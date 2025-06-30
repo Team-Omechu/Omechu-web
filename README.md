@@ -17,7 +17,9 @@
 - 커밋 메시지에는 간결하고 명확한 내용을 작성합니다.
 - 이슈 번호가 있다면 `#번호`를 함께 명시합니다.
 
+```bash
 feat: 로그인 폼 UI 레이아웃 구현 #1
 feat: 로그인 API 연동 로직 추가 #2
 style: 로그인 버튼 margin 조정 #15
 refactor: 로그인 useEffect cleanup 함수 분리 #23
+```
