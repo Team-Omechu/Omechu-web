@@ -1,0 +1,23 @@
+{
+  // ESLint가 적용할 설정들을 정의하는 곳입니다.
+  // "extends"는 미리 정의된 규칙 세트를 불러오는 키입니다.
+  "extends": [
+    "next/core-web-vitals", // Next.js 공식 추천 규칙
+    "prettier" // Prettier와 충돌하는 ESLint 규칙 제거
+  ],
+
+  // 팀에서 사용할 추가적인 규칙을 직접 정의할 수 있습니다.
+  "rules": {
+    // JSX에서 React import를 강제하지 않도록 (Next.js에선 필요 없음)
+    "react/react-in-jsx-scope": "off",
+
+    // 사용하지 않는 변수는 경고만 (에러 아님 → 팀원 학습 중이므로)
+    "no-unused-vars": "warn",
+
+    // 항상 세미콜론 붙이기
+    "semi": ["error", "always"],
+
+    // 큰따옴표 사용 ("대신 '를 쓰면 에러)
+    "quotes": ["error", "double"]
+  }
+}
