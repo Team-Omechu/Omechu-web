@@ -9,7 +9,18 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        mobile: { max: "375px" },
+        // 필요 시 추가 정의 가능
+      },
+      maxWidth: {
+        "screen-mobile": "375px",
+      },
+      minHeight: {
+        "screen-mobile": "812px",
+      },
+    },
   },
   plugins: [],
 };
