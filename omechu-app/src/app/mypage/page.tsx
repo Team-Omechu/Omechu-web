@@ -12,7 +12,7 @@ export default function MyPage() {
       <Header
         className={"border-b-0"}
         rightChild={
-          <button onClick={() => router.push("/profileSetting")}>
+          <button onClick={() => router.push("/mypage")}>
             <Image
               src={"/setting.png"}
               alt={"setting"}
@@ -38,7 +38,12 @@ export default function MyPage() {
           </div>
         </section>
         <section className="w-full border-2 bg-white rounded-md border-[#1F9BDA] text-[#00A3FF]">
-          <button className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white">
+          <button
+            onClick={() => {
+              router.push("/mypage/profileEdit");
+            }}
+            className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
+          >
             <span className="pl-3 text-lg">프로필 관리</span>
             <span className="pr-3">
               <Image
