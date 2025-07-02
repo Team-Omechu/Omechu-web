@@ -28,8 +28,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="flex flex-col h-screen mx-auto overflow-x-hidden max-w-screen-mobile ">
-        <main className="flex-1 bg-[#F8D5FF] pb-20 overflow-auto">
+      <body className="flex flex-col min-h-screen mx-auto overflow-x-hidden max-w-screen-mobile ">
+        <main className="flex-1 bg-[#F8D5FF] pb-20 overflow-y-scroll scroll-smooth">
           {children}
         </main>
         <BottomNav />
