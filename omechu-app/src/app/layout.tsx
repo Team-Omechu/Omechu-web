@@ -30,7 +30,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="flex justify-center bg-[#f8f9fa] min-h-screen overflow-x-hidden">
-        <div className="relative w-full min-h-screen bg-white shadow-md max-w-screen-mobile">
+        <div className="relative w-full min-h-screen pb-18  bg-[#f8d6ff] max-w-screen-mobile">
+          {/* (이삭) bottomNav의 h에 맞게 본문 pb 설정 */}
           {children}
           <BottomNav />
         </div>
