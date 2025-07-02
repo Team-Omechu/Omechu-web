@@ -10,8 +10,9 @@ export default function MyPage() {
   return (
     <>
       <Header
+        className={"border-b-0"}
         rightChild={
-          <button onClick={() => router.push("/")}>
+          <button onClick={() => router.push("/profileSetting")}>
             <Image
               src={"/setting.png"}
               alt={"setting"}
