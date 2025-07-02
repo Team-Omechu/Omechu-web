@@ -2,7 +2,7 @@ import Image from "next/image"; // Next.js에서 제공하는 next/image 컴포�
 
 const BottomNav = () => {
   return (
-    <div className="relative bottom-0 left-0 right-0 h-18 bg-white max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+    <div className="relative bottom-0 left-0 right-0 h-20 bg-white max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
       <div className="flex justify-between w-full px-5 py-2.5">
         <div className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100">
           <Image src="/Home.png" alt="Home" width={26} height={26} />
