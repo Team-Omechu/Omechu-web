@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
 import BottomNav from "./components/common/Bottom";
-import Header from "./components/common/Header";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -30,13 +28,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="flex justify-center min-h-screen overflow-x-hidden">
-        <div className="relative w-full min-h-screen pb-20 bg-[#f8d5ff] max-w-screen-mobile">
-          {/* (이삭) bottomNav의 h에 맞게 본문 pb 설정 */}
-          <Header leftChild={"<"} title={"메인페이지"} rightChild={">"} />
+      <body className="flex flex-col h-screen mx-auto overflow-x-hidden max-w-screen-mobile ">
+        <main className="flex-1 bg-[#F8D5FF] pb-20 overflow-auto">
           {children}
-          <BottomNav />
-        </div>
+        </main>
+        <BottomNav />
       </body>
     </html>
   );

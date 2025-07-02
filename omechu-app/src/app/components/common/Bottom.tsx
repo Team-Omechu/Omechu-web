@@ -6,7 +6,7 @@ const BottomNav = () => {
   const router = useRouter(); // React의 useNavigator처럼 변수 선언
 
   return (
-    <div className="relative bottom-0 left-0 right-0 h-20 bg-white max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 h-20 bg-white w-full max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
       <div className="flex justify-between w-full px-5 py-2.5">
         <div
           onClick={() => {
