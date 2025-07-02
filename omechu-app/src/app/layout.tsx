@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import BottomNav from "./components/common/Bottom";
+import Header from "./components/common/Header";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className="flex justify-center bg-[#f8f9fa] min-h-screen overflow-x-hidden">
         <div className="relative w-full min-h-screen pb-20 bg-[#f8d6ff] max-w-screen-mobile">
           {/* (이삭) bottomNav의 h에 맞게 본문 pb 설정 */}
+          <Header title={"메인페이지"} />
           {children}
           <BottomNav />
         </div>
