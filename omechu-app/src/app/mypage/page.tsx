@@ -40,7 +40,7 @@ export default function MyPage() {
         <section className="w-full border-2 bg-white rounded-md border-[#1F9BDA] text-[#00A3FF]">
           <button
             onClick={() => {
-              router.push("/mypage/profileEdit");
+              router.push("/mypage/profile-edit");
             }}
             className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
           >
@@ -57,7 +57,7 @@ export default function MyPage() {
           <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
           <button
             onClick={() => {
-              router.push("/mypage/userInfoEdit");
+              router.push("/mypage/user-info-edit");
             }}
             className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
           >

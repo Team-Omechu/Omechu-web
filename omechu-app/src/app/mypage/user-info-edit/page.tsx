@@ -72,7 +72,7 @@ export default function UserInfoEdit() {
         </section>
         <section>
           <button
-            onClick={() => router.push("/mypage/userInfoSetup")}
+            onClick={() => router.push("/mypage/user-info-setup")}
             className="w-[335px] h-[45px] bg-[#fb4746] hover:bg-[#e2403f] rounded-md active:bg-[#c93938] text-white text-[17px] font-medium"
           >
             다시 입력하기

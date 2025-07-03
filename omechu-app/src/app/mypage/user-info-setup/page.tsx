@@ -20,7 +20,7 @@ export default function UserInfoSetup() {
         </section>
         <section>
           <button
-            onClick={() => router.push("/userInfoSetup")}
+            onClick={() => router.push("/user-info-setup")}
             className="w-48 h-16 p-5 bg-[#fb4746] hover:bg-[#e2403f] rounded-md active:bg-[#c93938] text-white text-2xl flex items-center justify-center font-medium"
           >
             시작하기
