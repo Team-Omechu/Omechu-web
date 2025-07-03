@@ -2,7 +2,7 @@
 import Header from "@/app/components/common/Header";
 import { useRouter } from "next/navigation";
 
-export default function SetupGender() {
+export default function SetupFood() {
   const router = useRouter();
   return (
     <div className="flex flex-col w-auto h-screen">
@@ -25,7 +25,7 @@ export default function SetupGender() {
       <footer className="flex flex-col items-end w-full pb-[env(safe-area-inset-bottom)] gap-3">
         <button
           onClick={() => {
-            router.push("./state");
+            router.push("./exercise");
           }}
           className="mr-5 text-base text-[#828282]"
         >
@@ -33,7 +33,7 @@ export default function SetupGender() {
         </button>
         <button
           onClick={() => {
-            router.push("./state");
+            router.push("./exercise");
           }}
           className="p-2 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
         >

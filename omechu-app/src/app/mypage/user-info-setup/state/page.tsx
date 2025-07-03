@@ -2,7 +2,7 @@
 import Header from "@/app/components/common/Header";
 import { useRouter } from "next/navigation";
 
-export default function SetupGender() {
+export default function SetupState() {
   const router = useRouter();
   return (
     <div className="flex flex-col w-auto h-screen">
@@ -32,7 +32,7 @@ export default function SetupGender() {
         <div className="flex justify-between">
           <button
             onClick={() => {
-              router.back();
+              router.push("./gender");
             }}
             className="ml-5 text-base text-[#828282] flex items-center"
           >
