@@ -13,10 +13,10 @@ export default function SetupGender() {
         </section>
         <section>
           <div className="flex gap-5">
-            <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] text-xl text-[#FB4746]">
+            <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
               여성
             </button>
-            <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] text-xl text-[#FB4746]">
+            <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
               남성
             </button>
           </div>
