@@ -57,7 +57,7 @@ export default function MyPage() {
           <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
           <button
             onClick={() => {
-              router.push("/mypage/userInfoSetup");
+              router.push("/mypage/userInfoEdit");
             }}
             className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
           >
