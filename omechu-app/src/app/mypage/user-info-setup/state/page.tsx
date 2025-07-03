@@ -47,7 +47,12 @@ export default function SetupState() {
             건너뛰기 {">"}
           </button>
         </div>
-        <button className="p-2 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]">
+        <button
+          onClick={() => {
+            router.push("./food");
+          }}
+          className="p-2 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
+        >
           다음
         </button>
       </footer>
