@@ -42,8 +42,11 @@ export default function ProgressBar({ stepMap }: ProgressBarProps) {
       {showModal && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
           <AlertModal
+            title={"기본 상태 입력을 중단하시겠어요?"}
+            description={"지금까지 작성한 내용은 저장되지 않아요."}
+            confirmText={"그만하기"}
             onClose={() => setShowModal(false)}
-            onExit={() => router.push("/mypage/user-info-edit")}
+            onConfirm={() => router.push("/mypage/user-info-edit")}
           />
         </div>
       )}
