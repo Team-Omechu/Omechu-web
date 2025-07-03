@@ -1,4 +1,7 @@
-import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+
+import AlertModal from "./AlertModal";
 
 type ProgressBarProps = {
   stepMap: { [key: string]: number };
@@ -6,6 +9,9 @@ type ProgressBarProps = {
 
 export default function ProgressBar({ stepMap }: ProgressBarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [showModal, setShowModal] = useState(false); // 모달 상태
+
   const currentStep = stepMap[pathname] || 0;
   const totalSteps = Object.values(stepMap).length;
 
@@ -22,10 +28,25 @@ export default function ProgressBar({ stepMap }: ProgressBarProps) {
         ))}
       </div>
       <div>
-        <button className="w-[62px] h-6 p-1 bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] flex items-center justify-center text-white text-xs font-light rounded-md">
+        <button
+          onClick={() => {
+            setShowModal(true);
+          }} // 모달 여는 기능
+          className="w-[62px] h-6 p-1 bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] flex items-center justify-center text-white text-xs font-light rounded-md"
+        >
           그만하기
         </button>
       </div>
+
+      {/* 모달 */}
+      {showModal && (
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
+          <AlertModal
+            onClose={() => setShowModal(false)}
+            onExit={() => router.push("/mypage/user-info-edit")}
+          />
+        </div>
+      )}
     </div>
   );
 }
