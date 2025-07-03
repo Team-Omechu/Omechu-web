@@ -12,7 +12,7 @@ export default function UserInfoEdit() {
         leftChild={
           <button
             onClick={() => {
-              router.back();
+              router.push("./");
             }}
           >
             {"<"}

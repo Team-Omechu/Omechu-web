@@ -13,7 +13,7 @@ export default function ProfileEdit() {
         leftChild={
           <button
             onClick={() => {
-              router.back();
+              router.push("./");
             }}
           >
             {"<"}

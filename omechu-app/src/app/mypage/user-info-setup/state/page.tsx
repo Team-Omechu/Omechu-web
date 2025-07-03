@@ -1,12 +1,14 @@
 "use client";
-import Header from "@/app/components/common/Header";
+
+import ProgressBar from "@/app/components/common/ProgressBar";
 import { useRouter } from "next/navigation";
+import { userInfoStepMap } from "@/app/constants/stepMap";
 
 export default function SetupState() {
   const router = useRouter();
   return (
     <div className="flex flex-col w-auto h-screen">
-      <Header title={"progress-bar"} />
+      <ProgressBar stepMap={userInfoStepMap} />
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <section>
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
