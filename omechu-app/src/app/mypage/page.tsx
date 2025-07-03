@@ -55,7 +55,12 @@ export default function MyPage() {
             </span>
           </button>
           <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
-          <button className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white">
+          <button
+            onClick={() => {
+              router.push("/mypage/userInfoSetup");
+            }}
+            className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
+          >
             <span className="pl-3 text-lg">기본 상태 입력</span>
             <span className="pr-3">
               <Image
