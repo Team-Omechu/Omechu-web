@@ -1,12 +1,13 @@
 "use client";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import { useRouter } from "next/navigation";
+import { userInfoStepMap } from "@/app/constants/stepMap";
 
 export default function SetupGender() {
   const router = useRouter();
   return (
     <div className="flex flex-col w-auto h-screen">
-      <ProgressBar />
+      <ProgressBar stepMap={userInfoStepMap} />
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <section>
           <div className="text-3xl font-medium">성별은 무엇인가요?</div>
