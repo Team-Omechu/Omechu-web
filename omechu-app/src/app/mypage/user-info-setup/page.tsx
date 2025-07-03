@@ -8,7 +8,9 @@ export default function UserInfoSetup() {
     <>
       <Header
         className={"border-[#CAC6BF]"}
-        leftChild={<button onClick={() => router.back()}>{"<"}</button>}
+        leftChild={
+          <button onClick={() => router.push("./user-info-edit")}>{"<"}</button>
+        }
       />{" "}
       <main className="flex flex-col items-center justify-center w-full gap-24 px-4 py-6 min-h-[calc(100vh-10rem)]">
         <section className="flex flex-col gap-5 text-center">
