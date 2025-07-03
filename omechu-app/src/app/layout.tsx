@@ -1,17 +1,8 @@
+// src/app/layout.tsx
+
 import type { Metadata } from "next";
-// import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import BottomNav from "./components/common/Bottom";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+import ClientLayout from "./ClientLayout";
 
 export const metadata: Metadata = {
   title: "Omech - 오늘 뭐 먹지?",
@@ -28,11 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="flex flex-col h-screen mx-auto overflow-x-hidden max-w-screen-mobile ">
-        <main className="flex-1 bg-[#F8D5FF] pb-20 overflow-auto">
-          {children}
-        </main>
-        <BottomNav />
+      <body className="flex flex-col min-h-screen mx-auto overflow-x-hidden max-w-screen-mobile">
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
