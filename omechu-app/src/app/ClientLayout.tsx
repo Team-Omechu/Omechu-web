@@ -16,6 +16,7 @@ export default function ClientLayout({
     "/mypage/profile-edit",
     "/mypage/user-info-edit",
     "/mypage/user-info-setup/state",
+    "/mypage/user-info-setup/food",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
