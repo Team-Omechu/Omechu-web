@@ -7,20 +7,21 @@ export default function UserInfoSetup() {
   return (
     <>
       <Header
-        className={"border-b-0"}
+        className={"border-[#CAC6BF]"}
         leftChild={<button onClick={() => router.back()}>{"<"}</button>}
       />{" "}
-      <main className="flex flex-col items-center gap-5 justify-around w-full px-4 py-6 min-h-[calc(100vh-10rem)]">
-        <section>
-          <div className="text-lg font-medium">
-            {"<"} 이달의 기본 상태 {">"}
-          </div>
+      <main className="flex flex-col items-center justify-center w-full gap-24 px-4 py-6 min-h-[calc(100vh-10rem)]">
+        <section className="flex flex-col gap-5 text-center">
+          <div className="text-2xl font-medium">기본 정보 입력하기</div>
+          <span className="whitespace-pre font-normal text-[#828282]">
+            기본정보를 저장하여 {"\n"} 더 정교한 메뉴 추천을 받아보세요!
+          </span>
+          {/* prettier formatOnSave 때문에 whitespace-pre 미적용 -> 추후 수정 */}
         </section>
-        <section className="flex flex-col gap-3 px-5"></section>
         <section>
           <button
             onClick={() => router.push("/userInfoSetup")}
-            className="w-[335px] h-[45px] bg-[#fb4746] hover:bg-[#e2403f] rounded-md active:bg-[#c93938] text-white text-[17px] font-medium"
+            className="w-48 h-16 p-5 bg-[#fb4746] hover:bg-[#e2403f] rounded-md active:bg-[#c93938] text-white text-2xl flex items-center justify-center font-medium"
           >
             시작하기
           </button>
