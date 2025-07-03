@@ -1,12 +1,12 @@
 "use client";
-import Header from "@/app/components/common/Header";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import { useRouter } from "next/navigation";
 
 export default function SetupAllergy() {
   const router = useRouter();
   return (
     <div className="flex flex-col w-auto h-screen">
-      <Header title={"progress-bar"} />
+      <ProgressBar />
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <section>
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
@@ -20,7 +20,7 @@ export default function SetupAllergy() {
               달걀 (난류)
             </button>
             <button className="w-60 h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              우유
+              유제품
             </button>
             <button className="w-60 h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
               갑각류
@@ -38,7 +38,7 @@ export default function SetupAllergy() {
               달걀 (난류)
             </button>
             <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              우유
+              유제품
             </button>
             <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
               갑각류
