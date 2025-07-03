@@ -15,6 +15,7 @@ export default function ClientLayout({
     "/mypage/user-info-setup/gender",
     "/mypage/profile-edit",
     "/mypage/user-info-edit",
+    "/mypage/user-info-setup/exercise",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
