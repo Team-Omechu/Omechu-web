@@ -7,6 +7,15 @@ import { useRouter } from "next/navigation";
 
 export default function MyPage() {
   const router = useRouter();
+  const menuList: { title: string; href: string }[] = [
+    { title: "프로필 관리", href: "/mypage/profile-edit" },
+    { title: "기본 상태 관리", href: "/mypage/user-info-edit" },
+    { title: "추천 목록 관리", href: "/" },
+    { title: "먹부림 기록", href: "/" },
+    { title: "활동 내역", href: "/" },
+    { title: "찜 목록", href: "/" },
+  ];
+
   return (
     <>
       <Header
@@ -38,87 +47,33 @@ export default function MyPage() {
           </div>
         </section>
         <section className="w-full border-2 bg-white rounded-md border-[#1F9BDA] text-[#00A3FF]">
-          <button
-            onClick={() => {
-              router.push("/mypage/profile-edit");
-            }}
-            className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
-          >
-            <span className="pl-3 text-lg">프로필 관리</span>
-            <span className="pr-3">
-              <Image
-                src={"/right_arrow.svg"}
-                alt={"rightArrow"}
-                width={13}
-                height={13}
-              />
-            </span>
-          </button>
-          <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
-          <button
-            onClick={() => {
-              router.push("/mypage/user-info-edit");
-            }}
-            className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
-          >
-            <span className="pl-3 text-lg">기본 상태 입력</span>
-            <span className="pr-3">
-              <Image
-                src={"/right_arrow.svg"}
-                alt={"rightArrow"}
-                width={13}
-                height={13}
-              />
-            </span>
-          </button>
-          <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
-          <button className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white">
-            <span className="pl-3 text-lg">추천 목록 관리</span>
-            <span className="pr-3">
-              <Image
-                src={"/right_arrow.svg"}
-                alt={"rightArrow"}
-                width={13}
-                height={13}
-              />
-            </span>
-          </button>
-          <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
-          <button className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white">
-            <span className="pl-3 text-lg">먹부림 일지</span>
-            <span className="pr-3">
-              <Image
-                src={"/right_arrow.svg"}
-                alt={"rightArrow"}
-                width={13}
-                height={13}
-              />
-            </span>
-          </button>
-          <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
-          <button className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white">
-            <span className="pl-3 text-lg">활동 내역</span>
-            <span className="pr-3">
-              <Image
-                src={"/right_arrow.svg"}
-                alt={"rightArrow"}
-                width={13}
-                height={13}
-              />
-            </span>
-          </button>
-          <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
-          <button className="flex justify-between items-center w-full px-4 pt-2.5 pb-3 hover:bg-[#dfc0e6] hover:text-white">
-            <span className="pl-3 text-lg">찜 내역</span>
-            <span className="pr-3">
-              <Image
-                src={"/right_arrow.svg"}
-                alt={"rightArrow"}
-                width={13}
-                height={13}
-              />
-            </span>
-          </button>
+          {menuList.map((item, index) => {
+            const isLast = index === menuList.length - 1;
+
+            return (
+              <>
+                <button
+                  onClick={() => {
+                    router.push(item.href);
+                  }}
+                  className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
+                >
+                  <span className="pl-3 text-lg">{item.title}</span>
+                  <span className="pr-3">
+                    <Image
+                      src={"/right_arrow.svg"}
+                      alt={"rightArrow"}
+                      width={13}
+                      height={13}
+                    />
+                  </span>
+                </button>
+                {!isLast && (
+                  <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
+                )}
+              </>
+            );
+          })}
         </section>
       </main>
       <BottomNav />
