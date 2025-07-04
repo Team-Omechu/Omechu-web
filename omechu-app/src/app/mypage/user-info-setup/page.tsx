@@ -1,9 +1,12 @@
 "use client";
-import Header from "@/app/components/common/Header";
+
 import { useRouter } from "next/navigation";
+
+import Header from "@/app/components/common/Header";
 
 export default function UserInfoSetup() {
   const router = useRouter();
+
   return (
     <>
       <Header
