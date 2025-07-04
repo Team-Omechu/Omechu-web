@@ -7,6 +7,7 @@ type AlertModalProps = {
   cancelText?: string;
   onConfirm: () => void;
   onClose: () => void;
+  iconSrc?: string;
 };
 
 export default function AlertModal({
@@ -16,18 +17,19 @@ export default function AlertModal({
   cancelText = "취소",
   onConfirm,
   onClose,
+  iconSrc = "/close_button.png",
 }: AlertModalProps) {
   return (
-    <div className="flex flex-col px-5 pt-4 pb-6 gap-4 justify-between bg-white w-[335px] h-[200px] border-[1px] border-black rounded-[20px]">
+    <div className="w-[335px] h-[200px] bg-white rounded-[20px] p-5 flex flex-col justify-between shadow-xl">
       <div className="flex justify-end">
         <button onClick={onClose}>
-          <Image src="/close_button.png" alt="close" width={18} height={18} />
+          <Image src={iconSrc} alt="close" width={18} height={18} />
         </button>
       </div>
       <div className="flex flex-col items-center text-center">
         <span className="text-[19px] font-medium">{title}</span>
         {description && (
-          <span className="text-[15px] text-[#828282] font-medium mt-1">
+          <span className="mt-1 text-[15px] text-[#828282] font-medium">
             {description}
           </span>
         )}
@@ -35,13 +37,13 @@ export default function AlertModal({
       <div className="flex justify-center gap-2.5">
         <button
           onClick={onConfirm}
-          className="w-32 h-10 rounded-[30px] p-2.5 text-white active:bg-[#c93938] hover:bg-[#e2403f] bg-[#FB4746] flex items-center justify-center text-[15px] font-normal"
+          className="w-32 h-10 rounded-[30px] text-white bg-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938] text-[15px] font-normal"
         >
           {confirmText}
         </button>
         <button
           onClick={onClose}
-          className="w-32 h-10 rounded-[30px] p-2.5 bg-white hover:bg-[#f1f1f1] active:bg-[#e2e2e2] border-[1px] border-black flex items-center justify-center text-[15px] font-normal"
+          className="w-32 h-10 rounded-[30px] bg-white border border-black hover:bg-[#f1f1f1] active:bg-[#e2e2e2] text-[15px] font-normal"
         >
           {cancelText}
         </button>

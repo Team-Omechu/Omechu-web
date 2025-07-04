@@ -1,14 +1,24 @@
 "use client";
 
-import ProgressBar from "@/app/components/common/ProgressBar";
 import { useRouter } from "next/navigation";
-import { userInfoStepMap } from "@/app/constants/stepMap";
+import { useState } from "react";
+
+import ProgressBar from "@/app/components/common/ProgressBar";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import AlertModal from "@/app/components/common/AlertModal";
 
 export default function SetupFood() {
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="flex flex-col w-auto h-screen">
-      <ProgressBar stepMap={userInfoStepMap} />
+      <ProgressBar
+        currentStep={3}
+        totalSteps={5}
+        onCancelClick={() => setShowModal(true)}
+        cancelButtonText="그만하기"
+      />
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <section>
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
@@ -35,24 +45,6 @@ export default function SetupFood() {
               다른 나라 음식
             </button>
           </div>
-          {/* Grid 버전 */}
-          {/* <div className="grid grid-cols-2 gap-x-5 gap-y-3">
-            <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              한식
-            </button>
-            <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              양식
-            </button>
-            <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              중식
-            </button>
-            <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              일식
-            </button>
-            <button className="w-36 h-14 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              다른 나라 음식
-            </button>
-          </div> */}
         </section>
       </main>
       <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
@@ -83,6 +75,21 @@ export default function SetupFood() {
           다음
         </button>
       </footer>
+      {showModal && (
+        <ModalWrapper>
+          <AlertModal
+            title="기본 상태 입력을 중단하시겠어요?"
+            description="지금까지 작성한 내용은 저장되지 않아요."
+            confirmText="그만하기"
+            cancelText="돌아가기"
+            onConfirm={() => {
+              setShowModal(false);
+              router.push("./"); // 원하는 페이지로 이동
+            }}
+            onClose={() => setShowModal(false)}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }
