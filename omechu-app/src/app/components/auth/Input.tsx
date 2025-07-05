@@ -22,8 +22,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       : type;
 
     const baseStyle =
-      "w-full h-10 px-4 border rounded-md focus:outline-none bg-white";
-    const normalStyle = "border-gray-300 focus:border-gray-700";
+      "w-full h-10 px-4 border rounded-md focus:outline-none bg-white placeholder:text-[13px] placeholder:text-[#939393]";
+    const normalStyle = "border-[#494949] focus:border-[#494949]";
     const errorStyle = "border-red-500 focus:border-red-500";
     const inputClassName = `${baseStyle} ${error ? errorStyle : normalStyle}`;
 
@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={name}
-            className="block mb-1.5 text-sm font-medium text-gray-800"
+            className="block mb-1.5 text-[15px] font-normal text-[#393939]"
           >
             {label}
           </label>
