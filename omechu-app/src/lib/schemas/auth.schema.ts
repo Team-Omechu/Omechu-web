@@ -39,6 +39,12 @@ export const signupSchema = z
     }
   );
 
+// 비밀번호 찾기 폼 검증 스키마
+export const findPasswordSchema = z.object({
+  email: z.string().email("올바른 이메일 형식이 아닙니다."),
+});
+
 // 스키마로부터 TypeScript 타입 추론
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type SignupFormValues = z.infer<typeof signupSchema>;
+export type FindPasswordFormValues = z.infer<typeof findPasswordSchema>;
