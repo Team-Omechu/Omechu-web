@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
@@ -12,7 +13,7 @@ export default function SetupState() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="flex flex-col w-auto h-screen">
+    <div className="relative flex flex-col w-auto h-screen">
       <ProgressBar
         currentStep={2}
         totalSteps={5}
@@ -26,7 +27,7 @@ export default function SetupState() {
             가까운가요?
           </div>
         </section>
-        <section>
+        <section className="relative z-10">
           <div className="flex flex-col gap-5">
             <button className="w-60 h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
               다이어트 중
@@ -38,6 +39,16 @@ export default function SetupState() {
               유지 중
             </button>
           </div>
+        </section>
+
+        {/* 일러스트 */}
+        <section className="absolute top-[67%]">
+          <Image
+            src={"/transparent_illustration.png"}
+            alt={"배경 일러스트"}
+            width={250}
+            height={200}
+          />
         </section>
       </main>
       <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
