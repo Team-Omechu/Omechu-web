@@ -25,7 +25,7 @@ export default function ProfileEdit() {
           </button>
         }
       />
-      <main className="relative flex flex-col items-center w-full px-4 overflow-y-scroll min-h-100dvh scroll-smooth overscroll-none">
+      <main className="relative flex flex-col items-center w-full px-4 overflow-y-scroll min-h-100dvh scroll-smooth">
         <section className="flex items-center justify-center gap-10 h-44 mt-36">
           <div className="relative px-3">
             <div className="mb-3 rotate-45">
