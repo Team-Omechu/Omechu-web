@@ -12,7 +12,7 @@ export default function RecommendedList() {
   const [selectedIndex, setSelectedIndex] = useState(0); // 0: 추천 목록, 1: 제외 목록
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
     number | undefined
-  >(undefined);
+  >(undefined); // 0~13, 0: 'ㄱ', 13: 'ㅎ'
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function RecommendedList() {
           <input
             type="text"
             placeholder="음식명을 검색하세요."
-            className="px-6 flex items-center  bg-white w-[340px] h-10 border-2 border-black rounded-3xl"
+            className="px-6 flex items-center bg-white w-[340px] h-10 border-2 border-black rounded-3xl"
           />
           <Image
             onClick={() => {}}
@@ -103,57 +103,7 @@ export default function RecommendedList() {
 
         {/* 추천 목록 리스트 */}
         <section className="grid grid-cols-3 gap-4">
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
-          <FoodBox content={"Chocolate"} />
+          <FoodBox title={"Chocolate"} />
         </section>
       </main>
 
