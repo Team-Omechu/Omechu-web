@@ -10,7 +10,7 @@ type AlertModalProps = {
   iconSrc?: string;
 };
 
-export default function AlertModal({
+export default function AlertModal({x
   title,
   description,
   confirmText = "확인",
