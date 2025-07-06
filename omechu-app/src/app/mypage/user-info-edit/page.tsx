@@ -38,7 +38,7 @@ export default function UserInfoEdit() {
           </button>
         }
       />
-      <main className="flex flex-col items-center w-full min-h-100dvh px-4 py-6 min-h-[calc(100vh-10rem)]">
+      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-10rem)]">
         {userInfo.map((item, index) => (
           <div key={index} className="flex flex-col items-center w-full">
             <section>
