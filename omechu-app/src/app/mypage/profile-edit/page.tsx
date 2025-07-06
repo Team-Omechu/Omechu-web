@@ -36,20 +36,22 @@ export default function ProfileEdit() {
                 height={73}
               />
             </div>
-            <div className="absolute top-0 right-0">
+            <button className="absolute top-0 right-0">
               <Image
                 src={"/camera_icon.png"}
                 alt={"uploadingImage"}
                 width={25}
                 height={20}
               />
-            </div>
-            <button className="text-sm ml-1 text-[#48528E] text-center font-normal">
+            </button>
+            <button className="text-sm ml-1 text-[#48528E] dark:text-[#e9f5fb] text-center font-normal">
               사진지우기
             </button>
           </div>
           <div className="flex flex-col gap-1 mb-8 itmes-center">
-            <div className="text-lg font-medium text-[#393939]">닉네임</div>
+            <div className="text-lg font-medium text-[#393939] dark:text-[#f1f1f1]">
+              닉네임
+            </div>
             <div className="relative">
               <input
                 className="w-44 rounded-md h-9 border-[1px] border-[#626262] px-2.5 py-2.5 text-[#393939] text-base"
@@ -66,7 +68,7 @@ export default function ProfileEdit() {
                 />
               </button>
             </div>
-            <span className="text-xs font-normal ml-1 text-[#828282]">
+            <span className="text-xs font-normal ml-1 text-[#828282] dark:text-[#f6f6f6]">
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
