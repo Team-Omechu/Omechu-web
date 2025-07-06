@@ -25,7 +25,7 @@ export default function ProfileEdit() {
           </button>
         }
       />
-      <main className="flex flex-col items-center justify-around w-full px-4 py-6 overflow-y-scroll min-h-100dvh scroll-smooth">
+      <main className="relative flex flex-col items-center w-full px-4 overflow-y-scroll min-h-100dvh scroll-smooth overscroll-none">
         <section className="flex items-center justify-center gap-10 h-44 mt-36">
           <div className="relative px-3">
             <div className="mb-3 rotate-45">
@@ -70,6 +70,96 @@ export default function ProfileEdit() {
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
+        </section>
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+            저장
+          </button>
         </section>
         <section className="mt-36">
           <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
