@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useTheme } from "next-themes";
 
 import Image from "next/image";
 import BottomNav from "../components/common/Bottom";
@@ -11,7 +10,6 @@ import Header from "../components/common/Header";
 export default function MyPage() {
   const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const { theme } = useTheme();
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -75,13 +73,8 @@ export default function MyPage() {
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
                     <Image
-                      unoptimized
-                      src={
-                        theme === "dark"
-                          ? "/right_arrow_white.png"
-                          : "/right_arrow.svg"
-                      }
-                      alt={"rightArrow"}
+                      src={"/right_arrow.svg"}
+                      alt={"right_arrow"}
                       width={13}
                       height={13}
                     />

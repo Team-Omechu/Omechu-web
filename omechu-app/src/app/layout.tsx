@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
-
 import "./globals.css";
+
+import type { Metadata } from "next";
+
 import ClientLayout from "./ClientLayout";
 
 export const metadata: Metadata = {
@@ -20,9 +20,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="relative flex flex-col min-h-screen mx-auto overflow-x-hidden max-w-screen-mobile dark:bg-[#1a1a1a] dark:text-white">
-        <ThemeProvider attribute="class">
-          <ClientLayout>{children}</ClientLayout>
-        </ThemeProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
