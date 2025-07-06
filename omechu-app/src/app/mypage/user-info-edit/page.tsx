@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/app/components/common/Header";
+import InfoRow from "@/app/components/mypage/InfoRow";
 import { useRouter } from "next/navigation";
 
 const userInfo: {
@@ -46,56 +47,14 @@ export default function UserInfoEdit() {
               </div>
             </section>
             <section className="flex flex-col items-start justify-start w-full gap-3 px-6 mt-5 mb-10">
-              <div className="flex items-start gap-6">
-                <div
-                  className="w-32 h-9 px-1 justify-center items-center
-                            bg-[#F5F5F5] dark:bg-[#7a7a7a]
-                            border-[1px] border-[#393939]
-                            flex  rounded-md"
-                >
-                  성별
-                </div>
-                <div className="flex-1 mt-1.5 text-[#828282] text-base font-normal">
-                  {item.gender}
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-                  운동 상태
-                </div>
-                <div className="flex-1 mt-1.5 text-[#393939] text-base font-normal">
-                  {item.state}
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-                  선호 음식
-                </div>
-                <div className="flex-1 mt-1.5 max-h-32 overflow-y-scroll text-[#393939] text-base font-normal">
-                  {item.food}
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-                  체질
-                </div>
-                <div className="flex-1 mt-1.5 max-h-32 overflow-y-scroll text-[#393939] text-base font-normal">
-                  {item.condition}
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-                  알레르기
-                </div>
-                <div className="flex-1 mt-1.5  max-h-32 overflow-y-scroll text-[#393939] text-base font-normal">
-                  {item.allergy}
-                </div>
-              </div>
+              <InfoRow label="성별" content={item.gender} />
+              <InfoRow label="운동 상태" content={item.state} />
+              <InfoRow label="선호 음식" content={item.food} />
+              <InfoRow label="체질" content={item.condition} />
+              <InfoRow label="알레르기" content={item.allergy} />
             </section>
           </div>
         ))}
-
         <section>
           <button
             onClick={() => router.push("/mypage/user-info-setup")}
