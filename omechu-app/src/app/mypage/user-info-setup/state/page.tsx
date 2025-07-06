@@ -20,35 +20,37 @@ export default function SetupState() {
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
       />
-      <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
-        <section>
+      <main className="relative flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+        <section className="my-20">
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
             지금 어떤 운동 상태에{"\n"}
             가까운가요?
           </div>
         </section>
-        <section className="relative z-10">
-          <div className="flex flex-col gap-5">
-            <button className="w-60 h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              다이어트 중
-            </button>
-            <button className="w-60 h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              증량 중
-            </button>
-            <button className="w-60 h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              유지 중
-            </button>
+        <section className="relative flex flex-col items-center justify-center -mt-4">
+          <div className="relative z-10 flex flex-col gap-5">
+            {["다이어트 중", "증량 중", "유지 중"].map((item, index) => (
+              <button
+                key={index}
+                className="w-60 h-12 p-2  text-xl text-[#FB4746] hover:text-white
+                          border-[1px] rounded-md border-[#FB4746]
+                          bg-white 
+                          hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
+                          active:bg-[#c93938] dark:active:bg-[#71201f]  "
+              >
+                {item}
+              </button>
+            ))}
           </div>
-        </section>
-
-        {/* 일러스트 */}
-        <section className="absolute top-[67%]">
-          <Image
-            src={"/transparent_illustration.png"}
-            alt={"배경 일러스트"}
-            width={250}
-            height={200}
-          />
+          {/* 일러스트 */}
+          <div className="relative -top-5">
+            <Image
+              src={"/transparent_illustration.png"}
+              alt={"배경 일러스트"}
+              width={320}
+              height={200}
+            />
+          </div>
         </section>
       </main>
       <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
@@ -57,7 +59,7 @@ export default function SetupState() {
             onClick={() => {
               router.push("./gender");
             }}
-            className="ml-5 text-base text-[#828282] flex items-center"
+            className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
           >
             {"<"} 이전으로
           </button>
@@ -65,7 +67,7 @@ export default function SetupState() {
             onClick={() => {
               router.push("./food");
             }}
-            className="mr-5 text-base text-[#828282] flex items-center"
+            className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>
@@ -74,7 +76,11 @@ export default function SetupState() {
           onClick={() => {
             router.push("./food");
           }}
-          className="p-2 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
+          className="p-2 min-w-full h-12  rounded-t-md 
+                    text-white text-xl font-normal
+                    bg-[#1F9BDA] dark:bg-[#1774a4]
+                    hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
+                    active:bg-[#197cae] dark:active:bg-[#0e4662]"
         >
           다음
         </button>
