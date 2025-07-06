@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Image from "next/image";
 
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
@@ -20,15 +19,15 @@ export default function SetupState() {
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
       />
-      <main className="relative flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
         <section className="my-20">
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
             지금 어떤 운동 상태에{"\n"}
             가까운가요?
           </div>
         </section>
-        <section className="relative flex flex-col items-center justify-center -mt-4">
-          <div className="relative z-10 flex flex-col gap-5">
+        <section className="flex flex-col items-center justify-center -mt-4">
+          <div className="z-10 flex flex-col gap-5">
             {["다이어트 중", "증량 중", "유지 중"].map((item, index) => (
               <button
                 key={index}
@@ -41,15 +40,6 @@ export default function SetupState() {
                 {item}
               </button>
             ))}
-          </div>
-          {/* 일러스트 */}
-          <div className="relative -top-5">
-            <Image
-              src={"/transparent_illustration.png"}
-              alt={"배경 일러스트"}
-              width={320}
-              height={200}
-            />
           </div>
         </section>
       </main>
