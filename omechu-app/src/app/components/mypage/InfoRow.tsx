@@ -9,14 +9,14 @@ export default function InfoRow({ label, content }: InfoProps) {
       ? content.join(" ")
       : typeof content === "string" && content !== "None"
         ? content
-        : "없음";
+        : "None";
 
-  const isEmpty = displayContent === "없음";
+  const isEmpty = displayContent === "None";
 
   return (
     <div className="flex items-start gap-6">
       <div
-        className={`w-32 h-9 px-1 flex justify-center items-center
+        className={`w-32 h-10 px-1 flex justify-center items-center
                     border-[1px] border-[#393939] rounded-md 
                   bg-[#F5F5F5] dark:bg-[#7a7a7a]`}
       >

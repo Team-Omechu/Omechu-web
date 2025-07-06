@@ -46,7 +46,7 @@ export default function UserInfoEdit() {
                 {"<"} {item.name}의 기본 상태 {">"}
               </div>
             </section>
-            <section className="flex flex-col items-start justify-start w-full gap-3 px-6 mt-5 mb-10">
+            <section className="flex flex-col items-start justify-start w-full gap-4 px-6 mt-5 mb-10">
               <InfoRow label="성별" content={item.gender} />
               <InfoRow label="운동 상태" content={item.state} />
               <InfoRow label="선호 음식" content={item.food} />
