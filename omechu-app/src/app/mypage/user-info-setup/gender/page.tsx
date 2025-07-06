@@ -62,7 +62,9 @@ export default function SetupGender() {
               setShowModal(false);
               router.push("./"); // 원하는 페이지로 이동
             }}
-            onClose={() => setShowModal(false)}
+            onClose={() => {
+              setShowModal(false);
+            }}
           />
         </ModalWrapper>
       )}
