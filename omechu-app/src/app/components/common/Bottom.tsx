@@ -46,7 +46,7 @@ const BottomNav = () => {
             onClick={() => {
               router.push(item.routingUrl);
             }}
-            className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100"
+            className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-[#eeeeee] active:bg-[#e2e2e2] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
           >
             <Image src={item.imgSrc} alt={item.imgAlt} width={26} height={26} />
             <span className="text-xs font-medium">{item.title}</span>
