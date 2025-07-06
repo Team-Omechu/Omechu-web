@@ -13,15 +13,20 @@ export default function ProfileEdit() {
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.push("/mypage");
             }}
           >
-            {"<"}
+            <Image
+              src={"/left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={10}
+              height={10}
+            />
           </button>
         }
       />
-      <main className="flex flex-col items-center justify-around w-full px-4 py-6 min-h-[calc(100vh-10rem)]">
-        <section className="flex items-center justify-center gap-10 h-44">
+      <main className="flex flex-col items-center justify-around w-full px-4 py-6 overflow-y-scroll min-h-100dvh scroll-smooth">
+        <section className="flex items-center justify-center gap-10 h-44 mt-36">
           <div className="relative px-3">
             <div className="mb-3 rotate-45">
               <Image
@@ -66,8 +71,8 @@ export default function ProfileEdit() {
             </span>
           </div>
         </section>
-        <section>
-          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium">
+        <section className="mt-36">
+          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
             저장
           </button>
         </section>
