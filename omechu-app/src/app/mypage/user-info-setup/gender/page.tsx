@@ -17,11 +17,11 @@ export default function SetupGender() {
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
       />
-      <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
-        <section>
+      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+        <section className="my-20">
           <div className="text-3xl font-medium">성별은 무엇인가요?</div>
         </section>
-        <section>
+        <section className="my-10">
           <div className="flex gap-5">
             <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
               여성
@@ -37,7 +37,7 @@ export default function SetupGender() {
           onClick={() => {
             router.push("./state");
           }}
-          className="mr-5 text-base text-[#828282]"
+          className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
         >
           건너뛰기 {">"}
         </button>
@@ -45,7 +45,11 @@ export default function SetupGender() {
           onClick={() => {
             router.push("./state");
           }}
-          className="p-2 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
+          className="p-2 min-w-full h-12  rounded-t-md 
+                    text-white text-xl font-normal
+                    bg-[#1F9BDA] dark:bg-[#1774a4]
+                    hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
+                    active:bg-[#197cae] dark:active:bg-[#0e4662]"
         >
           다음
         </button>
