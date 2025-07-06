@@ -2,53 +2,56 @@
 import Image from "next/image"; // Next.js에서 제공하는 next/image 컴포넌트 사용
 import { useRouter } from "next/navigation";
 
+const navItems: {
+  title: string;
+  routingUrl: string;
+  imgSrc: string;
+  imgAlt: string;
+}[] = [
+  {
+    title: "홈",
+    routingUrl: "/",
+    imgSrc: "/Home.png",
+    imgAlt: "홈",
+  },
+  {
+    title: "전체메뉴",
+    routingUrl: "/",
+    imgSrc: "/menu.png",
+    imgAlt: "전체메뉴",
+  },
+  {
+    title: "맛집",
+    routingUrl: "/",
+    imgSrc: "/restaurant.png",
+    imgAlt: "맛집",
+  },
+  {
+    title: "마이페이지",
+    routingUrl: "/mypage",
+    imgSrc: "/mypage.png",
+    imgAlt: "마이페이지",
+  },
+];
+
 const BottomNav = () => {
   const router = useRouter(); // React의 useNavigator처럼 변수 선언
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 h-20 bg-white w-full max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 h-20 bg-[#f6f6f6] w-full max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:bg-[#7a7a7a]">
       <div className="flex justify-between w-full px-5 py-2.5">
-        <div
-          onClick={() => {
-            router.push("/");
-          }}
-          className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100"
-        >
-          <Image src="/Home.png" alt="Home" width={26} height={26} />
-          <span className="text-xs font-medium">홈</span>
-        </div>
-        <div
-          onClick={() => {
-            router.push("/");
-          }}
-          className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100"
-        >
-          <Image src="/menu.png" alt="menu" width={26} height={26} />
-          <span className="text-xs font-medium">전체메뉴</span>
-        </div>
-        <div
-          onClick={() => {
-            router.push("/");
-          }}
-          className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100"
-        >
-          <Image
-            src="/restaurant.png"
-            alt="restaurant"
-            width={26}
-            height={26}
-          />
-          <span className="text-xs font-medium">맛집</span>
-        </div>
-        <div
-          onClick={() => {
-            router.push("/mypage");
-          }} // 아직 mypage 구현 전 -> div 눌러도 이동 X
-          className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100"
-        >
-          <Image src="/mypage.png" alt="mypage" width={26} height={26} />
-          <span className="text-xs font-medium">마이페이지</span>
-        </div>
+        {navItems.map((item, index) => (
+          <div
+            key={index}
+            onClick={() => {
+              router.push(item.routingUrl);
+            }}
+            className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-gray-100"
+          >
+            <Image src={item.imgSrc} alt={item.imgAlt} width={26} height={26} />
+            <span className="text-xs font-medium">{item.title}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
