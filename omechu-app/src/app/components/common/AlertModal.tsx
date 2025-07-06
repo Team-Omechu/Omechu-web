@@ -12,10 +12,11 @@ export default function AlertModal({
   title,
   description,
   confirmText = "확인",
-  cancelText = "취소",
+  cancelText,
   onConfirm,
   onClose,
 }: AlertModalProps) {
+  const showCancelButton = !!cancelText;
   return (
     <div className="w-[335px] h-[200px] bg-white rounded-[20px] p-5 flex flex-col justify-between shadow-xl">
       <div className="flex justify-end"></div>
@@ -30,16 +31,18 @@ export default function AlertModal({
       <div className="flex justify-center gap-2.5">
         <button
           onClick={onConfirm}
-          className="flex-1 h-10 rounded-[30px] text-white bg-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938] text-[15px] font-normal"
+          className={`h-10 rounded-[30px] text-white bg-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938] text-[15px] font-normal ${showCancelButton ? "flex-1" : "w-40"}`}
         >
           {confirmText}
         </button>
-        <button
-          onClick={onClose}
-          className="flex-1 h-10 rounded-[30px] bg-white border border-black hover:bg-[#f1f1f1] active:bg-[#e2e2e2] text-[15px] font-normal"
-        >
-          {cancelText}
-        </button>
+        {showCancelButton && (
+          <button
+            onClick={onClose}
+            className="flex-1 h-10 rounded-[30px] bg-white border border-black hover:bg-[#f1f1f1] active:bg-[#e2e2e2] text-[15px] font-normal"
+          >
+            {cancelText}
+          </button>
+        )}
       </div>
     </div>
   );
