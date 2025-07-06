@@ -57,12 +57,10 @@ export default function SetupGender() {
             title="기본 상태 입력을 중단하시겠어요?"
             description="지금까지 작성한 내용은 저장되지 않아요."
             confirmText="그만하기"
-            cancelText="돌아가기"
             onConfirm={() => {
               setShowModal(false);
               router.push("./"); // 원하는 페이지로 이동
             }}
-            onClose={() => setShowModal(false)}
           />
         </ModalWrapper>
       )}
