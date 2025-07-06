@@ -19,27 +19,31 @@ export default function SetupCondition() {
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
       />
-      <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
-        <section>
+      <main className="relative flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+        <section className="my-20">
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
             체질은 무엇인가요?
           </div>
         </section>
-        <section className="w-full px-8">
-          {/* flex 버전 */}
+        <section className="w-full px-8 mt-10">
           <div className="flex flex-col gap-5">
-            <button className="w-full h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-lg text-[#FB4746]">
-              감기에 잘 걸리는 편이에요
-            </button>
-            <button className="w-full h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-lg text-[#FB4746]">
-              소화가 잘 안되는 날이 많아요
-            </button>
-            <button className="w-full h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-lg text-[#FB4746]">
-              열이 많아서 더위를 잘 타요
-            </button>
-            <button className="w-full h-12 p-2 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-lg text-[#FB4746]">
-              추위를 잘 타고 몸이 쉽게 차가워져요
-            </button>
+            {[
+              "감기에 잘 걸리는 편이에요",
+              "소화가 잘 안되는 날이 많아요",
+              "열이 많아서 더위를 잘 타요",
+              "추위를 잘 타고 몸이 쉽게 차가워져요",
+            ].map((item, index) => (
+              <button
+                key={index}
+                className="w-full h-12 p-2 text-lg text-[#FB4746] hover:text-white
+                          border-[1px] rounded-md border-[#FB4746]
+                          bg-white 
+                          hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
+                          active:bg-[#c93938] dark:active:bg-[#71201f]  "
+              >
+                {item}
+              </button>
+            ))}
           </div>
         </section>
       </main>
@@ -49,7 +53,7 @@ export default function SetupCondition() {
             onClick={() => {
               router.push("./food");
             }}
-            className="ml-5 text-base text-[#828282] flex items-center"
+            className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
           >
             {"<"} 이전으로
           </button>
@@ -57,7 +61,7 @@ export default function SetupCondition() {
             onClick={() => {
               router.push("./allergy");
             }}
-            className="mr-5 text-base text-[#828282] flex items-center"
+            className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>
