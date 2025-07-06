@@ -23,7 +23,7 @@ export default function MyPage() {
   return (
     <>
       <Header
-        className={"border-b-0"}
+        className={"border-b-0 hover:bg-[#f8d5ff] dark:hover:bg-[#baa0bf]"}
         rightChild={
           <button onClick={() => router.push("/mypage")}>
             <Image
@@ -46,15 +46,13 @@ export default function MyPage() {
             />
           </div>
           <div className="text-lg font-md font">제나</div>
-          <div className="text-xs font-normal text-[#828282]">
+          <div className="text-xs font-normal text-[#828282] dark:text-[#f6f6f6]">
             leej296@naver.com
           </div>
         </section>
-        <section className="w-full border-[3px] bg-white rounded-md border-[#1F9BDA] text-[#00A3FF]">
+        <section className="w-full border-[4px] rounded-xl bg-white border-[#1F9BDA] dark:bg-[#7a7a7a] dark:border-[#1774a4]">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
-            const isHovered = hoveredIndex === index;
-
             return (
               <>
                 <button
@@ -63,24 +61,27 @@ export default function MyPage() {
                   }}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 hover:bg-[#dfc0e6] hover:text-white"
+                  className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 rounded-xl 
+                  bg-white text-[#00A3FF]
+                  hover:bg-[#f1f1f1] hover:text-[#1c8cc4]
+                  active:bg-[#e2e2e2] active:text-[#197cae]
+                  dark:bg-[#7a7a7a] dark:text-[#e9f5fb]
+                  dark:hover:bg-[#626262] dark:hover:text-[#ddf0f9]
+                  dark:active:bg-[#494949] dark:active:text-[#bae0f4]
+                  "
                 >
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
                     <Image
-                      src={
-                        isHovered
-                          ? "/right_arrow_white.png"
-                          : "/right_arrow.svg"
-                      }
-                      alt={"rightArrow"}
+                      src={"/right_arrow.svg"}
+                      alt={"right_arrow"}
                       width={13}
                       height={13}
                     />
                   </span>
                 </button>
                 {!isLast && (
-                  <div className="h-[0.1px] bg-[#b3d8eb] w-[calc(100%-2.5rem)] mx-auto" />
+                  <div className="h-[1.2px] w-[calc(100%-2.5rem)] mx-auto bg-[#b3d8eb] dark:bg-white" />
                 )}
               </>
             );

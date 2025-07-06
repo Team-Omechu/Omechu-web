@@ -1,7 +1,26 @@
 "use client";
 
 import Header from "@/app/components/common/Header";
+import InfoRow from "@/app/components/mypage/InfoRow";
 import { useRouter } from "next/navigation";
+
+const userInfo: {
+  name: string;
+  gender: string;
+  state: string;
+  food: string[];
+  condition: string[];
+  allergy: string[];
+}[] = [
+  {
+    name: "이달",
+    gender: "None",
+    state: "다이어트 중",
+    food: ["한식", "다른나라"],
+    condition: ["추위를 잘 타요", "속이 자주 더부룩해요"],
+    allergy: ["갑각류"],
+  },
+];
 
 export default function UserInfoEdit() {
   const router = useRouter();
@@ -19,61 +38,31 @@ export default function UserInfoEdit() {
           </button>
         }
       />
-      <main className="flex flex-col items-center gap-5 justify-around w-full px-4 py-6 min-h-[calc(100vh-10rem)]">
-        <section>
-          <div className="text-lg font-medium">
-            {"<"} 이달의 기본 상태 {">"}
+      <main className="flex flex-col items-center w-full min-h-100dvh px-4 py-6 min-h-[calc(100vh-10rem)]">
+        {userInfo.map((item, index) => (
+          <div key={index} className="flex flex-col items-center w-full">
+            <section>
+              <div className="my-10 text-xl font-medium">
+                {"<"} {item.name}의 기본 상태 {">"}
+              </div>
+            </section>
+            <section className="flex flex-col items-start justify-start w-full gap-4 px-6 mt-5 mb-14">
+              <InfoRow label="성별" content={item.gender} />
+              <InfoRow label="운동 상태" content={item.state} />
+              <InfoRow label="선호 음식" content={item.food} />
+              <InfoRow label="체질" content={item.condition} />
+              <InfoRow label="알레르기" content={item.allergy} />
+            </section>
           </div>
-        </section>
-        <section className="flex flex-col gap-3 px-5">
-          <div className="flex items-start gap-4">
-            <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-              성별
-            </div>
-            <div className="flex-1 mt-1.5 text-[#828282] text-base font-normal">
-              None
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-              운동 상태
-            </div>
-            <div className="flex-1 mt-1.5 text-[#393939] text-base font-normal">
-              다이어트 중
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-              선호 음식
-            </div>
-            <div className="flex-1 mt-1.5 max-h-32 overflow-y-scroll text-[#393939] text-base font-normal">
-              한식 다른나라
-            </div>
-          </div>
-
-          <div className="flex items-start gap-4">
-            <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-              체질
-            </div>
-            <div className="flex-1 mt-1.5 max-h-32 overflow-y-scroll text-[#393939] text-base font-normal">
-              추위를 잘 타고 몸이 쉽게 차가워져요. 추위를 잘 타고 몸이 쉽게
-              차가워져요추위를 잘 타고 몸이 쉽게 차가워져요추위를 잘 타고 몸이
-              쉽게 차가워져요추위를 잘 타고 몸이 쉽게 차가워져요
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="w-32 h-9 bg-[#F5F5F5] flex items-center justify-center rounded-md px-1 py-1 border-[1px] border-[#393939]">
-              알레르기
-            </div>
-            <div className="flex-1 mt-1.5  max-h-32 overflow-y-scroll text-[#393939] text-base font-normal">
-              갑각류 알레르기
-            </div>
-          </div>
-        </section>
+        ))}
         <section>
           <button
             onClick={() => router.push("/mypage/user-info-setup")}
-            className="w-[335px] h-[45px] bg-[#fb4746] hover:bg-[#e2403f] rounded-md active:bg-[#c93938] text-white text-[17px] font-medium"
+            className="w-[335px] h-[45px] text-[17px] 
+                      font-medium text-white rounded-md
+                      bg-[#fb4746] dark:bg-[#bc3535]
+                      hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
+                      active:bg-[#c93938] dark:active:bg-[#71201f]"
           >
             다시 입력하기
           </button>
