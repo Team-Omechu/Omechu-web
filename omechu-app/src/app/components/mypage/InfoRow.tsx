@@ -6,7 +6,7 @@ type InfoProps = {
 export default function InfoRow({ label, content }: InfoProps) {
   const displayContent =
     Array.isArray(content) && content.length > 0
-      ? content.join(" ")
+      ? content.join(", ")
       : typeof content === "string" && content !== "None"
         ? content
         : "None";
@@ -23,8 +23,10 @@ export default function InfoRow({ label, content }: InfoProps) {
         {label}
       </div>
       <div
-        className={`flex-1 mt-1.5 text-base font-normal ${
-          isEmpty ? "text-[#a3a3a3]" : "text-[#393939]"
+        className={`flex-1 mt-1.5 text-base font-normal break-words whitespace-pre-wra ${
+          isEmpty
+            ? "text-[#a3a3a3] dark:text-[#fcdcdc] font-bold"
+            : "text-[#393939] dark:text-white font-bold"
         }`}
       >
         {displayContent}

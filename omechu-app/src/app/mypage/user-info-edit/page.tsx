@@ -17,7 +17,7 @@ const userInfo: {
     gender: "None",
     state: "다이어트 중",
     food: ["한식", "다른나라"],
-    condition: ["추위를 잘 타요"],
+    condition: ["추위를 잘 타요", "속이 자주 더부룩해요"],
     allergy: ["갑각류"],
   },
 ];
@@ -46,7 +46,7 @@ export default function UserInfoEdit() {
                 {"<"} {item.name}의 기본 상태 {">"}
               </div>
             </section>
-            <section className="flex flex-col items-start justify-start w-full gap-4 px-6 mt-5 mb-10">
+            <section className="flex flex-col items-start justify-start w-full gap-4 px-6 mt-5 mb-14">
               <InfoRow label="성별" content={item.gender} />
               <InfoRow label="운동 상태" content={item.state} />
               <InfoRow label="선호 음식" content={item.food} />
@@ -58,7 +58,11 @@ export default function UserInfoEdit() {
         <section>
           <button
             onClick={() => router.push("/mypage/user-info-setup")}
-            className="w-[335px] h-[45px] bg-[#fb4746] hover:bg-[#e2403f] rounded-md active:bg-[#c93938] text-white text-[17px] font-medium"
+            className="w-[335px] h-[45px] text-[17px] 
+                      font-medium text-white rounded-md
+                      bg-[#fb4746] dark:bg-[#bc3535]
+                      hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
+                      active:bg-[#c93938] dark:active:bg-[#71201f]"
           >
             다시 입력하기
           </button>
