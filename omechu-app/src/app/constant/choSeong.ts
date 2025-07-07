@@ -32,3 +32,25 @@ export const consonantGroupMap: Record<string, string[]> = {
   ㅍ: ["ㅍ"],
   ㅎ: ["ㅎ"],
 };
+
+export const HANGUL_CHO_SEONG = [
+  "ㄱ",
+  "ㄲ",
+  "ㄴ",
+  "ㄷ",
+  "ㄸ",
+  "ㄹ",
+  "ㅁ",
+  "ㅂ",
+  "ㅃ",
+  "ㅅ",
+  "ㅆ",
+  "ㅇ",
+  "ㅈ",
+  "ㅉ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ",
+];
