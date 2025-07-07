@@ -18,7 +18,11 @@ export default function ProgressBar({
           <div
             key={index}
             className={`flex-1 h-2 rounded-3xl border-[1.5px] border-[#1F9BDA] ${
-              index < currentStep ? "bg-[#1F9BDA]" : "bg-white"
+              index < currentStep
+                ? `bg-[#1f9bda] dark:bg-[#1774a4]
+                    hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
+                    active:bg-[#197cae] dark:active:bg-[#0e4662]`
+                : "bg-white"
             }`}
           />
         ))}
@@ -28,7 +32,10 @@ export default function ProgressBar({
         <div className="flex justify-start">
           <button
             onClick={onCancelClick}
-            className="w-[62px] h-6 px-2 bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] text-white text-xs font-light rounded-md"
+            className="w-[62px] h-6 px-2 text-white text-xs font-light rounded-md
+                      bg-[#1f9bda] dark:bg-[#1774a4]
+                      hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
+                      active:bg-[#197cae] dark:active:bg-[#0e4662]"
           >
             {cancelButtonText}
           </button>
