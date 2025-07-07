@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 import Image from "next/image";
 import BottomNav from "../components/common/Bottom";
@@ -9,7 +8,6 @@ import Header from "../components/common/Header";
 
 export default function MyPage() {
   const router = useRouter();
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -59,8 +57,6 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(item.href);
                   }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
                   className="flex justify-between items-center w-full px-4 pt-3 pb-2.5 rounded-xl 
                   bg-white text-[#00A3FF]
                   hover:bg-[#f1f1f1] hover:text-[#1c8cc4]

@@ -7,12 +7,79 @@ import Header from "@/app/components/common/Header";
 import Image from "next/image";
 import FoodBox from "@/app/components/mypage/FoodBox";
 
+const alphabetList: string[] = [
+  "ㄱ",
+  "ㄴ",
+  "ㄷ",
+  "ㄹ",
+  "ㅁ",
+  "ㅂ",
+  "ㅅ",
+  "ㅇ",
+  "ㅈ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ",
+];
+
 export default function RecommendedList() {
+  const initialfoodList: { title: string; isExcluded: boolean }[] = [
+    { title: "치킨", isExcluded: false },
+    { title: "초콜릿", isExcluded: false },
+    { title: "김밥", isExcluded: false },
+    { title: "떡볶이", isExcluded: false },
+    { title: "라면", isExcluded: false },
+    { title: "삼겹살", isExcluded: false },
+    { title: "불고기", isExcluded: false },
+    { title: "된장찌개", isExcluded: false },
+    { title: "피자", isExcluded: false },
+    { title: "햄버거", isExcluded: false },
+    { title: "초밥", isExcluded: false },
+    { title: "우동", isExcluded: false },
+    { title: "쌀국수", isExcluded: false },
+    { title: "냉면", isExcluded: false },
+    { title: "샐러드", isExcluded: false },
+    { title: "바나나", isExcluded: false },
+    { title: "딸기", isExcluded: false },
+    { title: "요거트", isExcluded: false },
+    { title: "도넛", isExcluded: false },
+    { title: "커피", isExcluded: false },
+  ];
+
+  const sortedFoodList = [...initialfoodList].sort((a, b) =>
+    a.title.localeCompare(b.title, "ko")
+  );
+  const [foodList, setFoodList] = useState(sortedFoodList);
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0); // 0: 추천 목록, 1: 제외 목록
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
     number | undefined
   >(undefined); // 0~13, 0: 'ㄱ', 13: 'ㅎ'
+
+  const getInitialConsonant = (char: string): string => {
+    const code = char.charCodeAt(0) - 0xac00;
+    const choIndex = Math.floor(code / 588);
+    return alphabetList[choIndex] ?? "";
+  };
+
+  const onToggle = (index: number) => {
+    console.log("토글 동작", index);
+    setFoodList((prev) =>
+      prev.map((item, idx) =>
+        idx === index ? { ...item, isExcluded: !item.isExcluded } : item
+      )
+    );
+  };
+
+  const filteredFoodList = foodList
+    .filter((item) => item.isExcluded === (selectedIndex === 1))
+    .filter((item) => {
+      if (selectedAlphabetIndex === undefined) return true;
+      const selectedConsonant = alphabetList[selectedAlphabetIndex];
+      return getInitialConsonant(item.title) === selectedConsonant;
+    });
 
   return (
     <>
@@ -73,26 +140,15 @@ export default function RecommendedList() {
             className="w-[340px] h-[61px] px-7 py-2 grid grid-cols-7 grid-flow-dense
                       bg-white border-2 border-black  rounded-2xl"
           >
-            {[
-              "ㄱ",
-              "ㄴ",
-              "ㄷ",
-              "ㄹ",
-              "ㅁ",
-              "ㅂ",
-              "ㅅ",
-              "ㅇ",
-              "ㅈ",
-              "ㅊ",
-              "ㅋ",
-              "ㅌ",
-              "ㅍ",
-              "ㅎ",
-            ].map((item, index) => (
+            {alphabetList.map((item, index) => (
               <button
                 className={`text-[15px] text-[text-#393939] font-normal hover:bg-[#e2e2e2] active:bg-[#828282] rounded-full 
                   ${selectedAlphabetIndex === index ? "font-black" : ""}`}
-                onClick={() => setSelectedAlphabetIndex(index)}
+                onClick={() =>
+                  setSelectedAlphabetIndex((prev) =>
+                    prev === index ? undefined : index
+                  )
+                }
                 key={index}
               >
                 {item}
@@ -103,7 +159,14 @@ export default function RecommendedList() {
 
         {/* 추천 목록 리스트 */}
         <section className="grid grid-cols-3 gap-4">
-          <FoodBox title={"Chocolate"} />
+          {filteredFoodList.map((item, index) => (
+            <FoodBox
+              key={`${item.title}-${index}`}
+              isExcluded={item.isExcluded}
+              onToggle={() => onToggle(foodList.indexOf(item))}
+              title={item.title}
+            />
+          ))}
         </section>
       </main>
 
