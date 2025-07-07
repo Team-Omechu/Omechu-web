@@ -43,11 +43,15 @@ const consonantGroupMap: Record<string, string[]> = {
 };
 
 export default function RecommendedList() {
-  const initialfoodList: { title: string; isExcluded: boolean }[] = [
-    { title: "치킨", isExcluded: false },
+  const initialfoodList: {
+    title: string;
+    isExcluded: boolean;
+    imageUrl?: string | null;
+  }[] = [
+    { title: "치킨", isExcluded: false, imageUrl: "/logo_3d.png" },
     { title: "초콜릿", isExcluded: false },
-    { title: "김밥", isExcluded: false },
-    { title: "떡볶이", isExcluded: false },
+    { title: "김밥", isExcluded: false, imageUrl: "/logo_3d.png" },
+    { title: "떡볶이", isExcluded: false, imageUrl: "/logo_3d.png" },
     { title: "라면", isExcluded: false },
     { title: "삼겹살", isExcluded: false },
     { title: "불고기", isExcluded: false },
@@ -104,11 +108,10 @@ export default function RecommendedList() {
     return choSeong[choIndex] ?? "";
   };
 
-  const onToggle = (index: number) => {
-    console.log("토글 동작", index);
+  const onToggle = (title: string) => {
     setFoodList((prev) =>
-      prev.map((item, idx) =>
-        idx === index ? { ...item, isExcluded: !item.isExcluded } : item
+      prev.map((item) =>
+        item.title === title ? { ...item, isExcluded: !item.isExcluded } : item
       )
     );
   };
@@ -131,7 +134,7 @@ export default function RecommendedList() {
     .filter((item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase())
     ); // 메뉴 검색 기능
-
+  console.table(foodList);
   return (
     <>
       <Header
@@ -218,8 +221,9 @@ export default function RecommendedList() {
             <FoodBox
               key={`${item.title}-${index}`}
               isExcluded={item.isExcluded}
-              onToggle={() => onToggle(foodList.indexOf(item))}
+              onToggle={() => onToggle(item.title)}
               title={item.title}
+              imageUrl={item.imageUrl} // 또는 추후에 실제 경로로 대체될 값
             />
           ))}
         </section>

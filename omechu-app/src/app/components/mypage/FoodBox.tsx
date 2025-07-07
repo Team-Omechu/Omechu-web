@@ -13,6 +13,7 @@ export default function FoodBox({
   isExcluded,
   onToggle,
 }: FoodBoxProp) {
+  console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
   return (
     <div
       className="relative py-1 w-[100px] h-[110px] 
@@ -37,7 +38,6 @@ export default function FoodBox({
         height={25}
         sizes="25px"
       />
-
       {/* 음식 이미지 (또는 fallback) */}
       {imageUrl ? (
         <Image
@@ -50,7 +50,6 @@ export default function FoodBox({
       ) : (
         <div className="bg-gray-200 w-[70px] h-[70px] rounded-lg" />
       )}
-
       {/* 음식 이름 */}
       <span className="text-[15px] font-normal">{title}</span>
     </div>
