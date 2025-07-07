@@ -24,7 +24,7 @@ export default function MenuDetail() {
                     <button onClick={() => {router.push("/fullmenu")}}>
                         <Image
                             src={"/left_arrow.png"}
-                            alt={"changeProfileImage"}
+                            alt={"뒤로가기"}
                             width={10}
                             height={10}
                         />
