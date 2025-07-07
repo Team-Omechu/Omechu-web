@@ -130,6 +130,7 @@ export default function FullMenu() {
                     isExcluded={false}
                     isToggled={false}
                     onToggle={() => {}}
+                    onClick={() => router.push(`/fullmenu/menu-detail?name=${encodeURIComponent(food)}`)}
                 />
             ))}
         </div>
