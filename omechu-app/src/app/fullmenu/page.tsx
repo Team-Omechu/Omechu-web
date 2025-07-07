@@ -6,7 +6,7 @@ import BottomNav from "../components/common/Bottom";
 import SearchBar from "../components/common/SearchBar";
 import FoodBox from "../components/common/FoodBox";
 import FilterModal from "../components/fullmenu/FilterModal";
-import TagItem from "../components/fullmenu/Tag";
+import TagItem from "../components/common/Tag";
 
 export default function FullMenu() {
   const router = useRouter();
