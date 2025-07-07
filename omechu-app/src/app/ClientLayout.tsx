@@ -39,6 +39,18 @@ export default function ClientLayout({
     "/mainpage/location-answer",
 
     "/mypage/recommended-list",
+
+    // 로그인, 회원가입, 온보딩 페이지
+    "/auth/signin",
+    "/auth/signup",
+    "/auth/find-password",
+    "/auth/find-password/sent",
+    "/onboarding/1",
+    "/onboarding/2",
+    "/onboarding/3",
+    "/onboarding/4",
+    "/onboarding/5",
+    "/onboarding/6",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
