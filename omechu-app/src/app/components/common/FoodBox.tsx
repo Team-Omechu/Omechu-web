@@ -4,6 +4,7 @@ type FoodBoxProp = {
   title: string;
   imageUrl?: string | null; // 실제 서비스에서는 이미지 경로 들어옴
   isExcluded: boolean;
+  isToggled?: boolean;
   onToggle: () => void;
 };
 
@@ -11,6 +12,7 @@ export default function FoodBox({
   title,
   imageUrl,
   isExcluded,
+  isToggled = true,
   onToggle,
 }: FoodBoxProp) {
   console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
@@ -23,21 +25,23 @@ export default function FoodBox({
     >
       {/* 추천 제외 || 복원 버튼 */}
       {/* dev 모드 일 때 이미지 렌더링 늦음 -> build 후 확인하니 렌더링 정상 (캐시 사용) */}
-      <Image
-        priority
-        loading="eager"
-        unoptimized
-        onClick={() => {
-          console.log("클릭됨", title);
-          onToggle();
-        }}
-        className="absolute cursor-pointer top-1 right-1"
-        src={isExcluded ? `/add_circle.webp` : `/do_not_disturb_on.webp`}
-        alt={isExcluded ? "음식 추천 제외 취소" : "음식 추천 제외"}
-        width={25}
-        height={25}
-        sizes="25px"
-      />
+      {isToggled && (
+        <Image
+          priority
+          loading="eager"
+          unoptimized
+          onClick={() => {
+            console.log("클릭됨", title);
+            onToggle();
+          }}
+          className="absolute cursor-pointer top-1 right-1"
+          src={isExcluded ? `/add_circle.webp` : `/do_not_disturb_on.webp`}
+          alt={isExcluded ? "음식 추천 제외 취소" : "음식 추천 제외"}
+          width={25}
+          height={25}
+          sizes="25px"
+        />
+      )}
       {/* 음식 이미지 (또는 fallback) */}
       {imageUrl ? (
         <Image
