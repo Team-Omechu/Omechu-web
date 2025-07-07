@@ -7,7 +7,7 @@ import Header from "@/app/components/common/Header";
 import Image from "next/image";
 import FoodBox from "@/app/components/mypage/FoodBox";
 
-const alphabetList: string[] = [
+const filteredChoSeong = [
   "ㄱ",
   "ㄴ",
   "ㄷ",
@@ -23,6 +23,24 @@ const alphabetList: string[] = [
   "ㅍ",
   "ㅎ",
 ];
+
+// 단자음 → 해당 단자음과 쌍자음을 포함하는 그룹
+const consonantGroupMap: Record<string, string[]> = {
+  ㄱ: ["ㄱ", "ㄲ"],
+  ㄴ: ["ㄴ"],
+  ㄷ: ["ㄷ", "ㄸ"],
+  ㄹ: ["ㄹ"],
+  ㅁ: ["ㅁ"],
+  ㅂ: ["ㅂ", "ㅃ"],
+  ㅅ: ["ㅅ", "ㅆ"],
+  ㅇ: ["ㅇ"],
+  ㅈ: ["ㅈ", "ㅉ"],
+  ㅊ: ["ㅊ"],
+  ㅋ: ["ㅋ"],
+  ㅌ: ["ㅌ"],
+  ㅍ: ["ㅍ"],
+  ㅎ: ["ㅎ"],
+};
 
 export default function RecommendedList() {
   const initialfoodList: { title: string; isExcluded: boolean }[] = [
@@ -48,6 +66,7 @@ export default function RecommendedList() {
     { title: "커피", isExcluded: false },
   ];
 
+  const [searchTerm, setSearchTerm] = useState("");
   const sortedFoodList = [...initialfoodList].sort((a, b) =>
     a.title.localeCompare(b.title, "ko")
   );
@@ -59,9 +78,30 @@ export default function RecommendedList() {
   >(undefined); // 0~13, 0: 'ㄱ', 13: 'ㅎ'
 
   const getInitialConsonant = (char: string): string => {
+    const choSeong = [
+      "ㄱ",
+      "ㄲ",
+      "ㄴ",
+      "ㄷ",
+      "ㄸ",
+      "ㄹ",
+      "ㅁ",
+      "ㅂ",
+      "ㅃ",
+      "ㅅ",
+      "ㅆ",
+      "ㅇ",
+      "ㅈ",
+      "ㅉ",
+      "ㅊ",
+      "ㅋ",
+      "ㅌ",
+      "ㅍ",
+      "ㅎ",
+    ];
     const code = char.charCodeAt(0) - 0xac00;
     const choIndex = Math.floor(code / 588);
-    return alphabetList[choIndex] ?? "";
+    return choSeong[choIndex] ?? "";
   };
 
   const onToggle = (index: number) => {
@@ -72,14 +112,25 @@ export default function RecommendedList() {
       )
     );
   };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setSearchTerm(""); // 검색어 초기화
+    }
+  };
 
   const filteredFoodList = foodList
     .filter((item) => item.isExcluded === (selectedIndex === 1))
     .filter((item) => {
       if (selectedAlphabetIndex === undefined) return true;
-      const selectedConsonant = alphabetList[selectedAlphabetIndex];
-      return getInitialConsonant(item.title) === selectedConsonant;
-    });
+
+      const selectedConsonant = filteredChoSeong[selectedAlphabetIndex];
+      const group = consonantGroupMap[selectedConsonant] || [];
+
+      return group.includes(getInitialConsonant(item.title));
+    })
+    .filter((item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ); // 메뉴 검색 기능
 
   return (
     <>
@@ -122,8 +173,12 @@ export default function RecommendedList() {
           <input
             type="text"
             placeholder="음식명을 검색하세요."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="px-6 flex items-center bg-white w-[340px] h-10 border-2 border-black rounded-3xl"
           />
+
           <Image
             onClick={() => {}}
             className="absolute z-10 top-1.5 right-4 cursor-pointer"
@@ -138,18 +193,18 @@ export default function RecommendedList() {
         <section>
           <div
             className="w-[340px] h-[61px] px-7 py-2 grid grid-cols-7 grid-flow-dense
-                      bg-white border-2 border-black  rounded-2xl"
+                  bg-white border-2 border-black rounded-2xl"
           >
-            {alphabetList.map((item, index) => (
+            {filteredChoSeong.map((item, index) => (
               <button
-                className={`text-[15px] text-[text-#393939] font-normal hover:bg-[#e2e2e2] active:bg-[#828282] rounded-full 
-                  ${selectedAlphabetIndex === index ? "font-black" : ""}`}
+                key={index}
                 onClick={() =>
                   setSelectedAlphabetIndex((prev) =>
                     prev === index ? undefined : index
                   )
                 }
-                key={index}
+                className={`text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] rounded-full 
+                ${selectedAlphabetIndex === index ? "font-black bg-[#d4f0ff]" : "font-normal"}`}
               >
                 {item}
               </button>
