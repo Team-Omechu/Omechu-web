@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import AlertModal from "@/app/components/common/AlertModal";
+import BottomNav from "@/app/components/mainpage/BottomNav";
 
 export default function BudgetPage() {
   const [selected, setSelected] = useState<string>("");
@@ -41,18 +42,7 @@ export default function BudgetPage() {
           ))}
         </div>
       </main>
-      <footer className="flex flex-col w-full pb-10 px-4">
-        <div className="flex justify-between">
-          <button
-            onClick={() => {
-              router.push("./who");
-            }}
-            className="mr-5 text-base text-[#828282] flex items-center"
-          >
-            {"<"} 이전으로 
-          </button>
-        </div>
-      </footer>
+      <BottomNav prevPath="./who" showNext={false}/>
       {showModal && (
         <ModalWrapper>
           <AlertModal
