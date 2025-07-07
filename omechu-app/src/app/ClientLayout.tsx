@@ -11,6 +11,15 @@ export default function ClientLayout({
   const pathname = usePathname();
 
   const noBottomNavRoutes = [
+    // 메인페이지
+    "/mainpage/question-answer/meal-time",
+    "/mainpage/question-answer/purpose",
+    "/mainpage/question-answer/state",
+    "/mainpage/question-answer/who",
+    "/mainpage/question-answer/budget",
+    "/mainpage/question-answer/middle-question",
+
+    // 마이페이지
     "/mypage/user-info-setup",
     "/mypage/user-info-setup/gender",
     "/mypage/profile-edit",
@@ -19,12 +28,17 @@ export default function ClientLayout({
     "/mypage/user-info-setup/food",
     "/mypage/user-info-setup/condition",
     "/mypage/user-info-setup/allergy",
+
     "/mainpage/question-answer/meal-time",
     "/mainpage/question-answer/purpose",
     "/mainpage/question-answer/state",
     "/mainpage/question-answer/who",
     "/mainpage/question-answer/budget",
     "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
+
+    "/mypage/recommended-list",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 

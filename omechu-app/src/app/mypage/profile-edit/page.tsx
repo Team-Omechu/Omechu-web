@@ -38,7 +38,7 @@ export default function ProfileEdit() {
             </div>
             <button className="absolute top-0 right-0">
               <Image
-                src={"/camera_icon.png"}
+                src="/camera_icon.png"
                 alt={"uploadingImage"}
                 width={25}
                 height={20}
