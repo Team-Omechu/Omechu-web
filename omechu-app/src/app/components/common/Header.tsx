@@ -11,7 +11,7 @@ const Header = ({ title, leftChild, rightChild, className }: HeaderProps) => {
       className={`relative z-10 flex items-center px-5 py-2.5 w-full 
         border-b border-[#828282] text-black 
         bg-[#f8d5ff] hover:bg-[#dfc0e6]
-        dark:bg-[#baa0bf] dark:text-white dark:hover:bg-[#958099]
+        dark:bg-[#baa0bf] dark:text-white dark:hover:bg-[#958099] min-h-[49px]
         ${className}`}
     >
       <div className="flex justify-start w-1/4">{leftChild}</div>
