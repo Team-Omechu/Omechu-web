@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import AlertModal from "@/app/components/common/AlertModal";
+import BottomNav from "@/app/components/mainpage/BottomNav";
 
 export default function WhoPage() {
   const [selected, setSelected] = useState<string>("");
@@ -44,26 +45,7 @@ export default function WhoPage() {
           ))}
         </div>
       </main>
-      <footer className="flex flex-col w-full pb-10 gap-3">
-        <div className="flex justify-between">
-          <button
-            onClick={() => {
-              router.push("./state");
-            }}
-            className="ml-5 text-base text-[#828282] flex items-center"
-          >
-            {"<"} 이전으로
-          </button>
-          <button
-            onClick={() => {
-              router.push("./budget");
-            }}
-            className="mr-5 text-base text-[#828282] flex items-center"
-          >
-            건너뛰기 {">"}
-          </button>
-        </div>
-      </footer>
+      <BottomNav prevPath="./state" nextPath="./budget"/>
       {showModal && (
         <ModalWrapper>
           <AlertModal
