@@ -15,7 +15,7 @@ export default function FoodBox({
   isToggled = true,
   onToggle,
 }: FoodBoxProp) {
-  console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
+  // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);  // 디버그용 콘솔 메세지 출력
   return (
     <div
       className="relative py-1 w-[100px] h-[110px] 
@@ -31,7 +31,7 @@ export default function FoodBox({
           loading="eager"
           unoptimized
           onClick={() => {
-            console.log("클릭됨", title);
+            // console.log("클릭됨", title); // 디버그용 콘솔 메세지 출력
             onToggle();
           }}
           className="absolute cursor-pointer top-1 right-1"
