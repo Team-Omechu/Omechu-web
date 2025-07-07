@@ -2,45 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { filteredChoSeong, consonantGroupMap } from "@/app/constant/choSeong";
 
 import Header from "@/app/components/common/Header";
 import Image from "next/image";
 import FoodBox from "@/app/components/common/FoodBox";
-
-const filteredChoSeong = [
-  "ㄱ",
-  "ㄴ",
-  "ㄷ",
-  "ㄹ",
-  "ㅁ",
-  "ㅂ",
-  "ㅅ",
-  "ㅇ",
-  "ㅈ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
-
-// 단자음 → 해당 단자음과 쌍자음을 포함하는 그룹
-const consonantGroupMap: Record<string, string[]> = {
-  ㄱ: ["ㄱ", "ㄲ"],
-  ㄴ: ["ㄴ"],
-  ㄷ: ["ㄷ", "ㄸ"],
-  ㄹ: ["ㄹ"],
-  ㅁ: ["ㅁ"],
-  ㅂ: ["ㅂ", "ㅃ"],
-  ㅅ: ["ㅅ", "ㅆ"],
-  ㅇ: ["ㅇ"],
-  ㅈ: ["ㅈ", "ㅉ"],
-  ㅊ: ["ㅊ"],
-  ㅋ: ["ㅋ"],
-  ㅌ: ["ㅌ"],
-  ㅍ: ["ㅍ"],
-  ㅎ: ["ㅎ"],
-};
 
 export default function RecommendedList() {
   const initialfoodList: {
@@ -134,7 +100,6 @@ export default function RecommendedList() {
     .filter((item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase())
     ); // 메뉴 검색 기능
-  console.table(foodList);
   return (
     <>
       <Header
@@ -220,10 +185,10 @@ export default function RecommendedList() {
           {filteredFoodList.map((item, index) => (
             <FoodBox
               key={`${item.title}-${index}`}
-              isExcluded={item.isExcluded}
-              onToggle={() => onToggle(item.title)}
               title={item.title}
               imageUrl={item.imageUrl} // 또는 추후에 실제 경로로 대체될 값
+              isExcluded={item.isExcluded}
+              onToggle={() => onToggle(item.title)}
             />
           ))}
         </section>
