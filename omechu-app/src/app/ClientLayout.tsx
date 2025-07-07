@@ -25,6 +25,8 @@ export default function ClientLayout({
     "/mainpage/question-answer/who",
     "/mainpage/question-answer/budget",
     "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
