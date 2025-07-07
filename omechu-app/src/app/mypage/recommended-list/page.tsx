@@ -1,121 +1,50 @@
 "use client";
 
+type FoodItem = {
+  title: string;
+  isExcluded: boolean;
+  imageUrl?: string | null;
+};
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  filteredChoSeong,
+  consonantGroupMap,
+  HANGUL_CHO_SEONG,
+} from "@/app/constant/choSeong";
+import { initialFoodList } from "@/app/constant/initialFoodList";
 
 import Header from "@/app/components/common/Header";
 import Image from "next/image";
 import FoodBox from "@/app/components/common/FoodBox";
 
-const filteredChoSeong = [
-  "ㄱ",
-  "ㄴ",
-  "ㄷ",
-  "ㄹ",
-  "ㅁ",
-  "ㅂ",
-  "ㅅ",
-  "ㅇ",
-  "ㅈ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
-
-// 단자음 → 해당 단자음과 쌍자음을 포함하는 그룹
-const consonantGroupMap: Record<string, string[]> = {
-  ㄱ: ["ㄱ", "ㄲ"],
-  ㄴ: ["ㄴ"],
-  ㄷ: ["ㄷ", "ㄸ"],
-  ㄹ: ["ㄹ"],
-  ㅁ: ["ㅁ"],
-  ㅂ: ["ㅂ", "ㅃ"],
-  ㅅ: ["ㅅ", "ㅆ"],
-  ㅇ: ["ㅇ"],
-  ㅈ: ["ㅈ", "ㅉ"],
-  ㅊ: ["ㅊ"],
-  ㅋ: ["ㅋ"],
-  ㅌ: ["ㅌ"],
-  ㅍ: ["ㅍ"],
-  ㅎ: ["ㅎ"],
-};
-
 export default function RecommendedList() {
-  const initialfoodList: {
-    title: string;
-    isExcluded: boolean;
-    imageUrl?: string | null;
-  }[] = [
-    { title: "치킨", isExcluded: false, imageUrl: "/logo_3d.png" },
-    { title: "초콜릿", isExcluded: false },
-    { title: "김밥", isExcluded: false, imageUrl: "/logo_3d.png" },
-    { title: "떡볶이", isExcluded: false, imageUrl: "/logo_3d.png" },
-    { title: "라면", isExcluded: false },
-    { title: "삼겹살", isExcluded: false },
-    { title: "불고기", isExcluded: false },
-    { title: "된장찌개", isExcluded: false },
-    { title: "피자", isExcluded: false },
-    { title: "햄버거", isExcluded: false },
-    { title: "초밥", isExcluded: false },
-    { title: "우동", isExcluded: false },
-    { title: "쌀국수", isExcluded: false },
-    { title: "냉면", isExcluded: false },
-    { title: "샐러드", isExcluded: false },
-    { title: "바나나", isExcluded: false },
-    { title: "딸기", isExcluded: false },
-    { title: "요거트", isExcluded: false },
-    { title: "도넛", isExcluded: false },
-    { title: "커피", isExcluded: false },
-  ];
-
   const [searchTerm, setSearchTerm] = useState("");
-  const sortedFoodList = [...initialfoodList].sort((a, b) =>
+  const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
     a.title.localeCompare(b.title, "ko")
   );
-  const [foodList, setFoodList] = useState(sortedFoodList);
+  const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0); // 0: 추천 목록, 1: 제외 목록
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
     number | undefined
-  >(undefined); // 0~13, 0: 'ㄱ', 13: 'ㅎ'
+  >(undefined);
 
   const getInitialConsonant = (char: string): string => {
-    const choSeong = [
-      "ㄱ",
-      "ㄲ",
-      "ㄴ",
-      "ㄷ",
-      "ㄸ",
-      "ㄹ",
-      "ㅁ",
-      "ㅂ",
-      "ㅃ",
-      "ㅅ",
-      "ㅆ",
-      "ㅇ",
-      "ㅈ",
-      "ㅉ",
-      "ㅊ",
-      "ㅋ",
-      "ㅌ",
-      "ㅍ",
-      "ㅎ",
-    ];
     const code = char.charCodeAt(0) - 0xac00;
     const choIndex = Math.floor(code / 588);
-    return choSeong[choIndex] ?? "";
+    return HANGUL_CHO_SEONG[choIndex] ?? "";
   };
 
-  const onToggle = (title: string) => {
+  const onToggle = (title: string): void => {
     setFoodList((prev) =>
       prev.map((item) =>
         item.title === title ? { ...item, isExcluded: !item.isExcluded } : item
       )
     );
   };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") {
       setSearchTerm(""); // 검색어 초기화
     }
@@ -134,7 +63,11 @@ export default function RecommendedList() {
     .filter((item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase())
     ); // 메뉴 검색 기능
-  console.table(foodList);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <Header
@@ -151,7 +84,7 @@ export default function RecommendedList() {
       />
 
       {/* Main */}
-      <main className="px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
+      <main className="relative overflow-y-auto px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
         {/* 리스트 선택  */}
         <section className="flex w-full ">
           {["추천 목록", "제외 목록"].map((item, index) => (
@@ -220,19 +153,21 @@ export default function RecommendedList() {
           {filteredFoodList.map((item, index) => (
             <FoodBox
               key={`${item.title}-${index}`}
-              isExcluded={item.isExcluded}
-              onToggle={() => onToggle(item.title)}
               title={item.title}
               imageUrl={item.imageUrl} // 또는 추후에 실제 경로로 대체될 값
+              isExcluded={item.isExcluded}
+              onToggle={() => onToggle(item.title)}
             />
           ))}
         </section>
-      </main>
 
-      {/* footer */}
-      <footer>
-        <button></button>
-      </footer>
+        {/* FAB(Floating Action Button) */}
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+          <button onClick={scrollToTop}>
+            <Image src="/fba.png" alt={"플로팅버튼"} width={36} height={36} />
+          </button>
+        </section>
+      </main>
     </>
   );
 }
