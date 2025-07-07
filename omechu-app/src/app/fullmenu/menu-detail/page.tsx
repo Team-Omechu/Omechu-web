@@ -21,11 +21,7 @@ export default function MenuDetail() {
             <Header
                 title={""}
                 leftChild={
-                    <button
-                        onClick={() => {
-                        router.push("/fullmenu");
-                        }}
-                    >
+                    <button onClick={() => {router.push("/fullmenu")}}>
                         <Image
                             src={"/left_arrow.png"}
                             alt={"changeProfileImage"}
