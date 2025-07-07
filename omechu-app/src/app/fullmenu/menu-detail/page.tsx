@@ -1,11 +1,20 @@
 'use client'
 
 import Header from "@/app/components/common/Header";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function MenuDetail() {
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const name = searchParams.get("name");
+    const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
+
+    const handleClick = () => {
+        router.push(`${pathname}/recipe-detail${encodedName}`);
+    };
 
     return (
         <>
@@ -14,7 +23,7 @@ export default function MenuDetail() {
                 leftChild={
                     <button
                         onClick={() => {
-                        router.push("/mypage");
+                        router.push("/fullmenu");
                         }}
                     >
                         <Image
@@ -29,7 +38,7 @@ export default function MenuDetail() {
 
             <main className="min-h-screen bg-[#F8D5FF] p-4 pt-8 text-sm text-black">
 
-                <h1 className="text-center text-2xl font-extrabold text-[#2D9CDB] mt-4 mb-2">김치찌개</h1>
+                <h1 className="text-center text-2xl font-extrabold text-[#2D9CDB] mt-4 mb-2">{name}</h1>
 
                 <div className="flex justify-center mb-6 mx-auto w-36 h-36">
                     <img
@@ -58,7 +67,12 @@ export default function MenuDetail() {
                         <p className="pl-2 mb-2">땅콩, 달걀</p>
 
                         <p className="font-semibold">레시피</p>
-                        <p className="pl-2 text-black underline cursor-pointer">보러가기 ▶</p>
+                        <p 
+                            className="pl-2 text-black underline cursor-pointer"
+                            onClick={handleClick}
+                        >
+                            보러가기 ▶
+                        </p>
                     </div>
                 </section>
             </main>
