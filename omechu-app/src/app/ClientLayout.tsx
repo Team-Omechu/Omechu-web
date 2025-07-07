@@ -39,7 +39,6 @@ export default function ClientLayout({
     "/mainpage/location-answer",
 
     "/mypage/recommended-list",
- 
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
