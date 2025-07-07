@@ -100,6 +100,10 @@ export default function RecommendedList() {
     .filter((item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase())
     ); // 메뉴 검색 기능
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <>
       <Header
@@ -116,7 +120,7 @@ export default function RecommendedList() {
       />
 
       {/* Main */}
-      <main className="px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
+      <main className="relative overflow-y-auto px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
         {/* 리스트 선택  */}
         <section className="flex w-full ">
           {["추천 목록", "제외 목록"].map((item, index) => (
@@ -192,12 +196,14 @@ export default function RecommendedList() {
             />
           ))}
         </section>
-      </main>
 
-      {/* footer */}
-      <footer>
-        <button></button>
-      </footer>
+        {/* FAB(Floating Action Button) */}
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+          <button onClick={scrollToTop}>
+            <Image src="/fba.png" alt={"플로팅버튼"} width={36} height={36} />
+          </button>
+        </section>
+      </main>
     </>
   );
 }
