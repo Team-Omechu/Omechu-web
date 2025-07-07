@@ -43,7 +43,7 @@ export default function MenuDetail() {
                 <div className="flex justify-center mb-6 mx-auto w-36 h-36">
                     <img
                         src="/오메추-로고-보라색버전-모자4 1.png"
-                        alt="김치찌개"
+                        alt={`${name}`}
                         className="object-contain rounded"
                     />
                 </div>
