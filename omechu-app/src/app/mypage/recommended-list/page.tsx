@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import Header from "@/app/components/common/Header";
 import Image from "next/image";
-import FoodBox from "@/app/components/mypage/FoodBox";
+import FoodBox from "@/app/components/common/FoodBox";
 
 const filteredChoSeong = [
   "ㄱ",
