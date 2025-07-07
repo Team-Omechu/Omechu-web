@@ -29,6 +29,14 @@ export default function ClientLayout({
     "/mypage/user-info-setup/condition",
     "/mypage/user-info-setup/allergy",
     "/mypage/recommended-list",
+    "/mainpage/question-answer/meal-time",
+    "/mainpage/question-answer/purpose",
+    "/mainpage/question-answer/state",
+    "/mainpage/question-answer/who",
+    "/mainpage/question-answer/budget",
+    "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
