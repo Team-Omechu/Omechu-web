@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import AlertModal from "@/app/components/common/AlertModal";
+import BottomNav from "@/app/components/mainpage/BottomNav";
 
 export default function MealTimePage() {
   const [selected, setSelected] = useState<string>("");
@@ -47,16 +48,7 @@ export default function MealTimePage() {
       </main>
 
       {/* 하단 건너뛰기 */}
-      <footer className="flex flex-col items-end w-full px-4 pb-10">
-        <button
-          onClick={() => {
-            router.push("./purpose");
-          }}
-          className="mr-4 text-base text-[#828282] flex items-center"
-        >
-          건너뛰기 {">"}
-        </button>
-      </footer>
+      <BottomNav showPrev={false} nextPath="./purpose"/>
       {showModal && (
         <ModalWrapper>
           <AlertModal
