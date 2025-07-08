@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { termsForService } from "@/app/constant/terms/service";
 
-export default function ServiceTerm() {
+export default function TermForService() {
   const router = useRouter();
 
   return (
