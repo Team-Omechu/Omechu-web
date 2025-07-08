@@ -31,6 +31,7 @@ export default function ClientLayout({
     "/mypage/recommended-list",
 
     // 마이페이지-이용약관
+    "/mypage/terms",
     "/mypage/terms/service",
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
