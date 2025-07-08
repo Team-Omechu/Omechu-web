@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import Header from "@/app/components/common/Header";
 import Image from "next/image";
 
-const termsList: { id: number; title: string; url: string }[] = [
-  { id: 1, title: "계정 관리", url: "/mypage/account-settings" },
+const settingsList: { id: number; title: string; url: string }[] = [
+  { id: 1, title: "계정 관리", url: "/mypage/settings/account-settings" },
   { id: 2, title: "이용 약관", url: "/mypage/terms" },
 ];
 
@@ -26,15 +26,15 @@ export default function Settings() {
             <Image
               src={"/left_arrow.png"}
               alt={"이전페이지"}
-              width={10}
-              height={15}
+              width={25}
+              height={25}
             />
           </button>
         }
       />
       <main className="px-2 py-2">
         <ul className="flex flex-col">
-          {termsList.map((item) => (
+          {settingsList.map((item) => (
             <button
               key={item.id}
               onClick={() => router.push(`${item.url}`)}
