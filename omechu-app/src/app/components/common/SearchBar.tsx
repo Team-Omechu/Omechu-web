@@ -1,22 +1,3 @@
-// ***************** SearchBar 사용법 ******************  //
-// 1. 검색바를 렌더링 하는 부모 컴포넌트에서 정의해주세요(그냥 복붙하면 됩니다.)
-
-// import { suggestionList } from "@/app/constant/suggestionList";
-
-// const [searchTerm, setSearchTerm] = useState("");
-// const [submittedTerm, setSubmittedTerm] = useState("");
-// const resetAfterSearch = true; // 입력청 초기화 하기 위한 변수 초기화
-
-// const handleSearch = () => {
-//   setSubmittedTerm(searchTerm); // 검색 실행
-//   console.log("검색 실행:", searchTerm);
-//   if (resetAfterSearch) {
-//     setSearchTerm(""); // 입력창 초기화
-//   }
-// };
-
-// ***************** SearchBar 사용법 ******************  //
-
 "use client";
 
 import { useState } from "react";

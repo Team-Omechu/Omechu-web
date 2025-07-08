@@ -7,7 +7,7 @@ type FoodItem = {
 };
 // 라이브러리
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 // 공용 컴포넌트
@@ -26,19 +26,38 @@ import { suggestionList } from "@/app/constant/suggestionList";
 
 export default function RecommendedList() {
   const router = useRouter();
+  const isJustResetRef = useRef(false);
 
   const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
     a.title.localeCompare(b.title, "ko")
   );
   const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
 
-  const [selectedIndex, setSelectedIndex] = useState(0); // 0: 추천 목록, 1: 제외 목록
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
     number | undefined
   >(undefined);
 
-  const [searchTerm, setSearchTerm] = useState(""); // 입력 중
-  const [submittedTerm, setSubmittedTerm] = useState(""); // 실 검색어
+  const [searchTerm, setSearchTerm] = useState("");
+  const [submittedTerm, setSubmittedTerm] = useState("");
+
+  const handleSearch = (term: string) => {
+    const trimmed = term.trim();
+
+    // ✅ 직접 입력이 아니라 자동 초기화 후 발생한 ""는 무시!
+    if (trimmed === "") {
+      if (!isJustResetRef.current) {
+        setSubmittedTerm(""); // ← 진짜로 전체 목록 검색 (엔터 친 경우)
+      }
+      return;
+    }
+
+    if (trimmed === submittedTerm) return;
+
+    setSubmittedTerm(trimmed);
+    isJustResetRef.current = true; // 🔥 다음 input 입력 무시
+    setSearchTerm(""); // 🔥 입력창 초기화
+  };
 
   const getInitialConsonant = (char: string): string => {
     const code = char.charCodeAt(0) - 0xac00;
@@ -54,13 +73,6 @@ export default function RecommendedList() {
     );
   };
 
-  const handleSearch = (term: string) => {
-    const trimmed = term.trim();
-    if (trimmed === "" || trimmed === submittedTerm) return; // 중복 방지
-    setSubmittedTerm(trimmed);
-    console.log("검색 실행:", trimmed);
-  };
-
   const filteredFoodList = foodList
     .filter((item) => item.isExcluded === (selectedIndex === 1))
     .filter((item) => {
@@ -69,9 +81,10 @@ export default function RecommendedList() {
       const group = consonantGroupMap[selectedConsonant] || [];
       return group.includes(getInitialConsonant(item.title));
     })
-    .filter((item) =>
-      item.title.toLowerCase().includes(submittedTerm.toLowerCase())
-    );
+    .filter((item) => {
+      if (submittedTerm === "") return true;
+      return item.title.toLowerCase().includes(submittedTerm.toLowerCase());
+    });
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -115,11 +128,11 @@ export default function RecommendedList() {
 
         {/* 검색 창 */}
         <SearchBar
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onSearch={handleSearch} // now expects string param
-          resetAfterSearch={true}
+          inputValue={searchTerm}
+          setInputValue={setSearchTerm}
+          onSearch={handleSearch}
           suggestionList={suggestionList}
+          isJustResetRef={isJustResetRef}
         />
 
         {/* 인덱스  */}
