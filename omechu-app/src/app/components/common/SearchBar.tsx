@@ -89,7 +89,8 @@ export default function SearchBar({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 150)} // blur 후 목록 닫힘 지연
         placeholder={placeholder}
-        className="flex items-center w-full h-10 px-6 pr-10 bg-white border-2 border-black rounded-3xl"
+        className={`flex items-center w-full h-10 px-6 pr-10 bg-white border-2 border-black rounded-t-3xl  
+          ${showSuggestions ? "" : "rounded-b-3xl"}`}
       />
 
       {/* 검색 버튼 */}
@@ -114,7 +115,7 @@ export default function SearchBar({
 
       {/* 자동완성 or 최근 검색어 목록 */}
       {showSuggestions && (
-        <ul className="absolute left-0 z-10 w-[92%] mx-3.5 bg-white border border-gray-300 rounded-md shadow-md top-full">
+        <ul className="absolute left-0 z-10 w-full bg-white shadow-md rounded-b-3xl top-full border-t-0 border-[2px] border-black">
           {filteredSuggestions.length > 0 ? (
             // 자동완성 목록
             filteredSuggestions.map((item, idx) => (
