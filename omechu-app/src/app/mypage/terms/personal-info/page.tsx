@@ -11,7 +11,7 @@ export default function TermForLocationInfo() {
   return (
     <>
       <Header
-        title={"개인정보 처리방침"}
+        title={"위치기반 서비스 이용약관"}
         leftChild={
           <button
             onClick={() => {
