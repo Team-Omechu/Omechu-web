@@ -1,12 +1,31 @@
+// ***************** SearchBar 사용법 ******************  //
+// 1. 검색바를 렌더링 하는 부모 컴포넌트에서 정의해주세요(그냥 복붙하면 됩니다.)
+
+// import { suggestionList } from "@/app/constant/suggestionList";
+
+// const [searchTerm, setSearchTerm] = useState("");
+// const [submittedTerm, setSubmittedTerm] = useState("");
+// const resetAfterSearch = true; // 입력청 초기화 하기 위한 변수 초기화
+
+// const handleSearch = () => {
+//   setSubmittedTerm(searchTerm); // 검색 실행
+//   console.log("검색 실행:", searchTerm);
+//   if (resetAfterSearch) {
+//     setSearchTerm(""); // 입력창 초기화
+//   }
+// };
+
+// ***************** SearchBar 사용법 ******************  //
+
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
+import { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from "react";
 
 interface SearchBarProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSearch: () => void;
+  onSearch: (searchTerm: string) => void;
   placeholder?: string;
   resetAfterSearch?: boolean;
   suggestionList?: string[];
@@ -19,11 +38,12 @@ export default function SearchBar({
   onChange,
   onSearch,
   placeholder = "검색어를 입력하세요.",
-  resetAfterSearch = false,
+  resetAfterSearch = true,
   suggestionList = [],
 }: SearchBarProps) {
+  const lastSearchedRef = useRef(""); // 마지막 검색어 기억용
   const [isFocused, setIsFocused] = useState(false); // input focus 여부
-  const [recentSearches, setRecentSearches] = useState<string[]>([]); // 최근 검색어 목록 상태
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   // 컴포넌트 마운트 시 최근 검색어 로컬스토리지에서 불러오기
@@ -45,6 +65,22 @@ export default function SearchBar({
     localStorage.setItem(RECENT_KEY, JSON.stringify(updated));
   };
 
+  const handleSearch = (rawTerm: string) => {
+    const trimmed = rawTerm.trim();
+
+    // ✅ 중복 검색어 방지
+    if (trimmed === "" || trimmed === lastSearchedRef.current) return;
+
+    // ✅ 마지막 검색어 기록
+    lastSearchedRef.current = trimmed;
+
+    saveRecent(trimmed);
+    onSearch(trimmed);
+
+    setSelectedIndex(-1);
+    setIsFocused(false);
+  };
+
   // Enter 키 입력 시 검색 실행 및 최근 검색어 저장
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const hasSuggestions = filteredSuggestions.length > 0;
@@ -60,25 +96,17 @@ export default function SearchBar({
     } else if (e.key === "Enter") {
       const selected =
         selectedIndex >= 0 ? filteredSuggestions[selectedIndex] : value;
-      if (selected.trim() !== "") {
-        saveRecent(selected);
-        onChange({
-          target: { value: selected },
-        } as ChangeEvent<HTMLInputElement>);
-        onSearch();
-        if (resetAfterSearch) {
-          onChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
-        }
-        setSelectedIndex(-1); // 초기화
-      }
+      handleSearch(selected);
+    } else if (e.key === "Escape") {
+      setIsFocused(false);
+      setSelectedIndex(-1);
     }
   };
 
   // 자동완성/최근 검색어 클릭 시 검색 실행
   const handleSuggestionClick = (item: string) => {
     onChange({ target: { value: item } } as ChangeEvent<HTMLInputElement>);
-    saveRecent(item);
-    onSearch();
+    handleSearch(item);
   };
 
   // 특정 최근 검색어 삭제
@@ -95,7 +123,6 @@ export default function SearchBar({
 
   // 자동완성 또는 최근 검색어 목록 보여줄지 여부
   const showSuggestions = isFocused && value.trim() !== "";
-  const showRecent = showSuggestions && filteredSuggestions.length === 0;
 
   return (
     <section className="relative w-[340px]">
@@ -120,14 +147,7 @@ export default function SearchBar({
       {/* 검색 버튼 */}
       <button
         onClick={() => {
-          if (value.trim() === "") return;
-          saveRecent(value);
-          onSearch();
-          if (resetAfterSearch) {
-            onChange({
-              target: { value: "" },
-            } as ChangeEvent<HTMLInputElement>);
-          }
+          handleSearch(value);
         }}
         className="absolute top-1.5 right-3 w-6 h-6"
         aria-label="검색"
@@ -150,9 +170,9 @@ export default function SearchBar({
                   key={idx}
                   onClick={() => handleSuggestionClick(item)}
                   className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100
-          ${isSelected ? "bg-gray-100 font-semibold" : ""}
-          ${isLast ? "rounded-b-3xl" : ""}
-        `}
+                            ${isSelected ? "bg-gray-100 font-semibold" : ""}
+                            ${isLast ? "rounded-b-3xl pb-3" : ""}
+                          `}
                 >
                   {item}
                 </li>
