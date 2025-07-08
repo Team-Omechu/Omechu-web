@@ -39,7 +39,6 @@ export default function RecommendedList() {
 
   const [searchTerm, setSearchTerm] = useState(""); // 입력 중
   const [submittedTerm, setSubmittedTerm] = useState(""); // 실 검색어
-  const resetAfterSearch = true;
 
   const getInitialConsonant = (char: string): string => {
     const code = char.charCodeAt(0) - 0xac00;
@@ -55,16 +54,11 @@ export default function RecommendedList() {
     );
   };
 
-  const handleSearch = () => {
-    setSubmittedTerm(searchTerm); // 검색 실행
-    console.log("검색 실행:", searchTerm);
-    if (resetAfterSearch) {
-      setSearchTerm(""); // 입력창 초기화
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleSearch = (term: string) => {
+    const trimmed = term.trim();
+    if (trimmed === "" || trimmed === submittedTerm) return; // 중복 방지
+    setSubmittedTerm(trimmed);
+    console.log("검색 실행:", trimmed);
   };
 
   const filteredFoodList = foodList
@@ -78,6 +72,10 @@ export default function RecommendedList() {
     .filter((item) =>
       item.title.toLowerCase().includes(submittedTerm.toLowerCase())
     );
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -119,7 +117,7 @@ export default function RecommendedList() {
         <SearchBar
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onSearch={handleSearch}
+          onSearch={handleSearch} // now expects string param
           resetAfterSearch={true}
           suggestionList={suggestionList}
         />
