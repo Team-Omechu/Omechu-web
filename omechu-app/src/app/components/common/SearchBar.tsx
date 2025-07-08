@@ -24,6 +24,7 @@ export default function SearchBar({
 }: SearchBarProps) {
   const [isFocused, setIsFocused] = useState(false); // input focus 여부
   const [recentSearches, setRecentSearches] = useState<string[]>([]); // 최근 검색어 목록 상태
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   // 컴포넌트 마운트 시 최근 검색어 로컬스토리지에서 불러오기
   useEffect(() => {
@@ -46,11 +47,29 @@ export default function SearchBar({
 
   // Enter 키 입력 시 검색 실행 및 최근 검색어 저장
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && value.trim() !== "") {
-      saveRecent(value);
-      onSearch();
-      if (resetAfterSearch) {
-        onChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
+    const hasSuggestions = filteredSuggestions.length > 0;
+
+    if (e.key === "ArrowDown" && hasSuggestions) {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev + 1) % filteredSuggestions.length);
+    } else if (e.key === "ArrowUp" && hasSuggestions) {
+      e.preventDefault();
+      setSelectedIndex((prev) =>
+        prev <= 0 ? filteredSuggestions.length - 1 : prev - 1
+      );
+    } else if (e.key === "Enter") {
+      const selected =
+        selectedIndex >= 0 ? filteredSuggestions[selectedIndex] : value;
+      if (selected.trim() !== "") {
+        saveRecent(selected);
+        onChange({
+          target: { value: selected },
+        } as ChangeEvent<HTMLInputElement>);
+        onSearch();
+        if (resetAfterSearch) {
+          onChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
+        }
+        setSelectedIndex(-1); // 초기화
       }
     }
   };
@@ -87,7 +106,12 @@ export default function SearchBar({
         onChange={onChange}
         onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setTimeout(() => setIsFocused(false), 150)} // blur 후 목록 닫힘 지연
+        onBlur={() => {
+          setTimeout(() => {
+            setIsFocused(false);
+            setSelectedIndex(-1); // 포커스 해제 시 선택된 인덱스 초기화
+          }, 150);
+        }}
         placeholder={placeholder}
         className={`flex items-center w-full h-10 px-6 pr-10 bg-white border-2 border-black rounded-t-3xl  
           ${showSuggestions ? "" : "rounded-b-3xl"}`}
@@ -115,18 +139,25 @@ export default function SearchBar({
 
       {/* 자동완성 or 최근 검색어 목록 */}
       {showSuggestions && (
-        <ul className="absolute left-0 z-10 w-full bg-white shadow-md rounded-b-3xl top-full border-t-0 border-[2px] border-black">
+        <ul className="absolute left-0 z-10 w-full bg-white shadow-md top-full border-t-0 border-[2px] border-black rounded-b-3xl">
           {filteredSuggestions.length > 0 ? (
-            // 자동완성 목록
-            filteredSuggestions.map((item, idx) => (
-              <li
-                key={idx}
-                onClick={() => handleSuggestionClick(item)}
-                className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
-              >
-                {item}
-              </li>
-            ))
+            filteredSuggestions.map((item, idx) => {
+              const isSelected = idx === selectedIndex;
+              const isLast = idx === filteredSuggestions.length - 1;
+
+              return (
+                <li
+                  key={idx}
+                  onClick={() => handleSuggestionClick(item)}
+                  className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100
+          ${isSelected ? "bg-gray-100 font-semibold" : ""}
+          ${isLast ? "rounded-b-3xl" : ""}
+        `}
+                >
+                  {item}
+                </li>
+              );
+            })
           ) : (
             <>
               {/* 최근 검색어 목록 */}
@@ -150,7 +181,7 @@ export default function SearchBar({
                 </li>
               ))}
               {recentSearches.length > 0 && (
-                <li className="px-4 py-2 text-right">
+                <li className="flex justify-end px-4 py-2">
                   <button
                     className="text-xs text-gray-500 hover:text-black"
                     onClick={() => {
