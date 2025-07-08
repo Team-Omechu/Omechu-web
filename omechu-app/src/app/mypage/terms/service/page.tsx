@@ -3,6 +3,8 @@
 import Header from "@/app/components/common/Header";
 import { useRouter } from "next/navigation";
 
+import { termsForService } from "@/app/constant/terms/service";
+
 export default function ServiceTerm() {
   const router = useRouter();
 
@@ -20,21 +22,19 @@ export default function ServiceTerm() {
           </button>
         }
       />
-
-      <main className="w-full px-7 py-9 md:bg-black">
-        <section className="flex flex-col justify-start gap-1 mb-3">
-          {/* 조항 번호 */}
-          <div className="text-base font-bold">제 1조</div>
-          {/* 조항 내용 */}
-          <div className="text-base font-normal text-[#828282] leading-relaxed">
-            내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용
-            내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용
-            내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용
-            내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용
-            내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용
-            내용
-          </div>
-        </section>
+      <main className="w-full px-7 py-9">
+        {termsForService.map((item, key) => (
+          <section key={key} className="flex flex-col justify-start gap-1 mb-2">
+            {/* 조항 번호, 제목 */}
+            <div className="text-base font-bold">
+              제 {item.index}조 ({item.about})
+            </div>
+            {/* 조항 내용 */}
+            <div className="text-base font-normal text-[#828282] leading-relaxed">
+              {item.content}
+            </div>
+          </section>
+        ))}
       </main>
     </>
   );
