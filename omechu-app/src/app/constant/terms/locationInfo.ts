@@ -30,4 +30,94 @@ export const termsForLocationlInfo: {
     content: `1. 본 약관은 서비스를 신청한 고객 또는 개인위치정보주체가 회사가 정한 소정의 절차에 따라 회원으로 등록함으로써 효력이 발생합니다.
 2. 서비스를 신청한 고객 또는 개인위치정보주체가 온라인에서 본 약관을 모두 읽고 ‘동의’ 버튼을 클릭하였을 경우 본 약관의 내용을 모두 읽고 이를 충분히 이해하였으며, 그 적용에 동의한 ...`,
   },
+  {
+    index: 5,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 6,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 7,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 8,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 9,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 10,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 11,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 12,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 13,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 14,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 15,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 16,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 17,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 18,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 19,
+    about: "",
+    content: ``,
+  },
+  {
+    index: 20,
+    about: "",
+    content: ``,
+  },
+  {
+    index: null,
+    about: null,
+    content: `부칙`,
+  },
+  {
+    index: 1,
+    about: "시행일",
+    content: `본 방침은 2025.08.22.부터 시행됩니다.`,
+  },
 ];
