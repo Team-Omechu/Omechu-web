@@ -29,13 +29,19 @@ export default function TermForService() {
       />
       <main className="w-full px-7 py-9">
         {termsForService.map((item, key) => (
-          <section key={key} className="flex flex-col justify-start gap-1 mb-2">
+          <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
-            <div className="text-base font-bold">
-              제 {item.index}조 ({item.about})
-            </div>
+            {item.index && (
+              <div className="text-base font-bold">
+                제 {item.index}조 ({item.about})
+              </div>
+            )}
             {/* 조항 내용 */}
-            <div className="text-base font-normal text-[#828282] leading-relaxed">
+            <div
+              className={`text-base font-normal leading-relaxed whitespace-pre-wrap ${
+                item.index ? "text-[#828282]" : "text-black"
+              }`}
+            >
               {item.content}
             </div>
           </section>
