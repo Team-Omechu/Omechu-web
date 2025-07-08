@@ -37,6 +37,12 @@ export default function ClientLayout({
     "/mainpage/question-answer/middle-question",
     "/mainpage/meal-answer",
     "/mainpage/location-answer",
+    "/mypage/recommended-list",
+
+    // 마이페이지-이용약관
+    "/mypage/terms/service",
+    "/mypage/terms/personal-info",
+    "/mypage/terms/location-info",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 

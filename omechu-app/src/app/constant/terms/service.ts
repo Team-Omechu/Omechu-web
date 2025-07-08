@@ -23,6 +23,6 @@ export const termsForService: {
   {
     index: 3,
     about: "약관 외 준칙",
-    content: "이 약관에서 정하지 아니한 사항에 대해서는 법령 또...",
+    content: "이 약관에서 정하지 아니한 사항에 대해서는 법령 또 ...",
   },
 ];

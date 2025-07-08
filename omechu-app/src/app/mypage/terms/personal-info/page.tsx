@@ -33,7 +33,7 @@ export default function TermForLocationInfo() {
             )}
             {/* 조항 내용 */}
             <div
-              className={`text-base font-normal leading-relaxed ${
+              className={`text-base font-normal leading-relaxed whitespace-pre-wrap ${
                 item.index ? "text-[#828282]" : "text-black"
               }`}
             >
