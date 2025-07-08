@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="relative flex flex-col min-h-screen mx-auto overflow-x-hidden max-w-screen-mobile dark:bg-[#1a1a1a] dark:text-white">
+      <body className="relative flex flex-col min-h-screen mx-auto overflow-x-hidden max-w-screen-mobile">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
