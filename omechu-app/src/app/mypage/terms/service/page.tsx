@@ -21,7 +21,7 @@ export default function ServiceTerm() {
         }
       />
 
-      <main className="w-full px-7 py-9 ">
+      <main className="w-full px-7 py-9 md:bg-black">
         <section className="flex flex-col justify-start gap-1 mb-3">
           {/* 조항 번호 */}
           <div className="text-base font-bold">제 1조</div>
