@@ -1,16 +1,17 @@
 "use client";
 
-import Image from "next/image";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
 import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
 
 export default function TermForPersonalInfo() {
   const router = useRouter();
-
+  const mainRef = useRef<HTMLDivElement>(null);
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -27,7 +28,10 @@ export default function TermForPersonalInfo() {
           </button>
         }
       />
-      <main className="w-full px-7 pt-7 pb-9">
+      <main
+        ref={mainRef}
+        className="relative w-full h-screen overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9"
+      >
         {termsForLocationlInfo.map((item, key) => (
           <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
@@ -46,8 +50,8 @@ export default function TermForPersonalInfo() {
             </div>
           </section>
         ))}
-        {/* FAB */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+        {/* FBA */}
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-3/4">
           <button onClick={scrollToTop}>
             <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
           </button>
