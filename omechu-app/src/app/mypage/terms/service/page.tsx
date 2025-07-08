@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -10,11 +10,6 @@ import { termsForService } from "@/app/constant/terms/service";
 export default function TermForService() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
-
-  const LIMIT = 5;
-  const [visibleCount, setVisibleCount] = useState(LIMIT);
-  const sentinelRef = useRef(null);
-
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
