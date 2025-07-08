@@ -14,11 +14,11 @@ const Header = ({ title, leftChild, rightChild, className }: HeaderProps) => {
         dark:bg-[#baa0bf] dark:text-white dark:hover:bg-[#958099]
         ${className}`}
     >
-      <div className="flex justify-start w-1/4">{leftChild}</div>
-      <div className="flex justify-center w-1/2 text-xl font-medium">
+      <div className="flex justify-start w-1/5">{leftChild}</div>
+      <div className="flex justify-center w-3/5 text-xl font-medium">
         {title}
       </div>
-      <div className="flex justify-end w-1/4">{rightChild}</div>
+      <div className="flex justify-end w-1/5">{rightChild}</div>
     </header>
   );
 };
