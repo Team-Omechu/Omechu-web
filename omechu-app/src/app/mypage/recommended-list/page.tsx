@@ -22,18 +22,24 @@ import {
   HANGUL_CHO_SEONG,
 } from "@/app/constant/choSeong";
 import { initialFoodList } from "@/app/constant/initialFoodList";
+import { suggestionList } from "@/app/constant/suggestionList";
 
 export default function RecommendedList() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
   const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
     a.title.localeCompare(b.title, "ko")
   );
   const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
-  const router = useRouter();
+
   const [selectedIndex, setSelectedIndex] = useState(0); // 0: 추천 목록, 1: 제외 목록
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
     number | undefined
   >(undefined);
+
+  const [searchTerm, setSearchTerm] = useState(""); // 입력 중
+  const [submittedTerm, setSubmittedTerm] = useState(""); // 실 검색어
+  const resetAfterSearch = true;
 
   const getInitialConsonant = (char: string): string => {
     const code = char.charCodeAt(0) - 0xac00;
@@ -41,36 +47,37 @@ export default function RecommendedList() {
     return HANGUL_CHO_SEONG[choIndex] ?? "";
   };
 
-  const onToggle = (title: string): void => {
+  const onToggle = (title: string) => {
     setFoodList((prev) =>
       prev.map((item) =>
         item.title === title ? { ...item, isExcluded: !item.isExcluded } : item
       )
     );
   };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") {
-      setSearchTerm(""); // 검색어 초기화
+
+  const handleSearch = () => {
+    setSubmittedTerm(searchTerm); // 검색 실행
+    console.log("검색 실행:", searchTerm);
+    if (resetAfterSearch) {
+      setSearchTerm(""); // 입력창 초기화
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const filteredFoodList = foodList
     .filter((item) => item.isExcluded === (selectedIndex === 1))
     .filter((item) => {
       if (selectedAlphabetIndex === undefined) return true;
-
       const selectedConsonant = filteredChoSeong[selectedAlphabetIndex];
       const group = consonantGroupMap[selectedConsonant] || [];
-
       return group.includes(getInitialConsonant(item.title));
     })
     .filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase())
-    ); // 메뉴 검색 기능
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+      item.title.toLowerCase().includes(submittedTerm.toLowerCase())
+    );
 
   return (
     <>
@@ -112,11 +119,9 @@ export default function RecommendedList() {
         <SearchBar
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onClickIcon={() => {
-            setSearchTerm;
-          }}
-          placeholder="음식명을 검색하세요."
+          onSearch={handleSearch}
+          resetAfterSearch={true}
+          suggestionList={suggestionList}
         />
 
         {/* 인덱스  */}
@@ -141,7 +146,6 @@ export default function RecommendedList() {
             ))}
           </div>
         </section>
-
         {/* 추천 목록 리스트 */}
         <section className="grid grid-cols-3 gap-4">
           {filteredFoodList.map((item, index) => (
@@ -157,7 +161,6 @@ export default function RecommendedList() {
             />
           ))}
         </section>
-
         {/* FAB(Floating Action Button) */}
         <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
           <button onClick={scrollToTop}>
