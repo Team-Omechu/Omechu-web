@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
 
-export default function TermForLocationInfo() {
+export default function TermForPersonalInfo() {
   const router = useRouter();
 
   return (
