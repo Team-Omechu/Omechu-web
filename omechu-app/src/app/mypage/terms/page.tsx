@@ -28,15 +28,15 @@ export default function Terms() {
           </button>
         }
       />
-      <main className="px-6 py-5">
-        <ul className="flex flex-col gap-4">
+      <main className="px-2 py-2">
+        <ul className="flex flex-col">
           {termsList.map((item) => (
             <button
               key={item.id}
               onClick={() => router.push(`${item.url}`)}
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <li className="flex items-center justify-between w-full">
+              <li className="flex items-center justify-between w-full px-6 py-3">
                 <h1 className="text-[clamp(1.25rem)] font-normal">
                   {item.title}
                 </h1>
