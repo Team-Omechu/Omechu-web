@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -8,9 +9,14 @@ import { termsForService } from "@/app/constant/terms/service";
 
 export default function TermForService() {
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  const LIMIT = 5;
+  const [visibleCount, setVisibleCount] = useState(LIMIT);
+  const sentinelRef = useRef(null);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -27,7 +33,10 @@ export default function TermForService() {
           </button>
         }
       />
-      <main className="w-full overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9 max-h-dvh">
+      <main
+        ref={mainRef}
+        className="relative w-full h-screen overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9"
+      >
         {termsForService.map((item, key) => (
           <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
@@ -46,8 +55,8 @@ export default function TermForService() {
             </div>
           </section>
         ))}
-        {/* FAB */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+        {/* FBA */}
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-3/4">
           <button onClick={scrollToTop}>
             <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
           </button>
