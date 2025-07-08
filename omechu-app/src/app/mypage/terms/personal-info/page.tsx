@@ -1,12 +1,17 @@
 "use client";
 
-import Header from "@/app/components/common/Header";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import Header from "@/app/components/common/Header";
 import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
 
 export default function TermForLocationInfo() {
   const router = useRouter();
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -41,6 +46,12 @@ export default function TermForLocationInfo() {
             </div>
           </section>
         ))}
+        {/* FAB */}
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+          <button onClick={scrollToTop}>
+            <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
+          </button>
+        </section>
       </main>
     </>
   );
