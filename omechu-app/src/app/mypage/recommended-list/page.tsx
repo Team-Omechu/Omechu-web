@@ -1,10 +1,13 @@
 "use client";
 
+// Food 아이템 타입 정의
+// title: 음식 이름, isExcluded: 제외 여부, imageUrl: 이미지 경로(optional)
 type FoodItem = {
   title: string;
   isExcluded: boolean;
   imageUrl?: string | null;
 };
+
 // 라이브러리
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -15,7 +18,7 @@ import Header from "@/app/components/common/Header";
 import FoodBox from "@/app/components/common/FoodBox";
 import SearchBar from "@/app/components/common/SearchBar";
 
-//상수 파일
+// 상수 데이터
 import {
   filteredChoSeong,
   consonantGroupMap,
@@ -26,28 +29,29 @@ import { suggestionList } from "@/app/constant/suggestionList";
 
 export default function RecommendedList() {
   const router = useRouter();
-  const isJustResetRef = useRef(false);
+  const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
 
+  // 음식 리스트 초기 정렬 (한글 기준 오름차순)
   const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
     a.title.localeCompare(b.title, "ko")
   );
   const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0); // 추천/제외 탭 인덱스
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
     number | undefined
-  >(undefined);
+  >(undefined); // 초성 필터 인덱스
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [submittedTerm, setSubmittedTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // input에 입력 중인 검색어
+  const [submittedTerm, setSubmittedTerm] = useState(""); // 검색 확정된 키워드
 
+  // 검색 실행 핸들러
   const handleSearch = (term: string) => {
     const trimmed = term.trim();
 
-    // ✅ 직접 입력이 아니라 자동 초기화 후 발생한 ""는 무시!
     if (trimmed === "") {
       if (!isJustResetRef.current) {
-        setSubmittedTerm(""); // ← 진짜로 전체 목록 검색 (엔터 친 경우)
+        setSubmittedTerm("");
       }
       return;
     }
@@ -55,16 +59,18 @@ export default function RecommendedList() {
     if (trimmed === submittedTerm) return;
 
     setSubmittedTerm(trimmed);
-    isJustResetRef.current = true; // 🔥 다음 input 입력 무시
-    setSearchTerm(""); // 🔥 입력창 초기화
+    isJustResetRef.current = true;
+    setSearchTerm("");
   };
 
+  // 한글 자음 추출 함수 (초성 기준 분류용)
   const getInitialConsonant = (char: string): string => {
     const code = char.charCodeAt(0) - 0xac00;
     const choIndex = Math.floor(code / 588);
     return HANGUL_CHO_SEONG[choIndex] ?? "";
   };
 
+  // 추천/제외 toggle 기능
   const onToggle = (title: string) => {
     setFoodList((prev) =>
       prev.map((item) =>
@@ -73,6 +79,7 @@ export default function RecommendedList() {
     );
   };
 
+  // 필터링된 음식 리스트 반환
   const filteredFoodList = foodList
     .filter((item) => item.isExcluded === (selectedIndex === 1))
     .filter((item) => {
@@ -92,22 +99,17 @@ export default function RecommendedList() {
 
   return (
     <>
+      {/* 상단 헤더 */}
       <Header
         leftChild={
-          <button
-            onClick={() => {
-              router.push("/mypage");
-            }}
-          >
-            {"<"}
-          </button>
+          <button onClick={() => router.push("/mypage")}>{"<"}</button>
         }
         title={"추천 목록 관리"}
       />
 
-      {/* Main */}
+      {/* 메인 섹션 */}
       <main className="relative overflow-y-auto px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
-        {/* 리스트 선택  */}
+        {/* 추천 / 제외 선택 버튼 */}
         <section className="flex w-full ">
           {["추천 목록", "제외 목록"].map((item, index) => (
             <button
@@ -132,15 +134,11 @@ export default function RecommendedList() {
           setInputValue={setSearchTerm}
           onSearch={handleSearch}
           suggestionList={suggestionList}
-          isJustResetRef={isJustResetRef}
         />
 
-        {/* 인덱스  */}
+        {/* 초성 필터 버튼 */}
         <section>
-          <div
-            className="w-[340px] h-[61px] px-7 py-2 grid grid-cols-7 grid-flow-dense
-                  bg-white border-2 border-black rounded-2xl"
-          >
+          <div className="w-[340px] h-[61px] px-7 py-2 grid grid-cols-7 grid-flow-dense bg-white border-2 border-black rounded-2xl">
             {filteredChoSeong.map((item, index) => (
               <button
                 key={index}
@@ -149,30 +147,35 @@ export default function RecommendedList() {
                     prev === index ? undefined : index
                   )
                 }
-                className={`text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] rounded-full 
-                ${selectedAlphabetIndex === index ? "font-black bg-[#d4f0ff]" : "font-normal"}`}
+                className={`text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] rounded-full  ${
+                  selectedAlphabetIndex === index
+                    ? "font-black bg-[#d4f0ff]"
+                    : "font-normal"
+                }`}
               >
                 {item}
               </button>
             ))}
           </div>
         </section>
-        {/* 추천 목록 리스트 */}
+
+        {/* 필터링된 음식 리스트 */}
         <section className="grid grid-cols-3 gap-4">
           {filteredFoodList.map((item, index) => (
             <FoodBox
               key={`${item.title}-${index}`}
               title={item.title}
-              imageUrl={item.imageUrl} // 또는 추후에 실제 경로로 대체될 값
+              imageUrl={item.imageUrl}
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
             />
           ))}
         </section>
-        {/* FAB(Floating Action Button) */}
+
+        {/* 플로팅 버튼 - 맨 위로 이동 */}
         <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
           <button onClick={scrollToTop}>
-            <Image src="/fba.png" alt={"플로팅버튼"} width={36} height={36} />
+            <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
           </button>
         </section>
       </main>
