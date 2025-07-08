@@ -3,7 +3,7 @@
 import Header from "@/app/components/common/Header";
 import { useRouter } from "next/navigation";
 
-import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
 
 export default function TermForPersonalInfo() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function TermForPersonalInfo() {
         }
       />
       <main className="w-full px-7 pt-7 pb-9">
-        {termsForPersonlInfo.map((item, key) => (
+        {termsForLocationlInfo.map((item, key) => (
           <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
             {item.index && (
@@ -33,7 +33,7 @@ export default function TermForPersonalInfo() {
             )}
             {/* 조항 내용 */}
             <div
-              className={`text-base font-normal leading-relaxed ${
+              className={`text-base font-normal leading-relaxed whitespace-pre-wrap ${
                 item.index ? "text-[#828282]" : "text-black"
               }`}
             >
