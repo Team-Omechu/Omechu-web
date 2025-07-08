@@ -27,7 +27,7 @@ export default function TermForService() {
           </button>
         }
       />
-      <main className="w-full px-7 py-9">
+      <main className="w-full overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9 max-h-dvh">
         {termsForService.map((item, key) => (
           <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
