@@ -9,7 +9,7 @@ const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"], // 사용할 폰트 굵기
   variable: "--font-noto-sans-kr", // CSS 변수 이름 설정
   display: "swap",
-  preload: true,
+  preload: false,
 });
 
 export const metadata: Metadata = {
