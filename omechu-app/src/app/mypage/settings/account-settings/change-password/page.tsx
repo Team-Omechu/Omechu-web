@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Header from "@/app/components/common/Header";
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
+import Toast from "@/app/components/common/Toast";
 
 // 테스트용 기존 비밀번호 (실제로는 서버에서 받아오는 값이어야 함)
 const SAMPLE_PASSWORD = "kang@1234";
@@ -52,6 +53,17 @@ export default function ChagePassword() {
     inputPassword === SAMPLE_PASSWORD &&
     !hasPasswordError(inputNewPassword) &&
     inputNewPassword === inputConfirmPassword;
+
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2500);
+  };
 
   return (
     <>
@@ -185,17 +197,21 @@ export default function ChagePassword() {
             />
           </div>
         </section>
-
         {/* 비밀번호 변경 버튼 */}
         <section className="mt-5">
           <button
-            disabled={!isFormValid}
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              if (!isFormValid) {
+                triggerToast("비밀번호를 다시 확인해 주세요");
+                return;
+              }
+              setShowModal(true);
+            }}
             className={`mt-48 w-[335px] h-[45px] text-white text-[17px] font-medium rounded-md transition
               ${
                 isFormValid
                   ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
-                  : "bg-gray-300 cursor-not-allowed"
+                  : "bg-gray-300"
               }`}
           >
             비밀번호 변경하기
@@ -213,6 +229,7 @@ export default function ChagePassword() {
             />
           </ModalWrapper>
         )}
+        <Toast message={toastMessage} show={showToast} />
       </main>
     </>
   );
