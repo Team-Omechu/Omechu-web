@@ -114,7 +114,7 @@ export default function FullMenu() {
           </span>
         </div>
 
-        {search.trim() && filteredItems.length === 0 && (
+        {isSearched && search.trim() && filteredItems.length === 0 && (
           <div className="text-center text-sm text-gray-500 mt-10">
             ‘{search}’에 대한 검색 결과가 없습니다.
           </div>
@@ -130,6 +130,7 @@ export default function FullMenu() {
                     isExcluded={false}
                     isToggled={false}
                     onToggle={() => {}}
+                    onClick={() => router.push(`/fullmenu/menu-detail?name=${encodeURIComponent(food)}`)}
                 />
             ))}
         </div>
