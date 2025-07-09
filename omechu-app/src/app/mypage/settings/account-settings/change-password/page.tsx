@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Header from "@/app/components/common/Header";
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 
+// 테스트용 기존 비밀번호 (실제로는 서버에서 받아오는 값이어야 함)
 const SAMPLE_PASSWORD = "kang@1234";
+
+// 에러 메시지 상수
 const ERROR_NOT_CORRECT_MESSAGE = "* 비밀번호가 일치하지 않습니다!";
 const ERROR_NOT_CORRECT_NEW_MESSAGE =
   "* 영문 대/소문자, 숫자, 특수문자 포함 8자 이상";
@@ -17,14 +20,17 @@ export default function ChagePassword() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
+  // 비밀번호 보기 토글 상태
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showNewConfirmPassword, setShowNewConfirmPassword] = useState(false);
 
+  // 입력 값 상태
   const [inputPassword, setInputPassword] = useState("");
   const [inputNewPassword, setInputNewPassword] = useState("");
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
 
+  // 에러 상태
   const [currentPasswordError, setCurrentPasswordError] = useState<
     boolean | null
   >(null);
@@ -35,14 +41,13 @@ export default function ChagePassword() {
     boolean | null
   >(null);
 
+  // 비밀번호 유효성 검사 함수 (정규식)
   const hasPasswordError = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
-    return !regex.test(password);
+    return !regex.test(password); // 유효하지 않으면 true
   };
 
-  const currentPasswordRef = useRef<HTMLInputElement>(null);
-  const newPasswordRef = useRef<HTMLInputElement>(null);
-
+  // 모든 조건이 통과하면 버튼 활성화
   const isFormValid =
     inputPassword === SAMPLE_PASSWORD &&
     !hasPasswordError(inputNewPassword) &&
@@ -53,10 +58,9 @@ export default function ChagePassword() {
       <Header
         title={"비밀번호 변경"}
         leftChild={
+          // ← 버튼 누르면 이전 설정 페이지로 이동
           <button
-            onClick={() => {
-              router.push("/mypage/settings/account-settings");
-            }}
+            onClick={() => router.push("/mypage/settings/account-settings")}
           >
             <Image
               src={"/left_arrow.png"}
@@ -69,87 +73,79 @@ export default function ChagePassword() {
       />
       <main className="flex flex-col items-center px-2 py-2 mt-20">
         <section className="w-full px-3">
-          {/* 기존 비밀번호 입력 */}
+          {/* 기존 비밀번호 입력 영역 */}
           <div className="relative flex flex-col w-full gap-1 mb-5">
             <span className="text-base text-[#393939] font-normal ml-1">
               기존 비밀번호
             </span>
             <input
-              ref={currentPasswordRef}
               type={showPassword ? "text" : "password"}
               value={inputPassword}
               placeholder="기존 비밀번호를 입력해주세요"
-              onChange={(e) => {
-                setInputPassword(e.target.value);
-              }}
-              onBlur={() => {
-                setCurrentPasswordError(inputPassword === SAMPLE_PASSWORD);
-              }}
+              onChange={(e) => setInputPassword(e.target.value)}
+              onBlur={() =>
+                setCurrentPasswordError(inputPassword === SAMPLE_PASSWORD)
+              }
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   setCurrentPasswordError(inputPassword === SAMPLE_PASSWORD);
                 }
               }}
-              className="w-full h-10 
-              text-sm text-[#828282] font-normal text-center
-              border-[1px] border-[#626262] rounded-md"
+              className="w-full h-10 text-sm text-[#828282] font-normal text-center border-[1px] border-[#626262] rounded-md"
             />
             {currentPasswordError === false && (
               <span className="text-xs font-normal text-red-500">
                 {ERROR_NOT_CORRECT_MESSAGE}
               </span>
             )}
+            {/* 눈 아이콘 눌러서 비밀번호 보기 토글 */}
             <Image
               className="absolute rounded-full top-9 right-4 active:bg-gray-200"
               onClick={() => setShowPassword((prev) => !prev)}
-              src={showPassword ? "/eye_closed.svg" : "/eye_closed.svg"} // eye_open Img 파일 받으면 두번째 이미지 교체하면 됨!
+              src={showPassword ? "/eye_open.svg" : "/eye_closed.svg"}
               alt="비밀번호_보기"
               width={24}
               height={24}
             />
           </div>
 
-          {/* 새 비밀번호 입력 */}
+          {/* 새 비밀번호 입력 영역 */}
           <div className="relative flex flex-col w-full gap-1 mb-5">
             <span className="text-base text-[#393939] font-normal ml-1">
               새 비밀번호
             </span>
             <input
-              ref={newPasswordRef}
               type={showNewPassword ? "text" : "password"}
               value={inputNewPassword}
               placeholder="새 비밀번호를 입력해주세요"
-              onChange={(e) => {
-                setInputNewPassword(e.target.value);
-              }}
-              onBlur={() => {
-                setNewPasswordError(hasPasswordError(inputNewPassword));
-              }}
+              onChange={(e) => setInputNewPassword(e.target.value)}
+              onBlur={() =>
+                setNewPasswordError(hasPasswordError(inputNewPassword))
+              }
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   setNewPasswordError(hasPasswordError(inputNewPassword));
                 }
               }}
-              className="w-full h-10 
-              text-sm text-[#828282] font-normal text-center
-              border-[1px] border-[#626262] rounded-md"
+              className="w-full h-10 text-sm text-[#828282] font-normal text-center border-[1px] border-[#626262] rounded-md"
             />
             {newPasswordError && (
               <span className="text-xs font-normal text-red-500">
                 {ERROR_NOT_CORRECT_NEW_MESSAGE}
               </span>
             )}
+            {/* 눈 아이콘 */}
             <Image
               className="absolute rounded-full top-9 right-4 active:bg-gray-200"
               onClick={() => setShowNewPassword((prev) => !prev)}
-              src={showNewPassword ? "/eye_closed.svg" : "/eye_closed.svg"} // eye_open Img 파일 받으면 두번째 이미지 교체하면 됨!
+              src={showNewPassword ? "/eye_open.svg" : "/eye_closed.svg"}
               alt="비밀번호_보기"
               width={24}
               height={24}
             />
           </div>
 
-          {/* 새 비밀번호 재확인 */}
+          {/* 새 비밀번호 재확인 입력 */}
           <div className="relative flex flex-col w-full gap-1 mb-5">
             <span className="text-base text-[#393939] font-normal ml-1">
               새 비밀번호 재확인
@@ -158,14 +154,12 @@ export default function ChagePassword() {
               type={showNewConfirmPassword ? "text" : "password"}
               value={inputConfirmPassword}
               placeholder="새 비밀번호를 다시 입력해주세요"
-              onChange={(e) => {
-                setInputConfirmPassword(e.target.value);
-              }}
-              onBlur={() => {
+              onChange={(e) => setInputConfirmPassword(e.target.value)}
+              onBlur={() =>
                 setConfirmPasswordError(
                   inputConfirmPassword !== inputNewPassword
-                );
-              }}
+                )
+              }
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   setConfirmPasswordError(
@@ -173,40 +167,42 @@ export default function ChagePassword() {
                   );
                 }
               }}
-              className="w-full h-10 
-              text-sm text-[#828282] font-normal text-center
-              border-[1px] border-[#626262] rounded-md"
+              className="w-full h-10 text-sm text-[#828282] font-normal text-center border-[1px] border-[#626262] rounded-md"
             />
             {confirmPasswordError && (
               <span className="text-xs font-normal text-red-500">
                 * 새 비밀번호가 일치하지 않습니다!
               </span>
             )}
+            {/* 눈 아이콘 */}
             <Image
               className="absolute rounded-full top-9 right-4 active:bg-gray-200"
               onClick={() => setShowNewConfirmPassword((prev) => !prev)}
-              src={showPassword ? "/eye_closed.svg" : "/eye_closed.svg"} // eye_open Img 파일 받으면 두번째 이미지 교체하면 됨!
+              src={showNewConfirmPassword ? "/eye_open.svg" : "/eye_closed.svg"}
               alt="비밀번호_보기"
               width={24}
               height={24}
             />
           </div>
         </section>
+
+        {/* 비밀번호 변경 버튼 */}
         <section className="mt-5">
           <button
             disabled={!isFormValid}
             onClick={() => setShowModal(true)}
-            className={`mt-48 w-[335px] h-[45px] text-white text-[17px] font-medium
-                      rounded-md transition
-                      ${
-                        isFormValid
-                          ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
-                          : "bg-gray-300 cursor-not-allowed"
-                      }`}
+            className={`mt-48 w-[335px] h-[45px] text-white text-[17px] font-medium rounded-md transition
+              ${
+                isFormValid
+                  ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+                  : "bg-gray-300 cursor-not-allowed"
+              }`}
           >
             비밀번호 변경하기
           </button>
         </section>
+
+        {/* 모달 - 비밀번호 변경 완료 알림 */}
         {showModal && (
           <ModalWrapper>
             <AlertModal
