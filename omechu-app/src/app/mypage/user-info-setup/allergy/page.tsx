@@ -16,7 +16,7 @@ export default function SetupAllergy() {
     <div className="flex flex-col w-auto h-screen">
       <ProgressBar
         currentStep={5}
-        totalSteps={10}
+        totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
       />

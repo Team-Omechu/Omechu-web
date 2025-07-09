@@ -17,14 +17,19 @@ export default function Terms() {
   return (
     <>
       <Header
-        title={"이용 약관"}
+        title={"기본 상태 입력"}
         leftChild={
           <button
             onClick={() => {
-              router.push("/mypage/settings");
+              router.push("./");
             }}
           >
-            {"<"}
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
       />
