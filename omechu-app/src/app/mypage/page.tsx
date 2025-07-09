@@ -52,7 +52,7 @@ export default function MyPage() {
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
-              <>
+              <div key={index}>
                 <button
                   onClick={() => {
                     router.push(item.href);
@@ -79,7 +79,7 @@ export default function MyPage() {
                 {!isLast && (
                   <div className="h-[1.2px] w-[calc(100%-2.5rem)] mx-auto bg-[#b3d8eb] dark:bg-white" />
                 )}
-              </>
+              </div>
             );
           })}
         </section>

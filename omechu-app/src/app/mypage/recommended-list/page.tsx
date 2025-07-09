@@ -168,6 +168,9 @@ export default function RecommendedList() {
               imageUrl={item.imageUrl}
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           ))}
         </section>
