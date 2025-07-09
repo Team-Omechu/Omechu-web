@@ -16,18 +16,18 @@ export default function AccountSettings() {
   return (
     <>
       <Header
-        title={"계정 관리"}
+        title={"기본 상태 입력"}
         leftChild={
           <button
             onClick={() => {
-              router.push("/mypage/settings");
+              router.push("./");
             }}
           >
             <Image
-              src={"/left_arrow.png"}
-              alt={"이전페이지"}
-              width={25}
-              height={25}
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
             />
           </button>
         }

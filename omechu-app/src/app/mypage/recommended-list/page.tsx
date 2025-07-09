@@ -101,10 +101,21 @@ export default function RecommendedList() {
     <>
       {/* 상단 헤더 */}
       <Header
+        title={"기본 상태 입력"}
         leftChild={
-          <button onClick={() => router.push("/mypage")}>{"<"}</button>
+          <button
+            onClick={() => {
+              router.push("./");
+            }}
+          >
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
+          </button>
         }
-        title={"추천 목록 관리"}
       />
 
       {/* 메인 섹션 */}

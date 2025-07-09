@@ -68,17 +68,18 @@ export default function ChagePassword() {
   return (
     <>
       <Header
-        title={"비밀번호 변경"}
+        title={"기본 상태 입력"}
         leftChild={
-          // ← 버튼 누르면 이전 설정 페이지로 이동
           <button
-            onClick={() => router.push("/mypage/settings/account-settings")}
+            onClick={() => {
+              router.push("./");
+            }}
           >
             <Image
-              src={"/left_arrow.png"}
-              alt={"이전페이지"}
-              width={25}
-              height={25}
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
             />
           </button>
         }
