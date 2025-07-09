@@ -52,7 +52,7 @@ export default function TermForLocationInfo() {
           </section>
         ))}
         {/* FBA */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-3/4">
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
           <button onClick={scrollToTop}>
             <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
           </button>
