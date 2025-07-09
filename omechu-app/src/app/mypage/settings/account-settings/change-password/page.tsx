@@ -114,7 +114,7 @@ export default function ChagePassword() {
             <Image
               className="absolute rounded-full top-9 right-4 active:bg-gray-200"
               onClick={() => setShowPassword((prev) => !prev)}
-              src={showPassword ? "/eye_open.svg" : "/eye_closed.svg"}
+              src={showPassword ? "/eye_closed.svg" : "/eye_closed.svg"} // eye_open 이미지 받으면 첫 번째 이미지 변경해야함
               alt="비밀번호_보기"
               width={24}
               height={24}
@@ -150,7 +150,7 @@ export default function ChagePassword() {
             <Image
               className="absolute rounded-full top-9 right-4 active:bg-gray-200"
               onClick={() => setShowNewPassword((prev) => !prev)}
-              src={showNewPassword ? "/eye_open.svg" : "/eye_closed.svg"}
+              src={showNewPassword ? "/eye_closed.svg" : "/eye_closed.svg"} // eye_open 이미지 받으면 첫 번째 이미지 변경해야함
               alt="비밀번호_보기"
               width={24}
               height={24}
@@ -190,7 +190,9 @@ export default function ChagePassword() {
             <Image
               className="absolute rounded-full top-9 right-4 active:bg-gray-200"
               onClick={() => setShowNewConfirmPassword((prev) => !prev)}
-              src={showNewConfirmPassword ? "/eye_open.svg" : "/eye_closed.svg"}
+              src={
+                showNewConfirmPassword ? "/eye_closed.svg" : "/eye_closed.svg"
+              } // eye_open 이미지 받으면 첫 번째 이미지 변경해야함
               alt="비밀번호_보기"
               width={24}
               height={24}
