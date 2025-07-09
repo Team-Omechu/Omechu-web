@@ -41,7 +41,7 @@ export default function AccountSettings() {
             </div>
             <button
               onClick={() =>
-                router.push("/mypage/account-settings/change-password")
+                router.push("/mypage/settings/account-settings/change-password")
               }
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
