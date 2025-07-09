@@ -18,10 +18,12 @@ export default function MealTimePage() {
     <div className="flex flex-col w-full h-screen">
       {/* 상단 진행 바 + 그만하기 버튼 */}
       <div className="px-4 pt-5">
-        <ProgressBar 
-        currentStep={1}
-        totalSteps={5}
-        onCancelClick={()=>{setShowModal(true)}}
+        <ProgressBar
+          currentStep={1}
+          totalSteps={5}
+          onCancelClick={() => {
+            setShowModal(true);
+          }}
         />
       </div>
 
@@ -33,7 +35,10 @@ export default function MealTimePage() {
           {meals.map((meal) => (
             <button
               key={meal}
-              onClick={()=>{setSelected(meal); router.push("./purpose")}}
+              onClick={() => {
+                setSelected(meal);
+                router.push("./purpose");
+              }}
               className={`w-full h-12 rounded-md border text-lg 
                 ${
                   selected === meal
@@ -48,13 +53,19 @@ export default function MealTimePage() {
       </main>
 
       {/* 하단 건너뛰기 */}
-      <BottomNav showPrev={false} nextPath="./purpose"/>
+      <BottomNav showPrev={false} nextPath="./purpose" />
       {showModal && (
         <ModalWrapper>
           <AlertModal
-          title="메뉴 추천을 중단하시겠어요?"
-          onConfirm={()=>{router.push("/"); setShowModal(false)}}
-          onClose={()=>{setShowModal(false)}}
+            title="메뉴 추천을 중단하시겠어요?"
+            onConfirm={() => {
+              router.push("/");
+              setShowModal(false);
+            }}
+            onClose={() => {
+              setShowModal(false);
+            }}
+            confirmText="확인"
           />
         </ModalWrapper>
       )}
