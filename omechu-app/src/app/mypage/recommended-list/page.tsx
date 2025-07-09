@@ -114,7 +114,7 @@ export default function RecommendedList() {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown}
           onClickIcon={() => {
-            setSearchTerm;
+            setSearchTerm("");
           }}
           placeholder="음식명을 검색하세요."
         />
@@ -151,6 +151,11 @@ export default function RecommendedList() {
               imageUrl={item.imageUrl} // 또는 추후에 실제 경로로 대체될 값
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
+              onClick={() =>
+                router.push(
+                  `/fullmenu/menu-detail?name=${encodeURIComponent(item.title)}`
+                )
+              }
             />
           ))}
         </section>
