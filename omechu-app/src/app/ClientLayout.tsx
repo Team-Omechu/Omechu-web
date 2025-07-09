@@ -29,8 +29,10 @@ export default function ClientLayout({
     "/mypage/user-info-setup/condition",
     "/mypage/user-info-setup/allergy",
     "/mypage/recommended-list",
-
-    // 마이페이지-이용약관
+    // 마이페이지-설정
+    "/mypage/settings",
+    "/mypage/settings/account-settings",
+    "/mypage/settings/account-settings/change-password",
     "/mypage/terms",
     "/mypage/terms/service",
     "/mypage/terms/personal-info",
