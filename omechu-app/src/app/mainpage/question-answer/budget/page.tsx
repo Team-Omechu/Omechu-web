@@ -17,10 +17,13 @@ export default function BudgetPage() {
   return (
     <div className="flex flex-col w-auto h-screen">
       <div className="px-4 pt-5">
-        <ProgressBar 
-        currentStep={5}
-        totalSteps={5}
-        onCancelClick={()=>{setShowModal(true)}}/>
+        <ProgressBar
+          currentStep={5}
+          totalSteps={5}
+          onCancelClick={() => {
+            setShowModal(true);
+          }}
+        />
       </div>
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <h2 className="text-2xl text-center">예산은 어떻게 되시나요?</h2>
@@ -29,7 +32,10 @@ export default function BudgetPage() {
           {budgets.map((budget) => (
             <button
               key={budget}
-              onClick={() => {setSelected(budget); router.push("./middle-question")}}
+              onClick={() => {
+                setSelected(budget);
+                router.push("./middle-question");
+              }}
               className={`w-full h-12 rounded-md border-[1px] text-lg 
               ${
                 selected === budget
@@ -42,13 +48,19 @@ export default function BudgetPage() {
           ))}
         </div>
       </main>
-      <BottomNav prevPath="./who" showNext={false}/>
+      <BottomNav prevPath="./who" showNext={false} />
       {showModal && (
         <ModalWrapper>
           <AlertModal
             title="메뉴 추천을 중단하시겠어요?"
-            onConfirm={() => {router.push("/"); setShowModal(false)}}
-            onClose={() => {setShowModal(false)}}
+            onConfirm={() => {
+              router.push("/");
+              setShowModal(false);
+            }}
+            onClose={() => {
+              setShowModal(false);
+            }}
+            confirmText="확인"
           />
         </ModalWrapper>
       )}
