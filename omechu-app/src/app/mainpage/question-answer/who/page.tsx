@@ -17,22 +17,28 @@ export default function WhoPage() {
   return (
     <div className="flex flex-col w-auto h-screen">
       <div className="px-4 pt-5">
-        <ProgressBar 
+        <ProgressBar
           currentStep={4}
           totalSteps={5}
-          onCancelClick={()=>{setShowModal(true)}} />
+          onCancelClick={() => {
+            setShowModal(true);
+          }}
+        />
       </div>
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <div>
-            <h2 className="text-2xl text-center">혼자 식사하시나요</h2>
-            <h2 className="text-2xl text-center">누구와 함께 하시나요?</h2>
+          <h2 className="text-2xl text-center">혼자 식사하시나요</h2>
+          <h2 className="text-2xl text-center">누구와 함께 하시나요?</h2>
         </div>
 
         <div className="flex flex-col w-60 gap-4">
           {whos.map((who) => (
             <button
               key={who}
-              onClick={() => {setSelected(who); router.push("./budget")}}
+              onClick={() => {
+                setSelected(who);
+                router.push("./budget");
+              }}
               className={`w-full h-12 p-2 rounded-md border-[1px] text-lg
               ${
                 selected === who
@@ -45,13 +51,19 @@ export default function WhoPage() {
           ))}
         </div>
       </main>
-      <BottomNav prevPath="./state" nextPath="./budget"/>
+      <BottomNav prevPath="./state" nextPath="./budget" />
       {showModal && (
         <ModalWrapper>
           <AlertModal
             title="메뉴 추천을 중단하시겠어요?"
-            onConfirm={() => {router.push("/"); setShowModal(false)}}
-            onClose={() => {setShowModal(false)}}
+            onConfirm={() => {
+              router.push("/");
+              setShowModal(false);
+            }}
+            onClose={() => {
+              setShowModal(false);
+            }}
+            confirmText="확인"
           />
         </ModalWrapper>
       )}
