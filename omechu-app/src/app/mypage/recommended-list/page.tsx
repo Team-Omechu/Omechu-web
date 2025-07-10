@@ -130,6 +130,7 @@ export default function RecommendedList() {
 
         {/* 검색 창 */}
         <SearchBar
+          placeholder="음식명을 검색하세요."
           inputValue={searchTerm}
           setInputValue={setSearchTerm}
           onSearch={handleSearch}
@@ -168,6 +169,11 @@ export default function RecommendedList() {
               imageUrl={item.imageUrl}
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
+              onClick={() =>
+                router.push(
+                  `/fullmenu/menu-detail?name=${encodeURIComponent(item.title)}`
+                )
+              }
             />
           ))}
         </section>
