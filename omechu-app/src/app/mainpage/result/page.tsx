@@ -1,14 +1,17 @@
 "use client";
 
-import Header from "@/app/components/common/Header";
+import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
 import MenuCard from "@/app/components/mainpage/MenuCard";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ResultPage() {
 const router = useRouter();
+const [showModal, setShowModal] = useState(false);
 const [openMenuId, setOpenMenuId] = useState<number|null>(1);
-console.log(openMenuId)
+
   const menus = [
     {
       id: 1,
@@ -51,23 +54,34 @@ console.log(openMenuId)
 
   return (
     <div className="p-4 flex flex-col">
-      <Header
-      leftChild={
-        <button onClick={()=>{router.push("./")}}>
-          &lt; 처음으로
-        </button>
-      }
-      className="flex justify-start"/>
+      <button className="flex justify-start"
+      onClick={()=>router.push("./")}
+      > 
+      &lt; 처음으로 
+      </button>
 
-      <div className="flex flex-col gap-4">
-        {menus.map((menu)=>(
-          <MenuCard
-          key={menu.id}
-          title={menu.title}
-          description={menu.description}
-          image={menu.image}
-          onClick={() => setOpenMenuId(menu.id)}
-          />
+      <div className="mt-3 flex flex-col gap-4">
+        {menus.map((menu) => (
+          <div key={menu.id} className="relative">
+            <button
+              className="absolute top-1 left-2 z-10 bg-white rounded-full"
+              onClick={() => {setShowModal(true)}}
+            >
+              <Image
+                src="/do_not_disturb_on.png"
+                alt="아이콘"
+                width={24}
+                height={24}
+              />
+            </button>
+
+            <MenuCard
+              title={menu.title}
+              description={menu.description}
+              image={menu.image}
+              onClick={() => setOpenMenuId(menu.id)}
+            />
+          </div>
         ))}
       </div>
 
@@ -81,7 +95,7 @@ console.log(openMenuId)
           }}>선택하기</button>
       </div>
 
-      <div className="mt-4 bg-white p-3 rounded-md text-sm">
+      <div className="mt-5 bg-white p-3 rounded-md text-sm">
         {tags.map((tag, idx) => (
           <div key={idx} className="mb-1 text-black flex flex-col p-1">
             <span className="font-semibold text-[#A3A3A3] mb-1">{tag}</span>
@@ -89,6 +103,17 @@ console.log(openMenuId)
           </div>
         ))}
       </div>
+      {showModal && (
+        <ModalWrapper>
+          <AlertModal
+            title="메뉴 추천을 중단하시겠어요?"
+            confirmText="제외하기"
+            cancelText="취소"
+            onConfirm={() => {router.push("/"); setShowModal(false)}}
+            onClose={() => {setShowModal(false)}}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }
