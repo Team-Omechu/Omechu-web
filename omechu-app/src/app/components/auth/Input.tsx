@@ -9,7 +9,7 @@ type InputProps = {
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, name, type, error, rightAddon, ...props }, ref) => {
     const baseStyle =
-      "w-full h-10 px-4 border rounded-md focus:outline-none bg-white placeholder:text-[13px] placeholder:text-[#939393]";
+      "w-full h-10 px-4 border rounded-md focus:outline-none bg-white placeholder:text-[13px] placeholder:text-[#939393] text-black";
     const normalStyle = "border-[#494949] focus:border-[#494949]";
     const errorStyle = "border-red-500 focus:border-red-500";
     const inputClassName = `${baseStyle} ${error ? errorStyle : normalStyle}`;

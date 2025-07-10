@@ -26,16 +26,16 @@ const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
         </div>
 
         <div className="flex flex-col gap-2 mb-4">
-          <h2 className="text-xl font-bold">더 쉽고 편한 추천을 원하시나요?</h2>
+          <h2 className="text-xl font-bold">더 정교한 추천을 원하시나요?</h2>
           <p className="text-sm text-gray-500">
-            로그인하고 더 다양한 서비스를 이용하세요!
+            로그인 후 더 다양한 서비스를 누려보세요!
           </p>
         </div>
         <Button
           onClick={onConfirm}
           variant="text"
           size="small"
-          className="w-auto h-auto !font-bold !text-base !text-[#FB4746]"
+          className="w-auto h-auto !font-bold !text-base !text-[] underline"
         >
           로그인 하러 가기
         </Button>
