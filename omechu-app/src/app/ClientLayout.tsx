@@ -31,10 +31,11 @@ export default function ClientLayout({
     "/mypage/recommended-list",
 
     // 로그인, 회원가입, 온보딩 페이지
-    "/auth/signin",
+    "/auth/login",
     "/auth/signup",
     "/auth/find-password",
     "/auth/find-password/sent",
+    "/auth/reset-password",
     "/onboarding/1",
     "/onboarding/2",
     "/onboarding/3",
