@@ -23,6 +23,12 @@ export default function LocationAnswerPage() {
     }
   };
 
+  const handleCancel = () => {
+    setShowModal(false); 
+    setIsChecked(false); 
+    setSelectedDistance("");
+  }
+
   return (
     <div className="flex flex-col w-full h-screen relative overflow-x-hidden">
       <main className="flex flex-col items-center justify-center flex-1 w-full">
@@ -61,7 +67,7 @@ export default function LocationAnswerPage() {
 
         {/* 결과 보기 버튼 */}
         <button
-          onClick={() => router.push("./result")}
+          onClick={() => router.push("/mainpage/result")}
           className="mt-10 flex w-[17.375rem] h-[2.8125rem] p-[0.625rem] flex-shrink-0 justify-center items-center gap-[0.625rem] rounded-[0.375rem] bg-[#FB4746] text-white text-[16px] font-medium"
         >
           결과 보기
@@ -71,7 +77,7 @@ export default function LocationAnswerPage() {
         <div className="absolute inset-0 z-50 flex justify-center items-end">
           <div className="w-full">
           <LocationModal
-            onClose={() => {setShowModal(false); setIsChecked(false); setSelectedDistance("");}}
+            onClose={handleCancel}
             onSelect={(distance) => {
               setSelectedDistance(distance);
               setShowModal(false);
