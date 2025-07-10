@@ -95,6 +95,7 @@ export default function RestaurantDetail() {
   const [rating, setRating] = useState(0); // 0~5점
   const [isActive, setIsActive] = useState(true);
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
+  const [showReportModal, setShowReportModal] = useState(true);
   return (
     <>
       <Header
@@ -367,6 +368,13 @@ export default function RestaurantDetail() {
             </div>
           </div>
         </section>
+        {showReportModal && (
+          <>
+            <ModalWrapper>
+              <ReportModal onClick={() => setShowReportModal(false)} />
+            </ModalWrapper>
+          </>
+        )}
       </main>
     </>
   );
