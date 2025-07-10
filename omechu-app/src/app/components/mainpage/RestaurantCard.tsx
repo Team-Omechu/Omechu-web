@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 
 interface RestaurantCardProps {
   name: string;
@@ -21,11 +22,13 @@ export default function RestaurantCard({
   tags,
   image,
 }: RestaurantCardProps) {
+  const [isLiked, setIsLiked]=useState(false);
   return (
     <div className="relative bg-white border border-black rounded-md p-4 flex items-start gap-4">
       {/* 즐겨찾기 아이콘 */}
-      <button className="absolute top-2 right-2 text-lg">
-        ♥️
+      <button className="absolute top-2 right-2 text-lg"
+      onClick={()=>setIsLiked((prev)=>!prev)}>
+        {isLiked? "❤️" : "🤍"}
       </button>
 
       {/* 정보 영역 */}
