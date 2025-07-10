@@ -11,6 +11,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-noto-sans-kr)", "sans-serif"],
+      },
       screens: {
         mobile: { max: "375px" },
         // 필요 시 추가 정의 가능

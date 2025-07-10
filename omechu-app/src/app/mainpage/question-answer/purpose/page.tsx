@@ -17,11 +17,13 @@ export default function PurposePage() {
   return (
     <div className="flex flex-col w-auto h-screen">
       <div className="px-4 pt-5">
-        <ProgressBar 
-        currentStep={2}
-        totalSteps={5}
-        onCancelClick={()=>{setShowModal(true)}}
-         />
+        <ProgressBar
+          currentStep={2}
+          totalSteps={5}
+          onCancelClick={() => {
+            setShowModal(true);
+          }}
+        />
       </div>
       <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
         <h2 className="text-2xl text-center">식사 목적은 무엇인가요?</h2>
@@ -30,7 +32,10 @@ export default function PurposePage() {
           {purposes.map((purpose) => (
             <button
               key={purpose}
-              onClick={() => {setSelected(purpose); router.push("./state")}}
+              onClick={() => {
+                setSelected(purpose);
+                router.push("./state");
+              }}
               className={`w-full h-12 p-2 rounded-md border-[1px] text-lg  
               ${
                 selected === purpose
@@ -43,13 +48,19 @@ export default function PurposePage() {
           ))}
         </div>
       </main>
-      <BottomNav prevPath="./meal-time" nextPath="./state"/>
+      <BottomNav prevPath="./meal-time" nextPath="./state" />
       {showModal && (
         <ModalWrapper>
           <AlertModal
             title="메뉴 추천을 중단하시겠어요?"
-            onConfirm={() => {router.push("/"); setShowModal(false)}}
-            onClose={() => {setShowModal(false)}}
+            onConfirm={() => {
+              router.push("/");
+              setShowModal(false);
+            }}
+            onClose={() => {
+              setShowModal(false);
+            }}
+            confirmText="확인"
           />
         </ModalWrapper>
       )}

@@ -6,6 +6,7 @@ type FoodBoxProp = {
   isExcluded: boolean;
   isToggled?: boolean;
   onToggle: () => void;
+  onClick: () => void;
 };
 
 export default function FoodBox({
@@ -14,6 +15,7 @@ export default function FoodBox({
   isExcluded,
   isToggled = true,
   onToggle,
+  onClick
 }: FoodBoxProp) {
   // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);  // 디버그용 콘솔 메세지 출력
   return (
@@ -21,7 +23,9 @@ export default function FoodBox({
       className="relative py-1 w-[100px] h-[110px] 
         flex flex-col justify-end items-center 
         border-[1px] border-black rounded-xl bg-white 
-        hover:scale-110 transition-transform duration-300"
+        hover:scale-110 transition-transform duration-300
+        cursor-pointer"
+      onClick={onClick}
     >
       {/* 추천 제외 || 복원 버튼 */}
       {/* dev 모드 일 때 이미지 렌더링 늦음 -> build 후 확인하니 렌더링 정상 (캐시 사용) */}
@@ -30,8 +34,9 @@ export default function FoodBox({
           priority
           loading="eager"
           unoptimized
-          onClick={() => {
+          onClick={(e) => {
             // console.log("클릭됨", title); // 디버그용 콘솔 메세지 출력
+            e.stopPropagation();
             onToggle();
           }}
           className="absolute cursor-pointer top-1 right-1"
