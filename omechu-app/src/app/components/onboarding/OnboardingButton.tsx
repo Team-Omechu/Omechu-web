@@ -10,9 +10,11 @@ const OnboardingButton = ({
   ...props
 }: OnboardingButtonProps) => {
   const baseStyle =
-    "w-full h-[45px] rounded-md border text-lg flex items-center justify-center";
-  const selectedStyle = "bg-red-500 text-white border-red-500";
-  const unselectedStyle = "bg-white text-red-500 border-red-500";
+    "w-full h-12 px-0 py-2 rounded-md border-[1px] text-xl flex items-center justify-center transition-colors";
+  const selectedStyle =
+    "bg-[#FB4746] text-white border-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938]";
+  const unselectedStyle =
+    "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]";
 
   return (
     <button

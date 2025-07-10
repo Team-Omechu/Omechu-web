@@ -15,13 +15,17 @@ const ProfileStep = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-full px-5">
-      <div className="flex flex-col items-center w-full gap-10 pt-8">
-        <div className="text-center">
-          <p className="text-lg font-semibold text-gray-500">반가워요!</p>
-          <h1 className="text-2xl font-bold">프로필을 입력해 주세요</h1>
+    <div className="flex flex-col items-center w-full px-4 py-6">
+      <section className="my-20">
+        <div className="p-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+          <div className="text-center text-2xl font-semibold text-[#1F9BDA]">
+            반가워요!
+          </div>
+          <h1 className="text-2xl font-bold text-black">
+            프로필을 입력해 주세요
+          </h1>
         </div>
-        <div className="flex flex-col items-center gap-2">
+        <div className="p-5 flex flex-col items-center gap-2">
           <div className="relative w-[73px] h-[73px] mb-2">
             <Image
               src="/onboarding-restaurant-icon.png"
@@ -31,7 +35,7 @@ const ProfileStep = () => {
               className="object-cover"
             />
           </div>
-          <button className="text-sm text-gray-500 hover:underline">
+          <button className="text-sm text-[#48528E] underline">
             사진 지우기
           </button>
         </div>
@@ -45,7 +49,10 @@ const ProfileStep = () => {
             error={isInvalid ? "한영문자 2-12글자로 입력해주세요" : ""}
           />
         </div>
-      </div>
+        <div className="flex flex-col gap-2 text-sm text-[#828282]">
+          한영문자 2-12글자로 입력해주세요
+        </div>
+      </section>
     </div>
   );
 };
