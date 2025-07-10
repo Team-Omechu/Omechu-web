@@ -44,6 +44,9 @@ export default function ClientLayout({
     "/mypage/terms/service",
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
+
+    //맛집-상세페이지
+    "/restaurants-detail",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
