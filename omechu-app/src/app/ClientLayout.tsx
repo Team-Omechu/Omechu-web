@@ -39,7 +39,7 @@ export default function ClientLayout({
     "/mypage/terms/location-info",
 
     //맛집-상세페이지
-    "/restaurants-detail",
+    "/restaurant-detail",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 

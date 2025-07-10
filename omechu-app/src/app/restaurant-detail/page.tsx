@@ -6,6 +6,8 @@ import { useState } from "react";
 
 import Header from "../components/common/Header";
 import Review from "../components/restaurant/Review";
+import ModalWrapper from "../components/common/ModalWrapper";
+import ReportModal from "../components/restaurant/ReportModal";
 
 const restaurant_time_table = [
   {
@@ -95,6 +97,7 @@ export default function RestaurantDetail() {
   const [rating, setRating] = useState(0); // 0~5점
   const [isActive, setIsActive] = useState(true);
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
+  const [showReportModal, setShowReportModal] = useState(true);
   return (
     <>
       {/* 헤더 */}
@@ -374,6 +377,13 @@ export default function RestaurantDetail() {
             </div>
           </div>
         </section>
+        {showReportModal && (
+          <>
+            <ModalWrapper>
+              <ReportModal onClick={() => setShowReportModal(false)} />
+            </ModalWrapper>
+          </>
+        )}
       </main>
     </>
   );
