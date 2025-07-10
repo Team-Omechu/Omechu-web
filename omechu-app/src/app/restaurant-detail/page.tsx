@@ -102,7 +102,7 @@ export default function RestaurantDetail() {
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
 
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
-  const [count, setCount] = useState<number>(0);
+
   return (
     <>
       <Header
@@ -367,7 +367,6 @@ export default function RestaurantDetail() {
                   onVote={() => {
                     if (!votedReviewIds.includes(item.id)) {
                       setVotedReviewIds((prev) => [...prev, item.id]);
-                      setCount((prev) => prev + 1);
                     }
                   }}
                   isVoted={votedReviewIds.includes(item.id)}
