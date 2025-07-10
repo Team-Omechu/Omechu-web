@@ -18,6 +18,9 @@ export default function ClientLayout({
     "/mainpage/question-answer/who",
     "/mainpage/question-answer/budget",
     "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
+    "/mainpage/result",
 
     // 마이페이지
     "/mypage/user-info-setup",
@@ -28,19 +31,9 @@ export default function ClientLayout({
     "/mypage/user-info-setup/food",
     "/mypage/user-info-setup/condition",
     "/mypage/user-info-setup/allergy",
-
-    "/mainpage/question-answer/meal-time",
-    "/mainpage/question-answer/purpose",
-    "/mainpage/question-answer/state",
-    "/mainpage/question-answer/who",
-    "/mainpage/question-answer/budget",
-    "/mainpage/question-answer/middle-question",
-    "/mainpage/meal-answer",
-    "/mainpage/location-answer",
-
     "/mypage/recommended-list",
   ];
-  const showBottomNav = !noBottomNavRoutes.includes(pathname);
+  const showBottomNav = !(noBottomNavRoutes.includes(pathname)|| pathname.startsWith("/mainpage/result/"));
 
   return (
     <>
