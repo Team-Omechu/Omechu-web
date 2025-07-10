@@ -30,6 +30,7 @@ export default function TermForService() {
               width={22}
               height={30}
             />
+
           </button>
         }
       />

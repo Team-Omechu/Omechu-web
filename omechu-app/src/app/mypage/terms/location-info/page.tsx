@@ -17,7 +17,7 @@ export default function TermForPersonalInfo() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"위치기반 서비스 이용약관"}
         leftChild={
           <button
             onClick={() => {
