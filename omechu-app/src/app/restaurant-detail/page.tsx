@@ -98,8 +98,11 @@ export default function RestaurantDetail() {
   const [rating, setRating] = useState(0); // 0~5점
   const [isActive, setIsActive] = useState(true);
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
-  const [showReportModal, setShowReportModal] = useState(true);
+  const [showReportModal, setShowReportModal] = useState(false);
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
+
+  const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
+  const [count, setCount] = useState<number>(0);
   return (
     <>
       {/* 헤더 */}
@@ -368,6 +371,14 @@ export default function RestaurantDetail() {
                   content={item.content}
                   tags={item.tags}
                   images={item.images}
+                  onVote={() => {
+                    if (!votedReviewIds.includes(item.id)) {
+                      setVotedReviewIds((prev) => [...prev, item.id]);
+                      setCount((prev) => prev + 1);
+                    }
+                  }}
+                  isVoted={votedReviewIds.includes(item.id)}
+                  onReport={() => setShowReportModal(true)}
                   onClick={() =>
                     setActiveOptionId((prev) =>
                       prev === item.id ? null : item.id

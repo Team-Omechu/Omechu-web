@@ -101,7 +101,7 @@ export default function RecommendedList() {
     <>
       {/* 상단 헤더 */}
       <Header
-        title={"기본 상태 입력"}
+        title={"추천 목록 관리"}
         leftChild={
           <button
             onClick={() => {

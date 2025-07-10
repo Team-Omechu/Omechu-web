@@ -17,7 +17,7 @@ export default function TermForService() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"서비스 이용약관"}
         leftChild={
           <button
             onClick={() => {

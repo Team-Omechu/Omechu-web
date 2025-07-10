@@ -11,6 +11,9 @@ type ReviewProps = {
   tags?: string[];
   images?: string[];
   onClick?: () => void;
+  onReport?: () => void;
+  onVote?: () => void;
+  isVoted: boolean;
   isOptionOpen?: boolean;
 };
 
@@ -25,6 +28,9 @@ export default function Review({
   tags,
   images,
   onClick,
+  onReport,
+  onVote,
+  isVoted,
   isOptionOpen = false,
 }: ReviewProps) {
   return (
@@ -50,9 +56,9 @@ export default function Review({
         </div>
         <div className="absolute flex items-center gap-1 mb-2 -top-1 -right-1">
           <span className="mt-1 text-sm ">{votes}</span>
-          <button className="mb-1">
+          <button onClick={onVote} className="mb-1">
             <Image
-              src="/thumbs-up-fill.png"
+              src={isVoted ? "/thumbs-up-fill.png" : "/thumbs-up.png"}
               alt="리뷰 추천 버튼"
               width={22}
               height={22}
@@ -69,7 +75,10 @@ export default function Review({
         </div>
         {isOptionOpen && (
           <div className="absolute p-2 bg-white border rounded shadow -right-1 top-6">
-            <button className="flex items-center justify-center w-full gap-2 text-left">
+            <button
+              onClick={onReport}
+              className="flex items-center justify-center w-full gap-2 text-left"
+            >
               <Image
                 src="/report.png"
                 alt={"신고하기"}
