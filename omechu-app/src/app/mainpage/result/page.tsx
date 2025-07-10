@@ -95,7 +95,7 @@ const [openMenuId, setOpenMenuId] = useState<number|null>(1);
           }}>선택하기</button>
       </div>
 
-      <div className="mt-5 bg-white p-3 rounded-md text-sm">
+      <div className="mt-5 bg-white p-3 rounded-md text-sm border border-black">
         {tags.map((tag, idx) => (
           <div key={idx} className="mb-1 text-black flex flex-col p-1">
             <span className="font-semibold text-[#A3A3A3] mb-1">{tag}</span>
@@ -107,9 +107,9 @@ const [openMenuId, setOpenMenuId] = useState<number|null>(1);
         <ModalWrapper>
           <AlertModal
             title="메뉴 추천을 중단하시겠어요?"
-            confirmText="제외하기"
             cancelText="취소"
-            onConfirm={() => {router.push("/"); setShowModal(false)}}
+            confirmText="제외하기"
+            onConfirm={() => {setShowModal(false)}}
             onClose={() => {setShowModal(false)}}
           />
         </ModalWrapper>
