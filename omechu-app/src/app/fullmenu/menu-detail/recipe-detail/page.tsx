@@ -13,18 +13,18 @@ export default function RecipeDetail() {
   return (
     <>
       <Header
-        title={""}
+        title={"기본 상태 입력"}
         leftChild={
           <button
             onClick={() => {
-              router.back();
+              router.push("./");
             }}
           >
             <Image
-              src={"/left_arrow.png"}
-              alt={"뒤로가기"}
-              width={10}
-              height={10}
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
             />
           </button>
         }

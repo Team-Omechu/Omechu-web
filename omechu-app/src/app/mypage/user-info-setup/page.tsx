@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
 
@@ -12,12 +13,19 @@ export default function UserInfoSetup() {
       <Header
         className={"border-[#CAC6BF]"}
         leftChild={
-          <button onClick={() => router.push("./user-info-edit")}>{"<"}</button>
+          <button onClick={() => router.push("./user-info-edit")}>
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
+          </button>
         }
       />{" "}
       <main className="flex flex-col items-center w-full px-4 overflow-y-scroll min-h-dvh scroll-smooth overscroll-none">
         <section className="flex flex-col gap-5 mt-32 mb-24 text-center">
-          <div className="text-2xl font-medium">기본 정보 입력하기</div>
+          <div className="text-base font-medium">기본 정보 입력하기</div>
           <span className="whitespace-pre font-normal text-[#828282] dark:text-[#fffcfc]">
             기본정보를 저장하여 {"\n"} 더 정교한 메뉴 추천을 받아보세요!
           </span>
