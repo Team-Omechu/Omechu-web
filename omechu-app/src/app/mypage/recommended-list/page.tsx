@@ -151,6 +151,9 @@ export default function RecommendedList() {
               imageUrl={item.imageUrl} // 또는 추후에 실제 경로로 대체될 값
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           ))}
         </section>
