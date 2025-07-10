@@ -5,21 +5,28 @@ import Image from "next/image";
 import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
 import TermsModal from "@/app/components/auth/TermsModal";
-import PrivacyModal from "@/app/components/auth/PrivacyModal";
-import LocationModal from "@/app/components/auth/LocationModal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, SignupFormValues } from "@/lib/schemas/auth.schema";
+import { termsForService } from "@/app/constant/terms/service";
+import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
 
+type Term = {
+  index: number | null;
+  about: string | null;
+  content: string;
+};
 export default function Signup() {
   // const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [isAllAgreed, setIsAllAgreed] = useState(false);
 
-  const [showTermsModal, setShowTermsModal] = useState(false);
-  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
-  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [modalContent, setModalContent] = useState<{
+    title: string;
+    terms: Term[];
+  } | null>(null);
 
   const {
     register,
@@ -56,6 +63,14 @@ export default function Signup() {
     setValue("termsPrivacy", checked, { shouldValidate: true });
     setValue("termsLocation", checked, { shouldValidate: true });
     setValue("termsAge", checked, { shouldValidate: true });
+  };
+
+  const showModal = (title: string, terms: Term[]) => {
+    setModalContent({ title, terms });
+  };
+
+  const closeModal = () => {
+    setModalContent(null);
   };
 
   const onSubmit = (data: SignupFormValues) => {
@@ -147,9 +162,9 @@ export default function Signup() {
                 id="all"
                 checked={isAllAgreed}
                 onChange={handleAllAgreement}
-                className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                className="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
               />
-              <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+              <span className="absolute inset-0 hidden items-center justify-center text-white peer-checked:flex">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-3.5 h-3.5"
@@ -168,7 +183,7 @@ export default function Signup() {
               아래의 내용을 모두 확인하였으며 모두 동의합니다
             </span>
           </label>
-          <div className="pl-7 space-y-2">
+          <div className="pl-7 space-y-3">
             <div className="flex items-center justify-between">
               <label
                 htmlFor="termsService"
@@ -179,9 +194,9 @@ export default function Signup() {
                     type="checkbox"
                     id="termsService"
                     {...register("termsService")}
-                    className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                    className="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                  <span className="absolute inset-0 hidden items-center justify-center text-white peer-checked:flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3.5 h-3.5"
@@ -200,7 +215,7 @@ export default function Signup() {
               </label>
               <button
                 type="button"
-                onClick={() => setShowTermsModal(true)}
+                onClick={() => showModal("서비스 이용약관", termsForService)}
                 className="text-sm text-gray-500"
               >
                 보기
@@ -222,9 +237,9 @@ export default function Signup() {
                     type="checkbox"
                     id="termsPrivacy"
                     {...register("termsPrivacy")}
-                    className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                    className="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                  <span className="absolute inset-0 hidden items-center justify-center text-white peer-checked:flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3.5 h-3.5"
@@ -245,7 +260,9 @@ export default function Signup() {
               </label>
               <button
                 type="button"
-                onClick={() => setShowPrivacyModal(true)}
+                onClick={() =>
+                  showModal("개인정보 처리방침", termsForPersonlInfo)
+                }
                 className="text-sm text-gray-500"
               >
                 보기
@@ -267,9 +284,9 @@ export default function Signup() {
                     type="checkbox"
                     id="termsLocation"
                     {...register("termsLocation")}
-                    className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                    className="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                  <span className="absolute inset-0 hidden items-center justify-center text-white peer-checked:flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3.5 h-3.5"
@@ -290,7 +307,9 @@ export default function Signup() {
               </label>
               <button
                 type="button"
-                onClick={() => setShowLocationModal(true)}
+                onClick={() =>
+                  showModal("위치 기반 서비스 이용약관", termsForLocationlInfo)
+                }
                 className="text-sm text-gray-500"
               >
                 보기
@@ -311,9 +330,9 @@ export default function Signup() {
                   type="checkbox"
                   id="termsAge"
                   {...register("termsAge")}
-                  className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                  className="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                 />
-                <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                <span className="absolute inset-0 hidden items-center justify-center text-white peer-checked:flex">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-3.5 h-3.5"
@@ -350,22 +369,12 @@ export default function Signup() {
         </div>
       </form>
 
-      {showTermsModal && (
+      {modalContent && (
         <TermsModal
-          onConfirm={() => setShowTermsModal(false)}
-          onClose={() => setShowTermsModal(false)}
-        />
-      )}
-      {showPrivacyModal && (
-        <PrivacyModal
-          onConfirm={() => setShowPrivacyModal(false)}
-          onClose={() => setShowPrivacyModal(false)}
-        />
-      )}
-      {showLocationModal && (
-        <LocationModal
-          onConfirm={() => setShowLocationModal(false)}
-          onClose={() => setShowLocationModal(false)}
+          title={modalContent.title}
+          terms={modalContent.terms}
+          onConfirm={closeModal}
+          onClose={closeModal}
         />
       )}
     </div>
