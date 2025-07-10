@@ -38,8 +38,8 @@ export default function MenuInfo() {
         <hr className="my-4 border-gray-200" />
 
         {/* 레시피 */}
-        <p className="font-medium mb-2 text-[#A3A3A3]">레시피</p>
-        <button className="text-sm text-blue-600 hover:underline">
+        <p className="font-medium mb-1 text-[#A3A3A3]">레시피</p>
+        <button className="text-sm text-[#393939] mb-3 border-b border-b-[#828282]">
           보러가기 &gt;
         </button>
       </div>
