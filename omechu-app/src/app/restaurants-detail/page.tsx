@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import Header from "../components/common/Header";
+import Review from "../components/restaurant/Review";
 
 const restaurant_time_table = [
   {
@@ -43,7 +44,7 @@ export default function RestaurantsDetial() {
 
   const [showAddress, setShowAddress] = useState(false);
   const [rating, setRating] = useState(0); // 0~5점
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   return (
     <>
@@ -67,7 +68,7 @@ export default function RestaurantsDetial() {
         }
       />
       {/* 메인 Container*/}
-      <main className="relative overflow-y-auto px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
+      <main className="relative overflow-y-auto px-4 pb-10  gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
         {/* 맛집 제목, 사진 */}
         <section className="flex flex-col items-center justify-between w-full gap-2 mt-3">
           <h1 className="text-2xl font-bold text-[#1F9BDA] text-center">
@@ -270,9 +271,14 @@ export default function RestaurantsDetial() {
 
           {/* 후기 카드 목록 */}
           <div className="flex flex-col w-full gap-3 mt-5">
-            <div className="flex justify-end gap-2 mr-2 text-sm font-normal">
+            {/* 후기 필터 버튼 */}
+            <div className="flex justify-end gap-2 mr-2 -mb-2 text-sm ">
               <button
-                className={isActive ? "text-[#393939]" : "text-[#828282]"}
+                className={
+                  isActive
+                    ? "text-[#393939] font-bold"
+                    : "text-[#828282] font-light"
+                }
                 onClick={() => {
                   setIsActive((prev) => !prev);
                 }}
@@ -281,7 +287,11 @@ export default function RestaurantsDetial() {
               </button>
               <span>|</span>
               <button
-                className={isActive ? "text-[#828282]" : "text-[#393939]"}
+                className={
+                  isActive
+                    ? "text-[#828282] font-light"
+                    : "text-[#393939] font-bold"
+                }
                 onClick={() => {
                   setIsActive((prev) => !prev);
                 }}
@@ -289,7 +299,16 @@ export default function RestaurantsDetial() {
                 최신 순
               </button>
             </div>
-            <div></div>
+
+            {/* 후기 목록 */}
+            <div className="flex flex-col gap-4">
+              <Review />
+              <Review />
+              <Review />
+              <Review />
+              <Review />
+              <Review />
+            </div>
           </div>
         </section>
       </main>
