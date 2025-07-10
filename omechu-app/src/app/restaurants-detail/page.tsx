@@ -43,6 +43,7 @@ export default function RestaurantsDetial() {
 
   const [showAddress, setShowAddress] = useState(false);
   const [rating, setRating] = useState(0); // 0~5점
+  const [isActive, setIsActive] = useState(false);
 
   return (
     <>
@@ -260,7 +261,7 @@ export default function RestaurantsDetial() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="px-4 py-1 bg-white border-[1px] w-fit rounded-3xl border-[#393939] text-sm font-nomal"
+                className="mt-1 px-4 py-1 bg-white border-[1px] w-fit rounded-3xl border-[#393939] text-sm font-nomal hover:scale-105 duration-300"
               >
                 {item}
               </div>
@@ -270,9 +271,23 @@ export default function RestaurantsDetial() {
           {/* 후기 카드 목록 */}
           <div className="flex flex-col w-full gap-3 mt-5">
             <div className="flex justify-end gap-2 mr-2 text-sm font-normal">
-              <button onClick={() => {}}>추천 순</button>
+              <button
+                className={isActive ? "text-[#393939]" : "text-[#828282]"}
+                onClick={() => {
+                  setIsActive((prev) => !prev);
+                }}
+              >
+                추천 순
+              </button>
               <span>|</span>
-              <button>최신 순</button>
+              <button
+                className={isActive ? "text-[#828282]" : "text-[#393939]"}
+                onClick={() => {
+                  setIsActive((prev) => !prev);
+                }}
+              >
+                최신 순
+              </button>
             </div>
             <div></div>
           </div>
