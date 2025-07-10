@@ -6,6 +6,9 @@ import { usePathname, useRouter } from "next/navigation";
 import Header from "../components/common/Header";
 import Review from "../components/restaurant/Review";
 import { useState } from "react";
+import ModalWrapper from "../components/common/ModalWrapper";
+import ReportModal from "../components/restaurant/ReportModal";
+import AlertModal from "../components/common/AlertModal";
 
 const restaurant_time_table = [
   {
@@ -96,6 +99,7 @@ export default function RestaurantDetail() {
   const [isActive, setIsActive] = useState(true);
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
   const [showReportModal, setShowReportModal] = useState(true);
+  const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
   return (
     <>
       <Header
@@ -371,7 +375,25 @@ export default function RestaurantDetail() {
         {showReportModal && (
           <>
             <ModalWrapper>
-              <ReportModal onClick={() => setShowReportModal(false)} />
+              <ReportModal
+                onClick={() => setShowReportModal(false)}
+                onReport={() => {
+                  setShowReportCompleteModal(true);
+                  setShowReportModal(false);
+                }}
+              />
+            </ModalWrapper>
+          </>
+        )}
+        {showReportCompleteModal && (
+          <>
+            <ModalWrapper>
+              <AlertModal
+                title="신고가 완료되었습니다"
+                description="운영팀이 빠르게 확인해 조치하겠습니다"
+                confirmText="확인"
+                onConfirm={() => setShowReportCompleteModal(false)}
+              />
             </ModalWrapper>
           </>
         )}

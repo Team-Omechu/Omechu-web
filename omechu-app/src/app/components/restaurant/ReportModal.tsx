@@ -3,9 +3,10 @@ import { useState } from "react";
 
 type ReportModalProps = {
   onClick: () => void;
+  onReport: () => void;
 };
 
-export default function ReportModal({ onClick }: ReportModalProps) {
+export default function ReportModal({ onClick, onReport }: ReportModalProps) {
   const [selectedReason, setSelectedReason] = useState("");
 
   const reasons = [
@@ -31,28 +32,33 @@ export default function ReportModal({ onClick }: ReportModalProps) {
       </div>
 
       {/* 모달 제목 */}
-      <div className="text-xl text-[#393939] font-medium">후기 신고하기</div>
+      <div className="mt-5 mb-2 text-2xl text-[#393939] font-semibold">
+        후기 신고하기
+      </div>
 
       {/* 신고 사유 */}
-      <div className="flex flex-col items-start w-full gap-2">
-        {reasons.map(({ id, label }) => (
-          <label
-            key={id}
-            htmlFor={id}
-            className="flex items-center gap-2 text-base text-[#393939]"
-          >
-            <input
-              id={id}
-              type="radio"
-              name="reportReason"
-              value={label}
-              checked={selectedReason === label}
-              onChange={() => setSelectedReason(label)}
-              className="accent-[#1F9BDA]"
-            />
-            {label}
-          </label>
-        ))}
+      <div className="w-full ">
+        <h1 className="mb-2">신고 사유를 선택해 주세요</h1>
+        <div className="flex flex-col items-start w-full gap-2 px-1">
+          {reasons.map(({ id, label }) => (
+            <label
+              key={id}
+              htmlFor={id}
+              className="flex items-center gap-2 text-sm text-[#626262]"
+            >
+              <input
+                id={id}
+                type="radio"
+                name="reportReason"
+                value={label}
+                checked={selectedReason === label}
+                onChange={() => setSelectedReason(label)}
+                className="accent-[#1F9BDA]"
+              />
+              {label}
+            </label>
+          ))}
+        </div>
       </div>
 
       {/* 신고 내용 */}
@@ -62,7 +68,10 @@ export default function ReportModal({ onClick }: ReportModalProps) {
       />
 
       {/* 신고 버튼 */}
-      <button className="w-36 h-10 rounded-3xl text-white bg-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938]">
+      <button
+        onClick={onReport}
+        className="w-36 h-10 rounded-3xl text-white bg-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+      >
         <span>신고하기</span>
       </button>
     </section>
