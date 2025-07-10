@@ -30,8 +30,8 @@ export default function LocationModal({
               className="flex items-center gap-2"
             >
               <span
-                className={`w-4 h-4 rounded-full border
-                  ${selected === d ? "bg-red-500 border-red-500" : "bg-white border-gray-300"}`}
+                className={`w-4 h-4 rounded-full border border-black
+                  ${selected === d ? "bg-red-500 " : "bg-white"}`}
               />
               <span className="text-black">{d}</span>
             </button>
