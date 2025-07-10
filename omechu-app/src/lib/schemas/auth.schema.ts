@@ -19,25 +19,23 @@ export const signupSchema = z
         "영문, 숫자, 특수문자를 모두 포함해야 합니다."
       ),
     passwordConfirm: z.string(),
-    termsAll: z.boolean(),
-    termsService: z.boolean().refine((val: boolean) => val === true, {
+    termsService: z.boolean().refine((val) => val === true, {
       message: "서비스 이용약관에 동의해주세요.",
     }),
-    termsPrivacy: z.boolean().refine((val: boolean) => val === true, {
+    termsPrivacy: z.boolean().refine((val) => val === true, {
       message: "개인정보 처리방침에 동의해주세요.",
     }),
-    termsAge: z.boolean().refine((val: boolean) => val === true, {
+    termsLocation: z.boolean().refine((val) => val === true, {
+      message: "위치기반 서비스 이용약관에 동의해주세요.",
+    }),
+    termsAge: z.boolean().refine((val) => val === true, {
       message: "만 14세 이상인지 확인해주세요.",
     }),
   })
-  .refine(
-    (data: { password?: string; passwordConfirm?: string }) =>
-      data.password === data.passwordConfirm,
-    {
-      message: "비밀번호가 일치하지 않습니다.",
-      path: ["passwordConfirm"],
-    }
-  );
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "비밀번호가 일치하지 않습니다.",
+    path: ["passwordConfirm"],
+  });
 
 // 비밀번호 찾기 폼 검증 스키마
 export const findPasswordSchema = z.object({
