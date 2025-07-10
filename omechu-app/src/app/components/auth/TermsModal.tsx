@@ -28,14 +28,14 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white w-[335px] rounded-2xl p-5 flex flex-col gap-4 shadow-lg max-h-[80vh]">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold">{title}</h2>
+          <h2 className="text-lg font-bold text-black">{title}</h2>
           <button onClick={onClose}>
             <Image src="/x_icon.png" alt="close" width={20} height={20} />
           </button>
         </div>
         <div
           ref={contentRef}
-          className="flex-grow p-3 overflow-y-auto border rounded-md bg-gray-50 scrollbar-hide"
+          className="flex-grow p-3 overflow-y-auto border rounded-md text-black bg-gray-50 scrollbar-hide"
         >
           {terms.map((item, key) => (
             <section
