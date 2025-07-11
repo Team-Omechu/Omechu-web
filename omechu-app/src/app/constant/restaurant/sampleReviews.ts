@@ -1,7 +1,9 @@
 // mockData
 export const sampleReviews = [
+  //  restaurantId: 1 (오레노 라멘)
   {
     id: 1,
+    restaurantId: 1,
     profileImgUrl: "/restaurant/avatar1.png",
     userId: "Alex",
     createdDate: "2025.05.05",
@@ -12,6 +14,7 @@ export const sampleReviews = [
   },
   {
     id: 2,
+    restaurantId: 1,
     profileImgUrl: "/restaurant/avatar2.png",
     userId: "Keren",
     createdDate: "2025.05.04",
@@ -22,6 +25,7 @@ export const sampleReviews = [
   },
   {
     id: 3,
+    restaurantId: 1,
     profileImgUrl: "/restaurant/avatar3.png",
     userId: "Jack",
     createdDate: "2025.04.03",
@@ -35,5 +39,40 @@ export const sampleReviews = [
       "/restaurant_blank.png",
       "/restaurant_blank.png",
     ],
+  },
+
+  // restaurantId: 2 (삼거리 포차)
+  {
+    id: 4,
+    restaurantId: 2,
+    profileImgUrl: "/restaurant/avatar1.png",
+    userId: "Mina",
+    createdDate: "2025.06.12",
+    votes: 7,
+    rating: 5,
+    content: "소주에 어울리는 안주 최고!",
+    tags: ["야식", "술안주", "분위기좋음"],
+  },
+  {
+    id: 5,
+    restaurantId: 2,
+    profileImgUrl: "/restaurant/avatar2.png",
+    userId: "Daniel",
+    createdDate: "2025.06.10",
+    votes: 1,
+    rating: 3,
+    content: "사람 너무 많아서 정신없어요",
+    tags: ["시끄러운", "회식"],
+  },
+  {
+    id: 6,
+    restaurantId: 2,
+    profileImgUrl: "/restaurant/avatar3.png",
+    userId: "Jiyoon",
+    createdDate: "2025.06.09",
+    votes: 4,
+    rating: 4,
+    content: "기대보단 무난했지만 재방문 의사 있음",
+    tags: ["친구모임", "저녁식사"],
   },
 ];
