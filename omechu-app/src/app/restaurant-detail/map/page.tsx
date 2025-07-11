@@ -37,7 +37,7 @@ export default function Map() {
         className="border-none"
         title={""}
         leftChild={
-          <button onClick={() => router.push("")}>
+          <button onClick={() => router.push(`/restaurant-detail?id=${id}`)}>
             <Image
               src={"/header_left_arrow.png"}
               alt="뒤로가기"
