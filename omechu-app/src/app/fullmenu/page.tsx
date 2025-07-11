@@ -56,6 +56,18 @@ export default function FullMenu() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [visibleCount, foodItems.length, isLoading]);
 
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isFilterOpen]);
+
   const handleSearchIconClick = () => {
     router.push(`/fullmenu?query=${search}`);
     setIsSearched(true);
