@@ -102,6 +102,7 @@ export default function RestaurantDetail() {
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
 
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
+  const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
 
   return (
     <>
@@ -152,7 +153,7 @@ export default function RestaurantDetail() {
           {/* 정보 - 메뉴 종류 */}
           <div className="flex items-center justify-start w-full gap-3">
             <Image
-              src="/food_menu.png"
+              src="/restaurant_menu.png"
               alt="맛집 메뉴"
               width={24}
               height={24}
@@ -162,7 +163,7 @@ export default function RestaurantDetail() {
             </span>
           </div>
           {/* 구분선 */}
-          <div className="bg-[#828282] w-full h-[1px] opacity-60"></div>
+          <div className="bg-[#3d2828] w-full h-[1px] opacity-60"></div>
           {/* 맛집 시간표 */}
           <div className="flex flex-row justify-start w-full gap-5">
             <div className="flex-shrink-0">
@@ -366,14 +367,30 @@ export default function RestaurantDetail() {
                   profileImgUrl={item.profileImgUrl}
                   userId={item.userId}
                   createdDate={item.createdDate}
-                  votes={item.votes}
+                  votes={localVotes[item.id] ?? item.votes}
                   rating={item.rating}
                   content={item.content}
                   tags={item.tags}
                   images={item.images}
                   onVote={() => {
-                    if (!votedReviewIds.includes(item.id)) {
+                    const hasVoted = votedReviewIds.includes(item.id);
+
+                    if (hasVoted) {
+                      // 좋아요 취소
+                      setVotedReviewIds((prev) =>
+                        prev.filter((id) => id !== item.id)
+                      );
+                      setLocalVotes((prev) => ({
+                        ...prev,
+                        [item.id]: (prev[item.id] ?? item.votes) - 1,
+                      }));
+                    } else {
+                      // 좋아요 누르기
                       setVotedReviewIds((prev) => [...prev, item.id]);
+                      setLocalVotes((prev) => ({
+                        ...prev,
+                        [item.id]: (prev[item.id] ?? item.votes) + 1,
+                      }));
                     }
                   }}
                   isVoted={votedReviewIds.includes(item.id)}
