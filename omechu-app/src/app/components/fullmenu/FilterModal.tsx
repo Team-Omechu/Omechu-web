@@ -33,7 +33,7 @@ export default function FilterModal({ onClose, onApply, selected }: FilterModalP
         <Header
                 title={"식사 상황 선택"}
                 rightChild={
-                    <button onClick={() => {router.back()}}>
+                    <button onClick={onClose}>
                         <Image
                             src={"/close_button.png"}
                             alt={"닫기"}
