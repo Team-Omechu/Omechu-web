@@ -31,16 +31,44 @@ export default function RestaurantDetail() {
     (review) => review.restaurantId === restaurant?.id
   );
   const summary = reviewSummary[restaurant?.id ?? 0];
+  const parseDate = (dateStr: string) => new Date(dateStr.replace(/\./g, "-"));
 
   const [showAddress, setShowAddress] = useState(false);
   const [rating, setRating] = useState(0); // 0~5점
-  const [isActive, setIsActive] = useState(true);
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
 
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
+  // 상태 정의
+  const [sortType, setSortType] = useState<"recommend" | "latest">("recommend");
+
+  const sortedReviews = [...filteredReviews].sort((a, b) => {
+    if (sortType === "recommend") {
+      const aVotes = localVotes[a.id] ?? a.votes;
+      const bVotes = localVotes[b.id] ?? b.votes;
+      return bVotes - aVotes;
+    } else {
+      return (
+        parseDate(b.createdDate).getTime() - parseDate(a.createdDate).getTime()
+      );
+    }
+  });
+
+  // 디버그용 콘솔.로그
+  console.log("id:", id);
+  console.log("restaurant:", restaurant);
+  console.log("filteredReviews:", filteredReviews);
+  console.log("summary:", summary);
+  sortedReviews.forEach((review) => {
+    console.log({
+      id: review.id,
+      votes: localVotes[review.id] ?? review.votes,
+      createdDate: review.createdDate,
+      parsed: parseDate(review.createdDate).getTime(),
+    });
+  });
 
   return (
     <>
@@ -264,29 +292,25 @@ export default function RestaurantDetail() {
           {/* 후기 카드 목록 */}
           <div className="flex flex-col w-full gap-3 mt-5">
             {/* 후기 필터 버튼 */}
-            <div className="flex justify-end gap-2 mr-2 -mb-2 text-sm ">
+            <div className="flex justify-end gap-2 mr-2 -mb-2 text-sm">
               <button
                 className={
-                  isActive
+                  sortType === "recommend"
                     ? "text-[#393939] font-bold"
                     : "text-[#828282] font-light"
                 }
-                onClick={() => {
-                  setIsActive((prev) => !prev);
-                }}
+                onClick={() => setSortType("recommend")}
               >
                 추천 순
               </button>
               <span>|</span>
               <button
                 className={
-                  isActive
-                    ? "text-[#828282] font-light"
-                    : "text-[#393939] font-bold"
+                  sortType === "latest"
+                    ? "text-[#393939] font-bold"
+                    : "text-[#828282] font-light"
                 }
-                onClick={() => {
-                  setIsActive((prev) => !prev);
-                }}
+                onClick={() => setSortType("latest")}
               >
                 최신 순
               </button>
@@ -294,10 +318,10 @@ export default function RestaurantDetail() {
 
             {/* 후기 목록 */}
             <div className="flex flex-col gap-4">
-              {filteredReviews.map((item, index) => (
+              {sortedReviews.map((item, index) => (
                 <Review
-                  id={item.id}
                   key={index}
+                  id={item.id}
                   profileImgUrl={item.profileImgUrl}
                   userId={item.userId}
                   createdDate={item.createdDate}
@@ -308,9 +332,7 @@ export default function RestaurantDetail() {
                   images={item.images}
                   onVote={() => {
                     const hasVoted = votedReviewIds.includes(item.id);
-
                     if (hasVoted) {
-                      // 좋아요 취소
                       setVotedReviewIds((prev) =>
                         prev.filter((id) => id !== item.id)
                       );
@@ -319,7 +341,6 @@ export default function RestaurantDetail() {
                         [item.id]: (prev[item.id] ?? item.votes) - 1,
                       }));
                     } else {
-                      // 좋아요 누르기
                       setVotedReviewIds((prev) => [...prev, item.id]);
                       setLocalVotes((prev) => ({
                         ...prev,
