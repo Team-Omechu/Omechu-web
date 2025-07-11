@@ -4,11 +4,11 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-import Header from "../components/common/Header";
-import Review from "../components/restaurant/Review";
-import ModalWrapper from "../components/common/ModalWrapper";
-import ReportModal from "../components/restaurant/ReportModal";
-import AlertModal from "../components/common/AlertModal";
+import Header from "@/app/components/common/Header";
+import Review from "@/app/components/restaurant/Review";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ReportModal from "@/app/components/restaurant/ReportModal";
+import AlertModal from "@/app/components/common/AlertModal";
 
 const restaurant_time_table = [
   {
