@@ -117,11 +117,11 @@ export default function FilterModal({ onClose, onApply, selected }: FilterModalP
                 </div>
 
                 <div className="text-base pl-2 mt-4 mb-2 text-gray-600">{tempSelected.length}/5</div>
-                <div className="flex flex-wrap gap-2 mt-2 pb-6 justify-center border-b border-gray-600">
+                <div className="flex flex-wrap gap-2 mt-2 pb-6 justify-start border-b border-gray-600 min-h-28">
                     {tempSelected.map((town) => (
                     <span
                         key={town}
-                        className="bg-gray-400 text-white text-xs rounded-full px-2 py-1 flex items-center gap-1"
+                        className="bg-gray-400 text-white text-xs rounded-full px-2 py-1 h-6 flex items-center gap-1"
                     >
                         {town}
                         <button onClick={() => setTempSelected(tempSelected.filter((t) => t !== town))}>✕</button>
