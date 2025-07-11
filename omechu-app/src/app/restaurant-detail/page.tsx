@@ -21,35 +21,60 @@ import {
 } from "@/app/constant/restaurant/reviewSummary";
 
 export default function RestaurantDetail() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const pathname = usePathname(); // 현재 페이지 경로 가져오기 (예: /restaurant/detail)
+  const router = useRouter(); // 페이지 이동을 위한 라우터 훅
+  const searchParams = useSearchParams(); // URL 쿼리스트링 접근 (예: ?id=1)
 
+  // URL에서 id 파라미터를 숫자로 파싱 (예: id=1 → 숫자 1로 변환)
   const id = Number(searchParams.get("id"));
+
+  // id에 해당하는 맛집 정보 찾기
   const restaurant = restaurantList.find((item) => item.id === id);
+
+  // 해당 맛집의 후기(review)만 필터링
   const filteredReviews = sampleReviews.filter(
     (review) => review.restaurantId === restaurant?.id
   );
+
+  // 해당 맛집의 평점 요약 정보 가져오기 (없으면 id 0을 fallback으로 사용)
   const summary = reviewSummary[restaurant?.id ?? 0];
+
+  // 날짜 문자열(2025.05.05)을 Date 객체로 변환하는 함수
   const parseDate = (dateStr: string) => new Date(dateStr.replace(/\./g, "-"));
 
+  // 상세주소 토글 여부를 저장하는 상태값
   const [showAddress, setShowAddress] = useState(false);
+
+  // 사용자가 클릭한 별점 저장 (후기 작성용)
   const [rating, setRating] = useState(0); // 0~5점
+
+  // 현재 옵션 메뉴가 열려있는 후기의 ID (없으면 null)
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
+
+  // 신고 모달 상태값
   const [showReportModal, setShowReportModal] = useState(false);
+
+  // 신고 완료 모달 상태값
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
 
+  // 사용자가 추천(좋아요) 버튼을 누른 후기 ID 목록
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
+
+  // 로컬 상태에서 추천 수를 따로 관리하는 객체 (key: 리뷰 id, value: 추천 수)
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
-  // 상태 정의
+
+  // 후기 정렬 기준 상태값 (기본: 추천순)
   const [sortType, setSortType] = useState<"recommend" | "latest">("recommend");
 
+  // 정렬된 후기 리스트 계산 (정렬 기준에 따라 다르게 정렬됨)
   const sortedReviews = [...filteredReviews].sort((a, b) => {
     if (sortType === "recommend") {
+      // 추천순: localVotes가 있으면 우선 적용, 없으면 기본 votes 사용
       const aVotes = localVotes[a.id] ?? a.votes;
       const bVotes = localVotes[b.id] ?? b.votes;
-      return bVotes - aVotes;
+      return bVotes - aVotes; // 내림차순 정렬 (추천 수 많은 게 앞으로)
     } else {
+      // 최신순: 날짜를 비교하여 최근 날짜가 먼저 오도록 정렬
       return (
         parseDate(b.createdDate).getTime() - parseDate(a.createdDate).getTime()
       );
