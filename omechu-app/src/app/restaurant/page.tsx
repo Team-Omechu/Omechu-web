@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "@/app/components/common/SearchBar";
 import Image from "next/image";
 import { suggestionList } from "@/app/constant/suggestionList";
 import TagItem from "@/app/components/common/Tag";
 import { foodItems } from "@/app/constant/restautantFoodList"; // 음식 데이터
-import FilterModal from "@/app/components/fullmenu/FilterModal"; // 임시
+import LocationModal from "@/app/components/restaurant/LocationModal";
 import { distance } from "fastest-levenshtein";
 
 export default function Restaurant() {
@@ -50,6 +50,18 @@ export default function Restaurant() {
         console.log("검색어:", search);
     };
 
+    useEffect(() => {
+        if (isFilterOpen) {
+        document.body.style.overflow = 'hidden';
+        } else {
+        document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+        document.body.style.overflow = 'auto';
+        };
+    }, [isFilterOpen]);
+
     return (
         <div className="min-h-screen px-4 pt-6 pb-20">
             <SearchBar
@@ -60,27 +72,30 @@ export default function Restaurant() {
                 suggestionList={suggestionList}
             />
 
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-                <button className="flex justify-between items-center gap-1 mr-auto">
+            <div className="flex items-center gap-2 mt-3">
+                <button className="flex justify-between items-center gap-1 flex-shrink-0">
                     <img src={'/myLocation.svg'} alt="내 위치" className="w-4 h-4"/>
                     내 위치
                 </button>
-                {selectedFilters.map((tag, idx) => (
+                <div className="flex overflow-x-auto whitespace-nowrap gap-2 mx-2 scrollbar-hide">
+                    {selectedFilters.map((tag, idx) => (
                     <TagItem
                         key={idx}
                         label={tag}
                         onRemove={() =>
-                            setSelectedFilters((prev) => prev.filter((item) => item !== tag))
+                        setSelectedFilters((prev) => prev.filter((item) => item !== tag))
                         }
+                        className="px-2"
                     />
-                ))}
-                <button className="ml-auto" onClick={() => setIsFilterOpen(true)}>
+                    ))}
+                </div>
+                <button className="flex-shrink-0 ml-auto" onClick={() => setIsFilterOpen(true)}>
                     <img src={'/customselect.png'} alt="사용자필터" className="w-8 h-8"/>
                 </button>
             </div>
     
             {isFilterOpen && (
-                <FilterModal
+                <LocationModal
                 selected={selectedFilters}
                 onClose={() => setIsFilterOpen(false)}
                 onApply={(newFilters) => setSelectedFilters(newFilters)}
@@ -90,7 +105,10 @@ export default function Restaurant() {
             <hr className="my-1 border-black" />
     
             <div className="flex justify-between items-center mt-2 mb-2 text-xs">
-                <button className="bg-[#3FA2FF] text-white px-7 py-2 rounded-full">
+                <button 
+                    className="bg-[#3FA2FF] text-white px-7 py-2 rounded-full"
+                    onClick={() => router.push('')}
+                >
                     + 등록하기
                 </button>
                 <div className="flex justify-end items-center gap-2 text-sm">
