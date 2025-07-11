@@ -1,12 +1,14 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "../components/common/Bottom";
 import SearchBar from "../components/common/SearchBar";
 import FoodBox from "../components/common/FoodBox";
 import FilterModal from "../components/fullmenu/FilterModal";
 import TagItem from "../components/common/Tag";
+import { suggestionList } from "../constant/suggestionList";
 
 export default function FullMenu() {
   const router = useRouter();
@@ -54,10 +56,6 @@ export default function FullMenu() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [visibleCount, foodItems.length, isLoading]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
   const handleSearchIconClick = () => {
     router.push(`/fullmenu?query=${search}`);
     setIsSearched(true);
@@ -67,10 +65,11 @@ export default function FullMenu() {
     <>
       <main className="min-h-screen p-4">
         <SearchBar 
-          value={search}
-          onChange={handleChange}
-          onClickIcon={handleSearchIconClick}
           placeholder="음식명을 검색하세요"
+          inputValue={search}
+          setInputValue={setSearch}
+          onSearch={handleSearchIconClick}
+          suggestionList={suggestionList}
         />
 
         <div className="flex flex-wrap gap-2 mt-3">
