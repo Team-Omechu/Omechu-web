@@ -5,19 +5,23 @@ type FoodItem = {
   isExcluded: boolean;
   imageUrl?: string | null;
 };
-
+// 라이브러리
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
+
+// 공용 컴포넌트
+import Header from "@/app/components/common/Header";
+import FoodBox from "@/app/components/common/FoodBox";
+import SearchBar from "@/app/components/common/SearchBar";
+
+//상수 파일
 import {
   filteredChoSeong,
   consonantGroupMap,
   HANGUL_CHO_SEONG,
 } from "@/app/constant/choSeong";
 import { initialFoodList } from "@/app/constant/initialFoodList";
-
-import Header from "@/app/components/common/Header";
-import Image from "next/image";
-import FoodBox from "@/app/components/common/FoodBox";
 
 export default function RecommendedList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -105,25 +109,15 @@ export default function RecommendedList() {
         </section>
 
         {/* 검색 창 */}
-        <section className="relative">
-          <input
-            type="text"
-            placeholder="음식명을 검색하세요."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="px-6 flex items-center bg-white w-[340px] h-10 border-2 border-black rounded-3xl"
-          />
-
-          <Image
-            onClick={() => {}}
-            className="absolute z-10 top-1.5 right-4 cursor-pointer"
-            src={"/search.png"}
-            alt="검색"
-            width={25}
-            height={25}
-          />
-        </section>
+        <SearchBar
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onClickIcon={() => {
+            setSearchTerm;
+          }}
+          placeholder="음식명을 검색하세요."
+        />
 
         {/* 인덱스  */}
         <section>
