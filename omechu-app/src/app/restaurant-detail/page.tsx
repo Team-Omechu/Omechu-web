@@ -182,7 +182,7 @@ export default function RestaurantDetail() {
           {/* 구분선 */}
           <div className="bg-[#828282] w-full h-[1px] opacity-60"></div>
           {/* 주소 */}
-          <div className="flex flex-1 gap-3">
+          <div className="flex flex-1 w-full gap-3">
             <div className="flex-shrink-0">
               <Image
                 className="flex-shrink-0 mb-2"
@@ -193,7 +193,7 @@ export default function RestaurantDetail() {
               />
             </div>
             <div className="relative flex flex-col w-full gap-3 mt-1">
-              <div className="flex items-start gap-1">
+              <div className="flex items-start w-full gap-1">
                 <span className="text-sm font-bold text-[#393939] w-14 flex-shrink-0 ">
                   도로명
                 </span>
@@ -203,18 +203,18 @@ export default function RestaurantDetail() {
               </div>
               {showAddress && (
                 <>
-                  <div className="flex items-start gap-1">
+                  <div className="flex items-start w-full gap-1">
                     <span className="text-sm font-bold text-[#393939] w-14 flex-shrink-0 ">
                       지번
                     </span>
-                    <span className="text-sm  font-normal text-[#828282] whitespace-pre-wrap">
-                      서울 성동구 성수동 123-1 1층
+                    <span className="text-sm font-normal text-[#828282] whitespace-pre-wrap">
+                      {restaurant?.address.jibun}
                     </span>
                   </div>
 
-                  <div className="flex items-start gap-1">
-                    <span className="text-sm font-normal text-[#828282] whitespace-pre-wrap">
-                      {restaurant?.address.jibun}
+                  <div className="flex items-start w-full gap-1">
+                    <span className="text-sm font-bold text-[#393939] w-14 flex-shrink-0 ">
+                      우편번호
                     </span>
                     <span className="text-sm font-normal text-[#828282] whitespace-pre-wrap">
                       {restaurant?.address.postalCode}

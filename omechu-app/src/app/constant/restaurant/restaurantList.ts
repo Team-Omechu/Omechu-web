@@ -2,7 +2,7 @@
 export const restaurantList = [
   {
     id: 1,
-    name: "오레노 라멘 합정 본점",
+    name: "오레노 라멘 합정 본점 ♥︎",
     category: "라멘",
     images: [
       "/restaurant_blank.png",
@@ -26,22 +26,26 @@ export const restaurantList = [
   },
   {
     id: 2,
-    name: "삼거리 포차 성수점",
-    category: "포장마차",
-    images: ["/restaurant_blank.png", "/restaurant_blank.png"],
+    name: "더모닝 브런치 성수점",
+    category: "브런치",
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
-      road: "서울 성동구 성수일로 123",
-      jibun: "서울 성동구 성수동2가 321-4",
-      postalCode: "06789",
+      road: "서울 성동구 연무장5길 12",
+      jibun: "서울 성동구 성수동2가 333-7",
+      postalCode: "04567",
     },
     timetable: [
-      { days_of_the_week: "월", time: "17:00 - 02:00" },
-      { days_of_the_week: "화", time: "17:00 - 02:00" },
-      { days_of_the_week: "수", time: "17:00 - 02:00" },
-      { days_of_the_week: "목", time: "17:00 - 02:00" },
-      { days_of_the_week: "금", time: "17:00 - 03:00" },
-      { days_of_the_week: "토", time: "17:00 - 03:00" },
-      { days_of_the_week: "일", time: "휴일" },
+      { days_of_the_week: "월", time: "08:00 - 15:00" },
+      { days_of_the_week: "화", time: "08:00 - 15:00" },
+      { days_of_the_week: "수", time: "08:00 - 15:00" },
+      { days_of_the_week: "목", time: "08:00 - 15:00" },
+      { days_of_the_week: "금", time: "08:00 - 15:00" },
+      { days_of_the_week: "토", time: "09:00 - 16:00" },
+      { days_of_the_week: "일", time: "09:00 - 16:00" },
     ],
   },
 ];
