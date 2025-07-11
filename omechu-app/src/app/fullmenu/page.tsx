@@ -92,6 +92,7 @@ export default function FullMenu() {
                     onRemove={() =>
                       setSelectedFilters((prev) => prev.filter((item) => item !== tag))
                     }
+                    className="px-6"
                 />
             ))}
             <button className="ml-auto" onClick={() => setIsFilterOpen(true)}>
