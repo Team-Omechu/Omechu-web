@@ -1,50 +1,36 @@
 "use client";
-
-import { sampleReviews } from "@/app/constant/restaurant/sampleReviews";
-
+// 라이브러리
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
+// 컴포넌트 목록
 import Header from "@/app/components/common/Header";
 import Review from "@/app/components/restaurant/Review";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ReportModal from "@/app/components/restaurant/ReportModal";
 import AlertModal from "@/app/components/common/AlertModal";
 
-const restaurant_time_table = [
-  {
-    days_of_the_week: "월",
-    time: "휴일",
-  },
-  {
-    days_of_the_week: "화",
-    time: "11:00 - 19:00",
-  },
-  {
-    days_of_the_week: "수",
-    time: "11:00 - 19:00",
-  },
-  {
-    days_of_the_week: "목",
-    time: "11:00 - 19:00",
-  },
-  {
-    days_of_the_week: "금",
-    time: "11:00 - 19:00",
-  },
-  {
-    days_of_the_week: "토",
-    time: "11:00 - 19:00",
-  },
-  {
-    days_of_the_week: "일",
-    time: "11:00 - 19:00",
-  },
-];
+//샘플 데이터(일단 상수파일로 관리)
+import { restaurantList } from "@/app/constant/restaurant/restaurantList";
+import { sampleReviews } from "@/app/constant/restaurant/sampleReviews";
+import {
+  reviewSummary,
+  reviewTags,
+} from "@/app/constant/restaurant/reviewSummary";
 
 export default function RestaurantDetail() {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const id = Number(searchParams.get("id"));
+  const restaurant = restaurantList.find((item) => item.id === id);
+  const filteredReviews = sampleReviews.filter(
+    (review) => review.restaurantId === restaurant?.id
+  );
+  const summary = reviewSummary[restaurant?.id ?? 0];
 
   const [showAddress, setShowAddress] = useState(false);
   const [rating, setRating] = useState(0); // 0~5점
@@ -75,13 +61,13 @@ export default function RestaurantDetail() {
         {/* 맛집 제목, 사진 */}
         <section className="flex flex-col items-center justify-between w-full gap-2 mt-3">
           <h1 className="text-2xl font-bold text-[#1F9BDA] text-center">
-            오레노 라멘 합정 본점 ❤️
+            {restaurant?.name}
           </h1>
           <div className="flex w-full gap-3 px-4 py-2 overflow-x-auto">
-            {[...Array(4)].map((_, idx) => (
+            {restaurant?.images?.map((url, idx) => (
               <Image
                 key={idx}
-                src="/restaurant_blank.png"
+                src={url}
                 alt={`맛집 사진 ${idx + 1}`}
                 width={180}
                 height={180}
@@ -104,7 +90,7 @@ export default function RestaurantDetail() {
               height={24}
             />
             <span className="mt-1 text-lg font-bold text-[#1F9BDA] text-center">
-              라멘
+              {restaurant?.category}
             </span>
           </div>
           {/* 구분선 */}
@@ -121,7 +107,7 @@ export default function RestaurantDetail() {
               />
             </div>
             <div>
-              {restaurant_time_table.map((item, index) => (
+              {restaurant?.timetable.map((item, index) => (
                 <div key={index} className="flex items-center gap-5">
                   <h1 className="text-lg font-normal text-[#393939] text-center">
                     {item.days_of_the_week}
@@ -151,8 +137,8 @@ export default function RestaurantDetail() {
                 <span className="text-sm font-bold text-[#393939] w-14 flex-shrink-0 ">
                   도로명
                 </span>
-                <span className="text-sm  font-normal text-[#828282] whitespace-pre-wrap">
-                  서울 성동구 왕십리로 36 104호
+                <span className="text-sm font-normal text-[#828282] whitespace-pre-wrap">
+                  {restaurant?.address.road}
                 </span>
               </div>
               {showAddress && (
@@ -167,11 +153,11 @@ export default function RestaurantDetail() {
                   </div>
 
                   <div className="flex items-start gap-1">
-                    <span className="text-sm font-bold text-[#393939] w-14 flex-shrink-0 ">
-                      우편번호
+                    <span className="text-sm font-normal text-[#828282] whitespace-pre-wrap">
+                      {restaurant?.address.jibun}
                     </span>
-                    <span className="text-sm  font-normal text-[#828282] whitespace-pre-wrap">
-                      12345
+                    <span className="text-sm font-normal text-[#828282] whitespace-pre-wrap">
+                      {restaurant?.address.postalCode}
                     </span>
                   </div>
                 </>
@@ -194,7 +180,9 @@ export default function RestaurantDetail() {
           </div>
           <div className="flex justify-end w-full">
             <button
-              onClick={() => router.push(`${pathname}/map?id=1`)}
+              onClick={() =>
+                router.push(`${pathname}/map?id=${restaurant?.id}`)
+              }
               className="flex flex-col justify-center items-center w-16 h-6 bg-[#1F9BDA] rounded-3xl"
             >
               <span className="mt-1 text-sm font-normal text-white">
@@ -236,33 +224,27 @@ export default function RestaurantDetail() {
         <section className="flex flex-col w-full gap-2">
           <div className="flex justify-between px-2 py-2">
             {/* 후기 평점 - 후기 개수 */}
-            <div className="flex gap-2 text-[#1F9BDA] text-xl font-medium">
-              <span>3.2</span>
-              <span>★★★☆☆</span>
-            </div>
-            <div className="flex gap-1 text-[#828282] text-base font-medium">
-              <span>후기</span>
-              <span className="font-bold">24</span>
-              <span>건</span>
-            </div>
+            {summary && (
+              <div className="flex w-full px-2 py-2 jubefore:stify-between">
+                <div className="flex gap-2 text-[#1F9BDA] text-xl font-medium">
+                  <span>{summary.averageRating.toFixed(1)}</span>
+                  <span>
+                    {"★".repeat(Math.round(summary.averageRating)) +
+                      "☆".repeat(5 - Math.round(summary.averageRating))}
+                  </span>
+                </div>
+                <div className="flex gap-1 text-[#828282] text-base font-medium">
+                  <span>후기</span>
+                  <span className="font-bold">{summary.reviewCount}</span>
+                  <span>건</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 후기 관련 태그 */}
           <div className="flex flex-wrap justify-center gap-1 px-4">
-            {[
-              "저녁식사(16)",
-              "혼밥(12)",
-              "조용한(9)",
-              "저녁식사(16)",
-              "혼밥(12)",
-              "조용한(9)",
-              "혼밥(12)",
-              "조용한(9)",
-              "저녁식사(16)",
-              "혼밥(12)",
-              "혼밥(12)",
-              "조용한(9)",
-            ].map((item, index) => (
+            {(reviewTags[restaurant?.id ?? 0] || []).map((item, index) => (
               <div
                 key={index}
                 className="mt-1 px-4 py-1 bg-white border-[1px] w-fit rounded-3xl border-[#393939] text-sm font-nomal hover:scale-105 duration-300"
@@ -305,7 +287,7 @@ export default function RestaurantDetail() {
 
             {/* 후기 목록 */}
             <div className="flex flex-col gap-4">
-              {sampleReviews.map((item, index) => (
+              {filteredReviews.map((item, index) => (
                 <Review
                   id={item.id}
                   key={index}
