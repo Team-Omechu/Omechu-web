@@ -1,13 +1,13 @@
 // mockData
 export const sampleReviews = [
-  //  restaurantId: 1 (오레노 라멘)
+  // restaurantId: 1 (오레노 라멘)
   {
     id: 1,
     restaurantId: 1,
     profileImgUrl: "/restaurant/avatar1.png",
     userId: "Alex",
     createdDate: "2025.05.05",
-    votes: 5,
+    votes: 20,
     rating: 5,
     content: "이거 먹으려고 부산에서 왔어요",
     tags: ["저녁식사", "혼밥", "고급스러운", "가격대 있음"],
@@ -18,7 +18,7 @@ export const sampleReviews = [
     profileImgUrl: "/restaurant/avatar2.png",
     userId: "Keren",
     createdDate: "2025.05.04",
-    votes: 2,
+    votes: 32,
     rating: 4,
     content: "맛있어요",
     tags: ["점심식사", "데이트"],
@@ -28,7 +28,7 @@ export const sampleReviews = [
     restaurantId: 1,
     profileImgUrl: "/restaurant/avatar3.png",
     userId: "Jack",
-    createdDate: "2025.04.03",
+    createdDate: "2025.06.03",
     votes: 2,
     rating: 4,
     content: "먹을만 해요",
@@ -58,8 +58,8 @@ export const sampleReviews = [
     restaurantId: 2,
     profileImgUrl: "/restaurant/avatar2.png",
     userId: "Daniel",
-    createdDate: "2025.06.10",
-    votes: 1,
+    createdDate: "2025.06.15",
+    votes: 11,
     rating: 3,
     content: "사람 너무 많아서 정신없어요",
     tags: ["시끄러운", "회식"],
@@ -70,7 +70,7 @@ export const sampleReviews = [
     profileImgUrl: "/restaurant/avatar3.png",
     userId: "Jiyoon",
     createdDate: "2025.06.09",
-    votes: 4,
+    votes: 42,
     rating: 4,
     content: "기대보단 무난했지만 재방문 의사 있음",
     tags: ["친구모임", "저녁식사"],
