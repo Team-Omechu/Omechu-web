@@ -27,7 +27,7 @@ export default function Map() {
   }
 
   // 맛집 이름으로 이미지 경로 구성 (공백 제거 등 처리)
-  const sanitizedName = restaurant.name.replace(/\s+/g, "");
+  // const sanitizedName = restaurant.name.replace(/\s+/g, "");
   const mapImagePath = "/restaurant/오레노라멘합정.png";
 
   return (
@@ -37,7 +37,7 @@ export default function Map() {
         className="border-none"
         title={""}
         leftChild={
-          <button onClick={() => router.push("../")}>
+          <button onClick={() => router.push("")}>
             <Image
               src={"/header_left_arrow.png"}
               alt="뒤로가기"
