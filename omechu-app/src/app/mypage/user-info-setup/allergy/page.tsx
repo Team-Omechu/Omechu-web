@@ -80,13 +80,9 @@ export default function SetupAllergy() {
           onClick={() => {
             setShowSaveModal(true);
           }}
-          className="p-2 min-w-full h-12 rounded-t-md 
-            text-white text-xl font-normal
-            bg-[#1F9BDA] dark:bg-[#1774a4]
-            hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
-            active:bg-[#197cae] dark:active:bg-[#0e4662]"
+          className="h-12 min-w-full p-2 text-xl font-normal text-white rounded-t-md  bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
         >
-          저장
+          제출하기
         </button>
       </footer>
 
