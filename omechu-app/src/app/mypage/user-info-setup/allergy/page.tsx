@@ -1,16 +1,16 @@
-// "use client";
+"use client";
 
-// import { useRouter } from "next/navigation";
-// import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-// import ProgressBar from "@/app/components/common/ProgressBar";
-// import ModalWrapper from "@/app/components/common/ModalWrapper";
-// import AlertModal from "@/app/components/common/AlertModal";
+import ProgressBar from "@/app/components/common/ProgressBar";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import AlertModal from "@/app/components/common/AlertModal";
 
-// export default function SetupAllergy() {
-//   const router = useRouter();
-//   const [showModal, setShowModal] = useState(false);
-//   const [showSaveModal, setShowSaveModal] = useState(false);
+export default function SetupAllergy() {
+  const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
 
   return (
     <div className="flex flex-col w-auto h-screen">
