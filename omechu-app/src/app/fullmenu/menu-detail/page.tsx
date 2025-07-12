@@ -3,8 +3,16 @@
 import Header from "@/app/components/common/Header";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function MenuDetail() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <MenuDetailClient />
+    </Suspense>
+  );
+}
+function MenuDetailClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -19,18 +27,18 @@ export default function MenuDetail() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={""}
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.push("/fullmenu");
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
-              alt={"changeProfileImage"}
-              width={22}
-              height={30}
+              src={"/left_arrow.png"}
+              alt={"뒤로가기"}
+              width={10}
+              height={10}
             />
           </button>
         }
@@ -41,20 +49,22 @@ export default function MenuDetail() {
           {name}
         </h1>
 
-        <div className="flex justify-center mx-auto mb-6 w-36 h-36">
-          <img
+        <div className="flex justify-center mb-6 mx-auto w-36 h-36">
+          <Image
             src="/오메추-로고-보라색버전-모자4 1.png"
-            alt={`${name}`}
+            alt={`${name || "메뉴 이미지"}`}
             className="object-contain rounded"
+            width={144}
+            height={144}
           />
         </div>
 
         <section className="px-4">
-          <h2 className="mb-2 text-base font-semibold">메뉴 정보</h2>
+          <h2 className="text-base font-semibold mb-2">메뉴 정보</h2>
 
           <div className="border border-gray-400 rounded-md p-4 bg-white text-[13px] leading-6">
-            <p className="mb-1 font-semibold">기본 영양 정보</p>
-            <div className="grid grid-cols-2 px-2 gap-y-1">
+            <p className="font-semibold mb-1">기본 영양 정보</p>
+            <div className="px-2 grid grid-cols-2 gap-y-1">
               <span>칼로리</span>
               <span className="text-right">950 kcal</span>
               <span>탄수화물</span>
