@@ -22,7 +22,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emnapi/runtime@npm:^1.4.3":
+"@emnapi/runtime@npm:^1.4.3, @emnapi/runtime@npm:^1.4.4":
   version: 1.4.4
   resolution: "@emnapi/runtime@npm:1.4.4"
   dependencies:
@@ -824,6 +824,7 @@ __metadata:
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
+
 "@unrs/resolver-binding-android-arm64@npm:1.11.0":
   version: 1.11.0
   resolution: "@unrs/resolver-binding-android-arm64@npm:1.11.0"
@@ -886,6 +887,7 @@ __metadata:
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
+
 "@unrs/resolver-binding-linux-riscv64-gnu@npm:1.11.0":
   version: 1.11.0
   resolution: "@unrs/resolver-binding-linux-riscv64-gnu@npm:1.11.0"
@@ -906,7 +908,7 @@ __metadata:
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
-  
+
 "@unrs/resolver-binding-linux-x64-gnu@npm:1.11.0":
   version: 1.11.0
   resolution: "@unrs/resolver-binding-linux-x64-gnu@npm:1.11.0"
@@ -4963,7 +4965,6 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
-
   languageName: node
   linkType: hard
 
