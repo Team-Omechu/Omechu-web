@@ -17,14 +17,19 @@ export default function TermForLocationInfo() {
   return (
     <>
       <Header
-        title={"개인정보 처리 방침"}
+        title={"기본 상태 입력"}
         leftChild={
           <button
             onClick={() => {
-              router.push("/mypage/terms");
+              router.push("./");
             }}
           >
-            {"<"}
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
       />
@@ -52,7 +57,7 @@ export default function TermForLocationInfo() {
           </section>
         ))}
         {/* FBA */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-3/4">
+        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
           <button onClick={scrollToTop}>
             <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
           </button>

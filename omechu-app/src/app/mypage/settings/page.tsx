@@ -6,12 +6,11 @@ import Header from "@/app/components/common/Header";
 import Image from "next/image";
 
 const termsList: { id: number; title: string; url: string }[] = [
-  { id: 1, title: "서비스 이용약관", url: "./terms/service" },
-  { id: 2, title: "개인정보 처리방침", url: "./terms/personal-info" },
-  { id: 3, title: "위치 기반 서비스 이용약관", url: "./terms/location-info" },
+  { id: 1, title: "계정 관리", url: "/mypage/account-settings" },
+  { id: 2, title: "이용 약관", url: "/mypage/terms" },
 ];
 
-export default function Terms() {
+export default function Settings() {
   const router = useRouter();
 
   return (
@@ -36,16 +35,17 @@ export default function Terms() {
       <main className="px-2 py-2">
         <ul className="flex flex-col">
           {termsList.map((item) => (
-            <button
+            <li
               key={item.id}
-              onClick={() => router.push(`${item.url}`)}
-              className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
+              className="flex flex-col w-full px-6 py-3 hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <li className="flex items-center justify-between w-full px-6 py-3">
-
-                <h1 className="text-[clamp(1.25rem)] font-normal">
+              <button
+                onClick={() => router.push(`${item.url}`)}
+                className="flex items-center justify-between w-full "
+              >
+                <span className="text-[clamp(1.25rem)] font-normal">
                   {item.title}
-                </h1>
+                </span>
                 <div>
                   <Image
                     src={"/right_arrow_black.png"}
@@ -54,8 +54,8 @@ export default function Terms() {
                     height={15}
                   />
                 </div>
-              </li>
-            </button>
+              </button>
+            </li>
           ))}
         </ul>
       </main>

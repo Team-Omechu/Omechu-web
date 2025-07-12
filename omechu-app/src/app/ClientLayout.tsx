@@ -30,6 +30,15 @@ export default function ClientLayout({
     "/mypage/user-info-setup/allergy",
     "/mypage/recommended-list",
 
+    // 마이페이지-설정
+    "/mypage/settings",
+    "/mypage/settings/account-settings",
+    "/mypage/settings/account-settings/change-password",
+    "/mypage/terms",
+    "/mypage/terms/service",
+    "/mypage/terms/personal-info",
+    "/mypage/terms/location-info",
+
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/signin",
     "/auth/signup",
@@ -41,12 +50,6 @@ export default function ClientLayout({
     "/onboarding/4",
     "/onboarding/5",
     "/onboarding/6",
-        
-    // 마이페이지-이용약관
-    "/mypage/terms/service",
-    "/mypage/terms/personal-info",
-    "/mypage/terms/location-info",
-
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 

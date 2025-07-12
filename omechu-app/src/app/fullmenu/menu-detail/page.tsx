@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import Header from "@/app/components/common/Header";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -19,7 +20,12 @@ function MenuDetailClient() {
 
   const name = searchParams.get("name");
   const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
+  const name = searchParams.get("name");
+  const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
 
+  const handleClick = () => {
+    router.push(`${pathname}/recipe-detail${encodedName}`);
+  };
   const handleClick = () => {
     router.push(`${pathname}/recipe-detail${encodedName}`);
   };
@@ -78,7 +84,10 @@ function MenuDetailClient() {
             </div>
 
             <hr className="my-3" />
+            <hr className="my-3" />
 
+            <p className="font-semibold">알레르기 유발 성분</p>
+            <p className="pl-2 mb-2">땅콩, 달걀</p>
             <p className="font-semibold">알레르기 유발 성분</p>
             <p className="pl-2 mb-2">땅콩, 달걀</p>
 
@@ -94,4 +103,17 @@ function MenuDetailClient() {
       </main>
     </>
   );
+            <p className="font-semibold">레시피</p>
+            <p
+              className="pl-2 text-black underline cursor-pointer"
+              onClick={handleClick}
+            >
+              보러가기 ▶
+            </p>
+          </div>
+        </section>
+      </main>
+    </>
+  );
 }
+
