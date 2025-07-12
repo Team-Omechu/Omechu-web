@@ -50,7 +50,7 @@ export default function SetupAllergy() {
                   key={index}
                   className="w-60 h-12 p-2  text-xl text-[#FB4746] hover:text-white
                           border-[1px] rounded-md border-[#FB4746]
-                          bg-white 
+                          bg-white
                           hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
                           active:bg-[#c93938] dark:active:bg-[#71201f]  "
                 >
@@ -76,7 +76,7 @@ export default function SetupAllergy() {
           onClick={() => {
             setShowSaveModal(true);
           }}
-          className="p-2 min-w-full h-12  rounded-t-md 
+          className="p-2 min-w-full h-12  rounded-t-md
             text-white text-xl font-normal
             bg-[#1F9BDA] dark:bg-[#1774a4]
             hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
