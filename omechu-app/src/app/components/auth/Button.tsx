@@ -1,7 +1,7 @@
 import React from "react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant: "red" | "yellow" | "text" | "gray";
+  variant: "red" | "yellow" | "text" | "gray" | "blue";
   size: "large" | "medium" | "small";
   leftIcon?: React.ReactNode;
 };
@@ -17,6 +17,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         "bg-[#FDDC3F] text-black hover:bg-[#f2d033] active:bg-[#e7c428] disabled:bg-gray-400 disabled:text-gray-200",
       text: "bg-transparent text-[#828282] hover:underline",
       gray: "bg-gray-300 text-gray-500 hover:bg-gray-400 active:bg-gray-500 disabled:bg-gray-400 disabled:text-gray-200",
+      blue: "bg-[#1F9BDA] text-white hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-300",
     };
 
     const sizeStyles = {

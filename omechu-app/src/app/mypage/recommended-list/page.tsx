@@ -57,12 +57,10 @@ export default function RecommendedList() {
     }
 
     if (trimmed === submittedTerm) return;
-
     setSubmittedTerm(trimmed);
     isJustResetRef.current = true;
     setSearchTerm("");
   };
-
   // 한글 자음 추출 함수 (초성 기준 분류용)
   const getInitialConsonant = (char: string): string => {
     const code = char.charCodeAt(0) - 0xac00;
