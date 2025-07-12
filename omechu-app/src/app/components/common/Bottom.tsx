@@ -17,7 +17,7 @@ const navItems: {
   {
     title: "전체메뉴",
     routingUrl: "/fullmenu",
-    imgSrc: "/menu.png",
+    imgSrc: "/menu.svg",
     imgAlt: "전체메뉴",
   },
   {

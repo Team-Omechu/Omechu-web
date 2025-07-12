@@ -17,10 +17,10 @@ export default function ProfileEdit() {
             }}
           >
             <Image
-              src={"/left_arrow.png"}
+              src={"/header_left_arrow.png"}
               alt={"changeProfileImage"}
-              width={10}
-              height={10}
+              width={22}
+              height={30}
             />
           </button>
         }

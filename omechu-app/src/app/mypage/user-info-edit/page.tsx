@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 import Header from "@/app/components/common/Header";
 import InfoRow from "@/app/components/mypage/InfoRow";
-import { useRouter } from "next/navigation";
 
 const userInfo: {
   name: string;
@@ -34,7 +36,12 @@ export default function UserInfoEdit() {
               router.push("./");
             }}
           >
-            {"<"}
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
       />
