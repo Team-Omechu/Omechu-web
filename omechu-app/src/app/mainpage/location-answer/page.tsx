@@ -15,17 +15,27 @@ export default function LocationAnswerPage() {
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
     setIsChecked(newValue);
-    if (newValue) setShowModal(true);
-    setSelectedDistance("");
+    if (newValue) {
+      setShowModal(true);
+      setSelectedDistance("가까이");
+    } else {
+      setSelectedDistance("");
+    }
   };
 
+  const handleCancel = () => {
+    setShowModal(false); 
+    setIsChecked(false); 
+    setSelectedDistance("");
+  }
+
   return (
-    <div className="flex flex-col w-full h-screen relative">
+    <div className="flex flex-col w-full h-screen relative overflow-x-hidden">
       <main className="flex flex-col items-center justify-center flex-1 w-full">
         {/* 질문 */}
-        <div className="flex flex-col justify-center items-center w-[415px] h-[112px] text-center text-[#393939] font-['Noto Sans KR'] font-medium text-[24px] mb-10">
-          <p>위치를 입력해주세요</p>
-          <p className="text-[#828282] text-[18px] font-normal mt-2">
+        <div className="flex flex-col justify-center items-center text-center text-[#393939] font-['Noto Sans KR'] mb-10">
+          <p className="text-xl font-semibold">위치를 입력해주세요</p>
+          <p className="text-[#828282] mt-2">
             주변 맛집 메뉴로 추천해드릴게요
           </p>
         </div>
@@ -36,33 +46,29 @@ export default function LocationAnswerPage() {
             type="checkbox"
             checked={isChecked}
             onChange={handleCheckboxChange}
-            className="w-[20px] h-[20px] p-1"
+            className="w-[1.25rem] h-[1.25rem] flex-shrink-0"
           />
-          <label className="text-[#333] text-[20px] font-normal font-['Inter']">
+          <label className="text-[1.25rem] text-[#393939] font-normal leading-normal font-['Inter'] ">
             내 주변
           </label>
-          <div
-            className="w-[94px] h-[28px] border border-[#333] rounded-[5px] bg-white px-2 text-sm flex items-center justify-center text-black"
-          >
-            {selectedDistance}
+          <div className="w-[5.875rem] h-[1.125rem] flex-shrink-0 rounded-[0.3125rem] border border-[#333] bg-white flex items-center justify-center text-sm text-black">
+          {selectedDistance}
           </div>
         </div>
-
-        {/* 지도 이미지 */}
-        <div className="mt-4 w-[280px] h-[170px] rounded-[20px] border-[3px] border-[#1F9BDA] overflow-hidden">
-          <Image
-            src={"/map.png"}
-            alt="지도"
-            width={280}
-            height={170}
-            className="w-full h-full object-cover"
-          />
+        <div className="mt-4 w-[17.5rem] h-[10.625rem] flex-shrink-0 rounded-[1.25rem] border-[3px] border-[#1F9BDA] overflow-hidden">
+        <Image
+          src="/map.png"
+          alt="지도"
+          width={280} 
+          height={170}
+          className="w-full h-full object-cover"
+        />
         </div>
 
         {/* 결과 보기 버튼 */}
         <button
-          onClick={() => router.push("/result")}
-          className="mt-6 flex w-[278px] h-[45px] px-4 justify-center items-center gap-2 rounded-[6px] bg-[#FB4746] text-white text-[16px] font-medium"
+          onClick={() => router.push("/mainpage/result")}
+          className="mt-10 flex w-[17.375rem] h-[2.8125rem] p-[0.625rem] flex-shrink-0 justify-center items-center gap-[0.625rem] rounded-[0.375rem] bg-[#FB4746] text-white text-[16px] font-medium"
         >
           결과 보기
         </button>
@@ -71,7 +77,7 @@ export default function LocationAnswerPage() {
         <div className="absolute inset-0 z-50 flex justify-center items-end">
           <div className="w-full">
           <LocationModal
-            onClose={() => {setShowModal(false); setIsChecked(false);}}
+            onClose={handleCancel}
             onSelect={(distance) => {
               setSelectedDistance(distance);
               setShowModal(false);
@@ -83,9 +89,6 @@ export default function LocationAnswerPage() {
 
       {/* 하단 네비 */}
       <BottomNav prevPath="./meal-answer" showNext={false} />
-
-      {/* 거리 선택 모달 - overlay로 렌더 */}
-
     </div>
   );
 }

@@ -34,8 +34,8 @@ export default function LoginPage() {
         <Image
           src="/오메추-로고-보라색버전-모자4 1.png" // public 폴더의 로고 이미지
           alt="Omechu Logo"
-          width={180}
-          height={180}
+          width={139}
+          height={92}
           priority
         />
       </Link>
