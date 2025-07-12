@@ -6,10 +6,24 @@ import { useState } from "react";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function SetupGender() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+
+  // Zustand 스토어에서 상태와 함수 가져옴
+  const gender = useOnboardingStore((state) => state.gender);
+  const setGender = useOnboardingStore((state) => state.setGender);
+
+  const handleGenderClick = (selectedGender: "남성" | "여성") => {
+    // 이미 선택한 상태에서 다시 클릭하면 취소
+    if (gender === selectedGender) {
+      setGender(null);
+    } else {
+      setGender(selectedGender);
+    }
+  };
 
   return (
     <div className="flex flex-col w-auto h-screen">
@@ -19,21 +33,35 @@ export default function SetupGender() {
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
       />
+
       <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
         <section className="my-20">
-          <div className="text-3xl font-medium">성별은 무엇인가요?</div>
+          <h1 className="text-3xl font-medium">성별은 무엇인가요?</h1>
         </section>
+
+        {/* 성별 버튼 */}
         <section className="my-10">
           <div className="flex gap-5">
-            <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              여성
-            </button>
-            <button className="w-28 h-14 p-2.5 bg-white border-[1px] rounded-md border-[#FB4746] active:bg-[#c93938] hover:bg-[#e2403f] hover:text-white text-xl text-[#FB4746]">
-              남성
-            </button>
+            {["여성", "남성"].map((label) => (
+              <button
+                key={label}
+                onClick={() => handleGenderClick(label as "남성" | "여성")}
+                className={`w-28 h-14 px-2.5 pt-1 text-xl rounded-md border-[1px]
+                  ${
+                    gender === label
+                      ? "bg-[#FB4746] text-white border-[#FB4746]"
+                      : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                  }
+                `}
+              >
+                <span>{label}</span>
+              </button>
+            ))}
           </div>
         </section>
       </main>
+
+      {/* 건너뛰기 / 다음 */}
       <footer className="flex flex-col items-end w-full pb-[env(safe-area-inset-bottom)] gap-3">
         <button
           onClick={() => {
@@ -47,7 +75,7 @@ export default function SetupGender() {
           onClick={() => {
             router.push("./state");
           }}
-          className="p-2 min-w-full h-12  rounded-t-md 
+          className="p-2 min-w-full h-12 rounded-t-md 
                     text-white text-xl font-normal
                     bg-[#1F9BDA] dark:bg-[#1774a4]
                     hover:bg-[#1c8cc4] dark:hover:bg-[#135d83]
@@ -57,6 +85,7 @@ export default function SetupGender() {
         </button>
       </footer>
 
+      {/* 중단 확인 모달 */}
       {showModal && (
         <ModalWrapper>
           <AlertModal
@@ -66,11 +95,9 @@ export default function SetupGender() {
             cancelText="돌아가기"
             onConfirm={() => {
               setShowModal(false);
-              router.push("./"); // 원하는 페이지로 이동
+              router.push("./");
             }}
-            onClose={() => {
-              setShowModal(false);
-            }}
+            onClose={() => setShowModal(false)}
           />
         </ModalWrapper>
       )}

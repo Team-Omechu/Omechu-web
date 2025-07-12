@@ -12,7 +12,7 @@ type OnboardingState = {
 
 type OnboardingActions = {
   setNickname: (nickname: string) => void;
-  setGender: (gender: "여성" | "남성") => void;
+  setGender: (gender: "여성" | "남성" | null) => void;
   setWorkoutStatus: (status: string) => void;
   togglePreferredFood: (food: string) => void;
   toggleConstitution: (item: string) => void;
