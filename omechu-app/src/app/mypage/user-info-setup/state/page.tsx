@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ProgressBar from "@/app/components/common/ProgressBar";
@@ -10,6 +12,18 @@ import ProgressBar from "@/app/components/common/ProgressBar";
 export default function SetupState() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+
+  const status = useOnboardingStore((state) => state.workoutStatus);
+  const setStatus = useOnboardingStore((state) => state.setWorkoutStatus);
+
+  const handleStatusClick = (value: string) => {
+    // 이미 선택된 값이면 취소, 아니면 선택
+    if (status === value) {
+      setStatus(null);
+    } else {
+      setStatus(value);
+    }
+  };
 
   return (
     <div className="relative flex flex-col w-auto h-screen">
@@ -28,16 +42,19 @@ export default function SetupState() {
         </section>
         <section className="flex flex-col items-center justify-center -mt-4">
           <div className="z-10 flex flex-col gap-5">
-            {["다이어트 중", "증량 중", "유지 중"].map((item, index) => (
+            {["다이어트 중", "증량 중", "유지 중"].map((label) => (
               <button
-                key={index}
-                className="w-60 h-12 p-2  text-xl text-[#FB4746] hover:text-white
-                          border-[1px] rounded-md border-[#FB4746]
-                          bg-white 
-                          hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
-                          active:bg-[#c93938] dark:active:bg-[#71201f]  "
+                key={label}
+                onClick={() => handleStatusClick(label)}
+                className={`w-60 h-12 px-2 text-xl rounded-md border-[1px]
+      ${
+        status === label
+          ? "bg-[#FB4746] text-white border-[#FB4746]"
+          : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+      }
+    `}
               >
-                {item}
+                <span>{label}</span>
               </button>
             ))}
           </div>
