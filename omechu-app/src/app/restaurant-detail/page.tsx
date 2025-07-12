@@ -97,17 +97,24 @@ export default function RestaurantDetail() {
 
   return (
     <>
+      {/* 헤더 */}
       <Header
+        className="border-none"
+        title={""}
         leftChild={
           <button
             onClick={() => {
-              router.push("/mypage");
+              router.push("./");
             }}
           >
-            {"<"}
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
-        title={"추천 목록 관리"}
       />
       {/* 메인 Container*/}
       <main className="relative overflow-y-auto px-4 pb-10  gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
