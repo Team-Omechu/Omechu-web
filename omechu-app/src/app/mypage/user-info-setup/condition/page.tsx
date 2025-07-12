@@ -42,7 +42,7 @@ export default function SetupCondition() {
         </section>
 
         {/* 선택 버튼들 */}
-        <section className="w-full px-8 mt-10">
+        <section className="w-full px-5 mt-10">
           <div className="flex flex-col gap-5">
             {[
               "감기에 잘 걸리는 편이에요",
@@ -55,7 +55,7 @@ export default function SetupCondition() {
                 <button
                   key={item}
                   onClick={() => handleClick(item)}
-                  className={`w-full h-12 p-2 text-lg rounded-md border-[1px]
+                  className={`w-full h-12 px-2 py-1 text-lg rounded-md border-[1px]
                     ${
                       isSelected
                         ? "bg-[#FB4746] text-white border-[#FB4746]"
@@ -89,7 +89,7 @@ export default function SetupCondition() {
         </div>
         <button
           onClick={() => router.push("./allergy")}
-          className="p-2 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
+          className="px-2 pt-1 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
         >
           다음
         </button>
