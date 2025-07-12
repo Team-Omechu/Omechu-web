@@ -35,15 +35,17 @@ export default function Settings() {
       <main className="px-2 py-2">
         <ul className="flex flex-col">
           {termsList.map((item) => (
-            <button
+            <li
               key={item.id}
-              onClick={() => router.push(`${item.url}`)}
-              className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
+              className="flex flex-col w-full px-6 py-3 hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <li className="flex items-center justify-between w-full px-6 py-3">
-                <h1 className="text-[clamp(1.25rem)] font-normal">
+              <button
+                onClick={() => router.push(`${item.url}`)}
+                className="flex items-center justify-between w-full "
+              >
+                <span className="text-[clamp(1.25rem)] font-normal">
                   {item.title}
-                </h1>
+                </span>
                 <div>
                   <Image
                     src={"/right_arrow_black.png"}
@@ -52,8 +54,8 @@ export default function Settings() {
                     height={15}
                   />
                 </div>
-              </li>
-            </button>
+              </button>
+            </li>
           ))}
         </ul>
       </main>
