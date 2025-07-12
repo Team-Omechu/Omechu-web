@@ -23,7 +23,7 @@ export default function MyPage() {
       <Header
         className={"border-b-0 hover:bg-[#f8d5ff] dark:hover:bg-[#baa0bf]"}
         rightChild={
-          <button onClick={() => router.push("/mypage")}>
+          <button onClick={() => router.push("/mypage/settings")}>
             <Image
               src={"/setting.png"}
               alt={"setting"}

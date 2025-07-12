@@ -825,6 +825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+
 "@unrs/resolver-binding-android-arm64@npm:1.11.1":
   version: 1.11.1
   resolution: "@unrs/resolver-binding-android-arm64@npm:1.11.1"
@@ -925,7 +926,7 @@ __metadata:
 
 "@unrs/resolver-binding-wasm32-wasi@npm:1.11.1":
   version: 1.11.1
-  resolution: "@unrs/resolver-binding-wasm32-wasi@npm:1.11.1"
+  resolution: "@unrs/resolver-binding-wasm32-wasi@npm:1.11.1>>>>>>> develop
   dependencies:
     "@napi-rs/wasm-runtime": "npm:^0.2.11"
   conditions: cpu=wasm32
@@ -934,7 +935,7 @@ __metadata:
 
 "@unrs/resolver-binding-win32-arm64-msvc@npm:1.11.1":
   version: 1.11.1
-  resolution: "@unrs/resolver-binding-win32-arm64-msvc@npm:1.11.1"
+  resolution: "@unrs/resolver-binding-win32-arm64-msvc@npm:
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
