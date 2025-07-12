@@ -11,7 +11,7 @@ export default function MyPage() {
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
-    { title: "기본 상태 관리", href: "/mypage/user-info-edit" },
+    { title: "기본 상태 입력", href: "/mypage/user-info-edit" },
     { title: "추천 목록 관리", href: "/mypage/recommended-list" },
     { title: "먹부림 기록", href: "/" },
     { title: "활동 내역", href: "/" },
@@ -52,7 +52,7 @@ export default function MyPage() {
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
-              <>
+              <div key={index}>
                 <button
                   onClick={() => {
                     router.push(item.href);
@@ -79,7 +79,7 @@ export default function MyPage() {
                 {!isLast && (
                   <div className="h-[1.2px] w-[calc(100%-2.5rem)] mx-auto bg-[#b3d8eb] dark:bg-white" />
                 )}
-              </>
+              </div>
             );
           })}
         </section>
