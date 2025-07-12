@@ -17,14 +17,19 @@ export default function TermForPersonalInfo() {
   return (
     <>
       <Header
-        title={"개인정보 처리방침"}
+        title={"위치기반 서비스 이용약관"}
         leftChild={
           <button
             onClick={() => {
-              router.push("/mypage/terms");
+              router.push("./");
             }}
           >
-            {"<"}
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
       />

@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 import Header from "@/app/components/common/Header";
 
 export default function UserInfoSetupStartPage() {
@@ -11,8 +13,13 @@ export default function UserInfoSetupStartPage() {
       <Header
         className={"border-[#CAC6BF]"}
         leftChild={
-          <button onClick={() => router.push("/mypage/user-info-edit")}>
-            {"<"}
+          <button onClick={() => router.push("./user-info-edit")}>
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
       />

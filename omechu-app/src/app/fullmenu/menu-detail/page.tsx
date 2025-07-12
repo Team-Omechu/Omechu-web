@@ -52,7 +52,7 @@ function MenuDetailClient() {
         <div className="flex justify-center mb-6 mx-auto w-36 h-36">
           <Image
             src="/오메추-로고-보라색버전-모자4 1.png"
-            alt={`${name}`}
+            alt={`${name || "메뉴 이미지"}`}
             className="object-contain rounded"
             width={144}
             height={144}

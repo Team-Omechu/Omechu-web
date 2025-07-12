@@ -17,14 +17,19 @@ export default function Terms() {
   return (
     <>
       <Header
-        title={"이용 약관"}
+        title={"기본 상태 입력"}
         leftChild={
           <button
             onClick={() => {
-              router.push("/mypage/settings");
+              router.push("./");
             }}
           >
-            {"<"}
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
           </button>
         }
       />
@@ -37,6 +42,7 @@ export default function Terms() {
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
               <li className="flex items-center justify-between w-full px-6 py-3">
+
                 <h1 className="text-[clamp(1.25rem)] font-normal">
                   {item.title}
                 </h1>

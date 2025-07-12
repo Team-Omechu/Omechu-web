@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import Header from "@/app/components/common/Header";
 import { useRouter, useSearchParams } from "next/navigation";
