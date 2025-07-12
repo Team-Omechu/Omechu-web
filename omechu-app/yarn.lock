@@ -647,7 +647,6 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^20":
-
   version: 20.19.7
   resolution: "@types/node@npm:20.19.7"
   dependencies:
