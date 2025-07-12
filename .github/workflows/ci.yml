@@ -27,16 +27,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: "yarn"
-          cache-dependency-path: "omechu-app/yarn.lock"
+          # yarn 캐시는 yarn 자체 설정에 맡기므로 setup-node에서는 제거합니다.
 
-      # 3. Corepack 활성화 (추가된 부분)
-      - name: Enable Corepack
-        run: corepack enable
+      # 3. Corepack 활성화 및 Yarn 버전 설정 (가장 중요한 부분)
+      - name: Enable Corepack and Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.9.2
 
       # 4. 의존성 설치
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: ./omechu-app
 
       # 5. 코드 린팅 실행
