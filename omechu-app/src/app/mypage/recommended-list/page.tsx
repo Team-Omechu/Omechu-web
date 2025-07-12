@@ -57,7 +57,7 @@ export default function RecommendedList() {
     }
 
     if (trimmed === submittedTerm) return;
-
+        
     setSubmittedTerm(trimmed);
     isJustResetRef.current = true;
     setSearchTerm("");
@@ -101,10 +101,21 @@ export default function RecommendedList() {
     <>
       {/* 상단 헤더 */}
       <Header
+        title={"기본 상태 입력"}
         leftChild={
-          <button onClick={() => router.push("/mypage")}>{"<"}</button>
+          <button
+            onClick={() => {
+              router.push("./");
+            }}
+          >
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
+          </button>
         }
-        title={"추천 목록 관리"}
       />
 
       {/* 메인 섹션 */}
@@ -131,7 +142,6 @@ export default function RecommendedList() {
         {/* 검색 창 */}
         <SearchBar
           placeholder="음식명을 검색하세요."
-
           inputValue={searchTerm}
           setInputValue={setSearchTerm}
           onSearch={handleSearch}
@@ -170,11 +180,9 @@ export default function RecommendedList() {
               imageUrl={item.imageUrl}
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
-              onClick={() =>
-                router.push(
-                  `/fullmenu/menu-detail?name=${encodeURIComponent(item.title)}`
-                )
-              }
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           ))}
         </section>
