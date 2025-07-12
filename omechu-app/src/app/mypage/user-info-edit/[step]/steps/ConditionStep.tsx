@@ -9,36 +9,21 @@ import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ProgressBar from "@/app/components/common/ProgressBar";
 
-export default function SetupCondition() {
+export default function ConditionStep() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  // Zustand에서 상태 가져오기
   const constitution = useOnboardingStore((state) => state.constitution);
-  const resetConstitution = useOnboardingStore(
-    (state) => state.resetConstitution
-  );
-
-  const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화 함수
-
   const toggleConstitution = useOnboardingStore(
     (state) => state.toggleConstitution
   );
 
-  // 건너뛰기 누르면 상태 초기화하고 다음 페이지로 이동
-  const handleSkip = () => {
-    resetConstitution();
-    router.push("./allergy");
-  };
-
-  // 버튼 클릭 시 토글 방식으로 값 추가 또는 제거
   const handleClick = (item: string) => {
     toggleConstitution(item);
   };
 
   return (
     <div className="flex flex-col w-auto h-screen">
-      {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={4}
         totalSteps={5}
@@ -46,7 +31,6 @@ export default function SetupCondition() {
         cancelButtonText="그만하기"
       />
 
-      {/* 본문 영역 */}
       <main className="relative flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
         <section className="my-20">
           <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
@@ -54,7 +38,6 @@ export default function SetupCondition() {
           </div>
         </section>
 
-        {/* 선택 버튼 리스트 */}
         <section className="w-full px-5 mt-10">
           <div className="flex flex-col gap-5">
             {[
@@ -84,7 +67,6 @@ export default function SetupCondition() {
         </section>
       </main>
 
-      {/* 하단 버튼 영역 */}
       <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
         <div className="flex justify-between">
           <button
@@ -94,28 +76,20 @@ export default function SetupCondition() {
             {"<"} 이전으로
           </button>
           <button
-            onClick={handleSkip}
+            onClick={() => router.push("./allergy")}
             className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>
         </div>
-
-        {/* 저장 버튼 (선택 안 했으면 비활성화) */}
         <button
           onClick={() => router.push("./allergy")}
-          disabled={constitution.length === 0}
-          className={`px-2 pt-1 min-w-full h-12 text-white text-xl font-normal rounded-t-md ${
-            constitution.length === 0
-              ? "bg-[#A1A1A1] cursor-not-allowed"
-              : "bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
-          }`}
+          className="px-2 pt-1 min-w-full h-12 text-white text-xl font-normal rounded-t-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
         >
           저장
         </button>
       </footer>
 
-      {/* 입력 중단 모달 */}
       {showModal && (
         <ModalWrapper>
           <AlertModal
@@ -124,7 +98,6 @@ export default function SetupCondition() {
             confirmText="그만하기"
             cancelText="돌아가기"
             onConfirm={() => {
-              resetAll();
               setShowModal(false);
               router.push("./");
             }}
