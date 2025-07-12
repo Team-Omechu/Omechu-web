@@ -116,7 +116,7 @@ export default function SetupAllergy() {
             confirmText="추천 받기"
             onConfirm={() => {
               setShowSaveModal(false);
-              router.push("/"); // 홈 or 추천 페이지
+              router.push("/mypage/user-info-edit");
             }}
           />
         </ModalWrapper>
