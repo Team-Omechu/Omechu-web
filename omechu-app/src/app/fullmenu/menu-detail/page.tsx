@@ -19,12 +19,7 @@ function MenuDetailClient() {
 
   const name = searchParams.get("name");
   const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
-  const name = searchParams.get("name");
-  const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
 
-  const handleClick = () => {
-    router.push(`${pathname}/recipe-detail${encodedName}`);
-  };
   const handleClick = () => {
     router.push(`${pathname}/recipe-detail${encodedName}`);
   };
@@ -57,7 +52,7 @@ function MenuDetailClient() {
         <div className="flex justify-center mb-6 mx-auto w-36 h-36">
           <Image
             src="/오메추-로고-보라색버전-모자4 1.png"
-            alt={`${name}`}
+            alt={`${name || "메뉴 이미지"}`}
             className="object-contain rounded"
             width={144}
             height={144}
@@ -83,25 +78,10 @@ function MenuDetailClient() {
             </div>
 
             <hr className="my-3" />
-            <hr className="my-3" />
 
             <p className="font-semibold">알레르기 유발 성분</p>
             <p className="pl-2 mb-2">땅콩, 달걀</p>
-            <p className="font-semibold">알레르기 유발 성분</p>
-            <p className="pl-2 mb-2">땅콩, 달걀</p>
 
-            <p className="font-semibold">레시피</p>
-            <p
-              className="pl-2 text-black underline cursor-pointer"
-              onClick={handleClick}
-            >
-              보러가기 ▶
-            </p>
-          </div>
-        </section>
-      </main>
-    </>
-  );
             <p className="font-semibold">레시피</p>
             <p
               className="pl-2 text-black underline cursor-pointer"
@@ -115,4 +95,3 @@ function MenuDetailClient() {
     </>
   );
 }
-
