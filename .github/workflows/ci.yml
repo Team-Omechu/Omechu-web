@@ -31,6 +31,12 @@ jobs:
           cache-dependency-path: "omechu-app/yarn.lock" # yarn.lock 파일 경로 지정
 
       # 3. 의존성 설치
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Prepare Yarn v4
+        run: corepack prepare yarn@4.9.2 --activate
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         working-directory: ./omechu-app # omechu-app 디렉토리에서 명령어 실행
