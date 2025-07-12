@@ -1,10 +1,19 @@
 "use client";
+"use client";
 
 import Header from "@/app/components/common/Header";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function RecipeDetail() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <RecipeDetailClient />
+    </Suspense>
+  );
+}
+function RecipeDetailClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -13,18 +22,18 @@ export default function RecipeDetail() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={""}
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.back();
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
-              alt={"changeProfileImage"}
-              width={22}
-              height={30}
+              src={"/left_arrow.png"}
+              alt={"뒤로가기"}
+              width={10}
+              height={10}
             />
           </button>
         }
@@ -35,26 +44,28 @@ export default function RecipeDetail() {
           {name} 레시피
         </h1>
 
-        <div className="flex justify-center mx-auto mb-6 w-36 h-36">
-          <img
+        <div className="flex justify-center mb-6 mx-auto w-36 h-36">
+          <Image
             src="/오메추-로고-보라색버전-모자4 1.png"
             alt={`${name}`}
             className="object-contain rounded"
+            width={144}
+            height={144}
           />
         </div>
 
         <section className="px-4 pb-4">
-          <h2 className="mb-2 text-base font-semibold">재료</h2>
+          <h2 className="text-base font-semibold mb-2">재료</h2>
           <p className="text-[13px] leading-5">
             된장국 두부 20g, 애느타리버섯 20g, 감자 10g, 양파 10g, 대파 10g,
             된장 5g(1작은술), 물 300ml(1½컵)
           </p>
         </section>
 
-        <hr className="mb-4 border-gray-400" />
+        <hr className="border-gray-400 mb-4" />
 
         <section className="px-4 text-[13px]">
-          <h2 className="mb-3 text-base font-semibold">요리법</h2>
+          <h2 className="text-base font-semibold mb-3">요리법</h2>
 
           {[
             { text: "감자, 양파를 잘 익도록 얇게 썬다." },
@@ -81,7 +92,7 @@ export default function RecipeDetail() {
                 <span>{step.text}</span>
               </p>
               {step.image && (
-                <div className="flex justify-center mt-2">
+                <div className="mt-2 flex justify-center">
                   <Image
                     src={"/오메추-로고-보라색버전-모자4 1.png"}
                     alt={`step-${index + 1}`}
