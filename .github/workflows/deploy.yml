@@ -13,19 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # 아래부터 모든 Vercel 관련 작업은 'omechu-app' 폴더 안에서 실행하도록 지정합니다.
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
-        working-directory: ./omechu-app
 
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./omechu-app
 
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./omechu-app
 
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./omechu-app
