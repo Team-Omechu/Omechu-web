@@ -1,13 +1,13 @@
 // src/app/restaurant-detail/map/[id]/page.tsx
+
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-// ✅ 런타임에 동적 처리할 수 있도록 명시
-export const dynamicParams = true;
+// 🔥 핵심: 동적 처리 설정 추가
+export const dynamic = "force-dynamic";
 
-// ✅ props 타입
 type Props = {
   params: { id: string };
 };
