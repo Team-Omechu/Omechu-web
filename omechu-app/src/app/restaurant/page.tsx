@@ -7,9 +7,11 @@ import Image from "next/image";
 import { distance } from "fastest-levenshtein";
 import SearchBar from "@/app/components/common/SearchBar";
 import { suggestionList } from "@/app/constant/suggestionList";
-import TagItem from "@/app/components/common/Tag";
 import { foodItems } from "@/app/constant/restautantFoodList"; // 음식 데이터
 import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
+import FilterTagList from "../components/restaurant/FilterTagList";
+import KeywordSelector from "../components/restaurant/KeywordSelector";
+import FoodCard from "../components/common/FoodCard";
 
 export default function Restaurant() {
 
@@ -138,18 +140,7 @@ export default function Restaurant() {
                     />
                     내 위치
                 </button>
-                <div className="flex overflow-x-auto whitespace-nowrap gap-2 mx-2 scrollbar-hide">
-                    {selectedFilters.map((tag, idx) => (
-                    <TagItem
-                        key={idx}
-                        label={tag}
-                        onRemove={() =>
-                        setSelectedFilters((prev) => prev.filter((item) => item !== tag))
-                        }
-                        className="px-2"
-                    />
-                    ))}
-                </div>
+                <FilterTagList tags={selectedFilters} onRemove={(tag) => setSelectedFilters((prev) => prev.filter((t) => t !== tag))} />
                 <button className="flex-shrink-0 ml-auto" onClick={() => setIsFilterOpen(true)}>
                     <Image 
                         src={'/customselect.png'} 
@@ -243,30 +234,17 @@ export default function Restaurant() {
 
             {/* 키워드 펼침 영역 */}
             {showKeywords && (
-                <div className="flex flex-wrap justify-end gap-1 text-xs mb-4">
-                    {keywordList.map((keyword, idx) => {
-                        const isSelected = selectedKeywords.includes(keyword);
-                        return (
-                            <button
-                                key={idx}
-                                onClick={() =>
-                                    setSelectedKeywords((prev) =>
-                                    isSelected
-                                        ? prev.filter((item) => item !== keyword)
-                                        : [...prev, keyword]
-                                    )
-                                }
-                                className={`w-20 h-7 rounded-full border border-gray-400 text-sm ${
-                                    isSelected
-                                    ? "bg-[#FB4746] text-white"
-                                    : "bg-white text-gray-600"
-                                }`}
-                            >
-                                {keyword}
-                            </button>
-                        );
-                    })}
-                </div>
+                <KeywordSelector
+                    keywords={keywordList}
+                    selected={selectedKeywords}
+                    onToggle={(keyword) =>
+                        setSelectedKeywords((prev) =>
+                        prev.includes(keyword)
+                            ? prev.filter((k) => k !== keyword)
+                            : [...prev, keyword]
+                        )
+                    }
+                />
             )}
 
             {isSearched && search.trim() && filteredItems.length === 0 && (
@@ -283,56 +261,15 @@ export default function Restaurant() {
                     <hr className="mt-8 border-t border-gray-600 w-full" />
 
                     {similarItems.length > 0 && (
-                        <>
-                            <div className="flex flex-col gap-4 mt-4">
+                        <div className="flex flex-col gap-4 mt-4">
                             {similarItems.map((item, idx) => (
-                                <div 
-                                    key={idx} 
-                                    className="flex justify-between items-start gap-3 p-3 border border-black rounded-xl shadow-md bg-white"
+                                <FoodCard
+                                    key={idx}
+                                    item={item}
                                     onClick={() => router.push(`/restaurant/restaurant-detail?menu=${encodeURIComponent(item.menu)}`)}
-                                >
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-2 text-sm font-semibold">
-                                            <span>{item.name}</span>
-                                            <span className="flex items-center gap-1 text-yellow-500 text-xs font-normal">
-                                                ⭐ {item.rating} 
-                                                <span className="text-yellow-500">({item.reviews})</span>
-                                            </span>
-                                        </div>
-                                        <p className="text-sm text-gray-500 mb-3">{item.address}</p>
-                                        <p className="text-blue-600 font-bold text-sm mb-1">{item.menu}</p>
-                                        <div className="flex gap-2 flex-wrap mt-1 text-xs">
-                                        {item.tags.map((tag, i) => (
-                                            <span
-                                                key={i}
-                                                className="border border-blue-400 text-blue-400 rounded-full px-2 py-0.5"
-                                            >
-                                            {tag}
-                                            </span>
-                                        ))}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col place-items-end gap-2">
-                                        <button>
-                                            <Image 
-                                                src={'/Heart.svg'} 
-                                                alt="사용자필터" 
-                                                width={20}
-                                                height={20}
-                                            />
-                                        </button>
-                                        <Image
-                                            src={item.image}
-                                            alt={item.menu}
-                                            width={70}
-                                            height={70}
-                                            className="w-[4.5rem] h-[4.5rem] object-contain rounded-sm border border-gray-200"
-                                        />
-                                    </div>
-                                </div>
+                                />
                             ))}
-                            </div>
-                        </>
+                        </div>
                     )}
                 </div>
             )}
@@ -340,50 +277,11 @@ export default function Restaurant() {
             {/* 음식 카드 리스트 */}
             <div className="flex flex-col gap-4">
                 {visibleItems.map((item, idx) => (
-                    <div 
-                        key={idx} 
-                        className="border border-black rounded-xl shadow-md bg-white p-3 flex justify-between items-start"
+                    <FoodCard
+                        key={idx}
+                        item={item}
                         onClick={() => router.push(`/restaurant/restaurant-detail?menu=${encodeURIComponent(item.menu)}`)}
-                    >
-                        <div className="flex-1">
-                            <div className="flex items-center gap-2 text-sm font-semibold">
-                                <span>{item.name}</span>
-                                <span className="flex items-center gap-1 text-yellow-500 text-xs font-normal">
-                                    ⭐ {item.rating} 
-                                    <span className="text-yellow-500">({item.reviews})</span>
-                                </span>
-                            </div>
-                            <p className="text-sm text-gray-500 mb-3">{item.address}</p>
-                            <p className="text-blue-600 font-bold text-sm mb-1">{item.menu}</p>
-                            <div className="flex gap-2 flex-wrap mt-1 text-xs">
-                            {item.tags.map((tag, i) => (
-                                <span
-                                    key={i}
-                                    className="border border-blue-400 text-blue-400 rounded-full px-2 py-0.5"
-                                >
-                                {tag}
-                                </span>
-                            ))}
-                            </div>
-                        </div>
-                        <div className="flex flex-col place-items-end gap-2">
-                            <button>
-                                <Image 
-                                    src={'/Heart.svg'} 
-                                    alt="사용자필터" 
-                                    width={20}
-                                    height={20}
-                                />
-                            </button>
-                            <Image
-                                src={item.image}
-                                alt={item.menu}
-                                width={70}
-                                height={70}
-                                className="w-[4.5rem] h-[4.5rem] object-contain rounded-sm border border-gray-200"
-                            />
-                        </div>
-                    </div>
+                    />
                 ))}
             </div>
         </div>
