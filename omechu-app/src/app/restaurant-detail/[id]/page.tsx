@@ -244,7 +244,9 @@ export default function RestaurantDetail() {
           </div>
           <div className="flex justify-end w-full">
             <button
-              onClick={() => router.push(`${pathname}/map?id=${restaurant.id}`)}
+              onClick={() =>
+                router.push(`/restaurant-detail/${restaurant.id}/map`)
+              }
               className="flex flex-col justify-center items-center w-16 h-6 bg-[#1F9BDA] rounded-3xl"
             >
               <span className="mt-1 text-sm font-normal text-white">

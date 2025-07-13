@@ -1,3 +1,5 @@
+"use client";
+
 // export default function RestaurantMap() {
 //   return <></>;
 // }
@@ -19,6 +21,7 @@ export default function MapPage({ params }: { params: { id: string } }) {
   if (!restaurant) return notFound();
 
   const mapImagePath = "/restaurant/오레노라멘합정.png";
+  console.log(params);
 
   return (
     <>
