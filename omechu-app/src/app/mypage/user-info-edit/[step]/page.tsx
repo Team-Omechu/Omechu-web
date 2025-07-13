@@ -1,12 +1,16 @@
-// src/app/mypage/user-info-edit/[step]/page.tsx
 import { notFound } from "next/navigation";
 import { stepComponents } from "@/app/constant/UserInfoEditSteps";
 
-type StepKey = keyof typeof stepComponents;
+type StepKey = "start" | "gender" | "state" | "food" | "condition" | "allergy";
 
-export default function StepPage({ params }: { params: { step: string } }) {
-  const step = params.step as StepKey;
-  const Component = stepComponents[step];
+type Props = {
+  params: {
+    step: StepKey;
+  };
+};
+
+export default function StepPage({ params }: Props) {
+  const Component = stepComponents[params.step];
 
   if (!Component) return notFound();
 
