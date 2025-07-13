@@ -6,6 +6,7 @@ import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import InfoRow from "@/app/components/mypage/InfoRow";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { indexToSlug } from "@/app/mypage/user-info-edit/[step]/page"; // 경로 맞춰서
 
 export default function UserInfoEdit() {
   const router = useRouter();
@@ -60,7 +61,9 @@ export default function UserInfoEdit() {
 
         <section>
           <button
-            onClick={() => router.push("/mypage/user-info-setup")}
+            onClick={() =>
+              router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
+            }
             className="w-[335px] h-[45px] text-[17px] 
                       font-medium text-white rounded-md
                       bg-[#fb4746] dark:bg-[#bc3535]

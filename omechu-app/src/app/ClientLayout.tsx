@@ -19,16 +19,6 @@ export default function ClientLayout({
     "/mainpage/question-answer/budget",
     "/mainpage/question-answer/middle-question",
 
-    // 마이페이지
-    "/mypage/user-info-setup",
-    "/mypage/user-info-setup/gender",
-    "/mypage/profile-edit",
-    "/mypage/user-info-edit",
-    "/mypage/user-info-setup/state",
-    "/mypage/user-info-setup/food",
-    "/mypage/user-info-setup/condition",
-    "/mypage/user-info-setup/allergy",
-    "/mypage/recommended-list",
     "/mainpage/question-answer/meal-time",
     "/mainpage/question-answer/purpose",
     "/mainpage/question-answer/state",
@@ -38,15 +28,6 @@ export default function ClientLayout({
     "/mainpage/meal-answer",
     "/mainpage/location-answer",
     "/mypage/recommended-list",
-
-    // 마이페이지-이용약관
-    "/mypage/terms",
-    // 마이페이지-설정
-    "/mypage/settings",
-    "/mypage/settings/account-settings",
-    "/mypage/settings/account-settings/change-password",
-    // 마이페이지-이용약관
-    "/mypage/terms",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/signin",
@@ -60,14 +41,32 @@ export default function ClientLayout({
     "/onboarding/5",
     "/onboarding/6",
 
-    // 마이페이지-이용약관
-    "/mypage/terms/service",
-    "/mypage/terms/personal-info",
-    "/mypage/terms/location-info",
-
     //맛집-상세페이지
     "restaurant/restaurant-detail",
     "restaurant/restaurant-detail/[id]/map",
+
+    // 마이페이지
+    "/mypage/user-info-setup",
+    "/mypage/user-info-setup/gender",
+    "/mypage/profile-edit",
+    "/mypage/user-info-edit",
+    "/mypage/user-info-edit/start",
+    "/mypage/user-info-edit/gender",
+    "/mypage/user-info-edit/state",
+    "/mypage/user-info-edit/food",
+    "/mypage/user-info-edit/condition",
+    "/mypage/user-info-edit/allergy",
+    // 추천맛집목록
+    "/mypage/recommended-list",
+    // 마이페이지-설정
+    "/mypage/settings",
+    "/mypage/settings/account-settings",
+    "/mypage/settings/account-settings/change-password",
+    // 마이페이지-이용약관
+    "/mypage/terms",
+    "/mypage/terms/service",
+    "/mypage/terms/personal-info",
+    "/mypage/terms/location-info",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 

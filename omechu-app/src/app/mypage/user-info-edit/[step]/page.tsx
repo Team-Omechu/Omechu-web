@@ -1,47 +1,56 @@
-// "use client";
+import { notFound } from "next/navigation";
 
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
+import EditStart from "./EditStart";
+import GenderStep from "./GenderStep";
+import StateStep from "./StateStep";
+import FoodStep from "./FoodStep";
+import ConditionStep from "./ConditionStep";
+import AllergyStep from "./AllergyStep";
 
-// // Step 컴포넌트 import
-// import GenderStep from "./steps/GenderStep";
-// import FoodStep from "./steps/FoodStep";
-// import ConditionStep from "./steps/ConditionStep";
-// import StateStep from "./steps/StateStep";
-// import AllergyStep from "./steps/AllergyStep";
+interface StepComponentMap {
+  [key: string]: () => React.ReactNode;
+}
 
-// // Zustand store import
-// import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+const stepComponents: StepComponentMap = {
+  start: EditStart,
+  gender: GenderStep,
+  state: StateStep,
+  food: FoodStep,
+  condition: ConditionStep,
+  allergy: AllergyStep,
+};
 
-// export default function StepPage({ params }: { params: { step: string } }) {
-//   const { step } = params;
-//   const router = useRouter();
-//   const [isClient, setIsClient] = useState(false);
+export const stepOrder = [
+  "start",
+  "gender",
+  "state",
+  "food",
+  "condition",
+  "allergy",
+];
 
-//   // hydration 이후에만 Zustand 접근 허용
-//   useEffect(() => {
-//     setIsClient(true);
-//   }, []);
+export const slugToIndex: Record<string, number> = {
+  start: 0,
+  gender: 1,
+  state: 2,
+  food: 3,
+  condition: 4,
+  allergy: 5,
+};
 
-//   // 잘못된 step이 들어왔을 경우 fallback
-//   const getStepComponent = () => {
-//     switch (step) {
-//       case "gender":
-//         return <GenderStep />;
-//       case "food":
-//         return <FoodStep />;
-//       case "condition":
-//         return <ConditionStep />;
-//       case "workout":
-//         return <StateStep />;
-//       case "allergy":
-//         return <AllergyStep />;
-//       default:
-//         return <div>존재하지 않는 단계입니다. 😢</div>;
-//     }
-//   };
+export const indexToSlug: Record<number, string> = {
+  0: "start",
+  1: "gender",
+  2: "state",
+  3: "food",
+  4: "condition",
+  5: "allergy",
+};
 
-//   if (!isClient) return null;
+export default function StepPage({ params }: { params: { step: string } }) {
+  const Component = stepComponents[params.step];
 
-//   return <>{getStepComponent()}</>;
-// }
+  if (!Component) return notFound();
+
+  return <Component />;
+}

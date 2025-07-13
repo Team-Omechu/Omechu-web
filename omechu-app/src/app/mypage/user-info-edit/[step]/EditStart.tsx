@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+import { indexToSlug } from "@/app/mypage/user-info-edit/[step]/page";
 import Header from "@/app/components/common/Header";
 
-export default function UserInfoSetup() {
+export default function EditStart() {
   const router = useRouter();
 
   return (
@@ -13,7 +14,11 @@ export default function UserInfoSetup() {
       <Header
         className={"border-[#CAC6BF]"}
         leftChild={
-          <button onClick={() => router.push("./user-info-edit")}>
+          <button
+            onClick={() =>
+              router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
+            }
+          >
             <Image
               src={"/header_left_arrow.png"}
               alt={"changeProfileImage"}
@@ -33,7 +38,9 @@ export default function UserInfoSetup() {
         </section>
         <section>
           <button
-            onClick={() => router.push("user-info-setup/gender")}
+            onClick={() =>
+              router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
+            }
             className="w-48 h-16 p-5 flex items-center justify-center
                       text-white text-2xl font-medium rounded-md 
                       bg-[#FB4746] dark:bg-[#bc3535]

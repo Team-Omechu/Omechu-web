@@ -10,7 +10,7 @@ const navItems: {
 }[] = [
   {
     title: "홈",
-    routingUrl: "/",
+    routingUrl: "/mainpage",
     imgSrc: "/Home.png",
     imgAlt: "홈",
   },
