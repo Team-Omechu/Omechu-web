@@ -1,18 +1,14 @@
 // src/app/restaurant-detail/map/[id]/page.tsx
-
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-// 🔥 핵심: 동적 처리 설정 추가
+// ✅ 동적 처리 명시
 export const dynamic = "force-dynamic";
 
-type Props = {
-  params: { id: string };
-};
-
-export default function MapPage({ params }: Props) {
+// ✅ 타입 명시 안하고 직접 구조분해할 것 (핵심)
+export default function MapPage({ params }: { params: { id: string } }) {
   const id = Number(params.id);
   const restaurant = restaurantList.find((r) => r.id === id);
 
