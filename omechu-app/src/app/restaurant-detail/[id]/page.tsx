@@ -1,3 +1,7 @@
+export default function RestaurantDetail() {
+  return <></>;
+}
+
 // "use client";
 // // 라이브러리
 // import Image from "next/image";
