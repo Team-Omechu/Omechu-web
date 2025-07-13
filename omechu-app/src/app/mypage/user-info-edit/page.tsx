@@ -6,7 +6,7 @@ import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import InfoRow from "@/app/components/mypage/InfoRow";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { indexToSlug } from "@/app/mypage/user-info-edit/[step]/page"; // 경로 맞춰서
+import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
 
 export default function UserInfoEdit() {
   const router = useRouter();

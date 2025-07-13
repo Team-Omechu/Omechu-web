@@ -7,7 +7,7 @@ import ProgressBar from "@/app/components/common/ProgressBar";
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { indexToSlug } from "./page";
+import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
 
 export default function GenderStep() {
   const router = useRouter();

@@ -8,7 +8,7 @@ import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import AlertModal from "@/app/components/common/AlertModal";
-import { indexToSlug } from "./page";
+import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
 
 export default function FoodStep() {
   const router = useRouter();

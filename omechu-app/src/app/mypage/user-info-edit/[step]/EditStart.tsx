@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { indexToSlug } from "@/app/mypage/user-info-edit/[step]/page";
+import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
 import Header from "@/app/components/common/Header";
 
 export default function EditStart() {
