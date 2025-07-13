@@ -1,9 +1,13 @@
+// src/app/restaurant-detail/map/[id]/page.tsx
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-// props 타입 명확하게 정의
+// ✅ 런타임에 동적 처리할 수 있도록 명시
+export const dynamicParams = true;
+
+// ✅ props 타입
 type Props = {
   params: { id: string };
 };
