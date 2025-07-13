@@ -2,7 +2,7 @@
 // 라이브러리
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 // 컴포넌트 목록
@@ -23,10 +23,9 @@ import {
 export default function RestaurantDetail() {
   const pathname = usePathname(); // 현재 페이지 경로 가져오기 (예: /restaurant/detail)
   const router = useRouter(); // 페이지 이동을 위한 라우터 훅
-  const searchParams = useSearchParams(); // URL 쿼리스트링 접근 (예: ?id=1)
 
-  // URL에서 id 파라미터를 숫자로 파싱 (예: id=1 → 숫자 1로 변환)
-  const id = Number(searchParams.get("id"));
+  const params = useParams();
+  const id = Number(params.id);
 
   // id에 해당하는 맛집 정보 찾기
   const restaurant = restaurantList.find((item) => item.id === id);
