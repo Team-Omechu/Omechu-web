@@ -93,7 +93,7 @@ export default function RestaurantDetail() {
         leftChild={
           <button
             onClick={() => {
-              router.push("/restuarant");
+              router.push("/restaurant");
             }}
           >
             <Image
