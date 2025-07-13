@@ -1,26 +1,18 @@
-// ✅ 1. 이 파일은 클라이언트 컴포넌트로 설정
-"use client";
-
-import { useRouter, useSearchParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-export default function MapPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+interface MapPageProps {
+  params: { id: string };
+}
 
-  const id = Number(searchParams.get("id"));
+export default function MapPage({ params }: MapPageProps) {
+  const id = Number(params.id);
   const restaurant = restaurantList.find((r) => r.id === id);
 
   if (!restaurant) {
-    return (
-      <main className="flex items-center justify-center h-screen">
-        <p className="text-xl font-semibold text-red-500">
-          맛집 정보를 찾을 수 없습니다.
-        </p>
-      </main>
-    );
+    return notFound(); // 404 페이지로 이동
   }
 
   const mapImagePath = "/restaurant/오레노라멘합정.png";
@@ -31,7 +23,7 @@ export default function MapPage() {
         className="border-none"
         title=""
         leftChild={
-          <button onClick={() => router.push(`/restaurant-detail?id=${id}`)}>
+          <button onClick={() => history.back()}>
             <Image
               src={"/header_left_arrow.png"}
               alt="뒤로가기"
