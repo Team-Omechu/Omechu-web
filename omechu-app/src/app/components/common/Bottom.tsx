@@ -22,7 +22,7 @@ const navItems: {
   },
   {
     title: "맛집",
-    routingUrl: "/restaurant-detail",
+    routingUrl: "/restaurant",
     imgSrc: "/restaurant.png",
     imgAlt: "맛집",
   },

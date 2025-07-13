@@ -85,20 +85,6 @@ export default function RestaurantDetail() {
     }
   });
 
-  // 디버그용 콘솔.로그
-  // console.log("id:", id);
-  // console.log("restaurant:", restaurant);
-  // console.log("filteredReviews:", filteredReviews);
-  // console.log("summary:", summary);
-  // sortedReviews.forEach((review) => {
-  //   console.log({
-  //     id: review.id,
-  //     votes: localVotes[review.id] ?? review.votes,
-  //     createdDate: review.createdDate,
-  //     parsed: parseDate(review.createdDate).getTime(),
-  //   });
-  // });
-
   return (
     <>
       <Header
