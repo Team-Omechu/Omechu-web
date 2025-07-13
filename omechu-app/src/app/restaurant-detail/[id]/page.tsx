@@ -42,13 +42,13 @@ export default function MapPage() {
       />
       <main className="flex flex-col items-center w-full h-full">
         <h1 className="mb-5 text-[#1F9BDA] text-2xl font-bold">
-          {restaurant.name} ♥︎
+          {restaurant!.name} ♥︎
         </h1>
         <section className="flex items-center justify-center w-full">
           <div className="w-80 h-80 border-2 border-[#89d8ff] overflow-hidden">
             <Image
               src={mapImagePath}
-              alt={`${restaurant.name} 지도`}
+              alt={`${restaurant!.name} 지도`}
               width={330}
               height={330}
             />
