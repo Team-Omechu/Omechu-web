@@ -3,7 +3,12 @@ import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-export default async function MapPage({ params }: { params: { id: string } }) {
+// props 타입 명확하게 정의
+interface Props {
+  params: { id: string };
+}
+
+export default function MapPage({ params }: Props) {
   const id = Number(params.id);
   const restaurant = restaurantList.find((r) => r.id === id);
 
