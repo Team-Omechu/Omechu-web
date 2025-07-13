@@ -1,7 +1,7 @@
 "use client";
 // 라이브러리
 import Image from "next/image";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 // 컴포넌트 목록
@@ -20,7 +20,6 @@ import {
 } from "@/app/constant/restaurant/reviewSummary";
 
 export default function RestaurantDetail() {
-  const pathname = usePathname(); // 현재 페이지 경로 가져오기 (예: /restaurant/detail)
   const router = useRouter(); // 페이지 이동을 위한 라우터 훅
 
   const params = useParams();
