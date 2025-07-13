@@ -66,7 +66,8 @@ export default function ClientLayout({
     "/mypage/terms/location-info",
 
     //맛집-상세페이지
-    "/restaurant-detail",
+    "restaurant/restaurant-detail",
+    "restaurant/restaurant-detail/[id]/map",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 
