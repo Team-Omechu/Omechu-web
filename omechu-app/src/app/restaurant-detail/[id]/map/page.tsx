@@ -1,27 +1,25 @@
 "use client";
 
-// export default function RestaurantMap() {
-//   return <></>;
-// }
-
-// src/app/restaurant-detail/map/[id]/page.tsx
-import { notFound } from "next/navigation";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-// ✅ 동적 처리 명시
-export const dynamic = "force-dynamic";
+export default function MapPage() {
+  const router = useRouter();
+  const params = useParams();
+  const id = Number((params as { id: string }).id);
 
-// ✅ 타입 명시 안하고 직접 구조분해할 것 (핵심)
-export default function MapPage({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
   const restaurant = restaurantList.find((r) => r.id === id);
-
-  if (!restaurant) return notFound();
+  if (!restaurant) {
+    return (
+      <main className="flex items-center justify-center h-screen">
+        <p className="text-gray-500">존재하지 않는 맛집입니다.</p>
+      </main>
+    );
+  }
 
   const mapImagePath = "/restaurant/오레노라멘합정.png";
-  console.log(params);
 
   return (
     <>
@@ -29,7 +27,7 @@ export default function MapPage({ params }: { params: { id: string } }) {
         className="border-none"
         title=""
         leftChild={
-          <button onClick={() => history.back()}>
+          <button onClick={() => router.back()}>
             <Image
               src={"/header_left_arrow.png"}
               alt="뒤로가기"
