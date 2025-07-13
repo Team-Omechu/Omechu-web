@@ -126,7 +126,6 @@ export default function AllergyStep() {
             }
             confirmText="추천 받기"
             onConfirm={() => {
-              resetAll();
               setShowSaveModal(false);
               router.push(`/mainpage`);
             }}
