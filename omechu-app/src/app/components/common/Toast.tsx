@@ -1,5 +1,7 @@
 // Toast.tsx
 
+import { useEffect, useState } from "react";
+
 /**
  * Toast 컴포넌트
  *
@@ -17,16 +19,34 @@ type ToastProps = {
 };
 
 export default function Toast({ message, show }: ToastProps) {
-  if (!show) return null;
+  const [visible, setVisible] = useState(false);
+  const [isHiding, setIsHiding] = useState(false);
+
+  useEffect(() => {
+    if (show) {
+      setVisible(true);
+      setIsHiding(false);
+    } else {
+      setIsHiding(true);
+      const timer = setTimeout(() => {
+        setVisible(false);
+        setIsHiding(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [show]);
+
+  if (!visible) return null;
 
   return (
-    <div
-      className={`fixed top-2/4 left-1/2 w-60 h-20 flex justify-center items-center transform -translate-x-1/2 px-5 py-3 text-sm text-white 
-        bg-[#82828280] rounded-3xl shadow-md transition-opacity duration-300 z-50
-        ${show ? "opacity-100" : "opacity-0 pointer-events-none"}
-      `}
-    >
-      {message}
+    <div className="fixed z-50 transform -translate-x-1/2 -translate-y-1/2 bottom-56 left-1/2">
+      <div
+        className={`w-fit h-20 px-10 py-3 text-sm text-white flex justify-center items-center
+      rounded-3xl shadow-md transition-opacity duration-300 bg-[#828282cc]
+      ${isHiding ? "opacity-0" : "opacity-70 animate-shake"}`}
+      >
+        {message}
+      </div>
     </div>
   );
 }
