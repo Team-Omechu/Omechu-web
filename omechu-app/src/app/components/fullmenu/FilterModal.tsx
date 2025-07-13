@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
-import { useRouter } from "next/navigation";
 
 type FilterModalProps = {
   onClose: () => void;
@@ -19,7 +18,6 @@ const filterOptions = {
 };
 
 export default function FilterModal({ onClose, onApply, selected }: FilterModalProps) {
-  const router = useRouter();
   const [tempSelected, setTempSelected] = useState<string[]>(selected);
 
   const toggleFilter = (item: string) => {
