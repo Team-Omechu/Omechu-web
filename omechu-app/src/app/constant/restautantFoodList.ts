@@ -1,7 +1,17 @@
 // restuarant 리스트에 사용되는 음식 아이템 데이터입니다.
 // 이 데이터는 더미 데이터로, 실제 API 호출로 대체될 수 있어서 interface를 적용하진 않았습니다.
 // 각 음식 아이템은 이름, 평점, 리뷰 수, 주소, 메뉴, 태그, 이미지 URL을 포함하며, 
-// 추후 interface를 적용할 수 있습니다.
+// 음식 아이템의 정보를 표시하는 데 사용됩니다.
+
+export type FoodItemType = {
+  name: string;           // 음식점 이름
+  rating: number;         // 평점 (예: 3.2)
+  reviews: number;        // 리뷰 수 (예: 24)
+  address: string;        // 주소
+  menu: string;           // 대표 메뉴
+  tags: string[];         // 키워드 태그 리스트 (예: ["데이트", "기념일"])
+  image: string;          // 이미지 경로
+};
 
 export const foodItems = [
     {
