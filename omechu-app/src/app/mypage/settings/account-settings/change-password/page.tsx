@@ -68,7 +68,7 @@ export default function ChagePassword() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"비밀번호 변경"}
         leftChild={
           <button
             onClick={() => {

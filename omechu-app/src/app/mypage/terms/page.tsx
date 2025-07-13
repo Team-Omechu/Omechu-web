@@ -17,11 +17,11 @@ export default function Terms() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"이용 약관"}
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.push("/mypage/settings");
             }}
           >
             <Image
