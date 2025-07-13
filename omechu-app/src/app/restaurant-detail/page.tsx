@@ -20,22 +20,6 @@ import {
   reviewTags,
 } from "@/app/constant/restaurant/reviewSummary";
 
-interface Restaurant {
-  id: number;
-  name: string;
-  category: string;
-  address: {
-    road: string;
-    jibun: string;
-    postalCode: string;
-  };
-  images: string[];
-  timetable: {
-    days_of_the_week: string;
-    time: string;
-  }[];
-}
-
 export default function RestaurantDetail() {
   const pathname = usePathname(); // 현재 페이지 경로 가져오기 (예: /restaurant/detail)
   const router = useRouter(); // 페이지 이동을 위한 라우터 훅
