@@ -1,14 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { distance } from "fastest-levenshtein";
 import SearchBar from "@/app/components/common/SearchBar";
-import Image from "next/image";
 import { suggestionList } from "@/app/constant/suggestionList";
 import TagItem from "@/app/components/common/Tag";
 import { foodItems } from "@/app/constant/restautantFoodList"; // 음식 데이터
-import LocationModal from "@/app/components/restaurant/LoactionModal/LocationModal";
+import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
 
 export default function Restaurant() {
 
@@ -22,8 +23,8 @@ export default function Restaurant() {
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [sortMode, setSortMode] = useState<"recommend" | "recent">("recommend");
-    // const [visibleCount, setVisibleCount] = useState(21);
-    // const [isLoading, setIsLoading] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(8);
+    const [isLoading, setIsLoading] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
     const [isSearched, setIsSearched] = useState(false);
@@ -41,7 +42,63 @@ export default function Restaurant() {
         !item.menu.includes(search.trim()) // 정확 검색에 이미 포함된 건 제외
     );
         
-    // const visibleItems = filteredItems.slice(0, visibleCount);
+    const visibleItems = filteredItems.slice(0, visibleCount);
+
+    // 무한 스크롤 구현에 대한 설명:
+    // 1. 사용자가 스크롤을 내리면 IntersectionObserver가 페이지 하단의 특정 요소(loaderRef)를 감지합니다.
+    // 2. 해당 요소가 뷰포트에 들어오면 observerCallback이 호출되어,
+    //    현재 로딩 중이 아니고, 아직 모든 항목을 로드하지 않은 경우,
+    //    로딩 상태를 true로 설정하고 visibleCount를 증가시킵니다.
+    // 3. visibleCount가 증가하면, 화면에 표시되는 항목이 늘어나고, 새로운 항목들이 렌더링됩니다. 
+    // 4. 로딩 상태는 일정 시간 후 자동으로 false로 설정되어, 로딩 애니메이션이 사라집니다.
+
+    // 무한 스크롤 감지를 위한 ref. 페이지 하단의 div에 연결됨
+    const loaderRef = useRef<HTMLDivElement | null>(null);
+
+    // IntersectionObserver 콜백 함수
+    // loaderRef 요소가 뷰포트에 들어오면 다음 항목들을 불러옴
+    const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+        const target = entries[0];
+
+        // 요소가 보이고, 로딩 중이 아니며, 아직 모든 항목을 로드하지 않은 경우
+        if (target.isIntersecting && !isLoading && visibleCount < filteredItems.length) {
+        setIsLoading(true); // 로딩 상태 시작
+        setVisibleCount((prev) => Math.min(prev + 18, filteredItems.length)); // 다음 항목 18개 추가
+        }
+    },
+    [isLoading, visibleCount, filteredItems.length]
+    );
+
+    // IntersectionObserver 등록 및 해제
+    useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+        root: null, // 뷰포트를 기준으로 관찰
+        rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
+        threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+    });
+
+    if (loaderRef.current) {
+        observer.observe(loaderRef.current);
+    }
+
+    return () => {
+        if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+        }
+    };
+    }, [observerCallback]);
+
+    // 로딩 상태를 일정 시간 후 자동 해제 (로딩 애니메이션 표시 목적)
+    useEffect(() => {
+    if (isLoading) {
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1800); // 1.8초 후 로딩 해제
+
+        return () => clearTimeout(timer);
+    }
+    }, [isLoading]);
 
     const handleSearch = (search: string) => {
         router.push(`/restaurant?query=${search}`);
@@ -73,7 +130,12 @@ export default function Restaurant() {
 
             <div className="flex items-center gap-2 mt-3">
                 <button className="flex justify-between items-center gap-1 flex-shrink-0">
-                    <img src={'/myLocation.svg'} alt="내 위치" className="w-4 h-4"/>
+                    <Image 
+                        src={'/myLocation.svg'} 
+                        alt="내 위치" 
+                        width={16} 
+                        height={16}
+                    />
                     내 위치
                 </button>
                 <div className="flex overflow-x-auto whitespace-nowrap gap-2 mx-2 scrollbar-hide">
@@ -89,7 +151,12 @@ export default function Restaurant() {
                     ))}
                 </div>
                 <button className="flex-shrink-0 ml-auto" onClick={() => setIsFilterOpen(true)}>
-                    <img src={'/customselect.png'} alt="사용자필터" className="w-8 h-8"/>
+                    <Image 
+                        src={'/customselect.png'} 
+                        alt="사용자필터" 
+                        width={32} 
+                        height={32}
+                    />
                 </button>
             </div>
     
@@ -136,10 +203,12 @@ export default function Restaurant() {
                         className="flex items-center gap-1 border border-gray-400 bg-white text-gray-500 text-xs px-3 py-1 rounded-full"
                     >
                         추천 키워드
-                        <img 
+                        <Image 
                             src={'/down_arrow.svg'} 
                             alt="추천 키워드" 
-                            className={`w-4 h-4 transition-transform duration-200 ${
+                            width={16}
+                            height={16}
+                            className={`transition-transform duration-200 ${
                                 showKeywords ? "rotate-180" : ""
                             }`}
                         />
@@ -158,10 +227,12 @@ export default function Restaurant() {
                         <button 
                             onClick={() => setShowKeywords((prev) => !prev)}
                         >
-                            <img 
+                            <Image 
                                 src={'/down_arrow.svg'} 
                                 alt="추천 키워드" 
-                                className={`w-6 h-6 transition-transform duration-200 ${
+                                width={24}
+                                height={24}
+                                className={`transition-transform duration-200 ${
                                     showKeywords ? "rotate-180" : ""
                                 }`}
                             />
@@ -243,7 +314,12 @@ export default function Restaurant() {
                                     </div>
                                     <div className="flex flex-col place-items-end gap-2">
                                         <button>
-                                            <img src={'/Heart.svg'} alt="사용자필터" className="w-5 h-5"/>
+                                            <Image 
+                                                src={'/Heart.svg'} 
+                                                alt="사용자필터" 
+                                                width={20}
+                                                height={20}
+                                            />
                                         </button>
                                         <Image
                                             src={item.image}
@@ -263,7 +339,7 @@ export default function Restaurant() {
 
             {/* 음식 카드 리스트 */}
             <div className="flex flex-col gap-4">
-                {filteredItems.map((item, idx) => (
+                {visibleItems.map((item, idx) => (
                     <div 
                         key={idx} 
                         className="border border-black rounded-xl shadow-md bg-white p-3 flex justify-between items-start"
@@ -292,7 +368,12 @@ export default function Restaurant() {
                         </div>
                         <div className="flex flex-col place-items-end gap-2">
                             <button>
-                                <img src={'/Heart.svg'} alt="사용자필터" className="w-5 h-5"/>
+                                <Image 
+                                    src={'/Heart.svg'} 
+                                    alt="사용자필터" 
+                                    width={20}
+                                    height={20}
+                                />
                             </button>
                             <Image
                                 src={item.image}
