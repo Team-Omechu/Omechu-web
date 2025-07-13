@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
-import { regionData } from "../../constant/RegionList";
+import { regionData } from "../../../constant/RegionList";
 
 type FilterModalProps = {
 onClose: () => void;

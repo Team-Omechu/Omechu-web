@@ -1,15 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { distance } from "fastest-levenshtein";
 import SearchBar from "@/app/components/common/SearchBar";
 import Image from "next/image";
 import { suggestionList } from "@/app/constant/suggestionList";
 import TagItem from "@/app/components/common/Tag";
 import { foodItems } from "@/app/constant/restautantFoodList"; // 음식 데이터
-import LocationModal from "@/app/components/restaurant/LocationModal";
-import { distance } from "fastest-levenshtein";
+import LocationModal from "@/app/components/restaurant/LoactionModal/LocationModal";
 
 export default function Restaurant() {
 
