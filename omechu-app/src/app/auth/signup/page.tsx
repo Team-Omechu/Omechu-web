@@ -66,7 +66,7 @@ export default function Signup() {
   return (
     <div className="flex flex-col items-center min-h-screen bg-[#F8D5FF] py-10 px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
-        <h1 className="text-xl font-bold text-center mb-8 text-black">
+        <h1 className="mb-8 text-xl font-bold text-center text-black">
           회원 정보를 입력해 주세요
         </h1>
 
@@ -149,7 +149,7 @@ export default function Signup() {
                 onChange={handleAllAgreement}
                 className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
               />
-              <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+              <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-3.5 h-3.5"
@@ -168,7 +168,7 @@ export default function Signup() {
               아래의 내용을 모두 확인하였으며 모두 동의합니다
             </span>
           </label>
-          <div className="pl-7 space-y-2">
+          <div className="space-y-2 pl-7">
             <div className="flex items-center justify-between">
               <label
                 htmlFor="termsService"
@@ -181,7 +181,7 @@ export default function Signup() {
                     {...register("termsService")}
                     className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                  <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3.5 h-3.5"
@@ -224,7 +224,7 @@ export default function Signup() {
                     {...register("termsPrivacy")}
                     className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                  <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3.5 h-3.5"
@@ -269,7 +269,7 @@ export default function Signup() {
                     {...register("termsLocation")}
                     className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                  <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3.5 h-3.5"
@@ -313,7 +313,7 @@ export default function Signup() {
                   {...register("termsAge")}
                   className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
                 />
-                <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 peer-checked:opacity-100">
+                <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-3.5 h-3.5"

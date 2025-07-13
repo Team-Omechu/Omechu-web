@@ -7,7 +7,7 @@ import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
 
-export default function TermForPersonalInfo() {
+export default function TermForLocationInfo() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
   const scrollToTop = () => {

@@ -29,15 +29,24 @@ export default function ClientLayout({
     "/mypage/user-info-setup/condition",
     "/mypage/user-info-setup/allergy",
     "/mypage/recommended-list",
+    "/mainpage/question-answer/meal-time",
+    "/mainpage/question-answer/purpose",
+    "/mainpage/question-answer/state",
+    "/mainpage/question-answer/who",
+    "/mainpage/question-answer/budget",
+    "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
+    "/mypage/recommended-list",
 
+    // 마이페이지-이용약관
+    "/mypage/terms",
     // 마이페이지-설정
     "/mypage/settings",
     "/mypage/settings/account-settings",
     "/mypage/settings/account-settings/change-password",
+    // 마이페이지-이용약관
     "/mypage/terms",
-    "/mypage/terms/service",
-    "/mypage/terms/personal-info",
-    "/mypage/terms/location-info",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/signin",
@@ -50,6 +59,14 @@ export default function ClientLayout({
     "/onboarding/4",
     "/onboarding/5",
     "/onboarding/6",
+
+    // 마이페이지-이용약관
+    "/mypage/terms/service",
+    "/mypage/terms/personal-info",
+    "/mypage/terms/location-info",
+
+    //맛집-상세페이지
+    "/restaurant-detail",
   ];
   const showBottomNav = !noBottomNavRoutes.includes(pathname);
 

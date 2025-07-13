@@ -7,7 +7,7 @@ import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
 
-export default function TermForLocationInfo() {
+export default function TermForPersonalInfo() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
   const scrollToTop = () => {
@@ -17,7 +17,7 @@ export default function TermForLocationInfo() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"개인정보 처리 방침"}
         leftChild={
           <button
             onClick={() => {
