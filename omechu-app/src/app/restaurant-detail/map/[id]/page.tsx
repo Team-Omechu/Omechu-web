@@ -4,9 +4,9 @@ import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
 // props 타입 명확하게 정의
-interface Props {
+type Props = {
   params: { id: string };
-}
+};
 
 export default function MapPage({ params }: Props) {
   const id = Number(params.id);
