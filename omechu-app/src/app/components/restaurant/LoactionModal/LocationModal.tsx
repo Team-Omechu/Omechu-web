@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "@/app/components/common/Header";
-import { regionData } from "../../../constant/RegionList";
+import { regionData } from "@/app/constant/RegionList";
+import SectionHeader from "./SecionHeader";
+import SelectableList from "./SelectableList";
+import ToggleableList from "./TogglealbeList";
+import TagList from "./TagList";
 
 type FilterModalProps = {
 onClose: () => void;
@@ -16,16 +20,6 @@ export default function LocationModal({ onClose, onApply, selected }: FilterModa
     const cities = Object.keys(regionData);
     const districts = Object.keys(regionData[selectedCity] || {});
     const towns = regionData[selectedCity]?.[selectedDistrict] || [];
-
-    const toggleTown = (town: string) => {
-        const full = `${selectedCity} ${selectedDistrict} ${town}`;
-        if (tempSelected.includes(full)) {
-            setTempSelected(tempSelected.filter((t) => t !== full));
-        } else {
-            if (tempSelected.length >= 5) return;
-            setTempSelected([...tempSelected, full]);
-        }
-    };
 
     useEffect(() => {
         const defaultCity = Object.keys(regionData)[0];
@@ -50,84 +44,55 @@ export default function LocationModal({ onClose, onApply, selected }: FilterModa
                 }
             />
             <div className="mx-4 my-6">
-                <div className="grid grid-cols-3 border-b border-gray-300">
-                    <div className="bg-[#00A3FF] text-white text-center py-2 text-sm border-r border-white">시·도</div>
-                    <div className="bg-[#00A3FF] text-white text-center py-2 text-sm border-r border-white">시·구·군</div>
-                    <div className="bg-[#00A3FF] text-white text-center py-2 text-sm">동·읍·면</div>
-                </div>
+                <SectionHeader titles={["시·도", "시·군·구", "동·읍·면"]} />
 
                 <div className="grid grid-cols-3 text-center border-b border-gray-400 h-[28rem]">
-                    <div className="border-r border-gray-300 overflow-y-auto scrollbar-hide">
-                    {cities.map((city) => (
-                        <button
-                            key={city}
-                            className={`block w-full px-3 py-2 text-sm ${selectedCity === city ? "bg-gray-400 text-white rounded-full" : ""}`}
-                            onClick={() => {
-                                setSelectedCity(city);
-                            }}
-                        >
-                            {city.replace("특별시", "")}
-                        </button>
-                    ))}
-                    </div>
+                    <SelectableList
+                        items={cities}
+                        selected={selectedCity}
+                        onSelect={(city) => {
+                            setSelectedCity(city);
+                            setSelectedDistrict(Object.keys(regionData[city])[0]);
+                        }}
+                    />
 
-                    <div className="border-r border-gray-300 overflow-y-auto scrollbar-hide">
-                        <button 
-                            className="block w-full px-3 py-2 text-sm"
-                            onClick={() => {
+                    <SelectableList
+                        items={districts}
+                        selected={selectedDistrict}
+                        onSelect={(district) => {
+                            if (district === "전체") {
                                 const full = `${selectedCity} 전체`;
-                                if (tempSelected.includes(full)) {
-                                    setTempSelected(tempSelected.filter((t) => t !== full));
-                                } else {
-                                    if (tempSelected.length >= 5) return;
-                                    setTempSelected([...tempSelected, full]);
-                                }
-                            }}
-                        >
-                            {selectedCity.replace("특별시", "")} 전체
-                        </button>
-                        {districts.map((district) => (
-                            <button
-                                key={district}
-                                className={`block w-full px-3 py-2 text-sm justify-between items-center ${selectedDistrict === district ? "bg-gray-400 text-white rounded-full" : ""}`}
-                                onClick={() => setSelectedDistrict(district)}
-                            >
-                                {district}
-                                {selectedDistrict === district && <span className="ml-1">▶</span>}
-                            </button>
-                        ))}
-                    </div>
+                            if (tempSelected.includes(full)) {
+                                setTempSelected(tempSelected.filter((t) => t !== full));
+                            } else {
+                                if (tempSelected.length >= 5) return;
+                                setTempSelected([...tempSelected, full]);
+                            }
+                            } else {
+                                setSelectedDistrict(district);
+                            }
+                        }}
+                        topItems={["전체"]}
+                    />
 
-                    <div className="overflow-y-auto scrollbar-hide">
-                        {towns.map((town) => {
-                            const full = `${selectedCity} ${selectedDistrict} ${town}`;
-                            const selected = tempSelected.includes(full);
-                            return (
-                                <button
-                                    key={town}
-                                    onClick={() => toggleTown(town)}
-                                    className={`block w-full px-3 py-2 text-sm justify-between items-center ${selected ? "bg-gray-400 text-white rounded-full" : ""}`}
-                                >
-                                    {town}
-                                    {selected && <span>✓</span>}
-                                </button>
-                            );
-                        })}
-                    </div>
+                    <ToggleableList
+                        items={towns.map((town) => ({
+                            label: town,
+                            value: `${selectedCity} ${selectedDistrict} ${town}`
+                        }))}
+                        selectedValues={tempSelected}
+                        onToggle={(item) =>
+                        setTempSelected((prev) =>
+                            prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+                        )}
+                    />
                 </div>
 
                 <div className="text-base pl-2 mt-4 mb-2 text-gray-600">{tempSelected.length}/5</div>
-                <div className="flex flex-wrap gap-2 mt-2 pb-6 justify-start border-b border-gray-600 min-h-28">
-                    {tempSelected.map((town) => (
-                    <span
-                        key={town}
-                        className="bg-gray-400 text-white text-xs rounded-full px-2 py-1 h-6 flex items-center gap-1"
-                    >
-                        {town}
-                        <button onClick={() => setTempSelected(tempSelected.filter((t) => t !== town))}>✕</button>
-                    </span>
-                    ))}
-                </div>
+                <TagList
+                    items={tempSelected}
+                    onRemove={(item) => setTempSelected(tempSelected.filter((t) => t !== item))}
+                />
 
                 <div className="mt-6 text-center">
                     <button 
