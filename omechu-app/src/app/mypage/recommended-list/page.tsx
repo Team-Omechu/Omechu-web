@@ -57,7 +57,6 @@ export default function RecommendedList() {
     }
 
     if (trimmed === submittedTerm) return;
-
     setSubmittedTerm(trimmed);
     isJustResetRef.current = true;
     setSearchTerm("");

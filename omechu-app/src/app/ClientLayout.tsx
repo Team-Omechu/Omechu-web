@@ -45,10 +45,8 @@ export default function ClientLayout({
     "/mypage/settings",
     "/mypage/settings/account-settings",
     "/mypage/settings/account-settings/change-password",
+    // 마이페이지-이용약관
     "/mypage/terms",
-    "/mypage/terms/service",
-    "/mypage/terms/personal-info",
-    "/mypage/terms/location-info",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/signin",
