@@ -18,8 +18,6 @@ export default function AllergyStep() {
   const allergies = useOnboardingStore((state) => state.allergies);
   const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
 
-  const resetAll = useOnboardingStore((state) => state.reset);
-
   // 버튼 클릭하면 선택/해제
   const handleClick = (item: string) => {
     toggleAllergy(item);
