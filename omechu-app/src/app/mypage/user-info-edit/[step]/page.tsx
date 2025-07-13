@@ -1,8 +1,12 @@
 import { notFound } from "next/navigation";
-import { stepComponents, StepKey } from "@/app/constant/UserInfoEditSteps";
+import {
+  stepComponents,
+  stepOrder,
+  StepKey,
+} from "@/app/constant/UserInfoEditSteps";
 
 export function generateStaticParams() {
-  return [];
+  return stepOrder.map((step) => ({ step }));
 }
 
 interface Props {
