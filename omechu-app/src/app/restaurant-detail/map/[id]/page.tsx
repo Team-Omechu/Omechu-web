@@ -3,17 +3,11 @@ import Image from "next/image";
 import Header from "@/app/components/common/Header";
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
-interface MapPageProps {
-  params: { id: string };
-}
-
-export default function MapPage({ params }: MapPageProps) {
+export default async function MapPage({ params }: { params: { id: string } }) {
   const id = Number(params.id);
   const restaurant = restaurantList.find((r) => r.id === id);
 
-  if (!restaurant) {
-    return notFound(); // 404 페이지로 이동
-  }
+  if (!restaurant) return notFound();
 
   const mapImagePath = "/restaurant/오레노라멘합정.png";
 
