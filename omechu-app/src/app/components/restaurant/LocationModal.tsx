@@ -9,7 +9,7 @@ onApply: (selected: string[]) => void;
 selected: string[];
 };
 
-export default function FilterModal({ onClose, onApply, selected }: FilterModalProps) {
+export default function LocationModal({ onClose, onApply, selected }: FilterModalProps) {
     const [tempSelected, setTempSelected] = useState<string[]>(selected);
     const [selectedCity, setSelectedCity] = useState("서울특별시");
     const [selectedDistrict, setSelectedDistrict] = useState("강북구");
