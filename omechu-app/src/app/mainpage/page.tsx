@@ -12,6 +12,8 @@ export default function MainPage() {
         <Image
           src="/mainpage.png"
           alt="메인 페이지"
+          width={375}
+          height={732}
           className="w-[25.5625rem] h-[40rem] object-cover mt-10"
         />
         {/* 버튼들 */}
