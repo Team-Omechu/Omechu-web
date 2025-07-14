@@ -32,7 +32,9 @@ jobs:
 
       # 3. Corepack 활성화
       - name: Enable Corepack
-        run: corepack enable
+        run: |
+          corepack enable
+          yarn set version 4.9.2
 
       # 4. 의존성 설치
       - name: Install dependencies
