@@ -8,8 +8,8 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
+import SquareButton from "@/app/components/common/button/SquareButton";
 import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
 
 export default function LoginPage() {
@@ -36,7 +36,7 @@ export default function LoginPage() {
     <div className="flex w-full flex-col items-center gap-8 py-10">
       <Link href="/">
         <Image
-          src="/오메추-로고-보라색버전-모자4 1.png" // public 폴더의 로고 이미지
+          src="/오메추-로고-보라색버전-모자4 1.png"
           alt="Omechu Logo"
           width={139}
           height={92}
@@ -68,7 +68,7 @@ export default function LoginPage() {
               className="p-2"
             >
               <Image
-                src={showPassword ? "/비밀번호보기.svg" : "/mdi-light_eye.svg"}
+                src={showPassword ? "/eye_open.svg" : "/eye_closed.svg"}
                 alt="toggle password visibility"
                 width={24}
                 height={24}
@@ -78,14 +78,15 @@ export default function LoginPage() {
         />
 
         <div className="mt-4">
-          <Button
+          <SquareButton
             type="submit"
             variant="red"
-            size="large"
+            size="lg"
             disabled={isSubmitting}
+            className="w-full"
           >
             {isSubmitting ? "로그인 중..." : "로그인"}
-          </Button>
+          </SquareButton>
         </div>
 
         <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
@@ -116,15 +117,10 @@ export default function LoginPage() {
         </span>
       </div>
 
-      <Button
-        variant="yellow"
-        size="large"
-        leftIcon={
-          <Image src="/kakao.png" alt="카카오 아이콘" width={24} height={24} />
-        }
-      >
+      <button className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]">
+        <Image src="/kakao.png" alt="카카오 아이콘" width={24} height={24} />
         카카오 로그인
-      </Button>
+      </button>
 
       {loginError && (
         <div className="mt-4 flex h-[70px] w-full items-center justify-center whitespace-pre-line rounded-md bg-[rgba(130,130,130,0.5)] text-center text-sm text-white">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import Button from "@/app/components/auth/Button";
+import RoundButton from "@/app/components/common/button/RoundButton";
 
 export default function FindPasswordEmailSentPage() {
   return (
@@ -19,9 +19,9 @@ export default function FindPasswordEmailSentPage() {
       </div>
       <div className="w-full px-24">
         <Link href="/auth/login" className="w-full">
-          <Button variant="red" size="large" className="w-full rounded-full">
+          <RoundButton variant="red" size="lg" className="w-full">
             로그인 하기
-          </Button>
+          </RoundButton>
         </Link>
       </div>
     </div>

@@ -106,7 +106,7 @@ export default function Signup() {
                 className="p-2"
               >
                 <Image
-                  src="/비밀번호보기.svg"
+                  src="/eye_open.svg"
                   alt="toggle password visibility"
                   width={24}
                   height={24}
@@ -130,7 +130,7 @@ export default function Signup() {
                 className="p-2"
               >
                 <Image
-                  src="/비밀번호보기.svg"
+                  src="/eye_open.svg"
                   alt="toggle password visibility"
                   width={24}
                   height={24}

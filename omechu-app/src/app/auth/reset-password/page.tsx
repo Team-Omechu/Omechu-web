@@ -9,8 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import AlertModal from "@/app/components/auth/AlertModal";
-import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
+import SquareButton from "@/app/components/common/button/SquareButton";
 import {
   resetPasswordSchema,
   ResetPasswordFormValues,
@@ -55,7 +55,7 @@ export default function ResetPasswordPage() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full flex-col gap-2"
+          className="flex w-full flex-col gap-4"
         >
           <Input
             {...register("password")}
@@ -63,6 +63,7 @@ export default function ResetPasswordPage() {
             type={showPassword ? "text" : "password"}
             placeholder="●●●●●●"
             error={errors.password?.message}
+            subText="* 대소문자, 숫자 및 특수문자 포함 8자 이상"
             rightAddon={
               <button
                 type="button"
@@ -70,8 +71,30 @@ export default function ResetPasswordPage() {
                 className="p-2"
               >
                 <Image
+                  src={showPassword ? "/eye_open.svg" : "/eye_closed.svg"}
+                  alt="toggle password visibility"
+                  width={24}
+                  height={24}
+                />
+              </button>
+            }
+          />
+
+          <Input
+            {...register("passwordConfirm")}
+            label="새 비밀번호 재확인"
+            type={showPasswordConfirm ? "text" : "password"}
+            placeholder="새 비밀번호를 다시 입력해주세요"
+            error={errors.passwordConfirm?.message}
+            rightAddon={
+              <button
+                type="button"
+                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                className="p-2"
+              >
+                <Image
                   src={
-                    showPassword ? "/비밀번호보기.svg" : "/mdi-light_eye.svg"
+                    showPasswordConfirm ? "/eye_open.svg" : "/eye_closed.svg"
                   }
                   alt="toggle password visibility"
                   width={24}
@@ -80,48 +103,17 @@ export default function ResetPasswordPage() {
               </button>
             }
           />
-          <p className="mt-1 -translate-y-2 text-xs text-[#828282]">
-            * 대소문자, 숫자 및 특수문자 포함 8자 이상
-          </p>
-
-          <div className="mt-2">
-            <Input
-              {...register("passwordConfirm")}
-              label="새 비밀번호 재확인"
-              type={showPasswordConfirm ? "text" : "password"}
-              placeholder="새 비밀번호를 다시 입력해주세요"
-              error={errors.passwordConfirm?.message}
-              rightAddon={
-                <button
-                  type="button"
-                  onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                  className="p-2"
-                >
-                  <Image
-                    src={
-                      showPasswordConfirm
-                        ? "/비밀번호보기.svg"
-                        : "/mdi-light_eye.svg"
-                    }
-                    alt="toggle password visibility"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-              }
-            />
-          </div>
 
           <div className="mt-8">
-            <Button
+            <SquareButton
               type="submit"
               variant="red"
-              size="large"
+              size="lg"
               disabled={isSubmitting}
               className="w-full"
             >
               {isSubmitting ? "설정 중..." : "비밀번호 설정하기"}
-            </Button>
+            </SquareButton>
           </div>
         </form>
       </div>

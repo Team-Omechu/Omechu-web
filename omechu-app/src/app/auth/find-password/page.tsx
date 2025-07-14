@@ -8,8 +8,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
+import SquareButton from "@/app/components/common/button/SquareButton";
 import {
   findPasswordSchema,
   FindPasswordFormValues,
@@ -64,14 +64,15 @@ export default function FindPasswordPage() {
           error={errors.email?.message}
         />
         <div className="mt-4">
-          <Button
+          <SquareButton
             type="submit"
             variant="red"
-            size="large"
+            size="lg"
             disabled={isSubmitting}
+            className="w-full"
           >
             {isSubmitting ? "메일 발송 중..." : "메일 발송하기"}
-          </Button>
+          </SquareButton>
         </div>
       </form>
 
