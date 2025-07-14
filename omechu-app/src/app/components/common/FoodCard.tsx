@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import { FoodItemType } from "@/app/constant/restautantFoodList";
 
 type FoodCardProps = {
@@ -8,25 +9,25 @@ type FoodCardProps = {
 
 export default function FoodCard({ item, onClick }: FoodCardProps) {
   return (
-    <div 
-      className="border border-black rounded-xl shadow-md bg-white p-3 flex justify-between items-start"
+    <div
+      className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md"
       onClick={onClick}
     >
       <div className="flex-1">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span>{item.name}</span>
-          <span className="flex items-center gap-1 text-yellow-500 text-xs font-normal">
+          <span className="flex items-center gap-1 text-xs font-normal text-yellow-500">
             ⭐ {item.rating}
             <span className="text-yellow-500">({item.reviews})</span>
           </span>
         </div>
-        <p className="text-sm text-gray-500 mb-3">{item.address}</p>
-        <p className="text-blue-600 font-bold text-sm mb-1">{item.menu}</p>
-        <div className="flex gap-2 flex-wrap mt-1 text-xs">
+        <p className="mb-3 text-sm text-gray-500">{item.address}</p>
+        <p className="mb-1 text-sm font-bold text-blue-600">{item.menu}</p>
+        <div className="mt-1 flex flex-wrap gap-2 text-xs">
           {item.tags.map((tag, i) => (
             <span
               key={i}
-              className="border border-blue-400 text-blue-400 rounded-full px-2 py-0.5"
+              className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
             >
               {tag}
             </span>
@@ -35,14 +36,14 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
       </div>
       <div className="flex flex-col place-items-end gap-2">
         <button>
-          <Image src={'/Heart.svg'} alt="하트" width={20} height={20} />
+          <Image src={"/Heart.svg"} alt="하트" width={20} height={20} />
         </button>
         <Image
           src={item.image}
           alt={item.menu}
           width={70}
           height={70}
-          className="w-[4.5rem] h-[4.5rem] object-contain rounded-sm border border-gray-200"
+          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
         />
       </div>
     </div>

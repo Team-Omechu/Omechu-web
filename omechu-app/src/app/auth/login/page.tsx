@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
+import { useForm } from "react-hook-form";
+
 import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
+import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
 
 export default function LoginPage() {
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -30,7 +33,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full gap-8 py-10">
+    <div className="flex w-full flex-col items-center gap-8 py-10">
       <Link href="/">
         <Image
           src="/오메추-로고-보라색버전-모자4 1.png" // public 폴더의 로고 이미지
@@ -43,7 +46,7 @@ export default function LoginPage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-full gap-4"
+        className="flex w-full flex-col gap-4"
       >
         <Input
           {...register("email")}
@@ -85,11 +88,11 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        <div className="flex items-center justify-between mt-2 text-sm text-gray-600">
+        <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
           <label className="flex items-center gap-1.5">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-gray-300 text-red-500 focus:ring-red-500"
+              className="h-4 w-4 rounded border-gray-300 text-red-500 focus:ring-red-500"
               {...register("rememberMe")}
             />
             <span>로그인 상태 유지</span>
@@ -106,9 +109,9 @@ export default function LoginPage() {
         </div>
       </form>
 
-      <div className="relative flex items-center w-full">
+      <div className="relative flex w-full items-center">
         <hr className="w-full border-t border-gray-300" />
-        <span className="absolute px-2 text-xs text-gray-400 bg-[#F8D5FF] -translate-x-1/2 left-1/2">
+        <span className="absolute left-1/2 -translate-x-1/2 bg-[#F8D5FF] px-2 text-xs text-gray-400">
           or
         </span>
       </div>
@@ -124,7 +127,7 @@ export default function LoginPage() {
       </Button>
 
       {loginError && (
-        <div className="w-full h-[70px] flex items-center justify-center text-sm text-center text-white bg-[rgba(130,130,130,0.5)] rounded-md mt-4 whitespace-pre-line">
+        <div className="mt-4 flex h-[70px] w-full items-center justify-center whitespace-pre-line rounded-md bg-[rgba(130,130,130,0.5)] text-center text-sm text-white">
           {loginError}
         </div>
       )}

@@ -1,9 +1,11 @@
 "use client";
 
-import Header from "@/app/components/common/Header";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { Suspense } from "react";
+
+import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import Header from "@/app/components/common/Header";
 
 export default function MenuDetail() {
   return (
@@ -45,26 +47,26 @@ function MenuDetailClient() {
       />
 
       <main className="min-h-screen bg-[#F8D5FF] p-4 pt-8 text-sm text-black">
-        <h1 className="text-center text-2xl font-extrabold text-[#2D9CDB] mt-4 mb-2">
+        <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
           {name}
         </h1>
 
-        <div className="flex justify-center mb-6 mx-auto w-36 h-36">
+        <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
             src="/오메추-로고-보라색버전-모자4 1.png"
             alt={`${name || "메뉴 이미지"}`}
-            className="object-contain rounded"
+            className="rounded object-contain"
             width={144}
             height={144}
           />
         </div>
 
         <section className="px-4">
-          <h2 className="text-base font-semibold mb-2">메뉴 정보</h2>
+          <h2 className="mb-2 text-base font-semibold">메뉴 정보</h2>
 
-          <div className="border border-gray-400 rounded-md p-4 bg-white text-[13px] leading-6">
-            <p className="font-semibold mb-1">기본 영양 정보</p>
-            <div className="px-2 grid grid-cols-2 gap-y-1">
+          <div className="rounded-md border border-gray-400 bg-white p-4 text-[13px] leading-6">
+            <p className="mb-1 font-semibold">기본 영양 정보</p>
+            <div className="grid grid-cols-2 gap-y-1 px-2">
               <span>칼로리</span>
               <span className="text-right">950 kcal</span>
               <span>탄수화물</span>
@@ -80,11 +82,11 @@ function MenuDetailClient() {
             <hr className="my-3" />
 
             <p className="font-semibold">알레르기 유발 성분</p>
-            <p className="pl-2 mb-2">땅콩, 달걀</p>
+            <p className="mb-2 pl-2">땅콩, 달걀</p>
 
             <p className="font-semibold">레시피</p>
             <p
-              className="pl-2 text-black underline cursor-pointer"
+              className="cursor-pointer pl-2 text-black underline"
               onClick={handleClick}
             >
               보러가기 ▶

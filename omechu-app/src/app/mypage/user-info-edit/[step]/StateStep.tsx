@@ -1,13 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { useRouter } from "next/navigation";
+
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function StateStep() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function StateStep() {
   const status = useOnboardingStore((state) => state.workoutStatus);
   const setStatus = useOnboardingStore((state) => state.setWorkoutStatus);
   const resetWorkoutStatus = useOnboardingStore(
-    (state) => state.resetWorkoutStatus
+    (state) => state.resetWorkoutStatus,
   );
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화
 
@@ -43,7 +44,7 @@ export default function StateStep() {
   };
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       <ProgressBar
         currentStep={2}
         totalSteps={5}
@@ -51,26 +52,24 @@ export default function StateStep() {
         cancelButtonText="그만하기"
       />
 
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         <section className="my-20">
-          <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             지금 어떤 운동 상태에{"\n"}가까운가요?
           </div>
         </section>
 
-        <section className="flex flex-col items-center justify-center -mt-4">
+        <section className="-mt-4 flex flex-col items-center justify-center">
           <div className="z-10 flex flex-col gap-5">
             {["다이어트 중", "증량 중", "유지 중"].map((label) => (
               <button
                 key={label}
                 onClick={() => handleStatusClick(label)}
-                className={`w-60 h-12 px-2 text-xl rounded-md border-[1px]
-                  ${
-                    status === label
-                      ? "bg-[#FB4746] text-white border-[#FB4746]"
-                      : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
-                  }
-                `}
+                className={`h-12 w-60 rounded-md border-[1px] px-2 text-xl ${
+                  status === label
+                    ? "border-[#FB4746] bg-[#FB4746] text-white"
+                    : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                } `}
               >
                 {label}
               </button>
@@ -79,19 +78,19 @@ export default function StateStep() {
         </section>
       </main>
 
-      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="mr-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             건너뛰기 {">"}
           </button>
@@ -101,12 +100,11 @@ export default function StateStep() {
         <button
           onClick={handleNext}
           disabled={!status}
-          className={`p-2 min-w-full h-12 rounded-t-md text-white text-xl font-normal
-            ${
-              status
-                ? "bg-[#1F9BDA] dark:bg-[#1774a4] hover:bg-[#1c8cc4] dark:hover:bg-[#135d83] active:bg-[#197cae] dark:active:bg-[#0e4662]"
-                : "bg-[#A1A1A1] dark:bg-[#555] cursor-not-allowed"
-            }`}
+          className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
+            status
+              ? "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]"
+              : "cursor-not-allowed bg-[#A1A1A1] dark:bg-[#555]"
+          }`}
         >
           저장
         </button>

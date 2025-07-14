@@ -1,17 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import AlertModal from "@/app/components/auth/AlertModal";
+import Button from "@/app/components/auth/Button";
+import Input from "@/app/components/auth/Input";
 import {
   resetPasswordSchema,
   ResetPasswordFormValues,
 } from "@/lib/schemas/auth.schema";
-import Button from "@/app/components/auth/Button";
-import Input from "@/app/components/auth/Input";
-import AlertModal from "@/app/components/auth/AlertModal";
 
 export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +43,7 @@ export default function ResetPasswordPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center w-full gap-8">
+      <div className="flex w-full flex-col items-center gap-8">
         <div className="flex flex-col gap-3 text-center">
           <h1 className="text-xl font-medium text-[#393939]">
             비밀번호 재설정
@@ -52,7 +55,7 @@ export default function ResetPasswordPage() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col w-full gap-2"
+          className="flex w-full flex-col gap-2"
         >
           <Input
             {...register("password")}
@@ -77,7 +80,7 @@ export default function ResetPasswordPage() {
               </button>
             }
           />
-          <p className="text-xs text-[#828282] mt-1 -translate-y-2">
+          <p className="mt-1 -translate-y-2 text-xs text-[#828282]">
             * 대소문자, 숫자 및 특수문자 포함 8자 이상
           </p>
 

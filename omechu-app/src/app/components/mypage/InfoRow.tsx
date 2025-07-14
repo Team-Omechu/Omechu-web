@@ -21,20 +21,16 @@ export default function InfoRow({ label, content }: InfoProps) {
   return (
     <div className="flex items-start gap-6">
       {/* 왼쪽 라벨 박스: 성별, 운동 상태 등 */}
-      <div
-        className="w-32 h-10 px-1 flex justify-center items-center
-                  border-[1px] border-[#393939] rounded-md 
-                  bg-[#F5F5F5] dark:bg-[#7a7a7a]"
-      >
+      <div className="flex h-10 w-32 items-center justify-center rounded-md border-[1px] border-[#393939] bg-[#F5F5F5] px-1 dark:bg-[#7a7a7a]">
         {label}
       </div>
 
       {/* 오른쪽 내용 박스: 실제 유저 입력 정보 or None */}
       <div
-        className={`flex-1 mt-2 text-base font-normal break-words whitespace-pre-wrap ${
+        className={`mt-2 flex-1 whitespace-pre-wrap break-words text-base font-normal ${
           isEmpty
-            ? "text-[#a3a3a3] dark:text-[#fcdcdc] font-bold" // 입력 안 된 경우: 흐리게 표시
-            : "text-[#393939] dark:text-white font-bold" // 입력된 경우: 진하게 표시
+            ? "font-bold text-[#a3a3a3] dark:text-[#fcdcdc]" // 입력 안 된 경우: 흐리게 표시
+            : "font-bold text-[#393939] dark:text-white" // 입력된 경우: 진하게 표시
         }`}
       >
         {displayContent}

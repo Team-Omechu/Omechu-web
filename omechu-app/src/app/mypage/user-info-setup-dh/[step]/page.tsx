@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useUserInfoSetupStore } from "@/lib/stores/userInfoSetup.store";
-import ProgressBar from "@/app/components/common/ProgressBar";
 
-// Step components
+import { useParams, useRouter } from "next/navigation";
+
+import ProgressBar from "@/app/components/common/ProgressBar";
+import AllergyStep from "@/app/components/user-info-setup/AllergyStep";
+import ConditionStep from "@/app/components/user-info-setup/ConditionStep";
+import FoodStep from "@/app/components/user-info-setup/FoodStep";
 import GenderStep from "@/app/components/user-info-setup/GenderStep";
 import StateStep from "@/app/components/user-info-setup/StateStep";
-import FoodStep from "@/app/components/user-info-setup/FoodStep";
-import ConditionStep from "@/app/components/user-info-setup/ConditionStep";
-import AllergyStep from "@/app/components/user-info-setup/AllergyStep";
+import { useUserInfoSetupStore } from "@/lib/stores/userInfoSetup.store";
 
 const USER_INFO_STEPS = 5;
 
@@ -73,7 +73,7 @@ export default function UserInfoSetupPage() {
   };
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       <header>
         <ProgressBar
           currentStep={step}
@@ -91,11 +91,11 @@ export default function UserInfoSetupPage() {
         />
       </header>
 
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
-      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           {step > 1 ? (
             <button
@@ -120,11 +120,7 @@ export default function UserInfoSetupPage() {
           <button
             onClick={handleNext}
             disabled={isNextDisabled}
-            className="p-2 min-w-full h-12 rounded-t-md 
-          text-white text-xl font-normal
-          bg-[#1F9BDA] 
-          hover:bg-[#1c8cc4] 
-          active:bg-[#197cae]"
+            className="h-12 min-w-full rounded-t-md bg-[#1F9BDA] p-2 text-xl font-normal text-white hover:bg-[#1c8cc4] active:bg-[#197cae]"
           >
             {step === USER_INFO_STEPS ? "저장" : "다음"}
           </button>

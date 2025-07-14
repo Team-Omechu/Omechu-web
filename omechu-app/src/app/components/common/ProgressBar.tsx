@@ -19,12 +19,12 @@ export default function ProgressBar({
     cancelButtonAlign === "right" ? "justify-end" : "justify-start";
 
   return (
-    <div className={`flex flex-col w-full px-5`}>
-      <div className="flex gap-1.5 pt-4 pb-3">
+    <div className={`flex w-full flex-col px-5`}>
+      <div className="flex gap-1.5 pb-3 pt-4">
         {Array.from({ length: totalSteps }).map((_, index) => (
           <div
             key={index}
-            className={`flex-1 h-2 rounded-3xl border-[1.5px] border-[#1F9BDA] ${
+            className={`h-2 flex-1 rounded-3xl border-[1.5px] border-[#1F9BDA] ${
               index < currentStep
                 ? `bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]`
                 : "bg-white"
@@ -37,7 +37,7 @@ export default function ProgressBar({
         <div className={`flex ${alignClass}`}>
           <button
             onClick={onCancelClick}
-            className={`w-auto h-6 px-2 text-white text-xs font-light rounded-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae] ${cancelButtonClassName}`}
+            className={`h-6 w-auto rounded-md bg-[#1f9bda] px-2 text-xs font-light text-white hover:bg-[#1c8cc4] active:bg-[#197cae] ${cancelButtonClassName}`}
           >
             {cancelButtonText}
           </button>

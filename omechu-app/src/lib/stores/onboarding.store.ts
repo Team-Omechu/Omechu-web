@@ -89,6 +89,6 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
     }),
     {
       name: "onboarding-storage",
-    }
-  )
+    },
+  ),
 );

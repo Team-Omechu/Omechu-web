@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+
 import BottomNav from "./components/common/Bottom";
 
 export default function ClientLayout({
@@ -72,12 +73,15 @@ export default function ClientLayout({
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
   ];
-  const showBottomNav = !(noBottomNavRoutes.includes(pathname)|| pathname.startsWith("/mainpage/result/"));
+  const showBottomNav = !(
+    noBottomNavRoutes.includes(pathname) ||
+    pathname.startsWith("/mainpage/result/")
+  );
 
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 bg-[#F8D5FF] dark:bg-[#baa0bf] overflow-y-scroll`}
+        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-[#F8D5FF] dark:bg-[#baa0bf]`}
       >
         {children}
       </main>

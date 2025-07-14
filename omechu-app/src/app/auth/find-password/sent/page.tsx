@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+
 import Button from "@/app/components/auth/Button";
 
 export default function FindPasswordEmailSentPage() {
   return (
-    <div className="flex flex-col items-center w-full gap-10 text-center pb-40">
+    <div className="flex w-full flex-col items-center gap-10 pb-40 text-center">
       <div className="flex flex-col gap-3">
         <h1 className="text-xl font-medium text-[#393939]">
           비밀번호 재설정 메일을 발송했어요

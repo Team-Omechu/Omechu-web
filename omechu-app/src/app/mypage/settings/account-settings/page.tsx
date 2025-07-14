@@ -1,11 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
 import AlertModal from "@/app/components/common/AlertModal";
+import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 
 const userEmail: string = "dlapdlf@gmail.com";
@@ -35,7 +36,7 @@ export default function AccountSettings() {
       <main className="flex flex-col items-center px-2 py-2">
         <section className="w-full">
           <div className="flex flex-col">
-            <div className="flex items-center justify-between w-full px-6 py-3 text-[#393939]">
+            <div className="flex w-full items-center justify-between px-6 py-3 text-[#393939]">
               <h1 className="text-base font-normal">가입 정보</h1>
               <div>{userEmail}</div>
             </div>
@@ -45,7 +46,7 @@ export default function AccountSettings() {
               }
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <div className="flex items-center justify-between w-full px-6 py-3">
+              <div className="flex w-full items-center justify-between px-6 py-3">
                 <h1 className="text-base font-normal text-[#393939]">
                   비밀번호 변경
                 </h1>
@@ -64,8 +65,7 @@ export default function AccountSettings() {
         <section className="mt-5">
           <button
             onClick={() => setShowModal(true)}
-            className="w-[335px] h-[45px] text-white text-[17px] font-medium
-                    bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938] rounded-md "
+            className="h-[45px] w-[335px] rounded-md bg-[#fb4746] text-[17px] font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938]"
           >
             로그아웃
           </button>

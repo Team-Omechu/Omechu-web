@@ -8,7 +8,7 @@ export default function SectionHeader({ titles }: SectionHeaderProps) {
       {titles.map((title, i) => (
         <div
           key={i}
-          className={`bg-[#00A3FF] text-white text-center py-2 text-sm ${i < titles.length - 1 ? "border-r border-white" : ""}`}
+          className={`bg-[#00A3FF] py-2 text-center text-sm text-white ${i < titles.length - 1 ? "border-r border-white" : ""}`}
         >
           {title}
         </div>

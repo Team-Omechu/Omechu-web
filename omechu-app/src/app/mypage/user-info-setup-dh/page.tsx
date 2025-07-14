@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import Header from "@/app/components/common/Header";
 
 export default function UserInfoSetupStartPage() {
@@ -16,8 +17,8 @@ export default function UserInfoSetupStartPage() {
           </button>
         }
       />
-      <main className="flex flex-col items-center w-full px-4 text-center">
-        <section className="flex flex-col gap-5 mt-32 mb-24">
+      <main className="flex w-full flex-col items-center px-4 text-center">
+        <section className="mb-24 mt-32 flex flex-col gap-5">
           <div className="text-2xl font-medium">기본 정보 입력하기</div>
           <span className="whitespace-pre-line font-normal text-[#828282]">
             기본정보를 저장하여 {"\n"} 더 정교한 메뉴 추천을 받아보세요!
@@ -26,9 +27,7 @@ export default function UserInfoSetupStartPage() {
         <section>
           <button
             onClick={() => router.push("/mypage/user-info-setup/1")}
-            className="w-48 h-16 p-5 flex items-center justify-center
-                      text-white text-2xl font-medium rounded-md 
-                      bg-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+            className="flex h-16 w-48 items-center justify-center rounded-md bg-[#FB4746] p-5 text-2xl font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938]"
           >
             시작하기
           </button>

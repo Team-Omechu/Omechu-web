@@ -14,8 +14,9 @@
           → 자동완성용 추천어 리스트 (선택)
 ***********************/
 
-import Image from "next/image";
 import { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from "react";
+
+import Image from "next/image";
 
 interface SearchBarProps {
   inputValue: string;
@@ -113,7 +114,7 @@ export default function SearchBar({
     } else if (e.key === "ArrowUp" && hasSuggestions) {
       e.preventDefault();
       setSelectedIndex((prev) =>
-        prev <= 0 ? filteredSuggestions.length - 1 : prev - 1
+        prev <= 0 ? filteredSuggestions.length - 1 : prev - 1,
       );
     } else if (e.key === "Enter") {
       const selected =
@@ -158,22 +159,21 @@ export default function SearchBar({
           }, 150);
         }}
         placeholder={placeholder}
-        className={`flex items-center w-full h-10 px-6 pr-10 bg-white border-2 border-black rounded-t-3xl  
-          ${showSuggestions ? "" : "rounded-b-3xl"}`}
+        className={`flex h-10 w-full items-center rounded-t-3xl border-2 border-black bg-white px-6 pr-10 ${showSuggestions ? "" : "rounded-b-3xl"}`}
       />
 
       <button
         onClick={() => handleSearch(inputValue)}
-        className="absolute top-1.5 right-3 w-6 h-6"
+        className="absolute right-3 top-1.5 h-6 w-6"
         aria-label="검색"
       >
-        <div className="relative w-full h-full">
+        <div className="relative h-full w-full">
           <Image src="/search.png" alt="검색" fill className="object-contain" />
         </div>
       </button>
 
       {showSuggestions && (
-        <ul className="absolute left-0 z-10 w-full bg-white shadow-md top-full border-t-0 border-[2px] border-black rounded-b-3xl">
+        <ul className="absolute left-0 top-full z-10 w-full rounded-b-3xl border-[2px] border-t-0 border-black bg-white shadow-md">
           {inputValue.trim() === "" ? (
             <>
               <li className="px-4 py-2 text-sm font-bold text-gray-600">
@@ -182,7 +182,7 @@ export default function SearchBar({
               {recentSearches.map((term, idx) => (
                 <li
                   key={idx}
-                  className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                  className="flex cursor-pointer items-center justify-between px-4 py-2 text-sm hover:bg-gray-100"
                 >
                   <span onClick={() => handleSuggestionClick(term)}>
                     {term}
@@ -218,10 +218,7 @@ export default function SearchBar({
                 <li
                   key={idx}
                   onClick={() => handleSuggestionClick(item)}
-                  className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100
-                    ${isSelected ? "bg-gray-100 font-semibold" : ""}
-                    ${isLast ? "rounded-b-3xl pb-3" : ""}
-                  `}
+                  className={`cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 ${isSelected ? "bg-gray-100 font-semibold" : ""} ${isLast ? "rounded-b-3xl pb-3" : ""} `}
                 >
                   {item}
                 </li>

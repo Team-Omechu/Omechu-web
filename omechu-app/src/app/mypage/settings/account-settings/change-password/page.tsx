@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 // 공용 컴포넌트
-import Header from "@/app/components/common/Header";
 import AlertModal from "@/app/components/common/AlertModal";
+import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import Toast from "@/app/components/common/Toast";
 import PasswordInput from "@/app/components/settings/PasswordInput";
@@ -25,7 +26,7 @@ export default function ChagePassword() {
 
   // 새 비밀번호 유효성 검사 결과 상태
   const [newPasswordError, setNewPasswordError] = useState<boolean | null>(
-    null
+    null,
   );
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     boolean | null
@@ -71,7 +72,7 @@ export default function ChagePassword() {
         }
       />
 
-      <main className="flex flex-col items-center px-4 py-2 mt-20">
+      <main className="mt-20 flex flex-col items-center px-4 py-2">
         <section className="w-full px-3">
           {/* 기존 비밀번호 입력 */}
           <PasswordInput
@@ -118,7 +119,7 @@ export default function ChagePassword() {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setConfirmPasswordError(
-                  inputConfirmPassword !== inputNewPassword
+                  inputConfirmPassword !== inputNewPassword,
                 );
               }
             }}
@@ -140,12 +141,11 @@ export default function ChagePassword() {
                 setShowModal(true);
               }
             }}
-            className={`mt-48 w-[335px] h-[45px] text-white text-[17px] font-medium rounded-md transition
-              ${
-                isFormValid
-                  ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
-                  : "bg-gray-300"
-              }`}
+            className={`mt-48 h-[45px] w-[335px] rounded-md text-[17px] font-medium text-white transition ${
+              isFormValid
+                ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+                : "bg-gray-300"
+            }`}
           >
             비밀번호 변경하기
           </button>
