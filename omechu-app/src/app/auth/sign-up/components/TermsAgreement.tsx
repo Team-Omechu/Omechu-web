@@ -11,7 +11,7 @@ import type {
 
 import type { SignupFormValues } from "@/lib/schemas/auth.schema";
 
-import Checkbox from "./Checkbox";
+import Checkbox from "../../components/Checkbox";
 
 type ModalType = "service" | "privacy" | "location";
 
@@ -47,21 +47,25 @@ const TermsAgreement = ({
   };
 
   return (
-    <div className="space-y-3 text-gray-800">
-      <h2 className="text-lg font-bold">서비스 약관에 동의해 주세요</h2>
+    <div className="space-y-3 text-[#626262]">
+      <h2 className="text-lg text-[#393939]">
+        서비스 약관에 동의해 주세요
+      </h2>
       <Checkbox
         id="all"
         label="아래의 내용을 모두 확인하였으며 모두 동의합니다"
         checked={isAllAgreed}
         onChange={handleAllAgreement}
+        variant="round"
       />
 
-      <div className="space-y-2 pl-7">
+      <div className="space-y-2 py-3 pl-7">
         <div className="flex items-center justify-between">
           <Checkbox
             id="termsService"
-            label="서비스 이용약관 동의(필수)"
+            label="서비스 이용약관 동의 (필수)"
             {...register("termsService")}
+            variant="round"
           />
           <button
             type="button"
@@ -72,14 +76,17 @@ const TermsAgreement = ({
           </button>
         </div>
         {errors.termsService && (
-          <p className="text-xs text-red-500">{errors.termsService.message}</p>
+          <p className="pl-6 text-xs text-red-500">
+            {errors.termsService.message}
+          </p>
         )}
 
         <div className="flex items-center justify-between">
           <Checkbox
             id="termsPrivacy"
-            label="개인정보 처리방침 동의(필수)"
+            label="개인정보 처리방침 동의 (필수)"
             {...register("termsPrivacy")}
+            variant="round"
           />
           <button
             type="button"
@@ -90,14 +97,17 @@ const TermsAgreement = ({
           </button>
         </div>
         {errors.termsPrivacy && (
-          <p className="text-xs text-red-500">{errors.termsPrivacy.message}</p>
+          <p className="pl-6 text-xs text-red-500">
+            {errors.termsPrivacy.message}
+          </p>
         )}
 
         <div className="flex items-center justify-between">
           <Checkbox
             id="termsLocation"
-            label="위치 기반 서비스 이용약관 동의(필수)"
+            label="위치 기반 서비스 이용약관 동의 (필수)"
             {...register("termsLocation")}
+            variant="round"
           />
           <button
             type="button"
@@ -108,18 +118,21 @@ const TermsAgreement = ({
           </button>
         </div>
         {errors.termsLocation && (
-          <p className="text-xs text-red-500">
+          <p className="pl-6 text-xs text-red-500">
             {errors.termsLocation.message}
           </p>
         )}
+      </div>
 
+      <div className="pl-7">
         <Checkbox
           id="termsAge"
           label="본인은 만 14세 이상입니다. (필수)"
           {...register("termsAge")}
+          variant="round"
         />
         {errors.termsAge && (
-          <p className="text-xs text-red-500">{errors.termsAge.message}</p>
+          <p className="pl-6 text-xs text-red-500">{errors.termsAge.message}</p>
         )}
       </div>
     </div>
