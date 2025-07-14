@@ -18,26 +18,19 @@ export default function ClientLayout({
     "/mainpage/question-answer/who",
     "/mainpage/question-answer/budget",
     "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
+    "/mainpage/result",
 
-    // 마이페이지
-    "/mypage/user-info-setup",
-    "/mypage/user-info-setup/gender",
-    "/mypage/profile-edit",
-    "/mypage/user-info-edit",
-    "/mypage/user-info-setup/state",
-    "/mypage/user-info-setup/food",
-    "/mypage/user-info-setup/condition",
-    "/mypage/user-info-setup/allergy",
+    "/mainpage/question-answer/meal-time",
+    "/mainpage/question-answer/purpose",
+    "/mainpage/question-answer/state",
+    "/mainpage/question-answer/who",
+    "/mainpage/question-answer/budget",
+    "/mainpage/question-answer/middle-question",
+    "/mainpage/meal-answer",
+    "/mainpage/location-answer",
     "/mypage/recommended-list",
-
-    // 마이페이지-설정
-    "/mypage/settings",
-    "/mypage/settings/account-settings",
-    "/mypage/settings/account-settings/change-password",
-    "/mypage/terms",
-    "/mypage/terms/service",
-    "/mypage/terms/personal-info",
-    "/mypage/terms/location-info",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/login",
@@ -52,30 +45,39 @@ export default function ClientLayout({
     "/onboarding/5",
     "/onboarding/6",
 
+    //맛집-상세페이지
+    "restaurant/restaurant-detail",
+    "restaurant/restaurant-detail/[id]/map",
+
+    // 마이페이지
+    "/mypage/user-info-setup",
+    "/mypage/user-info-setup/gender",
+    "/mypage/profile-edit",
+    "/mypage/user-info-edit",
+    "/mypage/user-info-edit/start",
+    "/mypage/user-info-edit/gender",
+    "/mypage/user-info-edit/state",
+    "/mypage/user-info-edit/food",
+    "/mypage/user-info-edit/condition",
+    "/mypage/user-info-edit/allergy",
+    // 추천맛집목록
+    "/mypage/recommended-list",
+    // 마이페이지-설정
+    "/mypage/settings",
+    "/mypage/settings/account-settings",
+    "/mypage/settings/account-settings/change-password",
     // 마이페이지-이용약관
+    "/mypage/terms",
     "/mypage/terms/service",
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
-    "/mypage/user-info-setup/1",
-    "/mypage/user-info-setup/2",
-    "/mypage/user-info-setup/3",
-    "/mypage/user-info-setup/4",
-    "/mypage/user-info-setup/5",
-    "/mypage/user-info-setup/6",
-
-    // 메인페이지-질문답변
-    "/mainpage/question-answer/1",
-    "/mainpage/question-answer/2",
-    "/mainpage/question-answer/3",
-    "/mainpage/question-answer/4",
-    "/mainpage/question-answer/5",
   ];
-  const showBottomNav = !noBottomNavRoutes.includes(pathname);
+  const showBottomNav = !(noBottomNavRoutes.includes(pathname)|| pathname.startsWith("/mainpage/result/"));
 
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 bg-[#F8D5FF] overflow-y-scroll`}
+        className={`${showBottomNav ? "pb-20" : ""} flex-1 bg-[#F8D5FF] dark:bg-[#baa0bf] overflow-y-scroll`}
       >
         {children}
       </main>
