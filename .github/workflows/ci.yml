@@ -28,22 +28,17 @@ jobs:
         with:
           node-version: "18"
 
-      # 3. Corepack 활성화
-      - name: Enable Corepack
-        run: corepack enable
+      # 3. Corepack을 사용해 특정 버전의 Yarn을 명시적으로 준비 및 활성화
+      - name: Prepare and activate Yarn
+        run: corepack prepare yarn@4.9.2 --activate
 
-      # 4. Yarn '준비운동' (첫 실행을 통해 초기 설정 유도)
-      - name: Prime Yarn
-        run: yarn --version
-        working-directory: ./omechu-app
-
-      # 5. Yarn 캐시 디렉토리 경로 가져오기
+      # 4. Yarn 캐시 디렉토리 경로 가져오기
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
         working-directory: ./omechu-app
 
-      # 6. 의존성 캐시 설정
+      # 5. 의존성 캐시 설정
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -52,22 +47,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-v4-
 
-      # 7. 의존성 설치
+      # 6. 의존성 설치
       - name: Install dependencies
         run: yarn install --immutable
         working-directory: ./omechu-app
 
-      # 8. 코드 포맷팅 확인
+      # 7. 코드 포맷팅 확인
       - name: Check formatting with Prettier
         run: yarn format:check
         working-directory: ./omechu-app
 
-      # 9. 코드 린팅 실행
+      # 8. 코드 린팅 실행
       - name: Run ESLint
         run: yarn lint
         working-directory: ./omechu-app
 
-      # 10. 빌드 실행
+      # 9. 빌드 실행
       - name: Build project
         run: yarn build
         working-directory: ./omechu-app
