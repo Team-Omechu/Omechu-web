@@ -108,7 +108,7 @@ export default function StateStep() {
                 : "bg-[#A1A1A1] dark:bg-[#555] cursor-not-allowed"
             }`}
         >
-          다음
+          저장
         </button>
       </footer>
 
