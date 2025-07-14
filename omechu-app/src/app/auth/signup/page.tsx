@@ -5,11 +5,12 @@ import Image from "next/image";
 import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
 import TermsModal from "@/app/components/auth/TermsModal";
-import PrivacyModal from "@/app/components/auth/PrivacyModal";
-import LocationModal from "@/app/components/auth/LocationModal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, SignupFormValues } from "@/lib/schemas/auth.schema";
+import { termsForService } from "@/app/constant/terms/service";
+import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
 
 export default function Signup() {
   // const router = useRouter();
@@ -352,19 +353,34 @@ export default function Signup() {
 
       {showTermsModal && (
         <TermsModal
-          onConfirm={() => setShowTermsModal(false)}
+          title="서비스 이용약관"
+          terms={termsForService}
+          onConfirm={() => {
+            setValue("termsService", true, { shouldValidate: true });
+            setShowTermsModal(false);
+          }}
           onClose={() => setShowTermsModal(false)}
         />
       )}
       {showPrivacyModal && (
-        <PrivacyModal
-          onConfirm={() => setShowPrivacyModal(false)}
+        <TermsModal
+          title="개인정보 처리방침"
+          terms={termsForPersonlInfo}
+          onConfirm={() => {
+            setValue("termsPrivacy", true, { shouldValidate: true });
+            setShowPrivacyModal(false);
+          }}
           onClose={() => setShowPrivacyModal(false)}
         />
       )}
       {showLocationModal && (
-        <LocationModal
-          onConfirm={() => setShowLocationModal(false)}
+        <TermsModal
+          title="위치기반서비스 이용약관"
+          terms={termsForLocationlInfo}
+          onConfirm={() => {
+            setValue("termsLocation", true, { shouldValidate: true });
+            setShowLocationModal(false);
+          }}
           onClose={() => setShowLocationModal(false)}
         />
       )}

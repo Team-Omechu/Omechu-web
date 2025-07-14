@@ -21,22 +21,32 @@ const ProfileStep = () => {
           <div className="text-center text-2xl font-semibold text-[#1F9BDA]">
             반가워요!
           </div>
-          <h1 className="text-2xl font-bold text-black">
+          <h1 className="text-2xl font-normal text-black">
             프로필을 입력해 주세요
           </h1>
         </div>
-        <div className="p-5 flex flex-col items-center gap-2">
-          <div className="relative w-[73px] h-[73px] mb-2">
+        <div className="flex flex-col items-center gap-2 mb-6">
+          <button type="button" className="relative">
             <Image
               src="/onboarding-restaurant-icon.png"
-              alt="Profile"
-              width={73}
-              height={73}
-              className="object-cover"
+              alt="프로필 사진 선택"
+              width={100}
+              height={100}
             />
-          </div>
-          <button className="text-sm text-[#48528E] underline">
-            사진 지우기
+            <div className="absolute top-0 right-0">
+              <Image
+                src="/camera_Icon.png"
+                alt="이미지 업로드"
+                width={30}
+                height={30}
+              />
+            </div>
+          </button>
+          <button
+            type="button"
+            className="text-sm text-[#48528E] dark:text-[#e9f5fb] text-center font-normal"
+          >
+            사진지우기
           </button>
         </div>
         <div className="w-full max-w-xs">

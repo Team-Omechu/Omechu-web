@@ -114,44 +114,32 @@ export default function OnboardingPage() {
         />
       </header>
 
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex flex-1 flex-col items-center w-full px-4 py-6">
         {renderStepComponent()}
       </main>
 
-      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
-        <div className="flex justify-between">
+      <footer className="w-full pb-[env(safe-area-inset-bottom)]">
+        <div className="flex justify-between px-5 mb-3">
           {step > 1 ? (
-            <button
-              onClick={handlePrev}
-              className="ml-5 text-base text-[#828282]"
-            >
+            <button onClick={handlePrev} className="text-base text-[#828282]">
               {"<"} 이전으로
             </button>
           ) : (
             <div />
           )}
           {step > 1 && step < ONBOARDING_STEPS && (
-            <button
-              onClick={handleSkip}
-              className="mr-5 text-base text-[#828282]"
-            >
+            <button onClick={handleSkip} className="text-base text-[#828282]">
               건너뛰기 {">"}
             </button>
           )}
         </div>
-        <div>
-          <button
-            onClick={handleNext}
-            disabled={isNextDisabled}
-            className="p-2 min-w-full h-12 rounded-t-md 
-            text-white text-xl font-normal
-            bg-[#1F9BDA] 
-            hover:bg-[#1c8cc4] 
-            active:bg-[#197cae]"
-          >
-            {step === ONBOARDING_STEPS ? "저장" : "다음"}
-          </button>
-        </div>
+        <button
+          onClick={handleNext}
+          disabled={isNextDisabled}
+          className="w-full h-12 p-2 text-white text-xl font-normal bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400"
+        >
+          {step === ONBOARDING_STEPS ? "저장" : "다음"}
+        </button>
       </footer>
     </div>
   );

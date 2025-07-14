@@ -11,6 +11,7 @@ import Input from "@/app/components/auth/Input";
 
 export default function LoginPage() {
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -25,7 +26,7 @@ export default function LoginPage() {
     // 가상의 로그인 실패 시나리오
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
-    setLoginError("이메일 또는 비밀번호가 올바르지 않습니다.");
+    setLoginError("이메일 또는 비밀번호가 \n 올바르지 않습니다.");
   };
 
   return (
@@ -54,9 +55,23 @@ export default function LoginPage() {
         <Input
           {...register("password")}
           label="비밀번호"
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="비밀번호를 입력해주세요"
           error={errors.password?.message}
+          rightAddon={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="p-2"
+            >
+              <Image
+                src={showPassword ? "/비밀번호보기.svg" : "/mdi-light_eye.svg"}
+                alt="toggle password visibility"
+                width={24}
+                height={24}
+              />
+            </button>
+          }
         />
 
         <div className="mt-4">
@@ -109,7 +124,7 @@ export default function LoginPage() {
       </Button>
 
       {loginError && (
-        <div className="w-full h-[70px] flex items-center justify-center text-center text-white bg-[rgba(130,130,130,0.5)] rounded-md mt-4">
+        <div className="w-full h-[70px] flex items-center justify-center text-sm text-center text-white bg-[rgba(130,130,130,0.5)] rounded-md mt-4 whitespace-pre-line">
           {loginError}
         </div>
       )}
