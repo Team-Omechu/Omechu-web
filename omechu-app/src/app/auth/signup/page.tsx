@@ -1,16 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
+
 import Image from "next/image";
+
 // import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
 import Button from "@/app/components/auth/Button";
 import Input from "@/app/components/auth/Input";
 import TermsModal from "@/app/components/auth/TermsModal";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema, SignupFormValues } from "@/lib/schemas/auth.schema";
-import { termsForService } from "@/app/constant/terms/service";
-import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
 import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
+import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import { termsForService } from "@/app/constant/terms/service";
+import { signupSchema, SignupFormValues } from "@/lib/schemas/auth.schema";
 
 export default function Signup() {
   // const router = useRouter();
@@ -65,9 +68,9 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-[#F8D5FF] py-10 px-4">
+    <div className="flex min-h-screen flex-col items-center bg-[#F8D5FF] px-4 py-10">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
-        <h1 className="mb-8 text-xl font-bold text-center text-black">
+        <h1 className="mb-8 text-center text-xl font-bold text-black">
           회원 정보를 입력해 주세요
         </h1>
 
@@ -111,7 +114,7 @@ export default function Signup() {
               </button>
             }
           />
-          <p className="text-xs text-[#828282] mt-1 -translate-y-3">
+          <p className="mt-1 -translate-y-3 text-xs text-[#828282]">
             * 영문, 숫자, 특수문자 포함 8자 이상
           </p>
           <Input
@@ -141,19 +144,19 @@ export default function Signup() {
 
         <div className="space-y-3 text-gray-800">
           <h2 className="text-lg font-bold">서비스 약관에 동의해 주세요</h2>
-          <label htmlFor="all" className="flex items-center cursor-pointer">
+          <label htmlFor="all" className="flex cursor-pointer items-center">
             <div className="relative">
               <input
                 type="checkbox"
                 id="all"
                 checked={isAllAgreed}
                 onChange={handleAllAgreement}
-                className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-gray-300 checked:border-transparent checked:bg-[#00B2FF] focus:outline-none"
               />
-              <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
+              <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-3.5 h-3.5"
+                  className="h-3.5 w-3.5"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -173,19 +176,19 @@ export default function Signup() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="termsService"
-                className="flex items-center cursor-pointer"
+                className="flex cursor-pointer items-center"
               >
                 <div className="relative">
                   <input
                     type="checkbox"
                     id="termsService"
                     {...register("termsService")}
-                    className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                    className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-gray-300 checked:border-transparent checked:bg-[#00B2FF] focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
+                  <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-3.5 h-3.5"
+                      className="h-3.5 w-3.5"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -216,19 +219,19 @@ export default function Signup() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="termsPrivacy"
-                className="flex items-center cursor-pointer"
+                className="flex cursor-pointer items-center"
               >
                 <div className="relative">
                   <input
                     type="checkbox"
                     id="termsPrivacy"
                     {...register("termsPrivacy")}
-                    className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                    className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-gray-300 checked:border-transparent checked:bg-[#00B2FF] focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
+                  <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-3.5 h-3.5"
+                      className="h-3.5 w-3.5"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -261,19 +264,19 @@ export default function Signup() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="termsLocation"
-                className="flex items-center cursor-pointer"
+                className="flex cursor-pointer items-center"
               >
                 <div className="relative">
                   <input
                     type="checkbox"
                     id="termsLocation"
                     {...register("termsLocation")}
-                    className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                    className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-gray-300 checked:border-transparent checked:bg-[#00B2FF] focus:outline-none"
                   />
-                  <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
+                  <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-3.5 h-3.5"
+                      className="h-3.5 w-3.5"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -305,19 +308,19 @@ export default function Signup() {
 
             <label
               htmlFor="termsAge"
-              className="flex items-center cursor-pointer"
+              className="flex cursor-pointer items-center"
             >
               <div className="relative">
                 <input
                   type="checkbox"
                   id="termsAge"
                   {...register("termsAge")}
-                  className="peer relative appearance-none w-5 h-5 border-2 border-gray-300 rounded-full cursor-pointer checked:bg-[#00B2FF] checked:border-transparent focus:outline-none"
+                  className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-gray-300 checked:border-transparent checked:bg-[#00B2FF] focus:outline-none"
                 />
-                <span className="absolute text-white transition-opacity -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none top-1/2 left-1/2 peer-checked:opacity-100">
+                <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-3.5 h-3.5"
+                    className="h-3.5 w-3.5"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >

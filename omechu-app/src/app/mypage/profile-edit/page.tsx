@@ -1,8 +1,9 @@
 "use client";
 
-import Header from "@/app/components/common/Header";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import Header from "@/app/components/common/Header";
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -25,8 +26,8 @@ export default function ProfileEdit() {
           </button>
         }
       />
-      <main className="relative flex flex-col items-center w-full px-4 overflow-y-scroll min-h-100dvh scroll-smooth">
-        <section className="flex items-center justify-center gap-10 h-44 mt-36">
+      <main className="min-h-100dvh relative flex w-full flex-col items-center overflow-y-scroll scroll-smooth px-4">
+        <section className="mt-36 flex h-44 items-center justify-center gap-10">
           <div className="relative px-3">
             <div className="mb-3 rotate-45">
               <Image
@@ -36,7 +37,7 @@ export default function ProfileEdit() {
                 height={73}
               />
             </div>
-            <button className="absolute top-0 right-0">
+            <button className="absolute right-0 top-0">
               <Image
                 src="/camera_icon.png"
                 alt={"uploadingImage"}
@@ -44,17 +45,17 @@ export default function ProfileEdit() {
                 height={20}
               />
             </button>
-            <button className="text-sm ml-1 text-[#48528E] dark:text-[#e9f5fb] text-center font-normal">
+            <button className="ml-1 text-center text-sm font-normal text-[#48528E] dark:text-[#e9f5fb]">
               사진지우기
             </button>
           </div>
-          <div className="flex flex-col gap-1 mb-8 itmes-center">
+          <div className="itmes-center mb-8 flex flex-col gap-1">
             <div className="text-lg font-medium text-[#393939] dark:text-[#f1f1f1]">
               닉네임
             </div>
             <div className="relative">
               <input
-                className="w-44 rounded-md h-9 border-[1px] border-[#626262] px-2.5 py-2.5 text-[#393939] text-base"
+                className="h-9 w-44 rounded-md border-[1px] border-[#626262] px-2.5 py-2.5 text-base text-[#393939]"
                 type="text"
                 defaultValue={"제나"}
                 placeholder="제나"
@@ -68,13 +69,13 @@ export default function ProfileEdit() {
                 />
               </button>
             </div>
-            <span className="text-xs font-normal ml-1 text-[#828282] dark:text-[#f6f6f6]">
+            <span className="ml-1 text-xs font-normal text-[#828282] dark:text-[#f6f6f6]">
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
         </section>
         <section className="mt-36">
-          <button className="w-[335px] h-[45px] bg-[#1F9BDA] hover:bg-[#1c8cc4] rounded-md active:bg-[#197cae] text-white text-[17px] font-medium dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+          <button className="h-[45px] w-[335px] rounded-md bg-[#1F9BDA] text-[17px] font-medium text-white hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
             저장
           </button>
         </section>

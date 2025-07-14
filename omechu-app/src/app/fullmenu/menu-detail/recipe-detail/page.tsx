@@ -1,9 +1,11 @@
 "use client";
 
-import Header from "@/app/components/common/Header";
-import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { Suspense } from "react";
+
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import Header from "@/app/components/common/Header";
 
 export default function RecipeDetail() {
   return (
@@ -39,32 +41,32 @@ function RecipeDetailClient() {
       />
 
       <main className="min-h-screen bg-[#F8D5FF] p-5 pt-8 text-sm text-black">
-        <h1 className="text-center text-2xl font-extrabold text-[#2D9CDB] mt-4 mb-2">
+        <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
           {name} 레시피
         </h1>
 
-        <div className="flex justify-center mb-6 mx-auto w-36 h-36">
+        <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
             src="/오메추-로고-보라색버전-모자4 1.png"
             alt={`${name}`}
-            className="object-contain rounded"
+            className="rounded object-contain"
             width={144}
             height={144}
           />
         </div>
 
         <section className="px-4 pb-4">
-          <h2 className="text-base font-semibold mb-2">재료</h2>
+          <h2 className="mb-2 text-base font-semibold">재료</h2>
           <p className="text-[13px] leading-5">
             된장국 두부 20g, 애느타리버섯 20g, 감자 10g, 양파 10g, 대파 10g,
             된장 5g(1작은술), 물 300ml(1½컵)
           </p>
         </section>
 
-        <hr className="border-gray-400 mb-4" />
+        <hr className="mb-4 border-gray-400" />
 
         <section className="px-4 text-[13px]">
-          <h2 className="text-base font-semibold mb-3">요리법</h2>
+          <h2 className="mb-3 text-base font-semibold">요리법</h2>
 
           {[
             { text: "감자, 양파를 잘 익도록 얇게 썬다." },
@@ -85,7 +87,7 @@ function RecipeDetailClient() {
           ].map((step, index) => (
             <div key={index} className="mb-6">
               <p className="flex items-start gap-2">
-                <span className="bg-[#2D9CDB] text-white rounded px-1.5 text-xs h-fit mt-0.5">
+                <span className="mt-0.5 h-fit rounded bg-[#2D9CDB] px-1.5 text-xs text-white">
                   {index + 1}
                 </span>
                 <span>{step.text}</span>

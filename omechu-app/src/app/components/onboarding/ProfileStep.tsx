@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+
 import Image from "next/image";
+
 import Input from "@/app/components/auth/Input";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
@@ -15,9 +17,9 @@ const ProfileStep = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full px-4 py-6">
+    <div className="flex w-full flex-col items-center px-4 py-6">
       <section className="my-20">
-        <div className="p-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+        <div className="whitespace-pre p-10 text-center text-3xl font-medium leading-relaxed">
           <div className="text-center text-2xl font-semibold text-[#1F9BDA]">
             반가워요!
           </div>
@@ -25,7 +27,7 @@ const ProfileStep = () => {
             프로필을 입력해 주세요
           </h1>
         </div>
-        <div className="flex flex-col items-center gap-2 mb-6">
+        <div className="mb-6 flex flex-col items-center gap-2">
           <button type="button" className="relative">
             <Image
               src="/onboarding-restaurant-icon.png"
@@ -33,7 +35,7 @@ const ProfileStep = () => {
               width={100}
               height={100}
             />
-            <div className="absolute top-0 right-0">
+            <div className="absolute right-0 top-0">
               <Image
                 src="/camera_Icon.png"
                 alt="이미지 업로드"
@@ -44,7 +46,7 @@ const ProfileStep = () => {
           </button>
           <button
             type="button"
-            className="text-sm text-[#48528E] dark:text-[#e9f5fb] text-center font-normal"
+            className="text-center text-sm font-normal text-[#48528E] dark:text-[#e9f5fb]"
           >
             사진지우기
           </button>

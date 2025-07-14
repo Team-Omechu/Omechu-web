@@ -1,16 +1,18 @@
 "use client";
 
+import { useState } from "react";
+
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import MenuCard from "@/app/components/mainpage/MenuCard";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function ResultPage() {
-const router = useRouter();
-const [showModal, setShowModal] = useState(false);
-const [openMenuId, setOpenMenuId] = useState<number|null>(1);
+  const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState<number | null>(1);
 
   const menus = [
     {
@@ -36,13 +38,7 @@ const [openMenuId, setOpenMenuId] = useState<number|null>(1);
     },
   ];
 
-  const tags = [
-    "아침",
-    "든든한 한 끼 식사",
-    "들뜨고 신나요",
-    "혼자",
-    "중간",
-  ];
+  const tags = ["아침", "든든한 한 끼 식사", "들뜨고 신나요", "혼자", "중간"];
 
   const tagDescriptions = [
     "간단하고 속에 편한 음식",
@@ -53,19 +49,19 @@ const [openMenuId, setOpenMenuId] = useState<number|null>(1);
   ];
 
   return (
-    <div className="p-4 flex flex-col">
-      <button className="flex justify-start"
-      onClick={()=>router.push("./")}
-      > 
-      &lt; 처음으로 
+    <div className="flex flex-col p-4">
+      <button className="flex justify-start" onClick={() => router.push("./")}>
+        &lt; 처음으로
       </button>
 
       <div className="mt-3 flex flex-col gap-4">
         {menus.map((menu) => (
           <div key={menu.id} className="relative">
             <button
-              className="absolute top-1 left-2 z-10 bg-white rounded-full"
-              onClick={() => {setShowModal(true)}}
+              className="absolute left-2 top-1 z-10 rounded-full bg-white"
+              onClick={() => {
+                setShowModal(true);
+              }}
             >
               <Image
                 src="/do_not_disturb_on.png"
@@ -86,19 +82,25 @@ const [openMenuId, setOpenMenuId] = useState<number|null>(1);
       </div>
 
       <div className="mt-4 flex justify-between gap-2">
-        <button className="bg-[#FB4746] text-[#FFF] rounded-md px-4 py-2 flex-1">다시 추천</button>
-        <button className="border border-gray-500 text-black bg-[#FFF] rounded-md px-4 py-2 flex-1"
+        <button className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF]">
+          다시 추천
+        </button>
+        <button
+          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black"
           onClick={() => {
             if (openMenuId !== null) {
               router.push(`/mainpage/result/${openMenuId}`);
             }
-          }}>선택하기</button>
+          }}
+        >
+          선택하기
+        </button>
       </div>
 
-      <div className="mt-5 bg-white p-3 rounded-md text-sm border border-black">
+      <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
         {tags.map((tag, idx) => (
-          <div key={idx} className="mb-1 text-black flex flex-col p-1">
-            <span className="font-semibold text-[#A3A3A3] mb-1">{tag}</span>
+          <div key={idx} className="mb-1 flex flex-col p-1 text-black">
+            <span className="mb-1 font-semibold text-[#A3A3A3]">{tag}</span>
             {tagDescriptions[idx]}
           </div>
         ))}
@@ -109,8 +111,12 @@ const [openMenuId, setOpenMenuId] = useState<number|null>(1);
             title="메뉴 추천을 중단하시겠어요?"
             cancelText="취소"
             confirmText="제외하기"
-            onConfirm={() => {setShowModal(false)}}
-            onClose={() => {setShowModal(false)}}
+            onConfirm={() => {
+              setShowModal(false);
+            }}
+            onClose={() => {
+              setShowModal(false);
+            }}
           />
         </ModalWrapper>
       )}

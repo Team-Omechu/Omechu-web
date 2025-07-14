@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+
+import Image from "next/image";
 
 interface PasswordInputProps {
   label: string; // 인풋 상단 라벨 텍스트
@@ -29,7 +30,7 @@ export default function PasswordInput({
   const [isVisible, setIsVisible] = useState(false); // 비밀번호 보기/숨기기 토글
 
   return (
-    <section className="relative flex flex-col w-full gap-1 mb-5">
+    <section className="relative mb-5 flex w-full flex-col gap-1">
       <span>{label}</span>
       <input
         data-testid={testId}
@@ -39,11 +40,11 @@ export default function PasswordInput({
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
-        className="w-full h-10 text-sm text-[#828282] font-normal text-center border-[1px] border-[#626262] rounded-md"
+        className="h-10 w-full rounded-md border-[1px] border-[#626262] text-center text-sm font-normal text-[#828282]"
       />
       {/* 비밀번호 보기 아이콘 */}
       <Image
-        className="absolute cursor-pointer top-9 right-4 active:bg-gray-200"
+        className="absolute right-4 top-9 cursor-pointer active:bg-gray-200"
         onClick={() => setIsVisible((prev) => !prev)}
         src={isVisible ? "/eye_open.svg" : "/eye_closed.svg"}
         alt="비밀번호 보기 토글"

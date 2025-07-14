@@ -14,16 +14,16 @@ const OnboardingStepLayout = ({
   paddingClassName = "px-8", // 기본값을 'px-8'로 설정
 }: OnboardingStepLayoutProps) => {
   return (
-    <div className="flex flex-col items-center w-full px-4 py-6">
+    <div className="flex w-full flex-col items-center px-4 py-6">
       <section className="my-20 text-center">
-        <h1 className="text-2xl font-bold text-black whitespace-pre-line">
+        <h1 className="whitespace-pre-line text-2xl font-bold text-black">
           {title}
         </h1>
       </section>
       <section
         className={`w-full max-w-xs ${paddingClassName} ${contentClassName}`}
       >
-        <div className="flex flex-col w-full gap-5 text-base">{children}</div>
+        <div className="flex w-full flex-col gap-5 text-base">{children}</div>
       </section>
     </div>
   );

@@ -1,8 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import BottomNav from "@/app/components/mainpage/BottomNav";
 import LocationModal from "@/app/components/mainpage/LocationModal";
 
@@ -24,65 +26,63 @@ export default function LocationAnswerPage() {
   };
 
   const handleCancel = () => {
-    setShowModal(false); 
-    setIsChecked(false); 
+    setShowModal(false);
+    setIsChecked(false);
     setSelectedDistance("");
-  }
+  };
 
   return (
-    <div className="flex flex-col w-full h-screen relative overflow-x-hidden">
-      <main className="flex flex-col items-center justify-center flex-1 w-full">
+    <div className="relative flex h-screen w-full flex-col overflow-x-hidden">
+      <main className="flex w-full flex-1 flex-col items-center justify-center">
         {/* 질문 */}
-        <div className="flex flex-col justify-center items-center text-center text-[#393939] font-['Noto Sans KR'] mb-10">
+        <div className="font-['Noto Sans KR'] mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
           <p className="text-xl font-semibold">위치를 입력해주세요</p>
-          <p className="text-[#828282] mt-2">
-            주변 맛집 메뉴로 추천해드릴게요
-          </p>
+          <p className="mt-2 text-[#828282]">주변 맛집 메뉴로 추천해드릴게요</p>
         </div>
 
         {/* 체크박스 + 텍스트 + 거리 라벨 */}
-        <div className="flex items-center gap-2 mt-4 ml-5">
+        <div className="ml-5 mt-4 flex items-center gap-2">
           <input
             type="checkbox"
             checked={isChecked}
             onChange={handleCheckboxChange}
-            className="w-[1.25rem] h-[1.25rem] flex-shrink-0"
+            className="h-[1.25rem] w-[1.25rem] flex-shrink-0"
           />
-          <label className="text-[1.25rem] text-[#393939] font-normal leading-normal font-['Inter'] ">
+          <label className="font-['Inter'] text-[1.25rem] font-normal leading-normal text-[#393939]">
             내 주변
           </label>
-          <div className="w-[5.875rem] h-[1.125rem] flex-shrink-0 rounded-[0.3125rem] border border-[#333] bg-white flex items-center justify-center text-sm text-black">
-          {selectedDistance}
+          <div className="flex h-[1.125rem] w-[5.875rem] flex-shrink-0 items-center justify-center rounded-[0.3125rem] border border-[#333] bg-white text-sm text-black">
+            {selectedDistance}
           </div>
         </div>
-        <div className="mt-4 w-[17.5rem] h-[10.625rem] flex-shrink-0 rounded-[1.25rem] border-[3px] border-[#1F9BDA] overflow-hidden">
-        <Image
-          src="/map.png"
-          alt="지도"
-          width={280} 
-          height={170}
-          className="w-full h-full object-cover"
-        />
+        <div className="mt-4 h-[10.625rem] w-[17.5rem] flex-shrink-0 overflow-hidden rounded-[1.25rem] border-[3px] border-[#1F9BDA]">
+          <Image
+            src="/map.png"
+            alt="지도"
+            width={280}
+            height={170}
+            className="h-full w-full object-cover"
+          />
         </div>
 
         {/* 결과 보기 버튼 */}
         <button
           onClick={() => router.push("/mainpage/result")}
-          className="mt-10 flex w-[17.375rem] h-[2.8125rem] p-[0.625rem] flex-shrink-0 justify-center items-center gap-[0.625rem] rounded-[0.375rem] bg-[#FB4746] text-white text-[16px] font-medium"
+          className="mt-10 flex h-[2.8125rem] w-[17.375rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-[#FB4746] p-[0.625rem] text-[16px] font-medium text-white"
         >
           결과 보기
         </button>
       </main>
       {showModal && (
-        <div className="absolute inset-0 z-50 flex justify-center items-end">
+        <div className="absolute inset-0 z-50 flex items-end justify-center">
           <div className="w-full">
-          <LocationModal
-            onClose={handleCancel}
-            onSelect={(distance) => {
-              setSelectedDistance(distance);
-              setShowModal(false);
-            }}
-          />
+            <LocationModal
+              onClose={handleCancel}
+              onSelect={(distance) => {
+                setSelectedDistance(distance);
+                setShowModal(false);
+              }}
+            />
           </div>
         </div>
       )}

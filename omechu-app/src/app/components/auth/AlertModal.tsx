@@ -1,7 +1,8 @@
 "use client";
 
-import Button from "./Button";
 import { MouseEvent } from "react";
+
+import Button from "./Button";
 
 interface AlertModalProps {
   title: string;
@@ -25,7 +26,7 @@ export default function AlertModal({
       onClick={handleWrapperClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
     >
-      <div className="flex flex-col items-center gap-6 bg-white rounded-lg p-6 w-[300px] text-center">
+      <div className="flex w-[300px] flex-col items-center gap-6 rounded-lg bg-white p-6 text-center">
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-bold text-black">{title}</h2>
           <p className="text-sm text-gray-600">{message}</p>

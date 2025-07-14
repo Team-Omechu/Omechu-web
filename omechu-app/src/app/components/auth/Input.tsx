@@ -19,7 +19,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={name}
-            className="block mb-1.5 text-[15px] font-normal text-[#393939]"
+            className="mb-1.5 block text-[15px] font-normal text-[#393939]"
           >
             {label}
           </label>
@@ -40,7 +40,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

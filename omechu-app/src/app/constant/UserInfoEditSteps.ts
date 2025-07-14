@@ -1,9 +1,9 @@
+import AllergyStep from "@/app/mypage/user-info-edit/[step]/AllergyStep";
+import ConditionStep from "@/app/mypage/user-info-edit/[step]/ConditionStep";
 import EditStart from "@/app/mypage/user-info-edit/[step]/EditStart";
+import FoodStep from "@/app/mypage/user-info-edit/[step]/FoodStep";
 import GenderStep from "@/app/mypage/user-info-edit/[step]/GenderStep";
 import StateStep from "@/app/mypage/user-info-edit/[step]/StateStep";
-import FoodStep from "@/app/mypage/user-info-edit/[step]/FoodStep";
-import ConditionStep from "@/app/mypage/user-info-edit/[step]/ConditionStep";
-import AllergyStep from "@/app/mypage/user-info-edit/[step]/AllergyStep";
 
 // step key 타입을 먼저 정의
 export type StepKey =

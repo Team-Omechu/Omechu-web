@@ -34,7 +34,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {props.children}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

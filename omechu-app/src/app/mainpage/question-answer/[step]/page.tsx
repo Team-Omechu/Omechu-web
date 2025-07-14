@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import AlertModal from "@/app/components/common/AlertModal";
 
-// Step components
-import MealTimeStep from "@/app/components/question-answer/MealTimeStep";
-import PurposeStep from "@/app/components/question-answer/PurposeStep";
-import MoodStep from "@/app/components/question-answer/MoodStep";
-import WhoStep from "@/app/components/question-answer/WhoStep";
+import { useParams, useRouter } from "next/navigation";
+
+import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import BudgetStep from "@/app/components/question-answer/BudgetStep";
 import FinalChoiceStep from "@/app/components/question-answer/FinalChoiceStep";
+import MealTimeStep from "@/app/components/question-answer/MealTimeStep";
+import MoodStep from "@/app/components/question-answer/MoodStep";
+import PurposeStep from "@/app/components/question-answer/PurposeStep";
+import WhoStep from "@/app/components/question-answer/WhoStep";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 const QUESTION_STEPS = 6;
 
@@ -56,7 +56,7 @@ export default function QuestionAnswerPage() {
   };
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       <header>
         <ProgressBar
           currentStep={step}
@@ -68,13 +68,13 @@ export default function QuestionAnswerPage() {
         />
       </header>
 
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
       {/* 마지막 스텝에서는 footer를 보여주지 않음 */}
       {step < QUESTION_STEPS && (
-        <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+        <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
           <div className="flex justify-between">
             {step > 1 ? (
               <button

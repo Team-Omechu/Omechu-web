@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "noImplicitAny": false, // (이삭) 빌드 오류 해결 테스트를 위해 임시로 설정했습니다. (25-07-14)
+    "noImplicitAny": true, // (리본) 다시 true로 변경경. (25-07-14)
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,

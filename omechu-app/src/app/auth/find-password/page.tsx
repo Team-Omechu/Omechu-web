@@ -1,16 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import Button from "@/app/components/auth/Button";
+import Input from "@/app/components/auth/Input";
 import {
   findPasswordSchema,
   FindPasswordFormValues,
 } from "@/lib/schemas/auth.schema";
-import Button from "@/app/components/auth/Button";
-import Input from "@/app/components/auth/Input";
-import { useRouter } from "next/navigation";
 
 export default function FindPasswordPage() {
   const [apiError, setApiError] = useState<string | null>(null);
@@ -33,13 +36,13 @@ export default function FindPasswordPage() {
       router.push("/auth/find-password/sent");
     } else {
       setApiError(
-        "비밀번호 재설정 메일 발송에 실패했습니다. \n 이메일 주소를 다시 확인해 주세요."
+        "비밀번호 재설정 메일 발송에 실패했습니다. \n 이메일 주소를 다시 확인해 주세요.",
       );
     }
   };
 
   return (
-    <div className="flex flex-col items-center w-full gap-6 pb-40">
+    <div className="flex w-full flex-col items-center gap-6 pb-40">
       <div className="flex flex-col gap-3 text-center">
         <h1 className="text-xl font-medium text-[#393939]">비밀번호 찾기</h1>
         <p className="text-sm font-normal text-[#828282]">
@@ -51,7 +54,7 @@ export default function FindPasswordPage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-full gap-2 pt-4"
+        className="flex w-full flex-col gap-2 pt-4"
       >
         <Input
           {...register("email")}
@@ -94,7 +97,7 @@ export default function FindPasswordPage() {
       </div>
 
       {apiError && (
-        <div className="w-full h-[70px] flex items-center justify-center text-sm text-center text-white bg-[rgba(130,130,130,0.5)] rounded-md mt-4 whitespace-pre-line">
+        <div className="mt-4 flex h-[70px] w-full items-center justify-center whitespace-pre-line rounded-md bg-[rgba(130,130,130,0.5)] text-center text-sm text-white">
           {apiError}
         </div>
       )}
