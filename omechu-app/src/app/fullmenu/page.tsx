@@ -8,7 +8,7 @@ import BottomNav from "../components/common/Bottom";
 import SearchBar from "../components/common/SearchBar";
 import FoodBox from "../components/common/FoodBox";
 import FilterModal from "../components/fullmenu/FilterModal";
-import TagItem from "../components/common/Tag";
+import TagItem from "../components/common/TagItem";
 import { suggestionList } from "../constant/suggestionList";
 
 export default function FullMenu() {
