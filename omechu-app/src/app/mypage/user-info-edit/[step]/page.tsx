@@ -2,6 +2,8 @@
 
 export const dynamicParams = true;
 export const dynamic = "auto";
+import { notFound } from "next/navigation";
+import { stepComponents } from "@/app/constant/UserInfoEditSteps";
 
 export function generateStaticParams() {
   return [
@@ -14,10 +16,13 @@ export function generateStaticParams() {
   ];
 }
 
-import { notFound } from "next/navigation";
-import { stepComponents } from "@/app/constant/UserInfoEditSteps";
+type StepPageProps = {
+  params: {
+    step: string;
+  };
+};
 
-export default function StepPage({ params }: { params: { step: string } }) {
+export default function StepPage({ params }: StepPageProps) {
   const Component = stepComponents[params.step as keyof typeof stepComponents];
 
   if (!Component) return notFound();
