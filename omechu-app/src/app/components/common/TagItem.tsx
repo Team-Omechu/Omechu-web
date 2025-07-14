@@ -1,11 +1,12 @@
 type TagItemProps = {
   label: string;
   onRemove: () => void;
+  className?: string;
 };
 
-export default function TagItem({ label, onRemove }: TagItemProps) {
+export default function TagItem({ label, onRemove, className = "" }: TagItemProps) {
   return (
-    <div className="bg-gray-400 rounded-full h-6 px-6 text-xs text-white flex items-center">
+    <div className={`bg-gray-400 rounded-full h-6 text-xs text-white flex items-center ${className}`}>
       <span>{label}</span>
       <button
         onClick={onRemove}
