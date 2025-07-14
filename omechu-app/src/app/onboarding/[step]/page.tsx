@@ -114,7 +114,7 @@ export default function OnboardingPage() {
         />
       </header>
 
-      <main className="flex flex-1 flex-col items-center justify-center w-full px-4 py-6">
+      <main className="flex flex-1 flex-col items-center w-full px-4 py-6">
         {renderStepComponent()}
       </main>
 
