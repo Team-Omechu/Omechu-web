@@ -56,7 +56,7 @@ export default function TermForLocationInfo() {
             </div>
           </section>
         ))}
-        {/* FBA */}
+        {/* Floating Action Button - 맨 위로 이동 */}
         <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>

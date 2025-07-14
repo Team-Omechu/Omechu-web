@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
 import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 
 export default function TermForPersonalInfo() {
   const router = useRouter();
@@ -56,12 +57,8 @@ export default function TermForPersonalInfo() {
             </div>
           </section>
         ))}
-        {/* FBA */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
-          <button onClick={scrollToTop}>
-            <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
-          </button>
-        </section>
+        {/* Floating Action Button - 맨 위로 이동 */}
+        <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>
   );
