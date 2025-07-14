@@ -1,0 +1,36 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+
+import SignInForm from "./components/SignInForm";
+
+export default function SignInPage() {
+  return (
+    <div className="flex w-full flex-col items-center gap-8 py-10">
+      <Link href="/">
+        <Image
+          src="/logo.png"
+          alt="Omechu Logo"
+          width={139}
+          height={92}
+          priority
+        />
+      </Link>
+
+      <SignInForm />
+
+      <div className="relative flex w-full items-center">
+        <hr className="w-full border-t border-gray-300" />
+        <span className="absolute left-1/2 -translate-x-1/2 bg-[#F8D5FF] px-2 text-xs text-gray-400">
+          or
+        </span>
+      </div>
+
+      <button className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]">
+        <Image src="/kakao.png" alt="카카오 아이콘" width={24} height={24} />
+        카카오 로그인
+      </button>
+    </div>
+  );
+}
