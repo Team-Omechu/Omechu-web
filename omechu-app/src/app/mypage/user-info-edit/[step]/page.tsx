@@ -1,5 +1,6 @@
 // src/app/mypage/user-info-edit/[step]/page.tsx
 
+export const dynamicParams = true;
 export const dynamic = "auto";
 
 export function generateStaticParams() {
@@ -14,16 +15,10 @@ export function generateStaticParams() {
 }
 
 import { notFound } from "next/navigation";
-import { stepComponents, StepKey } from "@/app/constant/UserInfoEditSteps";
+import { stepComponents } from "@/app/constant/UserInfoEditSteps";
 
-type PageProps = {
-  params: {
-    step: StepKey;
-  };
-};
-
-export default function StepPage({ params }: PageProps) {
-  const Component = stepComponents[params.step];
+export default function StepPage({ params }: { params: { step: string } }) {
+  const Component = stepComponents[params.step as keyof typeof stepComponents];
 
   if (!Component) return notFound();
 
