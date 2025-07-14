@@ -136,7 +136,7 @@ export default function OnboardingPage() {
         <button
           onClick={handleNext}
           disabled={isNextDisabled}
-          className="w-full h-12 p-2 text-white text-xl font-normal bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae]"
+          className="w-full h-12 p-2 text-white text-xl font-normal bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400"
         >
           {step === ONBOARDING_STEPS ? "저장" : "다음"}
         </button>
