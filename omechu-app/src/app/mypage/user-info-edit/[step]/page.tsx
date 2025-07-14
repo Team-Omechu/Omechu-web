@@ -1,22 +1,14 @@
+"use client";
+
+// ✅ generateStaticParams 제거
+// ✅ dynamicParams 명시
+export const dynamicParams = true;
+
 import { notFound } from "next/navigation";
-import {
-  stepComponents,
-  stepOrder,
-  StepKey,
-} from "@/app/constant/UserInfoEditSteps";
+import { stepComponents } from "@/app/constant/UserInfoEditSteps";
 
-export function generateStaticParams() {
-  return stepOrder.map((step) => ({ step }));
-}
-
-interface Props {
-  params: {
-    step: StepKey;
-  };
-}
-
-export default function StepPage({ params }: Props) {
-  const Component = stepComponents[params.step];
+export default function StepPage({ params }: { params: { step: string } }) {
+  const Component = stepComponents[params.step as keyof typeof stepComponents];
 
   if (!Component) return notFound();
 
