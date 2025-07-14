@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
+import AlertModal from "@/app/components/common/AlertModal";
 import BottomButton from "@/app/components/common/button/BottomButton";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import AllergyStep from "@/app/onboarding/components/AllergyStep";
 import ConstitutionStep from "@/app/onboarding/components/ConstitutionStep";
@@ -21,6 +23,7 @@ export default function OnboardingPage() {
   const params = useParams();
   const store = useOnboardingStore();
   const { setCurrentStep, reset } = store;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const step = Number(params.step);
 
@@ -54,14 +57,22 @@ export default function OnboardingPage() {
       router.push(`/onboarding/${step + 1}`);
     } else {
       // TODO: 온보딩 완료 처리 로직 (e.g., 서버에 데이터 전송)
-      alert("온보딩이 완료되었습니다!");
-      reset();
-      router.push("/");
+      setIsModalOpen(true);
     }
   };
 
   const handlePrev = () => router.back();
   const handleSkip = () => handleNext();
+
+  const handleRecommend = () => {
+    // TODO: 온보딩 완료 데이터 서버 전송
+    reset();
+    router.push("/");
+  };
+
+  const handleRecheck = () => {
+    setIsModalOpen(false);
+  };
 
   const renderStepComponent = () => {
     switch (step) {
@@ -125,9 +136,22 @@ export default function OnboardingPage() {
           )}
         </div>
         <BottomButton onClick={handleNext} disabled={isNextDisabled}>
-          {step === ONBOARDING_STEPS ? '저장' : '다음'}
+          {step === ONBOARDING_STEPS ? "저장" : "다음"}
         </BottomButton>
       </footer>
+
+      {isModalOpen && (
+        <ModalWrapper>
+          <AlertModal
+            title="저장 완료!"
+            description="이제 맛있는 메뉴 추천을 받아볼까요?"
+            confirmText="추천받기"
+            cancelText="내 정보 다시 보기"
+            onConfirm={handleRecommend}
+            onClose={handleRecheck}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }
