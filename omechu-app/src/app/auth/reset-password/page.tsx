@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import AlertModal from "@/app/components/auth/AlertModal";
-import Input from "@/app/components/auth/Input";
+import Input from "@/app/auth/components/Input";
+import AlertModal from "@/app/components/common/AlertModal";
 import SquareButton from "@/app/components/common/button/SquareButton";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
 import {
   resetPasswordSchema,
   ResetPasswordFormValues,
@@ -118,11 +119,14 @@ export default function ResetPasswordPage() {
         </form>
       </div>
       {isModalOpen && (
-        <AlertModal
-          title="비밀번호를 재설정했어요"
-          message="새로운 비밀번호로 로그인하세요"
-          onConfirm={handleModalConfirm}
-        />
+        <ModalWrapper>
+          <AlertModal
+            title="비밀번호를 재설정했어요"
+            description="새로운 비밀번호로 로그인하세요"
+            confirmText="확인"
+            onConfirm={handleModalConfirm}
+          />
+        </ModalWrapper>
       )}
     </>
   );
