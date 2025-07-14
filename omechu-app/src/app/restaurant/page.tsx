@@ -284,6 +284,15 @@ export default function Restaurant() {
                     />
                 ))}
             </div>
+
+            <div ref={loaderRef} className="h-[1px]" />
+
+            {isLoading && (
+                <div className="flex justify-center items-center mt-4 h-20">
+                    <div className="w-6 h-6 border-4 border-gray-300 border-t-gray-800 rounded-full animate-spin" />
+                    <span className="ml-2 text-gray-600 text-sm">로딩 중...</span>
+                </div>
+            )}
         </div>
     )
 }
