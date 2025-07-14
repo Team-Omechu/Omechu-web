@@ -16,6 +16,7 @@ type OnboardingActions = {
   setNickname: (nickname: string) => void;
   setGender: (gender: "여성" | "남성" | null) => void;
   setWorkoutStatus: (status: string | null) => void;
+  setPreferredFood: (foods: string[]) => void; // 타입 정의 추가
   togglePreferredFood: (food: string) => void;
   toggleConstitution: (item: string) => void;
   toggleAllergy: (allergy: string) => void;
@@ -45,7 +46,7 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
       setNickname: (nickname) => set({ nickname }),
       setGender: (gender) => set({ gender }),
       setWorkoutStatus: (status) => set({ workoutStatus: status }),
-      setPreferredFood: (foods) => set({ preferredFood: foods }),
+      setPreferredFood: (foods: string[]) => set({ preferredFood: foods }), // 파라미터 타입 추가
 
       togglePreferredFood: (food) => {
         const exists = get().preferredFood.includes(food);
