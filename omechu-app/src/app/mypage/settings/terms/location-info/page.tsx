@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
 import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 
 export default function TermForLocationInfo() {
   const router = useRouter();
@@ -56,11 +57,12 @@ export default function TermForLocationInfo() {
           </section>
         ))}
         {/* FBA */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+        <FloatingActionButton onClick={scrollToTop} />
+        {/* <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
           <button onClick={scrollToTop}>
             <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
           </button>
-        </section>
+        </section> */}
       </main>
     </>
   );
