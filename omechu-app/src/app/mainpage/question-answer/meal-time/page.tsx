@@ -39,7 +39,7 @@ export default function MealTimePage() {
                 setSelected(meal);
                 router.push("./purpose");
               }}
-              className={`w-full h-12 rounded-md border text-lg 
+              className={`w-full h-12 rounded-md border text-lg
                 ${
                   selected === meal
                     ? "bg-red-500 text-white border-red-500"

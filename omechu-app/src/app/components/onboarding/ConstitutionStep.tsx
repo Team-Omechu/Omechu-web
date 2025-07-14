@@ -15,7 +15,7 @@ const ConstitutionStep = () => {
   ];
 
   return (
-    <OnboardingStepLayout title="체질은 무엇인가요?">
+    <OnboardingStepLayout title="체질은 무엇인가요?" paddingClassName="px-0">
       {options.map((option) => (
         <OnboardingButton
           key={option}

@@ -1,18 +1,18 @@
 import React from "react";
 
-type OnboardingStepLayoutProps = {
-  title: React.ReactNode;
+type QuestionAnswerLayoutProps = {
+  title: string;
   children: React.ReactNode;
   contentClassName?: string;
   paddingClassName?: string; // paddingClassName prop 추가
 };
 
-const OnboardingStepLayout = ({
+const QuestionAnswerLayout = ({
   title,
   children,
   contentClassName = "",
   paddingClassName = "px-8", // 기본값을 'px-8'로 설정
-}: OnboardingStepLayoutProps) => {
+}: QuestionAnswerLayoutProps) => {
   return (
     <div className="flex flex-col items-center w-full px-4 py-6">
       <section className="my-20 text-center">
@@ -29,4 +29,4 @@ const OnboardingStepLayout = ({
   );
 };
 
-export default OnboardingStepLayout;
+export default QuestionAnswerLayout;

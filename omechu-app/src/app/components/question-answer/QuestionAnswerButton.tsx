@@ -1,14 +1,14 @@
 import React from "react";
 
-type OnboardingButtonProps = {
+type QuestionAnswerButtonProps = {
   isSelected: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const OnboardingButton = ({
+const QuestionAnswerButton = ({
   isSelected,
   children,
   ...props
-}: OnboardingButtonProps) => {
+}: QuestionAnswerButtonProps) => {
   const baseStyle =
     "w-full h-12 px-0 py-2 rounded-md border-[1px] text-xl flex items-center justify-center transition-colors";
   const selectedStyle =
@@ -28,4 +28,4 @@ const OnboardingButton = ({
   );
 };
 
-export default OnboardingButton;
+export default QuestionAnswerButton;

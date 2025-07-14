@@ -36,7 +36,7 @@ export default function BudgetPage() {
                 setSelected(budget);
                 router.push("./middle-question");
               }}
-              className={`w-full h-12 rounded-md border-[1px] text-lg 
+              className={`w-full h-12 rounded-md border-[1px] text-lg
               ${
                 selected === budget
                   ? "bg-red-500 text-white border-red-500"

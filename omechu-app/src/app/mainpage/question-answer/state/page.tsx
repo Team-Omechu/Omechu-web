@@ -41,7 +41,7 @@ export default function StatePage() {
                 setSelected(state);
                 router.push("./who");
               }}
-              className={`w-full h-12 rounded-md border-[1px] text-lg 
+              className={`w-full h-12 rounded-md border-[1px] text-lg
               ${
                 selected === state
                   ? "bg-red-500 text-white border-red-500"

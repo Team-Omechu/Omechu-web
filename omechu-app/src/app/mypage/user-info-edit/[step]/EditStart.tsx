@@ -42,7 +42,7 @@ export default function EditStart() {
               router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
             }
             className="w-48 h-16 p-5 flex items-center justify-center
-                      text-white text-2xl font-medium rounded-md 
+                      text-white text-2xl font-medium rounded-md
                       bg-[#FB4746] dark:bg-[#bc3535]
                       hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
                       active:bg-[#c93938] dark:active:bg-[#71201f]"

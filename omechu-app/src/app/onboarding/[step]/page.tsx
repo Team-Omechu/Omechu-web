@@ -97,47 +97,62 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8D5FF]">
-      <div className="px-4 pt-5">
+    <div className="relative flex flex-col w-auto h-screen">
+      <header>
         <ProgressBar
           currentStep={step}
           totalSteps={ONBOARDING_STEPS}
-          cancelButtonText="온보딩 그만하기"
+          cancelButtonText="일단 시작하기"
+          cancelButtonAlign="right"
+          cancelButtonClassName="w-auto"
           onCancelClick={() => {
-            if (confirm("온보딩을 중단하고 메인으로 이동하시겠습니까?")) {
+            if (confirm("일단 시작하기")) {
               reset();
               router.push("/");
             }
           }}
         />
-      </div>
+      </header>
 
-      <div className="flex flex-col justify-center flex-grow">
-        <main className="px-5">{renderStepComponent()}</main>
+      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+        {renderStepComponent()}
+      </main>
 
-        <footer className="px-5 pt-12 pb-8">
-          <div className="flex items-center justify-between max-w-xs mx-auto text-sm text-gray-500">
-            {step > 1 ? (
-              <button onClick={handlePrev}>{"<"} 이전으로</button>
-            ) : (
-              <div />
-            )}
-            {step > 1 && step < ONBOARDING_STEPS && (
-              <button onClick={handleSkip}>건너뛰기 {">"}</button>
-            )}
-          </div>
-          <div className="max-w-xs mx-auto mt-4">
-            <Button
-              variant="blue"
-              size="large"
-              onClick={handleNext}
-              disabled={isNextDisabled}
+      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+        <div className="flex justify-between">
+          {step > 1 ? (
+            <button
+              onClick={handlePrev}
+              className="ml-5 text-base text-[#828282]"
             >
-              {step === ONBOARDING_STEPS ? "저장" : "다음"}
-            </Button>
-          </div>
-        </footer>
-      </div>
+              {"<"} 이전으로
+            </button>
+          ) : (
+            <div />
+          )}
+          {step > 1 && step < ONBOARDING_STEPS && (
+            <button
+              onClick={handleSkip}
+              className="mr-5 text-base text-[#828282]"
+            >
+              건너뛰기 {">"}
+            </button>
+          )}
+        </div>
+        <div>
+          <button
+            onClick={handleNext}
+            disabled={isNextDisabled}
+            className="p-2 min-w-full h-12 rounded-t-md 
+            text-white text-xl font-normal
+            bg-[#1F9BDA] 
+            hover:bg-[#1c8cc4] 
+            active:bg-[#197cae]"
+          >
+            {step === ONBOARDING_STEPS ? "저장" : "다음"}
+          </button>
+        </div>
+      </footer>
     </div>
   );
 }

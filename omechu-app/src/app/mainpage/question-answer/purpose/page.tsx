@@ -36,7 +36,7 @@ export default function PurposePage() {
                 setSelected(purpose);
                 router.push("./state");
               }}
-              className={`w-full h-12 p-2 rounded-md border-[1px] text-lg  
+              className={`w-full h-12 p-2 rounded-md border-[1px] text-lg
               ${
                 selected === purpose
                   ? "bg-red-500 text-white border-red-500"
