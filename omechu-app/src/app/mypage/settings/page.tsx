@@ -7,7 +7,7 @@ import Image from "next/image";
 
 const termsList: { id: number; title: string; url: string }[] = [
   { id: 1, title: "계정 관리", url: "/mypage/settings/account-settings" },
-  { id: 2, title: "이용 약관", url: "/mypage/terms" },
+  { id: 2, title: "이용 약관", url: "/mypage/settings/terms" },
 ];
 
 export default function Settings() {
