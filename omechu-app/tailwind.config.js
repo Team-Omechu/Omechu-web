@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -24,6 +23,20 @@ module.exports = {
       minHeight: {
         "screen-mobile": "812px",
       },
+      // Toast 관련 좌우 흔들리는 애니메이션 추가
+      keyframes: {
+        shake: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "20%": { transform: "translateX(-1px)" },
+          "40%": { transform: "translateX(1px)" },
+          "60%": { transform: "translateX(-1px)" },
+          "80%": { transform: "translateX(1px)" },
+        },
+      },
+      animation: {
+        shake: "shake 0.5s ease-in-out",
+      },
+      // Toast 관련
     },
   },
 
@@ -43,3 +56,6 @@ module.exports = {
     },
   ],
 };
+
+// 25.07.14
+// 이삭 - keyframes 및 animation-shake 추가

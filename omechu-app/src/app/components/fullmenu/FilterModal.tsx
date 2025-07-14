@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Image from "next/image";
+import Header from "@/app/components/common/Header";
 
 type FilterModalProps = {
   onClose: () => void;
@@ -26,12 +28,19 @@ export default function FilterModal({ onClose, onApply, selected }: FilterModalP
 
   return (
     <div className="fixed inset-0 z-[9999] bg-[#F8D5FF] w-screen h-screen overflow-y-auto">
-        <div className="relative flex justify-center items-center px-4 pt-5 pb-3">
-            <h2 className="text-[18px] font-semibold">식사 상황 선택</h2>
-            <button onClick={onClose} className="absolute top-4 right-4 text-[22px] font-bold">✕</button>
-        </div>
-
-        <hr className="my-1 border-gray-500" />
+        <Header
+                title={"식사 상황 선택"}
+                rightChild={
+                    <button onClick={onClose}>
+                        <Image
+                            src={"/close_button.png"}
+                            alt={"닫기"}
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                }
+            />
 
         <div className="px-6 py-6">
             {Object.entries(filterOptions).map(([key, options]) => (

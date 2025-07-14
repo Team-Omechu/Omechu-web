@@ -6,9 +6,17 @@ import Header from "@/app/components/common/Header";
 import Image from "next/image";
 
 const termsList: { id: number; title: string; url: string }[] = [
-  { id: 1, title: "서비스 이용약관", url: "./terms/service" },
-  { id: 2, title: "개인정보 처리방침", url: "./terms/personal-info" },
-  { id: 3, title: "위치 기반 서비스 이용약관", url: "./terms/location-info" },
+  { id: 1, title: "서비스 이용약관", url: "/mypage/settings/terms/service" },
+  {
+    id: 2,
+    title: "개인정보 처리방침",
+    url: "/mypage/settings/terms/personal-info",
+  },
+  {
+    id: 3,
+    title: "위치 기반 서비스 이용약관",
+    url: "/mypage/settings/terms/location-info",
+  },
 ];
 
 export default function Terms() {
@@ -17,11 +25,11 @@ export default function Terms() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"이용 약관"}
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.push("/mypage/settings");
             }}
           >
             <Image
@@ -42,7 +50,6 @@ export default function Terms() {
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
               <li className="flex items-center justify-between w-full px-6 py-3">
-
                 <h1 className="text-[clamp(1.25rem)] font-normal">
                   {item.title}
                 </h1>

@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
-import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
+import { termsForService } from "@/app/constant/terms/service";
 
-export default function TermForPersonalInfo() {
+export default function TermForService() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
   const scrollToTop = () => {
@@ -17,7 +17,7 @@ export default function TermForPersonalInfo() {
   return (
     <>
       <Header
-        title={"위치기반 서비스 이용약관"}
+        title={"서비스 이용약관"}
         leftChild={
           <button
             onClick={() => {
@@ -30,6 +30,7 @@ export default function TermForPersonalInfo() {
               width={22}
               height={30}
             />
+
           </button>
         }
       />
@@ -37,7 +38,7 @@ export default function TermForPersonalInfo() {
         ref={mainRef}
         className="relative w-full h-screen overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9"
       >
-        {termsForLocationlInfo.map((item, key) => (
+        {termsForService.map((item, key) => (
           <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
             {item.index && (

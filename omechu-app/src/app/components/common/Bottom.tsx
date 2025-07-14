@@ -10,7 +10,7 @@ const navItems: {
 }[] = [
   {
     title: "홈",
-    routingUrl: "/",
+    routingUrl: "/mainpage",
     imgSrc: "/Home.png",
     imgAlt: "홈",
   },
@@ -22,7 +22,7 @@ const navItems: {
   },
   {
     title: "맛집",
-    routingUrl: "/",
+    routingUrl: "/restaurant",
     imgSrc: "/restaurant.png",
     imgAlt: "맛집",
   },
@@ -34,7 +34,7 @@ const navItems: {
   },
 ];
 
-const BottomNav = () => {
+export default function BottomNav() {
   const router = useRouter(); // React의 useNavigator처럼 변수 선언
 
   return (
@@ -55,8 +55,6 @@ const BottomNav = () => {
       </div>
     </div>
   );
-};
-
-export default BottomNav;
+}
 
 // (이삭) tailwindcss에 shadow-top 클래스는 없어서 직접 지정했습니다. shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]

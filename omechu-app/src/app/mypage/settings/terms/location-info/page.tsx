@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
-import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
 
 export default function TermForLocationInfo() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function TermForLocationInfo() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"위치기반 서비스 이용약관"}
         leftChild={
           <button
             onClick={() => {
@@ -37,8 +37,7 @@ export default function TermForLocationInfo() {
         ref={mainRef}
         className="relative w-full h-screen overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9"
       >
-        {" "}
-        {termsForPersonlInfo.map((item, key) => (
+        {termsForLocationlInfo.map((item, key) => (
           <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
             {item.index && (

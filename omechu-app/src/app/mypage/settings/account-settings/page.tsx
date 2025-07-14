@@ -16,7 +16,7 @@ export default function AccountSettings() {
   return (
     <>
       <Header
-        title={"기본 상태 입력"}
+        title={"계정 관리"}
         leftChild={
           <button
             onClick={() => {

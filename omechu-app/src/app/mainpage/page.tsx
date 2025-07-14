@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function MainPage() {
@@ -8,9 +9,11 @@ export default function MainPage() {
   return (
     <div className="w-full flex justify-center relative">
         {/* 메인 배경 이미지 */}
-        <img
+        <Image
           src="/mainpage.png"
           alt="메인 페이지"
+          width={375}
+          height={732}
           className="w-[25.5625rem] h-[40rem] object-cover mt-10"
         />
         {/* 버튼들 */}
