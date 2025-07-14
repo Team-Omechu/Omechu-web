@@ -85,6 +85,7 @@ export default function LocationModal({ onClose, onApply, selected }: FilterModa
                         setTempSelected((prev) =>
                             prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
                         )}
+                        maxSelected={5}
                     />
                 </div>
 

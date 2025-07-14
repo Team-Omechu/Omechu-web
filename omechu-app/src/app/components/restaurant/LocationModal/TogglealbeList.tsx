@@ -7,10 +7,10 @@ type ToggleableListProps = {
   items: Item[];
   selectedValues: string[];
   onToggle: (value: string) => void;
-  maxSelected?: number;
+  maxSelected: number;
 };
 
-export default function ToggleableList({ items, selectedValues, onToggle, maxSelected = 5 }: ToggleableListProps) {
+export default function ToggleableList({ items, selectedValues, onToggle, maxSelected }: ToggleableListProps) {
   return (
     <div className="overflow-y-auto scrollbar-hide">
       {items.map(({label, value}) => {
