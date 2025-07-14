@@ -6,6 +6,7 @@ type AlertModalProps = {
   onConfirm: () => void;
   onClose?: () => void;
   iconSrc?: string;
+  swapButtonOrder?: boolean;
 };
 
 export default function AlertModal({
@@ -15,6 +16,7 @@ export default function AlertModal({
   cancelText,
   onConfirm,
   onClose,
+  swapButtonOrder = false,
 }: AlertModalProps) {
   const showCancelButton = !!cancelText;
   return (
@@ -33,7 +35,59 @@ export default function AlertModal({
         )}
       </div>
       <div className="flex justify-center gap-2.5">
-        <button
+        {swapButtonOrder ? (
+          <>
+            {showCancelButton && (
+              <button
+                onClick={onClose}
+                className="flex-1 h-10 text-[15px] font-normal
+                      rounded-[30px] border-black border-2 dark:border-none
+                      bg-white dark:bg-[#7a7a7a]
+                      hover:bg-[#f1f1f1] dark:hover:bg-[#626262]
+                      active:bg-[#e2e2e2] dark:active:bg-[#494949]"
+              >
+                {cancelText}
+              </button>
+            )}
+            <button
+              onClick={onConfirm}
+              className={`h-10 rounded-[30px] text-white text-[15px] font-normal
+                    bg-[#FB4746] dark:bg-[#bc3535]
+                    hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
+                    active:bg-[#c93938] dark:active:bg-[#71201f]
+                    ${showCancelButton ? "flex-1" : "w-40"}`}
+            >
+              {confirmText}
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={onConfirm}
+              className={`h-10 rounded-[30px] text-white text-[15px] font-normal
+                    bg-[#FB4746] dark:bg-[#bc3535]
+                    hover:bg-[#e2403f] dark:hover:bg-[#972b2a]
+                    active:bg-[#c93938] dark:active:bg-[#71201f]
+                    ${showCancelButton ? "flex-1" : "w-40"}`}
+            >
+              {confirmText}
+            </button>
+            {showCancelButton && (
+              <button
+                onClick={onClose}
+                className="flex-1 h-10 text-[15px] font-normal
+                      rounded-[30px] border-black border-2 dark:border-none
+                      bg-white dark:bg-[#7a7a7a]
+                      hover:bg-[#f1f1f1] dark:hover:bg-[#626262]
+                      active:bg-[#e2e2e2] dark:active:bg-[#494949]"
+              >
+                {cancelText}
+              </button>
+            )}
+          </>
+        )}
+
+        {/* <button
           onClick={onConfirm}
           className={`h-10 rounded-[30px] text-white text-[15px] font-normal
                     bg-[#FB4746] dark:bg-[#bc3535]
@@ -54,7 +108,7 @@ export default function AlertModal({
           >
             {cancelText}
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
