@@ -31,6 +31,7 @@ export default function AllergyStep() {
         totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
+        cancelButtonAlign="left"
       />
 
       {/* 본문 영역 */}
@@ -52,7 +53,7 @@ export default function AllergyStep() {
                   <button
                     key={item}
                     onClick={() => handleClick(item)}
-                    className={`w-60 h-12 p-2 text-xl rounded-md border-[1px]
+                    className={`w-60 h-12 p-2 pt-2.5 text-xl rounded-md border-[1px]
                     ${
                       isSelected
                         ? "bg-[#FB4746] text-white border-[#FB4746]"
@@ -74,7 +75,7 @@ export default function AllergyStep() {
         <div className="flex justify-between">
           <button
             onClick={() =>
-              router.push(`mypage/user-info-edit/${indexToSlug[4]}`)
+              router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
             className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
           >

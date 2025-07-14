@@ -47,6 +47,7 @@ export default function GenderStep() {
         totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
+        cancelButtonAlign="left"
       />
 
       <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">

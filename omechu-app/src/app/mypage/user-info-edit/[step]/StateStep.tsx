@@ -49,6 +49,7 @@ export default function StateStep() {
         totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
+        cancelButtonAlign="left"
       />
 
       <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
@@ -64,7 +65,7 @@ export default function StateStep() {
               <button
                 key={label}
                 onClick={() => handleStatusClick(label)}
-                className={`w-60 h-12 px-2 text-xl rounded-md border-[1px]
+                className={`w-60 h-12 px-2 pt-1 text-xl rounded-md border-[1px]
                   ${
                     status === label
                       ? "bg-[#FB4746] text-white border-[#FB4746]"
