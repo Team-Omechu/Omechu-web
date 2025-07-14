@@ -2,9 +2,9 @@
 
 import React from "react";
 
+import ListButton from "@/app/components/common/button/ListButton";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
-import OnboardingButton from "./OnboardingButton";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
 const WorkoutStatusStep = () => {
@@ -14,13 +14,13 @@ const WorkoutStatusStep = () => {
   return (
     <OnboardingStepLayout title={"지금 어떤 운동 상태에 \n 가까운가요?"}>
       {options.map((option) => (
-        <OnboardingButton
+        <ListButton
           key={option}
           onClick={() => setWorkoutStatus(option)}
           isSelected={workoutStatus === option}
         >
           {option}
-        </OnboardingButton>
+        </ListButton>
       ))}
     </OnboardingStepLayout>
   );

@@ -2,9 +2,9 @@
 
 import React from "react";
 
+import ListButton from "@/app/components/common/button/ListButton";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
-import OnboardingButton from "./OnboardingButton";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
 const AllergyStep = () => {
@@ -20,13 +20,13 @@ const AllergyStep = () => {
   return (
     <OnboardingStepLayout title="알레르기가 있나요?">
       {options.map((option) => (
-        <OnboardingButton
+        <ListButton
           key={option}
           onClick={() => toggleAllergy(option)}
           isSelected={allergies.includes(option)}
         >
           {option}
-        </OnboardingButton>
+        </ListButton>
       ))}
     </OnboardingStepLayout>
   );

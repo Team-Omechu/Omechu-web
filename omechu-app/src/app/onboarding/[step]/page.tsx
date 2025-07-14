@@ -4,14 +4,14 @@ import { useEffect, useMemo } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import Button from "@/app/components/auth/Button";
+import BottomButton from "@/app/components/common/button/BottomButton";
 import ProgressBar from "@/app/components/common/ProgressBar";
-import AllergyStep from "@/app/components/onboarding/AllergyStep";
-import ConstitutionStep from "@/app/components/onboarding/ConstitutionStep";
-import GenderStep from "@/app/components/onboarding/GenderStep";
-import PreferredFoodStep from "@/app/components/onboarding/PreferredFoodStep";
-import ProfileStep from "@/app/components/onboarding/ProfileStep";
-import WorkoutStatusStep from "@/app/components/onboarding/WorkoutStatusStep";
+import AllergyStep from "@/app/onboarding/components/AllergyStep";
+import ConstitutionStep from "@/app/onboarding/components/ConstitutionStep";
+import GenderStep from "@/app/onboarding/components/GenderStep";
+import PreferredFoodStep from "@/app/onboarding/components/PreferredFoodStep";
+import ProfileStep from "@/app/onboarding/components/ProfileStep";
+import WorkoutStatusStep from "@/app/onboarding/components/WorkoutStatusStep";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 const ONBOARDING_STEPS = 6;
@@ -25,7 +25,7 @@ export default function OnboardingPage() {
   const step = Number(params.step);
 
   useEffect(() => {
-    if (isNaN(step) || step < 1) {
+    if (isNaN(step) || step < 1 || step > ONBOARDING_STEPS) {
       router.replace("/onboarding/1");
       return;
     }
@@ -40,6 +40,10 @@ export default function OnboardingPage() {
         return !store.gender;
       case 3:
         return !store.workoutStatus;
+      case 4:
+        return store.preferredFood.length === 0;
+      case 5:
+        return store.constitution.length === 0;
       default:
         return false;
     }
@@ -75,25 +79,12 @@ export default function OnboardingPage() {
         return <AllergyStep />;
       default:
         // useEffect에서 처리하지만, 만약을 위한 방어 코드
-        router.replace("/onboarding/1");
         return null;
     }
   };
 
-  if (isNaN(step) || step > ONBOARDING_STEPS) {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <p>잘못된 접근입니다.</p>
-        <Button
-          variant="red"
-          size="medium"
-          onClick={() => router.push("/")}
-          className="w-40"
-        >
-          홈으로
-        </Button>
-      </div>
-    );
+  if (isNaN(step) || step < 1 || step > ONBOARDING_STEPS) {
+    return null;
   }
 
   return (
@@ -133,13 +124,9 @@ export default function OnboardingPage() {
             </button>
           )}
         </div>
-        <button
-          onClick={handleNext}
-          disabled={isNextDisabled}
-          className="h-12 w-full bg-[#1F9BDA] p-2 text-xl font-normal text-white hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400"
-        >
-          {step === ONBOARDING_STEPS ? "저장" : "다음"}
-        </button>
+        <BottomButton onClick={handleNext} disabled={isNextDisabled}>
+          {step === ONBOARDING_STEPS ? '저장' : '다음'}
+        </BottomButton>
       </footer>
     </div>
   );
