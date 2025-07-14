@@ -244,6 +244,7 @@ export default function Restaurant() {
                             : [...prev, keyword]
                         )
                     }
+                    maxSelected={3}
                 />
             )}
 
