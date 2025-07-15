@@ -35,7 +35,9 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
 
   const handleAllAgreement = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
-    termNames.forEach((name) => setValue(name, checked, { shouldValidate: true }));
+    termNames.forEach((name) =>
+      setValue(name, checked, { shouldValidate: true }),
+    );
   };
 
   return (
@@ -131,4 +133,4 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
   );
 };
 
-export default TermsAgreement; 
+export default TermsAgreement;

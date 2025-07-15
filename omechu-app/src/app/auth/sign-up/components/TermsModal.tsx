@@ -31,19 +31,9 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
           />
         </button>
       </div>
-      <div
-        className="flex-grow overflow-y-auto rounded-md border bg-gray-50 p-3 text-black
-          [&::-webkit-scrollbar]:w-1.5
-          [&::-webkit-scrollbar-track]:bg-transparent
-          [&::-webkit-scrollbar-thumb]:rounded-[3px]
-          [&::-webkit-scrollbar-thumb]:bg-[#3B82F6]
-        "
-      >
+      <div className="flex-grow overflow-y-auto rounded-md border bg-gray-50 p-3 text-black [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-[#3B82F6] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
         {terms.map((item, key) => (
-          <section
-            key={key}
-            className="mb-5 flex flex-col justify-start gap-1"
-          >
+          <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {item.index && item.about && (
               <div className="text-sm font-bold">
                 제 {item.index}조 ({item.about})

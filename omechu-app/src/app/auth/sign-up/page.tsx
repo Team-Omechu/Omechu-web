@@ -79,15 +79,15 @@ export default function SignUpPage() {
                 activeModal === "service"
                   ? "서비스 이용약관"
                   : activeModal === "privacy"
-                  ? "개인정보 처리방침"
-                  : "위치기반서비스 이용약관"
+                    ? "개인정보 처리방침"
+                    : "위치기반서비스 이용약관"
               }
               terms={
                 activeModal === "service"
                   ? termsForService
                   : activeModal === "privacy"
-                  ? termsForPersonlInfo
-                  : termsForLocationlInfo
+                    ? termsForPersonlInfo
+                    : termsForLocationlInfo
               }
               onConfirm={() => {
                 if (activeModal) {
@@ -95,8 +95,8 @@ export default function SignUpPage() {
                     activeModal === "service"
                       ? "termsService"
                       : activeModal === "privacy"
-                      ? "termsPrivacy"
-                      : "termsLocation";
+                        ? "termsPrivacy"
+                        : "termsLocation";
                   setValue(termKey, true, { shouldValidate: true });
                 }
                 setActiveModal(null);

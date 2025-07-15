@@ -48,10 +48,7 @@ export default function ExampleTestPage() {
       {activeModal && (
         <ModalWrapper>
           {activeModal === "modal1" && (
-            <LoginPromptModal
-              onConfirm={handleConfirm}
-              onClose={handleClose}
-            />
+            <LoginPromptModal onConfirm={handleConfirm} onClose={handleClose} />
           )}
           {activeModal === "modal2" && (
             <LoginPromptModal2
@@ -63,4 +60,4 @@ export default function ExampleTestPage() {
       )}
     </div>
   );
-} 
+}

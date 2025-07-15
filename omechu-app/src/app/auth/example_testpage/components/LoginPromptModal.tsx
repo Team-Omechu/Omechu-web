@@ -33,9 +33,7 @@ const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
       </div>
 
       <div className="mb-6 flex flex-col gap-2">
-        <h2 className="text-xl text-[#393939]">
-          더 정교한 추천을 원하시나요?
-        </h2>
+        <h2 className="text-xl text-[#393939]">더 정교한 추천을 원하시나요?</h2>
         <p className="text-sm text-[#828282]">
           로그인 후 더 다양한 서비스를 누려보세요
         </p>

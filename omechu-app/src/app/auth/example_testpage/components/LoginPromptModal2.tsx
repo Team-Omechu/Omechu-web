@@ -9,10 +9,7 @@ type LoginPromptModal2Props = {
   onClose: () => void; // "X" 버튼 클릭 시
 };
 
-const LoginPromptModal2 = ({
-  onConfirm,
-  onClose,
-}: LoginPromptModal2Props) => {
+const LoginPromptModal2 = ({ onConfirm, onClose }: LoginPromptModal2Props) => {
   return (
     <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-[#E0E0E0] bg-white px-6 pb-6 pt-6 text-center shadow-lg">
       <button onClick={onClose} className="absolute right-5 top-5 z-10 p-1">

@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import InlineAlert from "@/app/auth/components/InlineAlert";
 import type { FindPasswordFormValues } from "@/lib/schemas/auth.schema";
 
-
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
 export default function FindPasswordPage() {
