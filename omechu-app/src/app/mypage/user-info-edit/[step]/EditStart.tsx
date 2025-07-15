@@ -5,15 +5,9 @@ import Image from "next/image";
 
 import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
 import Header from "@/app/components/common/Header";
-import Input from "@/app/components/common/Input";
-import { useState } from "react";
 
 export default function EditStart() {
   const router = useRouter();
-
-  const [val1, setVal1] = useState(""); // 테스트옹 상태 선언
-  const [val2, setVal2] = useState(""); // 테스트옹 상태 선언
-  const [val3, setVal3] = useState(""); // 테스트옹 상태 선언
 
   return (
     <>
@@ -56,51 +50,6 @@ export default function EditStart() {
             시작하기
           </button>
         </section>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <div className="w-full px-3">
-          <Input
-            label={"password"}
-            type={"password"}
-            showButton={false}
-            value={val1}
-            buttonText="인증하기"
-            onChange={(val1) => {
-              setVal1(val1);
-              console.log(val1);
-            }}
-          />
-        </div>
-        <div className="w-full px-3">
-          <Input
-            label={"email"}
-            type="email"
-            value={val2}
-            showButton={true}
-            buttonText="인증번호 확인"
-            onChange={(val2) => {
-              setVal2(val2);
-              console.log(val2);
-            }}
-          />
-        </div>
-        <div className="w-full px-3">
-          <Input
-            label={"닉네임"}
-            type="text"
-            value={val3}
-            description="한영문자 2-12글자 이내로 입력해주세요"
-            showButton={true}
-            buttonText="인증하기"
-            onChange={(val3) => {
-              setVal3(val3);
-              console.log(val3);
-            }}
-          />
-        </div>
       </main>
     </>
   );
