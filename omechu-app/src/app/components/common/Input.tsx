@@ -37,11 +37,13 @@ interface InputProps {
   showButton?: boolean; // 버튼 보여줄지 말지 (기본은 true)
   buttonText?: string; // 버튼 안에 들어갈 텍스트
   errorMessage?: string; // 에러 났을 때 보여줄 문구
-  showError?: boolean; // 에러 메시지 보여줄지 말지
+  showError?: boolean | null; // 에러 메시지 보여줄지 말지
   description?: string; // input 아래 설명 텍스트
   disabled?: boolean; // 버튼 비활성화 여부 (기본은 true)
   onClick?: () => void; // 버튼 클릭 이벤트
-  onChange: (value: string) => void; // 인풋 값 바뀔 때
+  onChange:
+    | ((value: string) => void)
+    | ((e: React.ChangeEvent<HTMLInputElement>) => void); // 인풋 값 바뀔 때
   onBlur?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -82,7 +84,7 @@ export default function Input({
           type={inputType}
           value={value}
           placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={onChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
           className={`w-full h-full pl-4 pt-0.5
