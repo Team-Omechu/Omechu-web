@@ -123,7 +123,7 @@ export default function ChangePassword() {
         </section>
 
         <section className="relative flex flex-col items-center w-full mt-5">
-          <Toast message={toastMessage} show={showToast} />
+          <Toast message={toastMessage} show={showToast} bottom={"80px"} />
           <button
             onClick={() => {
               if (inputPassword !== SAMPLE_PASSWORD) {

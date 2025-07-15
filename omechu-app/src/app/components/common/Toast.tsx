@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
  * 간단한 알림 메시지를 화면 중앙에 띄워주는 UI 컴포넌트입니다.
  * `message`는 표시할 텍스트이며, `show`가 true일 때에만 화면에 표시됩니다.
  *
- * - 포지션은 화면 중앙 고정(top-2/4, left-1/2)
  * - 부드러운 fade in/out 효과 포함
  * - `show`가 false일 경우 null을 반환하여 렌더링하지 않음
  */
@@ -16,9 +15,10 @@ import { useEffect, useState } from "react";
 type ToastProps = {
   message: string; // 화면에 표시할 텍스트 메시지
   show: boolean; // 표시 여부. true일 경우만 화면에 표시
+  bottom: string;
 };
 
-export default function Toast({ message, show }: ToastProps) {
+export default function Toast({ message, show, bottom = "80px" }: ToastProps) {
   const [visible, setVisible] = useState(false);
   const [isHiding, setIsHiding] = useState(false);
 
@@ -39,15 +39,20 @@ export default function Toast({ message, show }: ToastProps) {
   if (!visible) return null;
 
   return (
-    <div className="absolute z-50 flex justify-center w-full transform -translate-x-1/2 left-1/2">
+    <div
+      className={`absolute z-50 flex justify-center w-full transform -translate-x-1/2 left-1/2
+                    bottom-[${bottom}]
+                    `}
+      style={{ bottom: `${bottom}` }}
+    >
       <div
-        className={`w-fit px-4 py-3 h-16 flex items-center justify-center
+        className={`w-auto px-5 py-3 h-16 flex items-center justify-center
         text-sm text-white text-center
         rounded-xl shadow-lg bg-[#828282] backdrop-blur-sm
         transition-opacity duration-300
-        ${isHiding ? "opacity-0" : "opacity-50 animate-shake"}`}
+        ${isHiding ? "opacity-0" : "opacity-50 animate-shake"} `}
       >
-        <span>{message}</span>
+        <span className="text-center whitespace-pre-line">{message}</span>
       </div>
     </div>
   );
