@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import LoginPromptModal from "@/app/auth/components/LoginPromptModal";
+import LoginPromptModal from "@/app/auth/example_testpage/components/LoginPromptModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 
 export default function ExampleTestPage() {
