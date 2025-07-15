@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import Header from "@/app/components/common/Header";
 import { termsForService } from "@/app/constant/terms/service";
 
@@ -56,12 +57,8 @@ export default function TermForService() {
             </div>
           </section>
         ))}
-        {/* FBA */}
-        <section className="fixed bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
-          <button onClick={scrollToTop}>
-            <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
-          </button>
-        </section>
+        {/* Floating Action Button - 맨 위로 이동 */}
+        <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>
   );

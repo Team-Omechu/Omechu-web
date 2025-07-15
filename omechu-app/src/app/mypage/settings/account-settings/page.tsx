@@ -74,10 +74,11 @@ export default function AccountSettings() {
           <ModalWrapper>
             <AlertModal
               title="로그아웃 하시겠어요?"
-              confirmText="네"
-              cancelText="아니요"
-              onConfirm={() => router.push("/mypage")}
-              onClose={() => setShowModal(false)}
+              confirmText="아니요"
+              cancelText="네"
+              onConfirm={() => setShowModal(false)}
+              onClose={() => router.push("/mypage")}
+              swapButtonOrder={true}
             />
           </ModalWrapper>
         )}

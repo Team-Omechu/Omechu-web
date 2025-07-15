@@ -45,6 +45,7 @@ export default function ConditionStep() {
         totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
+        cancelButtonAlign="left"
       />
 
       {/* 본문 영역 */}
@@ -69,7 +70,7 @@ export default function ConditionStep() {
                 <button
                   key={item}
                   onClick={() => handleClick(item)}
-                  className={`h-12 w-full rounded-md border-[1px] px-2 py-1 text-lg ${
+                  className={`h-12 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
                     isSelected
                       ? "border-[#FB4746] bg-[#FB4746] text-white"
                       : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
