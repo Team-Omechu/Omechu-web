@@ -125,7 +125,7 @@ export default function RecommendedList() {
       />
 
       {/* 메인 섹션 */}
-      <main className="relative overflow-y-auto px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
+      <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4">
         {/* 검색 창 */}
         <SearchBar
           placeholder="음식명을 검색하세요."

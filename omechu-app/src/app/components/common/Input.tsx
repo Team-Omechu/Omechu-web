@@ -45,7 +45,7 @@ interface InputProps {
   onClick?: () => void; // 버튼 클릭 이벤트
   onChange: (
     value: string,
-    event?: React.ChangeEvent<HTMLInputElement>
+    event?: React.ChangeEvent<HTMLInputElement>,
   ) => void; // 인풋 값 바뀔 때
   onBlur?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -81,15 +81,15 @@ export default function Input({
   };
 
   return (
-    <section className="relative flex flex-col w-full mb-5">
+    <section className="relative mb-5 flex w-full flex-col">
       {/* 라벨 */}
       <label
         htmlFor={inputId}
-        className="text-sm text-normal text-[#393939] ml-0.5 mb-0.5"
+        className="text-normal mb-0.5 ml-0.5 text-sm text-[#393939]"
       >
         {label}
       </label>
-      <div className="flex items-center h-10 gap-1">
+      <div className="flex h-10 items-center gap-1">
         {/* 텍스트 인풋 */}
         <input
           id={inputId}
@@ -99,10 +99,7 @@ export default function Input({
           onChange={handleChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
-          className={`w-full h-full pl-4 pt-0.5
-            text-sm text-[#393939] font-normal
-            border-[1px] border-[#626262] rounded-md
-            placeholder:text-sm placeholder:text-[#828282]`}
+          className={`h-full w-full rounded-md border-[1px] border-[#626262] pl-4 pt-0.5 text-sm font-normal text-[#393939] placeholder:text-sm placeholder:text-[#828282]`}
         />
 
         {/* 버튼: showButton이 true일 때만 렌더링 */}
@@ -110,13 +107,11 @@ export default function Input({
           <button
             disabled={disabled}
             onClick={onClick}
-            className={`flex-shrink-0 px-4 pt-1 w-fit h-full 
-              text-center text-xs text-white rounded-lg
-              ${
-                disabled
-                  ? "bg-[#a3a3a3]" // 비활성화 상태
-                  : "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae]" // 활성 상태
-              }`}
+            className={`h-full w-fit flex-shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
+              disabled
+                ? "bg-[#a3a3a3]" // 비활성화 상태
+                : "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae]" // 활성 상태
+            }`}
           >
             {buttonText}
           </button>
@@ -139,19 +134,19 @@ export default function Input({
       )}
       {/* 설명 텍스트 */}
       {description && (
-        <span className="mt-1 ml-1 text-sm font-normal text-[#828282]">
+        <span className="ml-1 mt-1 text-sm font-normal text-[#828282]">
           {description}
         </span>
       )}
 
       {!showError && successMessage && (
-        <span className="absolute ml-1 text-xs font-normal text-[#1F9BDA] -bottom-5">
+        <span className="absolute -bottom-5 ml-1 text-xs font-normal text-[#1F9BDA]">
           {successMessage}
         </span>
       )}
       {/* 에러 메시지 */}
       {showError && errorMessage && (
-        <span className="absolute ml-1 text-xs font-normal text-red-500 -bottom-5">
+        <span className="absolute -bottom-5 ml-1 text-xs font-normal text-red-500">
           {errorMessage}
         </span>
       )}

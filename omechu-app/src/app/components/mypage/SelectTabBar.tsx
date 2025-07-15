@@ -36,15 +36,15 @@ export default function SelectTabBar({
   className,
 }: SelectTabBarProps) {
   return (
-    <section className="flex w-full mb-2">
+    <section className="mb-2 flex w-full">
       {tabs.map((item, index) => (
         <button
           key={index}
           onClick={() => onSelect(index)}
-          className={`flex-1 h-12 text-lg font-medium ${className} ${
+          className={`h-12 flex-1 text-lg font-medium ${className} ${
             selectedIndex === index
-              ? "text-white border-black border-b-[3px] bg-[#1f9bda]"
-              : "text-[#828282] border-b-[#828282] border-b-2 bg-white"
+              ? "border-b-[3px] border-black bg-[#1f9bda] text-white"
+              : "border-b-2 border-b-[#828282] bg-white text-[#828282]"
           }`}
         >
           {item}

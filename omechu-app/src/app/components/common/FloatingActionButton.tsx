@@ -23,7 +23,7 @@ export default function FloatingActionButton({
   alt = "floating-button",
 }: FloatingActionButtonProps) {
   return (
-    <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+    <section className="fixed bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
       <button onClick={onClick}>
         <Image
           src="/components/common/floatingActionButton.svg"

@@ -62,7 +62,7 @@ export default function ProgressBar({
         <div className={`flex ${alignClass}`}>
           <button
             onClick={onCancelClick}
-            className={`w-auto h-6 px-2 pt-1 text-white text-xs font-light rounded-md bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae] ${cancelButtonClassName}`}
+            className={`h-6 w-auto rounded-md bg-[#1f9bda] px-2 pt-1 text-xs font-light text-white hover:bg-[#1c8cc4] active:bg-[#197cae] ${cancelButtonClassName}`}
           >
             {cancelButtonText}
           </button>

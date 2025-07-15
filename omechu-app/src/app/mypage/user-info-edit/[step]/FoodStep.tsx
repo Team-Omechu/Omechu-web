@@ -78,7 +78,7 @@ export default function FoodStep() {
                   onClick={() => {
                     if (!isDisabled) handleClick(item);
                   }}
-                  className={`w-60 h-12 p-2 pt-2.5 text-xl rounded-md border-[1px] transition ${
+                  className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition ${
                     isSelected
                       ? "border-[#FB4746] bg-[#FB4746] text-white"
                       : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"

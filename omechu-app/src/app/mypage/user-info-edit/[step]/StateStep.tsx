@@ -66,13 +66,11 @@ export default function StateStep() {
               <button
                 key={label}
                 onClick={() => handleStatusClick(label)}
-                className={`w-60 h-12 px-2 pt-1 text-xl rounded-md border-[1px]
-                  ${
-                    status === label
-                      ? "bg-[#FB4746] text-white border-[#FB4746]"
-                      : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
-                  }
-                `}
+                className={`h-12 w-60 rounded-md border-[1px] px-2 pt-1 text-xl ${
+                  status === label
+                    ? "border-[#FB4746] bg-[#FB4746] text-white"
+                    : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                } `}
               >
                 {label}
               </button>

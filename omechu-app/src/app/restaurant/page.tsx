@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-// import { distance } from "fastest-levenshtein";
+import { distance } from "fastest-levenshtein";
 
 import SearchBar from "@/app/components/common/SearchBar";
 import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
@@ -52,11 +52,11 @@ export default function Restaurant() {
     ? foodItems.filter((item) => item.menu.includes(search.trim()))
     : foodItems;
 
-  // const similarItems = foodItems.filter(
-  //   (item) =>
-  //     distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
-  //     !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
-  // );
+  const similarItems = foodItems.filter(
+    (item) =>
+      distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
+      !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
+  );
 
   const visibleItems = filteredItems.slice(0, visibleCount);
 
@@ -139,7 +139,7 @@ export default function Restaurant() {
   }, [isFilterOpen]);
 
   return (
-    <div className="min-h-screen px-4 pt-6 pb-20">
+    <div className="min-h-screen px-4 pb-20 pt-6">
       <SearchBar
         placeholder="음식명을 검색하세요."
         inputValue={search}
@@ -148,8 +148,8 @@ export default function Restaurant() {
         suggestionList={suggestionList}
       />
 
-      <div className="flex items-center gap-2 mt-3">
-        <button className="flex items-center justify-between flex-shrink-0 gap-1">
+      <div className="mt-3 flex items-center gap-2">
+        <button className="flex flex-shrink-0 items-center justify-between gap-1">
           <Image src={"/myLocation.svg"} alt="내 위치" width={16} height={16} />
           내 위치
         </button>
@@ -160,7 +160,7 @@ export default function Restaurant() {
           }
         />
         <button
-          className="flex-shrink-0 ml-auto"
+          className="ml-auto flex-shrink-0"
           onClick={() => setIsFilterOpen(true)}
         >
           <Image
@@ -182,7 +182,7 @@ export default function Restaurant() {
 
       <hr className="my-1 border-black" />
 
-      <div className="flex items-center justify-between mt-2 mb-2 text-xs">
+      <div className="mb-2 mt-2 flex items-center justify-between text-xs">
         <button
           className="rounded-full bg-[#3FA2FF] px-7 py-2 text-white"
           onClick={() => router.push("")}
@@ -198,7 +198,7 @@ export default function Restaurant() {
           >
             추천
           </span>
-          <div className="w-px h-3 bg-gray-400" />
+          <div className="h-3 w-px bg-gray-400" />
           <span
             className={
               sortMode === "recent" ? "font-semibold" : "text-gray-500"
@@ -211,12 +211,12 @@ export default function Restaurant() {
       </div>
 
       {/* 추천 영역 */}
-      <div className="flex justify-end mt-4 mb-2">
+      <div className="mb-2 mt-4 flex justify-end">
         {selectedKeywords.length === 0 ? (
           // 아무것도 선택되지 않음
           <button
             onClick={() => setShowKeywords((prev) => !prev)}
-            className="flex items-center gap-1 px-3 py-1 text-xs text-gray-500 bg-white border border-gray-400 rounded-full"
+            className="flex items-center gap-1 rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-500"
           >
             추천 키워드
             <Image
@@ -235,7 +235,7 @@ export default function Restaurant() {
             {selectedKeywords.map((tag, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 text-xs text-gray-700 bg-white border border-gray-400 rounded-full"
+                className="rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-700"
               >
                 {tag}
               </span>
@@ -272,7 +272,7 @@ export default function Restaurant() {
       )}
 
       {isSearched && search.trim() && filteredItems.length === 0 && (
-        <div className="px-2 mt-10 mb-12">
+        <div className="mb-12 mt-10 px-2">
           <div className="flex flex-col items-center justify-center text-center">
             <p className="text-lg font-semibold text-black">
               ‘{search}’에 대한 검색 결과가 없습니다.
@@ -282,10 +282,10 @@ export default function Restaurant() {
             </p>
           </div>
 
-          <hr className="w-full mt-8 border-t border-gray-600" />
+          <hr className="mt-8 w-full border-t border-gray-600" />
 
-          {/* {similarItems.length > 0 && (
-            <div className="flex flex-col gap-4 mt-4">
+          {similarItems.length > 0 && (
+            <div className="mt-4 flex flex-col gap-4">
               {similarItems.map((item, idx) => (
                 <FoodCard
                   key={idx}
@@ -298,7 +298,7 @@ export default function Restaurant() {
                 />
               ))}
             </div>
-          )} */}
+          )}
         </div>
       )}
 
@@ -320,8 +320,8 @@ export default function Restaurant() {
       <div ref={loaderRef} className="h-[1px]" />
 
       {isLoading && (
-        <div className="flex items-center justify-center h-20 mt-4">
-          <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
+        <div className="mt-4 flex h-20 items-center justify-center">
+          <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
           <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
         </div>
       )}

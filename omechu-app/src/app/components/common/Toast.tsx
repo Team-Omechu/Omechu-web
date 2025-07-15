@@ -43,19 +43,13 @@ export default function Toast({ message, show, bottom = "80px" }: ToastProps) {
 
   return (
     <div
-      className={`absolute z-50 flex justify-center w-full transform -translate-x-1/2 left-1/2
-                    bottom-[${bottom}]
-                    `}
+      className={`absolute left-1/2 z-50 flex w-full -translate-x-1/2 transform justify-center bottom-[${bottom}] `}
       style={{ bottom: `${bottom}` }}
     >
       <div
-        className={`w-auto px-5 py-3 h-16 flex items-center justify-center
-        text-sm text-white text-center
-        rounded-xl shadow-lg bg-[#828282] backdrop-blur-sm
-        transition-opacity duration-300
-        ${isHiding ? "opacity-0" : "opacity-50 animate-shake"} `}
+        className={`flex h-16 w-auto items-center justify-center rounded-xl bg-[#828282] px-5 py-3 text-center text-sm text-white shadow-lg backdrop-blur-sm transition-opacity duration-300 ${isHiding ? "opacity-0" : "animate-shake opacity-50"} `}
       >
-        <span className="text-center whitespace-pre-line">{message}</span>
+        <span className="whitespace-pre-line text-center">{message}</span>
       </div>
     </div>
   );
