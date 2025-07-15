@@ -2,43 +2,27 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import type { ResetPasswordFormValues } from "@/lib/schemas/auth.schema";
 
-import AlertModal from "@/app/components/auth/AlertModal";
-import Button from "@/app/components/auth/Button";
-import Input from "@/app/components/auth/Input";
-import {
-  resetPasswordSchema,
-  ResetPasswordFormValues,
-} from "@/lib/schemas/auth.schema";
+import ResetPasswordForm from "./components/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
-  });
-
-  const onSubmit = async (data: ResetPasswordFormValues) => {
-    console.log(data);
+  const handleFormSubmit = async (data: ResetPasswordFormValues) => {
+    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsModalOpen(true);
   };
 
   const handleModalConfirm = () => {
     setIsModalOpen(false);
-    router.push("/auth/login");
+    router.push("/auth/sign-in");
   };
 
   return (
@@ -53,84 +37,18 @@ export default function ResetPasswordPage() {
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full flex-col gap-2"
-        >
-          <Input
-            {...register("password")}
-            label="새 비밀번호"
-            type={showPassword ? "text" : "password"}
-            placeholder="●●●●●●"
-            error={errors.password?.message}
-            rightAddon={
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="p-2"
-              >
-                <Image
-                  src={
-                    showPassword ? "/비밀번호보기.svg" : "/mdi-light_eye.svg"
-                  }
-                  alt="toggle password visibility"
-                  width={24}
-                  height={24}
-                />
-              </button>
-            }
-          />
-          <p className="mt-1 -translate-y-2 text-xs text-[#828282]">
-            * 대소문자, 숫자 및 특수문자 포함 8자 이상
-          </p>
-
-          <div className="mt-2">
-            <Input
-              {...register("passwordConfirm")}
-              label="새 비밀번호 재확인"
-              type={showPasswordConfirm ? "text" : "password"}
-              placeholder="새 비밀번호를 다시 입력해주세요"
-              error={errors.passwordConfirm?.message}
-              rightAddon={
-                <button
-                  type="button"
-                  onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                  className="p-2"
-                >
-                  <Image
-                    src={
-                      showPasswordConfirm
-                        ? "/비밀번호보기.svg"
-                        : "/mdi-light_eye.svg"
-                    }
-                    alt="toggle password visibility"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-              }
-            />
-          </div>
-
-          <div className="mt-8">
-            <Button
-              type="submit"
-              variant="red"
-              size="large"
-              disabled={isSubmitting}
-              className="w-full"
-            >
-              {isSubmitting ? "설정 중..." : "비밀번호 설정하기"}
-            </Button>
-          </div>
-        </form>
+        <ResetPasswordForm onFormSubmit={handleFormSubmit} />
       </div>
+
       {isModalOpen && (
-        <AlertModal
-          title="비밀번호를 재설정했어요"
-          message="새로운 비밀번호로 로그인하세요"
-          onConfirm={handleModalConfirm}
-        />
+        <ModalWrapper>
+          <AlertModal
+            title="비밀번호를 재설정했어요"
+            description="새로운 비밀번호로 로그인하세요"
+            confirmText="확인"
+            onConfirm={handleModalConfirm}
+          />
+        </ModalWrapper>
       )}
     </>
   );

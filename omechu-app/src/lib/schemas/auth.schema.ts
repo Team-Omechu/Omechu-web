@@ -14,7 +14,7 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 export const signupSchema = z
   .object({
     email: z.string().email({ message: "이메일 형식이 올바르지 않습니다." }),
-    verificationCode: z.string().min(1, "인증번호를 입력해주세요."),
+    verificationCode: z.string().optional(),
     password: z
       .string()
       .min(8, "비밀번호는 8자 이상이어야 합니다.")
