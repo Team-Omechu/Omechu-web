@@ -1,7 +1,7 @@
 import React from 'react';
 
 type RoundButtonProps = {
-  variant: 'red' | 'white';
+  variant: 'red' | 'white' | 'gray';
   size?: 'sm' | 'md' | 'lg';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -18,6 +18,7 @@ const RoundButton = ({
     red: 'bg-[#FB4746] text-white border-transparent hover:bg-[#e2403f] active:bg-[#c93938]',
     white:
       'bg-white text-black border-black hover:bg-gray-100 active:bg-gray-200',
+    gray: 'bg-white text-[#939393] border-[#939393] hover:bg-gray-100 active:bg-gray-200',
   };
 
   const sizeStyles = {
