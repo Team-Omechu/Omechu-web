@@ -4,9 +4,15 @@ type TagItemProps = {
   className?: string;
 };
 
-export default function TagItem({ label, onRemove, className = "" }: TagItemProps) {
+export default function TagItem({
+  label,
+  onRemove,
+  className = "",
+}: TagItemProps) {
   return (
-    <div className={`bg-gray-400 rounded-full h-6 text-xs text-white flex items-center ${className}`}>
+    <div
+      className={`flex h-6 items-center rounded-full bg-gray-400 text-xs text-white ${className}`}
+    >
       <span>{label}</span>
       <button
         onClick={onRemove}

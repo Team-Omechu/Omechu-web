@@ -10,10 +10,15 @@ type ToggleableListProps = {
   maxSelected: number;
 };
 
-export default function ToggleableList({ items, selectedValues, onToggle, maxSelected }: ToggleableListProps) {
+export default function ToggleableList({
+  items,
+  selectedValues,
+  onToggle,
+  maxSelected,
+}: ToggleableListProps) {
   return (
     <div className="overflow-y-auto scrollbar-hide">
-      {items.map(({label, value}) => {
+      {items.map(({ label, value }) => {
         const isSelected = selectedValues.includes(value);
         return (
           <button
@@ -23,7 +28,7 @@ export default function ToggleableList({ items, selectedValues, onToggle, maxSel
                 onToggle(value);
               }
             }}
-            className={`block w-full px-3 py-2 text-sm ${isSelected ? "bg-gray-400 text-white rounded-full" : ""}`}
+            className={`block w-full px-3 py-2 text-sm ${isSelected ? "rounded-full bg-gray-400 text-white" : ""}`}
           >
             {label} {isSelected && <span>✓</span>}
           </button>

@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { useRouter } from "next/navigation";
 
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
 import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function FoodStep() {
   const router = useRouter();
@@ -17,12 +17,12 @@ export default function FoodStep() {
   // Zustand에서 현재 음식 상태랑 toggle 함수 가져옴
   const preferredFood = useOnboardingStore((state) => state.preferredFood);
   const resetPreferredFood = useOnboardingStore(
-    (state) => state.resetPreferredFood
+    (state) => state.resetPreferredFood,
   );
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화 함수
 
   const togglePreferredFood = useOnboardingStore(
-    (state) => state.togglePreferredFood
+    (state) => state.togglePreferredFood,
   );
 
   // 음식 버튼 누르면 선택하거나 해제함 (최대 2개까지만)
@@ -46,19 +46,20 @@ export default function FoodStep() {
   };
 
   return (
-    <div className="flex flex-col w-auto h-screen">
+    <div className="flex h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={3}
         totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
+        cancelButtonAlign="left"
       />
 
       {/* 메인 영역 */}
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         <section className="my-20">
-          <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             평소 자주 먹거나 좋아하는{"\n"}
             음식이 있나요?
           </div>
@@ -77,10 +78,10 @@ export default function FoodStep() {
                   onClick={() => {
                     if (!isDisabled) handleClick(item);
                   }}
-                  className={`w-60 h-12 p-2 text-xl rounded-md border-[1px] transition ${
+                  className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition ${
                     isSelected
-                      ? "bg-[#FB4746] text-white border-[#FB4746]"
-                      : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                      ? "border-[#FB4746] bg-[#FB4746] text-white"
+                      : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
                   }`}
                 >
                   {item}
@@ -92,19 +93,19 @@ export default function FoodStep() {
       </main>
 
       {/* 하단 버튼 영역: 이전 / 건너뛰기 / 저장 */}
-      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[2]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="mr-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             건너뛰기 {">"}
           </button>
@@ -113,10 +114,10 @@ export default function FoodStep() {
         <button
           onClick={handleSave}
           disabled={preferredFood.length === 0}
-          className={`p-2 min-w-full h-12 rounded-t-md text-white text-xl font-normal ${
+          className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
             preferredFood.length === 0
-              ? "bg-[#A1A1A1] dark:bg-[#555] cursor-not-allowed"
-              : "bg-[#1F9BDA] dark:bg-[#1774a4] hover:bg-[#1c8cc4] dark:hover:bg-[#135d83] active:bg-[#197cae] dark:active:bg-[#0e4662]"
+              ? "cursor-not-allowed bg-[#A1A1A1] dark:bg-[#555]"
+              : "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]"
           }`}
         >
           저장

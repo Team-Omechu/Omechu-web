@@ -5,9 +5,14 @@ type KeywordSelectorProps = {
   maxSelected: number;
 };
 
-export default function KeywordSelector({ keywords, selected, onToggle, maxSelected }: KeywordSelectorProps) {
+export default function KeywordSelector({
+  keywords,
+  selected,
+  onToggle,
+  maxSelected,
+}: KeywordSelectorProps) {
   return (
-    <div className="flex flex-wrap justify-end gap-1 text-xs mb-4">
+    <div className="mb-4 flex flex-wrap justify-end gap-1 text-xs">
       {keywords.map((keyword, idx) => {
         const isSelected = selected.includes(keyword);
         return (
@@ -17,7 +22,7 @@ export default function KeywordSelector({ keywords, selected, onToggle, maxSelec
               if (isSelected || selected.length < maxSelected)
                 onToggle(keyword);
             }}
-            className={`w-20 h-7 rounded-full border border-gray-400 text-sm ${
+            className={`h-7 w-20 rounded-full border border-gray-400 text-sm ${
               isSelected ? "bg-[#FB4746] text-white" : "bg-white text-gray-600"
             }`}
           >

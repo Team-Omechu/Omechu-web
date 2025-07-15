@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+
 import { useUserInfoSetupStore } from "@/lib/stores/userInfoSetup.store";
+
 import UserInfoSetupButton from "./UserInfoSetupButton";
 import UserInfoSetupLayout from "./UserInfoSetupLayout";
 

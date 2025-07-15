@@ -5,11 +5,11 @@ type TagListProps = {
 
 export default function TagList({ items, onRemove }: TagListProps) {
   return (
-    <div className="flex flex-wrap gap-2 mt-2 pb-6 justify-start border-b border-gray-600 min-h-28">
+    <div className="mt-2 flex min-h-28 flex-wrap justify-start gap-2 border-b border-gray-600 pb-6">
       {items.map((item) => (
         <span
           key={item}
-          className="bg-gray-400 text-white text-xs rounded-full px-2 py-1 h-6 flex items-center gap-1"
+          className="flex h-6 items-center gap-1 rounded-full bg-gray-400 px-2 py-1 text-xs text-white"
         >
           {item}
           <button onClick={() => onRemove(item)}>✕</button>

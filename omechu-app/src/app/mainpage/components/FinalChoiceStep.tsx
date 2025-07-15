@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import QuestionAnswerButton from "./QuestionAnswerButton";
 ;
 
@@ -8,7 +9,7 @@ const FinalChoiceStep = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full gap-5">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-5">
       <QuestionAnswerButton
         onClick={() => {
           // TODO: 결과보기 로직

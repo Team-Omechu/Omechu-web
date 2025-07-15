@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import Header from "@/app/components/common/Header";
 import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
 
@@ -35,11 +37,11 @@ export default function TermForPersonalInfo() {
       />
       <main
         ref={mainRef}
-        className="relative w-full h-screen overflow-scroll overflow-x-hidden scrollbar-hide px-7 py-9"
+        className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
         {" "}
         {termsForPersonlInfo.map((item, key) => (
-          <section key={key} className="flex flex-col justify-start gap-1 mb-5">
+          <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {/* 조항 번호, 제목 */}
             {item.index && (
               <div className="text-base font-bold">
@@ -48,7 +50,7 @@ export default function TermForPersonalInfo() {
             )}
             {/* 조항 내용 */}
             <div
-              className={`text-base font-normal leading-relaxed whitespace-pre-wrap ${
+              className={`whitespace-pre-wrap text-base font-normal leading-relaxed ${
                 item.index ? "text-[#828282]" : "text-black"
               }`}
             >
@@ -56,12 +58,8 @@ export default function TermForPersonalInfo() {
             </div>
           </section>
         ))}
-        {/* FBA */}
-        <section className="fixed z-10 transform -translate-x-1/2 bottom-4 left-1/2">
-          <button onClick={scrollToTop}>
-            <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
-          </button>
-        </section>
+        {/* Floating Action Button - 맨 위로 이동 */}
+        <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>
   );

@@ -14,13 +14,13 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 export const signupSchema = z
   .object({
     email: z.string().email({ message: "이메일 형식이 올바르지 않습니다." }),
-    verificationCode: z.string().min(1, "인증번호를 입력해주세요."),
+    verificationCode: z.string().optional(),
     password: z
       .string()
       .min(8, "비밀번호는 8자 이상이어야 합니다.")
       .regex(
         /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "영문, 숫자, 특수문자를 모두 포함해야 합니다."
+        "영문, 숫자, 특수문자를 모두 포함해야 합니다.",
       ),
     passwordConfirm: z.string().min(1, "비밀번호를 다시 입력해주세요."),
     termsService: z.boolean().refine((val) => val === true, {
@@ -57,7 +57,7 @@ export const resetPasswordSchema = z
       .min(8, "8자 이상의 비밀번호를 입력해주세요.")
       .regex(
         /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "영문, 숫자, 특수문자를 포함하여 8자 이상 입력해주세요."
+        "영문, 숫자, 특수문자를 포함하여 8자 이상 입력해주세요.",
       ),
     passwordConfirm: z.string().min(1, "비밀번호를 다시 입력해주세요."),
   })

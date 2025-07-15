@@ -1,18 +1,20 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import Button from "@/app/components/auth/Button";
+import { useEffect, useMemo, useState } from "react";
 
-// Step components
-import ProfileStep from "@/app/components/onboarding/ProfileStep";
-import GenderStep from "@/app/components/onboarding/GenderStep";
-import WorkoutStatusStep from "@/app/components/onboarding/WorkoutStatusStep";
-import PreferredFoodStep from "@/app/components/onboarding/PreferredFoodStep";
-import ConstitutionStep from "@/app/components/onboarding/ConstitutionStep";
-import AllergyStep from "@/app/components/onboarding/AllergyStep";
+import { useParams, useRouter } from "next/navigation";
+
+import AlertModal from "@/app/components/common/AlertModal";
+import BottomButton from "@/app/components/common/button/BottomButton";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
+import AllergyStep from "@/app/onboarding/components/AllergyStep";
+import ConstitutionStep from "@/app/onboarding/components/ConstitutionStep";
+import GenderStep from "@/app/onboarding/components/GenderStep";
+import PreferredFoodStep from "@/app/onboarding/components/PreferredFoodStep";
+import ProfileStep from "@/app/onboarding/components/ProfileStep";
+import WorkoutStatusStep from "@/app/onboarding/components/WorkoutStatusStep";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 const ONBOARDING_STEPS = 6;
 
@@ -21,11 +23,13 @@ export default function OnboardingPage() {
   const params = useParams();
   const store = useOnboardingStore();
   const { setCurrentStep, reset } = store;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
 
   const step = Number(params.step);
 
   useEffect(() => {
-    if (isNaN(step) || step < 1) {
+    if (isNaN(step) || step < 1 || step > ONBOARDING_STEPS) {
       router.replace("/onboarding/1");
       return;
     }
@@ -40,6 +44,10 @@ export default function OnboardingPage() {
         return !store.gender;
       case 3:
         return !store.workoutStatus;
+      case 4:
+        return store.preferredFood.length === 0;
+      case 5:
+        return store.constitution.length === 0;
       default:
         return false;
     }
@@ -50,14 +58,31 @@ export default function OnboardingPage() {
       router.push(`/onboarding/${step + 1}`);
     } else {
       // TODO: 온보딩 완료 처리 로직 (e.g., 서버에 데이터 전송)
-      alert("온보딩이 완료되었습니다!");
-      reset();
-      router.push("/");
+      setIsModalOpen(true);
     }
   };
 
   const handlePrev = () => router.back();
   const handleSkip = () => handleNext();
+
+  const handleRecommend = () => {
+    // TODO: 온보딩 완료 데이터 서버 전송
+    reset();
+    router.push("/");
+  };
+
+  const handleRecheck = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmSkip = () => {
+    reset();
+    router.push("/");
+  };
+
+  const handleCancelSkip = () => {
+    setIsSkipModalOpen(false);
+  };
 
   const renderStepComponent = () => {
     switch (step) {
@@ -75,29 +100,16 @@ export default function OnboardingPage() {
         return <AllergyStep />;
       default:
         // useEffect에서 처리하지만, 만약을 위한 방어 코드
-        router.replace("/onboarding/1");
         return null;
     }
   };
 
-  if (isNaN(step) || step > ONBOARDING_STEPS) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4">
-        <p>잘못된 접근입니다.</p>
-        <Button
-          variant="red"
-          size="medium"
-          onClick={() => router.push("/")}
-          className="w-40"
-        >
-          홈으로
-        </Button>
-      </div>
-    );
+  if (isNaN(step) || step < 1 || step > ONBOARDING_STEPS) {
+    return null;
   }
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       <header>
         <ProgressBar
           currentStep={step}
@@ -105,21 +117,16 @@ export default function OnboardingPage() {
           cancelButtonText="일단 시작하기"
           cancelButtonAlign="right"
           cancelButtonClassName="w-auto"
-          onCancelClick={() => {
-            if (confirm("일단 시작하기")) {
-              reset();
-              router.push("/");
-            }
-          }}
+          onCancelClick={() => setIsSkipModalOpen(true)}
         />
       </header>
 
-      <main className="flex flex-1 flex-col items-center w-full px-4 py-6">
+      <main className="flex w-full flex-1 flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
       <footer className="w-full pb-[env(safe-area-inset-bottom)]">
-        <div className="flex justify-between px-5 mb-3">
+        <div className="mb-3 flex justify-between px-5">
           {step > 1 ? (
             <button onClick={handlePrev} className="text-base text-[#828282]">
               {"<"} 이전으로
@@ -133,14 +140,36 @@ export default function OnboardingPage() {
             </button>
           )}
         </div>
-        <button
-          onClick={handleNext}
-          disabled={isNextDisabled}
-          className="w-full h-12 p-2 text-white text-xl font-normal bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400"
-        >
+        <BottomButton onClick={handleNext} disabled={isNextDisabled}>
           {step === ONBOARDING_STEPS ? "저장" : "다음"}
-        </button>
+        </BottomButton>
       </footer>
+
+      {isModalOpen && (
+        <ModalWrapper>
+          <AlertModal
+            title="저장 완료!"
+            description="이제 맛있는 메뉴 추천을 받아볼까요?"
+            confirmText="추천받기"
+            cancelText="내 정보 다시 보기"
+            onConfirm={handleRecommend}
+            onClose={handleRecheck}
+          />
+        </ModalWrapper>
+      )}
+
+      {isSkipModalOpen && (
+        <ModalWrapper>
+          <AlertModal
+            title="지금까지 작성한 내용은 저장되지 않아요"
+            description="그래도 추천받기를 원하시나요?"
+            confirmText="그만하기"
+            cancelText="돌아가기"
+            onConfirm={handleConfirmSkip}
+            onClose={handleCancelSkip}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }

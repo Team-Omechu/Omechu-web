@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { useRouter } from "next/navigation";
 
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ProgressBar from "@/app/components/common/ProgressBar";
 import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function ConditionStep() {
   const router = useRouter();
@@ -17,13 +17,13 @@ export default function ConditionStep() {
   // Zustand에서 상태 가져오기
   const constitution = useOnboardingStore((state) => state.constitution);
   const resetConstitution = useOnboardingStore(
-    (state) => state.resetConstitution
+    (state) => state.resetConstitution,
   );
 
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화 함수
 
   const toggleConstitution = useOnboardingStore(
-    (state) => state.toggleConstitution
+    (state) => state.toggleConstitution,
   );
 
   // 건너뛰기 누르면 상태 초기화하고 다음 페이지로 이동
@@ -38,25 +38,26 @@ export default function ConditionStep() {
   };
 
   return (
-    <div className="flex flex-col w-auto h-screen">
+    <div className="flex h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={4}
         totalSteps={5}
         onCancelClick={() => setShowModal(true)}
         cancelButtonText="그만하기"
+        cancelButtonAlign="left"
       />
 
       {/* 본문 영역 */}
-      <main className="relative flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="relative flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         <section className="my-20">
-          <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             체질은 무엇인가요?
           </div>
         </section>
 
         {/* 선택 버튼 리스트 */}
-        <section className="w-full px-5 mt-10">
+        <section className="mt-10 w-full px-5">
           <div className="flex flex-col gap-5">
             {[
               "감기에 잘 걸리는 편이에요",
@@ -69,13 +70,11 @@ export default function ConditionStep() {
                 <button
                   key={item}
                   onClick={() => handleClick(item)}
-                  className={`w-full h-12 px-2 py-1 text-lg rounded-md border-[1px]
-                    ${
-                      isSelected
-                        ? "bg-[#FB4746] text-white border-[#FB4746]"
-                        : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
-                    }
-                  `}
+                  className={`h-12 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
+                    isSelected
+                      ? "border-[#FB4746] bg-[#FB4746] text-white"
+                      : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                  } `}
                 >
                   {item}
                 </button>
@@ -86,19 +85,19 @@ export default function ConditionStep() {
       </main>
 
       {/* 하단 버튼 영역 */}
-      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="mr-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             건너뛰기 {">"}
           </button>
@@ -110,9 +109,9 @@ export default function ConditionStep() {
             router.push(`/mypage/user-info-edit/${indexToSlug[5]}`)
           }
           disabled={constitution.length === 0}
-          className={`px-2 pt-1 min-w-full h-12 text-white text-xl font-normal rounded-t-md ${
+          className={`h-12 min-w-full rounded-t-md px-2 pt-1 text-xl font-normal text-white ${
             constitution.length === 0
-              ? "bg-[#A1A1A1] cursor-not-allowed"
+              ? "cursor-not-allowed bg-[#A1A1A1]"
               : "bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
           }`}
         >
