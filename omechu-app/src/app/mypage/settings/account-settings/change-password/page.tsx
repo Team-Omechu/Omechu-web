@@ -20,7 +20,7 @@ export default function ChangePassword() {
   const [inputPassword, setInputPassword] = useState("");
   const [inputNewPassword, setInputNewPassword] = useState("");
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
-
+  const [passwordMatched, setPasswordMatched] = useState<boolean | null>(null);
   const [newPasswordError, setNewPasswordError] = useState<boolean | null>(
     null
   );
@@ -66,13 +66,14 @@ export default function ChangePassword() {
         }
       />
 
-      <main className="flex flex-col items-center px-4 py-2 mt-20">
-        <section className="w-full px-3">
+      <main className="flex flex-col items-center px-4 py-2 mt-16">
+        <section className="flex flex-col w-full gap-4 px-3">
           <Input
             label="기존 비밀번호"
             type="password"
             value={inputPassword}
             placeholder="기존 비밀번호를 입력해주세요"
+            successMessage={passwordMatched ? "비밀번호가 확인되었습니다!" : ""}
             onChange={setInputPassword}
             showError={false}
           />
@@ -83,7 +84,7 @@ export default function ChangePassword() {
             value={inputNewPassword}
             placeholder="새 비밀번호를 입력해주세요"
             onChange={(v) => {
-              setInputConfirmPassword(v);
+              setInputNewPassword(v);
               if (newPasswordError) setNewPasswordError(null);
             }}
             onBlur={() =>
@@ -93,7 +94,6 @@ export default function ChangePassword() {
               if (e.key === "Enter")
                 setNewPasswordError(hasPasswordError(inputNewPassword));
             }}
-            description="영문 대소문자, 숫자, 특수문자 포함 8자 이상"
             errorMessage="* 영문 대/소문자, 숫자, 특수문자 포함 8자 이상"
             showError={newPasswordError === true}
           />
@@ -104,7 +104,7 @@ export default function ChangePassword() {
             value={inputConfirmPassword}
             placeholder="새 비밀번호를 다시 입력해주세요"
             onChange={(v) => {
-              setInputNewPassword(v);
+              setInputConfirmPassword(v);
               if (confirmPasswordError) setConfirmPasswordError(null);
             }}
             onBlur={() =>
@@ -122,19 +122,21 @@ export default function ChangePassword() {
           />
         </section>
 
-        <section className="mt-5">
+        <section className="relative flex flex-col items-center w-full mt-5">
           <Toast message={toastMessage} show={showToast} />
           <button
             onClick={() => {
               if (inputPassword !== SAMPLE_PASSWORD) {
                 triggerToast("비밀번호를 다시 확인해주세요!");
+                setPasswordMatched(false);
                 return;
               }
+              setPasswordMatched(true);
               if (isFormValid) {
                 setShowModal(true);
               }
             }}
-            className={`mt-48 w-[335px] h-[45px] text-white text-[17px] font-medium rounded-md transition
+            className={`mt-48 min-w-80 h-[45px] text-white text-[17px] font-medium rounded-md transition
               ${
                 isFormValid
                   ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"

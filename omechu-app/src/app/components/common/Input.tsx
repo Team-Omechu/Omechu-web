@@ -36,6 +36,7 @@ interface InputProps {
   placeholder?: string;
   showButton?: boolean; // 버튼 보여줄지 말지 (기본은 true)
   buttonText?: string; // 버튼 안에 들어갈 텍스트
+  successMessage?: string; // 성공 메세지
   errorMessage?: string; // 에러 났을 때 보여줄 문구
   showError?: boolean | null; // 에러 메시지 보여줄지 말지
   description?: string; // input 아래 설명 텍스트
@@ -56,6 +57,7 @@ export default function Input({
   placeholder = "",
   showButton = false,
   buttonText,
+  successMessage,
   errorMessage,
   showError = false,
   description = "",
@@ -80,7 +82,10 @@ export default function Input({
   return (
     <section className="relative flex flex-col w-full mb-5">
       {/* 라벨 */}
-      <label htmlFor={inputId} className="ml-1 ">
+      <label
+        htmlFor={inputId}
+        className="text-sm text-normal text-[#393939] ml-0.5 mb-0.5"
+      >
         {label}
       </label>
       <div className="flex items-center h-10 gap-1">
@@ -116,11 +121,10 @@ export default function Input({
           </button>
         )}
       </div>
-
       {/* 비밀번호 보기 아이콘: type이 password일 때만 */}
       {isPassword && (
         <Image
-          className={`absolute top-8 ${showButton ? "right-12" : "right-3"}`}
+          className={`absolute top-7 ${showButton ? "right-12" : "right-3"}`}
           onClick={() => setIsVisible((prev) => !prev)}
           src={
             isVisible
@@ -132,7 +136,6 @@ export default function Input({
           height={24}
         />
       )}
-
       {/* 설명 텍스트 */}
       {description && (
         <span className="mt-1 ml-1 text-sm font-normal text-[#828282]">
@@ -140,9 +143,14 @@ export default function Input({
         </span>
       )}
 
+      {!showError && successMessage && (
+        <span className="absolute ml-1 text-xs font-normal text-[#1F9BDA] -bottom-5">
+          {successMessage}
+        </span>
+      )}
       {/* 에러 메시지 */}
       {showError && errorMessage && (
-        <span className="mt-1 text-xs font-normal text-red-500">
+        <span className="absolute ml-1 text-xs font-normal text-red-500 -bottom-5">
           {errorMessage}
         </span>
       )}

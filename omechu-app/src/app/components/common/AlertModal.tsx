@@ -59,9 +59,11 @@ export default function AlertModal({
 
       {/* 타이틀 및 설명 영역 */}
       <div className="flex flex-col items-center text-center">
-        <span className="text-[19px] font-medium">{title}</span>
+        <span className="text-[19px] font-medium whitespace-pre-line">
+          {title}
+        </span>
         {description && (
-          <span className="mt-1 text-[15px] font-medium text-[#828282] dark:text-white">
+          <span className="mt-1 text-[15px] font-medium text-[#828282] dark:text-white whitespace-pre-line">
             {description}
           </span>
         )}

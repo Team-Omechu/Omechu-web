@@ -39,13 +39,15 @@ export default function Toast({ message, show }: ToastProps) {
   if (!visible) return null;
 
   return (
-    <div className="fixed z-50 transform -translate-x-1/2 -translate-y-1/2 bottom-56 left-1/2">
+    <div className="absolute z-50 flex justify-center w-full transform -translate-x-1/2 left-1/2">
       <div
-        className={`w-fit h-fit px-10 py-5 text-sm text-white flex justify-center items-center
-      rounded-xl shadow-md transition-opacity duration-300 bg-[#828282cc]
-      ${isHiding ? "opacity-0" : "opacity-70 animate-shake"}`}
+        className={`w-fit px-4 py-3 h-16 flex items-center justify-center
+        text-sm text-white text-center
+        rounded-xl shadow-lg bg-[#828282] backdrop-blur-sm
+        transition-opacity duration-300
+        ${isHiding ? "opacity-0" : "opacity-50 animate-shake"}`}
       >
-        {message}
+        <span>{message}</span>
       </div>
     </div>
   );
