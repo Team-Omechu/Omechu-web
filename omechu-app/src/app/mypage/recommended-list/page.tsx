@@ -27,6 +27,7 @@ import {
 import { initialFoodList } from "@/app/constant/initialFoodList";
 import { suggestionList } from "@/app/constant/suggestionList";
 import FloatingActionButton from "@/app/components/common/FloatingActionButton";
+import SelectTabBar from "@/app/components/mypage/SelectTabBar";
 
 export default function RecommendedList() {
   const router = useRouter();
@@ -117,27 +118,15 @@ export default function RecommendedList() {
         }
       />
 
+      {/* 추천 / 제외 선택 버튼 */}
+      <SelectTabBar
+        tabs={["추천 목록", "제외 목록"]}
+        selectedIndex={selectedIndex}
+        onSelect={setSelectedIndex}
+      />
+
       {/* 메인 섹션 */}
       <main className="relative overflow-y-auto px-4 gap-3 flex flex-col items-center w-full min-h-[calc(100vh-10rem)]">
-        {/* 추천 / 제외 선택 버튼 */}
-        <section className="flex w-full ">
-          {["추천 목록", "제외 목록"].map((item, index) => (
-            <button
-              onClick={() => {
-                setSelectedIndex(index);
-              }}
-              key={index}
-              className={`w-44 h-12 text-lg font-medium ${
-                selectedIndex === index
-                  ? "text-white border-black border-b-[3px] bg-[#1f9bda]"
-                  : "text-[#828282] border-b-[#828282] border-b-2 bg-white"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </section>
-
         {/* 검색 창 */}
         <SearchBar
           placeholder="음식명을 검색하세요."
@@ -186,7 +175,7 @@ export default function RecommendedList() {
           ))}
         </section>
 
-        {/* Floating Action Button (맨 위로 이동) */}
+        {/* Floating Action Button - 맨 위로 이동 */}
         <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>
