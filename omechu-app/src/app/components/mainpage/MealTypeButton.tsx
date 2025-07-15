@@ -8,17 +8,18 @@ type Props = {
 const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
   const items = ["한식", "중식", "일식", "양식", "기타-종류"];
 
-  const renderLabel = (item: string) => (item.startsWith("기타") ? "그 외" : item);
+  const renderLabel = (item: string) =>
+    item.startsWith("기타") ? "그 외" : item;
   const isDisabled = (item: string) =>
     !selectedItems.includes(item) && selectedItems.length >= 3;
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-[0.3125rem] self-stretch flex-wrap">
+      <div className="flex flex-wrap items-center gap-[0.3125rem] self-stretch">
         {items.map((item) => (
           <button
             key={item}
-            className={`flex w-[3.625rem] h-[2.1875rem] justify-center items-center gap-[0.625rem] flex-shrink-0 rounded-[0.3125rem] border border-black text-center leading-normal font-['Noto Sans KR'] text-[0.875rem] font-normal ${
+            className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black text-center text-[0.875rem] font-normal leading-normal ${
               selectedItems.includes(item)
                 ? "bg-[#FB4746] text-white"
                 : "bg-white"
@@ -30,7 +31,7 @@ const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
           </button>
         ))}
       </div>
-      <div className="w-full h-px bg-[#828282] opacity-60" />
+      <div className="h-px w-full bg-[#828282] opacity-60" />
     </div>
   );
 };

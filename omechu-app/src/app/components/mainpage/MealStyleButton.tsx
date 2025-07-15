@@ -12,7 +12,8 @@ const MealStyleGroup = ({ selectedItems, onToggle }: Props) => {
     ["건강한 음식", "자극적인 음식"],
   ];
 
-  const renderLabel = (item: string) => (item.startsWith("기타") ? "그 외" : item);
+  const renderLabel = (item: string) =>
+    item.startsWith("기타") ? "그 외" : item;
   const isDisabled = (item: string) =>
     !selectedItems.includes(item) && selectedItems.length >= 3;
 
@@ -20,11 +21,11 @@ const MealStyleGroup = ({ selectedItems, onToggle }: Props) => {
     <div className="flex flex-col gap-2">
       {stylePairs.map((pair, i) => (
         <div key={i} className="flex flex-col gap-2">
-          <div className="flex items-center gap-[0.3125rem] self-stretch flex-wrap">
+          <div className="flex flex-wrap items-center gap-[0.3125rem] self-stretch">
             {pair.map((item) => (
               <button
                 key={item}
-                className={`flex w-[7.8125rem] h-[2.1875rem] p-[0.625rem] justify-center items-center gap-[0.625rem] flex-shrink-0 rounded-[0.3125rem] border border-black text-center font-['Noto Sans KR'] text-[0.875rem] font-normal leading-normal ${
+                className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[7.8125rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black p-[0.625rem] text-center text-[0.875rem] font-normal leading-normal ${
                   selectedItems.includes(item)
                     ? "bg-[#FB4746] text-white"
                     : "bg-white"
@@ -36,7 +37,7 @@ const MealStyleGroup = ({ selectedItems, onToggle }: Props) => {
               </button>
             ))}
           </div>
-          <div className="w-full h-px bg-[#828282] opacity-60" />
+          <div className="h-px w-full bg-[#828282] opacity-60" />
         </div>
       ))}
     </div>

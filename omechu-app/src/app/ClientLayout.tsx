@@ -73,12 +73,16 @@ export default function ClientLayout({
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
   ];
-  const showBottomNav = !(noBottomNavRoutes.includes(pathname)|| pathname.startsWith("/mainpage/result/")|| pathname.startsWith("/mainpage/question-answer/"));
+  const showBottomNav = !(
+    noBottomNavRoutes.includes(pathname) ||
+    pathname.startsWith("/mainpage/result/") ||
+    pathname.startsWith("/mainpage/question-answer/")
+  );
 
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 bg-[#F8D5FF] dark:bg-[#baa0bf] overflow-y-scroll`}
+        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-[#F8D5FF] dark:bg-[#baa0bf]`}
       >
         {children}
       </main>

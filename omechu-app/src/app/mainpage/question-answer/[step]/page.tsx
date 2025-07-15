@@ -57,30 +57,32 @@ export default function QuestionAnswerPage() {
   };
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
-      {step < QUESTION_STEPS ?(
-      <header>
-        <ProgressBar
-          currentStep={step}
-          totalSteps={5} // 마지막 스텝은 프로그레스에 포함하지 않음
-          onCancelClick={() => setShowModal(true)}
-          cancelButtonText="그만하기"
-          cancelButtonAlign="left"
-          cancelButtonClassName="w-auto"
-        />
-      </header>
-      ) : (<div className="h-[60px]"/>)}
+    <div className="relative flex h-screen w-auto flex-col">
+      {step < QUESTION_STEPS ? (
+        <header>
+          <ProgressBar
+            currentStep={step}
+            totalSteps={5} // 마지막 스텝은 프로그레스에 포함하지 않음
+            onCancelClick={() => setShowModal(true)}
+            cancelButtonText="그만하기"
+            cancelButtonAlign="left"
+            cancelButtonClassName="w-auto"
+          />
+        </header>
+      ) : (
+        <div className="h-[60px]" />
+      )}
 
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
       {/* 마지막 스텝에서는 footer를 보여주지 않음 */}
       <StepFooter
-      showPrev={step > 1 && step < QUESTION_STEPS}
-      showNext={step >= 1 && step < QUESTION_STEPS}
-      onPrev={handlePrev}
-      onNext={handleSkip}
+        showPrev={step > 1 && step < QUESTION_STEPS}
+        showNext={step >= 1 && step < QUESTION_STEPS}
+        onPrev={handlePrev}
+        onNext={handleSkip}
       />
 
       {showModal && (

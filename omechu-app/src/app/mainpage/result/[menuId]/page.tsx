@@ -19,32 +19,29 @@ export default function MenuDetailPage() {
   }
 
   return (
-    <div className="p-4 flex flex-col">
+    <div className="flex flex-col p-4">
       <button className="flex justify-start" onClick={() => router.push("./")}>
         &lt; 처음으로
       </button>
 
-      <div className="mt-4 p-4 flex-col gap-4 items-center justify-center">
-        <p className="text-[#1F9BDA] font-semibold text-center">{menu.title}</p>
+      <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
+        <p className="text-center font-semibold text-[#1F9BDA]">{menu.title}</p>
         <Image
           src={"/logo_3d.png"}
           alt={menu.title}
-          className="w-24 h-24 rounded mx-auto"
+          className="mx-auto h-24 w-24 rounded"
           width={96}
           height={96}
         />
       </div>
 
       <div className="mt-10 w-full">
-        <MenuInfo
-        nutrition={menu.nutrition}
-        allergens={menu.allergens}
-        />
+        <MenuInfo nutrition={menu.nutrition} allergens={menu.allergens} />
       </div>
 
-      <div className="flex flex-row justify-between mt-5 ml-1 gap-4">
+      <div className="ml-1 mt-5 flex flex-row justify-between gap-4">
         <h3 className="text-l font-semibold">취향 저격! 추천 메뉴 있는 맛집</h3>
-        <button className="text-[#828282] text-sm">더보기 &gt;</button>
+        <button className="text-sm text-[#828282]">더보기 &gt;</button>
       </div>
 
       <div className="mt-3 space-y-2">

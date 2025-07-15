@@ -19,11 +19,11 @@ export default function MenuCard({
 }: MenuCardProps) {
   return (
     <div
-      className="mt-2 relative cursor-pointer transition-all duration-150"
+      className="relative mt-2 cursor-pointer transition-all duration-150"
       onClick={onClick}
     >
       <div
-        className={`border border-black rounded-md p-3 flex gap-3 items-center h-[100px] ${
+        className={`flex h-[100px] items-center gap-3 rounded-md border border-black p-3 ${
           selected ? "bg-gray-200" : "bg-white"
         }`}
       >
@@ -32,11 +32,11 @@ export default function MenuCard({
           alt={title}
           width={80}
           height={80}
-          className="rounded flex-shrink-0"
+          className="flex-shrink-0 rounded"
         />
-        <div className="flex-1 flex flex-col justify-center">
-          <h3 className="text-[#1F9BDA] font-semibold">{title}</h3>
-          <p className="text-sm text-[#828282] mt-1 leading-snug line-clamp-2">
+        <div className="flex flex-1 flex-col justify-center">
+          <h3 className="font-semibold text-[#1F9BDA]">{title}</h3>
+          <p className="mt-1 line-clamp-2 text-sm leading-snug text-[#828282]">
             {description}
           </p>
         </div>

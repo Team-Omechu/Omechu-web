@@ -20,7 +20,9 @@ function getRandomMenus() {
 export default function ResultPage() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const [selectedMenuIdForExclude, setSelectedMenuIdForExclude] = useState<number | null>(null); // 제외 대상
+  const [selectedMenuIdForExclude, setSelectedMenuIdForExclude] = useState<
+    number | null
+  >(null); // 제외 대상
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const [menus, setMenus] = useState<typeof defaultMenus | null>(null);
 
@@ -53,7 +55,7 @@ export default function ResultPage() {
   };
 
   return (
-    <div className="p-4 flex flex-col">
+    <div className="flex flex-col p-4">
       <button className="flex justify-start" onClick={() => router.push("./")}>
         &lt; 처음으로
       </button>
@@ -80,23 +82,23 @@ export default function ResultPage() {
 
       <div className="mt-4 flex justify-between gap-2">
         <button
-          className="bg-[#FB4746] text-[#FFF] rounded-md px-4 py-2 flex-1"
+          className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF]"
           onClick={handleReshuffle}
         >
           다시 추천
         </button>
         <button
-          className="border border-gray-500 text-black bg-[#FFF] rounded-md px-4 py-2 flex-1"
+          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black"
           onClick={handleNext}
         >
           선택하기
         </button>
       </div>
 
-      <div className="mt-5 bg-white p-3 rounded-md text-sm border border-black">
+      <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
         {tags.map((tag, idx) => (
-          <div key={idx} className="mb-1 text-black flex flex-col p-1">
-            <span className="font-semibold text-[#A3A3A3] mb-1">{tag}</span>
+          <div key={idx} className="mb-1 flex flex-col p-1 text-black">
+            <span className="mb-1 font-semibold text-[#A3A3A3]">{tag}</span>
             {tagDescriptions[idx]}
           </div>
         ))}

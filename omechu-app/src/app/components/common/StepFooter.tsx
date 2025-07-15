@@ -16,7 +16,7 @@ const StepFooter = ({
   onNext,
 }: StepFooterProps) => {
   return (
-    <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] h-[66px] gap-3">
+    <footer className="flex h-[66px] w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
       <div className="flex justify-between">
         {showPrev ? (
           <button onClick={onPrev} className="ml-5 text-base text-[#828282]">
