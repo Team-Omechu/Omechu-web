@@ -21,6 +21,7 @@ export default function ClientLayout({
     "/mainpage/meal-answer",
     "/mainpage/location-answer",
     "/mainpage/result",
+    "mainpage/question-answer/",
 
     "/mainpage/question-answer/meal-time",
     "/mainpage/question-answer/purpose",
@@ -72,7 +73,7 @@ export default function ClientLayout({
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
   ];
-  const showBottomNav = !(noBottomNavRoutes.includes(pathname)|| pathname.startsWith("/mainpage/result/"));
+  const showBottomNav = !(noBottomNavRoutes.includes(pathname)|| pathname.startsWith("/mainpage/result/")|| pathname.startsWith("/mainpage/question-answer/"));
 
   return (
     <>
