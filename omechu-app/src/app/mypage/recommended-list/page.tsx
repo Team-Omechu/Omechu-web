@@ -5,9 +5,11 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodBox from "@/app/components/common/FoodBox";
 import Header from "@/app/components/common/Header";
 import SearchBar from "@/app/components/common/SearchBar";
+import SelectTabBar from "@/app/components/mypage/SelectTabBar";
 import {
   consonantGroupMap,
   filteredChoSeong,
@@ -16,12 +18,11 @@ import {
 import { initialFoodList } from "@/app/constant/initialFoodList";
 import { suggestionList } from "@/app/constant/suggestionList";
 
-// Food 아이템 타입 정의
-// title: 음식 이름, isExcluded: 제외 여부, imageUrl: 이미지 경로(optional)
+// FoodItem 타입을 정의하거나 import
 type FoodItem = {
   title: string;
+  imageUrl: string;
   isExcluded: boolean;
-  imageUrl?: string | null;
 };
 
 export default function RecommendedList() {
@@ -29,9 +30,12 @@ export default function RecommendedList() {
   const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
 
   // 음식 리스트 초기 정렬 (한글 기준 오름차순)
-  const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
-    a.title.localeCompare(b.title, "ko"),
-  );
+  const sortedFoodList: FoodItem[] = [...initialFoodList]
+    .map((item) => ({
+      ...item,
+      imageUrl: item.imageUrl ?? "", // 기본값을 빈 문자열로 설정
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title, "ko"));
   const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
 
   const [selectedIndex, setSelectedIndex] = useState(0); // 추천/제외 탭 인덱스
@@ -113,27 +117,15 @@ export default function RecommendedList() {
         }
       />
 
+      {/* 추천 / 제외 선택 버튼 */}
+      <SelectTabBar
+        tabs={["추천 목록", "제외 목록"]}
+        selectedIndex={selectedIndex}
+        onSelect={setSelectedIndex}
+      />
+
       {/* 메인 섹션 */}
       <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4">
-        {/* 추천 / 제외 선택 버튼 */}
-        <section className="flex w-full">
-          {["추천 목록", "제외 목록"].map((item, index) => (
-            <button
-              onClick={() => {
-                setSelectedIndex(index);
-              }}
-              key={index}
-              className={`h-12 w-44 text-lg font-medium ${
-                selectedIndex === index
-                  ? "border-b-[3px] border-black bg-[#1f9bda] text-white"
-                  : "border-b-2 border-b-[#828282] bg-white text-[#828282]"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </section>
-
         {/* 검색 창 */}
         <SearchBar
           placeholder="음식명을 검색하세요."
@@ -182,12 +174,8 @@ export default function RecommendedList() {
           ))}
         </section>
 
-        {/* 플로팅 버튼 - 맨 위로 이동 */}
-        <section className="fixed bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
-          <button onClick={scrollToTop}>
-            <Image src="/fba.png" alt="플로팅버튼" width={36} height={36} />
-          </button>
-        </section>
+        {/* Floating Action Button - 맨 위로 이동 */}
+        <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>
   );
