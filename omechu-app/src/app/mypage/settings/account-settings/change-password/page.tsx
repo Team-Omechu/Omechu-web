@@ -60,7 +60,9 @@ export default function ChagePassword() {
       <Header
         title={"비밀번호 변경"}
         leftChild={
-          <button onClick={() => router.push("./")}>
+          <button
+            onClick={() => router.push("/mypage/settings/account-settings")}
+          >
             <Image
               src={"/header_left_arrow.png"}
               alt={"뒤로가기"}
