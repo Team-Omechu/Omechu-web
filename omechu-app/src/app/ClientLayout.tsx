@@ -72,6 +72,8 @@ export default function ClientLayout({
     "/mypage/settings/terms/service",
     "/mypage/settings/terms/personal-info",
     "/mypage/settings/terms/location-info",
+    // 마이페이지-찜목록
+    "/mypage/favorites",
   ];
   const showBottomNav = !(
     noBottomNavRoutes.includes(pathname) ||
