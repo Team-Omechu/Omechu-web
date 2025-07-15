@@ -15,7 +15,6 @@ export default function ResetPasswordPage() {
   const router = useRouter();
 
   const handleFormSubmit = async (data: ResetPasswordFormValues) => {
-    console.log(data);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsModalOpen(true);

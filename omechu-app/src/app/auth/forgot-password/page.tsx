@@ -15,7 +15,6 @@ export default function FindPasswordPage() {
   const handleFormSubmit = async (data: FindPasswordFormValues) => {
     setApiError(null);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
 
     if (data.email === "test@naver.com") {
       router.push("/auth/forgot-password/sent");

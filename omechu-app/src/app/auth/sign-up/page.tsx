@@ -42,7 +42,6 @@ export default function SignUpPage() {
   } = methods;
 
   const onSubmit = async (data: SignupFormValues) => {
-    console.log("Form data:", data);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     // TODO: Navigate to next page on success
   };

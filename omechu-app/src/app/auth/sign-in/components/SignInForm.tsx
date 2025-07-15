@@ -29,7 +29,6 @@ export default function SignInForm() {
     setLoginError(null);
     // 가상의 로그인 실패 시나리오
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
     setLoginError("이메일 또는 비밀번호가 \n 올바르지 않습니다.");
   };
 
