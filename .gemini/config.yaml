@@ -7,7 +7,7 @@ code_review:
 
   pull_request_opened:
     help: false       # PR 생성 시 도움말 제공 비활성화
-    summary: false    # 요약 제공 비활성화
+    summary: true    # 요약 제공 활성화
     code_review: true  # PR 오픈 시 자동 리뷰 실행
 
 ignore_patterns:
