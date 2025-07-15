@@ -20,7 +20,7 @@ export default function MainPage() {
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-[0.625rem]">
           <button
             className="flex w-[9.0625rem] h-[2.8125rem] p-[1.25rem] justify-center items-center gap-[0.625rem] flex-shrink-0 rounded-[0.375rem] bg-[#FB4746] text-white"
-            onClick={() => router.push("mainpage/question-answer/meal-time")}
+            onClick={() => router.push("mainpage/question-answer/1")}
           >
             시작하기
           </button>
