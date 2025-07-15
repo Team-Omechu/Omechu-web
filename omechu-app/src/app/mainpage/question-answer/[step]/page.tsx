@@ -8,12 +8,13 @@ import ModalWrapper from "@/app/components/common/ModalWrapper";
 import AlertModal from "@/app/components/common/AlertModal";
 
 // Step components
-import MealTimeStep from "@/app/components/question-answer/MealTimeStep";
-import PurposeStep from "@/app/components/question-answer/PurposeStep";
-import MoodStep from "@/app/components/question-answer/MoodStep";
-import WhoStep from "@/app/components/question-answer/WhoStep";
-import BudgetStep from "@/app/components/question-answer/BudgetStep";
-import FinalChoiceStep from "@/app/components/question-answer/FinalChoiceStep";
+import MealTimeStep from "@/app/mainpage/components/MealTimeStep";
+import PurposeStep from "@/app/mainpage/components/PurposeStep";
+import MoodStep from "@/app/mainpage/components/MoodStep";
+import WhoStep from "@/app/mainpage/components/WhoStep";
+import BudgetStep from "@/app/mainpage/components/BudgetStep";
+import FinalChoiceStep from "@/app/mainpage/components/FinalChoiceStep";
+import StepFooter from "@/app/components/common/StepFooter";
 
 const QUESTION_STEPS = 6;
 
@@ -57,6 +58,7 @@ export default function QuestionAnswerPage() {
 
   return (
     <div className="relative flex flex-col w-auto h-screen">
+      {step < QUESTION_STEPS ?(
       <header>
         <ProgressBar
           currentStep={step}
@@ -67,36 +69,19 @@ export default function QuestionAnswerPage() {
           cancelButtonClassName="w-auto"
         />
       </header>
+      ) : (<div className="h-[60px]"/>)}
 
       <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
         {renderStepComponent()}
       </main>
 
       {/* 마지막 스텝에서는 footer를 보여주지 않음 */}
-      {step < QUESTION_STEPS && (
-        <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
-          <div className="flex justify-between">
-            {step > 1 ? (
-              <button
-                onClick={handlePrev}
-                className="ml-5 text-base text-[#828282]"
-              >
-                {"<"} 이전으로
-              </button>
-            ) : (
-              <div />
-            )}
-            {step > 1 && step < QUESTION_STEPS && (
-              <button
-                onClick={handleSkip}
-                className="mr-5 text-base text-[#828282]"
-              >
-                건너뛰기 {">"}
-              </button>
-            )}
-          </div>
-        </footer>
-      )}
+      <StepFooter
+      showPrev={step > 1 && step < QUESTION_STEPS}
+      showNext={step >= 1 && step < QUESTION_STEPS}
+      onPrev={handlePrev}
+      onNext={handleSkip}
+      />
 
       {showModal && (
         <ModalWrapper>
@@ -108,7 +93,8 @@ export default function QuestionAnswerPage() {
               setShowModal(false);
             }}
             onClose={() => setShowModal(false)}
-            confirmText="확인"
+            confirmText="그만하기"
+            cancelText="취소"
           />
         </ModalWrapper>
       )}
