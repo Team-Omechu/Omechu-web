@@ -9,21 +9,18 @@ import Header from "@/app/components/common/Header";
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import Toast from "@/app/components/common/Toast";
-import PasswordInput from "@/app/components/settings/PasswordInput";
+import Input from "@/app/components/common/Input";
 
-// 테스트용 기존 비밀번호 (임시값)
-const SAMPLE_PASSWORD = "kang@1234";
+const SAMPLE_PASSWORD = "kang@1234"; // 테스트용 기존 비밀번호
 
-export default function ChagePassword() {
+export default function ChangePassword() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  // 비밀번호 입력값 상태
   const [inputPassword, setInputPassword] = useState("");
   const [inputNewPassword, setInputNewPassword] = useState("");
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
 
-  // 새 비밀번호 유효성 검사 결과 상태
   const [newPasswordError, setNewPasswordError] = useState<boolean | null>(
     null
   );
@@ -31,22 +28,18 @@ export default function ChagePassword() {
     boolean | null
   >(null);
 
-  // 새 비밀번호 유효성 검사 함수
   const hasPasswordError = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
     return !regex.test(password);
   };
 
-  // 폼 전체 유효 여부
   const isFormValid =
     !hasPasswordError(inputNewPassword) &&
     inputNewPassword === inputConfirmPassword;
 
-  // 토스트 메시지 상태
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
-  // 토스트 호출 함수
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
@@ -75,43 +68,45 @@ export default function ChagePassword() {
 
       <main className="flex flex-col items-center px-4 py-2 mt-20">
         <section className="w-full px-3">
-          {/* 기존 비밀번호 입력 */}
-          <PasswordInput
+          <Input
             label="기존 비밀번호"
+            type="password"
             value={inputPassword}
             placeholder="기존 비밀번호를 입력해주세요"
             onChange={setInputPassword}
             showError={false}
           />
 
-          {/* 새 비밀번호 입력 */}
-          <PasswordInput
+          <Input
             label="새 비밀번호"
+            type="password"
             value={inputNewPassword}
             placeholder="새 비밀번호를 입력해주세요"
-            onChange={(value) => {
-              setInputNewPassword(value);
+            onChange={(v) => {
+              setInputNewPassword(typeof v === "string" ? v : v.target.value);
               if (newPasswordError) setNewPasswordError(null);
             }}
             onBlur={() =>
               setNewPasswordError(hasPasswordError(inputNewPassword))
             }
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter")
                 setNewPasswordError(hasPasswordError(inputNewPassword));
-              }
             }}
+            description="영문 대소문자, 숫자, 특수문자 포함 8자 이상"
             errorMessage="* 영문 대/소문자, 숫자, 특수문자 포함 8자 이상"
             showError={newPasswordError === true}
           />
 
-          {/* 새 비밀번호 재확인 입력 */}
-          <PasswordInput
+          <Input
             label="새 비밀번호 재확인"
+            type="password"
             value={inputConfirmPassword}
             placeholder="새 비밀번호를 다시 입력해주세요"
-            onChange={(value) => {
-              setInputConfirmPassword(value);
+            onChange={(v) => {
+              setInputConfirmPassword(
+                typeof v === "string" ? v : v.target.value
+              );
               if (confirmPasswordError) setConfirmPasswordError(null);
             }}
             onBlur={() =>
@@ -129,7 +124,6 @@ export default function ChagePassword() {
           />
         </section>
 
-        {/* 비밀번호 변경 버튼 */}
         <section className="mt-5">
           <button
             onClick={() => {
@@ -137,7 +131,6 @@ export default function ChagePassword() {
                 triggerToast("비밀번호를 다시 확인해주세요!");
                 return;
               }
-
               if (isFormValid) {
                 setShowModal(true);
               }
@@ -153,7 +146,6 @@ export default function ChagePassword() {
           </button>
         </section>
 
-        {/* 변경 완료 모달 */}
         {showModal && (
           <ModalWrapper>
             <AlertModal
@@ -165,7 +157,6 @@ export default function ChagePassword() {
           </ModalWrapper>
         )}
 
-        {/* 토스트 알림 */}
         <Toast message={toastMessage} show={showToast} />
       </main>
     </>
