@@ -83,7 +83,7 @@ export default function ChangePassword() {
             value={inputNewPassword}
             placeholder="새 비밀번호를 입력해주세요"
             onChange={(v) => {
-              setInputNewPassword(typeof v === "string" ? v : v.target.value);
+              setInputConfirmPassword(v);
               if (newPasswordError) setNewPasswordError(null);
             }}
             onBlur={() =>
@@ -104,9 +104,7 @@ export default function ChangePassword() {
             value={inputConfirmPassword}
             placeholder="새 비밀번호를 다시 입력해주세요"
             onChange={(v) => {
-              setInputConfirmPassword(
-                typeof v === "string" ? v : v.target.value
-              );
+              setInputNewPassword(v);
               if (confirmPasswordError) setConfirmPasswordError(null);
             }}
             onBlur={() =>
@@ -125,6 +123,7 @@ export default function ChangePassword() {
         </section>
 
         <section className="mt-5">
+          <Toast message={toastMessage} show={showToast} />
           <button
             onClick={() => {
               if (inputPassword !== SAMPLE_PASSWORD) {
@@ -156,8 +155,6 @@ export default function ChangePassword() {
             />
           </ModalWrapper>
         )}
-
-        <Toast message={toastMessage} show={showToast} />
       </main>
     </>
   );

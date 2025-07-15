@@ -41,9 +41,10 @@ interface InputProps {
   description?: string; // input 아래 설명 텍스트
   disabled?: boolean; // 버튼 비활성화 여부 (기본은 true)
   onClick?: () => void; // 버튼 클릭 이벤트
-  onChange:
-    | ((value: string) => void)
-    | ((e: React.ChangeEvent<HTMLInputElement>) => void); // 인풋 값 바뀔 때
+  onChange: (
+    value: string,
+    event?: React.ChangeEvent<HTMLInputElement>
+  ) => void; // 인풋 값 바뀔 때
   onBlur?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -71,20 +72,25 @@ export default function Input({
   const isPassword = type === "password"; // 비밀번호 input인지 체크
   const inputType = isPassword ? (isVisible ? "text" : "password") : type; // 보기 여부에 따라 type 바뀜
 
+  // 내부 핸들러: 문자열 콜백 또는 이벤트 콜백 모두 지원
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value, e);
+  };
+
   return (
     <section className="relative flex flex-col w-full mb-5">
       {/* 라벨 */}
       <label htmlFor={inputId} className="ml-1 ">
         {label}
       </label>
-      <div className="flex items-center h-8 gap-1">
+      <div className="flex items-center h-10 gap-1">
         {/* 텍스트 인풋 */}
         <input
           id={inputId}
           type={inputType}
           value={value}
           placeholder={placeholder}
-          onChange={onChange}
+          onChange={handleChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
           className={`w-full h-full pl-4 pt-0.5
@@ -114,7 +120,7 @@ export default function Input({
       {/* 비밀번호 보기 아이콘: type이 password일 때만 */}
       {isPassword && (
         <Image
-          className={`absolute top-7 ${showButton ? "right-12" : "right-3"}`}
+          className={`absolute top-8 ${showButton ? "right-12" : "right-3"}`}
           onClick={() => setIsVisible((prev) => !prev)}
           src={
             isVisible
