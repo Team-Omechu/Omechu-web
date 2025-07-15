@@ -1,15 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
-import MenuCard from "@/app/mainpage/components/MenuCard";
 import {
   menus as defaultMenus,
   tagDescriptions,
   tags,
 } from "@/app/constant/mainpage/resultData";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import MenuCard from "@/app/mainpage/components/MenuCard";
+
 import ExcludeButton from "../components/ExcludeButton";
 
 function getRandomMenus() {

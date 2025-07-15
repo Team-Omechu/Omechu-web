@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+
 import BottomNav from "./components/common/Bottom";
 
 export default function ClientLayout({

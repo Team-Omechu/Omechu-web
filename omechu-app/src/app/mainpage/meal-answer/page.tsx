@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import StepFooter from "@/app/components/common/StepFooter";
 import MealIngredientGroup from "@/app/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/app/components/mainpage/MealStyleButton";
 import MealTypeGroup from "@/app/components/mainpage/MealTypeButton";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function MealAnswerPage() {
   const router = useRouter();

@@ -1,10 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 import Image from "next/image";
-import LocationModal from "@/app/mainpage/components/LocationModal";
+import { useRouter } from "next/navigation";
+
 import StepFooter from "@/app/components/common/StepFooter";
+import LocationModal from "@/app/mainpage/components/LocationModal";
 
 export default function LocationAnswerPage() {
   const router = useRouter();

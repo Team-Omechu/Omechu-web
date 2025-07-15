@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import AlertModal from "@/app/components/common/AlertModal";
 
-// Step components
-import MealTimeStep from "@/app/mainpage/components/MealTimeStep";
-import PurposeStep from "@/app/mainpage/components/PurposeStep";
-import MoodStep from "@/app/mainpage/components/MoodStep";
-import WhoStep from "@/app/mainpage/components/WhoStep";
+import { useParams, useRouter } from "next/navigation";
+
+import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
+import StepFooter from "@/app/components/common/StepFooter";
 import BudgetStep from "@/app/mainpage/components/BudgetStep";
 import FinalChoiceStep from "@/app/mainpage/components/FinalChoiceStep";
-import StepFooter from "@/app/components/common/StepFooter";
+import MealTimeStep from "@/app/mainpage/components/MealTimeStep";
+import MoodStep from "@/app/mainpage/components/MoodStep";
+import PurposeStep from "@/app/mainpage/components/PurposeStep";
+import WhoStep from "@/app/mainpage/components/WhoStep";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 const QUESTION_STEPS = 6;
 
