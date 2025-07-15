@@ -291,9 +291,7 @@ export default function Restaurant() {
                   key={idx}
                   item={item}
                   onClick={() =>
-                    router.push(
-                      `/restaurant/restaurant-detail/${item.id}`,
-                    )
+                    router.push(`/restaurant/restaurant-detail/${item.id}`)
                   }
                 />
               ))}
@@ -309,9 +307,7 @@ export default function Restaurant() {
             key={idx}
             item={item}
             onClick={() =>
-              router.push(
-                `/restaurant/restaurant-detail/${item.id}`,
-              )
+              router.push(`/restaurant/restaurant-detail/${item.id}`)
             }
           />
         ))}

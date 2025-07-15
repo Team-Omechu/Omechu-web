@@ -32,7 +32,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 85,
     menu: "쇼유라멘",
     tags: ["혼밥", "라멘", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울 성동구 왕십리로 36 104호",
       jibun: "서울 성동구 성수동 123-1 1층",
@@ -56,7 +60,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 61,
     menu: "프렌치토스트",
     tags: ["데이트", "아침식사", "디저트"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울 성동구 연무장5길 12",
       jibun: "서울 성동구 성수동2가 333-7",
@@ -79,7 +87,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 24,
     menu: "짜장면",
     tags: ["아침식사", "데이트", "기념일"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 강남구 테헤란로 23길 12",
       jibun: "서울특별시 강남구 역삼동 23-1",
@@ -102,7 +114,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 102,
     menu: "김밥",
     tags: ["점심식사", "혼밥", "테이크아웃"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 마포구 월드컵북로 123",
       jibun: "서울특별시 마포구 연남동 456-7",
@@ -125,7 +141,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 75,
     menu: "떡볶이",
     tags: ["간식", "야식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 123",
       jibun: "서울특별시 성동구 성수동1가 789-10",
@@ -148,7 +168,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 50,
     menu: "아메리카노",
     tags: ["카페", "디저트", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 456",
       jibun: "서울특별시 성동구 성수동2가 123-45",
@@ -171,7 +195,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 90,
     menu: "마르게리타 피자",
     tags: ["피자", "테이크아웃", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 789",
       jibun: "서울특별시 성동구 성수동3가 678-90",
@@ -194,7 +222,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 120,
     menu: "초밥",
     tags: ["스시", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 101",
       jibun: "서울특별시 성동구 성수동4가 111-22",
@@ -217,7 +249,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 65,
     menu: "크루아상",
     tags: ["베이커리", "디저트", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 202",
       jibun: "서울특별시 성동구 성수동5가 333-44",
@@ -240,7 +276,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 150,
     menu: "후라이드 치킨",
     tags: ["치킨", "야식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 303",
       jibun: "서울특별시 성동구 성수동6가 555-66",
@@ -263,7 +303,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 80,
     menu: "아이스크림",
     tags: ["디저트", "간식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 404",
       jibun: "서울특별시 성동구 성수동7가 777-88",
@@ -286,7 +330,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 200,
     menu: "스테이크",
     tags: ["스테이크", "데이트", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 505",
       jibun: "서울특별시 성동구 성수동8가 999-00",
@@ -309,7 +357,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 110,
     menu: "까르보나라",
     tags: ["파스타", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 606",
       jibun: "서울특별시 성동구 성수동9가 111-22",
@@ -332,7 +384,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 95,
     menu: "그린 샐러드",
     tags: ["샐러드", "건강식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 707",
       jibun: "서울특별시 성동구 성수동10가 333-44",
@@ -355,7 +411,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 130,
     menu: "수제버거",
     tags: ["버거", "테이크아웃", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 808",
       jibun: "서울특별시 성동구 성수동11가 555-66",
@@ -378,7 +438,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 70,
     menu: "타코",
     tags: ["타코", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 909",
       jibun: "서울특별시 성동구 성수동12가 777-88",
@@ -401,7 +465,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 85,
     menu: "인도 커리",
     tags: ["커리", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1010",
       jibun: "서울특별시 성동구 성수동13가 999-00",
@@ -424,7 +492,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 60,
     menu: "피쉬앤칩스",
     tags: ["피쉬앤칩스", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1111",
       jibun: "서울특별시 성동구 성수동14가 111-22",
@@ -447,7 +519,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 40,
     menu: "브런치",
     tags: ["브런치", "디저트", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1212",
       jibun: "서울특별시 성동구 성수동15가 333-44",
@@ -470,7 +546,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 150,
     menu: "케이크",
     tags: ["디저트", "카페", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1313",
       jibun: "서울특별시 성동구 성수동16가 555-66",
@@ -493,7 +573,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 55,
     menu: "스무디",
     tags: ["스무디", "건강식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1414",
       jibun: "서울특별시 성동구 성수동17가 777-88",
@@ -516,7 +600,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 65,
     menu: "와플",
     tags: ["디저트", "간식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1515",
       jibun: "서울특별시 성동구 성수동18가 999-00",
@@ -539,7 +627,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 45,
     menu: "핫도그",
     tags: ["간식", "야식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1616",
       jibun: "서울특별시 성동구 성수동19가 111-22",
@@ -562,7 +654,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 80,
     menu: "퓨전 요리",
     tags: ["퓨전", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1717",
       jibun: "서울특별시 성동구 성수동20가 333-44",
@@ -585,7 +681,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 70,
     menu: "칼국수",
     tags: ["국수", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1818",
       jibun: "서울특별시 성동구 성수동21가 555-66",
@@ -608,7 +708,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 90,
     menu: "전통 떡",
     tags: ["떡", "디저트", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 1919",
       jibun: "서울특별시 성동구 성수동22가 777-88",
@@ -631,7 +735,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 55,
     menu: "김치찌개",
     tags: ["찌개", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2020",
       jibun: "서울특별시 성동구 성수동23가 999-00",
@@ -654,7 +762,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 80,
     menu: "찜닭",
     tags: ["찜닭", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2121",
       jibun: "서울특별시 성동구 성수동24가 111-22",
@@ -677,7 +789,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 100,
     menu: "족발",
     tags: ["족발", "야식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2222",
       jibun: "서울특별시 성동구 성수동25가 333-44",
@@ -700,7 +816,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 65,
     menu: "김치만두",
     tags: ["만두", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2323",
       jibun: "서울특별시 성동구 성수동26가 555-66",
@@ -723,7 +843,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 75,
     menu: "떡볶이",
     tags: ["분식", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2424",
       jibun: "서울특별시 성동구 성수동27가 777-88",
@@ -746,7 +870,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 50,
     menu: "김밥",
     tags: ["김밥", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2525",
       jibun: "서울특별시 성동구 성수동28가 111-22",
@@ -769,7 +897,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 90,
     menu: "마르게리타 피자",
     tags: ["피자", "테이크아웃", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2626",
       jibun: "서울특별시 성동구 성수동29가 333-44",
@@ -792,7 +924,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 120,
     menu: "초밥",
     tags: ["스시", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2727",
       jibun: "서울특별시 성동구 성수동30가 555-66",
@@ -815,7 +951,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 85,
     menu: "에그 베네딕트",
     tags: ["브런치", "디저트", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2828",
       jibun: "서울특별시 성동구 성수동31가 777-88",
@@ -838,7 +978,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 95,
     menu: "마카롱",
     tags: ["디저트", "카페", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 2929",
       jibun: "서울특별시 성동구 성수동32가 999-00",
@@ -861,7 +1005,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 60,
     menu: "과일 스무디",
     tags: ["스무디", "건강식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 3030",
       jibun: "서울특별시 성동구 성수동33가 111-22",
@@ -884,7 +1032,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 70,
     menu: "과일 와플",
     tags: ["디저트", "간식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 3131",
       jibun: "서울특별시 성동구 성수동34가 333-44",
@@ -907,7 +1059,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 50,
     menu: "치즈 핫도그",
     tags: ["간식", "야식", "혼밥"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 3232",
       jibun: "서울특별시 성동구 성수동35가 555-66",
@@ -930,7 +1086,11 @@ export const Restaurants: RestaurantType[] = [
     reviews: 80,
     menu: "퓨전 파스타",
     tags: ["퓨전", "혼밥", "가성비"],
-    images: ["/restaurant_blank.png", "/restaurant_blank.png", "/restaurant_blank.png"],
+    images: [
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+      "/restaurant_blank.png",
+    ],
     address: {
       road: "서울특별시 성동구 성수이로 3333",
       jibun: "서울특별시 성동구 성수동36가 777-88",
@@ -945,6 +1105,5 @@ export const Restaurants: RestaurantType[] = [
       { days_of_the_week: "토", time: "12:00 - 23:00" },
       { days_of_the_week: "일", time: "12:00 - 23:00" },
     ],
-  }
-
+  },
 ];
