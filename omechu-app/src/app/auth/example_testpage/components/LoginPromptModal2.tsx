@@ -4,21 +4,23 @@ import Image from "next/image";
 
 import RoundButton from "@/app/components/common/button/RoundButton";
 
-type LoginPromptModalProps = {
+type LoginPromptModal2Props = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
-  onClose: () => void; // "X" 버튼 또는 "그냥 추천받기" 버튼 클릭 시
+  onClose: () => void; // "X" 버튼 클릭 시
 };
 
-const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
-  // 이 컴포넌트는 ModalWrapper 내에서 사용되어야 합니다.
+const LoginPromptModal2 = ({
+  onConfirm,
+  onClose,
+}: LoginPromptModal2Props) => {
   return (
-    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-black bg-white px-6 pb-6 pt-6 text-center shadow-lg">
+    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-[#E0E0E0] bg-white px-6 pb-6 pt-6 text-center shadow-lg">
       <button onClick={onClose} className="absolute right-5 top-5 z-10 p-1">
         <Image
           src="/common/black_x_icon.svg"
           alt="close"
-          width={18}
-          height={18}
+          width={24}
+          height={24}
         />
       </button>
 
@@ -33,28 +35,18 @@ const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
       </div>
 
       <div className="mb-6 flex flex-col gap-2">
-        <h2 className="text-xl text-[#393939]">
-          더 정교한 추천을 원하시나요?
-        </h2>
+        <h2 className="text-xl text-[#393939]">더 많은 기능을 원하시나요?</h2>
         <p className="text-sm text-[#828282]">
           로그인 후 더 다양한 서비스를 누려보세요
         </p>
       </div>
 
-      <div className="flex w-full items-center justify-center gap-3">
-        <RoundButton
-          onClick={onClose}
-          variant="gray"
-          size="sm"
-          className="flex-1"
-        >
-          그냥 추천받기
-        </RoundButton>
+      <div className="w-full px-16">
         <RoundButton
           onClick={onConfirm}
           variant="red"
-          size="sm"
-          className="flex-1"
+          size="md"
+          className="w-full"
         >
           로그인 하기
         </RoundButton>
@@ -63,4 +55,4 @@ const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
   );
 };
 
-export default LoginPromptModal;
+export default LoginPromptModal2;

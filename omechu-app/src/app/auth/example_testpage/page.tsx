@@ -5,38 +5,60 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import LoginPromptModal from "@/app/auth/example_testpage/components/LoginPromptModal";
+import LoginPromptModal2 from "@/app/auth/example_testpage/components/LoginPromptModal2";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 
+type ModalType = "modal1" | "modal2" | null;
+
 export default function ExampleTestPage() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
   const router = useRouter();
 
   const handleConfirm = () => {
-    setIsModalOpen(false);
-    // 실제라면 로그인 페이지로 이동하겠지만, 여기서는 모달만 닫습니다.
+    setActiveModal(null);
     alert("'로그인 하기' 클릭됨");
-    router.push("/auth/login"); // 예시: 로그인 페이지로 이동
+    router.push("/auth/sign-in");
   };
 
   const handleClose = () => {
-    setIsModalOpen(false);
-    alert("'그냥 추천받기' 또는 'X' 클릭됨");
+    setActiveModal(null);
+    alert("모달 닫힘");
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-gray-100">
+    <div className="flex h-screen flex-col items-center justify-center gap-4 bg-gray-100">
       <h1 className="mb-4 text-2xl">LoginPromptModal 테스트 페이지</h1>
-      <button
-        onClick={() => setIsModalOpen(true)}
-        disabled={isModalOpen}
-        className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:bg-gray-400"
-      >
-        모달 다시 열기
-      </button>
+      <div className="flex gap-4">
+        <button
+          onClick={() => setActiveModal("modal1")}
+          disabled={!!activeModal}
+          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:bg-gray-400"
+        >
+          모달 1 열기
+        </button>
+        <button
+          onClick={() => setActiveModal("modal2")}
+          disabled={!!activeModal}
+          className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 disabled:bg-gray-400"
+        >
+          모달 2 열기
+        </button>
+      </div>
 
-      {isModalOpen && (
+      {activeModal && (
         <ModalWrapper>
-          <LoginPromptModal onConfirm={handleConfirm} onClose={handleClose} />
+          {activeModal === "modal1" && (
+            <LoginPromptModal
+              onConfirm={handleConfirm}
+              onClose={handleClose}
+            />
+          )}
+          {activeModal === "modal2" && (
+            <LoginPromptModal2
+              onConfirm={handleConfirm}
+              onClose={handleClose}
+            />
+          )}
         </ModalWrapper>
       )}
     </div>
