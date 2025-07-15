@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import Header from "@/app/components/common/Header";
-import { restaurantList } from "@/app/constant/restaurant/restaurantList";
+import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 
 export default function MapPage() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function MapPage() {
   const id = Number((params as { id: string }).id);
 
   // id에 해당하는 맛집 데이터 찾기
-  const restaurant = restaurantList.find((r) => r.id === id);
+  const restaurant = Restaurants.find((r) => r.id === id);
 
   // 해당 id의 맛집이 없을 경우 예외 처리 (간단한 메시지)
   if (!restaurant) {
