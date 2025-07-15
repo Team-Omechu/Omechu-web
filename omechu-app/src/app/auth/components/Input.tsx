@@ -14,7 +14,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     // 기본 스타일 (플레이스홀더는 회색, 입력 텍스트는 검정)
     const baseStyle =
-      'w-full h-12 px-4 border rounded-md focus:outline-none bg-white placeholder:text-[#828282] text-black text-base placeholder:text-center';
+      'w-full h-12 px-4 border rounded-md focus:outline-none bg-white placeholder:text-[#828282] text-black text-sm placeholder:text-center';
     const normalStyle = 'border-[#D9D9D9] focus:border-black';
     const errorStyle = 'border-red-500 focus:border-red-500';
 
