@@ -2,12 +2,7 @@
 
 import React from "react";
 
-import type {
-  FieldErrors,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import type { SignupFormValues } from "@/lib/schemas/auth.schema";
 
@@ -16,20 +11,17 @@ import Checkbox from "../../components/Checkbox";
 type ModalType = "service" | "privacy" | "location";
 
 type TermsAgreementProps = {
-  register: UseFormRegister<SignupFormValues>;
-  setValue: UseFormSetValue<SignupFormValues>;
-  watch: UseFormWatch<SignupFormValues>;
-  errors: FieldErrors<SignupFormValues>;
   setActiveModal: (modal: ModalType | null) => void;
 };
 
-const TermsAgreement = ({
-  register,
-  setValue,
-  watch,
-  errors,
-  setActiveModal,
-}: TermsAgreementProps) => {
+const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<SignupFormValues>();
+
   const termNames = [
     "termsService",
     "termsPrivacy",
@@ -48,7 +40,7 @@ const TermsAgreement = ({
 
   return (
     <div className="space-y-3 text-[#626262]">
-      <h2 className="text-lg text-[#393939]">
+      <h2 className="text-center text-lg text-[#393939]">
         서비스 약관에 동의해 주세요
       </h2>
       <Checkbox
@@ -59,7 +51,7 @@ const TermsAgreement = ({
         variant="round"
       />
 
-      <div className="space-y-2 py-3 pl-7">
+      <div className="space-y-2 py-3 pl-2">
         <div className="flex items-center justify-between">
           <Checkbox
             id="termsService"
@@ -76,7 +68,7 @@ const TermsAgreement = ({
           </button>
         </div>
         {errors.termsService && (
-          <p className="pl-6 text-xs text-red-500">
+          <p className="pl-2 text-xs text-red-500">
             {errors.termsService.message}
           </p>
         )}
@@ -97,7 +89,7 @@ const TermsAgreement = ({
           </button>
         </div>
         {errors.termsPrivacy && (
-          <p className="pl-6 text-xs text-red-500">
+          <p className="pl-2 text-xs text-red-500">
             {errors.termsPrivacy.message}
           </p>
         )}
@@ -118,13 +110,13 @@ const TermsAgreement = ({
           </button>
         </div>
         {errors.termsLocation && (
-          <p className="pl-6 text-xs text-red-500">
+          <p className="pl-2 text-xs text-red-500">
             {errors.termsLocation.message}
           </p>
         )}
       </div>
 
-      <div className="pl-7">
+      <div className="pl-2">
         <Checkbox
           id="termsAge"
           label="본인은 만 14세 이상입니다. (필수)"
@@ -132,7 +124,7 @@ const TermsAgreement = ({
           variant="round"
         />
         {errors.termsAge && (
-          <p className="pl-6 text-xs text-red-500">{errors.termsAge.message}</p>
+          <p className="pl-2 text-xs text-red-500">{errors.termsAge.message}</p>
         )}
       </div>
     </div>

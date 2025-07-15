@@ -4,23 +4,22 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import type { SignupFormValues } from "@/lib/schemas/auth.schema";
 
 import Input from "../../components/Input";
 
-type UserInfoFieldsProps = {
-  register: UseFormRegister<SignupFormValues>;
-  errors: FieldErrors<SignupFormValues>;
-};
-
-export default function UserInfoFields({
-  register,
-  errors,
-}: UserInfoFieldsProps) {
+export default function UserInfoFields() {
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext<SignupFormValues>();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const verificationCode = watch("verificationCode");
 
   return (
     <div className="space-y-4">
@@ -34,14 +33,36 @@ export default function UserInfoFields({
           <button
             onClick={() => {
               /* 인증번호 전송 로직 */
+              setIsCodeSent(true);
             }}
             type="button"
             className="h-[38px] rounded-[6px] bg-[#00B2FF] px-4 text-sm font-normal text-white hover:bg-[#00a0e6] active:scale-[.98] active:bg-[#008ecb]"
           >
-            인증번호 전송
+            {isCodeSent ? "인증번호 재전송" : "인증번호 전송"}
           </button>
         }
       />
+      {isCodeSent && (
+        <Input
+          {...register("verificationCode")}
+          label="인증번호"
+          type="text"
+          placeholder="인증번호 6자리를 입력해주세요"
+          error={errors.verificationCode?.message}
+          rightAddon={
+            <button
+              onClick={() => {
+                /* 인증번호 확인 로직 */
+              }}
+              type="button"
+              disabled={!verificationCode || verificationCode.length !== 6}
+              className="h-[38px] rounded-[6px] bg-[#00B2FF] px-4 text-sm font-normal text-white hover:bg-[#00a0e6] active:scale-[.98] active:bg-[#008ecb] disabled:bg-[#A3A3A3]"
+            >
+              인증번호 확인
+            </button>
+          }
+        />
+      )}
       <Input
         {...register("password")}
         label="비밀번호"
