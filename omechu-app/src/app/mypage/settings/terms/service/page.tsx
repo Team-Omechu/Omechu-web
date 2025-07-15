@@ -5,9 +5,9 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import Header from "@/app/components/common/Header";
 import { termsForService } from "@/app/constant/terms/service";
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 
 export default function TermForService() {
   const router = useRouter();
@@ -37,10 +37,10 @@ export default function TermForService() {
       />
       <main
         ref={mainRef}
-        className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
+        className="relative w-full h-screen overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
         {termsForService.map((item, key) => (
-          <section key={key} className="mb-5 flex flex-col justify-start gap-1">
+          <section key={key} className="flex flex-col justify-start gap-1 mb-5">
             {/* 조항 번호, 제목 */}
             {item.index && (
               <div className="text-base font-bold">

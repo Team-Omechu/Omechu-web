@@ -8,9 +8,9 @@ import { useRouter } from "next/navigation";
 // 공용 컴포넌트
 import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
+import Input from "@/app/components/common/Input";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import Toast from "@/app/components/common/Toast";
-import Input from "@/app/components/common/Input";
 
 const SAMPLE_PASSWORD = "kang@1234"; // 테스트용 기존 비밀번호
 

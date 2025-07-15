@@ -5,9 +5,11 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodBox from "@/app/components/common/FoodBox";
 import Header from "@/app/components/common/Header";
 import SearchBar from "@/app/components/common/SearchBar";
+import SelectTabBar from "@/app/components/mypage/SelectTabBar";
 import {
   consonantGroupMap,
   filteredChoSeong,
@@ -15,17 +17,25 @@ import {
 } from "@/app/constant/choSeong";
 import { initialFoodList } from "@/app/constant/initialFoodList";
 import { suggestionList } from "@/app/constant/suggestionList";
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import SelectTabBar from "@/app/components/mypage/SelectTabBar";
+
+// FoodItem 타입을 정의하거나 import
+type FoodItem = {
+  title: string;
+  imageUrl: string;
+  isExcluded: boolean;
+};
 
 export default function RecommendedList() {
   const router = useRouter();
   const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
 
   // 음식 리스트 초기 정렬 (한글 기준 오름차순)
-  const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
-    a.title.localeCompare(b.title, "ko"),
-  );
+  const sortedFoodList: FoodItem[] = [...initialFoodList]
+    .map((item) => ({
+      ...item,
+      imageUrl: item.imageUrl ?? "", // 기본값을 빈 문자열로 설정
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title, "ko"));
   const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
 
   const [selectedIndex, setSelectedIndex] = useState(0); // 추천/제외 탭 인덱스
