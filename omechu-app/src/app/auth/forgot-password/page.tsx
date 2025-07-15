@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import InlineAlert from "@/app/auth/components/InlineAlert";
+import Toast from "@/app/components/common/Toast";
 import type { FindPasswordFormValues } from "@/lib/schemas/auth.schema";
 
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
@@ -45,9 +45,8 @@ export default function FindPasswordPage() {
         </div>
 
         <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
-
-        <InlineAlert message={toastMessage} />
       </div>
+      <Toast message={toastMessage} show={showToast} bottom="230px" />
     </main>
   );
 }

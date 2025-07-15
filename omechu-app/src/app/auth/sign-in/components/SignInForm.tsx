@@ -9,14 +9,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import Checkbox from "@/app/auth/components/Checkbox";
-import InlineAlert from "@/app/auth/components/InlineAlert";
 import Input from "@/app/auth/components/Input";
 import SquareButton from "@/app/components/common/button/SquareButton";
+import Toast from "@/app/components/common/Toast";
 import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const {
     register,
@@ -26,11 +27,16 @@ export default function SignInForm() {
     resolver: zodResolver(loginSchema),
   });
 
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
   const onSubmit = async (data: LoginFormValues) => {
-    setLoginError(null);
     // 가상의 로그인 실패 시나리오
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLoginError("이메일 또는 비밀번호가 \n 올바르지 않습니다.");
+    triggerToast("이메일 또는 비밀번호가 \n 올바르지 않습니다.");
   };
 
   return (
@@ -98,7 +104,7 @@ export default function SignInForm() {
         </div>
       </form>
 
-      <InlineAlert message={loginError!} />
+      <Toast message={toastMessage} show={showToast} bottom="150px" />
     </>
   );
 }
