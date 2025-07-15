@@ -18,6 +18,8 @@ export default function Favorites() {
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
 
+  const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
+
   const filteredItems = search.trim()
     ? foodItems.filter((item) => item.menu.includes(search.trim()))
     : foodItems;
@@ -92,7 +94,25 @@ export default function Favorites() {
       />
       <main className="min-h-full w-full px-5 pb-8 pt-3">
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section></section>
+        <section className="flex w-full justify-end gap-2 py-5 pr-1 text-sm text-[#828282]">
+          <button
+            className={
+              sortOrder === "latest" ? "font-semibold text-[#393939]" : ""
+            }
+            onClick={() => setSortOrder("latest")}
+          >
+            최신 순
+          </button>
+          <span>|</span>
+          <button
+            className={
+              sortOrder === "oldest" ? "font-semibold text-[#393939]" : ""
+            }
+            onClick={() => setSortOrder("oldest")}
+          >
+            오래된 순
+          </button>
+        </section>
 
         {/* 찜 목록 */}
         <section className="flex flex-col gap-3">
