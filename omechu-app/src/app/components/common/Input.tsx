@@ -124,8 +124,8 @@ export default function Input({
           onClick={() => setIsVisible((prev) => !prev)}
           src={
             isVisible
-              ? "/components/common/eye_open.svg" // 비밀번호 보이는 상태
-              : "/components/common/eye_closed.svg" // 가려진 상태
+              ? "/eye/eye_open.svg" // 비밀번호 보이는 상태
+              : "/eye/eye_closed.svg" // 가려진 상태
           }
           alt="비밀번호 보기 토글"
           width={24}
