@@ -24,6 +24,7 @@ export default function OnboardingPage() {
   const store = useOnboardingStore();
   const { setCurrentStep, reset } = store;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
 
   const step = Number(params.step);
 
@@ -74,6 +75,15 @@ export default function OnboardingPage() {
     setIsModalOpen(false);
   };
 
+  const handleConfirmSkip = () => {
+    reset();
+    router.push("/");
+  };
+
+  const handleCancelSkip = () => {
+    setIsSkipModalOpen(false);
+  };
+
   const renderStepComponent = () => {
     switch (step) {
       case 1:
@@ -107,12 +117,7 @@ export default function OnboardingPage() {
           cancelButtonText="일단 시작하기"
           cancelButtonAlign="right"
           cancelButtonClassName="w-auto"
-          onCancelClick={() => {
-            if (confirm("일단 시작하기")) {
-              reset();
-              router.push("/");
-            }
-          }}
+          onCancelClick={() => setIsSkipModalOpen(true)}
         />
       </header>
 
@@ -149,6 +154,19 @@ export default function OnboardingPage() {
             cancelText="내 정보 다시 보기"
             onConfirm={handleRecommend}
             onClose={handleRecheck}
+          />
+        </ModalWrapper>
+      )}
+
+      {isSkipModalOpen && (
+        <ModalWrapper>
+          <AlertModal
+            title="지금까지 작성한 내용은 저장되지 않아요"
+            description="그래도 추천받기를 원하시나요?"
+            confirmText="그만하기"
+            cancelText="돌아가기"
+            onConfirm={handleConfirmSkip}
+            onClose={handleCancelSkip}
           />
         </ModalWrapper>
       )}
