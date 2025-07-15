@@ -1,27 +1,16 @@
 "use client";
 
-// Food 아이템 타입 정의
-// title: 음식 이름, isExcluded: 제외 여부, imageUrl: 이미지 경로(optional)
-type FoodItem = {
-  title: string;
-  isExcluded: boolean;
-  imageUrl?: string | null;
-};
-
-// 라이브러리
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-// 공용 컴포넌트
-import Header from "@/app/components/common/Header";
 import FoodBox from "@/app/components/common/FoodBox";
+import Header from "@/app/components/common/Header";
 import SearchBar from "@/app/components/common/SearchBar";
-
-// 상수 데이터
 import {
-  filteredChoSeong,
   consonantGroupMap,
+  filteredChoSeong,
   HANGUL_CHO_SEONG,
 } from "@/app/constant/choSeong";
 import { initialFoodList } from "@/app/constant/initialFoodList";
@@ -35,7 +24,7 @@ export default function RecommendedList() {
 
   // 음식 리스트 초기 정렬 (한글 기준 오름차순)
   const sortedFoodList: FoodItem[] = [...initialFoodList].sort((a, b) =>
-    a.title.localeCompare(b.title, "ko")
+    a.title.localeCompare(b.title, "ko"),
   );
   const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
 
@@ -74,8 +63,8 @@ export default function RecommendedList() {
   const onToggle = (title: string) => {
     setFoodList((prev) =>
       prev.map((item) =>
-        item.title === title ? { ...item, isExcluded: !item.isExcluded } : item
-      )
+        item.title === title ? { ...item, isExcluded: !item.isExcluded } : item,
+      ),
     );
   };
 
@@ -138,18 +127,18 @@ export default function RecommendedList() {
 
         {/* 초성 필터 버튼 */}
         <section>
-          <div className="w-[340px] h-[61px] px-7 py-2 grid grid-cols-7 grid-flow-dense bg-white border-2 border-black rounded-2xl">
+          <div className="grid h-[61px] w-[340px] grid-flow-dense grid-cols-7 rounded-2xl border-2 border-black bg-white px-7 py-2">
             {filteredChoSeong.map((item, index) => (
               <button
                 key={index}
                 onClick={() =>
                   setSelectedAlphabetIndex((prev) =>
-                    prev === index ? undefined : index
+                    prev === index ? undefined : index,
                   )
                 }
-                className={`text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] rounded-full  ${
+                className={`rounded-full text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] ${
                   selectedAlphabetIndex === index
-                    ? "font-black bg-[#d4f0ff]"
+                    ? "bg-[#d4f0ff] font-black"
                     : "font-normal"
                 }`}
               >

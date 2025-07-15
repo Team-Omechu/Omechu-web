@@ -1,13 +1,9 @@
 "use client";
 
-// next/navigation 훅들 - 클라이언트에서 라우터 관련 기능 사용
-import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 
-// 공통 헤더 컴포넌트
 import Header from "@/app/components/common/Header";
-
-// 샘플 데이터 - 맛집 리스트 상수
 import { restaurantList } from "@/app/constant/restaurant/restaurantList";
 
 export default function MapPage() {
@@ -25,7 +21,7 @@ export default function MapPage() {
   // 해당 id의 맛집이 없을 경우 예외 처리 (간단한 메시지)
   if (!restaurant) {
     return (
-      <main className="flex items-center justify-center h-screen">
+      <main className="flex h-screen items-center justify-center">
         <p className="text-gray-500">존재하지 않는 맛집입니다.</p>
       </main>
     );
@@ -51,15 +47,15 @@ export default function MapPage() {
         }
       />
 
-      <main className="flex flex-col items-center w-full h-full">
+      <main className="flex h-full w-full flex-col items-center">
         {/* 맛집 이름 */}
-        <h1 className="mb-5 text-[#1F9BDA] text-2xl font-bold">
+        <h1 className="mb-5 text-2xl font-bold text-[#1F9BDA]">
           {restaurant.name}
         </h1>
 
         {/* 지도 이미지 영역 */}
-        <section className="flex items-center justify-center w-full">
-          <div className="w-80 h-80 border-2 border-[#89d8ff] overflow-hidden">
+        <section className="flex w-full items-center justify-center">
+          <div className="h-80 w-80 overflow-hidden border-2 border-[#89d8ff]">
             <Image
               src={mapImagePath}
               alt={`${restaurant.name} 지도`}

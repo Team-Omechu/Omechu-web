@@ -1,18 +1,18 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import Button from "@/app/components/auth/Button";
 
-// Step components
-import ProfileStep from "@/app/components/onboarding/ProfileStep";
-import GenderStep from "@/app/components/onboarding/GenderStep";
-import WorkoutStatusStep from "@/app/components/onboarding/WorkoutStatusStep";
-import PreferredFoodStep from "@/app/components/onboarding/PreferredFoodStep";
-import ConstitutionStep from "@/app/components/onboarding/ConstitutionStep";
+import { useParams, useRouter } from "next/navigation";
+
+import Button from "@/app/components/auth/Button";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import AllergyStep from "@/app/components/onboarding/AllergyStep";
+import ConstitutionStep from "@/app/components/onboarding/ConstitutionStep";
+import GenderStep from "@/app/components/onboarding/GenderStep";
+import PreferredFoodStep from "@/app/components/onboarding/PreferredFoodStep";
+import ProfileStep from "@/app/components/onboarding/ProfileStep";
+import WorkoutStatusStep from "@/app/components/onboarding/WorkoutStatusStep";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 const ONBOARDING_STEPS = 6;
 
@@ -82,7 +82,7 @@ export default function OnboardingPage() {
 
   if (isNaN(step) || step > ONBOARDING_STEPS) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4">
+      <div className="flex h-screen flex-col items-center justify-center gap-4">
         <p>잘못된 접근입니다.</p>
         <Button
           variant="red"
@@ -97,7 +97,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       <header>
         <ProgressBar
           currentStep={step}
@@ -114,12 +114,12 @@ export default function OnboardingPage() {
         />
       </header>
 
-      <main className="flex flex-1 flex-col items-center w-full px-4 py-6">
+      <main className="flex w-full flex-1 flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
       <footer className="w-full pb-[env(safe-area-inset-bottom)]">
-        <div className="flex justify-between px-5 mb-3">
+        <div className="mb-3 flex justify-between px-5">
           {step > 1 ? (
             <button onClick={handlePrev} className="text-base text-[#828282]">
               {"<"} 이전으로
@@ -136,7 +136,7 @@ export default function OnboardingPage() {
         <button
           onClick={handleNext}
           disabled={isNextDisabled}
-          className="w-full h-12 p-2 text-white text-xl font-normal bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400"
+          className="h-12 w-full bg-[#1F9BDA] p-2 text-xl font-normal text-white hover:bg-[#1c8cc4] active:bg-[#197cae] disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400"
         >
           {step === ONBOARDING_STEPS ? "저장" : "다음"}
         </button>

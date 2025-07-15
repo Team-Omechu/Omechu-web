@@ -15,16 +15,12 @@ export default function FoodBox({
   isExcluded,
   isToggled = true,
   onToggle,
-  onClick
+  onClick,
 }: FoodBoxProp) {
   // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);  // 디버그용 콘솔 메세지 출력
   return (
     <div
-      className="relative py-1 w-[100px] h-[110px] 
-        flex flex-col justify-end items-center 
-        border-[1px] border-black rounded-xl bg-white 
-        hover:scale-110 transition-transform duration-300
-        cursor-pointer"
+      className="relative flex h-[110px] w-[100px] cursor-pointer flex-col items-center justify-end rounded-xl border-[1px] border-black bg-white py-1 transition-transform duration-300 hover:scale-110"
       onClick={onClick}
     >
       {/* 추천 제외 || 복원 버튼 */}
@@ -39,7 +35,7 @@ export default function FoodBox({
             e.stopPropagation();
             onToggle();
           }}
-          className="absolute cursor-pointer top-1 right-1"
+          className="absolute right-1 top-1 cursor-pointer"
           src={isExcluded ? `/add_circle.webp` : `/do_not_disturb_on.webp`}
           alt={isExcluded ? "음식 추천 제외 취소" : "음식 추천 제외"}
           width={25}
@@ -54,10 +50,10 @@ export default function FoodBox({
           alt={`${title} 이미지`}
           width={70}
           height={70}
-          className="object-cover rounded-lg"
+          className="rounded-lg object-cover"
         />
       ) : (
-        <div className="bg-gray-200 w-[70px] h-[70px] rounded-lg" />
+        <div className="h-[70px] w-[70px] rounded-lg bg-gray-200" />
       )}
       {/* 음식 이름 */}
       <span className="text-[15px] font-normal">{title}</span>

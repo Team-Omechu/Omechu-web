@@ -38,15 +38,15 @@ export default function BottomNav() {
   const router = useRouter(); // React의 useNavigator처럼 변수 선언
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 h-20 bg-[#f6f6f6] w-full max-w-screen-mobile rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:bg-[#7a7a7a]">
-      <div className="flex justify-between w-full px-5 py-2.5">
+    <div className="fixed bottom-0 left-1/2 z-50 h-20 w-full max-w-screen-mobile -translate-x-1/2 rounded-t-[10px] bg-[#f6f6f6] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:bg-[#7a7a7a]">
+      <div className="flex w-full justify-between px-5 py-2.5">
         {navItems.map((item, index) => (
           <div
             key={index}
             onClick={() => {
               router.push(item.routingUrl);
             }}
-            className="flex flex-col items-center justify-center gap-1 py-1 rounded-lg cursor-pointer w-14 hover:bg-[#eeeeee] active:bg-[#e2e2e2] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
+            className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-[#e2e2e2] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
           >
             <Image src={item.imgSrc} alt={item.imgAlt} width={26} height={26} />
             <span className="text-xs font-medium">{item.title}</span>

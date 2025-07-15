@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 // 공용 컴포넌트
-import Header from "@/app/components/common/Header";
 import AlertModal from "@/app/components/common/AlertModal";
+import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import Toast from "@/app/components/common/Toast";
 import Input from "@/app/components/common/Input";
@@ -22,7 +23,7 @@ export default function ChangePassword() {
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
   const [passwordMatched, setPasswordMatched] = useState<boolean | null>(null);
   const [newPasswordError, setNewPasswordError] = useState<boolean | null>(
-    null
+    null,
   );
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     boolean | null
@@ -113,7 +114,7 @@ export default function ChangePassword() {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setConfirmPasswordError(
-                  inputConfirmPassword !== inputNewPassword
+                  inputConfirmPassword !== inputNewPassword,
                 );
               }
             }}

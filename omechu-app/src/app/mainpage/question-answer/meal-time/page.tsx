@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+
 import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import BottomNav from "@/app/components/mainpage/BottomNav";
 
 export default function MealTimePage() {
@@ -15,7 +17,7 @@ export default function MealTimePage() {
   const meals = ["아침", "점심", "저녁", "야식"];
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex h-screen w-full flex-col">
       {/* 상단 진행 바 + 그만하기 버튼 */}
       <div className="px-4 pt-5">
         <ProgressBar
@@ -28,10 +30,10 @@ export default function MealTimePage() {
       </div>
 
       {/* 질문 & 선택지 */}
-      <main className="flex flex-col items-center justify-center flex-1 w-full gap-12">
-        <h2 className="text-2xl text-center">언제 먹는 건가요?</h2>
+      <main className="flex w-full flex-1 flex-col items-center justify-center gap-12">
+        <h2 className="text-center text-2xl">언제 먹는 건가요?</h2>
 
-        <div className="flex flex-col gap-4 w-60">
+        <div className="flex w-60 flex-col gap-4">
           {meals.map((meal) => (
             <button
               key={meal}
@@ -39,12 +41,11 @@ export default function MealTimePage() {
                 setSelected(meal);
                 router.push("./purpose");
               }}
-              className={`w-full h-12 rounded-md border text-lg
-                ${
-                  selected === meal
-                    ? "bg-red-500 text-white border-red-500"
-                    : "bg-white text-red-500 border-red-500"
-                }`}
+              className={`h-12 w-full rounded-md border text-lg ${
+                selected === meal
+                  ? "border-red-500 bg-red-500 text-white"
+                  : "border-red-500 bg-white text-red-500"
+              }`}
             >
               {meal}
             </button>

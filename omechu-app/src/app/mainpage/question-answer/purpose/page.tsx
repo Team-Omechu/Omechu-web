@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+
 import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import BottomNav from "@/app/components/mainpage/BottomNav";
 
 export default function PurposePage() {
@@ -15,7 +17,7 @@ export default function PurposePage() {
   const purposes = ["든든한 한 끼 식사", "술 겸 안주", "간식", "기념일 식사"];
 
   return (
-    <div className="flex flex-col w-auto h-screen">
+    <div className="flex h-screen w-auto flex-col">
       <div className="px-4 pt-5">
         <ProgressBar
           currentStep={2}
@@ -25,10 +27,10 @@ export default function PurposePage() {
           }}
         />
       </div>
-      <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
-        <h2 className="text-2xl text-center">식사 목적은 무엇인가요?</h2>
+      <main className="flex h-full w-full flex-1 flex-col items-center justify-center gap-12">
+        <h2 className="text-center text-2xl">식사 목적은 무엇인가요?</h2>
 
-        <div className="flex flex-col w-60 gap-5">
+        <div className="flex w-60 flex-col gap-5">
           {purposes.map((purpose) => (
             <button
               key={purpose}
@@ -36,11 +38,10 @@ export default function PurposePage() {
                 setSelected(purpose);
                 router.push("./state");
               }}
-              className={`w-full h-12 p-2 rounded-md border-[1px] text-lg
-              ${
+              className={`h-12 w-full rounded-md border-[1px] p-2 text-lg ${
                 selected === purpose
-                  ? "bg-red-500 text-white border-red-500"
-                  : "bg-white text-red-500 border-red-500"
+                  ? "border-red-500 bg-red-500 text-white"
+                  : "border-red-500 bg-white text-red-500"
               }`}
             >
               {purpose}

@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+
 import OnboardingButton from "./OnboardingButton";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 

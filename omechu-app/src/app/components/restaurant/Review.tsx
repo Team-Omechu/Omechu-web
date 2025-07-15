@@ -34,10 +34,7 @@ export default function Review({
   isOptionOpen = false,
 }: ReviewProps) {
   return (
-    <section
-      className="w-full h-fit p-4 flex flex-col gap-2 bg-white 
-                border-[1px] border-[#393939] rounded-xl "
-    >
+    <section className="flex h-fit w-full flex-col gap-2 rounded-xl border-[1px] border-[#393939] bg-white p-4">
       {/* 프로필사진, 닉네임, 작성일 | 추천 버튼, 설정버튼 */}
       <div className="relative flex justify-between">
         <div className="flex items-center gap-3">
@@ -47,15 +44,15 @@ export default function Review({
             width={30}
             height={30}
           />
-          <span className="text-base text-[#393939] font-semibold">
+          <span className="text-base font-semibold text-[#393939]">
             {userId}
           </span>
-          <span className="mt-[1.2px] text-sm text-[#828282] font-normal">
+          <span className="mt-[1.2px] text-sm font-normal text-[#828282]">
             {createdDate}
           </span>
         </div>
-        <div className="absolute flex items-center gap-1 mb-2 -top-1 -right-1">
-          <span className="mt-1 text-sm ">{votes}</span>
+        <div className="absolute -right-1 -top-1 mb-2 flex items-center gap-1">
+          <span className="mt-1 text-sm">{votes}</span>
           <button onClick={onVote} className="mb-1">
             <Image
               src={isVoted ? "/thumbs-up-fill.png" : "/thumbs-up.png"}
@@ -74,10 +71,10 @@ export default function Review({
           </button>
         </div>
         {isOptionOpen && (
-          <div className="absolute p-2 bg-white border rounded shadow -right-1 top-6">
+          <div className="absolute -right-1 top-6 rounded border bg-white p-2 shadow">
             <button
               onClick={onReport}
-              className="flex items-center justify-center w-full gap-2 text-left"
+              className="flex w-full items-center justify-center gap-2 text-left"
             >
               <Image
                 src="/report.png"
@@ -91,12 +88,12 @@ export default function Review({
         )}
       </div>
       {/* 평점, 후기 */}
-      <div className="flex flex-col gap-1 mt-1 ml-2">
+      <div className="ml-2 mt-1 flex flex-col gap-1">
         <span className="text-xl font-normal text-[#1F9BDA]">
           {"★".repeat(rating) + "☆".repeat(5 - rating)}
         </span>
         <span className="text-xl font-normal text-[#828282]">{content}</span>
-        <div className="flex flex-shrink-0 gap-2 mt-1 overflow-x-scroll scrollbar-hide scroll-smooth max-h-52">
+        <div className="mt-1 flex max-h-52 flex-shrink-0 gap-2 overflow-x-scroll scroll-smooth scrollbar-hide">
           {images?.map((item, index) => (
             <Image
               key={`review-img-${index}`}
@@ -104,7 +101,7 @@ export default function Review({
               alt={`후기 이미지 ${index + 1}`}
               width={200}
               height={200}
-              className="rounded-md shrink-0"
+              className="shrink-0 rounded-md"
             />
           ))}
         </div>
@@ -114,7 +111,7 @@ export default function Review({
         {tags?.map((item, tagIdx) => (
           <div
             key={`tag-${id}-${tagIdx}`}
-            className="px-3 pt-1 pb-0.5 bg-white border-[1px] w-fit rounded-3xl border-[#393939] text-sm font-nomal hover:scale-105 duration-300"
+            className="font-nomal w-fit rounded-3xl border-[1px] border-[#393939] bg-white px-3 pb-0.5 pt-1 text-sm duration-300 hover:scale-105"
           >
             {item}
           </div>

@@ -1,7 +1,8 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
+
+import type { Metadata } from "next";
 
 import ClientLayout from "./ClientLayout";
 
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`relative flex flex-col min-h-screen mx-auto overflow-x-hidden max-w-screen-mobile dark:bg-[#1a1a1a] dark:text-white ${notoSansKR.variable}`}
+        className={`relative mx-auto flex min-h-screen max-w-screen-mobile flex-col overflow-x-hidden dark:bg-[#1a1a1a] dark:text-white ${notoSansKR.variable}`}
       >
         <ClientLayout>{children}</ClientLayout>
       </body>

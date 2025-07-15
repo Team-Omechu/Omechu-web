@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+
 import AlertModal from "@/app/components/common/AlertModal";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import BottomNav from "@/app/components/mainpage/BottomNav";
 
 export default function BudgetPage() {
@@ -15,7 +17,7 @@ export default function BudgetPage() {
   const budgets = ["1만원 미만", "1만원~3만원", "3만원 초과"];
 
   return (
-    <div className="flex flex-col w-auto h-screen">
+    <div className="flex h-screen w-auto flex-col">
       <div className="px-4 pt-5">
         <ProgressBar
           currentStep={5}
@@ -25,10 +27,10 @@ export default function BudgetPage() {
           }}
         />
       </div>
-      <main className="flex flex-col items-center justify-center flex-1 w-full h-full gap-12">
-        <h2 className="text-2xl text-center">예산은 어떻게 되시나요?</h2>
+      <main className="flex h-full w-full flex-1 flex-col items-center justify-center gap-12">
+        <h2 className="text-center text-2xl">예산은 어떻게 되시나요?</h2>
 
-        <div className="flex flex-col w-60 gap-4">
+        <div className="flex w-60 flex-col gap-4">
           {budgets.map((budget) => (
             <button
               key={budget}
@@ -36,11 +38,10 @@ export default function BudgetPage() {
                 setSelected(budget);
                 router.push("./middle-question");
               }}
-              className={`w-full h-12 rounded-md border-[1px] text-lg
-              ${
+              className={`h-12 w-full rounded-md border-[1px] text-lg ${
                 selected === budget
-                  ? "bg-red-500 text-white border-red-500"
-                  : "bg-white text-red-500 border-red-500"
+                  ? "border-red-500 bg-red-500 text-white"
+                  : "border-red-500 bg-white text-red-500"
               }`}
             >
               {budget}

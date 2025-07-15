@@ -12,8 +12,8 @@ interface MenuCardProps {
 
 export default function MenuCard({ title, description, image }: MenuCardProps) {
   return (
-    <div className="mt-3 relative cursor-pointer">
-      <div className="bg-white border border-black rounded-md p-3 flex gap-3 items-center">
+    <div className="relative mt-3 cursor-pointer">
+      <div className="flex items-center gap-3 rounded-md border border-black bg-white p-3">
         <Image
           src={image}
           alt={title}
@@ -22,8 +22,8 @@ export default function MenuCard({ title, description, image }: MenuCardProps) {
           className="rounded"
         />
         <div className="flex-1">
-          <h3 className="text-[#1F9BDA] font-semibold">{title}</h3>
-          <p className="text-sm text-[#828282] mt-1">{description}</p>
+          <h3 className="font-semibold text-[#1F9BDA]">{title}</h3>
+          <p className="mt-1 text-sm text-[#828282]">{description}</p>
         </div>
       </div>
     </div>

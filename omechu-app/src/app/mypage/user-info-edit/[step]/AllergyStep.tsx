@@ -1,13 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ProgressBar from "@/app/components/common/ProgressBar";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+import { useRouter } from "next/navigation";
+
 import AlertModal from "@/app/components/common/AlertModal";
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ProgressBar from "@/app/components/common/ProgressBar";
 import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function AllergyStep() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function AllergyStep() {
   };
 
   return (
-    <div className="flex flex-col w-auto h-screen">
+    <div className="flex h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={5}
@@ -35,9 +36,9 @@ export default function AllergyStep() {
       />
 
       {/* 본문 영역 */}
-      <main className="flex flex-col items-center w-full px-4 py-6 min-h-[calc(100vh-9rem)]">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         <section className="my-20">
-          <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             알레르기가 있나요?
           </div>
         </section>
@@ -56,28 +57,27 @@ export default function AllergyStep() {
                     className={`w-60 h-12 p-2 pt-2.5 text-xl rounded-md border-[1px]
                     ${
                       isSelected
-                        ? "bg-[#FB4746] text-white border-[#FB4746]"
-                        : "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white"
-                    }
-                  `}
+                        ? "border-[#FB4746] bg-[#FB4746] text-white"
+                        : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                    } `}
                   >
                     {item}
                   </button>
                 );
-              }
+              },
             )}
           </div>
         </section>
       </main>
 
       {/* 하단 버튼들 */}
-      <footer className="flex flex-col w-full pb-[env(safe-area-inset-bottom)] gap-3">
+      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:text-white dark:font-semibold"
+            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
           >
             {"<"} 이전으로
           </button>
@@ -88,7 +88,7 @@ export default function AllergyStep() {
           onClick={() => {
             setShowSaveModal(true);
           }}
-          className="h-12 min-w-full p-2 text-xl font-normal text-white rounded-t-md  bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+          className="h-12 min-w-full rounded-t-md bg-[#fb4746] p-2 text-xl font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938]"
         >
           제출하기
         </button>
