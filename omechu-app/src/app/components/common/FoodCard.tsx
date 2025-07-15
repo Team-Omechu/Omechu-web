@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import { FoodItemType } from "@/app/constant/restautantFoodList";
+import { RestaurantType } from "@/app/constant/restaurant/restaurantList";
 
 type FoodCardProps = {
-  item: FoodItemType; // 타입은 foodItems 데이터 구조에 맞게 정의
+  item: RestaurantType; // 타입은 foodItems 데이터 구조에 맞게 정의
   onClick: () => void;
 };
 
