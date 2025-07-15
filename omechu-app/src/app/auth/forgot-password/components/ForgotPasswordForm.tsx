@@ -53,7 +53,7 @@ export default function ForgotPasswordForm({
         </div>
       </form>
 
-      <div className="flex flex-col items-center gap-1 pt-1 text-[13px] text-[#828282]">
+      <div className="flex flex-col items-center gap-1 pt-1 text-sm text-[#828282]">
         <div className="flex items-center justify-center gap-4">
           <span>비밀번호가 생각났어요</span>
           <Link

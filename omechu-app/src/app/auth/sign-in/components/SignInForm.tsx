@@ -9,13 +9,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import Checkbox from "@/app/auth/components/Checkbox";
+import InlineAlert from "@/app/auth/components/InlineAlert";
 import Input from "@/app/auth/components/Input";
 import SquareButton from "@/app/components/common/button/SquareButton";
 import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
 
 export default function SignInForm() {
-  const [loginError, setLoginError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const {
     register,
@@ -97,11 +98,7 @@ export default function SignInForm() {
         </div>
       </form>
 
-      {loginError && (
-        <div className="mt-4 flex h-[70px] w-full items-center justify-center whitespace-pre-line rounded-md bg-[rgba(130,130,130,0.5)] text-center text-sm text-white">
-          {loginError}
-        </div>
-      )}
+      <InlineAlert message={loginError!} />
     </>
   );
 }

@@ -4,22 +4,30 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import InlineAlert from "@/app/auth/components/InlineAlert";
 import type { FindPasswordFormValues } from "@/lib/schemas/auth.schema";
+
 
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
 export default function FindPasswordPage() {
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
 
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
   const handleFormSubmit = async (data: FindPasswordFormValues) => {
-    setApiError(null);
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (data.email === "test@naver.com") {
       router.push("/auth/forgot-password/sent");
     } else {
-      setApiError(
+      triggerToast(
         "비밀번호 재설정 메일 발송에 실패했습니다. \n 이메일 주소를 다시 확인해 주세요.",
       );
     }
@@ -39,11 +47,7 @@ export default function FindPasswordPage() {
 
         <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
 
-        {apiError && (
-          <div className="mt-4 flex h-[70px] w-full items-center justify-center whitespace-pre-line rounded-md bg-[rgba(130,130,130,0.5)] text-center text-sm text-white">
-            {apiError}
-          </div>
-        )}
+        <InlineAlert message={toastMessage} />
       </div>
     </main>
   );
