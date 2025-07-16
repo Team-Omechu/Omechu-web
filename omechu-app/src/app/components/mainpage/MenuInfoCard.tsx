@@ -2,11 +2,15 @@
 
 import React from "react";
 
-export default function MenuInfo() {
+type MenuInfoProps = {
+  onRecipeClick?: () => void;
+}
+
+export default function MenuInfo({ onRecipeClick }: MenuInfoProps) {
   return (
     <div>
-      <h3 className="text-l mb-2 ml-1 font-semibold">메뉴 정보</h3>
-      <div className="w-full rounded-md border border-gray-300 bg-white p-2">
+      <h2 className="text-base mb-2 ml-1 font-semibold">메뉴 정보</h2>
+      <div className="w-full rounded-md border border-gray-300 bg-white p-4 text-sm">
         {/* 기본 영양 정보 */}
         <div className="text-sm text-gray-800">
           <p className="mb-2 font-medium text-[#A3A3A3]">기본 영양 정보</p>
@@ -43,8 +47,11 @@ export default function MenuInfo() {
 
           {/* 레시피 */}
           <p className="mb-1 font-medium text-[#A3A3A3]">레시피</p>
-          <button className="mb-3 border-b border-b-[#828282] text-sm text-[#393939]">
-            보러가기 &gt;
+          <button 
+            className="mb-3 border-b border-b-[#828282] text-sm text-[#393939]"
+            onClick={onRecipeClick}
+          >
+            보러가기 ▶
           </button>
         </div>
       </div>
