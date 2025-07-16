@@ -33,7 +33,7 @@ export default function KeywordToggleSection({
         <div className="flex flex-wrap items-center gap-2">
           {selectedKeywords.map((tag, idx) => (
             <span
-              key={idx}
+              key={tag}
               className="rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-700"
             >
               {tag}
