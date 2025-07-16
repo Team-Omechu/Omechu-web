@@ -13,14 +13,14 @@ import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // ÏùåÏã
 import { suggestionList } from "@/app/constant/suggestionList";
 
 import FloatingActionButton from "../components/common/FloatingActionButton";
-import KeywordSelector from "../components/restaurant/KeywordSection/KeywordSelector";
+import LoadingIndicator from "../components/common/LoadingIndicator";
 import ModalWrapper from "../components/common/ModalWrapper";
 import SortSelector, { SortOption } from "../components/common/SortSelector";
-import LoadingIndicator from "../components/common/LoadingIndicator";
+import FilterSection from "../components/restaurant/FilterSection/FilterSection";
+import FoodCardList from "../components/restaurant/FoodCardList";
+import KeywordSelector from "../components/restaurant/KeywordSection/KeywordSelector";
 import KeywordToggleSection from "../components/restaurant/KeywordSection/KeywordToggleSection";
 import SearchResultEmpty from "../components/restaurant/SearchResultEmpty";
-import FoodCardList from "../components/restaurant/FoodCardList";
-import FilterSection from "../components/restaurant/FilterSection/FilterSection";
 
 export default function Restaurant() {
   const keywordList = [

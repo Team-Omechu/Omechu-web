@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import FilterTagList from "./FilterTagList";
 
 interface FilterSectionProps {
