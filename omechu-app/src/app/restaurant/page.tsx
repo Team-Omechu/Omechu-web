@@ -16,10 +16,13 @@ import { suggestionList } from "@/app/constant/suggestionList";
 import FloatingActionButton from "../components/common/FloatingActionButton";
 import FoodCard from "../components/common/FoodCard";
 import FilterTagList from "../components/restaurant/FilterTagList";
-import KeywordSelector from "../components/restaurant/KeywordSelector";
+import KeywordSelector from "../components/restaurant/KeywordSection/KeywordSelector";
 import ModalWrapper from "../components/common/ModalWrapper";
 import SortSelector, { SortOption } from "../components/common/SortSelector";
 import LoadingIndicator from "../components/common/LoadingIndicator";
+import KeywordToggleSection from "../components/restaurant/KeywordSection/KeywordToggleSection";
+import SearchResultEmpty from "../components/restaurant/SearchResultEmpty";
+import FoodCardList from "../components/restaurant/FoodCardList";
 
 export default function Restaurant() {
   const keywordList = [
@@ -204,49 +207,11 @@ export default function Restaurant() {
       </div>
 
       {/* 추천 영역 */}
-      <div className="mb-2 mt-4 flex justify-end">
-        {selectedKeywords.length === 0 ? (
-          // 아무것도 선택되지 않음
-          <button
-            onClick={() => setShowKeywords((prev) => !prev)}
-            className="flex items-center gap-1 rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-500"
-          >
-            추천 키워드
-            <Image
-              src={"/down_arrow.svg"}
-              alt="추천 키워드"
-              width={16}
-              height={16}
-              className={`transition-transform duration-200 ${
-                showKeywords ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-        ) : (
-          // 키워드 선택됨
-          <div className="flex flex-wrap items-center gap-2">
-            {selectedKeywords.map((tag, idx) => (
-              <span
-                key={idx}
-                className="rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-700"
-              >
-                {tag}
-              </span>
-            ))}
-            <button onClick={() => setShowKeywords((prev) => !prev)}>
-              <Image
-                src={"/down_arrow.svg"}
-                alt="추천 키워드"
-                width={24}
-                height={24}
-                className={`transition-transform duration-200 ${
-                  showKeywords ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-        )}
-      </div>
+      <KeywordToggleSection
+        selectedKeywords={selectedKeywords}
+        showKeywords={showKeywords}
+        onToggleShow={() => setShowKeywords((prev) => !prev)}
+      />
 
       {/* 키워드 펼침 영역 */}
       {showKeywords && (
@@ -265,46 +230,19 @@ export default function Restaurant() {
       )}
 
       {isSearched && search.trim() && filteredItems.length === 0 && (
-        <div className="mb-12 mt-10 px-2">
-          <div className="flex flex-col items-center justify-center text-center">
-            <p className="text-lg font-semibold text-black">
-              ‘{search}’에 대한 검색 결과가 없습니다.
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              검색어와 비슷한 결과를 알려드릴게요
-            </p>
-          </div>
-
-          <hr className="mt-8 w-full border-t border-gray-600" />
-
-          {similarItems.length > 0 && (
-            <div className="mt-4 flex flex-col gap-4">
-              {similarItems.map((item, idx) => (
-                <FoodCard
-                  key={idx}
-                  item={item}
-                  onClick={() =>
-                    router.push(`/restaurant/restaurant-detail/${item.id}`)
-                  }
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <SearchResultEmpty
+          search={search}
+          similarItems={similarItems}
+          onItemClick={(id) => router.push(`/restaurant/restaurant-detail/${id}`)}
+        />
       )}
 
+
       {/* 음식 카드 리스트 */}
-      <div className="flex flex-col gap-4">
-        {visibleItems.map((item, idx) => (
-          <FoodCard
-            key={idx}
-            item={item}
-            onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id}`)
-            }
-          />
-        ))}
-      </div>
+      <FoodCardList
+        items={visibleItems}
+        onItemClick={(id) => router.push(`/restaurant/restaurant-detail/${id}`)}
+      />
 
       <div ref={loaderRef} className="h-[1px]" />
 
