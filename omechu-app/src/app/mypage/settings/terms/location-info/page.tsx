@@ -58,7 +58,7 @@ export default function TermForLocationInfo() {
           </section>
         ))}
         {/* Floating Action Button - 맨 위로 이동 */}
-        <FloatingActionButton onClick={scrollToTop} />
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4"/>
       </main>
     </>
   );
