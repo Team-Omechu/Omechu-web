@@ -14,6 +14,7 @@ import TagItem from "../components/common/TagItem";
 import FilterModal from "../components/fullmenu/FilterModal";
 import { suggestionList } from "../constant/suggestionList";
 import { foodItems } from "../constant/foodItems";
+import ModalWrapper from "../components/common/ModalWrapper";
 
 export default function FullMenu() {
   const router = useRouter();
@@ -97,18 +98,6 @@ export default function FullMenu() {
     }
   }, [isLoading]);
 
-  useEffect(() => {
-    if (isFilterOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isFilterOpen]);
-
   const handleSearchIconClick = () => {
     router.push(`/fullmenu?query=${search}`);
     setIsSearched(true);
@@ -150,11 +139,13 @@ export default function FullMenu() {
         </div>
 
         {isFilterOpen && (
-          <FilterModal
-            selected={selectedFilters}
-            onClose={() => setIsFilterOpen(false)}
-            onApply={(newFilters) => setSelectedFilters(newFilters)}
-          />
+          <ModalWrapper>
+            <FilterModal
+              selected={selectedFilters}
+              onClose={() => setIsFilterOpen(false)}
+              onApply={(newFilters) => setSelectedFilters(newFilters)}
+            />
+          </ModalWrapper>
         )}
 
         <hr className="my-1 border-black" />

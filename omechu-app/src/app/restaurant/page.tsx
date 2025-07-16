@@ -17,6 +17,7 @@ import FloatingActionButton from "../components/common/FloatingActionButton";
 import FoodCard from "../components/common/FoodCard";
 import FilterTagList from "../components/restaurant/FilterTagList";
 import KeywordSelector from "../components/restaurant/KeywordSelector";
+import ModalWrapper from "../components/common/ModalWrapper";
 
 export default function Restaurant() {
   const keywordList = [
@@ -132,18 +133,6 @@ export default function Restaurant() {
     console.log("검색어:", search);
   };
 
-  useEffect(() => {
-    if (isFilterOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isFilterOpen]);
-
   return (
     <main ref={mainRef} className="min-h-screen px-4 pb-20 pt-6">
       <SearchBar
@@ -179,11 +168,13 @@ export default function Restaurant() {
       </div>
 
       {isFilterOpen && (
-        <LocationModal
-          selected={selectedFilters}
-          onClose={() => setIsFilterOpen(false)}
-          onApply={(newFilters) => setSelectedFilters(newFilters)}
-        />
+        <ModalWrapper>
+          <LocationModal
+            selected={selectedFilters}
+            onClose={() => setIsFilterOpen(false)}
+            onApply={(newFilters) => setSelectedFilters(newFilters)}
+          />
+        </ModalWrapper>
       )}
 
       <hr className="my-1 border-black" />
