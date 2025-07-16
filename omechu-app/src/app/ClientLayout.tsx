@@ -13,26 +13,9 @@ export default function ClientLayout({
 
   const noBottomNavRoutes = [
     // 메인페이지
-    "/mainpage/question-answer/meal-time",
-    "/mainpage/question-answer/purpose",
-    "/mainpage/question-answer/state",
-    "/mainpage/question-answer/who",
-    "/mainpage/question-answer/budget",
-    "/mainpage/question-answer/middle-question",
     "/mainpage/meal-answer",
     "/mainpage/location-answer",
     "/mainpage/result",
-    "mainpage/question-answer/",
-
-    "/mainpage/question-answer/meal-time",
-    "/mainpage/question-answer/purpose",
-    "/mainpage/question-answer/state",
-    "/mainpage/question-answer/who",
-    "/mainpage/question-answer/budget",
-    "/mainpage/question-answer/middle-question",
-    "/mainpage/meal-answer",
-    "/mainpage/location-answer",
-    "/mypage/recommended-list",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/login",

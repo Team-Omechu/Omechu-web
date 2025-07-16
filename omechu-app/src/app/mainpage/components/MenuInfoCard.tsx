@@ -48,7 +48,7 @@ export default function MenuInfo({ nutrition, allergens }: MenuDetail) {
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
-          <p className="mb-4 text-sm">{allergens}</p>
+          <p className="mb-4 text-sm">{allergens.join(",")}</p>
 
           <hr className="my-4 border-gray-200" />
 
