@@ -42,13 +42,13 @@ export default function MenuDetailPage() {
 
       <div className="ml-1 mt-5 flex flex-row justify-between gap-4">
         <h3 className="text-l font-semibold">취향 저격! 추천 메뉴 있는 맛집</h3>
-        <button className="text-sm text-[#828282]">더보기 &gt;</button>
+        <button className="text-sm text-[#828282]" onClick={() => router.push(`/restaurant?query=${encodeURIComponent(menu.title)}`)}>더보기 &gt;</button>
       </div>
 
       <div className="mt-3 space-y-2">
-        {restaurantList.map((restaurant, idx) => (
+        {restaurantList.map((restaurant) => (
           <RestaurantCard
-            key={idx}
+            key={restaurant.name}
             name={restaurant.name}
             rating={restaurant.rating}
             reviews={restaurant.reviews}
