@@ -139,7 +139,10 @@ export default function ProfileEdit() {
               title="프로필 변경 완료"
               description="이제 맛집을 찾으러 가볼까요?"
               confirmText="완료"
-              onConfirm={() => setShowModal(false)}
+              onConfirm={() => {
+                setShowModal(false);
+                router.refresh();
+              }}
             />
           </ModalWrapper>
         )}

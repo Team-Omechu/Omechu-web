@@ -18,10 +18,10 @@ import { useEffect, useState } from "react";
 type ToastProps = {
   message: string; // 화면에 표시할 텍스트 메시지
   show: boolean; // 표시 여부. true일 경우만 화면에 표시
-  bottom: string;
+  className?: string;
 };
 
-export default function Toast({ message, show, bottom = "80px" }: ToastProps) {
+export default function Toast({ message, show, className }: ToastProps) {
   const [visible, setVisible] = useState(false);
   const [isHiding, setIsHiding] = useState(false);
 
@@ -43,8 +43,7 @@ export default function Toast({ message, show, bottom = "80px" }: ToastProps) {
 
   return (
     <div
-      className={`absolute left-1/2 z-50 flex w-full -translate-x-1/2 transform justify-center bottom-[${bottom}] `}
-      style={{ bottom: `${bottom}` }}
+      className={`absolute left-1/2 z-50 flex w-full -translate-x-1/2 transform justify-center ${className} `}
     >
       <div
         className={`flex h-16 w-auto items-center justify-center rounded-xl bg-[#828282] px-5 py-3 text-center text-sm text-white shadow-lg backdrop-blur-sm transition-opacity duration-300 ${isHiding ? "opacity-0" : "animate-shake opacity-50"} `}
