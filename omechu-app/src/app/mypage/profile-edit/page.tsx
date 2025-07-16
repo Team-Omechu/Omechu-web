@@ -5,13 +5,16 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
 
 export default function ProfileEdit() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [nickname, setNickname] = useState("제나"); // 기본값 설정
+  const [showModal, setShowModal] = useState(false);
 
   const handleImageClick = () => {
     fileInputRef.current?.click(); // 숨겨진 input 클릭 유도
@@ -123,10 +126,23 @@ export default function ProfileEdit() {
           </div>
         </section>
         <section className="mt-36">
-          <button className="h-[45px] w-[335px] rounded-md bg-[#1F9BDA] text-[17px] font-medium text-white hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]">
+          <button
+            onClick={() => setShowModal(true)}
+            className="h-[45px] w-[335px] rounded-md bg-[#1F9BDA] text-[17px] font-medium text-white hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]"
+          >
             저장
           </button>
         </section>
+        {showModal && (
+          <ModalWrapper>
+            <AlertModal
+              title="프로필 변경 완료"
+              description="이제 맛집을 찾으러 가볼까요?"
+              confirmText="완료"
+              onConfirm={() => setShowModal(false)}
+            />
+          </ModalWrapper>
+        )}
       </main>
     </>
   );
