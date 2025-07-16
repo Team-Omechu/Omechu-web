@@ -23,7 +23,6 @@ export default function Favorites() {
   const filteredItems = search.trim()
     ? foodItems.filter((item) => item.menu.includes(search.trim()))
     : foodItems;
-  const visibleItems = filteredItems.slice(0, visibleCount);
 
   const similarItems = foodItems.filter(
     (item) =>
@@ -82,6 +81,8 @@ export default function Favorites() {
     const bIdx = foodItems.indexOf(b);
     return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
   });
+
+  const visibleItems = sortedItems.slice(0, visibleCount);
 
   return (
     <>

@@ -1,17 +1,6 @@
-export type FoodItemType = {
-  name: string; // 음식점 이름
-  rating: number; // 평점 (예: 3.2)
-  reviews: number; // 리뷰 수 (예: 24)
-  address: string; // 주소
-  menu: string; // 대표 메뉴
-  tags: string[]; // 키워드 태그 리스트 (예: ["데이트", "기념일"])
-  image: string; // 이미지 경로
-  createdAt: string;
-};
-
 export const foodItems = [
   {
-    name: "Restaurant 1",
+    name: "연남의 가든",
     rating: 1.2,
     reviews: 124,
     address: "서울특별시 용산구 74-12",
@@ -21,7 +10,7 @@ export const foodItems = [
     createdAt: "2025-01-09T02:00:09.268089",
   },
   {
-    name: "Restaurant 2",
+    name: "명동 카페",
     rating: 1.2,
     reviews: 144,
     address: "서울특별시 서초구 33-48",
@@ -31,7 +20,7 @@ export const foodItems = [
     createdAt: "2025-01-02T02:00:09.268124",
   },
   {
-    name: "Restaurant 3",
+    name: "건대의 한옥",
     rating: 0.3,
     reviews: 88,
     address: "서울특별시 종로구 43-55",
@@ -41,7 +30,7 @@ export const foodItems = [
     createdAt: "2024-11-27T02:00:09.268144",
   },
   {
-    name: "Restaurant 4",
+    name: "건대 한옥",
     rating: 4.7,
     reviews: 94,
     address: "서울특별시 서초구 77-79",
@@ -51,7 +40,7 @@ export const foodItems = [
     createdAt: "2025-06-28T02:00:09.268157",
   },
   {
-    name: "Restaurant 5",
+    name: "청담 가든",
     rating: 3.3,
     reviews: 44,
     address: "서울특별시 마포구 26-20",
@@ -61,7 +50,7 @@ export const foodItems = [
     createdAt: "2024-08-14T02:00:09.268169",
   },
   {
-    name: "Restaurant 6",
+    name: "강남의 마을",
     rating: 0.1,
     reviews: 99,
     address: "서울특별시 서초구 1-55",
@@ -71,7 +60,7 @@ export const foodItems = [
     createdAt: "2025-05-28T02:00:09.268180",
   },
   {
-    name: "Restaurant 7",
+    name: "합정 주점",
     rating: 4.6,
     reviews: 117,
     address: "서울특별시 강남구 7-53",
@@ -81,7 +70,7 @@ export const foodItems = [
     createdAt: "2025-03-09T02:00:09.268190",
   },
   {
-    name: "Restaurant 8",
+    name: "을지로의 한옥",
     rating: 1.4,
     reviews: 39,
     address: "서울특별시 성동구 37-94",
@@ -91,7 +80,7 @@ export const foodItems = [
     createdAt: "2025-02-15T02:00:09.268205",
   },
   {
-    name: "Restaurant 9",
+    name: "연남 바베큐",
     rating: 0.7,
     reviews: 81,
     address: "서울특별시 송파구 6-29",
@@ -101,7 +90,7 @@ export const foodItems = [
     createdAt: "2024-10-03T02:00:09.268218",
   },
   {
-    name: "Restaurant 10",
+    name: "서촌 맛집",
     rating: 0.1,
     reviews: 77,
     address: "서울특별시 중구 2-92",
@@ -111,7 +100,7 @@ export const foodItems = [
     createdAt: "2024-11-25T02:00:09.268229",
   },
   {
-    name: "Restaurant 11",
+    name: "명동의 거리",
     rating: 4.7,
     reviews: 41,
     address: "서울특별시 영등포구 53-12",
@@ -121,7 +110,7 @@ export const foodItems = [
     createdAt: "2024-11-26T02:00:09.268239",
   },
   {
-    name: "Restaurant 12",
+    name: "연남 다방",
     rating: 1.2,
     reviews: 21,
     address: "서울특별시 송파구 10-74",
@@ -131,7 +120,7 @@ export const foodItems = [
     createdAt: "2024-12-26T02:00:09.268248",
   },
   {
-    name: "Restaurant 13",
+    name: "강남 카페",
     rating: 2.9,
     reviews: 74,
     address: "서울특별시 중구 31-26",
@@ -141,7 +130,7 @@ export const foodItems = [
     createdAt: "2025-01-08T02:00:09.268258",
   },
   {
-    name: "Restaurant 14",
+    name: "리틀 카페",
     rating: 2.0,
     reviews: 62,
     address: "서울특별시 구로구 81-17",
@@ -151,7 +140,7 @@ export const foodItems = [
     createdAt: "2025-04-08T02:00:09.268268",
   },
   {
-    name: "Restaurant 15",
+    name: "명동 주점",
     rating: 1.1,
     reviews: 37,
     address: "서울특별시 도봉구 84-82",
@@ -161,7 +150,7 @@ export const foodItems = [
     createdAt: "2024-11-19T02:00:09.268278",
   },
   {
-    name: "Restaurant 16",
+    name: "연남 리틀",
     rating: 4.6,
     reviews: 10,
     address: "서울특별시 성동구 40-47",
@@ -171,7 +160,7 @@ export const foodItems = [
     createdAt: "2024-09-22T02:00:09.268286",
   },
   {
-    name: "Restaurant 17",
+    name: "브라더스 키친",
     rating: 0.2,
     reviews: 72,
     address: "서울특별시 동작구 26-13",
@@ -181,7 +170,7 @@ export const foodItems = [
     createdAt: "2025-01-11T02:00:09.268296",
   },
   {
-    name: "Restaurant 18",
+    name: "연남의 브라더스",
     rating: 2.3,
     reviews: 23,
     address: "서울특별시 중랑구 4-88",
@@ -191,7 +180,7 @@ export const foodItems = [
     createdAt: "2024-11-10T02:00:09.268305",
   },
   {
-    name: "Restaurant 19",
+    name: "연남 식당",
     rating: 2.0,
     reviews: 58,
     address: "서울특별시 강북구 73-47",
@@ -201,7 +190,7 @@ export const foodItems = [
     createdAt: "2025-07-04T02:00:09.268315",
   },
   {
-    name: "Restaurant 20",
+    name: "브라더스 식당",
     rating: 0.5,
     reviews: 136,
     address: "서울특별시 양천구 48-53",
@@ -211,7 +200,7 @@ export const foodItems = [
     createdAt: "2024-11-03T02:00:09.268324",
   },
   {
-    name: "Restaurant 21",
+    name: "연남 한옥",
     rating: 2.1,
     reviews: 95,
     address: "서울특별시 용산구 67-61",
@@ -221,7 +210,7 @@ export const foodItems = [
     createdAt: "2025-06-27T02:00:09.268334",
   },
   {
-    name: "Restaurant 22",
+    name: "명동 숯불",
     rating: 4.3,
     reviews: 130,
     address: "서울특별시 구로구 34-97",
@@ -231,7 +220,7 @@ export const foodItems = [
     createdAt: "2024-07-23T02:00:09.268343",
   },
   {
-    name: "Restaurant 23",
+    name: "명동의 다방",
     rating: 2.7,
     reviews: 30,
     address: "서울특별시 은평구 2-99",
@@ -241,7 +230,7 @@ export const foodItems = [
     createdAt: "2024-11-09T02:00:09.268353",
   },
   {
-    name: "Restaurant 24",
+    name: "하우스 포차",
     rating: 2.1,
     reviews: 36,
     address: "서울특별시 마포구 62-68",
@@ -251,7 +240,7 @@ export const foodItems = [
     createdAt: "2025-05-25T02:00:09.268363",
   },
   {
-    name: "Restaurant 25",
+    name: "마을 숯불",
     rating: 4.4,
     reviews: 34,
     address: "서울특별시 구로구 78-60",
@@ -261,7 +250,7 @@ export const foodItems = [
     createdAt: "2025-05-29T02:00:09.268372",
   },
   {
-    name: "Restaurant 26",
+    name: "서촌의 가든",
     rating: 2.5,
     reviews: 86,
     address: "서울특별시 구로구 9-62",
@@ -271,7 +260,7 @@ export const foodItems = [
     createdAt: "2025-03-21T02:00:09.268381",
   },
   {
-    name: "Restaurant 27",
+    name: "다방 주점",
     rating: 1.8,
     reviews: 132,
     address: "서울특별시 강서구 96-38",
@@ -281,7 +270,7 @@ export const foodItems = [
     createdAt: "2024-11-17T02:00:09.268391",
   },
   {
-    name: "Restaurant 28",
+    name: "서촌의 리틀",
     rating: 2.3,
     reviews: 134,
     address: "서울특별시 마포구 20-33",
@@ -291,7 +280,7 @@ export const foodItems = [
     createdAt: "2024-11-26T02:00:09.268400",
   },
   {
-    name: "Restaurant 29",
+    name: "합정 분식",
     rating: 3.5,
     reviews: 62,
     address: "서울특별시 동작구 70-81",
@@ -301,7 +290,7 @@ export const foodItems = [
     createdAt: "2024-08-14T02:00:09.268413",
   },
   {
-    name: "Restaurant 30",
+    name: "건대 브라더스",
     rating: 1.7,
     reviews: 79,
     address: "서울특별시 강남구 12-68",
@@ -311,7 +300,7 @@ export const foodItems = [
     createdAt: "2024-10-27T02:00:09.268430",
   },
   {
-    name: "Restaurant 31",
+    name: "건대 주점",
     rating: 4.7,
     reviews: 15,
     address: "서울특별시 중랑구 81-83",
@@ -321,7 +310,7 @@ export const foodItems = [
     createdAt: "2025-01-24T02:00:09.268446",
   },
   {
-    name: "Restaurant 32",
+    name: "을지로의 하우스",
     rating: 1.6,
     reviews: 27,
     address: "서울특별시 중랑구 40-52",
@@ -331,7 +320,7 @@ export const foodItems = [
     createdAt: "2025-07-04T02:00:09.268462",
   },
   {
-    name: "Restaurant 33",
+    name: "하우스 식당",
     rating: 4.1,
     reviews: 55,
     address: "서울특별시 동작구 44-10",
@@ -341,7 +330,7 @@ export const foodItems = [
     createdAt: "2024-12-26T02:00:09.268476",
   },
   {
-    name: "Restaurant 34",
+    name: "브라더스 바베큐",
     rating: 3.8,
     reviews: 44,
     address: "서울특별시 강북구 96-3",
@@ -351,7 +340,7 @@ export const foodItems = [
     createdAt: "2025-04-15T02:00:09.268487",
   },
   {
-    name: "Restaurant 35",
+    name: "가든 주점",
     rating: 2.9,
     reviews: 112,
     address: "서울특별시 중구 62-47",
@@ -361,7 +350,7 @@ export const foodItems = [
     createdAt: "2025-04-29T02:00:09.268497",
   },
   {
-    name: "Restaurant 36",
+    name: "망원 거리",
     rating: 0.3,
     reviews: 76,
     address: "서울특별시 은평구 39-13",
@@ -371,7 +360,7 @@ export const foodItems = [
     createdAt: "2024-07-20T02:00:09.268506",
   },
   {
-    name: "Restaurant 37",
+    name: "강남 리틀",
     rating: 1.6,
     reviews: 7,
     address: "서울특별시 도봉구 98-4",
@@ -381,7 +370,7 @@ export const foodItems = [
     createdAt: "2025-02-08T02:00:09.268515",
   },
   {
-    name: "Restaurant 38",
+    name: "건대 정식",
     rating: 2.4,
     reviews: 41,
     address: "서울특별시 용산구 10-76",
@@ -391,7 +380,7 @@ export const foodItems = [
     createdAt: "2024-08-20T02:00:09.268525",
   },
   {
-    name: "Restaurant 39",
+    name: "홍대 맛집",
     rating: 0.7,
     reviews: 142,
     address: "서울특별시 성동구 94-40",
@@ -401,7 +390,7 @@ export const foodItems = [
     createdAt: "2025-04-30T02:00:09.268534",
   },
   {
-    name: "Restaurant 40",
+    name: "망원의 마을",
     rating: 0.7,
     reviews: 74,
     address: "서울특별시 영등포구 30-58",
@@ -411,7 +400,7 @@ export const foodItems = [
     createdAt: "2024-12-22T02:00:09.268543",
   },
   {
-    name: "Restaurant 41",
+    name: "거리 바베큐",
     rating: 2.3,
     reviews: 18,
     address: "서울특별시 성동구 23-34",
@@ -421,7 +410,7 @@ export const foodItems = [
     createdAt: "2025-01-27T02:00:09.268553",
   },
   {
-    name: "Restaurant 42",
+    name: "청담의 브라더스",
     rating: 1.1,
     reviews: 100,
     address: "서울특별시 서초구 100-8",
@@ -431,7 +420,7 @@ export const foodItems = [
     createdAt: "2025-02-05T02:00:09.268562",
   },
   {
-    name: "Restaurant 43",
+    name: "연남 브라더스",
     rating: 1.1,
     reviews: 142,
     address: "서울특별시 성동구 75-55",
@@ -441,7 +430,7 @@ export const foodItems = [
     createdAt: "2025-03-04T02:00:09.268571",
   },
   {
-    name: "Restaurant 44",
+    name: "연남 하우스",
     rating: 1.1,
     reviews: 12,
     address: "서울특별시 마포구 2-16",
@@ -451,7 +440,7 @@ export const foodItems = [
     createdAt: "2025-05-30T02:00:09.268580",
   },
   {
-    name: "Restaurant 45",
+    name: "명동 정식",
     rating: 3.6,
     reviews: 54,
     address: "서울특별시 관악구 39-20",
@@ -461,7 +450,7 @@ export const foodItems = [
     createdAt: "2024-11-12T02:00:09.268589",
   },
   {
-    name: "Restaurant 46",
+    name: "합정의 다방",
     rating: 2.1,
     reviews: 14,
     address: "서울특별시 종로구 78-77",
@@ -471,7 +460,7 @@ export const foodItems = [
     createdAt: "2024-11-02T02:00:09.268598",
   },
   {
-    name: "Restaurant 47",
+    name: "을지로의 상회",
     rating: 0.2,
     reviews: 57,
     address: "서울특별시 마포구 72-63",
@@ -481,7 +470,7 @@ export const foodItems = [
     createdAt: "2025-02-13T02:00:09.268607",
   },
   {
-    name: "Restaurant 48",
+    name: "청담 바베큐",
     rating: 3.5,
     reviews: 52,
     address: "서울특별시 송파구 1-41",
@@ -491,7 +480,7 @@ export const foodItems = [
     createdAt: "2024-09-17T02:00:09.268616",
   },
   {
-    name: "Restaurant 49",
+    name: "홍대 식당",
     rating: 2.2,
     reviews: 10,
     address: "서울특별시 서초구 92-74",
@@ -501,7 +490,7 @@ export const foodItems = [
     createdAt: "2024-07-23T02:00:09.268626",
   },
   {
-    name: "Restaurant 50",
+    name: "건대 다방",
     rating: 2.0,
     reviews: 29,
     address: "서울특별시 강남구 53-51",
@@ -511,7 +500,7 @@ export const foodItems = [
     createdAt: "2025-01-08T02:00:09.268635",
   },
   {
-    name: "Restaurant 51",
+    name: "다방 정식",
     rating: 0.1,
     reviews: 133,
     address: "서울특별시 동작구 22-28",
@@ -521,7 +510,7 @@ export const foodItems = [
     createdAt: "2025-06-15T02:00:09.268645",
   },
   {
-    name: "Restaurant 52",
+    name: "강남 주점",
     rating: 2.6,
     reviews: 34,
     address: "서울특별시 송파구 21-1",
@@ -531,7 +520,7 @@ export const foodItems = [
     createdAt: "2025-07-02T02:00:09.268654",
   },
   {
-    name: "Restaurant 53",
+    name: "청담 소울",
     rating: 0.8,
     reviews: 7,
     address: "서울특별시 영등포구 25-34",
@@ -541,7 +530,7 @@ export const foodItems = [
     createdAt: "2024-12-12T02:00:09.268663",
   },
   {
-    name: "Restaurant 54",
+    name: "서촌의 하우스",
     rating: 4.5,
     reviews: 74,
     address: "서울특별시 중랑구 74-20",
@@ -551,7 +540,7 @@ export const foodItems = [
     createdAt: "2025-07-03T02:00:09.268677",
   },
   {
-    name: "Restaurant 55",
+    name: "을지로의 다방",
     rating: 4.1,
     reviews: 114,
     address: "서울특별시 강남구 74-30",
@@ -561,7 +550,7 @@ export const foodItems = [
     createdAt: "2024-11-15T02:00:09.268693",
   },
   {
-    name: "Restaurant 56",
+    name: "청담 숯불",
     rating: 1.3,
     reviews: 72,
     address: "서울특별시 도봉구 38-16",
@@ -571,7 +560,7 @@ export const foodItems = [
     createdAt: "2025-05-01T02:00:09.268707",
   },
   {
-    name: "Restaurant 57",
+    name: "청담의 가든",
     rating: 4.3,
     reviews: 106,
     address: "서울특별시 서초구 35-71",
@@ -581,7 +570,7 @@ export const foodItems = [
     createdAt: "2024-11-16T02:00:09.268717",
   },
   {
-    name: "Restaurant 58",
+    name: "청담 거리",
     rating: 3.2,
     reviews: 1,
     address: "서울특별시 강남구 93-48",
@@ -591,7 +580,7 @@ export const foodItems = [
     createdAt: "2025-05-07T02:00:09.268726",
   },
   {
-    name: "Restaurant 59",
+    name: "다방 바베큐",
     rating: 0.7,
     reviews: 82,
     address: "서울특별시 송파구 100-15",
@@ -601,7 +590,7 @@ export const foodItems = [
     createdAt: "2024-11-17T02:00:09.268736",
   },
   {
-    name: "Restaurant 60",
+    name: "망원의 하우스",
     rating: 2.6,
     reviews: 126,
     address: "서울특별시 노원구 6-2",
@@ -611,7 +600,7 @@ export const foodItems = [
     createdAt: "2025-07-09T02:00:09.268745",
   },
   {
-    name: "Restaurant 61",
+    name: "을지로 하우스",
     rating: 2.8,
     reviews: 57,
     address: "서울특별시 서초구 42-46",
@@ -621,7 +610,7 @@ export const foodItems = [
     createdAt: "2024-10-01T02:00:09.268754",
   },
   {
-    name: "Restaurant 62",
+    name: "강남 숯불",
     rating: 0.2,
     reviews: 97,
     address: "서울특별시 구로구 49-31",
@@ -631,7 +620,7 @@ export const foodItems = [
     createdAt: "2024-11-29T02:00:09.268765",
   },
   {
-    name: "Restaurant 63",
+    name: "다방 키친",
     rating: 3.9,
     reviews: 26,
     address: "서울특별시 성북구 44-28",
@@ -641,7 +630,7 @@ export const foodItems = [
     createdAt: "2025-01-01T02:00:09.268779",
   },
   {
-    name: "Restaurant 64",
+    name: "망원 정식",
     rating: 1.1,
     reviews: 58,
     address: "서울특별시 노원구 100-21",
@@ -651,7 +640,7 @@ export const foodItems = [
     createdAt: "2024-10-13T02:00:09.268794",
   },
   {
-    name: "Restaurant 65",
+    name: "소울 포차",
     rating: 3.9,
     reviews: 40,
     address: "서울특별시 송파구 81-37",
@@ -661,7 +650,7 @@ export const foodItems = [
     createdAt: "2024-11-08T02:00:09.268808",
   },
   {
-    name: "Restaurant 66",
+    name: "홍대의 하우스",
     rating: 1.2,
     reviews: 80,
     address: "서울특별시 동작구 85-41",
@@ -671,7 +660,7 @@ export const foodItems = [
     createdAt: "2025-03-24T02:00:09.268817",
   },
   {
-    name: "Restaurant 67",
+    name: "합정의 리틀",
     rating: 0.8,
     reviews: 87,
     address: "서울특별시 도봉구 73-22",
@@ -681,7 +670,7 @@ export const foodItems = [
     createdAt: "2024-11-02T02:00:09.268826",
   },
   {
-    name: "Restaurant 68",
+    name: "건대 포차",
     rating: 2.2,
     reviews: 8,
     address: "서울특별시 양천구 65-62",
@@ -691,7 +680,7 @@ export const foodItems = [
     createdAt: "2025-02-14T02:00:09.268839",
   },
   {
-    name: "Restaurant 69",
+    name: "합정의 한옥",
     rating: 0.7,
     reviews: 90,
     address: "서울특별시 마포구 42-27",
@@ -701,7 +690,7 @@ export const foodItems = [
     createdAt: "2025-06-01T02:00:09.268854",
   },
   {
-    name: "Restaurant 70",
+    name: "홍대 마을",
     rating: 2.5,
     reviews: 74,
     address: "서울특별시 마포구 38-53",
@@ -711,7 +700,7 @@ export const foodItems = [
     createdAt: "2024-10-13T02:00:09.268864",
   },
   {
-    name: "Restaurant 71",
+    name: "건대 하우스",
     rating: 1.5,
     reviews: 142,
     address: "서울특별시 양천구 38-52",
@@ -721,7 +710,7 @@ export const foodItems = [
     createdAt: "2025-03-24T02:00:09.268874",
   },
   {
-    name: "Restaurant 72",
+    name: "하우스 숯불",
     rating: 1.7,
     reviews: 3,
     address: "서울특별시 용산구 46-33",
@@ -731,7 +720,7 @@ export const foodItems = [
     createdAt: "2025-05-31T02:00:09.268883",
   },
   {
-    name: "Restaurant 73",
+    name: "홍대 하우스",
     rating: 0.0,
     reviews: 15,
     address: "서울특별시 강북구 45-31",
@@ -741,7 +730,7 @@ export const foodItems = [
     createdAt: "2024-07-16T02:00:09.268892",
   },
   {
-    name: "Restaurant 74",
+    name: "브라더스 포차",
     rating: 1.5,
     reviews: 126,
     address: "서울특별시 영등포구 19-98",
@@ -751,7 +740,7 @@ export const foodItems = [
     createdAt: "2025-07-12T02:00:09.268903",
   },
   {
-    name: "Restaurant 75",
+    name: "마을 정식",
     rating: 3.0,
     reviews: 9,
     address: "서울특별시 영등포구 15-13",
@@ -761,7 +750,7 @@ export const foodItems = [
     createdAt: "2024-12-15T02:00:09.268912",
   },
   {
-    name: "Restaurant 76",
+    name: "명동의 한옥",
     rating: 4.9,
     reviews: 79,
     address: "서울특별시 구로구 93-54",
@@ -771,7 +760,7 @@ export const foodItems = [
     createdAt: "2025-05-15T02:00:09.268921",
   },
   {
-    name: "Restaurant 77",
+    name: "명동의 소울",
     rating: 3.4,
     reviews: 150,
     address: "서울특별시 용산구 65-27",
@@ -781,7 +770,7 @@ export const foodItems = [
     createdAt: "2025-06-01T02:00:09.268930",
   },
   {
-    name: "Restaurant 78",
+    name: "강남의 가든",
     rating: 1.8,
     reviews: 77,
     address: "서울특별시 성북구 81-75",
@@ -791,7 +780,7 @@ export const foodItems = [
     createdAt: "2024-12-20T02:00:09.268939",
   },
   {
-    name: "Restaurant 79",
+    name: "망원의 거리",
     rating: 2.3,
     reviews: 127,
     address: "서울특별시 중구 34-81",
@@ -801,7 +790,7 @@ export const foodItems = [
     createdAt: "2025-03-27T02:00:09.268948",
   },
   {
-    name: "Restaurant 80",
+    name: "연남 주점",
     rating: 3.7,
     reviews: 144,
     address: "서울특별시 용산구 4-83",
@@ -811,7 +800,7 @@ export const foodItems = [
     createdAt: "2024-08-26T02:00:09.268957",
   },
   {
-    name: "Restaurant 81",
+    name: "을지로의 마을",
     rating: 1.3,
     reviews: 16,
     address: "서울특별시 양천구 40-84",
@@ -821,7 +810,7 @@ export const foodItems = [
     createdAt: "2024-11-12T02:00:09.268966",
   },
   {
-    name: "Restaurant 82",
+    name: "합정 한옥",
     rating: 1.6,
     reviews: 44,
     address: "서울특별시 성북구 40-31",
@@ -831,7 +820,7 @@ export const foodItems = [
     createdAt: "2025-04-29T02:00:09.268976",
   },
   {
-    name: "Restaurant 83",
+    name: "청담 정식",
     rating: 3.2,
     reviews: 27,
     address: "서울특별시 도봉구 34-17",
@@ -841,7 +830,7 @@ export const foodItems = [
     createdAt: "2025-01-06T02:00:09.268986",
   },
   {
-    name: "Restaurant 84",
+    name: "서촌 정식",
     rating: 4.7,
     reviews: 78,
     address: "서울특별시 도봉구 83-46",
@@ -851,7 +840,7 @@ export const foodItems = [
     createdAt: "2025-01-31T02:00:09.268995",
   },
   {
-    name: "Restaurant 85",
+    name: "서촌의 소울",
     rating: 3.6,
     reviews: 73,
     address: "서울특별시 양천구 47-15",
@@ -861,7 +850,7 @@ export const foodItems = [
     createdAt: "2024-09-22T02:00:09.269005",
   },
   {
-    name: "Restaurant 86",
+    name: "하우스 주점",
     rating: 1.7,
     reviews: 14,
     address: "서울특별시 성북구 64-21",
@@ -871,7 +860,7 @@ export const foodItems = [
     createdAt: "2024-10-04T02:00:09.269015",
   },
   {
-    name: "Restaurant 87",
+    name: "연남 소울",
     rating: 1.8,
     reviews: 65,
     address: "서울특별시 성동구 4-54",
@@ -881,7 +870,7 @@ export const foodItems = [
     createdAt: "2025-03-09T02:00:09.269024",
   },
   {
-    name: "Restaurant 88",
+    name: "합정 하우스",
     rating: 1.4,
     reviews: 107,
     address: "서울특별시 강북구 67-64",
@@ -891,7 +880,7 @@ export const foodItems = [
     createdAt: "2025-02-18T02:00:09.269033",
   },
   {
-    name: "Restaurant 89",
+    name: "마을 카페",
     rating: 1.8,
     reviews: 1,
     address: "서울특별시 영등포구 87-28",
@@ -901,7 +890,7 @@ export const foodItems = [
     createdAt: "2024-10-01T02:00:09.269042",
   },
   {
-    name: "Restaurant 90",
+    name: "거리 숯불",
     rating: 1.0,
     reviews: 116,
     address: "서울특별시 강북구 20-91",
@@ -911,7 +900,7 @@ export const foodItems = [
     createdAt: "2025-01-01T02:00:09.269051",
   },
   {
-    name: "Restaurant 91",
+    name: "서촌 거리",
     rating: 1.1,
     reviews: 145,
     address: "서울특별시 마포구 51-30",
@@ -921,7 +910,7 @@ export const foodItems = [
     createdAt: "2025-04-10T02:00:09.269060",
   },
   {
-    name: "Restaurant 92",
+    name: "브라더스 숯불",
     rating: 0.2,
     reviews: 57,
     address: "서울특별시 동작구 34-69",
@@ -931,7 +920,7 @@ export const foodItems = [
     createdAt: "2025-06-28T02:00:09.269070",
   },
   {
-    name: "Restaurant 93",
+    name: "합정 다방",
     rating: 4.0,
     reviews: 53,
     address: "서울특별시 영등포구 11-26",
@@ -941,7 +930,7 @@ export const foodItems = [
     createdAt: "2025-07-14T02:00:09.269079",
   },
   {
-    name: "Restaurant 94",
+    name: "청담의 마을",
     rating: 2.7,
     reviews: 26,
     address: "서울특별시 서초구 63-26",
@@ -951,7 +940,7 @@ export const foodItems = [
     createdAt: "2025-04-27T02:00:09.269088",
   },
   {
-    name: "Restaurant 95",
+    name: "합정의 소울",
     rating: 0.8,
     reviews: 142,
     address: "서울특별시 강남구 46-74",
@@ -961,7 +950,7 @@ export const foodItems = [
     createdAt: "2024-11-07T02:00:09.269097",
   },
   {
-    name: "Restaurant 96",
+    name: "홍대의 상회",
     rating: 3.4,
     reviews: 75,
     address: "서울특별시 강북구 56-80",
@@ -971,7 +960,7 @@ export const foodItems = [
     createdAt: "2025-06-29T02:00:09.269111",
   },
   {
-    name: "Restaurant 97",
+    name: "연남의 하우스",
     rating: 1.8,
     reviews: 112,
     address: "서울특별시 노원구 19-59",
@@ -981,7 +970,7 @@ export const foodItems = [
     createdAt: "2025-04-06T02:00:09.269125",
   },
   {
-    name: "Restaurant 98",
+    name: "상회 맛집",
     rating: 2.4,
     reviews: 137,
     address: "서울특별시 서초구 57-10",
@@ -991,7 +980,7 @@ export const foodItems = [
     createdAt: "2025-06-27T02:00:09.269134",
   },
   {
-    name: "Restaurant 99",
+    name: "을지로 소울",
     rating: 3.4,
     reviews: 37,
     address: "서울특별시 은평구 40-33",
@@ -1001,7 +990,7 @@ export const foodItems = [
     createdAt: "2025-02-12T02:00:09.269144",
   },
   {
-    name: "Restaurant 100",
+    name: "명동 리틀",
     rating: 0.9,
     reviews: 8,
     address: "서울특별시 구로구 90-25",
