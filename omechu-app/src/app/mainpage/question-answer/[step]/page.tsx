@@ -7,12 +7,13 @@ import { useParams, useRouter } from "next/navigation";
 import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ProgressBar from "@/app/components/common/ProgressBar";
-import BudgetStep from "@/app/components/question-answer/BudgetStep";
-import FinalChoiceStep from "@/app/components/question-answer/FinalChoiceStep";
-import MealTimeStep from "@/app/components/question-answer/MealTimeStep";
-import MoodStep from "@/app/components/question-answer/MoodStep";
-import PurposeStep from "@/app/components/question-answer/PurposeStep";
-import WhoStep from "@/app/components/question-answer/WhoStep";
+import StepFooter from "@/app/components/common/StepFooter";
+import BudgetStep from "@/app/mainpage/components/BudgetStep";
+import FinalChoiceStep from "@/app/mainpage/components/FinalChoiceStep";
+import MealTimeStep from "@/app/mainpage/components/MealTimeStep";
+import MoodStep from "@/app/mainpage/components/MoodStep";
+import PurposeStep from "@/app/mainpage/components/PurposeStep";
+import WhoStep from "@/app/mainpage/components/WhoStep";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 const QUESTION_STEPS = 6;
@@ -57,46 +58,32 @@ export default function QuestionAnswerPage() {
 
   return (
     <div className="relative flex h-screen w-auto flex-col">
-      <header>
-        <ProgressBar
-          currentStep={step}
-          totalSteps={5} // 마지막 스텝은 프로그레스에 포함하지 않음
-          onCancelClick={() => setShowModal(true)}
-          cancelButtonText="그만하기"
-          cancelButtonAlign="left"
-          cancelButtonClassName="w-auto"
-        />
-      </header>
+      {step < QUESTION_STEPS ? (
+        <header>
+          <ProgressBar
+            currentStep={step}
+            totalSteps={5} // 마지막 스텝은 프로그레스에 포함하지 않음
+            onCancelClick={() => setShowModal(true)}
+            cancelButtonText="그만하기"
+            cancelButtonAlign="left"
+            cancelButtonClassName="w-auto"
+          />
+        </header>
+      ) : (
+        <div className="h-[60px]" />
+      )}
 
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
       {/* 마지막 스텝에서는 footer를 보여주지 않음 */}
-      {step < QUESTION_STEPS && (
-        <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
-          <div className="flex justify-between">
-            {step > 1 ? (
-              <button
-                onClick={handlePrev}
-                className="ml-5 text-base text-[#828282]"
-              >
-                {"<"} 이전으로
-              </button>
-            ) : (
-              <div />
-            )}
-            {step > 1 && step < QUESTION_STEPS && (
-              <button
-                onClick={handleSkip}
-                className="mr-5 text-base text-[#828282]"
-              >
-                건너뛰기 {">"}
-              </button>
-            )}
-          </div>
-        </footer>
-      )}
+      <StepFooter
+        showPrev={step > 1 && step < QUESTION_STEPS}
+        showNext={step >= 1 && step < QUESTION_STEPS}
+        onPrev={handlePrev}
+        onNext={handleSkip}
+      />
 
       {showModal && (
         <ModalWrapper>
@@ -108,7 +95,8 @@ export default function QuestionAnswerPage() {
               setShowModal(false);
             }}
             onClose={() => setShowModal(false)}
-            confirmText="확인"
+            confirmText="그만하기"
+            cancelText="취소"
           />
         </ModalWrapper>
       )}

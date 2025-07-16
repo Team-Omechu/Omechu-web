@@ -2,7 +2,18 @@
 
 import React from "react";
 
-export default function MenuInfo() {
+interface MenuDetail {
+  nutrition: {
+    calories: string;
+    carbs: string;
+    protein: string;
+    fat: string;
+    vitamin: string;
+  };
+  allergens: string[];
+}
+
+export default function MenuInfo({ nutrition, allergens }: MenuDetail) {
   return (
     <div>
       <h3 className="text-l mb-2 ml-1 font-semibold">메뉴 정보</h3>
@@ -13,23 +24,23 @@ export default function MenuInfo() {
           <div className="space-y-1">
             <div className="flex justify-between">
               <span>칼로리</span>
-              <span className="text-[#828282]">950 kcal</span>
+              <span className="text-[#828282]">{nutrition.calories}</span>
             </div>
             <div className="flex justify-between">
               <span>탄수화물</span>
-              <span className="text-[#828282]">120 g</span>
+              <span className="text-[#828282]">{nutrition.carbs}</span>
             </div>
             <div className="flex justify-between">
               <span>단백질</span>
-              <span className="text-[#828282]">20 g</span>
+              <span className="text-[#828282]">{nutrition.protein}</span>
             </div>
             <div className="flex justify-between">
               <span>지방</span>
-              <span className="text-[#828282]">35 g</span>
+              <span className="text-[#828282]">{nutrition.fat}</span>
             </div>
             <div className="flex justify-between">
               <span>비타민</span>
-              <span className="text-[#828282]">비타민 B군</span>
+              <span className="text-[#828282]">{nutrition.vitamin}</span>
             </div>
           </div>
 
@@ -37,7 +48,7 @@ export default function MenuInfo() {
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
-          <p className="mb-4 text-sm">땅콩, 달걀</p>
+          <p className="mb-4 text-sm">{allergens}</p>
 
           <hr className="my-4 border-gray-200" />
 
