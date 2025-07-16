@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { RestaurantType } from "@/app/constant/restaurant/restaurantList";
+import { useState } from "react";
 
 type FoodCardProps = {
   item: RestaurantType; // 타입은 foodItems 데이터 구조에 맞게 정의
@@ -8,6 +9,13 @@ type FoodCardProps = {
 };
 
 export default function FoodCard({ item, onClick }: FoodCardProps) {
+  const [isLiked, setIsLiked] = useState(item.isLiked ?? false);
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked((prev) => !prev);
+  };
+
   return (
     <div
       className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md"
@@ -35,8 +43,12 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
         </div>
       </div>
       <div className="flex flex-col place-items-end gap-2">
-        <button>
-          <Image src={"/Heart.svg"} alt="하트" width={20} height={20} />
+        <button onClick={handleLikeClick}>
+          <Image 
+            src={isLiked ? "/Heart_Filled.svg" : "/Heart.svg"} 
+            alt="하트" 
+            width={20} 
+            height={20} />
         </button>
         <Image
           src={item.images?.[0] || "/restaurant_blank.png"}
