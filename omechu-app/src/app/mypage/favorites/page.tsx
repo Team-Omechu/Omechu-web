@@ -99,9 +99,9 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="min-h-full w-full px-5 pb-8 pt-3">
+      <main className="min-h-full w-full px-6 pb-8 pt-3">
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section className="flex w-full justify-end gap-2 pb-5 pr-1 pt-2 text-sm text-[#828282]">
+        <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-[#828282]">
           <button
             className={
               sortOrder === "latest" ? "font-semibold text-[#393939]" : ""
@@ -122,7 +122,7 @@ export default function Favorites() {
         </section>
 
         {/* 찜 목록 */}
-        <section className="flex flex-col gap-3">
+        <section className="flex flex-col gap-4">
           {visibleItems.map((item, idx) => (
             <FoodCard
               key={idx}
