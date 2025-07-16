@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef, useState } from "react";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -7,6 +9,29 @@ import Header from "@/app/components/common/Header";
 
 export default function ProfileEdit() {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click(); // 숨겨진 input 클릭 유도
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      console.log("선택된 파일:", file);
+    }
+  };
+
+  const handleDeleteImage = () => {
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // 실제 input 비우기
+    }
+  };
+
   return (
     <>
       <Header
@@ -29,23 +54,41 @@ export default function ProfileEdit() {
       <main className="min-h-100dvh relative flex w-full flex-col items-center overflow-y-scroll scroll-smooth px-4">
         <section className="mt-36 flex h-44 items-center justify-center gap-10">
           <div className="relative px-3">
-            <div className="mb-3 rotate-45">
+            <div className="mb-3">
               <Image
-                src={"/profile.png"}
+                src={
+                  imagePreview
+                    ? imagePreview
+                    : "/profile/profile_default_img_rotated.svg"
+                }
                 alt={"changeProfileImage"}
                 width={73}
                 height={73}
               />
             </div>
-            <button className="absolute right-0 top-0">
+            <button
+              className="absolute right-0 top-0"
+              onClick={handleImageClick}
+            >
               <Image
-                src="/camera_icon.png"
-                alt={"uploadingImage"}
+                src="/profile/camera.svg"
+                alt="uploadingImage"
                 width={25}
                 height={20}
               />
             </button>
-            <button className="ml-1 text-center text-sm font-normal text-[#48528E] dark:text-[#e9f5fb]">
+
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+            />
+            <button
+              className="ml-1 text-center text-sm font-normal text-[#48528E] dark:text-[#e9f5fb]"
+              onClick={handleDeleteImage}
+            >
               사진지우기
             </button>
           </div>

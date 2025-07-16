@@ -37,7 +37,7 @@ export default function MyPage() {
         <section className="flex flex-col items-center">
           <div className="my-4">
             <Image
-              src={"/profile.png"}
+              src={"/profile/profile_default_img.svg"}
               alt={"profile"}
               width={75}
               height={75}
@@ -62,8 +62,8 @@ export default function MyPage() {
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
                     <Image
-                      src={"/right_arrow.svg"}
-                      alt={"right_arrow"}
+                      src={"/arrow/right_arrow.svg"}
+                      alt={"메뉴 이동 버튼"}
                       width={13}
                       height={13}
                     />
