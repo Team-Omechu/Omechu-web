@@ -18,6 +18,7 @@ import FoodCard from "../components/common/FoodCard";
 import FilterTagList from "../components/restaurant/FilterTagList";
 import KeywordSelector from "../components/restaurant/KeywordSelector";
 import ModalWrapper from "../components/common/ModalWrapper";
+import SortSelector, { SortOption } from "../components/common/SortSelector";
 
 export default function Restaurant() {
   const keywordList = [
@@ -39,10 +40,17 @@ export default function Restaurant() {
     "조용한",
   ];
 
+  const sortOptions: SortOption[] = [
+    { label: "추천", value: "recommend" },
+    { label: "최근 본 식당", value: "recent" },
+  ];
+
+  type SortValue = SortOption["value"];
+
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
-  const [sortMode, setSortMode] = useState<"recommend" | "recent">("recommend");
+  const [sortMode, setSortMode] = useState<SortValue>("recommend");
   const [visibleCount, setVisibleCount] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -187,25 +195,11 @@ export default function Restaurant() {
         >
           + 등록하기
         </button>
-        <div className="flex items-center justify-end gap-2 text-sm">
-          <span
-            className={
-              sortMode === "recommend" ? "font-semibold" : "text-gray-500"
-            }
-            onClick={() => setSortMode("recommend")}
-          >
-            추천
-          </span>
-          <div className="h-3 w-px bg-gray-400" />
-          <span
-            className={
-              sortMode === "recent" ? "font-semibold" : "text-gray-500"
-            }
-            onClick={() => setSortMode("recent")}
-          >
-            최근 본 식당
-          </span>
-        </div>
+        <SortSelector
+          options={sortOptions}
+          selected={sortMode}
+          onSelect={setSortMode}
+        />
       </div>
 
       {/* 추천 영역 */}

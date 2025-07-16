@@ -15,13 +15,20 @@ import { suggestionList } from "../constant/suggestionList";
 import { foodItems } from "../constant/foodItems";
 import ModalWrapper from "../components/common/ModalWrapper";
 import FilterTagList from "../components/restaurant/FilterTagList";
+import SortSelector, { SortOption } from "../components/common/SortSelector";
 
 export default function FullMenu() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
+  const sortOptions: SortOption[] = [
+    { label: "추천", value: "recommend" },
+    { label: "최근 본 메뉴", value: "recent" },
+  ];
+
+  type SortValue = SortOption["value"];
 
   const [search, setSearch] = useState("");
-  const [sortMode, setSortMode] = useState<"recommend" | "recent">("recommend");
+  const [sortMode, setSortMode] = useState<SortValue>("recommend");
   const [visibleCount, setVisibleCount] = useState(21);
   const [isLoading, setIsLoading] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -145,25 +152,11 @@ export default function FullMenu() {
 
         <hr className="my-1 border-black" />
 
-        <div className="mb-6 mt-4 flex items-center justify-end gap-1 text-sm">
-          <span
-            className={
-              sortMode === "recommend" ? "font-semibold" : "text-gray-500"
-            }
-            onClick={() => setSortMode("recommend")}
-          >
-            추천순
-          </span>
-          <div className="h-4 w-px bg-gray-400" />
-          <span
-            className={
-              sortMode === "recent" ? "font-semibold" : "text-gray-500"
-            }
-            onClick={() => setSortMode("recent")}
-          >
-            최근 본 순
-          </span>
-        </div>
+        <SortSelector
+          options={sortOptions}
+          selected={sortMode}
+          onSelect={setSortMode}
+        />
 
         {isSearched && search.trim() && filteredItems.length === 0 && (
           <div className="mt-10 text-center text-sm text-gray-500">
