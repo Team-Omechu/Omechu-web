@@ -115,6 +115,7 @@ export default function ResultPage() {
               setShowModal(false);
               setSelectedMenuIdForExclude(null);
             }}
+            swapButtonOrder={true}
           />
         </ModalWrapper>
       )}
