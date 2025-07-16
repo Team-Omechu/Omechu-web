@@ -10,7 +10,7 @@ import { distance } from "fastest-levenshtein";
 
 import SearchBar from "@/app/components/common/SearchBar";
 import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
-import { foodItems } from "@/app/constant/restautantFoodList"; // 음식 데이터
+import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 import { suggestionList } from "@/app/constant/suggestionList";
 
 import FoodCard from "../components/common/FoodCard";
@@ -49,10 +49,10 @@ export default function Restaurant() {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
 
   const filteredItems = search.trim()
-    ? foodItems.filter((item) => item.menu.includes(search.trim()))
-    : foodItems;
+    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
+    : Restaurants;
 
-  const similarItems = foodItems.filter(
+  const similarItems = Restaurants.filter(
     (item) =>
       distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
       !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
@@ -291,9 +291,7 @@ export default function Restaurant() {
                   key={idx}
                   item={item}
                   onClick={() =>
-                    router.push(
-                      `/restaurant/restaurant-detail?menu=${encodeURIComponent(item.menu)}`,
-                    )
+                    router.push(`/restaurant/restaurant-detail/${item.id}`)
                   }
                 />
               ))}
@@ -309,9 +307,7 @@ export default function Restaurant() {
             key={idx}
             item={item}
             onClick={() =>
-              router.push(
-                `/restaurant/restaurant-detail?menu=${encodeURIComponent(item.menu)}`,
-              )
+              router.push(`/restaurant/restaurant-detail/${item.id}`)
             }
           />
         ))}

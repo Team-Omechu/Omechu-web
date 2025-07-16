@@ -30,9 +30,12 @@ export default function ClientLayout({
     "/onboarding/5",
     "/onboarding/6",
 
-    //맛집-상세페이지
-    "restaurant/restaurant-detail",
-    "restaurant/restaurant-detail/[id]/map",
+    // 전체메뉴 페이지
+    "/fullmenu/menu-detail",
+    "/fullmenu/menu-detail/recipe-detail",
+
+    // 맛집-상세페이지
+    "/restaurant/restaurant-detail",
 
     // 마이페이지
     "/mypage/user-info-setup",
@@ -57,10 +60,17 @@ export default function ClientLayout({
     "/mypage/terms/personal-info",
     "/mypage/terms/location-info",
   ];
+
+  const dynamicNoBottomNavPrefixes = [
+    // 동적 라우트가 있는 페이지들
+    "/restaurant/restaurant-detail/",
+    "/mainpage/question-answer/",
+    "/mainpage/result/"
+  ];
+
   const showBottomNav = !(
     noBottomNavRoutes.includes(pathname) ||
-    pathname.startsWith("/mainpage/result/") ||
-    pathname.startsWith("/mainpage/question-answer/")
+    dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix))
   );
 
   return (
