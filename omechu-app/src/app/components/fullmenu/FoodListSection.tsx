@@ -21,7 +21,7 @@ export default function FoodListSection({ items, search, isSearched, onClickItem
       <div className="mt-4 grid grid-cols-3 gap-4">
         {items.map((food, idx) => (
           <FoodBox
-            key={idx}
+            key={food}
             title={food}
             imageUrl="/logo.png"
             isExcluded={false}
