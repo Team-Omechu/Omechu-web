@@ -13,25 +13,9 @@ export default function ClientLayout({
 
   const noBottomNavRoutes = [
     // 메인페이지
-    "/mainpage/question-answer/meal-time",
-    "/mainpage/question-answer/purpose",
-    "/mainpage/question-answer/state",
-    "/mainpage/question-answer/who",
-    "/mainpage/question-answer/budget",
-    "/mainpage/question-answer/middle-question",
     "/mainpage/meal-answer",
     "/mainpage/location-answer",
     "/mainpage/result",
-
-    "/mainpage/question-answer/meal-time",
-    "/mainpage/question-answer/purpose",
-    "/mainpage/question-answer/state",
-    "/mainpage/question-answer/who",
-    "/mainpage/question-answer/budget",
-    "/mainpage/question-answer/middle-question",
-    "/mainpage/meal-answer",
-    "/mainpage/location-answer",
-    "/mypage/recommended-list",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/login",
@@ -71,21 +55,22 @@ export default function ClientLayout({
     "/mypage/settings/account-settings",
     "/mypage/settings/account-settings/change-password",
     // 마이페이지-이용약관
-    "/mypage/settings/terms",
-    "/mypage/settings/terms/service",
-    "/mypage/settings/terms/personal-info",
-    "/mypage/settings/terms/location-info",
+    "/mypage/terms",
+    "/mypage/terms/service",
+    "/mypage/terms/personal-info",
+    "/mypage/terms/location-info",
   ];
 
   const dynamicNoBottomNavPrefixes = [
     // 동적 라우트가 있는 페이지들
     "/restaurant/restaurant-detail/",
+    "/mainpage/question-answer/",
+    "/mainpage/result/",
   ];
 
   const showBottomNav = !(
     noBottomNavRoutes.includes(pathname) ||
-    dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix)) ||
-    pathname.startsWith("/mainpage/result/")
+    dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix))
   );
 
   return (

@@ -4,34 +4,35 @@ import React from "react";
 
 import { useRouter } from "next/navigation";
 
+import ListButton from "@/app/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerButton from "./QuestionAnswerButton";
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
 
-const BudgetStep = () => {
+const MealTimeStep = () => {
   const router = useRouter();
-  const { budget, setBudget } = useQuestionAnswerStore();
-  const options = ["1만원 미만", "1만원~3만원", "3만원 초과"];
+  const { mealTime, setMealTime } = useQuestionAnswerStore();
+  const options = ["아침", "점심", "저녁", "야식"];
 
   const handleSelect = (option: string) => {
-    setBudget(option);
-    router.push("/mainpage/question-answer/6");
+    setMealTime(option);
+    router.push("/mainpage/question-answer/2");
   };
 
   return (
-    <QuestionAnswerLayout title="예산은 어떻게 되시나요?">
+    <QuestionAnswerLayout title="언제 먹는 건가요?">
       {options.map((option) => (
-        <QuestionAnswerButton
+        <ListButton
           key={option}
           onClick={() => handleSelect(option)}
-          isSelected={budget === option}
+          isSelected={mealTime === option}
+          textSize="base"
         >
           {option}
-        </QuestionAnswerButton>
+        </ListButton>
       ))}
     </QuestionAnswerLayout>
   );
 };
 
-export default BudgetStep;
+export default MealTimeStep;

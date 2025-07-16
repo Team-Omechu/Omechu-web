@@ -4,121 +4,62 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import BottomNav from "@/app/components/mainpage/BottomNav";
+import StepFooter from "@/app/components/common/StepFooter";
+import MealIngredientGroup from "@/app/components/mainpage/MealIngredientButton";
+import MealStyleGroup from "@/app/components/mainpage/MealStyleButton";
+import MealTypeGroup from "@/app/components/mainpage/MealTypeButton";
 
 export default function MealAnswerPage() {
   const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const toggleSelect = (item: string) => {
-    setSelectedItems((prev) => {
-      if (prev.includes(item)) {
-        return prev.filter((v) => v !== item);
-      }
-      if (prev.length >= 3) return prev;
-      return [...prev, item];
-    });
+    setSelectedItems((prev) =>
+      prev.includes(item)
+        ? prev.filter((v) => v !== item)
+        : prev.length < 3
+          ? [...prev, item]
+          : prev,
+    );
   };
 
   return (
-    <div className="flex h-screen w-full flex-col bg-[#f8d6ff]">
+    <div className="flex h-screen w-full flex-col overflow-x-hidden">
       <main className="flex w-full flex-1 flex-col items-center justify-center">
         {/* 질문 문구 */}
-        <div className="flex h-[112px] w-[393px] shrink-0 flex-col justify-center text-center font-sans text-[24px] font-medium text-[#393939]">
+        <div className="font-['Noto Sans KR'] flex h-[10rem] w-[24.5625rem] flex-shrink-0 flex-col justify-center text-center text-[1.5rem] font-medium leading-normal text-[#393939]">
           <h2>제외하고 싶은</h2>
           <h2>음식은 무엇인가요?</h2>
         </div>
 
         <div className="flex w-[310px] flex-col gap-4">
-          {/* 첫 번째 그룹: 5열 */}
-          <div className="flex flex-col gap-2">
-            <div className="grid grid-cols-5 gap-2">
-              {["한식", "중식", "일식", "양식", "기타-종류"].map((item) => (
-                <button
-                  key={item}
-                  className={`flex h-[35px] w-[58px] items-center justify-center rounded-md border px-2 py-1 text-xs ${
-                    selectedItems.includes(item)
-                      ? "border-red-500 bg-red-500 text-white"
-                      : "border-[#999999] bg-white text-black"
-                  }`}
-                  onClick={() => toggleSelect(item)}
-                  disabled={
-                    selectedItems.length >= 3 && !selectedItems.includes(item)
-                  }
-                >
-                  {item.startsWith("기타") ? "그 외" : item}
-                </button>
-              ))}
-            </div>
-            <div className="h-px w-[310px] bg-[#828282] opacity-60" />
-          </div>
+          {/* 1: type */}
+          <MealTypeGroup
+            selectedItems={selectedItems}
+            onToggle={toggleSelect}
+          />
 
-          {/* 두 번째 그룹: 5열 */}
-          <div className="flex flex-col gap-2">
-            <div className="grid grid-cols-5 gap-2">
-              {["밥", "면", "고기", "해산물", "기타-재료"].map((item) => (
-                <button
-                  key={item}
-                  className={`flex h-[35px] w-[58px] items-center justify-center rounded-md border px-2 py-1 text-xs ${
-                    selectedItems.includes(item)
-                      ? "border-red-500 bg-red-500 text-white"
-                      : "border-[#999999] bg-white text-black"
-                  }`}
-                  onClick={() => toggleSelect(item)}
-                  disabled={
-                    selectedItems.length >= 3 && !selectedItems.includes(item)
-                  }
-                >
-                  {item.startsWith("기타") ? "그 외" : item}
-                </button>
-              ))}
-            </div>
-            <div className="h-px w-[310px] bg-[#828282] opacity-60" />
-          </div>
+          {/* 2: ingredient */}
+          <MealIngredientGroup
+            selectedItems={selectedItems}
+            onToggle={toggleSelect}
+          />
 
-          {/* 세 번째 그룹: 2개씩 한 줄 */}
-          <div className="flex flex-col gap-2">
-            {[
-              ["국물 있는 음식", "국물 없는 음식"],
-              ["따뜻한 음식", "차가운 음식"],
-              ["건강한 음식", "자극적인 음식"],
-            ].map((pair, i) => (
-              <div key={i} className="flex flex-col gap-2">
-                <div className="flex items-center gap-[5px]">
-                  {pair.map((item) => (
-                    <button
-                      key={item}
-                      className={`flex h-[35px] w-[125px] items-center justify-center rounded-md border px-2 py-1 text-xs ${
-                        selectedItems.includes(item)
-                          ? "border-red-500 bg-red-500 text-white"
-                          : "border-[#999999] bg-white text-black"
-                      }`}
-                      onClick={() => toggleSelect(item)}
-                      disabled={
-                        selectedItems.length >= 3 &&
-                        !selectedItems.includes(item)
-                      }
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <div className="h-px w-[310px] bg-[#828282] opacity-60" />
-              </div>
-            ))}
-          </div>
+          {/* 3: style */}
+          <MealStyleGroup
+            selectedItems={selectedItems}
+            onToggle={toggleSelect}
+          />
         </div>
 
         {/* 하단 반영 버튼 */}
         <button
-          className={`mt-8 h-12 w-48 rounded-md text-sm font-medium transition ${
+          className={`mt-8 flex h-[3.125rem] w-[8.75rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-[#333] p-[0.625rem] text-center font-['Noto_Sans_KR'] text-[1.125rem] font-normal ${
             selectedItems.length > 0
-              ? "bg-red-500 text-white"
+              ? "bg-[#FB4746] text-white"
               : "border border-black bg-white text-black"
           }`}
-          onClick={() => {
-            router.push("./location-answer");
-          }}
+          onClick={() => router.push("./location-answer")}
         >
           {selectedItems.length > 0
             ? `${selectedItems.length}개 제외하기`
@@ -127,9 +68,11 @@ export default function MealAnswerPage() {
       </main>
 
       {/* 하단 네비게이션 */}
-      <BottomNav
-        prevPath="./question-answer/middle-question"
-        nextPath="./location-answer"
+      <StepFooter
+        showNext={true}
+        showPrev={true}
+        onNext={() => router.push("./location-answer")}
+        onPrev={() => router.back()}
       />
     </div>
   );
