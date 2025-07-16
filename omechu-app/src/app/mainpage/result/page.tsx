@@ -8,12 +8,12 @@ import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import {
   menus as defaultMenus,
-  tagDescriptions,
-  tags,
+  tagData
 } from "@/app/constant/mainpage/resultData";
 import MenuCard from "@/app/mainpage/components/MenuCard";
 
 import ExcludeButton from "../components/ExcludeButton";
+import TagCard from "../components/TagCard";
 
 function getRandomMenus() {
   const shuffled = [...defaultMenus].sort(() => 0.5 - Math.random());
@@ -99,11 +99,8 @@ export default function ResultPage() {
       </div>
 
       <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
-        {tags.map((tag, idx) => (
-          <div key={idx} className="mb-1 flex flex-col p-1 text-black">
-            <span className="mb-1 font-semibold text-[#A3A3A3]">{tag}</span>
-            {tagDescriptions[idx]}
-          </div>
+        {tagData?.map(({tag, description}) => (
+          <TagCard key={tag} tag={tag} description={description}/>
         ))}
       </div>
 
