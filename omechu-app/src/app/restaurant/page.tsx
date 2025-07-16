@@ -13,6 +13,7 @@ import LocationModal from "@/app/components/restaurant/LocationModal/LocationMod
 import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 import { suggestionList } from "@/app/constant/suggestionList";
 
+import FloatingActionButton from "../components/common/FloatingActionButton";
 import FoodCard from "../components/common/FoodCard";
 import FilterTagList from "../components/restaurant/FilterTagList";
 import KeywordSelector from "../components/restaurant/KeywordSelector";
@@ -38,6 +39,7 @@ export default function Restaurant() {
   ];
 
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState<"recommend" | "recent">("recommend");
   const [visibleCount, setVisibleCount] = useState(8);
@@ -59,6 +61,10 @@ export default function Restaurant() {
   );
 
   const visibleItems = filteredItems.slice(0, visibleCount);
+
+  const scrollToTop = () => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // 무한 스크롤 구현에 대한 설명:
   // 1. 사용자가 스크롤을 내리면 IntersectionObserver가 페이지 하단의 특정 요소(loaderRef)를 감지합니다.
@@ -139,7 +145,7 @@ export default function Restaurant() {
   }, [isFilterOpen]);
 
   return (
-    <div className="min-h-screen px-4 pb-20 pt-6">
+    <main ref={mainRef} className="min-h-screen px-4 pb-20 pt-6">
       <SearchBar
         placeholder="음식명을 검색하세요."
         inputValue={search}
@@ -321,6 +327,8 @@ export default function Restaurant() {
           <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
         </div>
       )}
-    </div>
+
+      <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
+    </main>
   );
 }
