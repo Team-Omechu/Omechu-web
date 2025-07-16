@@ -10,7 +10,7 @@ import { distance } from "fastest-levenshtein";
 
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
-import { foodItems } from "@/app/constant/restaurantFoodList2"; // 음식 데이터
+import { Restaurants } from "@/app/constant/restaurant/restaurantList2"; // 음식 데이터
 
 export default function Favorites() {
   const router = useRouter();
@@ -21,10 +21,10 @@ export default function Favorites() {
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
   const filteredItems = search.trim()
-    ? foodItems.filter((item) => item.menu.includes(search.trim()))
-    : foodItems;
+    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
+    : Restaurants;
 
-  const similarItems = foodItems.filter(
+  const similarItems = Restaurants.filter(
     (item) =>
       distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
       !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
@@ -77,8 +77,8 @@ export default function Favorites() {
   }, [isLoading]);
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    const aIdx = foodItems.indexOf(a);
-    const bIdx = foodItems.indexOf(b);
+    const aIdx = Restaurants.indexOf(a);
+    const bIdx = Restaurants.indexOf(b);
     return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
   });
 
@@ -123,17 +123,17 @@ export default function Favorites() {
 
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
-          {visibleItems.map((item, idx) => (
-            <FoodCard
-              key={idx}
-              item={item}
-              onClick={() =>
-                router.push(
-                  `/restaurant/restaurant-detail?menu=${encodeURIComponent(item.menu)}`,
-                )
-              }
-            />
-          ))}
+          <div className="flex flex-col gap-4">
+            {visibleItems.map((item, idx) => (
+              <FoodCard
+                key={idx}
+                item={item}
+                onClick={() =>
+                  router.push(`/restaurant/restaurant-detail/${item.id}`)
+                }
+              />
+            ))}
+          </div>
         </section>
 
         <div ref={loaderRef} className="h-[1px]" />
