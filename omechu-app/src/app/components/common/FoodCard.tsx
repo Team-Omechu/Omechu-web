@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import { FoodItemType } from "@/app/constant/restautantFoodList";
+import { RestaurantType } from "@/app/constant/restaurant/restaurantList";
 
 type FoodCardProps = {
-  item: FoodItemType; // 타입은 foodItems 데이터 구조에 맞게 정의
+  item: RestaurantType; // 타입은 foodItems 데이터 구조에 맞게 정의
   onClick: () => void;
 };
 
@@ -21,7 +21,7 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
             <span className="text-yellow-500">({item.reviews})</span>
           </span>
         </div>
-        <p className="mb-3 text-sm text-gray-500">{item.address}</p>
+        <p className="mb-3 text-sm text-gray-500">{item.address.road}</p>
         <p className="mb-1 text-sm font-bold text-blue-600">{item.menu}</p>
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
           {item.tags.map((tag, i) => (
@@ -39,7 +39,7 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
           <Image src={"/Heart.svg"} alt="하트" width={20} height={20} />
         </button>
         <Image
-          src={item.image}
+          src={item.images?.[0] || "/restaurant_blank.png"}
           alt={item.menu}
           width={70}
           height={70}

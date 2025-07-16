@@ -10,7 +10,7 @@ import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ReportModal from "@/app/components/restaurant/ReportModal";
 import Review from "@/app/components/restaurant/Review";
-import { restaurantList } from "@/app/constant/restaurant/restaurantList";
+import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 import {
   reviewSummary,
   reviewTags,
@@ -47,7 +47,7 @@ export default function RestaurantDetail() {
   const [sortType, setSortType] = useState<"recommend" | "latest">("recommend");
 
   // id에 해당하는 맛집 정보 찾기
-  const restaurant = restaurantList.find((item) => item.id === id);
+  const restaurant = Restaurants.find((item) => item.id === id);
 
   if (!restaurant) {
     return (
@@ -225,7 +225,9 @@ export default function RestaurantDetail() {
           <div className="flex w-full justify-end">
             <button
               onClick={() =>
-                router.push(`/restaurant-detail/${restaurant.id}/map`)
+                router.push(
+                  `/restaurant/restaurant-detail/${restaurant.id}/map`,
+                )
               }
               className="flex h-6 w-16 flex-col items-center justify-center rounded-3xl bg-[#1F9BDA]"
             >
