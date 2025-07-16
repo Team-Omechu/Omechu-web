@@ -11,6 +11,7 @@ export default function ProfileEdit() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [nickname, setNickname] = useState("제나"); // 기본값 설정
 
   const handleImageClick = () => {
     fileInputRef.current?.click(); // 숨겨진 input 클릭 유도
@@ -67,7 +68,7 @@ export default function ProfileEdit() {
               />
             </div>
             <button
-              className="absolute right-0 top-0"
+              className="absolute right-1 top-1"
               onClick={handleImageClick}
             >
               <Image
@@ -98,16 +99,20 @@ export default function ProfileEdit() {
             </div>
             <div className="relative">
               <input
-                className="h-9 w-44 rounded-md border-[1px] border-[#626262] px-2.5 py-2.5 text-base text-[#393939]"
+                className="h-9 w-44 rounded-md border-[1px] border-[#626262] px-2.5 py-2.5 text-base text-[#393939] placeholder:text-sm"
                 type="text"
-                defaultValue={"제나"}
-                placeholder="제나"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="닉네임을 입력해주세요"
               />
-              <button className="absolute right-2 top-2.5">
+              <button
+                className="absolute right-2 top-2"
+                onClick={() => setNickname("")}
+              >
                 <Image
-                  src={"/x_icon.png"}
-                  alt={"x-icon"}
-                  width={15}
+                  src={"/x/cancel.svg"}
+                  alt={"초기화"}
+                  width={20}
                   height={15}
                 />
               </button>
