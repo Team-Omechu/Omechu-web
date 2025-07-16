@@ -19,6 +19,7 @@ import FilterTagList from "../components/restaurant/FilterTagList";
 import KeywordSelector from "../components/restaurant/KeywordSelector";
 import ModalWrapper from "../components/common/ModalWrapper";
 import SortSelector, { SortOption } from "../components/common/SortSelector";
+import LoadingIndicator from "../components/common/LoadingIndicator";
 
 export default function Restaurant() {
   const keywordList = [
@@ -307,12 +308,7 @@ export default function Restaurant() {
 
       <div ref={loaderRef} className="h-[1px]" />
 
-      {isLoading && (
-        <div className="mt-4 flex h-20 items-center justify-center">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
-          <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
-        </div>
-      )}
+      {isLoading && <LoadingIndicator />}
 
       <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
     </main>
