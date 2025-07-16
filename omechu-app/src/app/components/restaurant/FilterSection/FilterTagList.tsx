@@ -11,7 +11,7 @@ export default function FilterTagList({ tags, onRemove, className }: FilterTagLi
     <div className="mx-2 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
       {tags.map((tag, idx) => (
         <TagItem
-          key={idx}
+          key={tag}
           label={tag}
           onRemove={() => onRemove(tag)}
           className={`${className}`}
