@@ -5,12 +5,11 @@
 //
 //  - `message`: 표시할 텍스트 (줄바꿈 포함 가능)
 //  - `show`: true일 때만 화면에 표시
-//  - `bottom`: 하단 여백 위치 (단위 포함된 문자열로 전달)
+//  - `className`: bottom- 클래스로 세부 위치 조정
 //
 //  - 부드러운 fade in/out 포함
 //  - `show`가 false일 경우 opacity만 줄었다가 300ms 후 DOM 제거
 //  - 흔들리는 shake 애니메이션은 tailwind keyframes에 별도 정의 필요
-//  - tailwind class의 bottom-[값]은 string props와 충돌 위험 있어 style 방식 병행
 // --------------------------------------------------
 
 import { useEffect, useState } from "react";
@@ -74,7 +73,7 @@ export default function Toast({ message, show, className }: ToastProps) {
 //       <button onClick={() => triggerToast("비밀번호가\n일치하지 않습니다")}>
 //         토스트 띄우기
 //       </button>
-//       <Toast message={toastMessage} show={showToast} bottom="20px" />
+//       <Toast message={toastMessage} show={showToast} className="bottom-20" />
 //     </>
 //   );
 // }
@@ -88,4 +87,4 @@ export default function Toast({ message, show, className }: ToastProps) {
 // - show: boolean (표시 여부)
 //
 // 선택 props:
-// - bottom: string (하단 위치, 단위 포함. ex: "10px", "2rem" 등. 기본값 "80px")
+// - className: top, bottom 등 높이 관련 position class
