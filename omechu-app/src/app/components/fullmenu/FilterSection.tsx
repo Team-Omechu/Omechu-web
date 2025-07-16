@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import FilterTagList from "../restaurant/FilterTagList";
+import FilterTagList from "../restaurant/FilterSection/FilterTagList";
 
 interface Props {
   tags: string[];
