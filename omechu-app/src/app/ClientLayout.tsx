@@ -65,7 +65,7 @@ export default function ClientLayout({
     // 동적 라우트가 있는 페이지들
     "/restaurant/restaurant-detail/",
     "/mainpage/question-answer/",
-    "/mainpage/result/"
+    "/mainpage/result/",
   ];
 
   const showBottomNav = !(
