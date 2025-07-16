@@ -5,8 +5,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import BottomNav from "@/app/components/mainpage/BottomNav";
-import LocationModal from "@/app/components/mainpage/LocationModal";
+import StepFooter from "@/app/components/common/StepFooter";
+import LocationModal from "@/app/mainpage/components/LocationModal";
 
 export default function LocationAnswerPage() {
   const router = useRouter();
@@ -88,7 +88,11 @@ export default function LocationAnswerPage() {
       )}
 
       {/* 하단 네비 */}
-      <BottomNav prevPath="./meal-answer" showNext={false} />
+      <StepFooter
+        showNext={false}
+        showPrev={true}
+        onPrev={() => router.back()}
+      />
     </div>
   );
 }
