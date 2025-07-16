@@ -4,9 +4,9 @@ import React from "react";
 
 import { useRouter } from "next/navigation";
 
+import ListButton from "@/app/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerButton from "./QuestionAnswerButton";
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
 
 const PurposeStep = () => {
@@ -22,13 +22,14 @@ const PurposeStep = () => {
   return (
     <QuestionAnswerLayout title="식사 목적은 무엇인가요?">
       {options.map((option) => (
-        <QuestionAnswerButton
+        <ListButton
           key={option}
           onClick={() => handleSelect(option)}
           isSelected={purpose === option}
+          textSize="base"
         >
           {option}
-        </QuestionAnswerButton>
+        </ListButton>
       ))}
     </QuestionAnswerLayout>
   );

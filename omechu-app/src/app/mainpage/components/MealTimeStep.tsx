@@ -4,9 +4,9 @@ import React from "react";
 
 import { useRouter } from "next/navigation";
 
+import ListButton from "@/app/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerButton from "./QuestionAnswerButton";
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
 
 const MealTimeStep = () => {
@@ -22,13 +22,14 @@ const MealTimeStep = () => {
   return (
     <QuestionAnswerLayout title="언제 먹는 건가요?">
       {options.map((option) => (
-        <QuestionAnswerButton
+        <ListButton
           key={option}
           onClick={() => handleSelect(option)}
           isSelected={mealTime === option}
+          textSize="base"
         >
           {option}
-        </QuestionAnswerButton>
+        </ListButton>
       ))}
     </QuestionAnswerLayout>
   );

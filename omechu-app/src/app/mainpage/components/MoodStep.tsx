@@ -4,9 +4,9 @@ import React from "react";
 
 import { useRouter } from "next/navigation";
 
+import ListButton from "@/app/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerButton from "./QuestionAnswerButton";
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
 
 const MoodStep = () => {
@@ -27,13 +27,14 @@ const MoodStep = () => {
   return (
     <QuestionAnswerLayout title="기분 상태는 어떤가요?">
       {options.map((option) => (
-        <QuestionAnswerButton
+        <ListButton
           key={option}
           onClick={() => handleSelect(option)}
           isSelected={mood === option}
+          textSize="base"
         >
           {option}
-        </QuestionAnswerButton>
+        </ListButton>
       ))}
     </QuestionAnswerLayout>
   );
