@@ -6,6 +6,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import FloatingActionButton from "../components/common/FloatingActionButton";
 import BottomNav from "../components/common/Bottom";
 import FoodBox from "../components/common/FoodBox";
 import SearchBar from "../components/common/SearchBar";
@@ -16,6 +17,7 @@ import { foodItems } from "../constant/foodItems";
 
 export default function FullMenu() {
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
 
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState<"recommend" | "recent">("recommend");
@@ -189,7 +191,7 @@ export default function FullMenu() {
               <FoodBox
                 key={idx}
                 title={food}
-                imageUrl="/오메추-로고-보라색버전-모자4 1.png"
+                imageUrl="/logo.png"
                 isExcluded={false}
                 isToggled={false}
                 onToggle={() => {}}
@@ -214,8 +216,6 @@ export default function FullMenu() {
 
         <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
       </main>
-
-      <BottomNav />
     </>
   );
 }
