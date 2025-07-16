@@ -6,7 +6,7 @@ export const foodItems = [
     address: "서울특별시 용산구 74-12",
     menu: "라면",
     tags: ["혼밥", "아침식사", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-09T02:00:09.268089",
   },
   {
@@ -16,7 +16,7 @@ export const foodItems = [
     address: "서울특별시 서초구 33-48",
     menu: "불고기",
     tags: ["조용한", "기념일", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-02T02:00:09.268124",
   },
   {
@@ -26,7 +26,7 @@ export const foodItems = [
     address: "서울특별시 종로구 43-55",
     menu: "불고기",
     tags: ["가족", "고급스러운", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-27T02:00:09.268144",
   },
   {
@@ -36,7 +36,7 @@ export const foodItems = [
     address: "서울특별시 서초구 77-79",
     menu: "짬뽕",
     tags: ["데이트", "점심식사", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-28T02:00:09.268157",
   },
   {
@@ -46,7 +46,7 @@ export const foodItems = [
     address: "서울특별시 마포구 26-20",
     menu: "스시",
     tags: ["가성비", "가족", "야식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-08-14T02:00:09.268169",
   },
   {
@@ -56,7 +56,7 @@ export const foodItems = [
     address: "서울특별시 서초구 1-55",
     menu: "불고기",
     tags: ["혼밥", "고급스러운", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-28T02:00:09.268180",
   },
   {
@@ -66,7 +66,7 @@ export const foodItems = [
     address: "서울특별시 강남구 7-53",
     menu: "불고기",
     tags: ["단체회식", "시끌벅적한", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-09T02:00:09.268190",
   },
   {
@@ -76,7 +76,7 @@ export const foodItems = [
     address: "서울특별시 성동구 37-94",
     menu: "우동",
     tags: ["점심식사", "아침식사", "야식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-15T02:00:09.268205",
   },
   {
@@ -86,7 +86,7 @@ export const foodItems = [
     address: "서울특별시 송파구 6-29",
     menu: "스테이크",
     tags: ["조용한", "데이트", "아침식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-03T02:00:09.268218",
   },
   {
@@ -96,7 +96,7 @@ export const foodItems = [
     address: "서울특별시 중구 2-92",
     menu: "라면",
     tags: ["시끌벅적한", "단체회식", "가성비"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-25T02:00:09.268229",
   },
   {
@@ -106,7 +106,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 53-12",
     menu: "파스타",
     tags: ["혼밥", "고급스러운", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-26T02:00:09.268239",
   },
   {
@@ -116,7 +116,7 @@ export const foodItems = [
     address: "서울특별시 송파구 10-74",
     menu: "라면",
     tags: ["기념일", "데이트", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-12-26T02:00:09.268248",
   },
   {
@@ -126,7 +126,7 @@ export const foodItems = [
     address: "서울특별시 중구 31-26",
     menu: "치킨",
     tags: ["캐주얼한", "술모임", "가성비"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-08T02:00:09.268258",
   },
   {
@@ -136,7 +136,7 @@ export const foodItems = [
     address: "서울특별시 구로구 81-17",
     menu: "된장찌개",
     tags: ["가족", "가성비", "저녁식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-08T02:00:09.268268",
   },
   {
@@ -146,7 +146,7 @@ export const foodItems = [
     address: "서울특별시 도봉구 84-82",
     menu: "우동",
     tags: ["시끌벅적한", "저녁식사", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-19T02:00:09.268278",
   },
   {
@@ -156,7 +156,7 @@ export const foodItems = [
     address: "서울특별시 성동구 40-47",
     menu: "햄버거",
     tags: ["술모임", "데이트", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-09-22T02:00:09.268286",
   },
   {
@@ -166,7 +166,7 @@ export const foodItems = [
     address: "서울특별시 동작구 26-13",
     menu: "치킨",
     tags: ["시끌벅적한", "캐주얼한", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-11T02:00:09.268296",
   },
   {
@@ -176,7 +176,7 @@ export const foodItems = [
     address: "서울특별시 중랑구 4-88",
     menu: "파스타",
     tags: ["저녁식사", "아침식사", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-10T02:00:09.268305",
   },
   {
@@ -186,7 +186,7 @@ export const foodItems = [
     address: "서울특별시 강북구 73-47",
     menu: "라면",
     tags: ["가성비", "고급스러운", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-04T02:00:09.268315",
   },
   {
@@ -196,7 +196,7 @@ export const foodItems = [
     address: "서울특별시 양천구 48-53",
     menu: "김치찌개",
     tags: ["야식", "점심식사", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-03T02:00:09.268324",
   },
   {
@@ -206,7 +206,7 @@ export const foodItems = [
     address: "서울특별시 용산구 67-61",
     menu: "해장국",
     tags: ["야식", "깔끔한", "단체회식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-27T02:00:09.268334",
   },
   {
@@ -216,7 +216,7 @@ export const foodItems = [
     address: "서울특별시 구로구 34-97",
     menu: "된장찌개",
     tags: ["야식", "저녁식사", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-07-23T02:00:09.268343",
   },
   {
@@ -226,7 +226,7 @@ export const foodItems = [
     address: "서울특별시 은평구 2-99",
     menu: "삼겹살",
     tags: ["시끌벅적한", "점심식사", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-09T02:00:09.268353",
   },
   {
@@ -236,7 +236,7 @@ export const foodItems = [
     address: "서울특별시 마포구 62-68",
     menu: "냉면",
     tags: ["고급스러운", "캐주얼한", "단체회식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-25T02:00:09.268363",
   },
   {
@@ -246,7 +246,7 @@ export const foodItems = [
     address: "서울특별시 구로구 78-60",
     menu: "스시",
     tags: ["혼밥", "아침식사", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-29T02:00:09.268372",
   },
   {
@@ -256,7 +256,7 @@ export const foodItems = [
     address: "서울특별시 구로구 9-62",
     menu: "비빔밥",
     tags: ["점심식사", "저녁식사", "조용한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-21T02:00:09.268381",
   },
   {
@@ -266,7 +266,7 @@ export const foodItems = [
     address: "서울특별시 강서구 96-38",
     menu: "냉면",
     tags: ["야식", "가족", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-17T02:00:09.268391",
   },
   {
@@ -276,7 +276,7 @@ export const foodItems = [
     address: "서울특별시 마포구 20-33",
     menu: "비빔밥",
     tags: ["저녁식사", "시끌벅적한", "데이트"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-26T02:00:09.268400",
   },
   {
@@ -286,7 +286,7 @@ export const foodItems = [
     address: "서울특별시 동작구 70-81",
     menu: "쌀국수",
     tags: ["조용한", "야식", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-08-14T02:00:09.268413",
   },
   {
@@ -296,7 +296,7 @@ export const foodItems = [
     address: "서울특별시 강남구 12-68",
     menu: "쌀국수",
     tags: ["기념일", "단체회식", "아침식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-27T02:00:09.268430",
   },
   {
@@ -306,7 +306,7 @@ export const foodItems = [
     address: "서울특별시 중랑구 81-83",
     menu: "해장국",
     tags: ["깔끔한", "가성비", "단체회식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-24T02:00:09.268446",
   },
   {
@@ -316,7 +316,7 @@ export const foodItems = [
     address: "서울특별시 중랑구 40-52",
     menu: "파스타",
     tags: ["고급스러운", "시끌벅적한", "데이트"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-04T02:00:09.268462",
   },
   {
@@ -326,7 +326,7 @@ export const foodItems = [
     address: "서울특별시 동작구 44-10",
     menu: "햄버거",
     tags: ["기념일", "점심식사", "단체회식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-12-26T02:00:09.268476",
   },
   {
@@ -336,7 +336,7 @@ export const foodItems = [
     address: "서울특별시 강북구 96-3",
     menu: "삼겹살",
     tags: ["저녁식사", "아침식사", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-15T02:00:09.268487",
   },
   {
@@ -346,7 +346,7 @@ export const foodItems = [
     address: "서울특별시 중구 62-47",
     menu: "파스타",
     tags: ["고급스러운", "조용한", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-29T02:00:09.268497",
   },
   {
@@ -356,7 +356,7 @@ export const foodItems = [
     address: "서울특별시 은평구 39-13",
     menu: "떡볶이",
     tags: ["야식", "데이트", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-07-20T02:00:09.268506",
   },
   {
@@ -366,7 +366,7 @@ export const foodItems = [
     address: "서울특별시 도봉구 98-4",
     menu: "냉면",
     tags: ["아침식사", "데이트", "저녁식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-08T02:00:09.268515",
   },
   {
@@ -376,7 +376,7 @@ export const foodItems = [
     address: "서울특별시 용산구 10-76",
     menu: "짜장면",
     tags: ["고급스러운", "데이트", "캐주얼한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-08-20T02:00:09.268525",
   },
   {
@@ -386,7 +386,7 @@ export const foodItems = [
     address: "서울특별시 성동구 94-40",
     menu: "해장국",
     tags: ["점심식사", "캐주얼한", "가족"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-30T02:00:09.268534",
   },
   {
@@ -396,7 +396,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 30-58",
     menu: "김치찌개",
     tags: ["점심식사", "단체회식", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-12-22T02:00:09.268543",
   },
   {
@@ -406,7 +406,7 @@ export const foodItems = [
     address: "서울특별시 성동구 23-34",
     menu: "우동",
     tags: ["조용한", "단체회식", "아침식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-27T02:00:09.268553",
   },
   {
@@ -416,7 +416,7 @@ export const foodItems = [
     address: "서울특별시 서초구 100-8",
     menu: "스테이크",
     tags: ["단체회식", "가성비", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-05T02:00:09.268562",
   },
   {
@@ -426,7 +426,7 @@ export const foodItems = [
     address: "서울특별시 성동구 75-55",
     menu: "쌀국수",
     tags: ["단체회식", "야식", "아침식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-04T02:00:09.268571",
   },
   {
@@ -436,7 +436,7 @@ export const foodItems = [
     address: "서울특별시 마포구 2-16",
     menu: "햄버거",
     tags: ["데이트", "술모임", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-30T02:00:09.268580",
   },
   {
@@ -446,7 +446,7 @@ export const foodItems = [
     address: "서울특별시 관악구 39-20",
     menu: "김치찌개",
     tags: ["가성비", "야식", "가족"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-12T02:00:09.268589",
   },
   {
@@ -456,7 +456,7 @@ export const foodItems = [
     address: "서울특별시 종로구 78-77",
     menu: "해장국",
     tags: ["캐주얼한", "야식", "가성비"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-02T02:00:09.268598",
   },
   {
@@ -466,7 +466,7 @@ export const foodItems = [
     address: "서울특별시 마포구 72-63",
     menu: "파스타",
     tags: ["가족", "깔끔한", "아침식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-13T02:00:09.268607",
   },
   {
@@ -476,7 +476,7 @@ export const foodItems = [
     address: "서울특별시 송파구 1-41",
     menu: "햄버거",
     tags: ["야식", "단체회식", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-09-17T02:00:09.268616",
   },
   {
@@ -486,7 +486,7 @@ export const foodItems = [
     address: "서울특별시 서초구 92-74",
     menu: "피자",
     tags: ["단체회식", "기념일", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-07-23T02:00:09.268626",
   },
   {
@@ -496,7 +496,7 @@ export const foodItems = [
     address: "서울특별시 강남구 53-51",
     menu: "햄버거",
     tags: ["아침식사", "단체회식", "야식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-08T02:00:09.268635",
   },
   {
@@ -506,7 +506,7 @@ export const foodItems = [
     address: "서울특별시 동작구 22-28",
     menu: "떡볶이",
     tags: ["캐주얼한", "혼밥", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-15T02:00:09.268645",
   },
   {
@@ -516,7 +516,7 @@ export const foodItems = [
     address: "서울특별시 송파구 21-1",
     menu: "된장찌개",
     tags: ["야식", "시끌벅적한", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-02T02:00:09.268654",
   },
   {
@@ -526,7 +526,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 25-34",
     menu: "피자",
     tags: ["데이트", "가족", "조용한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-12-12T02:00:09.268663",
   },
   {
@@ -536,7 +536,7 @@ export const foodItems = [
     address: "서울특별시 중랑구 74-20",
     menu: "김치찌개",
     tags: ["조용한", "깔끔한", "데이트"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-03T02:00:09.268677",
   },
   {
@@ -546,7 +546,7 @@ export const foodItems = [
     address: "서울특별시 강남구 74-30",
     menu: "냉면",
     tags: ["가성비", "혼밥", "시끌벅적한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-15T02:00:09.268693",
   },
   {
@@ -556,7 +556,7 @@ export const foodItems = [
     address: "서울특별시 도봉구 38-16",
     menu: "된장찌개",
     tags: ["단체회식", "조용한", "시끌벅적한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-01T02:00:09.268707",
   },
   {
@@ -566,7 +566,7 @@ export const foodItems = [
     address: "서울특별시 서초구 35-71",
     menu: "김치찌개",
     tags: ["야식", "가족", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-16T02:00:09.268717",
   },
   {
@@ -576,7 +576,7 @@ export const foodItems = [
     address: "서울특별시 강남구 93-48",
     menu: "떡볶이",
     tags: ["캐주얼한", "조용한", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-07T02:00:09.268726",
   },
   {
@@ -586,7 +586,7 @@ export const foodItems = [
     address: "서울특별시 송파구 100-15",
     menu: "우동",
     tags: ["야식", "저녁식사", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-17T02:00:09.268736",
   },
   {
@@ -596,7 +596,7 @@ export const foodItems = [
     address: "서울특별시 노원구 6-2",
     menu: "피자",
     tags: ["시끌벅적한", "단체회식", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-09T02:00:09.268745",
   },
   {
@@ -606,7 +606,7 @@ export const foodItems = [
     address: "서울특별시 서초구 42-46",
     menu: "스시",
     tags: ["혼밥", "단체회식", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-01T02:00:09.268754",
   },
   {
@@ -616,7 +616,7 @@ export const foodItems = [
     address: "서울특별시 구로구 49-31",
     menu: "돈까스",
     tags: ["야식", "점심식사", "가성비"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-29T02:00:09.268765",
   },
   {
@@ -626,7 +626,7 @@ export const foodItems = [
     address: "서울특별시 성북구 44-28",
     menu: "햄버거",
     tags: ["데이트", "점심식사", "저녁식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-01T02:00:09.268779",
   },
   {
@@ -636,7 +636,7 @@ export const foodItems = [
     address: "서울특별시 노원구 100-21",
     menu: "짬뽕",
     tags: ["저녁식사", "고급스러운", "아침식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-13T02:00:09.268794",
   },
   {
@@ -646,7 +646,7 @@ export const foodItems = [
     address: "서울특별시 송파구 81-37",
     menu: "해장국",
     tags: ["단체회식", "가족", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-08T02:00:09.268808",
   },
   {
@@ -656,7 +656,7 @@ export const foodItems = [
     address: "서울특별시 동작구 85-41",
     menu: "김치찌개",
     tags: ["야식", "점심식사", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-24T02:00:09.268817",
   },
   {
@@ -666,7 +666,7 @@ export const foodItems = [
     address: "서울특별시 도봉구 73-22",
     menu: "파스타",
     tags: ["기념일", "시끌벅적한", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-02T02:00:09.268826",
   },
   {
@@ -676,7 +676,7 @@ export const foodItems = [
     address: "서울특별시 양천구 65-62",
     menu: "쌀국수",
     tags: ["기념일", "혼밥", "가족"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-14T02:00:09.268839",
   },
   {
@@ -686,7 +686,7 @@ export const foodItems = [
     address: "서울특별시 마포구 42-27",
     menu: "우동",
     tags: ["캐주얼한", "가성비", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-01T02:00:09.268854",
   },
   {
@@ -696,7 +696,7 @@ export const foodItems = [
     address: "서울특별시 마포구 38-53",
     menu: "삼겹살",
     tags: ["단체회식", "술모임", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-13T02:00:09.268864",
   },
   {
@@ -706,7 +706,7 @@ export const foodItems = [
     address: "서울특별시 양천구 38-52",
     menu: "파스타",
     tags: ["가성비", "깔끔한", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-24T02:00:09.268874",
   },
   {
@@ -716,7 +716,7 @@ export const foodItems = [
     address: "서울특별시 용산구 46-33",
     menu: "치킨",
     tags: ["저녁식사", "혼밥", "캐주얼한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-31T02:00:09.268883",
   },
   {
@@ -726,7 +726,7 @@ export const foodItems = [
     address: "서울특별시 강북구 45-31",
     menu: "된장찌개",
     tags: ["캐주얼한", "혼밥", "데이트"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-07-16T02:00:09.268892",
   },
   {
@@ -736,7 +736,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 19-98",
     menu: "쌀국수",
     tags: ["저녁식사", "혼밥", "캐주얼한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-12T02:00:09.268903",
   },
   {
@@ -746,7 +746,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 15-13",
     menu: "피자",
     tags: ["가성비", "조용한", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-12-15T02:00:09.268912",
   },
   {
@@ -756,7 +756,7 @@ export const foodItems = [
     address: "서울특별시 구로구 93-54",
     menu: "치킨",
     tags: ["고급스러운", "기념일", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-05-15T02:00:09.268921",
   },
   {
@@ -766,7 +766,7 @@ export const foodItems = [
     address: "서울특별시 용산구 65-27",
     menu: "치킨",
     tags: ["기념일", "점심식사", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-01T02:00:09.268930",
   },
   {
@@ -776,7 +776,7 @@ export const foodItems = [
     address: "서울특별시 성북구 81-75",
     menu: "해장국",
     tags: ["가성비", "기념일", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-12-20T02:00:09.268939",
   },
   {
@@ -786,7 +786,7 @@ export const foodItems = [
     address: "서울특별시 중구 34-81",
     menu: "피자",
     tags: ["캐주얼한", "시끌벅적한", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-27T02:00:09.268948",
   },
   {
@@ -796,7 +796,7 @@ export const foodItems = [
     address: "서울특별시 용산구 4-83",
     menu: "짜장면",
     tags: ["가족", "술모임", "혼밥"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-08-26T02:00:09.268957",
   },
   {
@@ -806,7 +806,7 @@ export const foodItems = [
     address: "서울특별시 양천구 40-84",
     menu: "햄버거",
     tags: ["야식", "기념일", "데이트"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-12T02:00:09.268966",
   },
   {
@@ -816,7 +816,7 @@ export const foodItems = [
     address: "서울특별시 성북구 40-31",
     menu: "우동",
     tags: ["깔끔한", "단체회식", "캐주얼한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-29T02:00:09.268976",
   },
   {
@@ -826,7 +826,7 @@ export const foodItems = [
     address: "서울특별시 도봉구 34-17",
     menu: "짜장면",
     tags: ["야식", "시끌벅적한", "고급스러운"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-06T02:00:09.268986",
   },
   {
@@ -836,7 +836,7 @@ export const foodItems = [
     address: "서울특별시 도봉구 83-46",
     menu: "김치찌개",
     tags: ["캐주얼한", "점심식사", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-31T02:00:09.268995",
   },
   {
@@ -846,7 +846,7 @@ export const foodItems = [
     address: "서울특별시 양천구 47-15",
     menu: "된장찌개",
     tags: ["점심식사", "혼밥", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-09-22T02:00:09.269005",
   },
   {
@@ -856,7 +856,7 @@ export const foodItems = [
     address: "서울특별시 성북구 64-21",
     menu: "냉면",
     tags: ["고급스러운", "시끌벅적한", "조용한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-04T02:00:09.269015",
   },
   {
@@ -866,7 +866,7 @@ export const foodItems = [
     address: "서울특별시 성동구 4-54",
     menu: "비빔밥",
     tags: ["점심식사", "기념일", "깔끔한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-03-09T02:00:09.269024",
   },
   {
@@ -876,7 +876,7 @@ export const foodItems = [
     address: "서울특별시 강북구 67-64",
     menu: "햄버거",
     tags: ["기념일", "저녁식사", "시끌벅적한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-18T02:00:09.269033",
   },
   {
@@ -886,7 +886,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 87-28",
     menu: "비빔밥",
     tags: ["가족", "고급스러운", "기념일"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-10-01T02:00:09.269042",
   },
   {
@@ -896,7 +896,7 @@ export const foodItems = [
     address: "서울특별시 강북구 20-91",
     menu: "쌀국수",
     tags: ["가족", "아침식사", "캐주얼한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-01-01T02:00:09.269051",
   },
   {
@@ -906,7 +906,7 @@ export const foodItems = [
     address: "서울특별시 마포구 51-30",
     menu: "짜장면",
     tags: ["데이트", "조용한", "야식"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-10T02:00:09.269060",
   },
   {
@@ -916,7 +916,7 @@ export const foodItems = [
     address: "서울특별시 동작구 34-69",
     menu: "피자",
     tags: ["시끌벅적한", "아침식사", "술모임"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-28T02:00:09.269070",
   },
   {
@@ -926,7 +926,7 @@ export const foodItems = [
     address: "서울특별시 영등포구 11-26",
     menu: "파스타",
     tags: ["가족", "조용한", "점심식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-07-14T02:00:09.269079",
   },
   {
@@ -936,7 +936,7 @@ export const foodItems = [
     address: "서울특별시 서초구 63-26",
     menu: "치킨",
     tags: ["혼밥", "아침식사", "시끌벅적한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-27T02:00:09.269088",
   },
   {
@@ -946,7 +946,7 @@ export const foodItems = [
     address: "서울특별시 강남구 46-74",
     menu: "햄버거",
     tags: ["아침식사", "혼밥", "가성비"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-11-07T02:00:09.269097",
   },
   {
@@ -956,7 +956,7 @@ export const foodItems = [
     address: "서울특별시 강북구 56-80",
     menu: "파스타",
     tags: ["가성비", "혼밥", "데이트"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-29T02:00:09.269111",
   },
   {
@@ -966,7 +966,7 @@ export const foodItems = [
     address: "서울특별시 노원구 19-59",
     menu: "스테이크",
     tags: ["데이트", "혼밥", "시끌벅적한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-04-06T02:00:09.269125",
   },
   {
@@ -976,7 +976,7 @@ export const foodItems = [
     address: "서울특별시 서초구 57-10",
     menu: "떡볶이",
     tags: ["깔끔한", "캐주얼한", "저녁식사"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-06-27T02:00:09.269134",
   },
   {
@@ -986,7 +986,7 @@ export const foodItems = [
     address: "서울특별시 은평구 40-33",
     menu: "쌀국수",
     tags: ["캐주얼한", "혼밥", "시끌벅적한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2025-02-12T02:00:09.269144",
   },
   {
@@ -996,7 +996,7 @@ export const foodItems = [
     address: "서울특별시 구로구 90-25",
     menu: "쌀국수",
     tags: ["시끌벅적한", "점심식사", "캐주얼한"],
-    image: "/logo/logo.png",
+    image: "/logo/logo.svg",
     createdAt: "2024-08-18T02:00:09.269153",
   },
 ];
