@@ -1,13 +1,13 @@
 import FoodBox from "@/app/components/common/FoodBox";
 
-interface Props {
+interface FoodListSectionProps {
   items: string[];
   search: string;
   isSearched: boolean;
   onClickItem: (item: string) => void;
 }
 
-export default function FoodListSection({ items, search, isSearched, onClickItem }: Props) {
+export default function FoodListSection({ items, search, isSearched, onClickItem }: FoodListSectionProps) {
   if (isSearched && search.trim() && items.length === 0) {
     return (
       <div className="mt-10 text-center text-sm text-gray-500">
