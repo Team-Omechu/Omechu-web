@@ -10,7 +10,7 @@ import { distance } from "fastest-levenshtein";
 
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
-import { foodItems } from "@/app/constant/restautantFoodList"; // 음식 데이터
+import { foodItems } from "@/app/constant/restaurantFoodList2"; // 음식 데이터
 
 export default function Favorites() {
   const router = useRouter();
@@ -77,6 +77,12 @@ export default function Favorites() {
     }
   }, [isLoading]);
 
+  const sortedItems = [...filteredItems].sort((a, b) => {
+    const aIdx = foodItems.indexOf(a);
+    const bIdx = foodItems.indexOf(b);
+    return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
+  });
+
   return (
     <>
       <Header
@@ -94,7 +100,7 @@ export default function Favorites() {
       />
       <main className="min-h-full w-full px-5 pb-8 pt-3">
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section className="flex w-full justify-end gap-2 py-5 pr-1 text-sm text-[#828282]">
+        <section className="flex w-full justify-end gap-2 pb-5 pr-1 pt-2 text-sm text-[#828282]">
           <button
             className={
               sortOrder === "latest" ? "font-semibold text-[#393939]" : ""

@@ -21,7 +21,7 @@ export const foodItems = [
     address: "서울특별시 마포구 합정동 123-45",
     menu: "짜장면",
     tags: ["아침식사", "데이트", "기념일"],
-    image: "/오메추-로고-보라색버전-모자4 1.png",
+    image: "/logo/logo.png",
   },
   {
     name: "맛있는김밥",
