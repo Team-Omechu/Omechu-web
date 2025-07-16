@@ -2,13 +2,13 @@ import Image from "next/image";
 
 import FilterTagList from "../restaurant/FilterSection/FilterTagList";
 
-interface Props {
+interface FilterSectionProps {
   tags: string[];
   onRemove: (tag: string) => void;
   onOpen: () => void;
 }
 
-export default function FilterSection({ tags, onRemove, onOpen }: Props) {
+export default function FilterSection({ tags, onRemove, onOpen }: FilterSectionProps) {
     return (
         <div className="mt-3 flex items-center gap-2">
             <FilterTagList
