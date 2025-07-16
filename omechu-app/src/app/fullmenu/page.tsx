@@ -3,19 +3,18 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import FloatingActionButton from "../components/common/FloatingActionButton";
-import FoodBox from "../components/common/FoodBox";
 import SearchBar from "../components/common/SearchBar";
-import TagItem from "../components/common/TagItem";
 import FilterModal from "../components/fullmenu/FilterModal";
 import { suggestionList } from "../constant/suggestionList";
 import { foodItems } from "../constant/foodItems";
 import ModalWrapper from "../components/common/ModalWrapper";
-import FilterTagList from "../components/restaurant/FilterTagList";
 import SortSelector, { SortOption } from "../components/common/SortSelector";
+import FilterSection from "../components/fullmenu/FilterSection";
+import LoadingIndicator from "../components/common/LoadingIndicator";
+import FoodListSection from "../components/fullmenu/FoodListSection";
 
 export default function FullMenu() {
   const router = useRouter();
@@ -121,24 +120,11 @@ export default function FullMenu() {
           suggestionList={suggestionList}
         />
 
-        <div className="mt-3 flex items-center gap-2">
-          <FilterTagList
-            tags={selectedFilters}
-            onRemove={(tag) =>
-              setSelectedFilters((prev) => prev.filter((t) => t !== tag))
-            }
-            className="px-5"
-          />
-          <button className="ml-auto" onClick={() => setIsFilterOpen(true)}>
-            <Image
-              src={"/customselect.png"}
-              alt="사용자필터"
-              className="h-8 w-8"
-              width={32}
-              height={32}
-            />
-          </button>
-        </div>
+        <FilterSection
+          tags={selectedFilters}
+          onRemove={(tag) => setSelectedFilters(prev => prev.filter(t => t !== tag))}
+          onOpen={() => setIsFilterOpen(true)}
+        />
 
         {isFilterOpen && (
           <ModalWrapper>
@@ -158,40 +144,18 @@ export default function FullMenu() {
           onSelect={setSortMode}
         />
 
-        {isSearched && search.trim() && filteredItems.length === 0 && (
-          <div className="mt-10 text-center text-sm text-gray-500">
-            ‘{search}’에 대한 검색 결과가 없습니다.
-          </div>
-        )}
-
-        {filteredItems.length > 0 && (
-          <div className="mt-4 grid grid-cols-3 gap-4">
-            {visibleItems.map((food, idx) => (
-              <FoodBox
-                key={idx}
-                title={food}
-                imageUrl="/logo.png"
-                isExcluded={false}
-                isToggled={false}
-                onToggle={() => {}}
-                onClick={() =>
-                  router.push(
-                    `/fullmenu/menu-detail?name=${encodeURIComponent(food)}`,
-                  )
-                }
-              />
-            ))}
-          </div>
-        )}
+        <FoodListSection
+          items={visibleItems}
+          search={search}
+          isSearched={isSearched}
+          onClickItem={(food) =>
+            router.push(`/fullmenu/menu-detail?name=${encodeURIComponent(food)}`)
+          }
+        />
 
         <div ref={loaderRef} className="h-[1px]" />
 
-        {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
-            <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator />}
 
         <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
       </main>
