@@ -12,6 +12,7 @@ import SearchBar from "../components/common/SearchBar";
 import TagItem from "../components/common/TagItem";
 import FilterModal from "../components/fullmenu/FilterModal";
 import { suggestionList } from "../constant/suggestionList";
+import { foodItems } from "../constant/foodItems";
 
 export default function FullMenu() {
   const router = useRouter();
