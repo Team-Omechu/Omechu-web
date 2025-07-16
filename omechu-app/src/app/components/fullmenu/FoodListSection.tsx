@@ -7,7 +7,12 @@ interface FoodListSectionProps {
   onClickItem: (item: string) => void;
 }
 
-export default function FoodListSection({ items, search, isSearched, onClickItem }: FoodListSectionProps) {
+export default function FoodListSection({
+  items,
+  search,
+  isSearched,
+  onClickItem,
+}: FoodListSectionProps) {
   if (isSearched && search.trim() && items.length === 0) {
     return (
       <div className="mt-10 text-center text-sm text-gray-500">

@@ -122,7 +122,9 @@ export default function FullMenu() {
 
         <FilterSection
           tags={selectedFilters}
-          onRemove={(tag) => setSelectedFilters(prev => prev.filter(t => t !== tag))}
+          onRemove={(tag) =>
+            setSelectedFilters((prev) => prev.filter((t) => t !== tag))
+          }
           onOpen={() => setIsFilterOpen(true)}
         />
 
@@ -149,7 +151,9 @@ export default function FullMenu() {
           search={search}
           isSearched={isSearched}
           onClickItem={(food) =>
-            router.push(`/fullmenu/menu-detail?name=${encodeURIComponent(food)}`)
+            router.push(
+              `/fullmenu/menu-detail?name=${encodeURIComponent(food)}`,
+            )
           }
         />
 

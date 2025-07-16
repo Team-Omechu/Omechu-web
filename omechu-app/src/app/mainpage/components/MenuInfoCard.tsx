@@ -14,10 +14,14 @@ interface MenuDetail {
   onRecipeClick?: () => void;
 }
 
-export default function MenuInfo({ nutrition, allergens, onRecipeClick }: MenuDetail) {
+export default function MenuInfo({
+  nutrition,
+  allergens,
+  onRecipeClick,
+}: MenuDetail) {
   return (
     <div>
-      <h2 className="text-base mb-2 ml-1 font-semibold">메뉴 정보</h2>
+      <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
       <div className="w-full rounded-md border border-gray-300 bg-white p-4 text-sm">
         {/* 기본 영양 정보 */}
         <div className="text-sm text-gray-800">
@@ -55,7 +59,7 @@ export default function MenuInfo({ nutrition, allergens, onRecipeClick }: MenuDe
 
           {/* 레시피 */}
           <p className="mb-1 font-medium text-[#A3A3A3]">레시피</p>
-          <button 
+          <button
             className="mb-3 border-b border-b-[#828282] text-sm text-[#393939]"
             onClick={onRecipeClick}
           >

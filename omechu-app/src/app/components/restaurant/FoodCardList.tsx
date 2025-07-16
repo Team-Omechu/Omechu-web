@@ -14,11 +14,7 @@ export default function FoodCardList({
   return (
     <div className="flex flex-col gap-4">
       {items.map((item, idx) => (
-        <FoodCard
-          key={idx}
-          item={item}
-          onClick={() => onItemClick(item.id)}
-        />
+        <FoodCard key={idx} item={item} onClick={() => onItemClick(item.id)} />
       ))}
     </div>
   );

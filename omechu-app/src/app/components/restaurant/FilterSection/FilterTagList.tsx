@@ -6,7 +6,11 @@ type FilterTagListProps = {
   className?: string;
 };
 
-export default function FilterTagList({ tags, onRemove, className }: FilterTagListProps) {
+export default function FilterTagList({
+  tags,
+  onRemove,
+  className,
+}: FilterTagListProps) {
   return (
     <div className="mx-2 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
       {tags.map((tag, idx) => (

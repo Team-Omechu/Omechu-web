@@ -214,10 +214,11 @@ export default function Restaurant() {
         <SearchResultEmpty
           search={search}
           similarItems={similarItems}
-          onItemClick={(id) => router.push(`/restaurant/restaurant-detail/${id}`)}
+          onItemClick={(id) =>
+            router.push(`/restaurant/restaurant-detail/${id}`)
+          }
         />
       )}
-
 
       {/* 음식 카드 리스트 */}
       <FoodCardList
