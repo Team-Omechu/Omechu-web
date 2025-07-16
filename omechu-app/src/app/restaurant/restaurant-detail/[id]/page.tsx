@@ -9,6 +9,7 @@ import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ReportModal from "@/app/components/restaurant/ReportModal";
+import ReviewModal from "@/app/components/restaurant/restaurant-detail/ReviewModal";
 import Review from "@/app/components/restaurant/Review";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 import {
@@ -27,7 +28,10 @@ export default function RestaurantDetail() {
   const [showAddress, setShowAddress] = useState(false);
 
   // 사용자가 클릭한 별점 저장 (후기 작성용)
-  const [rating, setRating] = useState(0); // 0~5점
+  // const [rating, setRating] = useState(0); // 0~5점
+
+  // 후기 작성 모달 열림 여부
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   // 현재 옵션 메뉴가 열려있는 후기의 ID (없으면 null)
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
@@ -250,14 +254,29 @@ export default function RestaurantDetail() {
                 return (
                   <button
                     key={score}
-                    onClick={() => setRating(score)}
+                    onClick={() => {
+                      setShowReviewModal(true);
+                    }}
                     className="h-fit w-fit text-3xl text-[#1F9BDA]"
                   >
-                    {score <= rating ? "★" : "☆"}
+                    ☆
                   </button>
                 );
               })}
             </div>
+            {showReviewModal && (
+              <ModalWrapper>
+                <ReviewModal
+                  restaurantName={restaurant.name}
+                  onClose={() => setShowReviewModal(false)}
+                  onSubmit={(rating, tags, images, comment) => {
+                    // 후기 제출 처리 로직
+                    console.log({ rating, tags, images, comment });
+                    setShowReviewModal(false);
+                  }}
+                />
+              </ModalWrapper>
+            )}
             <span className="text-base font-normal text-[#828282]">
               후기를 남겨주세요!
             </span>
