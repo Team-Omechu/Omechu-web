@@ -3,7 +3,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { distance } from "fastest-levenshtein";
@@ -14,8 +13,6 @@ import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음�
 import { suggestionList } from "@/app/constant/suggestionList";
 
 import FloatingActionButton from "../components/common/FloatingActionButton";
-import FoodCard from "../components/common/FoodCard";
-import FilterTagList from "../components/restaurant/FilterTagList";
 import KeywordSelector from "../components/restaurant/KeywordSection/KeywordSelector";
 import ModalWrapper from "../components/common/ModalWrapper";
 import SortSelector, { SortOption } from "../components/common/SortSelector";
@@ -23,6 +20,7 @@ import LoadingIndicator from "../components/common/LoadingIndicator";
 import KeywordToggleSection from "../components/restaurant/KeywordSection/KeywordToggleSection";
 import SearchResultEmpty from "../components/restaurant/SearchResultEmpty";
 import FoodCardList from "../components/restaurant/FoodCardList";
+import FilterSection from "../components/restaurant/FilterSection/FilterSection";
 
 export default function Restaurant() {
   const keywordList = [
@@ -155,30 +153,13 @@ export default function Restaurant() {
         suggestionList={suggestionList}
       />
 
-      <div className="mt-3 flex items-center gap-2">
-        <button className="flex flex-shrink-0 items-center justify-between gap-1">
-          <Image src={"/myLocation.svg"} alt="내 위치" width={16} height={16} />
-          내 위치
-        </button>
-        <FilterTagList
-          tags={selectedFilters}
-          onRemove={(tag) =>
-            setSelectedFilters((prev) => prev.filter((t) => t !== tag))
-          }
-          className="px-2"
-        />
-        <button
-          className="ml-auto flex-shrink-0"
-          onClick={() => setIsFilterOpen(true)}
-        >
-          <Image
-            src={"/customselect.png"}
-            alt="사용자필터"
-            width={32}
-            height={32}
-          />
-        </button>
-      </div>
+      <FilterSection
+        selectedFilters={selectedFilters}
+        onRemoveFilter={(tag) =>
+          setSelectedFilters((prev) => prev.filter((t) => t !== tag))
+        }
+        onOpenFilterModal={() => setIsFilterOpen(true)}
+      />
 
       {isFilterOpen && (
         <ModalWrapper>
