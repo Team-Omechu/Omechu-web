@@ -1,3 +1,5 @@
+import Keyword from "@/app/components/common/Keyword";
+
 type KeywordSelectorProps = {
   keywords: string[];
   selected: string[];
@@ -16,18 +18,16 @@ export default function KeywordSelector({
       {keywords.map((keyword, idx) => {
         const isSelected = selected.includes(keyword);
         return (
-          <button
-            key={idx}
+          <Keyword
+            key={keyword}
+            label={keyword}
+            selected={isSelected}
             onClick={() => {
-              if (isSelected || selected.length < maxSelected)
+              if (isSelected || selected.length < maxSelected) {
                 onToggle(keyword);
+              }
             }}
-            className={`h-7 w-20 rounded-full border border-gray-400 text-sm ${
-              isSelected ? "bg-[#FB4746] text-white" : "bg-white text-gray-600"
-            }`}
-          >
-            {keyword}
-          </button>
+          />
         );
       })}
     </div>
