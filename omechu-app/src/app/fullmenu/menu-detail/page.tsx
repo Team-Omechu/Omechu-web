@@ -3,10 +3,11 @@
 import { Suspense } from "react";
 
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Header from "@/app/components/common/Header";
-import MenuInfo from "@/app/components/mainpage/MenuInfoCard";
+import { menus } from "@/app/constant/mainpage/resultData";
+import MenuInfo from "@/app/mainpage/components/MenuInfoCard";
 
 export default function MenuDetail() {
   return (
@@ -19,6 +20,13 @@ function MenuDetailClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const params = useParams();
+  const menuId = Number(params.menuId);
+  
+  const menu = menus.find((m) => m.id === menuId);
+  if (!menu) {
+    return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
+  }
 
   const name = searchParams.get("name");
   const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
@@ -63,7 +71,7 @@ function MenuDetailClient() {
         </div>
 
         <section className="px-4">
-          <MenuInfo onRecipeClick={handleClick} />
+          <MenuInfo nutrition={menu.nutrition} allergens={menu.allergens} onRecipeClick={handleClick} />
         </section>
       </main>
     </>
