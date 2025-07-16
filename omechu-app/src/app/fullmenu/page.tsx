@@ -20,8 +20,8 @@ export default function FullMenu() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
   const sortOptions: SortOption[] = [
-    { label: "추천", value: "recommend" },
-    { label: "최근 본 메뉴", value: "recent" },
+    { label: "추천 순", value: "recommend" },
+    { label: "최근 본 순", value: "recent" },
   ];
 
   type SortValue = SortOption["value"];
