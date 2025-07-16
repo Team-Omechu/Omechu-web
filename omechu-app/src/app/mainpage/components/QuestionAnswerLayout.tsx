@@ -15,7 +15,7 @@ const QuestionAnswerLayout = ({
 }: QuestionAnswerLayoutProps) => {
   return (
     <div className="flex w-full flex-col items-center px-4 py-6">
-      <section className="my-20 text-center">
+      <section className="my-20 h-[32px] text-center">
         <h1 className="whitespace-pre-line text-2xl font-bold text-black">
           {title}
         </h1>
