@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import FloatingActionButton from "../components/common/FloatingActionButton";
-import BottomNav from "../components/common/Bottom";
 import FoodBox from "../components/common/FoodBox";
 import SearchBar from "../components/common/SearchBar";
 import TagItem from "../components/common/TagItem";
