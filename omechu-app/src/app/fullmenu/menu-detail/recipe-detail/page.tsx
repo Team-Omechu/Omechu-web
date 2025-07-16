@@ -95,7 +95,7 @@ function RecipeDetailClient() {
               {step.image && (
                 <div className="mt-2 flex justify-center">
                   <Image
-                    src={"logo.png"}
+                    src={"/logo.png"}
                     alt={`step-${index + 1}`}
                     width={200}
                     height={150}
