@@ -153,6 +153,7 @@ export default function Restaurant() {
           onRemove={(tag) =>
             setSelectedFilters((prev) => prev.filter((t) => t !== tag))
           }
+          className="px-2"
         />
         <button
           className="ml-auto flex-shrink-0"

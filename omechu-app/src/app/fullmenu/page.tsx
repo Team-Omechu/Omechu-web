@@ -14,6 +14,7 @@ import FilterModal from "../components/fullmenu/FilterModal";
 import { suggestionList } from "../constant/suggestionList";
 import { foodItems } from "../constant/foodItems";
 import ModalWrapper from "../components/common/ModalWrapper";
+import FilterTagList from "../components/restaurant/FilterTagList";
 
 export default function FullMenu() {
   const router = useRouter();
@@ -113,19 +114,14 @@ export default function FullMenu() {
           suggestionList={suggestionList}
         />
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          {selectedFilters.map((tag, idx) => (
-            <TagItem
-              key={idx}
-              label={tag}
-              onRemove={() =>
-                setSelectedFilters((prev) =>
-                  prev.filter((item) => item !== tag),
-                )
-              }
-              className="px-6"
-            />
-          ))}
+        <div className="mt-3 flex items-center gap-2">
+          <FilterTagList
+            tags={selectedFilters}
+            onRemove={(tag) =>
+              setSelectedFilters((prev) => prev.filter((t) => t !== tag))
+            }
+            className="px-5"
+          />
           <button className="ml-auto" onClick={() => setIsFilterOpen(true)}>
             <Image
               src={"/customselect.png"}
