@@ -21,15 +21,14 @@ export default function SortSelector({
       {options.map((option, idx) => (
         <div key={option.value} className="flex items-center gap-2">
           {idx !== 0 && <div className="h-3 w-px bg-gray-400" />}
-          <span
+          <button
             className={
               selected === option.value ? "font-semibold" : "text-gray-500"
             }
             onClick={() => onSelect(option.value)}
-            role="button"
           >
             {option.label}
-          </span>
+          </button>
         </div>
       ))}
     </div>
