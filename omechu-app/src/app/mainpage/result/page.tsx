@@ -8,7 +8,7 @@ import AlertModal from "@/app/components/common/AlertModal";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import {
   menus as defaultMenus,
-  tagData
+  tagData,
 } from "@/app/constant/mainpage/resultData";
 import MenuCard from "@/app/mainpage/components/MenuCard";
 
@@ -99,8 +99,8 @@ export default function ResultPage() {
       </div>
 
       <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
-        {tagData?.map(({tag, description}) => (
-          <TagCard key={tag} tag={tag} description={description}/>
+        {tagData?.map(({ tag, description }) => (
+          <TagCard key={tag} tag={tag} description={description} />
         ))}
       </div>
 
