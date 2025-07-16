@@ -31,6 +31,10 @@ export default function FullMenu() {
 
   const visibleItems = filteredItems.slice(0, visibleCount);
 
+  const scrollToTop = () => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   // 무한 스크롤 구현에 대한 설명:
   // 1. 사용자가 스크롤을 내리면 IntersectionObserver가 페이지 하단의 특정 요소(loaderRef)를 감지합니다.
   // 2. 해당 요소가 뷰포트에 들어오면 observerCallback이 호출되어,
@@ -110,7 +114,7 @@ export default function FullMenu() {
 
   return (
     <>
-      <main className="min-h-screen p-4">
+      <main ref={mainRef} className="min-h-screen p-4">
         <SearchBar
           placeholder="음식명을 검색하세요"
           inputValue={search}
@@ -207,6 +211,8 @@ export default function FullMenu() {
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
+
+        <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
       </main>
 
       <BottomNav />
