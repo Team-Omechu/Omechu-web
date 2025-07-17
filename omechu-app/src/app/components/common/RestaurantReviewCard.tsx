@@ -164,7 +164,7 @@ export default function FoodReviewCard({
               {reviewImages.map((imgSrc, i) =>
                 imgSrc ? (
                   <ReviewImage
-                    key={i}
+                    key={`${imgSrc}-${i}`}
                     src={imgSrc}
                     alt={`리뷰 이미지 ${i + 1}`}
                   />
