@@ -151,7 +151,7 @@ export default function MyActivity() {
                 )
                 .slice(0, visibleCount)
                 .map((review, idx) => (
-                  <FoodReviewCard key={idx} {...review} />
+                  <FoodReviewCard key={review.id} {...review} />
                 ))}
             </section>
           </>
