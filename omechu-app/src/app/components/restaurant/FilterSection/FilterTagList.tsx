@@ -18,7 +18,7 @@ export default function FilterTagList({
           key={tag}
           label={tag}
           onRemove={() => onRemove(tag)}
-          className={`${className}`}
+          className={className}
         />
       ))}
     </div>
