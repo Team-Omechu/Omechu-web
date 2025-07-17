@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -10,7 +11,7 @@ import { distance } from "fastest-levenshtein";
 
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList2"; // 음식 데이터
+import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 
 export default function Favorites() {
   const router = useRouter();
