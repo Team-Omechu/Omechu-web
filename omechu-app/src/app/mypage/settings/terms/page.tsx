@@ -33,7 +33,7 @@ export default function Terms() {
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
               height={30}

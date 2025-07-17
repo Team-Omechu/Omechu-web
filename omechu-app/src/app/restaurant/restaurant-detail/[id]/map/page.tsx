@@ -49,7 +49,7 @@ export default function MapPage() {
         leftChild={
           <button onClick={() => router.back()}>
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt="뒤로가기"
               width={22}
               height={30}
