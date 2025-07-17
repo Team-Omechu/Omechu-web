@@ -178,7 +178,7 @@ export default function FoodReviewCard({
             <div className="flex gap-2">
               {tags.map((item, index) => (
                 <div
-                  key={index}
+                  key={`${item}-${index}`}
                   className="flex h-6 w-fit items-center justify-center rounded-3xl border-[1px] border-[#A3A3A3] px-2 pt-0.5"
                 >
                   <span className="text-sm font-normal text-[#A3A3A3]">
