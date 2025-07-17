@@ -50,6 +50,15 @@ export default function RestaurantDetail() {
   // 후기 정렬 기준 상태값 (기본: 추천순)
   const [sortType, setSortType] = useState<"recommend" | "latest">("recommend");
 
+  // 좋아요 상태 관리 (임시로 하트 클릭 시 토글)
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 하트 클릭 시 좋아요 상태 토글
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked((prev) => !prev);
+  };
+
   // id에 해당하는 맛집 정보 찾기
   const restaurant = Restaurants.find((item) => item.id === id);
 
@@ -110,10 +119,21 @@ export default function RestaurantDetail() {
       {/* 메인 Container*/}
       <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4 pb-10">
         {/* 맛집 제목, 사진 */}
-        <section className="mt-3 flex w-full flex-col items-center justify-between gap-2">
-          <h1 className="text-center text-2xl font-bold text-[#1F9BDA]">
-            {restaurant.name}
-          </h1>
+        <section className="flex w-full flex-col items-center justify-between gap-2">
+          <div className="mb-5 mt-4 flex items-center justify-between gap-2">
+            {/* 맛집 이름 */}
+            <h1 className="text-2xl font-bold text-gray-700">
+              {restaurant.name}
+            </h1>
+            <button onClick={handleLikeClick}>
+              <Image
+                src={isLiked ? "/Heart_Filled.svg" : "/Heart.svg"}
+                alt="하트"
+                width={20}
+                height={20}
+              />
+            </button>
+          </div>
           <div className="flex w-full gap-3 overflow-x-auto px-4 py-2">
             {restaurant.images.map((url, idx) => (
               <Image
@@ -137,7 +157,7 @@ export default function RestaurantDetail() {
               width={24}
               height={24}
             />
-            <span className="mt-1 text-center text-lg font-bold text-[#1F9BDA]">
+            <span className="mt-1 text-center text-lg font-bold text-gray-700">
               {restaurant.category}
             </span>
           </div>
