@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import Header from "@/app/components/common/Header";
+import FoodieBox from "@/app/components/mypage/FoodieBox";
 
 export default function FoodieLog() {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -35,7 +36,7 @@ export default function FoodieLog() {
       />
       <main ref={mainRef} className="flex h-screen w-full flex-col px-4">
         {/* 기간 설정 Tab */}
-        <section className="flex h-fit w-full items-center justify-center px-1 pt-3">
+        <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 pt-3">
           {["전체", "1주", "1개월", "3개월", "6개월", "1년", "직접입력"].map(
             (item, idx) => (
               <button
@@ -84,7 +85,36 @@ export default function FoodieLog() {
         </section>
 
         {/* FoodieLog List */}
-        <section className="col-span-3 grid grid-cols-3"></section>
+        <section className="flex w-full items-center justify-center">
+          <div className="grid grid-cols-3 gap-x-3 gap-y-2">
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+            <FoodieBox />
+          </div>
+        </section>
         <FloatingActionButton onClick={scrollToTop} />
       </main>
     </>
