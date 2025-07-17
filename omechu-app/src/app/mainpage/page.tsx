@@ -26,7 +26,7 @@ export default function MainPage() {
         </button>
         <button
           className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] border border-[#00A3FF] bg-[#FFF] p-[1.25rem] text-[#00A3FF]"
-          onClick={() => router.push("mainpage/random")}
+          onClick={() => router.push("mainpage/random-recommend")}
         >
           랜덤추천
         </button>
