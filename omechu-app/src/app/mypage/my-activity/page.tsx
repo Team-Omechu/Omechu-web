@@ -10,8 +10,8 @@ import { distance } from "fastest-levenshtein";
 
 import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodCard from "@/app/components/common/FoodCard";
-import FoodReviewCard from "@/app/components/common/FoodReveiwCard";
 import Header from "@/app/components/common/Header";
+import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
 import SelectTabBar from "@/app/components/mypage/SelectTabBar";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList2";
 
