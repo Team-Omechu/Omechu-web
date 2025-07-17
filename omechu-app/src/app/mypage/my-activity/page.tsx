@@ -46,19 +46,25 @@ export default function MyActivity() {
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
 
-      if (
-        target.isIntersecting &&
-        !isLoading &&
-        visibleCount < filteredItems.length
-      ) {
-        setIsLoading(true); // 로딩 상태 시작
-        setVisibleCount((prev) => Math.min(prev + 5, filteredItems.length)); // 다음 항목 18개 추가
+      if (!target.isIntersecting || isLoading) return;
+
+      setIsLoading(true);
+
+      if (selectedIndex === 0) {
+        // 리뷰 탭
+        setVisibleCount((prev) =>
+          Math.min(prev + 5, mockFoodReviewCardData.length),
+        );
+      } else if (selectedIndex === 1) {
+        // 등록한 맛집 탭
+        setVisibleCount((prev) => Math.min(prev + 5, filteredItems.length));
       }
     },
-    [isLoading, visibleCount, filteredItems.length],
+    [isLoading, selectedIndex, filteredItems.length],
   );
 
   useEffect(() => {
+    if (selectedIndex !== 0 && selectedIndex !== 1) return; // 두 탭 모두 허용
     const observer = new IntersectionObserver(observerCallback, {
       root: null, // 뷰포트를 기준으로 관찰
       rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
@@ -90,6 +96,10 @@ export default function MyActivity() {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  useEffect(() => {
+    setVisibleCount(5);
+  }, [selectedIndex]);
+
   return (
     <>
       <Header
@@ -113,7 +123,7 @@ export default function MyActivity() {
       />
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
+        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-auto scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
@@ -142,6 +152,12 @@ export default function MyActivity() {
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
               {mockFoodReviewCardData
+                .sort((a, b) =>
+                  sortOrder === "Latest"
+                    ? new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                    : (b.recommendCount ?? 0) - (a.recommendCount ?? 0),
+                )
                 .slice(0, visibleCount)
                 .map((review, idx) => (
                   <FoodReviewCard key={idx} {...review} />
@@ -152,7 +168,7 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {/* 등록한 맛집 목록 */}
-            <section className="mt-4 flex flex-col gap-5">
+            <section className="flex flex-col gap-5 mt-4">
               {visibleItems.map((item, idx) => (
                 <div key={idx} className="flex flex-col">
                   <button className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]">
@@ -173,8 +189,8 @@ export default function MyActivity() {
         <div ref={loaderRef} className="h-[1px]" />
 
         {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
+          <div className="flex items-center justify-center h-20 mt-4">
+            <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
