@@ -80,7 +80,7 @@ export default function MyActivity() {
         observer.unobserve(loaderRef.current);
       }
     };
-  }, [observerCallback]);
+  }, [observerCallback, selectedIndex]);
 
   useEffect(() => {
     if (isLoading) {
