@@ -27,7 +27,7 @@ export type RestaurantType = {
 export const Restaurants: RestaurantType[] = [
   {
     id: 1,
-    name: "오레노 라멘 합정 본점 ♥︎",
+    name: "오레노 라멘 합정 본점",
     category: "라멘",
     rating: 4.6,
     reviews: 85,
