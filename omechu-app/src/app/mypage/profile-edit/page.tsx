@@ -25,7 +25,6 @@ export default function ProfileEdit() {
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
-      console.log("선택된 파일:", file);
     }
   };
 
