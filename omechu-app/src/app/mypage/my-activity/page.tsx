@@ -5,9 +5,11 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import FoodReviewCard from "@/app/components/common/FoodReveiwCard";
 import Header from "@/app/components/common/Header";
 import SelectTabBar from "@/app/components/mypage/SelectTabBar";
-import FoodReviewCard from "@/app/components/common/FoodReveiwCard";
+
+import { mockFoodReviewCardData } from "./mockFoodReviewData";
 
 export default function MyActivity() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -59,9 +61,9 @@ export default function MyActivity() {
         </section>
         {/* 리뷰 카드 리스트 */}
         <section className="flex flex-col items-center gap-7">
-          <FoodReviewCard />
-          <FoodReviewCard />
-          <FoodReviewCard />
+          {mockFoodReviewCardData.map((review, idx) => (
+            <FoodReviewCard key={idx} {...review} />
+          ))}
         </section>
       </main>
     </>
