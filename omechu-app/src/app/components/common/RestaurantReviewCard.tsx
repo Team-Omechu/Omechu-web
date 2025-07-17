@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import AlertModal from "./AlertModal";
 import ModalWrapper from "./ModalWrapper";
 
-export interface FoodReviewCardProps {
+export interface RestaurantReviewCardProps {
   id: number;
   createdAt: string;
   restaurantName: string;
@@ -22,7 +22,7 @@ export interface FoodReviewCardProps {
   onNavigate: () => void;
 }
 
-export default function FoodReviewCard({
+export default function RestaurantReviewCard({
   id,
   createdAt,
   restaurantName,
@@ -36,7 +36,7 @@ export default function FoodReviewCard({
   tags,
   onDelete,
   onNavigate,
-}: FoodReviewCardProps) {
+}: RestaurantReviewCardProps) {
   const router = useRouter();
 
   const [showDeletModal, setShowDeleteModal] = useState(false);
@@ -79,8 +79,12 @@ export default function FoodReviewCard({
     );
   }
 
-  function ReviewImage({ src, alt }: { src: string; alt: string }) {
+  const ReviewImage: React.FC<{ src: string; alt: string }> = ({
+    src,
+    alt,
+  }) => {
     const [imgSrc, setImgSrc] = useState(src);
+
     return (
       <div className="relative h-[100px] min-w-[100px] flex-shrink-0">
         <Image
@@ -92,7 +96,7 @@ export default function FoodReviewCard({
         />
       </div>
     );
-  }
+  };
 
   return (
     <>

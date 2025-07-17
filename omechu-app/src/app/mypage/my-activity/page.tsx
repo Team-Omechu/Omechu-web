@@ -15,7 +15,7 @@ import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
 import SelectTabBar from "@/app/components/mypage/SelectTabBar";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList2";
 
-import { mockFoodReviewCardData } from "./mockFoodReviewData";
+import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
 export default function MyActivity() {
   const router = useRouter();
@@ -53,7 +53,7 @@ export default function MyActivity() {
       if (selectedIndex === 0) {
         // 리뷰 탭
         setVisibleCount((prev) =>
-          Math.min(prev + 5, mockFoodReviewCardData.length),
+          Math.min(prev + 5, MOCK_FOOD_REVIEW_CARD_DATA.length),
         );
       } else if (selectedIndex === 1) {
         // 등록한 맛집 탭
@@ -151,7 +151,7 @@ export default function MyActivity() {
             </section>
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
-              {mockFoodReviewCardData
+              {MOCK_FOOD_REVIEW_CARD_DATA.slice()
                 .sort((a, b) =>
                   sortOrder === "Latest"
                     ? new Date(b.createdAt).getTime() -

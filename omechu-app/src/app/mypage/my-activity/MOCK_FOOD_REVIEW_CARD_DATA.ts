@@ -1,7 +1,7 @@
 // mockFoodReviewData.ts
-import { FoodReviewCardProps } from "@/app/components/common/FoodReveiwCard";
+import { RestaurantReviewCardProps } from "@/app/components/common/RestaurantReviewCard";
 
-export const mockFoodReviewCardData: FoodReviewCardProps[] = [
+export const MOCK_FOOD_REVIEW_CARD_DATA: RestaurantReviewCardProps[] = [
   {
     id: 1,
     createdAt: "2025-07-08",
