@@ -140,6 +140,7 @@ export default function MyActivity() {
                 최신 순
               </button>
             </section>
+
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
               {MOCK_FOOD_REVIEW_CARD_DATA.slice()
