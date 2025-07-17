@@ -32,15 +32,17 @@ export default function MyActivity() {
     ? Restaurants.filter((item) => item.menu.includes(search.trim()))
     : Restaurants;
 
+  const visibleItems = filteredItems.slice(0, visibleCount);
+  const [isLoading, setIsLoading] = useState(false);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const LODAING_TIMEOUT = 1800;
+
   const similarItems = Restaurants.filter(
     (item) =>
       distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
       !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
   );
-
-  const visibleItems = filteredItems.slice(0, visibleCount);
-  const [isLoading, setIsLoading] = useState(false);
-  const loaderRef = useRef<HTMLDivElement | null>(null);
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -86,7 +88,7 @@ export default function MyActivity() {
     if (isLoading) {
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 1800); // 1.8초 후 로딩 해제
+      }, LODAING_TIMEOUT); // 1.8초 후 로딩 해제
 
       return () => clearTimeout(timer);
     }
