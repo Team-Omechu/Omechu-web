@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { distance } from "fastest-levenshtein";
 
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodCard from "@/app/components/common/FoodCard";
 import FoodReviewCard from "@/app/components/common/FoodReveiwCard";
 import Header from "@/app/components/common/Header";
@@ -18,12 +19,14 @@ import { mockFoodReviewCardData } from "./mockFoodReviewData";
 
 export default function MyActivity() {
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [sortOrder, setSortOrder] = useState<"Recommended" | "Latest">(
     "Recommended",
   );
   const [search, setSearch] = useState("");
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   const filteredItems = search.trim()
     ? Restaurants.filter((item) => item.menu.includes(search.trim()))
@@ -36,6 +39,56 @@ export default function MyActivity() {
   );
 
   const visibleItems = filteredItems.slice(0, visibleCount);
+  const [isLoading, setIsLoading] = useState(false);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+
+      if (
+        target.isIntersecting &&
+        !isLoading &&
+        visibleCount < filteredItems.length
+      ) {
+        setIsLoading(true); // 로딩 상태 시작
+        setVisibleCount((prev) => Math.min(prev + 5, filteredItems.length)); // 다음 항목 18개 추가
+      }
+    },
+    [isLoading, visibleCount, filteredItems.length],
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null, // 뷰포트를 기준으로 관찰
+      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
+      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+    });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [observerCallback]);
+
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1800); // 1.8초 후 로딩 해제
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
+  const scrollToTop = () => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -58,7 +111,10 @@ export default function MyActivity() {
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
       />
-      <main className="flex min-h-full w-full flex-col items-center px-2 pb-8 pt-3">
+      <main
+        ref={mainRef}
+        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
+      >
         {selectedIndex === 0 && (
           <>
             {/* 필터 - 추천 순 | 최신 순 */}
@@ -85,9 +141,11 @@ export default function MyActivity() {
             </section>
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
-              {mockFoodReviewCardData.map((review, idx) => (
-                <FoodReviewCard key={idx} {...review} />
-              ))}
+              {mockFoodReviewCardData
+                .slice(0, visibleCount)
+                .map((review, idx) => (
+                  <FoodReviewCard key={idx} {...review} />
+                ))}
             </section>
           </>
         )}
@@ -111,7 +169,17 @@ export default function MyActivity() {
             </section>
           </>
         )}
+
+        <div ref={loaderRef} className="h-[1px]" />
+
+        {isLoading && (
+          <div className="mt-4 flex h-20 items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
+            <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
+          </div>
+        )}
       </main>
+      <FloatingActionButton onClick={scrollToTop} />
     </>
   );
 }
