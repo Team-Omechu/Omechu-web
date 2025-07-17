@@ -39,7 +39,7 @@ export default function RestaurantReviewCard({
 }: RestaurantReviewCardProps) {
   const router = useRouter();
 
-  const [showDeletModal, setShowDeleteModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
@@ -193,7 +193,7 @@ export default function RestaurantReviewCard({
             </div>
           )}
         </section>
-        {showDeletModal && (
+        {showDeleteModal && (
           <ModalWrapper>
             <AlertModal
               title="정말로 삭제하시겠어요?"
