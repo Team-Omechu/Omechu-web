@@ -6,8 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { distance } from "fastest-levenshtein";
-
 import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
@@ -25,24 +23,15 @@ export default function MyActivity() {
   const [sortOrder, setSortOrder] = useState<"Recommended" | "Latest">(
     "Recommended",
   );
-  const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(5);
 
-  const filteredItems = search.trim()
-    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-    : Restaurants;
+  const filteredItems = Restaurants;
 
   const visibleItems = filteredItems.slice(0, visibleCount);
   const [isLoading, setIsLoading] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   const LODAING_TIMEOUT = 1800;
-
-  const similarItems = Restaurants.filter(
-    (item) =>
-      distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
-      !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
-  );
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
