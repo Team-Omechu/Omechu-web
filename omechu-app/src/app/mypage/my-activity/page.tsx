@@ -161,7 +161,7 @@ export default function MyActivity() {
             {/* 등록한 맛집 목록 */}
             <section className="mt-4 flex flex-col gap-5">
               {visibleItems.map((item, idx) => (
-                <div key={idx} className="flex flex-col">
+                <div key={item.id} className="flex flex-col">
                   <button className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]">
                     편집
                   </button>

@@ -55,13 +55,10 @@ export default function RestaurantReviewCard({
     );
   };
 
-  function RestaurantImage({
-    src,
-    alt,
-  }: {
+  const RestaurantImage: React.FC<{
     src: string | null | undefined;
     alt: string;
-  }) {
+  }> = ({ src, alt }) => {
     const [imgSrc, setImgSrc] = useState(src || "/image/image_empty.svg");
 
     return (
@@ -77,7 +74,7 @@ export default function RestaurantReviewCard({
         }}
       />
     );
-  }
+  };
 
   const ReviewImage: React.FC<{ src: string; alt: string }> = ({
     src,
