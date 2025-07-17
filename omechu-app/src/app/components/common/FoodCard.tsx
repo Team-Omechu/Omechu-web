@@ -39,7 +39,7 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
           <Image src={"/Heart.svg"} alt="하트" width={20} height={20} />
         </button>
         <Image
-          src={item.images?.[0] || "/restaurant_blank.png"}
+          src={item.images?.[0] || "/logo/logo.svg"}
           alt={item.menu}
           width={70}
           height={70}
