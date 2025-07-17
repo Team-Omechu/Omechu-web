@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +19,47 @@ export default function FoodieLog() {
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const [visibleCount, setVisibleCount] = useState(5);
+  const [isLoading, setIsLoading] = useState(false);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (!target.isIntersecting || isLoading) return;
+
+      setIsLoading(true);
+      setVisibleCount((prev) => prev + 5); // 필요한 만큼 늘리기
+    },
+    [isLoading],
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      rootMargin: "0px 0px 160px 0px",
+      threshold: 0,
+    });
+
+    const currentLoader = loaderRef.current;
+    if (currentLoader) observer.observe(currentLoader);
+
+    return () => {
+      if (currentLoader) observer.unobserve(currentLoader);
+    };
+  }, [observerCallback]);
+
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setIsLoading(false), 1800); // LODAING_TIMEOUT
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    setVisibleCount(5); // 초기화
+  }, [selectedPeriod, sortOrder]); // 정렬/기간이 바뀌면 리셋
   return (
     <>
       <Header
@@ -119,6 +160,15 @@ export default function FoodieLog() {
           </div>
         </section>
         <FloatingActionButton onClick={scrollToTop} />
+
+        <div ref={loaderRef} className="h-[1px]" />
+
+        {isLoading && (
+          <div className="mt-4 flex h-20 items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
+            <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
+          </div>
+        )}
       </main>
     </>
   );
