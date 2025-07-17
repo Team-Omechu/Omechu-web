@@ -34,9 +34,12 @@ export default function FoodieLog() {
           </Link>
         }
       />
-      <main ref={mainRef} className="flex h-screen w-full flex-col px-4">
+      <main
+        ref={mainRef}
+        className="flex h-screen w-full flex-col overflow-y-auto px-4 scrollbar-hide"
+      >
         {/* 기간 설정 Tab */}
-        <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 pt-3">
+        <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 py-2">
           {["전체", "1주", "1개월", "3개월", "6개월", "1년", "직접입력"].map(
             (item, idx) => (
               <button
@@ -44,7 +47,7 @@ export default function FoodieLog() {
                 onClick={() => {
                   setSelectedPeriod(item);
                 }}
-                className={`mx-0.5 mb-1 px-1 pt-1 text-base hover:bg-[#dfc0e6] ${
+                className={`mx-0.5 px-1 pt-1 text-base hover:bg-[#dfc0e6] ${
                   selectedPeriod === item
                     ? "border-b-[3px] border-black font-bold text-[#393939]"
                     : "font-normal text-[#716F6C]"
@@ -86,7 +89,7 @@ export default function FoodieLog() {
 
         {/* FoodieLog List */}
         <section className="flex w-full items-center justify-center">
-          <div className="grid grid-cols-3 gap-x-3 gap-y-2">
+          <div className="grid grid-cols-3 gap-x-4 gap-y-3">
             <FoodieBox />
             <FoodieBox />
             <FoodieBox />
