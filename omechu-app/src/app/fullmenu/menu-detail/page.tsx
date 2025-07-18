@@ -3,9 +3,16 @@
 import { Suspense } from "react";
 
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 import Header from "@/app/components/common/Header";
+import { menus } from "@/app/constant/mainpage/resultData";
+import MenuInfo from "@/app/mainpage/components/MenuInfoCard";
 
 export default function MenuDetail() {
   return (
@@ -18,6 +25,13 @@ function MenuDetailClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const params = useParams();
+  const menuId = Number(params.menuId);
+
+  const menu = menus.find((m) => m.id === menuId);
+  if (!menu) {
+    return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
+  }
 
   const name = searchParams.get("name");
   const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
@@ -53,7 +67,7 @@ function MenuDetailClient() {
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
-            src="/오메추-로고-보라색버전-모자4 1.png"
+            src="/logo.png"
             alt={`${name || "메뉴 이미지"}`}
             className="rounded object-contain"
             width={144}
@@ -62,36 +76,11 @@ function MenuDetailClient() {
         </div>
 
         <section className="px-4">
-          <h2 className="mb-2 text-base font-semibold">메뉴 정보</h2>
-
-          <div className="rounded-md border border-gray-400 bg-white p-4 text-[13px] leading-6">
-            <p className="mb-1 font-semibold">기본 영양 정보</p>
-            <div className="grid grid-cols-2 gap-y-1 px-2">
-              <span>칼로리</span>
-              <span className="text-right">950 kcal</span>
-              <span>탄수화물</span>
-              <span className="text-right">120 g</span>
-              <span>단백질</span>
-              <span className="text-right">20 g</span>
-              <span>지방</span>
-              <span className="text-right">35 g</span>
-              <span>비타민</span>
-              <span className="text-right">비타민 B군</span>
-            </div>
-
-            <hr className="my-3" />
-
-            <p className="font-semibold">알레르기 유발 성분</p>
-            <p className="mb-2 pl-2">땅콩, 달걀</p>
-
-            <p className="font-semibold">레시피</p>
-            <p
-              className="cursor-pointer pl-2 text-black underline"
-              onClick={handleClick}
-            >
-              보러가기 ▶
-            </p>
-          </div>
+          <MenuInfo
+            nutrition={menu.nutrition}
+            allergens={menu.allergens}
+            onRecipeClick={handleClick}
+          />
         </section>
       </main>
     </>

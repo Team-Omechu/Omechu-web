@@ -3,7 +3,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { distance } from "fastest-levenshtein";
@@ -13,9 +12,15 @@ import LocationModal from "@/app/components/restaurant/LocationModal/LocationMod
 import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 import { suggestionList } from "@/app/constant/suggestionList";
 
-import FoodCard from "../components/common/FoodCard";
-import FilterTagList from "../components/restaurant/FilterTagList";
-import KeywordSelector from "../components/restaurant/KeywordSelector";
+import FloatingActionButton from "../components/common/FloatingActionButton";
+import LoadingIndicator from "../components/common/LoadingIndicator";
+import ModalWrapper from "../components/common/ModalWrapper";
+import SortSelector, { SortOption } from "../components/common/SortSelector";
+import FilterSection from "../components/restaurant/FilterSection/FilterSection";
+import FoodCardList from "../components/restaurant/FoodCardList";
+import KeywordSelector from "../components/restaurant/KeywordSection/KeywordSelector";
+import KeywordToggleSection from "../components/restaurant/KeywordSection/KeywordToggleSection";
+import SearchResultEmpty from "../components/restaurant/SearchResultEmpty";
 
 export default function Restaurant() {
   const keywordList = [
@@ -37,9 +42,17 @@ export default function Restaurant() {
     "조용한",
   ];
 
+  const sortOptions: SortOption[] = [
+    { label: "추천 순", value: "recommend" },
+    { label: "최근 본 순", value: "recent" },
+  ];
+
+  type SortValue = SortOption["value"];
+
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
-  const [sortMode, setSortMode] = useState<"recommend" | "recent">("recommend");
+  const [sortMode, setSortMode] = useState<SortValue>("recommend");
   const [visibleCount, setVisibleCount] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -59,6 +72,10 @@ export default function Restaurant() {
   );
 
   const visibleItems = filteredItems.slice(0, visibleCount);
+
+  const scrollToTop = () => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // 무한 스크롤 구현에 대한 설명:
   // 1. 사용자가 스크롤을 내리면 IntersectionObserver가 페이지 하단의 특정 요소(loaderRef)를 감지합니다.
@@ -126,20 +143,8 @@ export default function Restaurant() {
     console.log("검색어:", search);
   };
 
-  useEffect(() => {
-    if (isFilterOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isFilterOpen]);
-
   return (
-    <div className="min-h-screen px-4 pb-20 pt-6">
+    <main ref={mainRef} className="min-h-screen px-4 pb-20 pt-6">
       <SearchBar
         placeholder="음식명을 검색하세요."
         inputValue={search}
@@ -148,36 +153,22 @@ export default function Restaurant() {
         suggestionList={suggestionList}
       />
 
-      <div className="mt-3 flex items-center gap-2">
-        <button className="flex flex-shrink-0 items-center justify-between gap-1">
-          <Image src={"/myLocation.svg"} alt="내 위치" width={16} height={16} />
-          내 위치
-        </button>
-        <FilterTagList
-          tags={selectedFilters}
-          onRemove={(tag) =>
-            setSelectedFilters((prev) => prev.filter((t) => t !== tag))
-          }
-        />
-        <button
-          className="ml-auto flex-shrink-0"
-          onClick={() => setIsFilterOpen(true)}
-        >
-          <Image
-            src={"/customselect.png"}
-            alt="사용자필터"
-            width={32}
-            height={32}
-          />
-        </button>
-      </div>
+      <FilterSection
+        selectedFilters={selectedFilters}
+        onRemoveFilter={(tag) =>
+          setSelectedFilters((prev) => prev.filter((t) => t !== tag))
+        }
+        onOpenFilterModal={() => setIsFilterOpen(true)}
+      />
 
       {isFilterOpen && (
-        <LocationModal
-          selected={selectedFilters}
-          onClose={() => setIsFilterOpen(false)}
-          onApply={(newFilters) => setSelectedFilters(newFilters)}
-        />
+        <ModalWrapper>
+          <LocationModal
+            selected={selectedFilters}
+            onClose={() => setIsFilterOpen(false)}
+            onApply={(newFilters) => setSelectedFilters(newFilters)}
+          />
+        </ModalWrapper>
       )}
 
       <hr className="my-1 border-black" />
@@ -189,71 +180,19 @@ export default function Restaurant() {
         >
           + 등록하기
         </button>
-        <div className="flex items-center justify-end gap-2 text-sm">
-          <span
-            className={
-              sortMode === "recommend" ? "font-semibold" : "text-gray-500"
-            }
-            onClick={() => setSortMode("recommend")}
-          >
-            추천
-          </span>
-          <div className="h-3 w-px bg-gray-400" />
-          <span
-            className={
-              sortMode === "recent" ? "font-semibold" : "text-gray-500"
-            }
-            onClick={() => setSortMode("recent")}
-          >
-            최근 본 식당
-          </span>
-        </div>
+        <SortSelector
+          options={sortOptions}
+          selected={sortMode}
+          onSelect={setSortMode}
+        />
       </div>
 
       {/* 추천 영역 */}
-      <div className="mb-2 mt-4 flex justify-end">
-        {selectedKeywords.length === 0 ? (
-          // 아무것도 선택되지 않음
-          <button
-            onClick={() => setShowKeywords((prev) => !prev)}
-            className="flex items-center gap-1 rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-500"
-          >
-            추천 키워드
-            <Image
-              src={"/down_arrow.svg"}
-              alt="추천 키워드"
-              width={16}
-              height={16}
-              className={`transition-transform duration-200 ${
-                showKeywords ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-        ) : (
-          // 키워드 선택됨
-          <div className="flex flex-wrap items-center gap-2">
-            {selectedKeywords.map((tag, idx) => (
-              <span
-                key={idx}
-                className="rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-700"
-              >
-                {tag}
-              </span>
-            ))}
-            <button onClick={() => setShowKeywords((prev) => !prev)}>
-              <Image
-                src={"/down_arrow.svg"}
-                alt="추천 키워드"
-                width={24}
-                height={24}
-                className={`transition-transform duration-200 ${
-                  showKeywords ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-        )}
-      </div>
+      <KeywordToggleSection
+        selectedKeywords={selectedKeywords}
+        showKeywords={showKeywords}
+        onToggleShow={() => setShowKeywords((prev) => !prev)}
+      />
 
       {/* 키워드 펼침 영역 */}
       {showKeywords && (
@@ -272,55 +211,26 @@ export default function Restaurant() {
       )}
 
       {isSearched && search.trim() && filteredItems.length === 0 && (
-        <div className="mb-12 mt-10 px-2">
-          <div className="flex flex-col items-center justify-center text-center">
-            <p className="text-lg font-semibold text-black">
-              ‘{search}’에 대한 검색 결과가 없습니다.
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              검색어와 비슷한 결과를 알려드릴게요
-            </p>
-          </div>
-
-          <hr className="mt-8 w-full border-t border-gray-600" />
-
-          {similarItems.length > 0 && (
-            <div className="mt-4 flex flex-col gap-4">
-              {similarItems.map((item, idx) => (
-                <FoodCard
-                  key={idx}
-                  item={item}
-                  onClick={() =>
-                    router.push(`/restaurant/restaurant-detail/${item.id}`)
-                  }
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <SearchResultEmpty
+          search={search}
+          similarItems={similarItems}
+          onItemClick={(id) =>
+            router.push(`/restaurant/restaurant-detail/${id}`)
+          }
+        />
       )}
 
       {/* 음식 카드 리스트 */}
-      <div className="flex flex-col gap-4">
-        {visibleItems.map((item, idx) => (
-          <FoodCard
-            key={idx}
-            item={item}
-            onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id}`)
-            }
-          />
-        ))}
-      </div>
+      <FoodCardList
+        items={visibleItems}
+        onItemClick={(id) => router.push(`/restaurant/restaurant-detail/${id}`)}
+      />
 
       <div ref={loaderRef} className="h-[1px]" />
 
-      {isLoading && (
-        <div className="mt-4 flex h-20 items-center justify-center">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
-          <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
-        </div>
-      )}
-    </div>
+      {isLoading && <LoadingIndicator />}
+
+      <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
+    </main>
   );
 }
