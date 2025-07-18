@@ -77,7 +77,10 @@ export default function ReviewModal({
 
       {/* 제출 버튼 */}
       <button
-        onClick={() => setShowConfirmModal(true)}
+        onClick={() => {
+          setShowConfirmModal(true);
+          onSubmit(rating, selectedTags, images, comment);
+        }}
         className="mb-4 w-full rounded-md bg-[#FF5B5B] py-2 font-bold text-white"
       >
         전달하기
@@ -89,10 +92,7 @@ export default function ReviewModal({
           <AlertModal
             title="소중한 후기가 전달되었어요."
             confirmText="제출하기"
-            onConfirm={() => {
-              onSubmit(rating, selectedTags, images, comment);
-              setShowConfirmModal(false);
-            }}
+            onConfirm={() => setShowConfirmModal(false)}
             onClose={() => setShowConfirmModal(false)}
           />
         </ModalWrapper>
