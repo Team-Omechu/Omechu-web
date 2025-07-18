@@ -48,6 +48,7 @@ export default function RestaurantInfoBox({
           alt="시간표"
           width={24}
           height={24}
+          className="object-contain"
         />
         <div>
           {restaurant.timetable.map((item, index) => (
@@ -69,6 +70,7 @@ export default function RestaurantInfoBox({
           alt="위치"
           width={24}
           height={24}
+          className="object-contain"
         />
         <div className="flex w-full flex-col gap-3">
           <div className="flex items-start gap-1">
