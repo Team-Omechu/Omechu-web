@@ -59,20 +59,11 @@ export default function MapPage() {
       />
 
       <main className="flex h-full w-full flex-col items-center">
-        <div className="mb-5 mt-4 flex items-center justify-between gap-2">
-          {/* 맛집 이름 */}
-          <h1 className="text-2xl font-bold text-gray-700">
-            {restaurant.name}
-          </h1>
-          <button onClick={handleLikeClick}>
-            <Image
-              src={isLiked ? "/Heart_Filled.svg" : "/Heart.svg"}
-              alt="하트"
-              width={20}
-              height={20}
-            />
-          </button>
-        </div>
+        <RestaurantDetailHeader
+          name={restaurant.name}
+          isLiked={isLiked}
+          onLikeClick={handleLikeClick}
+        />
 
         {/* 지도 이미지 영역 */}
         <section className="flex w-full items-center justify-center">

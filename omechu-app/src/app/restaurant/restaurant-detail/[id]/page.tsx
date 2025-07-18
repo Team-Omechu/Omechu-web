@@ -9,7 +9,8 @@ import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import ReportModal from "@/app/components/restaurant/ReportModal";
-import ReviewModal from "@/app/components/restaurant/restaurant-detail/ReviewModal";
+import ReviewModal from "@/app/components/restaurant/restaurant-detail/modal/ReviewModal";
+import RestaurantDetailHeader from "@/app/components/restaurant/restaurant-detail/RestaurantDetailHeader";
 import Review from "@/app/components/restaurant/Review";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 import {
@@ -120,20 +121,11 @@ export default function RestaurantDetail() {
       <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4 pb-10">
         {/* 맛집 제목, 사진 */}
         <section className="flex w-full flex-col items-center justify-between gap-2">
-          <div className="mb-5 mt-4 flex items-center justify-between gap-2">
-            {/* 맛집 이름 */}
-            <h1 className="text-2xl font-bold text-gray-700">
-              {restaurant.name}
-            </h1>
-            <button onClick={handleLikeClick}>
-              <Image
-                src={isLiked ? "/Heart_Filled.svg" : "/Heart.svg"}
-                alt="하트"
-                width={20}
-                height={20}
-              />
-            </button>
-          </div>
+          <RestaurantDetailHeader
+            name={restaurant.name}
+            isLiked={isLiked}
+            onLikeClick={handleLikeClick}
+          />
           <div className="flex w-full gap-3 overflow-x-auto px-4 py-2">
             {restaurant.images.map((url, idx) => (
               <Image
