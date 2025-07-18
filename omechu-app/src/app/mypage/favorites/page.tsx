@@ -11,7 +11,6 @@ import { distance } from "fastest-levenshtein";
 
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
-
 import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 
 export default function Favorites() {

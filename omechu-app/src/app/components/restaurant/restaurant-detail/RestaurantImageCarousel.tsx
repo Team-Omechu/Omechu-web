@@ -11,7 +11,7 @@ export default function RestaurantImageCarousel({
     <div className="flex w-full gap-3 overflow-x-auto px-4 py-2">
       {images.map((url, idx) => (
         <Image
-          key={url}
+          key={idx}
           src={url}
           alt={`맛집 사진 ${idx + 1}`}
           width={180}
