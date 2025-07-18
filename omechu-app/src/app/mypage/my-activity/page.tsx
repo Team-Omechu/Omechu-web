@@ -114,7 +114,7 @@ export default function MyActivity() {
       />
       <main
         ref={mainRef}
-        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-auto scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
@@ -159,7 +159,7 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {/* 등록한 맛집 목록 */}
-            <section className="flex flex-col gap-5 mt-4">
+            <section className="mt-4 flex flex-col gap-5">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
                   <button className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]">
@@ -180,8 +180,8 @@ export default function MyActivity() {
         <div ref={loaderRef} className="h-[1px]" />
 
         {isLoading && (
-          <div className="flex items-center justify-center h-20 mt-4">
-            <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
+          <div className="mt-4 flex h-20 items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
