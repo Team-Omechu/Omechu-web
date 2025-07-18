@@ -6,6 +6,9 @@ import Image from "next/image";
 
 import Header from "@/app/components/common/Header";
 
+import AlertModal from "../common/AlertModal";
+import ModalWrapper from "../common/ModalWrapper";
+
 interface RestaurantAddModalProps {
   onClose: () => void;
 }
@@ -15,6 +18,7 @@ export default function RestaurantAddModal({
 }: RestaurantAddModalProps) {
   const [menus, setMenus] = useState<string[]>([""]);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +27,9 @@ export default function RestaurantAddModal({
 
   const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
+  const handleClickClose = () => {
+    setIsAlertOpen(true);
+  };
 
   const handleAddMenu = () => {
     if (menus.length < 3) {
@@ -65,14 +72,31 @@ export default function RestaurantAddModal({
       <Header
         title={"맛집 등록"}
         rightChild={
-          <button onClick={onClose}>
-            <Image
-              src={"/close_button.png"}
-              alt={"닫기"}
-              width={18}
-              height={18}
-            />
-          </button>
+          <div>
+            <button onClick={handleClickClose}>
+              <Image
+                src={"/close_button.png"}
+                alt={"닫기"}
+                width={18}
+                height={18}
+              />
+            </button>
+            {isAlertOpen && (
+              <ModalWrapper>
+                <AlertModal
+                  title="지금까지 작성한 내용은 저장되지 않아요."
+                  description="정말 맛집 등록을 중단하시겠어요?"
+                  confirmText="계속 작성하기"
+                  cancelText="나가기"
+                  onConfirm={() => setIsAlertOpen(false)}
+                  onClose={() => {
+                    setIsAlertOpen(false);
+                    onClose();
+                  }}
+                />
+              </ModalWrapper>
+            )}
+          </div>
         }
       />
 
