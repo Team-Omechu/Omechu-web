@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Image from "next/image";
 
@@ -15,7 +15,14 @@ export default function RestaurantAddModal({
 }: RestaurantAddModalProps) {
   const [menus, setMenus] = useState<string[]>([""]);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
   const days = ["월", "화", "수", "목", "금", "토", "일"];
+
+  const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
+
 
   const handleAddMenu = () => {
     if (menus.length < 3) {
@@ -39,6 +46,19 @@ export default function RestaurantAddModal({
     );
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      alert("jpg, jpeg, png 파일만 업로드할 수 있습니다.");
+      return;
+    }
+
+    setImageFile(file);
+    setImagePreviewUrl(URL.createObjectURL(file));
+  };
+
   return (
     <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#F8D5FF] px-4 py-5">
       {/* 헤더 */}
@@ -57,8 +77,36 @@ export default function RestaurantAddModal({
       />
 
       {/* 이미지 영역 */}
-      <div className="mb-8 mt-4 flex h-40 w-full items-center justify-center rounded-md bg-gray-300 text-sm text-gray-600">
-        업로드할 이미지 미리보기
+      <div
+        className="mb-8 mt-4 flex h-40 w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-gray-300 text-sm text-gray-600"
+        onClick={() => imageInputRef.current?.click()}
+      >
+        {imagePreviewUrl ? (
+          <div className="relative h-full w-full">
+            <Image
+              src={imagePreviewUrl}
+              alt={`업로드 이미지`}
+              width={358}
+              height={160}
+              className="object-contain"
+            />
+            <button
+              onClick={() => setImagePreviewUrl(null)}
+              className="absolute right-2 top-2 rounded-full bg-gray-200 px-1 text-base font-extrabold text-black"
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <span>업로드할 이미지 미리보기</span>
+        )}
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/jpg"
+          className="hidden"
+          onChange={handleImageChange}
+        />
       </div>
 
       {/* 식당명 */}
