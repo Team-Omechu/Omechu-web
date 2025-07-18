@@ -17,7 +17,7 @@ import FoodCardList from "@/app/components/restaurant/FoodCardList";
 import KeywordSelector from "@/app/components/restaurant/KeywordSection/KeywordSelector";
 import KeywordToggleSection from "@/app/components/restaurant/KeywordSection/KeywordToggleSection";
 import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
-import RestaurantAddModal from "@/app/components/restaurant/RestaurantAddModal";
+import RestaurantAddModal from "@/app/components/restaurant/RestaurantAddModal/RestaurantAddModal";
 import SearchResultEmpty from "@/app/components/restaurant/SearchResultEmpty";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 import { suggestionList } from "@/app/constant/suggestionList";

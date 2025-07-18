@@ -4,10 +4,11 @@ import { useRef, useState } from "react";
 
 import Image from "next/image";
 
+import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
 
-import AlertModal from "../common/AlertModal";
-import ModalWrapper from "../common/ModalWrapper";
+import TimeDropdown from "./TimePicker";
 
 interface RestaurantAddModalProps {
   onClose: () => void;
@@ -19,6 +20,8 @@ export default function RestaurantAddModal({
   const [menus, setMenus] = useState<string[]>([""]);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [startTime, setStartTime] = useState("10:00");
+  const [endTime, setEndTime] = useState("10:00");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -185,17 +188,19 @@ export default function RestaurantAddModal({
         ))}
       </div>
       <div className="mb-4 flex items-center gap-2 text-sm">
-        <input
-          type="text"
-          placeholder="00 시 00 분"
-          className="w-1/2 rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
-        ~
-        <input
-          type="text"
-          placeholder="00 시 00 분"
-          className="w-1/2 rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
+        <div className="flex items-end gap-3">
+          <TimeDropdown
+            label="시작 시간"
+            value={startTime}
+            onChange={setStartTime}
+          />
+          <span className="mb-2 text-xl text-gray-500">~</span>
+          <TimeDropdown
+            label="종료 시간"
+            value={endTime}
+            onChange={setEndTime}
+          />
+        </div>
       </div>
 
       {/* 주소 */}
