@@ -1,15 +1,18 @@
 "use client";
 
+import { useState } from "react";
+
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 import MealIngredientGroup from "@/app/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/app/components/mainpage/MealStyleButton";
 import MealTypeGroup from "@/app/components/mainpage/MealTypeButton";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import RandomRecommendModal from "../components/RandomRecommendModal";
 import { menus } from "@/app/constant/mainpage/resultData";
+
+import RandomRecommendModal from "../components/RandomRecommendModal";
 
 export default function RandomRecommendPage() {
   const router = useRouter();
