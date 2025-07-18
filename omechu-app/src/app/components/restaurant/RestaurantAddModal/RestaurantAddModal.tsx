@@ -117,6 +117,7 @@ export default function RestaurantAddModal({
                     setIsAlertOpen(false);
                     onClose();
                   }}
+                  swapButtonOrder={true}
                 />
               </ModalWrapper>
             )}
