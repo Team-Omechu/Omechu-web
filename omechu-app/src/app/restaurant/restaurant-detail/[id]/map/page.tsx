@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import Header from "@/app/components/common/Header";
+import RestaurantMapPreview from "@/app/components/restaurant/restaurant-detail/map/RestaurantMapPreview";
+import RestaurantDetailHeader from "@/app/components/restaurant/restaurant-detail/RestaurantDetailHeader";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 
 export default function MapPage() {
@@ -66,16 +68,10 @@ export default function MapPage() {
         />
 
         {/* 지도 이미지 영역 */}
-        <section className="flex w-full items-center justify-center">
-          <div className="h-80 w-80 overflow-hidden border-2 border-[#00A3FF]">
-            <Image
-              src={mapImagePath}
-              alt={`${restaurant.name} 지도`}
-              width={330}
-              height={330}
-            />
-          </div>
-        </section>
+        <RestaurantMapPreview
+          mapImagePath={mapImagePath}
+          restaurantName={restaurant.name}
+        />
       </main>
     </>
   );
