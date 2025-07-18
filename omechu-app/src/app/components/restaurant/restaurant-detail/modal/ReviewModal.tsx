@@ -8,7 +8,7 @@ import ImageUploader from "./ImageUploader";
 import RatingSelector from "./RatingSelector";
 import TagSelector from "./TagSelector";
 import TextReview from "./TextReview";
-import Header from "../../common/Header";
+import Header from "../../../common/Header";
 
 interface ReviewModalProps {
   restaurantName: string;

@@ -1,4 +1,4 @@
-import Keyword from "../../common/Keyword";
+import Keyword from "../../../common/Keyword";
 
 const allTags = [
   "아침식사",
