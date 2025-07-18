@@ -187,10 +187,15 @@ export default function Restaurant() {
       <div className="mb-2 mt-2 flex items-center justify-between text-xs">
         <button
           className="rounded-full bg-[#3FA2FF] px-7 py-2 text-white"
-          onClick={() => router.push("")}
+          onClick={() => setShowAddModal(true)}
         >
           + 등록하기
         </button>
+        {showAddModal && (
+          <ModalWrapper>
+            <RestaurantAddModal onClose={() => setShowAddModal(false)} />
+          </ModalWrapper>
+        )}
         <SortSelector
           options={sortOptions}
           selected={sortMode}
