@@ -46,7 +46,7 @@ export default function FindPasswordPage() {
 
         <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
       </div>
-      <Toast message={toastMessage} show={showToast} bottom="230px" />
+      <Toast message={toastMessage} show={showToast} className={"bottom-56"} />
     </main>
   );
 }

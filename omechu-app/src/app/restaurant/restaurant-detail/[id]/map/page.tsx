@@ -1,9 +1,13 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import Header from "@/app/components/common/Header";
+import RestaurantMapPreview from "@/app/components/restaurant/restaurant-detail/map/RestaurantMapPreview";
+import RestaurantDetailHeader from "@/app/components/restaurant/restaurant-detail/RestaurantDetailHeader";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 
 export default function MapPage() {
@@ -17,6 +21,15 @@ export default function MapPage() {
 
   // id에 해당하는 맛집 데이터 찾기
   const restaurant = Restaurants.find((r) => r.id === id);
+
+  // 좋아요 상태 관리 (임시로 하트 클릭 시 토글)
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 하트 클릭 시 좋아요 상태 토글
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked((prev) => !prev);
+  };
 
   // 해당 id의 맛집이 없을 경우 예외 처리 (간단한 메시지)
   if (!restaurant) {
@@ -38,7 +51,7 @@ export default function MapPage() {
         leftChild={
           <button onClick={() => router.back()}>
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt="뒤로가기"
               width={22}
               height={30}
@@ -48,22 +61,17 @@ export default function MapPage() {
       />
 
       <main className="flex h-full w-full flex-col items-center">
-        {/* 맛집 이름 */}
-        <h1 className="mb-5 text-2xl font-bold text-[#1F9BDA]">
-          {restaurant.name}
-        </h1>
+        <RestaurantDetailHeader
+          name={restaurant.name}
+          isLiked={isLiked}
+          onLikeClick={handleLikeClick}
+        />
 
         {/* 지도 이미지 영역 */}
-        <section className="flex w-full items-center justify-center">
-          <div className="h-80 w-80 overflow-hidden border-2 border-[#89d8ff]">
-            <Image
-              src={mapImagePath}
-              alt={`${restaurant.name} 지도`}
-              width={330}
-              height={330}
-            />
-          </div>
-        </section>
+        <RestaurantMapPreview
+          mapImagePath={mapImagePath}
+          restaurantName={restaurant.name}
+        />
       </main>
     </>
   );

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-type ReviewProps = {
+export type ReviewProps = {
   id: number;
   profileImgUrl: string;
   userId: string;

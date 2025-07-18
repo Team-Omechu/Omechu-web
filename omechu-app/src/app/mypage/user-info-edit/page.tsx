@@ -26,7 +26,7 @@ export default function UserInfoEdit() {
         leftChild={
           <button onClick={() => router.push("./")}>
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"back"}
               width={22}
               height={30}

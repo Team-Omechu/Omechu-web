@@ -8,8 +8,13 @@ import { useParams, useRouter } from "next/navigation";
 import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
+import SortSelector, { SortOption } from "@/app/components/common/SortSelector";
 import ReportModal from "@/app/components/restaurant/ReportModal";
-import Review from "@/app/components/restaurant/Review";
+import RestaurantDetailHeader from "@/app/components/restaurant/restaurant-detail/RestaurantDetailHeader";
+import RestaurantImageCarousel from "@/app/components/restaurant/restaurant-detail/RestaurantImageCarousel";
+import RestaurantInfoBox from "@/app/components/restaurant/restaurant-detail/RestaurantInfoBox";
+import ReviewList from "@/app/components/restaurant/restaurant-detail/ReviewList";
+import ReviewWriter from "@/app/components/restaurant/restaurant-detail/ReviewWriter";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 import {
   reviewSummary,
@@ -27,7 +32,10 @@ export default function RestaurantDetail() {
   const [showAddress, setShowAddress] = useState(false);
 
   // 사용자가 클릭한 별점 저장 (후기 작성용)
-  const [rating, setRating] = useState(0); // 0~5점
+  // const [rating, setRating] = useState(0); // 0~5점
+
+  // 후기 작성 모달 열림 여부
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   // 현재 옵션 메뉴가 열려있는 후기의 ID (없으면 null)
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
@@ -43,8 +51,24 @@ export default function RestaurantDetail() {
   // 로컬 상태에서 추천 수를 따로 관리하는 객체 (key: 리뷰 id, value: 추천 수)
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
 
+  // 후기 정렬 옵션
+  const sortOptions: SortOption[] = [
+    { label: "추천 순", value: "recommend" },
+    { label: "최신 순", value: "latest" },
+  ];
+
   // 후기 정렬 기준 상태값 (기본: 추천순)
-  const [sortType, setSortType] = useState<"recommend" | "latest">("recommend");
+  type SortValue = SortOption["value"];
+  const [sortMode, setSortMode] = useState<SortValue>("recommend");
+
+  // 좋아요 상태 관리 (임시로 하트 클릭 시 토글)
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 하트 클릭 시 좋아요 상태 토글
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked((prev) => !prev);
+  };
 
   // id에 해당하는 맛집 정보 찾기
   const restaurant = Restaurants.find((item) => item.id === id);
@@ -70,7 +94,7 @@ export default function RestaurantDetail() {
 
   // 정렬된 후기 리스트 계산 (정렬 기준에 따라 다르게 정렬됨)
   const sortedReviews = [...filteredReviews].sort((a, b) => {
-    if (sortType === "recommend") {
+    if (sortMode === "recommend") {
       // 추천순: localVotes가 있으면 우선 적용, 없으면 기본 votes 사용
       const aVotes = localVotes[a.id] ?? a.votes;
       const bVotes = localVotes[b.id] ?? b.votes;
@@ -95,7 +119,7 @@ export default function RestaurantDetail() {
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
               height={30}
@@ -106,165 +130,26 @@ export default function RestaurantDetail() {
       {/* 메인 Container*/}
       <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4 pb-10">
         {/* 맛집 제목, 사진 */}
-        <section className="mt-3 flex w-full flex-col items-center justify-between gap-2">
-          <h1 className="text-center text-2xl font-bold text-[#1F9BDA]">
-            {restaurant.name}
-          </h1>
-          <div className="flex w-full gap-3 overflow-x-auto px-4 py-2">
-            {restaurant.images.map((url, idx) => (
-              <Image
-                key={idx}
-                src={url}
-                alt={`맛집 사진 ${idx + 1}`}
-                width={180}
-                height={180}
-                className="shrink-0 rounded-lg"
-              />
-            ))}
-          </div>
+        <section className="flex w-full flex-col items-center justify-between gap-2">
+          <RestaurantDetailHeader
+            name={restaurant.name}
+            isLiked={isLiked}
+            onLikeClick={handleLikeClick}
+          />
+          <RestaurantImageCarousel images={restaurant.images} />
         </section>
         {/* 맛집 정보 */}
         <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-[#393939] bg-white p-4">
           {/* 정보 - 메뉴 종류 */}
-          <div className="flex w-full items-center justify-start gap-3">
-            <Image
-              src="/restaurant_menu.png"
-              alt="맛집 메뉴"
-              width={24}
-              height={24}
-            />
-            <span className="mt-1 text-center text-lg font-bold text-[#1F9BDA]">
-              {restaurant.category}
-            </span>
-          </div>
-          {/* 구분선 */}
-          <div className="h-[1px] w-full bg-[#3d2828] opacity-60"></div>
-          {/* 맛집 시간표 */}
-          <div className="flex w-full flex-row justify-start gap-5">
-            <div className="flex-shrink-0">
-              <Image
-                className="flex-shrink-0"
-                src="/restaurant_time_table.png"
-                alt="맛집 시간표"
-                width={24}
-                height={24}
-              />
-            </div>
-            <div>
-              {restaurant.timetable.map((item, index) => (
-                <div key={index} className="flex items-center gap-5">
-                  <h1 className="text-center text-lg font-normal text-[#393939]">
-                    {item.days_of_the_week}
-                  </h1>
-                  <span className="text-base font-normal text-[#828282]">
-                    {item.time}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* 구분선 */}
-          <div className="h-[1px] w-full bg-[#828282] opacity-60"></div>
-          {/* 주소 */}
-          <div className="flex flex-1 gap-3">
-            <div className="flex-shrink-0">
-              <Image
-                className="mb-2 flex-shrink-0"
-                src="/restaurant_location.png"
-                alt="맛집 위치"
-                width={24}
-                height={24}
-              />
-            </div>
-            <div className="relative mt-1 flex w-full flex-col gap-3">
-              <div className="flex items-start gap-1">
-                <span className="w-14 flex-shrink-0 text-sm font-bold text-[#393939]">
-                  도로명
-                </span>
-                <span className="whitespace-pre-wrap text-sm font-normal text-[#828282]">
-                  {restaurant.address.road}
-                </span>
-              </div>
-              {showAddress && (
-                <>
-                  <div className="flex items-start gap-1">
-                    <span className="w-14 flex-shrink-0 text-sm font-bold text-[#393939]">
-                      지번
-                    </span>
-                    <span className="whitespace-pre-wrap text-sm font-normal text-[#828282]">
-                      {restaurant.address.jibun}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start gap-1">
-                    <span className="whitespace-pre-wrap text-sm font-normal text-[#828282]">
-                      우편번호
-                    </span>
-                    <span className="whitespace-pre-wrap text-sm font-normal text-[#828282]">
-                      {restaurant.address.postalCode}
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="z-10">
-              <button
-                onClick={() => {
-                  setShowAddress((prev) => !prev);
-                }}
-              >
-                <Image
-                  src={showAddress ? "/arrow_up.png" : "/arrow_down.png"}
-                  alt="상세주소 보기"
-                  width={30}
-                  height={30}
-                />
-              </button>
-            </div>
-          </div>
-          <div className="flex w-full justify-end">
-            <button
-              onClick={() =>
-                router.push(
-                  `/restaurant/restaurant-detail/${restaurant.id}/map`,
-                )
-              }
-              className="flex h-6 w-16 flex-col items-center justify-center rounded-3xl bg-[#1F9BDA]"
-            >
-              <span className="mt-1 text-sm font-normal text-white">
-                지도보기
-              </span>
-            </button>
-          </div>
+          <RestaurantInfoBox
+            restaurant={restaurant}
+            showAddress={showAddress}
+            onToggleAddress={() => setShowAddress((prev) => !prev)}
+          />
         </section>
 
         {/* 후기 작성 칸 */}
-        <section className="mt-5 flex w-full flex-col items-center gap-5">
-          {/* 구분선 */}
-          <div className="h-[2px] w-full bg-[#828282] opacity-40" />
-          {/* 별 후기 작성 */}
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex gap-1">
-              {Array.from({ length: 5 }, (_, index) => {
-                const score = index + 1;
-                return (
-                  <button
-                    key={score}
-                    onClick={() => setRating(score)}
-                    className="h-fit w-fit text-3xl text-[#1F9BDA]"
-                  >
-                    {score <= rating ? "★" : "☆"}
-                  </button>
-                );
-              })}
-            </div>
-            <span className="text-base font-normal text-[#828282]">
-              후기를 남겨주세요!
-            </span>
-          </div>
-          {/* 구분선 */}
-          <div className="h-[2px] w-full bg-[#828282] opacity-40" />
-        </section>
+        <ReviewWriter restaurantName={restaurant.name} />
 
         {/* 후기 */}
         <section className="flex w-full flex-col gap-2">
@@ -303,73 +188,24 @@ export default function RestaurantDetail() {
           {/* 후기 카드 목록 */}
           <div className="mt-5 flex w-full flex-col gap-3">
             {/* 후기 필터 버튼 */}
-            <div className="-mb-2 mr-2 flex justify-end gap-2 text-sm">
-              <button
-                className={
-                  sortType === "recommend"
-                    ? "font-bold text-[#393939]"
-                    : "font-light text-[#828282]"
-                }
-                onClick={() => setSortType("recommend")}
-              >
-                추천 순
-              </button>
-              <span>|</span>
-              <button
-                className={
-                  sortType === "latest"
-                    ? "font-bold text-[#393939]"
-                    : "font-light text-[#828282]"
-                }
-                onClick={() => setSortType("latest")}
-              >
-                최신 순
-              </button>
-            </div>
+            <SortSelector
+              options={sortOptions}
+              selected={sortMode}
+              onSelect={(value) => setSortMode(value as "recommend" | "latest")}
+              className="-mb-2 mr-2"
+            />
 
             {/* 후기 목록 */}
-            <div className="flex flex-col gap-4">
-              {sortedReviews.map((item, index) => (
-                <Review
-                  key={index}
-                  id={item.id}
-                  profileImgUrl={item.profileImgUrl}
-                  userId={item.userId}
-                  createdDate={item.createdDate}
-                  votes={localVotes[item.id] ?? item.votes}
-                  rating={item.rating}
-                  content={item.content}
-                  tags={item.tags}
-                  images={item.images}
-                  onVote={() => {
-                    const hasVoted = votedReviewIds.includes(item.id);
-                    if (hasVoted) {
-                      setVotedReviewIds((prev) =>
-                        prev.filter((id) => id !== item.id),
-                      );
-                      setLocalVotes((prev) => ({
-                        ...prev,
-                        [item.id]: (prev[item.id] ?? item.votes) - 1,
-                      }));
-                    } else {
-                      setVotedReviewIds((prev) => [...prev, item.id]);
-                      setLocalVotes((prev) => ({
-                        ...prev,
-                        [item.id]: (prev[item.id] ?? item.votes) + 1,
-                      }));
-                    }
-                  }}
-                  isVoted={votedReviewIds.includes(item.id)}
-                  onReport={() => setShowReportModal(true)}
-                  onClick={() =>
-                    setActiveOptionId((prev) =>
-                      prev === item.id ? null : item.id,
-                    )
-                  }
-                  isOptionOpen={activeOptionId === item.id}
-                />
-              ))}
-            </div>
+            <ReviewList
+              reviews={sortedReviews}
+              localVotes={localVotes}
+              votedReviewIds={votedReviewIds}
+              setVotedReviewIds={setVotedReviewIds}
+              setLocalVotes={setLocalVotes}
+              activeOptionId={activeOptionId}
+              setActiveOptionId={setActiveOptionId}
+              onReport={() => setShowReportModal(true)}
+            />
           </div>
         </section>
         {showReportModal && (

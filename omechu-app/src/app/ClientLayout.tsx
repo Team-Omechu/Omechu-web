@@ -56,10 +56,12 @@ export default function ClientLayout({
     "/mypage/settings/account-settings",
     "/mypage/settings/account-settings/change-password",
     // 마이페이지-이용약관
-    "/mypage/terms",
-    "/mypage/terms/service",
-    "/mypage/terms/personal-info",
-    "/mypage/terms/location-info",
+    "/mypage/settings/terms",
+    "/mypage/settings/terms/service",
+    "/mypage/settings/terms/personal-info",
+    "/mypage/settings/terms/location-info",
+    // 마이페이지-찜목록
+    "/mypage/favorites",
   ];
 
   const dynamicNoBottomNavPrefixes = [

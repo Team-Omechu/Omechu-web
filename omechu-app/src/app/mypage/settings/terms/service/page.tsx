@@ -27,7 +27,7 @@ export default function TermForService() {
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
               height={30}
@@ -58,7 +58,7 @@ export default function TermForService() {
           </section>
         ))}
         {/* Floating Action Button - 맨 위로 이동 */}
-        <FloatingActionButton onClick={scrollToTop} />
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
     </>
   );

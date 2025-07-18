@@ -47,7 +47,7 @@ function RecipeDetailClient() {
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
-            src="/오메추-로고-보라색버전-모자4 1.png"
+            src="/logo.png"
             alt={`${name}`}
             className="rounded object-contain"
             width={144}
@@ -95,7 +95,7 @@ function RecipeDetailClient() {
               {step.image && (
                 <div className="mt-2 flex justify-center">
                   <Image
-                    src={"/오메추-로고-보라색버전-모자4 1.png"}
+                    src={"/logo.png"}
                     alt={`step-${index + 1}`}
                     width={200}
                     height={150}
