@@ -19,6 +19,7 @@ export default function RestaurantAddModal({
   const [menus, setMenus] = useState<string[]>([""]);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -216,9 +217,25 @@ export default function RestaurantAddModal({
       />
 
       {/* 등록하기 버튼 */}
-      <button className="w-full rounded-md bg-[#FF5B5B] py-3 text-base font-bold text-white">
+      <button
+        className="w-full rounded-md bg-[#FF5B5B] py-3 text-base font-bold text-white"
+        onClick={() => setIsConfirmOpen(true)}
+      >
         등록하기
       </button>
+      {/* 등록 완료 모달 */}
+      {isConfirmOpen && (
+        <ModalWrapper>
+          <AlertModal
+            title="맛집이 등록되었어요."
+            confirmText="확인"
+            onConfirm={() => {
+              setIsConfirmOpen(false);
+              onClose();
+            }}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }
