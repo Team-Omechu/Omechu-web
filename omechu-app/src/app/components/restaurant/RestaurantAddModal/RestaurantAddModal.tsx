@@ -140,7 +140,11 @@ export default function RestaurantAddModal({
               className="object-contain"
             />
             <button
-              onClick={() => setImagePreviewUrl(null)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setImagePreviewUrl(null);
+                setImageFile(null);
+              }}
               className="absolute right-2 top-2 rounded-full bg-gray-200 px-1 text-base font-extrabold text-black"
             >
               ×
