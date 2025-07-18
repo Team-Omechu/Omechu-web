@@ -8,7 +8,8 @@ import AlertModal from "@/app/components/common/AlertModal";
 import Header from "@/app/components/common/Header";
 import ModalWrapper from "@/app/components/common/ModalWrapper";
 
-import TimeDropdown from "./TimePicker";
+import AddressSearchModal from "./AddressSearchModal";
+import TimeDropdown from "./TimeDropdown";
 
 interface RestaurantAddModalProps {
   onClose: () => void;
@@ -17,14 +18,33 @@ interface RestaurantAddModalProps {
 export default function RestaurantAddModal({
   onClose,
 }: RestaurantAddModalProps) {
+  const [restaurantName, setRestaurantName] = useState("");
   const [menus, setMenus] = useState<string[]>([""]);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [startTime, setStartTime] = useState("10:00");
   const [endTime, setEndTime] = useState("10:00");
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [address, setAddress] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  // 제출하기 유효성 검사 함수
+  const isFormValid = () => {
+    return (
+      restaurantName.trim() !== "" &&
+      menus.some((m) => m.trim() !== "") &&
+      selectedDays.length > 0 &&
+      startTime &&
+      endTime &&
+      address.trim() !== "" &&
+      imageFile !== null
+    );
+  };
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [detailAddress, setDetailAddress] = useState("");
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const days = ["월", "화", "수", "목", "금", "토", "일"];
@@ -142,6 +162,8 @@ export default function RestaurantAddModal({
       <input
         type="text"
         placeholder="식당명을 입력하세요"
+        value={restaurantName}
+        onChange={(e) => setRestaurantName(e.target.value)}
         className="mb-3 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
       />
 
@@ -209,22 +231,58 @@ export default function RestaurantAddModal({
         <input
           type="text"
           placeholder="주소지를 입력해 주세요"
-          className="flex-1 rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-sm"
+          value={address}
+          readOnly
+          className={`flex-1 rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-800 ${
+            address
+              ? "border-gray-300 bg-white text-gray-800"
+              : "cursor-not-allowed border-gray-300 bg-gray-200 text-gray-400"
+          }`}
         />
-        <button className="rounded-full bg-[#3FA2FF] px-4 py-2 text-sm text-white">
+        <button
+          type="button"
+          onClick={() => setIsSearchModalOpen(true)}
+          className="rounded-full bg-[#3FA2FF] px-4 py-2 text-sm text-white"
+        >
           주소찾기
         </button>
       </div>
       <input
         type="text"
         placeholder="상세 주소를 입력해 주세요 (선택)"
-        className="mb-6 w-full rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-sm"
+        value={detailAddress}
+        onChange={(e) => setDetailAddress(e.target.value)}
+        disabled={!address}
+        className={`mb-6 w-full rounded-md border px-3 py-2 text-sm ${
+          address
+            ? "border-gray-300 bg-white text-gray-800"
+            : "cursor-not-allowed border-gray-300 bg-gray-200 text-gray-400"
+        }`}
       />
+      {isSearchModalOpen && (
+        <ModalWrapper>
+          <AddressSearchModal
+            onClose={() => setIsSearchModalOpen(false)}
+            onSelect={(selectedAddress) => {
+              setAddress(selectedAddress);
+              setIsSearchModalOpen(false);
+            }}
+          />
+        </ModalWrapper>
+      )}
 
       {/* 등록하기 버튼 */}
       <button
-        className="w-full rounded-md bg-[#FF5B5B] py-3 text-base font-bold text-white"
-        onClick={() => setIsConfirmOpen(true)}
+        className={`w-full rounded-md py-3 text-base font-bold text-white transition ${
+          isFormValid()
+            ? "bg-[#FF5B5B] hover:bg-[#e64545]"
+            : "cursor-not-allowed bg-gray-300"
+        }`}
+        onClick={() => {
+          if (!isFormValid()) return;
+          setIsConfirmOpen(true);
+          // 여기서 API 저장 요청도 함께 실행 가능
+        }}
       >
         등록하기
       </button>
