@@ -14,7 +14,7 @@ export default function MainPage() {
         alt="메인 페이지"
         width={375}
         height={700}
-        className=" h-[660px] w-[375px] object-cover"
+        className="h-[660px] w-[375px] object-cover"
       />
       {/* 버튼들 */}
       <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 transform gap-[0.625rem]">
