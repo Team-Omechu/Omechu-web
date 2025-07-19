@@ -36,7 +36,7 @@ export default function SelectTabBar({
   className,
 }: SelectTabBarProps) {
   return (
-    <section className="mb-2 flex w-full">
+    <section className="flex w-full">
       {tabs.map((item, index) => (
         <button
           key={index}
