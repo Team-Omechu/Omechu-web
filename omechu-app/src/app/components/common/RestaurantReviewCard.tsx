@@ -202,6 +202,7 @@ export default function RestaurantReviewCard({
                 setShowDeleteModal(false);
               }}
               onClose={() => setShowDeleteModal(false)}
+              swapButtonOrder={true}
             />
           </ModalWrapper>
         )}
