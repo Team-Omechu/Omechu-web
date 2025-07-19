@@ -114,6 +114,7 @@ export default function MyActivity() {
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
       />
+
       <main
         ref={mainRef}
         className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
