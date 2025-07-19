@@ -175,8 +175,8 @@ export default function MyActivity() {
         <div ref={loaderRef} className="h-[1px]" />
 
         {isLoading && <LoadingIndicator />}
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
-      <FloatingActionButton onClick={scrollToTop} />
     </>
   );
 }
