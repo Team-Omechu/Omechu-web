@@ -10,6 +10,7 @@ import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
 import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
+import SortSelector from "@/app/components/common/SortSelector";
 import SelectTabBar from "@/app/components/mypage/SelectTabBar";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 
@@ -20,8 +21,8 @@ export default function MyActivity() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [sortOrder, setSortOrder] = useState<"Recommended" | "Latest">(
-    "Recommended",
+  const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
+    "recommended",
   );
   const [visibleCount, setVisibleCount] = useState(5);
 
@@ -118,33 +119,26 @@ export default function MyActivity() {
       >
         {selectedIndex === 0 && (
           <>
-            {/* 필터 - 추천 순 | 최신 순 */}
             <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-[#828282]">
-              <button
-                className={
-                  sortOrder === "Recommended"
-                    ? "font-semibold text-[#393939]"
-                    : ""
+              {/* 필터 - 추천 순 | 최신 순 */}
+              <SortSelector
+                options={[
+                  { label: "추천 순", value: "recommended" },
+                  { label: "최신 순", value: "latest" },
+                ]}
+                selected={
+                  sortOrder === "recommended" ? "recommended" : "latest"
                 }
-                onClick={() => setSortOrder("Recommended")}
-              >
-                추천 순
-              </button>
-              <span>|</span>
-              <button
-                className={
-                  sortOrder === "Latest" ? "font-semibold text-[#393939]" : ""
+                onSelect={(value) =>
+                  setSortOrder(value === "latest" ? "latest" : "recommended")
                 }
-                onClick={() => setSortOrder("Latest")}
-              >
-                최신 순
-              </button>
+              />
             </section>
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
               {MOCK_FOOD_REVIEW_CARD_DATA.slice()
                 .sort((a, b) =>
-                  sortOrder === "Latest"
+                  sortOrder === "latest"
                     ? new Date(b.createdAt).getTime() -
                       new Date(a.createdAt).getTime()
                     : (b.recommendCount ?? 0) - (a.recommendCount ?? 0),
