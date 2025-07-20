@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import CustomDatePicker from "@/app/components/common/CustomDatePicker";
 import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import Header from "@/app/components/common/Header";
 import FoodieBox from "@/app/components/mypage/FoodieBox";
@@ -77,7 +78,7 @@ export default function FoodieLog() {
       />
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col overflow-y-auto px-4 scrollbar-hide"
+        className="flex flex-col w-full h-screen px-4 overflow-y-auto scrollbar-hide"
       >
         {/* 기간 설정 Tab */}
         <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 py-2">
@@ -99,7 +100,10 @@ export default function FoodieLog() {
             ),
           )}
         </section>
-
+        {/* 기간 입력 Tab */}
+        <section className="flex h-fit w-full items-center justify-center gap-3 border-b-[1px] border-t-[1px] border-[#828282] px-1 py-3">
+          <CustomDatePicker />
+        </section>
         {/* 기간 입력 Tab */}
         <section className="flex h-fit w-full items-center justify-center gap-3 border-b-[1px] border-t-[1px] border-[#828282] px-1 py-3">
           <input type="date" />
@@ -129,7 +133,7 @@ export default function FoodieLog() {
         </section>
 
         {/* FoodieLog List */}
-        <section className="flex w-full items-center justify-center">
+        <section className="flex items-center justify-center w-full">
           <div className="grid grid-cols-3 gap-x-4 gap-y-3">
             <FoodieBox />
             <FoodieBox />
@@ -164,8 +168,8 @@ export default function FoodieLog() {
         <div ref={loaderRef} className="h-[1px]" />
 
         {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
+          <div className="flex items-center justify-center h-20 mt-4">
+            <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
