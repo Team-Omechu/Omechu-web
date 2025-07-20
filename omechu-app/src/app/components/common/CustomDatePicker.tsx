@@ -4,6 +4,7 @@ import { useState, forwardRef } from "react";
 
 import Image from "next/image";
 
+import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -53,11 +54,11 @@ export default function CustomDatePicker() {
           <Image
             src="/arrow/left-calender-arrow.svg"
             alt="이전 달로 이동"
-            width={13}
+            width={14}
             height={26}
           />
         </button>
-        <span className="text-sm font-normal text-[#393939]">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
+        <span className="text-xl font-normal text-[#393939]">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
         <button
           onClick={increaseMonth}
           className="px-2 py-1 text-sm rounded hover:bg-gray-200"
@@ -65,7 +66,7 @@ export default function CustomDatePicker() {
           <Image
             src="/arrow/right-calender-arrow.svg"
             alt="이전 달로 이동"
-            width={13}
+            width={14}
             height={26}
           />
         </button>
@@ -84,7 +85,7 @@ export default function CustomDatePicker() {
         startDate={startDate}
         endDate={endDate ?? undefined}
         renderCustomHeader={renderCustomHeader}
-        calendarClassName="text-white"
+        locale={ko}
       />
       <span> ~ </span>
       <DatePicker
@@ -95,8 +96,9 @@ export default function CustomDatePicker() {
         selectsEnd
         startDate={startDate}
         endDate={endDate}
-        renderCustomHeader={renderCustomHeader}
         minDate={startDate ?? undefined}
+        renderCustomHeader={renderCustomHeader}
+        locale={ko}
       />
     </section>
   );

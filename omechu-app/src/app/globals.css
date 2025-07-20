@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.react-datepicker {
+  @apply mt-0 rounded-2xl border-2 border-black px-6 !important;
+}
+
+.react-datepicker {
+  @apply mt-0 rounded-2xl border-2 border-black px-6 !important;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker__header {
+  @apply border-none bg-white pb-0 !important;
+}
+
+.react-datepicker__day-names {
+  @apply m-0 pb-0 !important;
+}
+
+.react-datepicker__day-name {
+  @apply h-fit text-[#828282] !important;
+}
+
+.react-datepicker__month {
+  @apply mt-0 !important;
+}

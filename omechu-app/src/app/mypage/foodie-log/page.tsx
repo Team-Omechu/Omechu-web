@@ -81,7 +81,7 @@ export default function FoodieLog() {
         className="flex flex-col w-full h-screen px-4 overflow-y-auto scrollbar-hide"
       >
         {/* 기간 설정 Tab */}
-        <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 py-2">
+        <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 pt-2">
           {["전체", "1주", "1개월", "3개월", "6개월", "1년", "직접입력"].map(
             (item, idx) => (
               <button
@@ -89,7 +89,7 @@ export default function FoodieLog() {
                 onClick={() => {
                   setSelectedPeriod(item);
                 }}
-                className={`mx-0.5 px-1 pt-1 text-base hover:bg-[#dfc0e6] ${
+                className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-[#dfc0e6] ${
                   selectedPeriod === item
                     ? "border-b-[3px] border-black font-bold text-[#393939]"
                     : "font-normal text-[#716F6C]"
@@ -100,19 +100,15 @@ export default function FoodieLog() {
             ),
           )}
         </section>
-        {/* 기간 입력 Tab */}
-        <section className="flex h-fit w-full items-center justify-center gap-3 border-b-[1px] border-t-[1px] border-[#828282] px-1 py-3">
-          <CustomDatePicker />
-        </section>
-        {/* 기간 입력 Tab */}
-        <section className="flex h-fit w-full items-center justify-center gap-3 border-b-[1px] border-t-[1px] border-[#828282] px-1 py-3">
-          <input type="date" />
-          <span className="pt-1 text-base font-bold"> ~ </span>
-          <input type="date" />
-        </section>
+        {/* 기간 입력 Tab (직접입력일 때만 보여짐) */}
+        {selectedPeriod === "직접입력" && (
+          <section className="-mt-1 flex h-fit w-full items-center justify-center gap-3 border-t-[1px] border-[#828282] px-1 py-3">
+            <CustomDatePicker />
+          </section>
+        )}
 
         {/* 필터 - 추천 순 | 최신 순 */}
-        <section className="flex w-full justify-end gap-3 py-4 pr-3 text-sm text-[#828282]">
+        <section className="-mt-1 flex w-full justify-end gap-3 border-t-[1px] border-[#828282] py-4 pr-3 text-sm text-[#828282]">
           <button
             className={
               sortOrder === "MostLogged" ? "font-semibold text-[#393939]" : ""
