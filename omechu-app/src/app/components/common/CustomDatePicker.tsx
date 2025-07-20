@@ -1,6 +1,8 @@
+// 참고 : https://reactdatepicker.com/
+
 "use client";
 
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useEffect } from "react";
 
 import Image from "next/image";
 
@@ -9,8 +11,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function CustomDatePicker() {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   // <input /> 커스터마이징
   const CustomInput = forwardRef<HTMLButtonElement, any>(
@@ -74,32 +76,59 @@ export default function CustomDatePicker() {
     );
   };
 
+  useEffect(() => {
+    if (startDate && endDate && startDate > endDate) {
+      setEndDate(null);
+    }
+  }, [startDate]);
+
   return (
-    <section className="flex items-center justify-center w-full gap-4">
-      <DatePicker
-        selected={startDate}
-        dateFormat="yyyy.MM.dd"
-        customInput={<CustomInput />}
-        onChange={(date) => setStartDate(date)}
-        selectsStart
-        startDate={startDate}
-        endDate={endDate ?? undefined}
-        renderCustomHeader={renderCustomHeader}
-        locale={ko}
-      />
-      <span> ~ </span>
-      <DatePicker
-        selected={endDate}
-        dateFormat="yyyy.MM.dd"
-        customInput={<CustomInput />}
-        onChange={(date) => setEndDate(date)}
-        selectsEnd
-        startDate={startDate}
-        endDate={endDate}
-        minDate={startDate ?? undefined}
-        renderCustomHeader={renderCustomHeader}
-        locale={ko}
-      />
+    <section className="flex flex-col items-end w-full">
+      <section className="flex items-center justify-center w-full gap-4">
+        <DatePicker
+          selected={startDate}
+          dateFormat="yyyy.MM.dd"
+          customInput={<CustomInput />}
+          onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate ?? undefined}
+          renderCustomHeader={renderCustomHeader}
+          popperPlacement="bottom-start"
+          locale={ko}
+        />
+        <span> ~ </span>
+        <DatePicker
+          selected={endDate}
+          dateFormat="yyyy.MM.dd"
+          customInput={<CustomInput />}
+          onChange={(date) => {
+            if (startDate && date && date < startDate) {
+              alert("종료일은 시작일보다 빠를 수 없습니다.");
+              return;
+            }
+            setEndDate(date);
+          }}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate ?? undefined}
+          renderCustomHeader={renderCustomHeader}
+          popperPlacement="bottom-end"
+          locale={ko}
+        />
+      </section>
+      {startDate && endDate && (
+        <button
+          onClick={() => {
+            setStartDate(null);
+            setEndDate(null);
+          }}
+          className="items-end mt-1 mr-4 text-xs text-gray-500"
+        >
+          선택 초기화
+        </button>
+      )}
     </section>
   );
 }
