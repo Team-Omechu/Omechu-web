@@ -7,20 +7,20 @@ import { useRouter } from "next/navigation";
 
 import { distance } from "fastest-levenshtein";
 
+import FloatingActionButton from "@/app/components/common/FloatingActionButton";
+import LoadingIndicator from "@/app/components/common/LoadingIndicator";
+import ModalWrapper from "@/app/components/common/ModalWrapper";
 import SearchBar from "@/app/components/common/SearchBar";
+import SortSelector, { SortOption } from "@/app/components/common/SortSelector";
+import FilterSection from "@/app/components/restaurant/FilterSection/FilterSection";
+import FoodCardList from "@/app/components/restaurant/FoodCardList";
+import KeywordSelector from "@/app/components/restaurant/KeywordSection/KeywordSelector";
+import KeywordToggleSection from "@/app/components/restaurant/KeywordSection/KeywordToggleSection";
 import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
+import RestaurantAddModal from "@/app/components/restaurant/RestaurantAddModal/RestaurantAddModal";
+import SearchResultEmpty from "@/app/components/restaurant/SearchResultEmpty";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
 import { suggestionList } from "@/app/constant/suggestionList";
-
-import FloatingActionButton from "../components/common/FloatingActionButton";
-import LoadingIndicator from "../components/common/LoadingIndicator";
-import ModalWrapper from "../components/common/ModalWrapper";
-import SortSelector, { SortOption } from "../components/common/SortSelector";
-import FilterSection from "../components/restaurant/FilterSection/FilterSection";
-import FoodCardList from "../components/restaurant/FoodCardList";
-import KeywordSelector from "../components/restaurant/KeywordSection/KeywordSelector";
-import KeywordToggleSection from "../components/restaurant/KeywordSection/KeywordToggleSection";
-import SearchResultEmpty from "../components/restaurant/SearchResultEmpty";
 
 export default function Restaurant() {
   const keywordList = [
@@ -51,15 +51,26 @@ export default function Restaurant() {
 
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
+  // 검색어 상태
   const [search, setSearch] = useState("");
+  // 현재 선택된 정렬 모드
   const [sortMode, setSortMode] = useState<SortValue>("recommend");
+  // 현재 표시되는 항목 수
   const [visibleCount, setVisibleCount] = useState(8);
+  // 로딩 상태
   const [isLoading, setIsLoading] = useState(false);
+  // 필터링 모달 열림 상태
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // 필터링된 항목을 저장하는 상태
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  // 검색 후 상태를 저장하는 상태
   const [isSearched, setIsSearched] = useState(false);
+  // 키워드 토글 상태
   const [showKeywords, setShowKeywords] = useState(false);
+  // 선택된 키워드 상태
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  // 식당 등록 모달 열림 상태
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const filteredItems = search.trim()
     ? Restaurants.filter((item) => item.menu.includes(search.trim()))
@@ -176,10 +187,15 @@ export default function Restaurant() {
       <div className="mb-2 mt-2 flex items-center justify-between text-xs">
         <button
           className="rounded-full bg-[#3FA2FF] px-7 py-2 text-white"
-          onClick={() => router.push("")}
+          onClick={() => setShowAddModal(true)}
         >
           + 등록하기
         </button>
+        {showAddModal && (
+          <ModalWrapper>
+            <RestaurantAddModal onClose={() => setShowAddModal(false)} />
+          </ModalWrapper>
+        )}
         <SortSelector
           options={sortOptions}
           selected={sortMode}

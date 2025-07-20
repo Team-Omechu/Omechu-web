@@ -64,7 +64,7 @@ export default function AlertModal({
       </div>
 
       {/* 확인/취소 버튼 영역 */}
-      <div className="flex justify-center gap-2.5">
+      <div className="flex justify-center gap-3 p-4">
         {swapButtonOrder ? (
           // 버튼 순서: [취소] [확인]
           <>
@@ -88,6 +88,7 @@ export default function AlertModal({
           <>
             <button
               onClick={onConfirm}
+
               className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}

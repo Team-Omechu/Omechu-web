@@ -52,13 +52,14 @@ export default function Review({
           </span>
         </div>
         <div className="absolute -right-1 -top-1 mb-2 flex items-center gap-1">
-          <span className="mt-1 text-sm">{votes}</span>
-          <button onClick={onVote} className="mb-1">
+          <span className="text-sm">{votes}</span>
+          <button onClick={onVote}>
             <Image
               src={isVoted ? "/thumbs-up-fill.png" : "/thumbs-up.png"}
               alt="리뷰 추천 버튼"
-              width={22}
-              height={22}
+              width={18}
+              height={18}
+              className="mr-1 object-contain"
             />
           </button>
           <button onClick={onClick}>
@@ -89,10 +90,10 @@ export default function Review({
       </div>
       {/* 평점, 후기 */}
       <div className="ml-2 mt-1 flex flex-col gap-1">
-        <span className="text-xl font-normal text-[#1F9BDA]">
+        <span className="text-lg font-normal text-[#1F9BDA]">
           {"★".repeat(rating) + "☆".repeat(5 - rating)}
         </span>
-        <span className="text-xl font-normal text-[#828282]">{content}</span>
+        <span className="text-base font-normal text-[#828282]">{content}</span>
         <div className="mt-1 flex max-h-52 flex-shrink-0 gap-2 overflow-x-scroll scroll-smooth scrollbar-hide">
           {images?.map((item, index) => (
             <Image
