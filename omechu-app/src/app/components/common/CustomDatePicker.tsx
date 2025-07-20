@@ -32,6 +32,47 @@ export default function CustomDatePicker() {
   );
   CustomInput.displayName = "CustomInput";
 
+  const renderCustomHeader = ({
+    date,
+    decreaseMonth,
+    increaseMonth,
+  }: {
+    date: Date;
+    decreaseMonth: () => void;
+    increaseMonth: () => void;
+  }) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return (
+      <div className="flex items-center justify-between px-4">
+        <button
+          onClick={decreaseMonth}
+          className="px-2 py-1 rounded hover:bg-gray-200"
+        >
+          <Image
+            src="/arrow/left-calender-arrow.svg"
+            alt="이전 달로 이동"
+            width={13}
+            height={26}
+          />
+        </button>
+        <span className="text-sm font-normal text-[#393939]">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
+        <button
+          onClick={increaseMonth}
+          className="px-2 py-1 text-sm rounded hover:bg-gray-200"
+        >
+          <Image
+            src="/arrow/right-calender-arrow.svg"
+            alt="이전 달로 이동"
+            width={13}
+            height={26}
+          />
+        </button>
+      </div>
+    );
+  };
+
   return (
     <section className="flex items-center justify-center w-full gap-4">
       <DatePicker
@@ -42,16 +83,19 @@ export default function CustomDatePicker() {
         selectsStart
         startDate={startDate}
         endDate={endDate ?? undefined}
+        renderCustomHeader={renderCustomHeader}
+        calendarClassName="text-white"
       />
       <span> ~ </span>
       <DatePicker
-        selected={startDate}
+        selected={endDate}
         dateFormat="yyyy.MM.dd"
         customInput={<CustomInput />}
         onChange={(date) => setEndDate(date)}
         selectsEnd
         startDate={startDate}
         endDate={endDate}
+        renderCustomHeader={renderCustomHeader}
         minDate={startDate ?? undefined}
       />
     </section>
