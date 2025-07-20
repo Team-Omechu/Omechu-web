@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
+import QuestionAnswerLayout from "@/app/mainpage/components/QuestionAnswerLayout";
 import StepFooter from "@/app/components/common/StepFooter";
 import MealIngredientGroup from "@/app/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/app/components/mainpage/MealStyleButton";
@@ -25,53 +25,48 @@ export default function MealAnswerPage() {
 
   return (
     <div className="flex h-screen w-full flex-col overflow-x-hidden">
-      <main className="flex w-full flex-1 flex-col items-center justify-center">
-        {/* 질문 문구 */}
-        <div className="font-['Noto Sans KR'] flex h-[10rem] w-[24.5625rem] flex-shrink-0 flex-col justify-center text-center text-[1.5rem] font-semibold leading-normal text-[#393939]">
-          <h2>제외하고 싶은</h2>
-          <h2>음식은 무엇인가요?</h2>
-        </div>
-
-        <div className="flex w-[310px] flex-col gap-2">
-          {/* 1: type */}
-          <MealTypeGroup
-            selectedItems={selectedItems}
-            onToggle={toggleSelect}
-          />
-
-          {/* 2: ingredient */}
-          <MealIngredientGroup
-            selectedItems={selectedItems}
-            onToggle={toggleSelect}
-          />
-
-          {/* 3: style */}
-          <MealStyleGroup
-            selectedItems={selectedItems}
-            onToggle={toggleSelect}
-          />
-        </div>
-
-        {/* 하단 반영 버튼 */}
-        <button
-          className={`mt-8 flex h-[3.125rem] w-[8.75rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-[#333] p-[0.625rem] text-center font-['Noto_Sans_KR'] text-[1.125rem] font-normal ${
-            selectedItems.length > 0
-              ? "bg-[#FB4746] text-white border-black hover:bg-[#e2403f] active:bg-[#c93938]"
-              : "bg-white text-black border-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
-          }`}
-          onClick={() => router.push("./location-answer")}
+      {/* Layout 적용 */}
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center px-4 py-6">
+        <QuestionAnswerLayout
+          title={"제외하고 싶은\n음식은 무엇인가요?"}
+          paddingClassName=""
+          contentClassName="flex flex-col items-center justify-start space-y-0"
         >
-          {selectedItems.length > 0
-            ? `${selectedItems.length}개 제외하기`
-            : "모두 반영하기"}
-        </button>
+          <div className="flex w-[310px] flex-col gap-2">
+            <MealTypeGroup
+              selectedItems={selectedItems}
+              onToggle={toggleSelect}
+            />
+            <MealIngredientGroup
+              selectedItems={selectedItems}
+              onToggle={toggleSelect}
+            />
+            <MealStyleGroup
+              selectedItems={selectedItems}
+              onToggle={toggleSelect}
+            />
+          </div>
+
+          <button
+            className={`mt-8 mx-auto flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-[#333] p-[0.625rem] text-[1.125rem] font-['Noto_Sans_KR'] font-normal ${
+              selectedItems.length > 0
+                ? "bg-[#FB4746] text-white border-black hover:bg-[#e2403f] active:bg-[#c93938]"
+                : "bg-white text-black border-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
+            }`}
+            onClick={() => router.push("./location-answer")}
+          >
+            {selectedItems.length > 0
+              ? `${selectedItems.length}개 제외하기`
+              : "모두 반영하기"}
+          </button>
+        </QuestionAnswerLayout>
       </main>
 
       {/* 하단 네비게이션 */}
       <StepFooter
         showNext={true}
         showPrev={true}
-        onNext={() => router.push("./location-answer")}
+        onNext={() => router.push("/mainpage/location-answer")}
         onPrev={() => router.back()}
       />
     </div>

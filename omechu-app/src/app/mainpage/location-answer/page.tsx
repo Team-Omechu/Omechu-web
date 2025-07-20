@@ -33,7 +33,7 @@ export default function LocationAnswerPage() {
 
   return (
     <div className="relative flex h-screen w-full flex-col overflow-x-hidden">
-      <main className="flex w-full flex-1 flex-col items-center justify-center">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center mt-10 px-4 py-6">
         {/* 질문 */}
         <div className="font-['Noto Sans KR'] mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
           <p className="text-xl font-semibold">위치를 입력해주세요</p>

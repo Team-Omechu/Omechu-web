@@ -15,7 +15,7 @@ const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-[0.3125rem] self-stretch">
+      <div className="flex flex-wrap justify-center items-center gap-[0.3125rem]">
         {items.map((item) => (
           <button
             key={item}

@@ -64,7 +64,7 @@ export default function MenuInfo({
             onClick={onRecipeClick}
           >
             <span className="border-b border-[#828282]">보러가기</span>
-            <span> ▶</span>
+            <span>▶</span>
           </button>
         </div>
       </div>
