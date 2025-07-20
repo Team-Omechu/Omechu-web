@@ -14,6 +14,8 @@ import MenuCard from "@/app/mainpage/components/MenuCard";
 
 import ExcludeButton from "../components/ExcludeButton";
 import TagCard from "../components/TagCard";
+import Header from "@/app/components/common/Header";
+import Image from "next/image";
 
 function getRandomMenus() {
   const shuffled = [...defaultMenus].sort(() => 0.5 - Math.random());
@@ -58,12 +60,28 @@ export default function ResultPage() {
   };
 
   return (
-    <div className="flex flex-col p-4">
-      <button className="flex justify-start" onClick={() => router.push("./")}>
-        &lt; 처음으로
-      </button>
+    <div className="flex flex-col">
+      <Header
+        leftChild={
+          <button
+            onClick={() => {
+              router.push("/mainpage");
+            }}
+            className="flex items-center text-sm font-bold"
+          >
+            <Image
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
+              width={22}
+              height={30}
+            />
+            <span>처음으로</span>
+          </button>
+        }
+        className="border-b-0"
+      />
 
-      <div className="mt-3 flex flex-col gap-4">
+      <div className="mt-3 flex flex-col gap-4 px-4">
         {menus?.map((menu) => (
           <div key={menu.id} className="relative">
             <ExcludeButton
@@ -83,7 +101,7 @@ export default function ResultPage() {
         ))}
       </div>
 
-      <div className="mt-4 flex justify-between gap-2">
+      <div className="mt-4 flex justify-between gap-2 px-4 h-[50px]">
         <button
           className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF]"
           onClick={handleReshuffle}
@@ -98,10 +116,12 @@ export default function ResultPage() {
         </button>
       </div>
 
+      <div className="px-4">
       <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
         {tagData?.map(({ tag, description }) => (
           <TagCard key={tag} tag={tag} description={description} />
         ))}
+      </div>
       </div>
 
       {showModal && (
