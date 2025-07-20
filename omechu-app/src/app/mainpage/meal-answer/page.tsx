@@ -32,7 +32,7 @@ export default function MealAnswerPage() {
           <h2>음식은 무엇인가요?</h2>
         </div>
 
-        <div className="flex w-[310px] flex-col gap-4">
+        <div className="flex w-[310px] flex-col gap-2">
           {/* 1: type */}
           <MealTypeGroup
             selectedItems={selectedItems}
