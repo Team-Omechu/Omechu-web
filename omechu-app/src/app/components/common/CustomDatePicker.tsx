@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, forwardRef } from "react";
+import { useState, useEffect, forwardRef } from "react";
 
 import Image from "next/image";
 
@@ -80,7 +80,7 @@ export default function CustomDatePicker() {
     if (startDate && endDate && startDate > endDate) {
       setEndDate(null);
     }
-  }, [startDate]);
+  }, [endDate, startDate]);
 
   return (
     <section className="flex flex-col items-end w-full">
