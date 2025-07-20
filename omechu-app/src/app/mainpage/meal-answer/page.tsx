@@ -27,7 +27,7 @@ export default function MealAnswerPage() {
     <div className="flex h-screen w-full flex-col overflow-x-hidden">
       <main className="flex w-full flex-1 flex-col items-center justify-center">
         {/* 질문 문구 */}
-        <div className="font-['Noto Sans KR'] flex h-[10rem] w-[24.5625rem] flex-shrink-0 flex-col justify-center text-center text-[1.5rem] font-medium leading-normal text-[#393939]">
+        <div className="font-['Noto Sans KR'] flex h-[10rem] w-[24.5625rem] flex-shrink-0 flex-col justify-center text-center text-[1.5rem] font-semibold leading-normal text-[#393939]">
           <h2>제외하고 싶은</h2>
           <h2>음식은 무엇인가요?</h2>
         </div>
@@ -56,8 +56,8 @@ export default function MealAnswerPage() {
         <button
           className={`mt-8 flex h-[3.125rem] w-[8.75rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-[#333] p-[0.625rem] text-center font-['Noto_Sans_KR'] text-[1.125rem] font-normal ${
             selectedItems.length > 0
-              ? "bg-[#FB4746] text-white"
-              : "border border-black bg-white text-black"
+              ? "bg-[#FB4746] text-white border-black hover:bg-[#e2403f] active:bg-[#c93938]"
+              : "bg-white text-black border-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
           }`}
           onClick={() => router.push("./location-answer")}
         >
