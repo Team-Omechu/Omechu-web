@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, forwardRef, useEffect } from "react";
+import { useState, forwardRef } from "react";
 
 import Image from "next/image";
 
