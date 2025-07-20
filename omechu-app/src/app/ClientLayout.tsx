@@ -62,6 +62,8 @@ export default function ClientLayout({
     "/mypage/settings/terms/location-info",
     // 마이페이지-찜목록
     "/mypage/favorites",
+    // 마이페이지-활동내역
+    "/mypage/my-activity",
   ];
 
   const dynamicNoBottomNavPrefixes = [
