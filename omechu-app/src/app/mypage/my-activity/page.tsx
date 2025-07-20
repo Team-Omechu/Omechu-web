@@ -9,9 +9,11 @@ import { useRouter } from "next/navigation";
 import FloatingActionButton from "@/app/components/common/FloatingActionButton";
 import FoodCard from "@/app/components/common/FoodCard";
 import Header from "@/app/components/common/Header";
+import LoadingIndicator from "@/app/components/common/LoadingIndicator";
 import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
+import SortSelector from "@/app/components/common/SortSelector";
 import SelectTabBar from "@/app/components/mypage/SelectTabBar";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList2";
+import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
@@ -20,8 +22,8 @@ export default function MyActivity() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [sortOrder, setSortOrder] = useState<"Recommended" | "Latest">(
-    "Recommended",
+  const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
+    "recommended",
   );
   const [visibleCount, setVisibleCount] = useState(5);
 
@@ -112,40 +114,34 @@ export default function MyActivity() {
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
       />
+
       <main
         ref={mainRef}
         className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
-            {/* 필터 - 추천 순 | 최신 순 */}
             <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-[#828282]">
-              <button
-                className={
-                  sortOrder === "Recommended"
-                    ? "font-semibold text-[#393939]"
-                    : ""
+              {/* 필터 - 추천 순 | 최신 순 */}
+              <SortSelector
+                options={[
+                  { label: "추천 순", value: "recommended" },
+                  { label: "최신 순", value: "latest" },
+                ]}
+                selected={
+                  sortOrder === "recommended" ? "recommended" : "latest"
                 }
-                onClick={() => setSortOrder("Recommended")}
-              >
-                추천 순
-              </button>
-              <span>|</span>
-              <button
-                className={
-                  sortOrder === "Latest" ? "font-semibold text-[#393939]" : ""
+                onSelect={(value) =>
+                  setSortOrder(value === "latest" ? "latest" : "recommended")
                 }
-                onClick={() => setSortOrder("Latest")}
-              >
-                최신 순
-              </button>
+              />
             </section>
 
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
               {MOCK_FOOD_REVIEW_CARD_DATA.slice()
                 .sort((a, b) =>
-                  sortOrder === "Latest"
+                  sortOrder === "latest"
                     ? new Date(b.createdAt).getTime() -
                       new Date(a.createdAt).getTime()
                     : (b.recommendCount ?? 0) - (a.recommendCount ?? 0),
@@ -180,14 +176,9 @@ export default function MyActivity() {
 
         <div ref={loaderRef} className="h-[1px]" />
 
-        {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
-            <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator />}
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
-      <FloatingActionButton onClick={scrollToTop} />
     </>
   );
 }

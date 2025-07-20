@@ -9,6 +9,7 @@ export type RestaurantType = {
   category?: string;
   rating: number;
   reviews: number;
+  isLiked: boolean;
   menu: string;
   tags: string[];
   images: string[];
@@ -26,10 +27,11 @@ export type RestaurantType = {
 export const Restaurants: RestaurantType[] = [
   {
     id: 1,
-    name: "오레노 라멘 합정 본점 ♥︎",
+    name: "오레노 라멘 합정 본점",
     category: "라멘",
     rating: 4.6,
     reviews: 85,
+    isLiked: true,
     menu: "쇼유라멘",
     tags: ["혼밥", "라멘", "가성비"],
     images: [
@@ -58,6 +60,7 @@ export const Restaurants: RestaurantType[] = [
     category: "브런치",
     rating: 4.2,
     reviews: 61,
+    isLiked: true,
     menu: "프렌치토스트",
     tags: ["데이트", "아침식사", "디저트"],
     images: [
@@ -85,6 +88,7 @@ export const Restaurants: RestaurantType[] = [
     name: "pier 23",
     rating: 3.2,
     reviews: 24,
+    isLiked: false,
     menu: "짜장면",
     tags: ["아침식사", "데이트", "기념일"],
     images: [
@@ -112,6 +116,7 @@ export const Restaurants: RestaurantType[] = [
     name: "맛있는김밥",
     rating: 4.5,
     reviews: 102,
+    isLiked: false,
     menu: "김밥",
     tags: ["점심식사", "혼밥", "테이크아웃"],
     images: [
@@ -139,6 +144,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 떡볶이",
     rating: 4.0,
     reviews: 75,
+    isLiked: false,
     menu: "떡볶이",
     tags: ["간식", "야식", "혼밥"],
     images: [
@@ -166,6 +172,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 카페",
     rating: 4.3,
     reviews: 50,
+    isLiked: false,
     menu: "아메리카노",
     tags: ["카페", "디저트", "혼밥"],
     images: [
@@ -193,6 +200,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 피자",
     rating: 4.1,
     reviews: 90,
+    isLiked: false,
     menu: "마르게리타 피자",
     tags: ["피자", "테이크아웃", "혼밥"],
     images: [
@@ -220,6 +228,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 스시",
     rating: 4.7,
     reviews: 120,
+    isLiked: false,
     menu: "초밥",
     tags: ["스시", "혼밥", "가성비"],
     images: [
@@ -247,6 +256,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 베이커리",
     rating: 4.4,
     reviews: 65,
+    isLiked: false,
     menu: "크루아상",
     tags: ["베이커리", "디저트", "혼밥"],
     images: [
@@ -274,6 +284,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 치킨",
     rating: 4.8,
     reviews: 150,
+    isLiked: true,
     menu: "후라이드 치킨",
     tags: ["치킨", "야식", "혼밥"],
     images: [
@@ -301,6 +312,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 아이스크림",
     rating: 4.5,
     reviews: 80,
+    isLiked: false,
     menu: "아이스크림",
     tags: ["디저트", "간식", "혼밥"],
     images: [
@@ -328,6 +340,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 스테이크",
     rating: 4.9,
     reviews: 200,
+    isLiked: false,
     menu: "스테이크",
     tags: ["스테이크", "데이트", "혼밥"],
     images: [
@@ -355,6 +368,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 파스타",
     rating: 4.6,
     reviews: 110,
+    isLiked: true,
     menu: "까르보나라",
     tags: ["파스타", "혼밥", "가성비"],
     images: [
@@ -382,6 +396,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 샐러드",
     rating: 4.3,
     reviews: 95,
+    isLiked: false,
     menu: "그린 샐러드",
     tags: ["샐러드", "건강식", "혼밥"],
     images: [
@@ -409,6 +424,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 버거",
     rating: 4.4,
     reviews: 130,
+    isLiked: false,
     menu: "수제버거",
     tags: ["버거", "테이크아웃", "혼밥"],
     images: [
@@ -436,6 +452,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 타코",
     rating: 4.2,
     reviews: 70,
+    isLiked: false,
     menu: "타코",
     tags: ["타코", "혼밥", "가성비"],
     images: [
@@ -463,6 +480,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 커리",
     rating: 4.1,
     reviews: 85,
+    isLiked: false,
     menu: "인도 커리",
     tags: ["커리", "혼밥", "가성비"],
     images: [
@@ -490,6 +508,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 피쉬앤칩스",
     rating: 4.5,
     reviews: 60,
+    isLiked: false,
     menu: "피쉬앤칩스",
     tags: ["피쉬앤칩스", "혼밥", "가성비"],
     images: [
@@ -517,6 +536,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 브런치카페",
     rating: 4.0,
     reviews: 40,
+    isLiked: false,
     menu: "브런치",
     tags: ["브런치", "디저트", "혼밥"],
     images: [
@@ -544,6 +564,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 디저트카페",
     rating: 4.8,
     reviews: 150,
+    isLiked: true,
     menu: "케이크",
     tags: ["디저트", "카페", "혼밥"],
     images: [
@@ -571,6 +592,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 스무디",
     rating: 4.3,
     reviews: 55,
+    isLiked: false,
     menu: "스무디",
     tags: ["스무디", "건강식", "혼밥"],
     images: [
@@ -598,6 +620,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 와플",
     rating: 4.4,
     reviews: 65,
+    isLiked: false,
     menu: "와플",
     tags: ["디저트", "간식", "혼밥"],
     images: [
@@ -625,6 +648,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 핫도그",
     rating: 4.0,
     reviews: 45,
+    isLiked: false,
     menu: "핫도그",
     tags: ["간식", "야식", "혼밥"],
     images: [
@@ -652,6 +676,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 퓨전요리",
     rating: 4.6,
     reviews: 80,
+    isLiked: false,
     menu: "퓨전 요리",
     tags: ["퓨전", "혼밥", "가성비"],
     images: [
@@ -679,6 +704,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 국수집",
     rating: 4.2,
     reviews: 70,
+    isLiked: false,
     menu: "칼국수",
     tags: ["국수", "혼밥", "가성비"],
     images: [
@@ -706,6 +732,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 떡집",
     rating: 4.5,
     reviews: 90,
+    isLiked: false,
     menu: "전통 떡",
     tags: ["떡", "디저트", "혼밥"],
     images: [
@@ -733,6 +760,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 김치찌개",
     rating: 4.1,
     reviews: 55,
+    isLiked: false,
     menu: "김치찌개",
     tags: ["찌개", "혼밥", "가성비"],
     images: [
@@ -760,6 +788,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 찜닭",
     rating: 4.4,
     reviews: 80,
+    isLiked: false,
     menu: "찜닭",
     tags: ["찜닭", "혼밥", "가성비"],
     images: [
@@ -787,6 +816,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 족발집",
     rating: 4.7,
     reviews: 100,
+    isLiked: false,
     menu: "족발",
     tags: ["족발", "야식", "혼밥"],
     images: [
@@ -814,6 +844,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 만두집",
     rating: 4.3,
     reviews: 65,
+    isLiked: false,
     menu: "김치만두",
     tags: ["만두", "혼밥", "가성비"],
     images: [
@@ -841,6 +872,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 떡볶이",
     rating: 4.5,
     reviews: 75,
+    isLiked: true,
     menu: "떡볶이",
     tags: ["분식", "혼밥", "가성비"],
     images: [
@@ -868,6 +900,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 김밥집",
     rating: 4.2,
     reviews: 50,
+    isLiked: false,
     menu: "김밥",
     tags: ["김밥", "혼밥", "가성비"],
     images: [
@@ -895,6 +928,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 피자",
     rating: 4.6,
     reviews: 90,
+    isLiked: false,
     menu: "마르게리타 피자",
     tags: ["피자", "테이크아웃", "혼밥"],
     images: [
@@ -922,6 +956,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 스시",
     rating: 4.8,
     reviews: 120,
+    isLiked: false,
     menu: "초밥",
     tags: ["스시", "혼밥", "가성비"],
     images: [
@@ -949,6 +984,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 브런치",
     rating: 4.4,
     reviews: 85,
+    isLiked: false,
     menu: "에그 베네딕트",
     tags: ["브런치", "디저트", "혼밥"],
     images: [
@@ -976,6 +1012,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 디저트",
     rating: 4.7,
     reviews: 95,
+    isLiked: false,
     menu: "마카롱",
     tags: ["디저트", "카페", "혼밥"],
     images: [
@@ -1003,6 +1040,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 스무디",
     rating: 4.3,
     reviews: 60,
+    isLiked: false,
     menu: "과일 스무디",
     tags: ["스무디", "건강식", "혼밥"],
     images: [
@@ -1030,6 +1068,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 와플",
     rating: 4.4,
     reviews: 70,
+    isLiked: false,
     menu: "과일 와플",
     tags: ["디저트", "간식", "혼밥"],
     images: [
@@ -1057,6 +1096,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 핫도그",
     rating: 4.0,
     reviews: 50,
+    isLiked: false,
     menu: "치즈 핫도그",
     tags: ["간식", "야식", "혼밥"],
     images: [
@@ -1084,6 +1124,7 @@ export const Restaurants: RestaurantType[] = [
     name: "성수동 퓨전요리",
     rating: 4.6,
     reviews: 80,
+    isLiked: true,
     menu: "퓨전 파스타",
     tags: ["퓨전", "혼밥", "가성비"],
     images: [
