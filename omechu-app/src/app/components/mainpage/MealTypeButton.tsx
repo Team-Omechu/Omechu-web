@@ -21,8 +21,8 @@ const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
             key={item}
             className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black text-center text-[0.875rem] font-normal leading-normal ${
               selectedItems.includes(item)
-                ? "bg-[#FB4746] text-white"
-                : "bg-white"
+                ? "bg-[#FB4746] text-white border-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+                : "bg-white text-black border-[#FB4746] hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
             }`}
             onClick={() => onToggle(item)}
             disabled={isDisabled(item)}
