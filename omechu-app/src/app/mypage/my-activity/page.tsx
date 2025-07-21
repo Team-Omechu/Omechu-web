@@ -13,8 +13,10 @@ import LoadingIndicator from "@/app/components/common/LoadingIndicator";
 import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
 import SortSelector from "@/app/components/common/SortSelector";
 import SelectTabBar from "@/app/components/mypage/SelectTabBar";
+import RestaurantEditModal from "@/app/components/restaurant/RestaurantAddModal/RestaurantEditModal";
 import { Restaurants } from "@/app/constant/restaurant/restaurantList";
 
+import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
 export default function MyActivity() {
@@ -93,6 +95,23 @@ export default function MyActivity() {
     setVisibleCount(5);
   }, [selectedIndex]);
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editTargetId, setEditTargetId] = useState<number | null>(null);
+
+  const handleOpenEditModal = (id: number) => {
+    setEditTargetId(id);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditTargetId(null);
+  };
+
+  const editTargetData = initialRestaurantData.find(
+    (r) => r.id === editTargetId,
+  );
+
   return (
     <>
       <Header
@@ -117,7 +136,7 @@ export default function MyActivity() {
 
       <main
         ref={mainRef}
-        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-auto scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
@@ -156,12 +175,12 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {/* 등록한 맛집 목록 */}
-            <section className="flex flex-col gap-5 mt-4">
+            <section className="mt-4 flex flex-col gap-5">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
                   <button
+                    onClick={() => handleOpenEditModal(item.id)}
                     className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]"
-                    onClick={() => router.push(`/restaurant/edit/${item.id}`)}
                   >
                     편집
                   </button>
@@ -174,6 +193,12 @@ export default function MyActivity() {
                 </div>
               ))}
             </section>
+            {editTargetData && (
+              <RestaurantEditModal
+                onClose={handleCloseEditModal}
+                initialData={editTargetData}
+              />
+            )}
           </>
         )}
 

@@ -20,23 +20,24 @@ interface RestaurantData {
 }
 
 export default function RestaurantEditPage() {
-  const { id } = useParams();
-  console.log("id", id);
+  const params = useParams();
   const router = useRouter();
 
   const [initialData, setInitialData] = useState<RestaurantData | null>(null);
 
   useEffect(() => {
-    if (!id) return;
+    const rawId = params?.id;
+    const numericId = Number(Array.isArray(rawId) ? rawId[0] : rawId);
 
-    const numericId = Number(id);
+    if (!numericId || isNaN(numericId)) {
+      console.warn("올바르지 않은 ID입니다.");
+      router.back();
+      return;
+    }
+
     const data = initialRestaurantData.find((item) => item.id === numericId);
 
-    console.log("initialRestaurantData", initialRestaurantData);
-    console.log("numericId", numericId);
-
     if (data) {
-      // id를 제외한 나머지만 전달
       const {
         restaurantName,
         menus,
@@ -47,6 +48,7 @@ export default function RestaurantEditPage() {
         detailAddress,
         imageUrl,
       } = data;
+
       setInitialData({
         restaurantName,
         menus,
@@ -58,12 +60,12 @@ export default function RestaurantEditPage() {
         imageUrl,
       });
     } else {
-      console.warn("해당 맛집을 찾을 수 없습니다.");
+      console.warn("해당 ID의 맛집이 존재하지 않습니다.");
       router.back();
     }
-  }, [id, router]);
+  }, [params, router]);
 
-  if (!initialData) return null;
+  if (!initialData) return <div>로딩 중...</div>;
 
   return (
     <RestaurantEditModal
