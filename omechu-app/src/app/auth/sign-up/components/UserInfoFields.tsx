@@ -6,9 +6,8 @@ import Image from "next/image";
 
 import { useFormContext } from "react-hook-form";
 
+import Input from "@/auth/components/Input";
 import type { SignupFormValues } from "@/lib/schemas/auth.schema";
-
-import Input from "../../components/Input";
 
 export default function UserInfoFields() {
   const {
