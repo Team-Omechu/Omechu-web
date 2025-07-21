@@ -10,4 +10,4 @@ const config = {
   plugins: ["prettier-plugin-tailwindcss"], // Tailwind CSS 플러그인
 };
 
-export default config;
+module.exports = config; // export default 대신 사용
