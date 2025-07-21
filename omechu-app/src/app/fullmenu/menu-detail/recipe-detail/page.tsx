@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
+import { menus } from "@/constant/mainpage/resultData";
 
 export default function RecipeDetail() {
   return (
@@ -17,8 +18,14 @@ export default function RecipeDetail() {
 function RecipeDetailClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const menuId = searchParams.get("menuId");
+  console.log("menuId →", menuId);
 
-  const name = searchParams.get("name");
+  const menu = menus.find((item) => item.id === Number(menuId));
+
+  if (!menu) {
+    return <div className="p-4">존재하지 않는 메뉴입니다.</div>;
+  }
 
   return (
     <>
@@ -42,13 +49,13 @@ function RecipeDetailClient() {
 
       <main className="min-h-screen bg-[#F8D5FF] p-5 pt-8 text-sm text-black">
         <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
-          {name} 레시피
+          {menu.title} 레시피
         </h1>
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
             src="/logo.png"
-            alt={`${name}`}
+            alt={`${menu.title}`}
             className="rounded object-contain"
             width={144}
             height={144}
@@ -95,7 +102,7 @@ function RecipeDetailClient() {
               {step.image && (
                 <div className="mt-2 flex justify-center">
                   <Image
-                    src={"/logo.png"}
+                    src={"/logo/logo.png"}
                     alt={`step-${index + 1}`}
                     width={200}
                     height={150}

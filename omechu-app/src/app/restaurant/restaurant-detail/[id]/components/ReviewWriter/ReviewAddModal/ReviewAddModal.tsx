@@ -4,11 +4,14 @@ import { useState } from "react";
 
 import Image from "next/image";
 
+import AlertModal from "@/components/common/AlertModal";
+import Header from "@/components/common/Header";
+import ModalWrapper from "@/components/common/ModalWrapper";
+
 import ImageUploader from "./ImageUploader";
 import RatingSelector from "./RatingSelector";
 import TagSelector from "./TagSelector";
 import TextReview from "./TextReview";
-import Header from "../../../common/Header";
 
 interface ReviewModalProps {
   restaurantName: string;
@@ -21,7 +24,7 @@ interface ReviewModalProps {
   ) => void;
 }
 
-export default function ReviewModal({
+export default function ReviewAddModal({
   restaurantName,
   onClose,
   onSubmit,
@@ -30,6 +33,7 @@ export default function ReviewModal({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [comment, setComment] = useState("");
   const [images, setImages] = useState<File[]>([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   return (
     <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#F8D5FF] px-4 py-5 scrollbar-hide">
@@ -73,11 +77,26 @@ export default function ReviewModal({
 
       {/* 제출 버튼 */}
       <button
-        onClick={() => onSubmit(rating, selectedTags, images, comment)}
+        onClick={() => {
+          setShowConfirmModal(true);
+          onSubmit(rating, selectedTags, images, comment);
+        }}
         className="mb-4 w-full rounded-md bg-[#FF5B5B] py-2 font-bold text-white"
       >
         전달하기
       </button>
+
+      {/* 확인 모달 */}
+      {showConfirmModal && (
+        <ModalWrapper>
+          <AlertModal
+            title="소중한 후기가 전달되었어요."
+            confirmText="제출하기"
+            onConfirm={() => setShowConfirmModal(false)}
+            onClose={() => setShowConfirmModal(false)}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }

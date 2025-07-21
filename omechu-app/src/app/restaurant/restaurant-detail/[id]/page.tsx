@@ -9,15 +9,16 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
-import ReportModal from "@/components/restaurant/ReportModal";
-import RestaurantDetailHeader from "@/components/restaurant/restaurant-detail/RestaurantDetailHeader";
-import RestaurantImageCarousel from "@/components/restaurant/restaurant-detail/RestaurantImageCarousel";
-import RestaurantInfoBox from "@/components/restaurant/restaurant-detail/RestaurantInfoBox";
-import ReviewList from "@/components/restaurant/restaurant-detail/ReviewList";
-import ReviewWriter from "@/components/restaurant/restaurant-detail/ReviewWriter";
 import { Restaurants } from "@/constant/restaurant/restaurantList";
 import { reviewSummary, reviewTags } from "@/constant/restaurant/reviewSummary";
 import { sampleReviews } from "@/constant/restaurant/sampleReviews";
+import ReportModal from "@/restaurant/restaurant-detail/[id]/components/ReportModal";
+
+import RestaurantDetailHeader from "./components/RestaurantDetailHeader";
+import RestaurantImageCarousel from "./components/RestaurantImageCarousel";
+import RestaurantInfoBox from "./components/RestaurantInfoBox";
+import ReviewList from "./components/ReviewList/ReviewList";
+import ReviewWriter from "./components/ReviewWriter/ReviewWriter";
 
 export default function RestaurantDetail() {
   const router = useRouter(); // 페이지 이동을 위한 라우터 훅

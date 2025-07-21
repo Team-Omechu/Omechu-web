@@ -30,7 +30,7 @@ export default function FloatingActionButton({
     >
       <button onClick={onClick}>
         <Image
-          src="/components/common/floatingActionButton.svg"
+          src="/common/floatingActionButton.svg"
           alt={alt}
           width={36}
           height={36}

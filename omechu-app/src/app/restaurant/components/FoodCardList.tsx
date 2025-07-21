@@ -1,6 +1,5 @@
+import FoodCard from "@/components/common/FoodCard";
 import { RestaurantType } from "@/constant/restaurant/restaurantList";
-
-import FoodCard from "../common/FoodCard";
 
 interface FoodCardListProps {
   items: RestaurantType[];

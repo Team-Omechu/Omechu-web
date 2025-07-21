@@ -1,7 +1,7 @@
 "use client";
 
-import Review from "@/components/restaurant/Review";
-import type { ReviewProps } from "@/components/restaurant/Review";
+import Review from "@/restaurant/restaurant-detail/[id]/components/ReviewList/Review";
+import type { ReviewProps } from "@/restaurant/restaurant-detail/[id]/components/ReviewList/Review";
 
 interface ReviewListProps {
   reviews: Omit<

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import FilterTagList from "../restaurant/FilterSection/FilterTagList";
+import FilterTagList from "@/components/common/FilterTagList";
 
 interface FilterSectionProps {
   tags: string[];
@@ -18,7 +18,7 @@ export default function FilterSection({
       <FilterTagList tags={tags} onRemove={onRemove} className="px-5" />
       <button className="ml-auto" onClick={onOpen}>
         <Image
-          src={"/customselect.png"}
+          src={"/common/customselect.png"}
           alt="사용자필터"
           className="h-8 w-8"
           width={32}

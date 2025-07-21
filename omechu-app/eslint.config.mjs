@@ -12,45 +12,45 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "eslint-config-prettier"),
-  {
-    rules: {
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling"],
-            "index",
-          ],
-          pathGroups: [
-            {
-              pattern: "react",
-              group: "external",
-              position: "before",
-            },
-            {
-              pattern: "next/**",
-              group: "external",
-              position: "before",
-            },
-            {
-              pattern: "@/**",
-              group: "internal",
-              position: "before",
-            },
-          ],
-          pathGroupsExcludedImportTypes: ["react", "next/**"],
-          "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
-        },
-      ],
-    },
-  },
+  // {
+  //   rules: {
+  //     "import/order": [
+  //       "error",
+  //       {
+  //         groups: [
+  //           "builtin",
+  //           "external",
+  //           "internal",
+  //           ["parent", "sibling"],
+  //           "index",
+  //         ],
+  //         pathGroups: [
+  //           {
+  //             pattern: "react",
+  //             group: "external",
+  //             position: "before",
+  //           },
+  //           {
+  //             pattern: "next/**",
+  //             group: "external",
+  //             position: "before",
+  //           },
+  //           {
+  //             pattern: "@/**",
+  //             group: "internal",
+  //             position: "before",
+  //           },
+  //         ],
+  //         pathGroupsExcludedImportTypes: ["react", "next/**"],
+  //         "newlines-between": "always",
+  //         alphabetize: {
+  //           order: "asc",
+  //           caseInsensitive: true,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // },
 ];
 
 export default eslintConfig;

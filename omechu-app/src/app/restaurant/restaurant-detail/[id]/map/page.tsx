@@ -6,9 +6,10 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import Header from "@/components/common/Header";
-import RestaurantMapPreview from "@/components/restaurant/restaurant-detail/map/RestaurantMapPreview";
-import RestaurantDetailHeader from "@/components/restaurant/restaurant-detail/RestaurantDetailHeader";
 import { Restaurants } from "@/constant/restaurant/restaurantList";
+import RestaurantDetailHeader from "@/restaurant/restaurant-detail/[id]/components/RestaurantDetailHeader";
+
+import RestaurantMapPreview from "./components/RestaurantMapPreview";
 
 export default function MapPage() {
   const router = useRouter();

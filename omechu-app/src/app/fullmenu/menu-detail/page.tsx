@@ -11,8 +11,8 @@ import {
 } from "next/navigation";
 
 import Header from "@/components/common/Header";
+import MenuInfo from "@/components/common/MenuInfoCard";
 import { menus } from "@/constant/mainpage/resultData";
-import MenuInfo from "@/mainpage/components/MenuInfoCard";
 
 export default function MenuDetail() {
   return (
@@ -25,19 +25,17 @@ function MenuDetailClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const params = useParams();
-  const menuId = Number(params.menuId);
+  const menuId = searchParams.get("menuId");
+  console.log("menuId →", menuId);
 
-  const menu = menus.find((m) => m.id === menuId);
+  const menu = menus.find((item) => item.id === Number(menuId));
+
   if (!menu) {
     return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
   }
 
-  const name = searchParams.get("name");
-  const encodedName = name ? `?name=${encodeURIComponent(name)}` : "";
-
   const handleClick = () => {
-    router.push(`${pathname}/recipe-detail${encodedName}`);
+    router.push(`${pathname}/recipe-detail?menuId=${menu.id}`);
   };
 
   return (
@@ -62,13 +60,13 @@ function MenuDetailClient() {
 
       <main className="min-h-screen bg-[#F8D5FF] p-4 pt-8 text-sm text-black">
         <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
-          {name}
+          {menu.title}
         </h1>
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
             src="/logo.png"
-            alt={`${name || "메뉴 이미지"}`}
+            alt={`${menu.title || "메뉴 이미지"}`}
             className="rounded object-contain"
             width={144}
             height={144}

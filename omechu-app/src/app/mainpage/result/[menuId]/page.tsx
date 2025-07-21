@@ -7,7 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 import RestaurantCard from "@/components/mainpage/RestaurantCard";
 import { restaurantList } from "@/constant/mainpage/RestaurantData";
 import { menus } from "@/constant/mainpage/resultData";
-import MenuInfo from "@/mainpage/components/MenuInfoCard";
+import MenuInfo from "@/components/common/MenuInfoCard";
 
 export default function MenuDetailPage() {
   const router = useRouter();

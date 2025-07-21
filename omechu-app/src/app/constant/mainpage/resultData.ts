@@ -1,12 +1,28 @@
 // resultData.ts
 
-export const menus = [
+export type menuType = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  nutrition: {
+    calories: string;
+    carbs: string;
+    protein: string;
+    fat: string;
+    vitamin: string;
+  };
+  allergens: string[];
+  recipeUrl: string;
+};
+
+export const menus: menuType[] = [
   {
     id: 1,
     title: "카레라이스",
     description:
       "매콤한 향신료와 따뜻한 밥이 어우러져 기분을 북돋아주고 활력을 주는 한 그릇 요리",
-    image: "/logo_3d.png",
+    image: "/logo/logo.png",
     nutrition: {
       calories: "950 kcal",
       carbs: "120 g",
