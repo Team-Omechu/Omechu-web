@@ -10,11 +10,11 @@ import LoadingIndicator from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import SearchBar from "@/components/common/SearchBar";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
-import FilterModal from "@/components/fullmenu/FilterModal";
-import FilterSection from "@/components/fullmenu/FilterSection";
-import FoodListSection from "@/components/fullmenu/FoodListSection";
 import { foodItems } from "@/constant/foodItems";
 import { suggestionList } from "@/constant/suggestionList";
+import FilterModal from "@/fullmenu/components/FilterModal";
+import FilterSection from "@/fullmenu/components/FilterSection";
+import FoodListSection from "@/fullmenu/components/FoodListSection";
 
 export default function FullMenu() {
   const router = useRouter();

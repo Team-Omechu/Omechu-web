@@ -3,8 +3,7 @@
 import { useState } from "react";
 
 import ModalWrapper from "@/components/common/ModalWrapper";
-
-import ReviewModal from "./ReviewModal/ReviewModal";
+import ReviewAddModal from "@/restaurant/restaurant-detail/[id]/components/ReviewWriter/ReviewAddModal/ReviewAddModal";
 
 interface Props {
   restaurantName: string;
@@ -30,7 +29,7 @@ export default function ReviewWriter({ restaurantName }: Props) {
         </div>
         {showModal && (
           <ModalWrapper>
-            <ReviewModal
+            <ReviewAddModal
               restaurantName={restaurantName}
               onClose={() => setShowModal(false)}
               onSubmit={(rating, tags, images, comment) => {

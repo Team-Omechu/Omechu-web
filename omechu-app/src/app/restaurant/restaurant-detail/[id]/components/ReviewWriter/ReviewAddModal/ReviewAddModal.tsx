@@ -24,7 +24,7 @@ interface ReviewModalProps {
   ) => void;
 }
 
-export default function ReviewModal({
+export default function ReviewAddModal({
   restaurantName,
   onClose,
   onSubmit,

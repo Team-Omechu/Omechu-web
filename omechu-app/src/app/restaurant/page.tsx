@@ -10,17 +10,18 @@ import { distance } from "fastest-levenshtein";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import SortSelector, { SortOption } from "@/components/common/SortSelector";
-import FilterSection from "@/components/restaurant/FilterSection/FilterSection";
-import FoodCardList from "@/components/restaurant/FoodCardList";
-import KeywordSelector from "@/components/restaurant/KeywordSection/KeywordSelector";
-import KeywordToggleSection from "@/components/restaurant/KeywordSection/KeywordToggleSection";
-import RestaurantAddModal from "@/components/restaurant/RestaurantAddModal/RestaurantAddModal";
-import SearchResultEmpty from "@/components/restaurant/SearchResultEmpty";
 import SearchBar from "@/components/common/SearchBar";
-import LocationModal from "@/components/restaurant/LocationModal/LocationModal";
+import SortSelector, { SortOption } from "@/components/common/SortSelector";
 import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
 import { suggestionList } from "@/constant/suggestionList";
+import FoodCardList from "@/restaurant/components/FoodCardList";
+import SearchResultEmpty from "@/restaurant/components/SearchResultEmpty";
+
+import FilterSection from "./components/FilterSection/RestaurantFilterSection";
+import KeywordSelector from "./components/KeywordSection/KeywordSelector";
+import KeywordToggleSection from "./components/KeywordSection/KeywordToggleSection";
+import LocationModal from "./components/LocationFilterModal/LocationModal";
+import RestaurantAddModal from "./components/RestaurantAddModal/RestaurantAddModal";
 
 export default function Restaurant() {
   const keywordList = [

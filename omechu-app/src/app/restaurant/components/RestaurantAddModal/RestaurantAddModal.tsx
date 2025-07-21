@@ -8,8 +8,8 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 
-import AddressSection from "./AddressSection";
-import BusinessHoursSelector from "./BusinessHoursSelector";
+import AddressSection from "./AddressSection/AddressSection";
+import BusinessHoursSelector from "./BusinessHoursSelector/BusinessHoursSelector";
 import ImageUploader from "./ImageUploader";
 import MenuInputList from "./MenuInputList";
 import RestaurantNameInput from "./RestaurantNameInput";

@@ -11,8 +11,8 @@ import {
 } from "next/navigation";
 
 import Header from "@/components/common/Header";
+import MenuInfo from "@/components/common/MenuInfoCard";
 import { menus } from "@/constant/mainpage/resultData";
-import MenuInfo from "@/mainpage/components/MenuInfoCard";
 
 export default function MenuDetail() {
   return (
