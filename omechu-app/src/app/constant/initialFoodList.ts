@@ -6,7 +6,7 @@ export const initialFoodList: {
   {
     title: "치킨",
     isExcluded: false,
-    imageUrl: "/image/image_blank.svg",
+    imageUrl: "/image/image_empty.svg",
   },
   { title: "초콜릿", isExcluded: false, imageUrl: "/logo/logo.svg" },
   { title: "김밥", isExcluded: false, imageUrl: "/logo/logo.svg" },
