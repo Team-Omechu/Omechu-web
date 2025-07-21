@@ -10,7 +10,7 @@ import LoadingIndicator from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import SearchBar from "@/components/common/SearchBar";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
-import { foodItems } from "@/constant/foodItems";
+import { menus } from "@/constant/mainpage/resultData";
 import { suggestionList } from "@/constant/suggestionList";
 import FilterModal from "@/fullmenu/components/FilterModal";
 import FilterSection from "@/fullmenu/components/FilterSection";
@@ -35,8 +35,8 @@ export default function FullMenu() {
   const [isSearched, setIsSearched] = useState(false);
 
   const filteredItems = search.trim()
-    ? foodItems.filter((item) => item.includes(search.trim()))
-    : foodItems;
+    ? menus.filter((item) => item.title.includes(search.trim()))
+    : menus;
 
   const visibleItems = filteredItems.slice(0, visibleCount);
 
@@ -151,9 +151,7 @@ export default function FullMenu() {
           search={search}
           isSearched={isSearched}
           onClickItem={(food) =>
-            router.push(
-              `/fullmenu/menu-detail?name=${encodeURIComponent(food)}`,
-            )
+            router.push(`/fullmenu/menu-detail?menuId=${food}`)
           }
         />
 
