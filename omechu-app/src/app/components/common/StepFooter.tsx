@@ -7,6 +7,7 @@ type StepFooterProps = {
   showNext?: boolean;
   onPrev?: () => void;
   onNext?: () => void;
+  children?: React.ReactNode;
 };
 
 const StepFooter = ({
@@ -14,23 +15,32 @@ const StepFooter = ({
   showNext = false,
   onPrev,
   onNext,
+  children,
 }: StepFooterProps) => {
+  // 표시할 버튼이나 컨텐츠가 없으면 footer 자체를 렌더링하지 않습니다.
+  if (!showPrev && !showNext && !children) {
+    return null;
+  }
+
   return (
-    <footer className="flex h-[66px] w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
-      <div className="flex justify-between">
-        {showPrev ? (
-          <button onClick={onPrev} className="ml-5 text-base text-[#828282]">
-            {"<"} 이전으로
-          </button>
-        ) : (
-          <div />
-        )}
-        {showNext ? (
-          <button onClick={onNext} className="mr-5 text-base text-[#828282]">
-            건너뛰기 {">"}
-          </button>
-        ) : null}
-      </div>
+    <footer className="w-full pb-[env(safe-area-inset-bottom)]">
+      {(showPrev || showNext) && (
+        <div className="mb-3 flex justify-between px-5">
+          {showPrev ? (
+            <button onClick={onPrev} className="text-base text-[#828282]">
+              {"<"} 이전으로
+            </button>
+          ) : (
+            <div />
+          )}
+          {showNext ? (
+            <button onClick={onNext} className="text-base text-[#828282]">
+              건너뛰기 {">"}
+            </button>
+          ) : null}
+        </div>
+      )}
+      {children}
     </footer>
   );
 };
