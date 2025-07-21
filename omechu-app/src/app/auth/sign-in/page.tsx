@@ -29,7 +29,12 @@ export default function SignInPage() {
         </div>
 
         <button className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]">
-          <Image src="/kakao.png" alt="카카오 아이콘" width={24} height={24} />
+          <Image
+            src="/auth/kakao-icon.svg"
+            alt="카카오 아이콘"
+            width={24}
+            height={24}
+          />
           카카오 로그인
         </button>
       </div>
