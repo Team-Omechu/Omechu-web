@@ -49,17 +49,15 @@ export default function AlertModal({
   const showCancelButton = !!cancelText;
 
   return (
-    <div className="flex h-[180px] w-[335px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl dark:bg-[#a3a3a3]">
+    <div className="flex h-fit w-[335px] flex-col justify-between gap-5 rounded-[20px] border-2 border-[#393939] bg-white px-6 py-12 shadow-xl">
       {/* 상단 여백용 (닫기 버튼 등 들어갈 자리, 현재 비어있음) */}
       <div className="flex justify-end"></div>
 
       {/* 타이틀 및 설명 영역 */}
       <div className="flex flex-col items-center text-center">
-        <span className="whitespace-pre-line text-[19px] font-medium">
-          {title}
-        </span>
+        <span className="whitespace-pre-line text-xl font-medium">{title}</span>
         {description && (
-          <span className="mt-1 whitespace-pre-line text-[15px] font-medium text-[#828282] dark:text-white">
+          <span className="mt-1 whitespace-pre-line text-[15px] font-medium text-[#828282]">
             {description}
           </span>
         )}
@@ -73,14 +71,14 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-[#f1f1f1] active:bg-[#e2e2e2] dark:border-none dark:bg-[#7a7a7a] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
+                className="h-10 flex-1 rounded-[30px] border-[1px] border-[#626262] bg-white text-[15px] font-normal text-[#626262] hover:bg-[#f1f1f1] active:bg-[#e2e2e2]"
               >
                 {cancelText}
               </button>
             )}
             <button
               onClick={onConfirm}
-              className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] dark:bg-[#bc3535] dark:hover:bg-[#972b2a] dark:active:bg-[#71201f] ${showCancelButton ? "flex-1" : "w-40"}`}
+              className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}
             </button>
@@ -90,14 +88,14 @@ export default function AlertModal({
           <>
             <button
               onClick={onConfirm}
-              className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] dark:bg-[#bc3535] dark:hover:bg-[#972b2a] dark:active:bg-[#71201f] ${showCancelButton ? "flex-1" : "w-40"}`}
+              className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}
             </button>
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-[#f1f1f1] active:bg-[#e2e2e2] dark:border-none dark:bg-[#7a7a7a] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
+                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-[#f1f1f1] active:bg-[#e2e2e2]"
               >
                 {cancelText}
               </button>

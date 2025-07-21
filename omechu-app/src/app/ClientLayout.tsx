@@ -16,6 +16,7 @@ export default function ClientLayout({
     "/mainpage/meal-answer",
     "/mainpage/location-answer",
     "/mainpage/result",
+    "/mainpage/random-recommend",
 
     // 로그인, 회원가입, 온보딩 페이지
     "/auth/login",
@@ -61,6 +62,8 @@ export default function ClientLayout({
     "/mypage/settings/terms/location-info",
     // 마이페이지-찜목록
     "/mypage/favorites",
+    // 마이페이지-활동내역
+    "/mypage/my-activity",
   ];
 
   const dynamicNoBottomNavPrefixes = [
