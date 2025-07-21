@@ -1,9 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
-import Image from "next/image";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
