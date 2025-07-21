@@ -11,7 +11,7 @@ const FinalChoiceStep = () => {
       <ListButton
         onClick={() => {
           // TODO: 결과보기 로직
-          router.push("/mainpage");
+          router.push("/mainpage/result");
         }}
         isSelected={false}
         textSize="base"

@@ -22,7 +22,7 @@ export default function RandomRecommendModal({
     <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl dark:bg-[#a3a3a3]">
       <button className="absolute right-4 top-4" onClick={onClose}>
         <Image
-          src={"/close_button.png"}
+          src={"/x/close_button.png"}
           alt="취소버튼"
           width={18}
           height={18}
