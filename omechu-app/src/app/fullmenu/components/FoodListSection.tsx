@@ -1,10 +1,11 @@
 import FoodBox from "@/components/common/FoodBox";
+import { menuType } from "@/constant/mainpage/resultData";
 
 interface FoodListSectionProps {
-  items: string[];
+  items: menuType[];
   search: string;
   isSearched: boolean;
-  onClickItem: (item: string) => void;
+  onClickItem: (item: number) => void;
 }
 
 export default function FoodListSection({
@@ -26,13 +27,13 @@ export default function FoodListSection({
       <div className="mt-4 grid grid-cols-3 gap-4">
         {items.map((food, idx) => (
           <FoodBox
-            key={food}
-            title={food}
+            key={food.id}
+            title={food.title}
             imageUrl="/logo/logo.png"
             isExcluded={false}
             isToggled={false}
             onToggle={() => {}}
-            onClick={() => onClickItem(food)}
+            onClick={() => onClickItem(food.id)}
           />
         ))}
       </div>
