@@ -95,7 +95,7 @@ export default function RandomRecommendPage() {
         <ModalWrapper>
           <RandomRecommendModal
             title={randomMenu?.title}
-            iconSrc="/restaurant_blank.png"
+            iconSrc="/image/image_empty.svg"
             confirmText="선택하기"
             retryText="다시 추천"
             onConfirm={handleConfirm}
