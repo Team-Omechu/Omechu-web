@@ -1,6 +1,22 @@
 // resultData.ts
 
-export const menus = [
+export type menuType = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  nutrition: {
+    calories: string;
+    carbs: string;
+    protein: string;
+    fat: string;
+    vitamin: string;
+  };
+  allergens: string[];
+  recipeUrl: string;
+};
+
+export const menus: menuType[] = [
   {
     id: 1,
     title: "카레라이스",
