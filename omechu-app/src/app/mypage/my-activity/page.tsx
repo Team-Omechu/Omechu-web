@@ -192,12 +192,12 @@ export default function MyActivity() {
                 </div>
               ))}
             </section>
-            {editTargetData && (
+            {/* {editTargetData && (
               <RestaurantEditModal
                 onClose={handleCloseEditModal}
                 initialData={editTargetData}
               />
-            )}
+            )} */}
           </>
         )}
 
