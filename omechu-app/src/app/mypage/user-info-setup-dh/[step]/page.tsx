@@ -4,12 +4,12 @@ import { useEffect, useMemo } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import ProgressBar from "@/app/components/common/ProgressBar";
-import AllergyStep from "@/app/components/user-info-setup/AllergyStep";
-import ConditionStep from "@/app/components/user-info-setup/ConditionStep";
-import FoodStep from "@/app/components/user-info-setup/FoodStep";
-import GenderStep from "@/app/components/user-info-setup/GenderStep";
-import StateStep from "@/app/components/user-info-setup/StateStep";
+import ProgressBar from "@/components/common/ProgressBar";
+import AllergyStep from "@/components/user-info-setup/AllergyStep";
+import ConditionStep from "@/components/user-info-setup/ConditionStep";
+import FoodStep from "@/components/user-info-setup/FoodStep";
+import GenderStep from "@/components/user-info-setup/GenderStep";
+import StateStep from "@/components/user-info-setup/StateStep";
 import { useUserInfoSetupStore } from "@/lib/stores/userInfoSetup.store";
 
 const USER_INFO_STEPS = 5;

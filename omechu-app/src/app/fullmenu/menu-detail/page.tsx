@@ -10,9 +10,9 @@ import {
   useSearchParams,
 } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
-import { menus } from "@/app/constant/mainpage/resultData";
-import MenuInfo from "@/app/mainpage/components/MenuInfoCard";
+import Header from "@/components/common/Header";
+import { menus } from "@/constant/mainpage/resultData";
+import MenuInfo from "@/mainpage/components/MenuInfoCard";
 
 export default function MenuDetail() {
   return (

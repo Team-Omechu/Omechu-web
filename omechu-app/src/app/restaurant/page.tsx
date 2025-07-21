@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 
 import { distance } from "fastest-levenshtein";
 
-import SearchBar from "@/app/components/common/SearchBar";
-import LocationModal from "@/app/components/restaurant/LocationModal/LocationModal";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
-import { suggestionList } from "@/app/constant/suggestionList";
+import SearchBar from "@/components/common/SearchBar";
+import LocationModal from "@/components/restaurant/LocationModal/LocationModal";
+import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
+import { suggestionList } from "@/constant/suggestionList";
 
 import FloatingActionButton from "../components/common/FloatingActionButton";
 import LoadingIndicator from "../components/common/LoadingIndicator";

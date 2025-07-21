@@ -2,7 +2,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import RoundButton from "@/app/components/common/button/RoundButton";
+import RoundButton from "@/components/common/button/RoundButton";
 
 type Term = {
   index: number | null;

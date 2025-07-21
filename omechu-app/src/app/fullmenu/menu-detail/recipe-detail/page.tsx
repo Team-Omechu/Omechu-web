@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
+import Header from "@/components/common/Header";
 
 export default function RecipeDetail() {
   return (

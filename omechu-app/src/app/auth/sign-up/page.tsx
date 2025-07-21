@@ -5,11 +5,11 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
-import BottomButton from "@/app/components/common/button/BottomButton";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
-import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
-import { termsForService } from "@/app/constant/terms/service";
+import BottomButton from "@/components/common/button/BottomButton";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
+import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
+import { termsForService } from "@/constant/terms/service";
 import { signupSchema, type SignupFormValues } from "@/lib/schemas/auth.schema";
 
 import SignUpForm from "./components/SignUpForm";

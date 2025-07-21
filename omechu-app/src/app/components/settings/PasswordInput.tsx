@@ -78,7 +78,7 @@ export default function PasswordInput({
 
 //** 사용 예시 **
 //   import { useState } from "react";
-// import PasswordInput from "@/app/components/settings/PasswordInput";
+// import PasswordInput from "@/components/settings/PasswordInput";
 
 // export default function SamplePage() {
 //   const [password, setPassword] = useState("");
