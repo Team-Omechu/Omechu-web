@@ -67,7 +67,7 @@ export default function ResultPage() {
             onClick={() => {
               router.push("/mainpage");
             }}
-            className="flex items-center text-sm font-bold"
+            className="flex items-center font-bold"
           >
             <Image
               src={"/header_left_arrow.png"}
@@ -75,10 +75,10 @@ export default function ResultPage() {
               width={22}
               height={30}
             />
-            <span>처음으로</span>
+            <span className="flex flex-shrink-0 mb-0.5 ml-1">처음으로</span>
           </button>
         }
-        className="border-b-0"
+        className="border-b-0 h-[60px]"
       />
 
       <div className="mt-3 flex flex-col gap-4 px-4">
