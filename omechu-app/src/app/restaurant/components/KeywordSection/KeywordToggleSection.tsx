@@ -20,7 +20,7 @@ export default function KeywordToggleSection({
         >
           추천 키워드
           <Image
-            src="/down_arrow.svg"
+            src="/arrow/arrow_down.png"
             alt="추천 키워드"
             width={16}
             height={16}
@@ -41,7 +41,7 @@ export default function KeywordToggleSection({
           ))}
           <button onClick={onToggleShow}>
             <Image
-              src="/down_arrow.svg"
+              src="arrow/arrow_up.png"
               alt="추천 키워드"
               width={24}
               height={24}

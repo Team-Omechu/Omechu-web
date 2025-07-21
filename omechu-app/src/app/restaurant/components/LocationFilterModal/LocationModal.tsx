@@ -42,7 +42,7 @@ export default function LocationModal({
         rightChild={
           <button onClick={onClose}>
             <Image
-              src={"/close_button.png"}
+              src={"/x/close_big.svg"}
               alt={"닫기"}
               width={18}
               height={18}
