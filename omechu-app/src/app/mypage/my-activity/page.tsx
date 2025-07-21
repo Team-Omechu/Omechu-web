@@ -58,20 +58,23 @@ export default function MyActivity() {
   );
 
   useEffect(() => {
-    if (selectedIndex !== 0 && selectedIndex !== 1) return; // 두 탭 모두 허용
+    if (selectedIndex !== 0 && selectedIndex !== 1) return;
+
     const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+      root: null,
+      rootMargin: "0px 0px 160px 0px",
+      threshold: 0,
     });
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    const currentLoader = loaderRef.current;
+
+    if (currentLoader) {
+      observer.observe(currentLoader);
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
   }, [observerCallback, selectedIndex]);
