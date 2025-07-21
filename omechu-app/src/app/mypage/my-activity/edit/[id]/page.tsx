@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import RestaurantEditModal from "@/components/restaurant/RestaurantAddModal/RestaurantEditModal";
+// import RestaurantEditModal from "@/components/restaurant/RestaurantAddModal/RestaurantEditModal";
 
 import initialRestaurantData from "./INITIAL_RESTAURANT_DATA";
 
@@ -67,10 +67,10 @@ export default function RestaurantEditPage() {
 
   if (!initialData) return <div>로딩 중...</div>;
 
-  return (
-    <RestaurantEditModal
-      onClose={() => router.back()}
-      initialData={initialData}
-    />
-  );
+  // return (
+  //   <RestaurantEditModal
+  //     onClose={() => router.back()}
+  //     initialData={initialData}
+  //   />
+  // );
 }
