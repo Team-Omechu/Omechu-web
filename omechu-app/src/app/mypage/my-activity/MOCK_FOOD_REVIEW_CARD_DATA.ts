@@ -1,5 +1,5 @@
 // mockFoodReviewData.ts
-import { RestaurantReviewCardProps } from "@/app/components/common/RestaurantReviewCard";
+import { RestaurantReviewCardProps } from "@/components/common/RestaurantReviewCard";
 
 export const MOCK_FOOD_REVIEW_CARD_DATA: RestaurantReviewCardProps[] = [
   {

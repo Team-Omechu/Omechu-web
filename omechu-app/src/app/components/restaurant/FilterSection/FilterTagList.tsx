@@ -1,4 +1,4 @@
-import TagItem from "@/app/components/common/TagItem";
+import TagItem from "@/components/common/TagItem";
 
 type FilterTagListProps = {
   tags: string[];

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import ListButton from "@/app/components/common/button/ListButton";
+import ListButton from "@/components/common/button/ListButton";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 import OnboardingStepLayout from "./OnboardingStepLayout";

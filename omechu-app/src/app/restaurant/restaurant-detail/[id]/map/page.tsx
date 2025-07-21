@@ -5,10 +5,10 @@ import { useState } from "react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
-import RestaurantMapPreview from "@/app/components/restaurant/restaurant-detail/map/RestaurantMapPreview";
-import RestaurantDetailHeader from "@/app/components/restaurant/restaurant-detail/RestaurantDetailHeader";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList";
+import Header from "@/components/common/Header";
+import RestaurantMapPreview from "@/components/restaurant/restaurant-detail/map/RestaurantMapPreview";
+import RestaurantDetailHeader from "@/components/restaurant/restaurant-detail/RestaurantDetailHeader";
+import { Restaurants } from "@/constant/restaurant/restaurantList";
 
 export default function MapPage() {
   const router = useRouter();

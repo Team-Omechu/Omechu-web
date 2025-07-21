@@ -4,10 +4,10 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import StepFooter from "@/app/components/common/StepFooter";
-import MealIngredientGroup from "@/app/components/mainpage/MealIngredientButton";
-import MealStyleGroup from "@/app/components/mainpage/MealStyleButton";
-import MealTypeGroup from "@/app/components/mainpage/MealTypeButton";
+import StepFooter from "@/components/common/StepFooter";
+import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
+import MealStyleGroup from "@/components/mainpage/MealStyleButton";
+import MealTypeGroup from "@/components/mainpage/MealTypeButton";
 
 export default function MealAnswerPage() {
   const router = useRouter();

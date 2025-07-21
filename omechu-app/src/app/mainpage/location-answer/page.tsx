@@ -5,8 +5,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import StepFooter from "@/app/components/common/StepFooter";
-import LocationModal from "@/app/mainpage/components/LocationModal";
+import StepFooter from "@/components/common/StepFooter";
+import LocationModal from "@/mainpage/components/LocationModal";
 
 export default function LocationAnswerPage() {
   const router = useRouter();

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import Header from "@/app/components/common/Header";
-import { regionData } from "@/app/constant/RegionList";
+import Header from "@/components/common/Header";
+import { regionData } from "@/constant/RegionList";
 
 import SectionHeader from "./SecionHeader";
 import SelectableList from "./SelectableList";

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-import { RestaurantType } from "@/app/constant/restaurant/restaurantList";
+import { RestaurantType } from "@/constant/restaurant/restaurantList";
 
 type FoodCardProps = {
   item: RestaurantType; // 타입은 foodItems 데이터 구조에 맞게 정의

@@ -6,15 +6,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import FoodCard from "@/app/components/common/FoodCard";
-import Header from "@/app/components/common/Header";
-import LoadingIndicator from "@/app/components/common/LoadingIndicator";
-import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
-import SortSelector from "@/app/components/common/SortSelector";
-import SelectTabBar from "@/app/components/mypage/SelectTabBar";
-import RestaurantEditModal from "@/app/components/restaurant/RestaurantAddModal/RestaurantEditModal";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import FoodCard from "@/components/common/FoodCard";
+import Header from "@/components/common/Header";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import FoodReviewCard from "@/components/common/RestaurantReviewCard";
+import SortSelector from "@/components/common/SortSelector";
+import SelectTabBar from "@/components/mypage/SelectTabBar";
+import { Restaurants } from "@/constant/restaurant/restaurantList";
 
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";

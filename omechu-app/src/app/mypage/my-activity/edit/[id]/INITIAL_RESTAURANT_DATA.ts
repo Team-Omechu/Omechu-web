@@ -1,67 +1,60 @@
-"use client";
+type RestaurantInitialData = {
+  id: number;
+  restaurantName: string;
+  menus: string[];
+  selectedDays: string[];
+  startTime: string;
+  endTime: string;
+  address: string;
+  detailAddress: string;
+  imageUrl: string;
+};
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+const initialRestaurantData: RestaurantInitialData[] = [
+  {
+    id: 1,
+    restaurantName: "삼겹살집 우주",
+    menus: ["삼겹살", "목살", "된장찌개"],
+    selectedDays: ["월", "화", "수", "목", "금"],
+    startTime: "11:30",
+    endTime: "22:00",
+    address: "서울시 송파구 가락동 123-45",
+    detailAddress: "3층 301호",
+    imageUrl: "/images/test-samgyeopsal.jpg",
+  },
+  {
+    id: 2,
+    restaurantName: "그린샐러드하우스",
+    menus: ["닭가슴살 샐러드", "연어 샐러드"],
+    selectedDays: ["월", "화", "수", "목", "금"],
+    startTime: "10:00",
+    endTime: "20:00",
+    address: "서울시 강남구 삼성동 42-1",
+    detailAddress: "2층",
+    imageUrl: "/images/salad.jpg",
+  },
+  {
+    id: 3,
+    restaurantName: "데일리브런치",
+    menus: ["프렌치토스트", "팬케이크", "아메리카노"],
+    selectedDays: ["토", "일"],
+    startTime: "09:00",
+    endTime: "15:00",
+    address: "서울시 마포구 연남동 99-2",
+    detailAddress: "1층",
+    imageUrl: "/images/brunch.jpg",
+  },
+  {
+    id: 4,
+    restaurantName: "우주의 야식천국",
+    menus: ["불닭볶음면", "치즈김밥", "떡볶이"],
+    selectedDays: ["금", "토", "일"],
+    startTime: "18:00",
+    endTime: "03:00",
+    address: "서울시 관악구 신림동 28-11",
+    detailAddress: "지하 1층",
+    imageUrl: "/images/snack.jpg",
+  },
+];
 
-import RestaurantEditModal from "@/app/components/restaurant/RestaurantAddModal/RestaurantEditModal";
-import initialRestaurantData, {
-  RestaurantInitialData,
-} from "./INITIAL_RESTAURANT_DATA";
-
-// id 제외한 타입
-type RestaurantData = Omit<RestaurantInitialData, "id">;
-
-export default function RestaurantEditPage() {
-  const params = useParams();
-  const router = useRouter();
-
-  const [initialData, setInitialData] = useState<RestaurantData | null>(null);
-
-  useEffect(() => {
-    const rawId = params?.id;
-    const numericId = Number(Array.isArray(rawId) ? rawId[0] : rawId);
-
-    if (isNaN(numericId)) {
-      console.warn("올바르지 않은 ID입니다.");
-      router.back();
-      return;
-    }
-
-    const data = initialRestaurantData.find((item) => item.id === numericId);
-
-    if (data) {
-      const {
-        restaurantName,
-        menus,
-        selectedDays,
-        startTime,
-        endTime,
-        address,
-        detailAddress,
-        imageUrl,
-      } = data;
-      setInitialData({
-        restaurantName,
-        menus,
-        selectedDays,
-        startTime,
-        endTime,
-        address,
-        detailAddress,
-        imageUrl,
-      });
-    } else {
-      console.warn("해당 맛집을 찾을 수 없습니다.");
-      router.back();
-    }
-  }, [params, router]);
-
-  if (!initialData) return null;
-
-  return (
-    <RestaurantEditModal
-      onClose={() => router.back()}
-      initialData={initialData}
-    />
-  );
-}
+export default initialRestaurantData;

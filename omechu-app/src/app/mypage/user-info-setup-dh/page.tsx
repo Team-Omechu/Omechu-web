@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
+import Header from "@/components/common/Header";
 
 export default function UserInfoSetupStartPage() {
   const router = useRouter();

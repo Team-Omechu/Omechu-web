@@ -5,9 +5,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import Header from "@/app/components/common/Header";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+import AlertModal from "@/components/common/AlertModal";
+import Header from "@/components/common/Header";
+import ModalWrapper from "@/components/common/ModalWrapper";
 
 const userEmail: string = "dlapdlf@gmail.com";
 

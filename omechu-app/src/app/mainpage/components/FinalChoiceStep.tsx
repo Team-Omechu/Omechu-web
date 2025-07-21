@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import ListButton from "@/app/components/common/button/ListButton";
+import ListButton from "@/components/common/button/ListButton";
 const FinalChoiceStep = () => {
   const router = useRouter();
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import RoundButton from "@/app/components/common/button/RoundButton";
+import RoundButton from "@/components/common/button/RoundButton";
 
 export default function EmailSentMessage() {
   return (

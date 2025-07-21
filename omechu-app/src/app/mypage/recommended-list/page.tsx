@@ -5,18 +5,18 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import FoodBox from "@/app/components/common/FoodBox";
-import Header from "@/app/components/common/Header";
-import SearchBar from "@/app/components/common/SearchBar";
-import SelectTabBar from "@/app/components/mypage/SelectTabBar";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import FoodBox from "@/components/common/FoodBox";
+import Header from "@/components/common/Header";
+import SearchBar from "@/components/common/SearchBar";
+import SelectTabBar from "@/components/mypage/SelectTabBar";
 import {
   consonantGroupMap,
   filteredChoSeong,
   HANGUL_CHO_SEONG,
-} from "@/app/constant/choSeong";
-import { initialFoodList } from "@/app/constant/initialFoodList";
-import { suggestionList } from "@/app/constant/suggestionList";
+} from "@/constant/choSeong";
+import { initialFoodList } from "@/constant/initialFoodList";
+import { suggestionList } from "@/constant/suggestionList";
 
 // FoodItem 타입을 정의하거나 import
 type FoodItem = {
@@ -113,6 +113,7 @@ export default function RecommendedList() {
               width={22}
               height={30}
             />
+            <span>처음으로</span>
           </button>
         }
       />
