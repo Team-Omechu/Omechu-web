@@ -1,4 +1,4 @@
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+import ModalWrapper from "@/components/common/ModalWrapper";
 
 import AddressSearchModal from "./AddressSearchModal";
 

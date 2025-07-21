@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
 
 import ImageUploader from "./ImageUploader";
 import RatingSelector from "./RatingSelector";
