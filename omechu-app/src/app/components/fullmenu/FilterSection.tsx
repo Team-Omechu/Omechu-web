@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import FilterTagList from "../restaurant/FilterSection/FilterTagList";
+import FilterTagList from "@/components/restaurant/FilterSection/FilterTagList";
 
 interface FilterSectionProps {
   tags: string[];
