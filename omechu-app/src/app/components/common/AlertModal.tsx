@@ -49,7 +49,7 @@ export default function AlertModal({
   const showCancelButton = !!cancelText;
 
   return (
-    <div className="flex h-fit w-[335px] flex-col justify-between gap-5 rounded-[20px] border-2 border-[#393939] bg-white px-6 py-12 shadow-xl">
+    <div className="flex h-fit w-[22rem] flex-col justify-between gap-5 rounded-[20px] border-2 border-[#393939] bg-white px-6 py-12 shadow-xl">
       {/* 상단 여백용 (닫기 버튼 등 들어갈 자리, 현재 비어있음) */}
       <div className="flex justify-end"></div>
 
@@ -88,7 +88,6 @@ export default function AlertModal({
           <>
             <button
               onClick={onConfirm}
-
               className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}
