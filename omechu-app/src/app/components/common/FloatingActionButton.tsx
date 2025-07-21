@@ -9,20 +9,20 @@
 // - //* 아이콘 경로는 "/components/common/fab.svg" 기준으로 고정
 // -------------------------------------------
 
-'use client'
+"use client";
 
-import Image from 'next/image'
+import Image from "next/image";
 
 type FloatingActionButtonProps = {
-  onClick: () => void // 클릭 시 실행할 함수 (예: scrollToTop)
-  className?: string // 페이지별로 컴포넌트 위치 설정 (예: bottom-24)
-  alt?: string // 이미지 대체 텍스트 (기본값: "floating-button")
-}
+  onClick: () => void; // 클릭 시 실행할 함수 (예: scrollToTop)
+  className?: string; // 페이지별로 컴포넌트 위치 설정 (예: bottom-24)
+  alt?: string; // 이미지 대체 텍스트 (기본값: "floating-button")
+};
 
 export default function FloatingActionButton({
   onClick,
   className,
-  alt = 'floating-button',
+  alt = "floating-button",
 }: FloatingActionButtonProps) {
   return (
     <section
@@ -30,12 +30,12 @@ export default function FloatingActionButton({
     >
       <button onClick={onClick}>
         <Image
-          src='/common/floatingActionButton.svg'
+          src="/common/floatingActionButton.svg"
           alt={alt}
           width={36}
           height={36}
         />
       </button>
     </section>
-  )
+  );
 }
