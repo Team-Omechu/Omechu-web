@@ -1,4 +1,4 @@
-import Keyword from "@/app/components/common/Keyword";
+import Keyword from "@/components/common/Keyword";
 
 type KeywordSelectorProps = {
   keywords: string[];

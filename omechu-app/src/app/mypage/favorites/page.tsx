@@ -9,9 +9,9 @@ import { useRouter } from "next/navigation";
 
 import { distance } from "fastest-levenshtein";
 
-import FoodCard from "@/app/components/common/FoodCard";
-import Header from "@/app/components/common/Header";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList"; // 음식 데이터
+import FoodCard from "@/components/common/FoodCard";
+import Header from "@/components/common/Header";
+import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
 
 export default function Favorites() {
   const router = useRouter();

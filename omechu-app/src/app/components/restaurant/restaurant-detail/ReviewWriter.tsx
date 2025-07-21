@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import ReviewModal from "@/app/components/restaurant/restaurant-detail/ReviewModal/ReviewModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ReviewModal from "./ReviewModal/ReviewModal";
 
 interface Props {
   restaurantName: string;

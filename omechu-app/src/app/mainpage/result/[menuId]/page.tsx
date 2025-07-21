@@ -4,10 +4,10 @@
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 
-import RestaurantCard from "@/app/components/mainpage/RestaurantCard";
-import { restaurantList } from "@/app/constant/mainpage/RestaurantData";
-import { menus } from "@/app/constant/mainpage/resultData";
-import MenuInfo from "@/app/mainpage/components/MenuInfoCard";
+import RestaurantCard from "@/components/mainpage/RestaurantCard";
+import { restaurantList } from "@/constant/mainpage/RestaurantData";
+import { menus } from "@/constant/mainpage/resultData";
+import MenuInfo from "@/mainpage/components/MenuInfoCard";
 
 export default function MenuDetailPage() {
   const router = useRouter();

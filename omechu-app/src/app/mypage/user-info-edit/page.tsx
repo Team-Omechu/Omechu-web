@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
-import InfoRow from "@/app/components/mypage/InfoRow";
-import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import Header from "@/components/common/Header";
+import InfoRow from "@/components/mypage/InfoRow";
+import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function UserInfoEdit() {

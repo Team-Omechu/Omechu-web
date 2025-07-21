@@ -2,7 +2,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import RoundButton from "@/app/components/common/button/RoundButton";
+import RoundButton from "@/components/common/button/RoundButton";
 
 type LoginPromptModal2Props = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시

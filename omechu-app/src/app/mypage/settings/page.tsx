@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
+import Header from "@/components/common/Header";
 
 const termsList: { id: number; title: string; url: string }[] = [
   { id: 1, title: "계정 관리", url: "/mypage/settings/account-settings" },

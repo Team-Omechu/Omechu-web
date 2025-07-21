@@ -1,4 +1,4 @@
-import FoodBox from "@/app/components/common/FoodBox";
+import FoodBox from "@/components/common/FoodBox";
 
 interface FoodListSectionProps {
   items: string[];

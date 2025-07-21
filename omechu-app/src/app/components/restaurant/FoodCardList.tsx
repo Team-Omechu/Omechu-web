@@ -1,4 +1,4 @@
-import { RestaurantType } from "@/app/constant/restaurant/restaurantList";
+import { RestaurantType } from "@/constant/restaurant/restaurantList";
 
 import FoodCard from "../common/FoodCard";
 

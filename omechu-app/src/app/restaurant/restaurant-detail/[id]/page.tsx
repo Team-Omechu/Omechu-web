@@ -5,22 +5,19 @@ import { useState } from "react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import Header from "@/app/components/common/Header";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import SortSelector, { SortOption } from "@/app/components/common/SortSelector";
-import ReportModal from "@/app/components/restaurant/ReportModal";
-import RestaurantDetailHeader from "@/app/components/restaurant/restaurant-detail/RestaurantDetailHeader";
-import RestaurantImageCarousel from "@/app/components/restaurant/restaurant-detail/RestaurantImageCarousel";
-import RestaurantInfoBox from "@/app/components/restaurant/restaurant-detail/RestaurantInfoBox";
-import ReviewList from "@/app/components/restaurant/restaurant-detail/ReviewList";
-import ReviewWriter from "@/app/components/restaurant/restaurant-detail/ReviewWriter";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList";
-import {
-  reviewSummary,
-  reviewTags,
-} from "@/app/constant/restaurant/reviewSummary";
-import { sampleReviews } from "@/app/constant/restaurant/sampleReviews";
+import AlertModal from "@/components/common/AlertModal";
+import Header from "@/components/common/Header";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import SortSelector, { SortOption } from "@/components/common/SortSelector";
+import ReportModal from "@/components/restaurant/ReportModal";
+import RestaurantDetailHeader from "@/components/restaurant/restaurant-detail/RestaurantDetailHeader";
+import RestaurantImageCarousel from "@/components/restaurant/restaurant-detail/RestaurantImageCarousel";
+import RestaurantInfoBox from "@/components/restaurant/restaurant-detail/RestaurantInfoBox";
+import ReviewList from "@/components/restaurant/restaurant-detail/ReviewList";
+import ReviewWriter from "@/components/restaurant/restaurant-detail/ReviewWriter";
+import { Restaurants } from "@/constant/restaurant/restaurantList";
+import { reviewSummary, reviewTags } from "@/constant/restaurant/reviewSummary";
+import { sampleReviews } from "@/constant/restaurant/sampleReviews";
 
 export default function RestaurantDetail() {
   const router = useRouter(); // 페이지 이동을 위한 라우터 훅
