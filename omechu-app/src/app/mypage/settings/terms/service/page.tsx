@@ -5,9 +5,9 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import Header from "@/app/components/common/Header";
-import { termsForService } from "@/app/constant/terms/service";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import Header from "@/components/common/Header";
+import { termsForService } from "@/constant/terms/service";
 
 export default function TermForService() {
   const router = useRouter();

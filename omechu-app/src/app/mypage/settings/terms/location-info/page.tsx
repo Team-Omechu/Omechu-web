@@ -5,9 +5,9 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import Header from "@/app/components/common/Header";
-import { termsForLocationlInfo } from "@/app/constant/terms/locationInfo";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import Header from "@/components/common/Header";
+import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
 
 export default function TermForLocationInfo() {
   const router = useRouter();

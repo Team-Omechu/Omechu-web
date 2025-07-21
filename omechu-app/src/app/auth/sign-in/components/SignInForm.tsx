@@ -8,10 +8,10 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import Checkbox from "@/app/auth/components/Checkbox";
-import Input from "@/app/auth/components/Input";
-import SquareButton from "@/app/components/common/button/SquareButton";
-import Toast from "@/app/components/common/Toast";
+import Checkbox from "@/auth/components/Checkbox";
+import Input from "@/auth/components/Input";
+import SquareButton from "@/components/common/button/SquareButton";
+import Toast from "@/components/common/Toast";
 import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
 
 export default function SignInForm() {

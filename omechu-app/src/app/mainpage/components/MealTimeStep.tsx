@@ -4,7 +4,7 @@ import React from "react";
 
 import { useRouter } from "next/navigation";
 
-import ListButton from "@/app/components/common/button/ListButton";
+import ListButton from "@/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 import QuestionAnswerLayout from "./QuestionAnswerLayout";

@@ -3,11 +3,11 @@
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 
-import { menus } from "@/app/constant/mainpage/resultData";
-import MenuInfo from "@/app/mainpage/components/MenuInfoCard";
-import FoodCard from "@/app/components/common/FoodCard";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList";
-import Header from "@/app/components/common/Header";
+import { menus } from "@/constant/mainpage/resultData";
+import MenuInfo from "@/mainpage/components/MenuInfoCard";
+import FoodCard from "@/components/common/FoodCard";
+import { Restaurants } from "@/constant/restaurant/restaurantList";
+import Header from "@/components/common/Header";
 
 export default function MenuDetailPage() {
   const router = useRouter();

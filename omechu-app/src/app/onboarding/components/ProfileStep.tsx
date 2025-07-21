@@ -4,7 +4,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import Input from "@/app/auth/components/Input";
+import Input from "@/auth/components/Input";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 const ProfileStep = () => {

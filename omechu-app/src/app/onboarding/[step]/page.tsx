@@ -4,16 +4,16 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import BottomButton from "@/app/components/common/button/BottomButton";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import AllergyStep from "@/app/onboarding/components/AllergyStep";
-import ConstitutionStep from "@/app/onboarding/components/ConstitutionStep";
-import GenderStep from "@/app/onboarding/components/GenderStep";
-import PreferredFoodStep from "@/app/onboarding/components/PreferredFoodStep";
-import ProfileStep from "@/app/onboarding/components/ProfileStep";
-import WorkoutStatusStep from "@/app/onboarding/components/WorkoutStatusStep";
+import AlertModal from "@/components/common/AlertModal";
+import BottomButton from "@/components/common/button/BottomButton";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ProgressBar from "@/components/common/ProgressBar";
+import AllergyStep from "@/onboarding/components/AllergyStep";
+import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
+import GenderStep from "@/onboarding/components/GenderStep";
+import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
+import ProfileStep from "@/onboarding/components/ProfileStep";
+import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 const ONBOARDING_STEPS = 6;

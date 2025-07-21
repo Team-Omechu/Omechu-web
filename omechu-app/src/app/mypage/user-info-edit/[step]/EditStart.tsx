@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
-import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import Header from "@/components/common/Header";
+import { indexToSlug } from "@/constant/UserInfoEditSteps";
 
 export default function EditStart() {
   const router = useRouter();

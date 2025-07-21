@@ -5,8 +5,8 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import Input from "@/app/auth/components/Input";
-import SquareButton from "@/app/components/common/button/SquareButton";
+import Input from "@/auth/components/Input";
+import SquareButton from "@/components/common/button/SquareButton";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import Toast from "@/app/components/common/Toast";
+import Toast from "@/components/common/Toast";
 import type { FindPasswordFormValues } from "@/lib/schemas/auth.schema";
 
 import ForgotPasswordForm from "./components/ForgotPasswordForm";

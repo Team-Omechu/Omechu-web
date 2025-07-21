@@ -4,17 +4,14 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import {
-  menus as defaultMenus,
-  tagData,
-} from "@/app/constant/mainpage/resultData";
-import MenuCard from "@/app/mainpage/components/MenuCard";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import { menus as defaultMenus, tagData } from "@/constant/mainpage/resultData";
+import MenuCard from "@/mainpage/components/MenuCard";
 
 import ExcludeButton from "../components/ExcludeButton";
 import TagCard from "../components/TagCard";
-import Header from "@/app/components/common/Header";
+import Header from "@/components/common/Header";
 import Image from "next/image";
 
 function getRandomMenus() {

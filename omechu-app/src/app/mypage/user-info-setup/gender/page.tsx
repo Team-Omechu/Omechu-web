@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import ProgressBar from "@/app/components/common/ProgressBar";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ProgressBar from "@/components/common/ProgressBar";
 
 export default function SetupGender() {
   const router = useRouter();

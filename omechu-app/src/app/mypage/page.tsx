@@ -14,7 +14,7 @@ export default function MyPage() {
     { title: "기본 상태 입력", href: "/mypage/user-info-edit" },
     { title: "추천 목록 관리", href: "/mypage/recommended-list" },
     { title: "먹부림 기록", href: "/" },
-    { title: "활동 내역", href: "/" },
+    { title: "활동 내역", href: "/mypage/my-activity" },
     { title: "찜 목록", href: "/mypage/favorites" },
   ];
 
