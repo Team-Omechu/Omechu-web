@@ -24,7 +24,7 @@ export default function MealAnswerPage() {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col overflow-x-hidden">
+    <div className="flex h-screen w-full flex-col">
       {/* Layout 적용 */}
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center px-4 py-6">
         <QuestionAnswerLayout
@@ -48,12 +48,12 @@ export default function MealAnswerPage() {
           </div>
 
           <button
-            className={`mt-8 mx-auto flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-[#333] p-[0.625rem] text-[1.125rem] font-['Noto_Sans_KR'] font-normal ${
+            className={`mt-8 mx-auto flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${
               selectedItems.length > 0
-                ? "bg-[#FB4746] text-white border-black hover:bg-[#e2403f] active:bg-[#c93938]"
-                : "bg-white text-black border-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
+                ? "bg-[#FB4746] text-white hover:bg-[#e2403f] active:bg-[#c93938]"
+                : "bg-white text-black border border-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
             }`}
-            onClick={() => router.push("./location-answer")}
+            onClick={() => router.push("/mainpage/location-answer")}
           >
             {selectedItems.length > 0
               ? `${selectedItems.length}개 제외하기`

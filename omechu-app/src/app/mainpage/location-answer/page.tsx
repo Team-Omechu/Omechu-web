@@ -32,7 +32,7 @@ export default function LocationAnswerPage() {
   };
 
   return (
-    <div className="relative flex h-screen w-full flex-col overflow-x-hidden">
+    <div className="relative flex h-screen w-full flex-col">
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center mt-10 px-4 py-6">
         {/* 질문 */}
         <div className="font-['Noto Sans KR'] mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
