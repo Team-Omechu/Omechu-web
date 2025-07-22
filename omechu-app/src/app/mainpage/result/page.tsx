@@ -126,7 +126,7 @@ export default function ResultPage() {
       {showModal && (
         <ModalWrapper>
           <AlertModal
-            title="추천 목록에서 메뉴를 제외하시겠어요?"
+            title={"추천 목록에서 메뉴를\n제외하시겠어요?"}
             cancelText="취소"
             confirmText="제외하기"
             onConfirm={handleExclude}
