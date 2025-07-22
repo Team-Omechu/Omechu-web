@@ -192,11 +192,11 @@ export default function Restaurant() {
         >
           + 등록하기
         </button>
-        {showAddModal && (
+        {/* {showAddModal && (
           <ModalWrapper>
             <RestaurantAddModal onClose={() => setShowAddModal(false)} />
           </ModalWrapper>
-        )}
+        )} */}
         <SortSelector
           options={sortOptions}
           selected={sortMode}

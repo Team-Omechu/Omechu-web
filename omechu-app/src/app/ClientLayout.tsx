@@ -60,6 +60,8 @@ export default function ClientLayout({
     "/mypage/settings/terms/service",
     "/mypage/settings/terms/personal-info",
     "/mypage/settings/terms/location-info",
+    // 마이페이지-먹부림일지
+    "/mypage/foodie-log",
     // 마이페이지-찜목록
     "/mypage/favorites",
     // 마이페이지-활동내역
