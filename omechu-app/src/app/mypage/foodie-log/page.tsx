@@ -79,7 +79,7 @@ export default function FoodieLog() {
           <Link href={"/mypage"}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              alt={"뒤로가기"}
               width={22}
               height={30}
             />
