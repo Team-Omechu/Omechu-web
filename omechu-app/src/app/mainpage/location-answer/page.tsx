@@ -37,8 +37,8 @@ export default function LocationAnswerPage() {
       <Header className="border-b-0"/>
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center mb-2 px-4 py-6">
         {/* 질문 */}
-        <div className="font-['Noto Sans KR'] mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
-          <p className="text-xl font-semibold">위치를 입력해주세요</p>
+        <div className="mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
+          <p className="text-[25px] font-semibold">위치를 입력해주세요</p>
           <p className="mt-2 text-[#828282]">주변 맛집 메뉴로 추천해드릴게요</p>
         </div>
 
