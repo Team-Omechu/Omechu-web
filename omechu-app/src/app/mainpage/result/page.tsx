@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -24,7 +23,7 @@ export default function ResultPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedMenuIdForExclude, setSelectedMenuIdForExclude] = useState<
     number | null
-  >(null); // 제외 대상
+  >(null);
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const [menus, setMenus] = useState<typeof defaultMenus | null>(null);
 
@@ -49,7 +48,7 @@ export default function ResultPage() {
     if (selectedMenuIdForExclude !== null && menus) {
       setMenus(menus.filter((m) => m.id !== selectedMenuIdForExclude));
       if (openMenuId === selectedMenuIdForExclude) {
-        setOpenMenuId(null); // 선택된 메뉴가 제외된 경우 초기화
+        setOpenMenuId(null);
       }
     }
     setShowModal(false);
@@ -67,8 +66,8 @@ export default function ResultPage() {
             className="flex items-center font-bold"
           >
             <Image
-              src={"/header_left_arrow.png"}
-              alt={"changeProfileImage"}
+              src={'/header_left_arrow.png'}
+              alt={'changeProfileImage'}
               width={22}
               height={30}
             />
@@ -91,7 +90,10 @@ export default function ResultPage() {
               title={menu.title}
               description={menu.description}
               image={menu.image}
-              onClick={() => setOpenMenuId(menu.id)}
+              // 클릭 시 토글: 이미 선택된 메뉴는 다시 누르면 해제
+              onClick={() =>
+                setOpenMenuId(openMenuId === menu.id ? null : menu.id)
+              }
               selected={openMenuId === menu.id}
             />
           </div>
@@ -100,13 +102,13 @@ export default function ResultPage() {
 
       <div className="mt-4 flex justify-between gap-2 px-4 h-[50px]">
         <button
-          className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF]"
+          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-[#A3A3A3]"
           onClick={handleReshuffle}
         >
-          다시 추천
+          다시추천
         </button>
         <button
-          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black"
+          className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF] hover:bg-[#e2403f]"
           onClick={handleNext}
         >
           선택하기
@@ -114,11 +116,11 @@ export default function ResultPage() {
       </div>
 
       <div className="px-4">
-      <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
-        {tagData?.map(({ tag, description }) => (
-          <TagCard key={tag} tag={tag} description={description} />
-        ))}
-      </div>
+        <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
+          {tagData?.map(({ tag, description }) => (
+            <TagCard key={tag} tag={tag} description={description} />
+          ))}
+        </div>
       </div>
 
       {showModal && (
