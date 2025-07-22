@@ -15,24 +15,25 @@ export default function CustomDatePicker() {
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   // <input /> 커스터마이징
-  const CustomInput = forwardRef<HTMLButtonElement, any>(
-    ({ value, onClick }, ref) => (
-      <button
-        type="button"
-        onClick={onClick}
-        ref={ref}
-        className="flex h-fit w-32 items-center gap-2 rounded-md bg-[#F2F2F2] px-4 pb-1 pt-1.5 text-sm text-[#393939] shadow-sm"
-      >
-        <Image
-          src="/calender/uil_calender.svg"
-          alt="달력 아이콘"
-          width={16}
-          height={16}
-        />
-        {value || null}
-      </button>
-    ),
-  );
+  const CustomInput = forwardRef<
+    HTMLButtonElement,
+    { value?: string; onClick?: React.MouseEventHandler<HTMLButtonElement> }
+  >(({ value, onClick }, ref) => (
+    <button
+      type="button"
+      onClick={onClick}
+      ref={ref}
+      className="flex h-fit w-32 items-center gap-2 rounded-md bg-[#F2F2F2] px-4 pb-1 pt-1.5 text-sm text-[#393939] shadow-sm"
+    >
+      <Image
+        src="/calender/uil_calender.svg"
+        alt="달력 아이콘"
+        width={16}
+        height={16}
+      />
+      {value || null}
+    </button>
+  ));
   CustomInput.displayName = "CustomInput";
 
   const renderCustomHeader = ({
