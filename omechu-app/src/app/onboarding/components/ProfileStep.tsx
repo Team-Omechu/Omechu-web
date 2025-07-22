@@ -30,14 +30,14 @@ const ProfileStep = () => {
         <div className="mb-6 flex flex-col items-center gap-2">
           <button type="button" className="relative">
             <Image
-              src="/onboarding-restaurant-icon.png"
+              src="/profile/profile_default_img.svg"
               alt="프로필 사진 선택"
               width={100}
               height={100}
             />
             <div className="absolute right-0 top-0">
               <Image
-                src="/camera_Icon.png"
+                src="/profile/camera.svg"
                 alt="이미지 업로드"
                 width={30}
                 height={30}
