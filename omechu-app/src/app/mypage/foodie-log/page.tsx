@@ -20,6 +20,9 @@ const PERIOD_OPTIONS = [
   "직접입력",
 ];
 
+const ITEMS_PER_PAGE = 10;
+const LODAING_TIMEOUT = 1800;
+
 export default function FoodieLog() {
   const mainRef = useRef<HTMLDivElement>(null);
   const [selectedPeriod, setSelectedPeriod] = useState("전체");
@@ -41,7 +44,7 @@ export default function FoodieLog() {
       if (!target.isIntersecting || isLoading) return;
 
       setIsLoading(true);
-      setVisibleCount((prev) => prev + 5); // 필요한 만큼 늘리기
+      setVisibleCount((prev) => prev + ITEMS_PER_PAGE); // 필요한 만큼 늘리기
     },
     [isLoading],
   );
@@ -63,7 +66,7 @@ export default function FoodieLog() {
 
   useEffect(() => {
     if (isLoading) {
-      const timer = setTimeout(() => setIsLoading(false), 1800); // LODAING_TIMEOUT
+      const timer = setTimeout(() => setIsLoading(false), LODAING_TIMEOUT); // LODAING_TIMEOUT
       return () => clearTimeout(timer);
     }
   }, [isLoading]);
@@ -139,7 +142,7 @@ export default function FoodieLog() {
         {/* FoodieLog List */}
         <section className="flex w-full items-center justify-center">
           <div className="grid grid-cols-3 gap-x-4 gap-y-3">
-            {Array.from({ length: 100 }).map((_, idx) => (
+            {Array.from({ length: visibleCount }).map((_, idx) => (
               <FoodieBox key={idx} />
             ))}
           </div>
