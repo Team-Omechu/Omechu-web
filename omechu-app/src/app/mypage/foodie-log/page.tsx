@@ -131,35 +131,12 @@ export default function FoodieLog() {
         {/* FoodieLog List */}
         <section className="flex w-full items-center justify-center">
           <div className="grid grid-cols-3 gap-x-4 gap-y-3">
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
-            <FoodieBox />
+            {Array.from({ length: 100 }).map((_, idx) => (
+              <FoodieBox key={idx} />
+            ))}
           </div>
         </section>
-        <FloatingActionButton onClick={scrollToTop} />
+        <FloatingActionButton onClick={scrollToTop} className={"bottom-4"} />
 
         <div ref={loaderRef} className="h-[1px]" />
 
