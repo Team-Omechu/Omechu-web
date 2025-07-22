@@ -146,7 +146,7 @@ export default function RestaurantReviewCard({
                   }
                   alt="추천 버튼"
                   width={18}
-                  height={20}
+                  height={18}
                 />
               </button>
             </div>

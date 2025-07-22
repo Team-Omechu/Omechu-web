@@ -1,0 +1,14 @@
+# Ignore Paths
+.gitignore
+node_modules
+.next
+.vercel
+build
+dist
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log* 
+.eslintignore

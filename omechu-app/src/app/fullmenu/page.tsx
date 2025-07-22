@@ -5,16 +5,16 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "../components/common/FloatingActionButton";
-import LoadingIndicator from "../components/common/LoadingIndicator";
-import ModalWrapper from "../components/common/ModalWrapper";
-import SearchBar from "../components/common/SearchBar";
-import SortSelector, { SortOption } from "../components/common/SortSelector";
-import FilterModal from "../components/fullmenu/FilterModal";
-import FilterSection from "../components/fullmenu/FilterSection";
-import FoodListSection from "../components/fullmenu/FoodListSection";
-import { foodItems } from "../constant/foodItems";
-import { suggestionList } from "../constant/suggestionList";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import SearchBar from "@/components/common/SearchBar";
+import SortSelector, { SortOption } from "@/components/common/SortSelector";
+import { menus } from "@/constant/mainpage/resultData";
+import { suggestionList } from "@/constant/suggestionList";
+import FilterModal from "@/fullmenu/components/FilterModal";
+import FilterSection from "@/fullmenu/components/FilterSection";
+import FoodListSection from "@/fullmenu/components/FoodListSection";
 
 export default function FullMenu() {
   const router = useRouter();
@@ -35,8 +35,8 @@ export default function FullMenu() {
   const [isSearched, setIsSearched] = useState(false);
 
   const filteredItems = search.trim()
-    ? foodItems.filter((item) => item.includes(search.trim()))
-    : foodItems;
+    ? menus.filter((item) => item.title.includes(search.trim()))
+    : menus;
 
   const visibleItems = filteredItems.slice(0, visibleCount);
 
@@ -151,9 +151,7 @@ export default function FullMenu() {
           search={search}
           isSearched={isSearched}
           onClickItem={(food) =>
-            router.push(
-              `/fullmenu/menu-detail?name=${encodeURIComponent(food)}`,
-            )
+            router.push(`/fullmenu/menu-detail?menuId=${food}`)
           }
         />
 

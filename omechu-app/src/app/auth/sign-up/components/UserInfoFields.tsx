@@ -76,7 +76,7 @@ export default function UserInfoFields() {
             className="p-2"
           >
             <Image
-              src={showPassword ? "/eye_open.svg" : "/eye_closed.svg"}
+              src={showPassword ? "/eye/eye_open.svg" : "/eye/eye_closed.svg"}
               alt="toggle password visibility"
               width={24}
               height={24}
@@ -100,7 +100,11 @@ export default function UserInfoFields() {
             className="p-2"
           >
             <Image
-              src={showPasswordConfirm ? "/eye_open.svg" : "/eye_closed.svg"}
+              src={
+                showPasswordConfirm
+                  ? "/eye/eye_open.svg"
+                  : "/eye/eye_closed.svg"
+              }
               alt="toggle password visibility"
               width={24}
               height={24}

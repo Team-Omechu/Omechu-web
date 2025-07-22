@@ -57,7 +57,7 @@ export default function LocationAnswerPage() {
         </div>
         <div className="mt-4 h-[10.625rem] w-[17.5rem] flex-shrink-0 overflow-hidden rounded-[1.25rem] border-[3px] border-[#1F9BDA]">
           <Image
-            src="/map.png"
+            src="/map/map.svg"
             alt="지도"
             width={280}
             height={170}

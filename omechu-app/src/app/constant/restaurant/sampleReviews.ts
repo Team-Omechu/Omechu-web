@@ -34,10 +34,10 @@ export const sampleReviews = [
     content: "먹을만 해요",
     tags: ["조용한"],
     images: [
-      "/restaurant_blank.png",
-      "/restaurant_blank.png",
-      "/restaurant_blank.png",
-      "/restaurant_blank.png",
+      "/image/image_empty.svg",
+      "/image/image_empty.svg",
+      "/image/image_empty.svg",
+      "/image/image_empty.svg",
     ],
   },
 
