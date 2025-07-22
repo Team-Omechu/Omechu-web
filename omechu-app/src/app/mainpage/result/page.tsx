@@ -56,7 +56,7 @@ export default function ResultPage() {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex h-screen w-full flex-col">
       <Header
         leftChild={
           <button
@@ -66,15 +66,15 @@ export default function ResultPage() {
             className="flex items-center font-bold"
           >
             <Image
-              src={'/header_left_arrow.png'}
-              alt={'changeProfileImage'}
+              src={"/header_left_arrow.png"}
+              alt={"changeProfileImage"}
               width={22}
               height={30}
             />
-            <span className="flex flex-shrink-0 mb-0.5 ml-1">처음으로</span>
+            <span className="mb-0.5 ml-1 flex flex-shrink-0">처음으로</span>
           </button>
         }
-        className="border-b-0 h-[60px]"
+        className="h-[60px] border-b-0"
       />
 
       <div className="mt-3 flex flex-col gap-4 px-4">
@@ -100,7 +100,7 @@ export default function ResultPage() {
         ))}
       </div>
 
-      <div className="mt-4 flex justify-between gap-2 px-4 h-[50px]">
+      <div className="mt-4 flex h-[50px] justify-between gap-2 px-4">
         <button
           className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-[#A3A3A3]"
           onClick={handleReshuffle}

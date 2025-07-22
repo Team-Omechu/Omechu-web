@@ -48,7 +48,7 @@ export default function RandomRecommendPage() {
     );
   };
   return (
-    <div className="flex flex-col items-center h-screen w-full">
+    <div className="flex h-screen w-full flex-col items-center">
       <Header
         leftChild={
           <button

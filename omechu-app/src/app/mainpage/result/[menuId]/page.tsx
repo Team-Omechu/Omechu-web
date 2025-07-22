@@ -20,12 +20,12 @@ export default function MenuDetailPage() {
   }
 
   // 메뉴 이름이 포함된 맛집 필터링
-  const relatedRestaurants = Restaurants.filter((r) =>
-    r.menu.includes(menu.title) || r.tags.includes(menu.title)
+  const relatedRestaurants = Restaurants.filter(
+    (r) => r.menu.includes(menu.title) || r.tags.includes(menu.title),
   );
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <Header
         leftChild={
           <button
@@ -40,10 +40,10 @@ export default function MenuDetailPage() {
               width={22}
               height={30}
             />
-            <span className="flex flex-shrink-0 mb-0.5 ml-1">처음으로</span>
+            <span className="mb-0.5 ml-1 flex flex-shrink-0">처음으로</span>
           </button>
         }
-        className="border-b-0 h-[60px]"
+        className="h-[60px] border-b-0"
       />
 
       <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
@@ -62,9 +62,11 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="ml-1 mt-5 flex flex-row justify-between gap-4">
-        <h3 className="text-l font-semibold px-4">취향 저격! 추천 메뉴 있는 맛집</h3>
+        <h3 className="text-l px-4 font-semibold">
+          취향 저격! 추천 메뉴 있는 맛집
+        </h3>
         <button
-          className="text-sm text-[#828282] px-4"
+          className="px-4 text-sm text-[#828282]"
           onClick={() =>
             router.push(`/restaurant?query=${encodeURIComponent(menu.title)}`)
           }
@@ -79,7 +81,9 @@ export default function MenuDetailPage() {
             <FoodCard
               key={item.id}
               item={item}
-              onClick={() => router.push(`/restaurant/restaurant-detail/${item.id}`)}
+              onClick={() =>
+                router.push(`/restaurant/restaurant-detail/${item.id}`)
+              }
             />
           ))
         ) : (

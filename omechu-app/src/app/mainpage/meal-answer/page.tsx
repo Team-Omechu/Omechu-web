@@ -9,7 +9,6 @@ import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/components/mainpage/MealStyleButton";
 import MealTypeGroup from "@/components/mainpage/MealTypeButton";
 
-
 export default function MealAnswerPage() {
   const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -49,10 +48,10 @@ export default function MealAnswerPage() {
           </div>
 
           <button
-            className={`mt-8 mx-auto flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${
+            className={`mx-auto mt-8 flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${
               selectedItems.length > 0
                 ? "bg-[#FB4746] text-white hover:bg-[#e2403f] active:bg-[#c93938]"
-                : "bg-white text-black border border-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
+                : "border border-black bg-white text-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
             }`}
             onClick={() => router.push("/mainpage/location-answer")}
           >

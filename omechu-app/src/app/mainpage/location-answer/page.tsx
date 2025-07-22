@@ -34,8 +34,8 @@ export default function LocationAnswerPage() {
 
   return (
     <div className="relative flex h-screen w-full flex-col">
-      <Header className="border-b-0"/>
-      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center mb-2 px-4 py-6">
+      <Header className="border-b-0" />
+      <main className="mb-2 flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center px-4 py-6">
         {/* 질문 */}
         <div className="mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
           <p className="text-[25px] font-semibold">위치를 입력해주세요</p>
