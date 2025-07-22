@@ -38,7 +38,6 @@ const ProfileStep = () => {
             <div className="absolute right-0 top-0">
               <Image
                 src="/profile/camera.svg"
-                src="/profile/camera.svg"
                 alt="이미지 업로드"
                 width={30}
                 height={30}
