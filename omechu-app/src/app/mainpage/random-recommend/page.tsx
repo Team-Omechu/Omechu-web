@@ -57,7 +57,7 @@ export default function RandomRecommendPage() {
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
               height={30}
@@ -67,7 +67,7 @@ export default function RandomRecommendPage() {
         className="border-b-0"
       />
 
-      <div className="mt-5 flex flex-col gap-2">
+      <div className="mt-5 flex min-h-screen flex-col gap-2">
         {/* 1: type */}
         <MealTypeGroup selectedItems={selectedItems} onToggle={toggleSelect} />
 
