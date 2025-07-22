@@ -51,7 +51,7 @@ export default function CustomDatePicker() {
       <div className="flex items-center justify-between px-4">
         <button
           onClick={decreaseMonth}
-          className="px-2 py-1 rounded hover:bg-gray-200"
+          className="rounded px-2 py-1 hover:bg-gray-200"
         >
           <Image
             src="/arrow/left-calender-arrow.svg"
@@ -63,7 +63,7 @@ export default function CustomDatePicker() {
         <span className="text-xl font-normal text-[#393939]">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
         <button
           onClick={increaseMonth}
-          className="px-2 py-1 text-sm rounded hover:bg-gray-200"
+          className="rounded px-2 py-1 text-sm hover:bg-gray-200"
         >
           <Image
             src="/arrow/right-calender-arrow.svg"
@@ -83,8 +83,8 @@ export default function CustomDatePicker() {
   }, [endDate, startDate]);
 
   return (
-    <section className="flex flex-col items-end w-full">
-      <section className="flex items-center justify-center w-full gap-4">
+    <section className="flex w-full flex-col items-end">
+      <section className="flex w-full items-center justify-center gap-4">
         <DatePicker
           selected={startDate}
           dateFormat="yyyy.MM.dd"
@@ -124,7 +124,7 @@ export default function CustomDatePicker() {
             setStartDate(null);
             setEndDate(null);
           }}
-          className="items-end mt-1 mr-4 text-xs text-gray-500"
+          className="mr-4 mt-1 items-end text-xs text-gray-500"
         >
           선택 초기화
         </button>
