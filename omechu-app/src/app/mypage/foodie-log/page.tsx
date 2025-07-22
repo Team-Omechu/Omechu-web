@@ -10,6 +10,16 @@ import FloatingActionButton from "@/components/common/FloatingActionButton";
 import Header from "@/components/common/Header";
 import FoodieBox from "@/components/mypage/FoodieBox";
 
+const PERIOD_OPTIONS = [
+  "전체",
+  "1주",
+  "1개월",
+  "3개월",
+  "6개월",
+  "1년",
+  "직접입력",
+];
+
 export default function FoodieLog() {
   const mainRef = useRef<HTMLDivElement>(null);
   const [selectedPeriod, setSelectedPeriod] = useState("전체");
@@ -82,23 +92,21 @@ export default function FoodieLog() {
       >
         {/* 기간 설정 Tab */}
         <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 pt-2">
-          {["전체", "1주", "1개월", "3개월", "6개월", "1년", "직접입력"].map(
-            (item, idx) => (
-              <button
-                key={`${item}-${idx}`}
-                onClick={() => {
-                  setSelectedPeriod(item);
-                }}
-                className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-[#dfc0e6] ${
-                  selectedPeriod === item
-                    ? "border-b-[3px] border-black font-bold text-[#393939]"
-                    : "font-normal text-[#716F6C]"
-                }`}
-              >
-                {item}
-              </button>
-            ),
-          )}
+          {PERIOD_OPTIONS.map((item, idx) => (
+            <button
+              key={`${item}-${idx}`}
+              onClick={() => {
+                setSelectedPeriod(item);
+              }}
+              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-[#dfc0e6] ${
+                selectedPeriod === item
+                  ? "border-b-[3px] border-black font-bold text-[#393939]"
+                  : "font-normal text-[#716F6C]"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
         </section>
         {/* 기간 입력 Tab (직접입력일 때만 보여짐) */}
         {selectedPeriod === "직접입력" && (
