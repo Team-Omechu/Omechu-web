@@ -13,7 +13,7 @@ export default function ExcludeButton({ onClick }: Props) {
       onClick={onClick}
     >
       <Image
-        src="/do_not_disturb_on.png"
+        src="/circle/circle_minus.svg"
         alt="제외 아이콘"
         width={24}
         height={24}

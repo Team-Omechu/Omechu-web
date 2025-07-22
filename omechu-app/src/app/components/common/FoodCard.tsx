@@ -46,7 +46,7 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
       <div className="flex flex-col place-items-end gap-2">
         <button onClick={handleLikeClick}>
           <Image
-            src={isLiked ? "/Heart_Filled.svg" : "/Heart.svg"}
+            src={isLiked ? "/heart/heart_filled.svg" : "/heart/heart_empty.svg"}
             alt="하트"
             width={20}
             height={20}

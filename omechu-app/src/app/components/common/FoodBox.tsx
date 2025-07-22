@@ -17,7 +17,8 @@ export default function FoodBox({
   onToggle,
   onClick,
 }: FoodBoxProp) {
-  // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);  // 디버그용 콘솔 메세지 출력
+  // 디버그용 콘솔 메세지 출력
+  // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
   return (
     <div
       className="relative flex h-[110px] w-[100px] cursor-pointer flex-col items-center justify-end rounded-xl border-[1px] border-black bg-white py-1 transition-transform duration-300 hover:scale-110"
@@ -36,7 +37,9 @@ export default function FoodBox({
             onToggle();
           }}
           className="absolute right-1 top-1 cursor-pointer"
-          src={isExcluded ? `/add_circle.webp` : `/do_not_disturb_on.webp`}
+          src={
+            isExcluded ? `/circle/circle_plus.svg` : `/circle/circle_minus.svg`
+          }
           alt={isExcluded ? "음식 추천 제외 취소" : "음식 추천 제외"}
           width={25}
           height={25}

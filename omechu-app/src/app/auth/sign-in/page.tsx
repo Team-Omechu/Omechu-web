@@ -11,7 +11,7 @@ export default function SignInPage() {
       <div className="flex w-full max-w-sm flex-col items-center gap-8 py-10">
         <Link href="/">
           <Image
-            src="/logo.png"
+            src="/logo/logo.png"
             alt="Omechu Logo"
             width={139}
             height={92}
@@ -30,7 +30,7 @@ export default function SignInPage() {
 
         <button className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]">
           <Image
-            src="/auth/kakao-icon.svg"
+            src="/kakao/kakao.svg"
             alt="카카오 아이콘"
             width={24}
             height={24}
