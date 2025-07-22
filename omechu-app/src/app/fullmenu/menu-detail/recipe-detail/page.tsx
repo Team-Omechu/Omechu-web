@@ -38,10 +38,10 @@ function RecipeDetailClient() {
             }}
           >
             <Image
-              src={"/left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"뒤로가기"}
-              width={10}
-              height={10}
+              width={22}
+              height={22}
             />
           </button>
         }
@@ -54,7 +54,7 @@ function RecipeDetailClient() {
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
-            src="/logo.png"
+            src="/logo/logo.svg"
             alt={`${menu.title}`}
             className="rounded object-contain"
             width={144}
