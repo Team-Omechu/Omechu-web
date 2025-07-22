@@ -48,7 +48,7 @@ export default function RandomRecommendPage() {
     );
   };
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center h-screen w-full">
       <Header
         leftChild={
           <button
@@ -67,7 +67,7 @@ export default function RandomRecommendPage() {
         className="border-b-0"
       />
 
-      <div className="mt-5 flex min-h-screen flex-col gap-2">
+      <div className="mt-5 flex flex-col gap-2">
         {/* 1: type */}
         <MealTypeGroup selectedItems={selectedItems} onToggle={toggleSelect} />
 
@@ -80,7 +80,7 @@ export default function RandomRecommendPage() {
         {/* 3: style */}
         <MealStyleGroup selectedItems={selectedItems} onToggle={toggleSelect} />
       </div>
-      <button className="relative mt-12" onClick={handleModal}>
+      <button className="relative mt-10" onClick={handleModal}>
         <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">
           Press me!
         </p>
