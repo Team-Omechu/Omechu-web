@@ -31,7 +31,12 @@ export default function RestaurantCard({
         className="absolute right-2 top-2 text-lg"
         onClick={() => setIsLiked((prev) => !prev)}
       >
-        {isLiked ? "❤️" : "🤍"}
+        <Image
+          src={isLiked ? "/heart/heart_filled.svg" : "/heart/heart_empty.svg"}
+          alt="찜버튼"
+          width={22}
+          height={22}
+        />
       </button>
 
       {/* 정보 영역 */}
@@ -60,13 +65,13 @@ export default function RestaurantCard({
       </div>
 
       {/* 이미지 */}
-      <div className="mt-10 flex-shrink-0">
+      <div className="mt-10">
         <Image
           src={image}
           alt={name}
-          width={50}
-          height={100}
-          className="h-full w-full rounded-md object-cover"
+          width={70}
+          height={70}
+          className="rounded-md object-cover"
         />
       </div>
     </div>

@@ -7,7 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 import RestaurantCard from "@/components/mainpage/RestaurantCard";
 import { restaurantList } from "@/constant/mainpage/RestaurantData";
 import { menus } from "@/constant/mainpage/resultData";
-import MenuInfo from "@/mainpage/components/MenuInfoCard";
+import MenuInfo from "@/components/common/MenuInfoCard";
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function MenuDetailPage() {
       <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
         <p className="text-center font-semibold text-[#1F9BDA]">{menu.title}</p>
         <Image
-          src={"/logo_3d.png"}
+          src={"/logo/logo.svg"}
           alt={menu.title}
           className="mx-auto h-24 w-24 rounded"
           width={96}

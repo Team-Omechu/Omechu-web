@@ -168,7 +168,12 @@ export default function SearchBar({
         aria-label="검색"
       >
         <div className="relative h-full w-full">
-          <Image src="/search.png" alt="검색" fill className="object-contain" />
+          <Image
+            src="/search/search.svg"
+            alt="검색"
+            fill
+            className="object-contain"
+          />
         </div>
       </button>
 

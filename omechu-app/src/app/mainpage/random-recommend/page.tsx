@@ -57,7 +57,7 @@ export default function RandomRecommendPage() {
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
               height={30}
@@ -67,7 +67,7 @@ export default function RandomRecommendPage() {
         className="border-b-0"
       />
 
-      <div className="mt-5 flex flex-col gap-2">
+      <div className="mt-5 flex min-h-screen flex-col gap-2">
         {/* 1: type */}
         <MealTypeGroup selectedItems={selectedItems} onToggle={toggleSelect} />
 
@@ -95,7 +95,7 @@ export default function RandomRecommendPage() {
         <ModalWrapper>
           <RandomRecommendModal
             title={randomMenu?.title}
-            iconSrc="/restaurant_blank.png"
+            iconSrc="/image/image_empty.svg"
             confirmText="선택하기"
             retryText="다시 추천"
             onConfirm={handleConfirm}
