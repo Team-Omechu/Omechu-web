@@ -1,11 +1,7 @@
-// 참고 : https://reactdatepicker.com/
-
 "use client";
 
 import { useState, useEffect, forwardRef } from "react";
-
 import Image from "next/image";
-
 import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -85,7 +81,7 @@ export default function CustomDatePicker() {
 
   return (
     <section className="flex w-full flex-col items-end">
-      <section className="flex w-full items-center justify-center gap-4">
+      <section className="relative flex w-full items-center justify-center gap-4">
         <DatePicker
           selected={startDate}
           dateFormat="yyyy.MM.dd"
@@ -104,10 +100,10 @@ export default function CustomDatePicker() {
           dateFormat="yyyy.MM.dd"
           customInput={<CustomInput />}
           onChange={(date) => {
-            if (startDate && date && date < startDate) {
-              alert("종료일은 시작일보다 빠를 수 없습니다.");
+            if (startDate && date && date.getTime() < startDate.getTime()) {
               return;
             }
+
             setEndDate(date);
           }}
           selectsEnd
