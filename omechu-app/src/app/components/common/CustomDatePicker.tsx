@@ -68,7 +68,7 @@ export default function CustomDatePicker() {
         >
           <Image
             src="/arrow/right-calender-arrow.svg"
-            alt="이전 달로 이동"
+            alt="다음 달로 이동"
             width={14}
             height={26}
           />
