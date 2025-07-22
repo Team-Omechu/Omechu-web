@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* .react-datepicker 관련 Tailwind 기반 커스터마이징은 globals.css 같은 전역 CSS 파일에만 작성 가능 */
+/* 컴포넌트 파일(JSX/TSX) 내부에 직접 넣을 수는 없음 */
+.react-datepicker {
+  @apply rounded-3xl border-2 border-black px-6 !important;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker__header {
+  @apply border-none bg-white pb-0 !important;
+}
+
+.react-datepicker__day-names {
+  @apply m-0 pb-0 !important;
+}
+
+.react-datepicker__day-name {
+  @apply h-fit text-[#828282] !important;
+}
+
+.react-datepicker__month {
+  @apply m-0 mb-2 h-fit w-fit text-xs !important;
+}
+
+.react-datepicker__day--outside-month {
+  @apply text-gray-400 !important;
+}
