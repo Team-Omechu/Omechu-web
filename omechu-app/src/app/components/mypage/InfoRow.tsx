@@ -21,7 +21,7 @@ export default function InfoRow({ label, content }: InfoProps) {
   return (
     <div className="flex items-start gap-6">
       {/* 왼쪽 라벨 박스: 성별, 운동 상태 등 */}
-      <div className="flex h-10 w-32 items-center justify-center rounded-md border-[1px] border-[#393939] bg-[#F5F5F5] px-1 dark:bg-[#7a7a7a]">
+      <div className="border-grey-darker bg-grey-light flex h-10 w-32 items-center justify-center rounded-md border-[1px] px-1 pt-1">
         {label}
       </div>
 
