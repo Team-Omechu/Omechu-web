@@ -14,24 +14,20 @@ export default function EditStart() {
       <Header
         className={"border-[#CAC6BF]"}
         leftChild={
-          <button
-            onClick={() =>
-              router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
-            }
-          >
+          <button onClick={() => router.push("/mypage/user-info-edit")}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
-              height={30}
+              height={22}
             />
           </button>
         }
       />{" "}
-      <main className="flex min-h-dvh w-full flex-col items-center overflow-y-scroll overscroll-none scroll-smooth px-4">
+      <main className="flex min-h-[calc(100vh-3.1rem)] w-full flex-col items-center overflow-y-scroll overscroll-none scroll-smooth px-4">
         <section className="mb-24 mt-32 flex flex-col gap-5 text-center">
           <div className="text-2xl font-medium">기본 정보 입력하기</div>
-          <span className="whitespace-pre font-normal text-[#828282] dark:text-[#fffcfc]">
+          <span className="text-grey-normalActive whitespace-pre font-normal">
             기본정보를 저장하여 {"\n"} 더 정교한 메뉴 추천을 받아보세요!
           </span>
           {/* prettier formatOnSave 때문에 whitespace-pre 미적용 -> 추후 수정 */}
@@ -41,7 +37,7 @@ export default function EditStart() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
             }
-            className="flex h-16 w-48 items-center justify-center rounded-md bg-[#FB4746] p-5 text-2xl font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938] dark:bg-[#bc3535] dark:hover:bg-[#972b2a] dark:active:bg-[#71201f]"
+            className="bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive flex h-16 w-48 items-center justify-center rounded-md p-5 text-2xl font-medium text-white"
           >
             시작하기
           </button>
