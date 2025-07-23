@@ -25,7 +25,7 @@ export default function AllergyStep() {
   };
 
   return (
-    <div className="flex h-screen w-auto flex-col">
+    <div className="reltive flex h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={5}
@@ -52,7 +52,7 @@ export default function AllergyStep() {
 
                 return (
                   <button
-                    key={item}
+                    key={`${item}-${allergies.includes(item)}`}
                     onClick={() => handleClick(item)}
                     className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                       isSelected
@@ -70,7 +70,7 @@ export default function AllergyStep() {
       </main>
 
       {/* 하단 버튼들 */}
-      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
+      <footer className="absolute bottom-0 flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
