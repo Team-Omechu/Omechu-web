@@ -36,7 +36,20 @@ module.exports = {
       animation: {
         shake: "shake 0.5s ease-in-out",
       },
-      // Toast 관련
+      colors: {
+        primaryColor: {
+          light: "#ffeded",
+          lightHover: "#fee3e3",
+          lightActive: "#fec6c6",
+          normal: "fb4746",
+          normalHover: "#e2403f",
+          normalActive: "#c93938",
+          dark: "#bc3535",
+          darkHover: "#972b2a",
+          darkActive: "#71201f",
+          darker: "#581919",
+        },
+      },
     },
   },
 
