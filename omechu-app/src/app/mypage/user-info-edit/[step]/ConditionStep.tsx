@@ -13,7 +13,6 @@ import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 export default function ConditionStep() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-
   // Zustand에서 상태 가져오기
   const constitution = useOnboardingStore((state) => state.constitution);
   const resetConstitution = useOnboardingStore(
@@ -38,7 +37,7 @@ export default function ConditionStep() {
   };
 
   return (
-    <div className="flex h-screen w-auto flex-col">
+    <div className="relative flex h-screen w-full flex-col items-center">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={4}
@@ -49,7 +48,7 @@ export default function ConditionStep() {
       />
 
       {/* 본문 영역 */}
-      <main className="relative flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
+      <main className="relative flex h-full w-full flex-col items-center px-4 py-6">
         <section className="my-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             체질은 무엇인가요?
@@ -68,12 +67,12 @@ export default function ConditionStep() {
               const isSelected = constitution.includes(item);
               return (
                 <button
-                  key={item}
+                  key={`${item}-${constitution.includes(item)}`}
                   onClick={() => handleClick(item)}
                   className={`h-12 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
                     isSelected
-                      ? "border-[#FB4746] bg-[#FB4746] text-white"
-                      : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                      ? "border-primary-normal bg-primary-normal text-white"
+                      : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
                   } `}
                 >
                   {item}
@@ -85,19 +84,19 @@ export default function ConditionStep() {
       </main>
 
       {/* 하단 버튼 영역 */}
-      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
+      <footer className="absolute bottom-0 flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+            className="text-grey-normalActive ml-5 text-base"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+            className="text-grey-normalActive mr-5 text-base"
           >
             건너뛰기 {">"}
           </button>
@@ -112,7 +111,7 @@ export default function ConditionStep() {
           className={`h-12 min-w-full rounded-t-md px-2 pt-1 text-xl font-normal text-white ${
             constitution.length === 0
               ? "cursor-not-allowed bg-[#A1A1A1]"
-              : "bg-[#1f9bda] hover:bg-[#1c8cc4] active:bg-[#197cae]"
+              : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
           }`}
         >
           저장
