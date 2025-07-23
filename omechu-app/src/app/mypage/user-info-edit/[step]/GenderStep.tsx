@@ -37,7 +37,7 @@ export default function GenderStep() {
   };
 
   return (
-    <div className="flex h-screen w-auto flex-col">
+    <div className="relative flex h-screen w-auto flex-col">
       <ProgressBar
         currentStep={1}
         totalSteps={5}
@@ -46,7 +46,7 @@ export default function GenderStep() {
         cancelButtonAlign="left"
       />
 
-      <main className="flex min-h-[calc(100vh-10.9rem)] w-full flex-col items-center px-4 py-6">
+      <main className="h-full] flex w-full flex-col items-center px-4 py-6">
         <section className="my-20">
           <h1 className="text-3xl font-medium">성별은 무엇인가요?</h1>
         </section>
@@ -72,7 +72,7 @@ export default function GenderStep() {
       </main>
 
       {/* 건너뛰기 / 저장 버튼 */}
-      <section className="flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
+      <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
           className="text-grey-normalActive mr-5 text-base"
