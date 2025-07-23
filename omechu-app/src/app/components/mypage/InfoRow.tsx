@@ -29,8 +29,8 @@ export default function InfoRow({ label, content }: InfoProps) {
       <div
         className={`mt-2 flex-1 whitespace-pre-wrap break-words text-base font-normal ${
           isEmpty
-            ? "font-bold text-[#a3a3a3] dark:text-[#fcdcdc]" // 입력 안 된 경우: 흐리게 표시
-            : "font-bold text-[#393939] dark:text-white" // 입력된 경우: 진하게 표시
+            ? "text-grey-normal font-bold" // 입력 안 된 경우: 흐리게 표시
+            : "text-grey-darker font-bold" // 입력된 경우: 진하게 표시
         }`}
       >
         {displayContent}
