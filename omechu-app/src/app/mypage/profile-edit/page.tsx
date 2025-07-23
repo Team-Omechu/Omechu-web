@@ -102,7 +102,7 @@ export default function ProfileEdit() {
             </div>
             <div className="relative">
               <input
-                className="h-9 w-44 rounded-md border-[1px] border-[#626262] px-2.5 py-2.5 text-base text-[#393939] placeholder:text-sm"
+                className="border-grey-darkHover text-grey-darker h-9 w-44 rounded-md border-[1px] px-2.5 py-2.5 text-base placeholder:text-sm"
                 type="text"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
@@ -120,7 +120,7 @@ export default function ProfileEdit() {
                 />
               </button>
             </div>
-            <span className="ml-1 text-xs font-normal text-[#828282] dark:text-[#f6f6f6]">
+            <span className="text-grey-normalActive ml-1 text-xs font-normal">
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
@@ -128,7 +128,7 @@ export default function ProfileEdit() {
         <section className="mt-36">
           <button
             onClick={() => setShowModal(true)}
-            className="bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive h-12 w-80 rounded-md text-lg font-medium text-white"
+            className="bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive h-12 w-80 rounded-md text-lg font-medium text-white"
           >
             저장
           </button>
