@@ -5,6 +5,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import type { Metadata } from "next";
 
 import ClientLayout from "./ClientLayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"], // 사용할 폰트 굵기
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
   },
 };
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: {
@@ -31,7 +34,9 @@ export default function RootLayout({
       <body
         className={`relative mx-auto flex max-h-screen max-w-screen-mobile flex-col overflow-x-hidden dark:bg-[#1a1a1a] dark:text-white ${notoSansKR.variable}`}
       >
-        <ClientLayout>{children}</ClientLayout>
+        <QueryClientProvider client={queryClient}>
+          <ClientLayout>{children}</ClientLayout>
+        </QueryClientProvider>
       </body>
     </html>
   );
