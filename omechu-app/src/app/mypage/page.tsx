@@ -33,7 +33,7 @@ export default function MyPage() {
           </button>
         }
       />
-      <main className="flex h-[calc(100vh-10rem)] w-full flex-col items-center justify-start gap-10 px-8 py-10">
+      <main className="flex h-screen w-full flex-col items-center justify-start gap-16 px-10 py-16">
         <section className="flex flex-col items-center">
           <div className="my-4">
             <Image

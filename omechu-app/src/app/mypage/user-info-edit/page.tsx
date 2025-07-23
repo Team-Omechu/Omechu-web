@@ -34,14 +34,14 @@ export default function UserInfoEdit() {
           </button>
         }
       />
-      <main className="flex min-h-[calc(100vh-3.1rem)] w-full flex-col items-center px-4 py-6">
+      <main className="flex h-screen w-full flex-col items-center px-4 py-6">
         <div className="flex w-full flex-col items-center">
           <section>
             <div className="my-10 text-xl font-medium">
               {"<"} {nickname || "사용자"}의 기본 상태 {">"}
             </div>
           </section>
-          <section className="mb-14 mt-5 flex w-full flex-col items-start justify-start gap-4 px-6">
+          <section className="mb-14 mt-10 flex w-full flex-col items-start justify-start gap-4 px-10">
             <InfoRow label="성별" content={gender || "None"} />
             <InfoRow label="운동 상태" content={workoutStatus || "None"} />
             <InfoRow
@@ -64,7 +64,7 @@ export default function UserInfoEdit() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
             }
-            className="bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive h-12 w-80 rounded-md text-[17px] font-medium text-white"
+            className="bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive h-12 w-[340px] rounded-md text-[17px] font-medium text-white"
           >
             다시 입력하기
           </button>
