@@ -24,7 +24,7 @@ export default function UserInfoEdit() {
       <Header
         title={"기본 상태 입력"}
         leftChild={
-          <button onClick={() => router.push("./")}>
+          <button onClick={() => router.push("/mypage")}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
               alt={"back"}
