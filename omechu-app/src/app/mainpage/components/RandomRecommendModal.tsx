@@ -1,3 +1,4 @@
+import Header from "@/components/common/Header";
 import Image from "next/image";
 
 type ModalProps = {

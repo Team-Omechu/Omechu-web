@@ -9,7 +9,7 @@ type Props = {
 export default function ExcludeButton({ onClick }: Props) {
   return (
     <button
-      className="absolute left-2 top-1 z-10 rounded-full bg-white"
+      className="absolute left-2 z-10 rounded-full bg-white"
       onClick={onClick}
     >
       <Image
