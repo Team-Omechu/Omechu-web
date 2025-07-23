@@ -72,7 +72,7 @@ export default function ConditionStep() {
                   className={`h-14 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
+                      : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
                   } `}
                 >
                   {item}
@@ -90,13 +90,13 @@ export default function ConditionStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
-            className="ml-5 text-base text-grey-normalActive"
+            className="text-grey-normalActive ml-5 text-base"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normalActive"
+            className="text-grey-normalActive mr-5 text-base"
           >
             건너뛰기 {">"}
           </button>
