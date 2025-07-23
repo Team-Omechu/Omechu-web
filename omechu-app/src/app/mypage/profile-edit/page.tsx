@@ -49,12 +49,12 @@ export default function ProfileEdit() {
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
-              height={30}
+              height={22}
             />
           </button>
         }
       />
-      <main className="min-h-100dvh relative flex w-full flex-col items-center overflow-y-scroll scroll-smooth px-4">
+      <main className="relative flex h-[calc(100dvh-3.1rem)] w-full flex-col items-center overflow-y-scroll scroll-smooth px-4">
         <section className="mt-36 flex h-44 items-center justify-center gap-10">
           <div className="relative px-3">
             <div className="mb-3">
@@ -67,6 +67,7 @@ export default function ProfileEdit() {
                 alt={"changeProfileImage"}
                 width={73}
                 height={73}
+                priority
               />
             </div>
             <button
