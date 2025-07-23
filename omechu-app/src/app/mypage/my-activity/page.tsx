@@ -15,6 +15,7 @@ import SortSelector from "@/components/common/SortSelector";
 import SelectTabBar from "@/components/mypage/SelectTabBar";
 import { Restaurants } from "@/constant/restaurant/restaurantList";
 
+import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
 export default function MyActivity() {
@@ -57,20 +58,23 @@ export default function MyActivity() {
   );
 
   useEffect(() => {
-    if (selectedIndex !== 0 && selectedIndex !== 1) return; // 두 탭 모두 허용
+    if (selectedIndex !== 0 && selectedIndex !== 1) return;
+
     const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+      root: null,
+      rootMargin: "0px 0px 160px 0px",
+      threshold: 0,
     });
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    const currentLoader = loaderRef.current;
+
+    if (currentLoader) {
+      observer.observe(currentLoader);
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
   }, [observerCallback, selectedIndex]);
@@ -92,6 +96,23 @@ export default function MyActivity() {
   useEffect(() => {
     setVisibleCount(5);
   }, [selectedIndex]);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editTargetId, setEditTargetId] = useState<number | null>(null);
+
+  const handleOpenEditModal = (id: number) => {
+    setEditTargetId(id);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditTargetId(null);
+  };
+
+  const editTargetData = initialRestaurantData.find(
+    (r) => r.id === editTargetId,
+  );
 
   return (
     <>
@@ -136,6 +157,7 @@ export default function MyActivity() {
                 }
               />
             </section>
+
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
               {MOCK_FOOD_REVIEW_CARD_DATA.slice()
@@ -158,7 +180,10 @@ export default function MyActivity() {
             <section className="mt-4 flex flex-col gap-5">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
-                  <button className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]">
+                  <button
+                    onClick={() => handleOpenEditModal(item.id)}
+                    className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]"
+                  >
                     편집
                   </button>
                   <FoodCard
@@ -170,6 +195,12 @@ export default function MyActivity() {
                 </div>
               ))}
             </section>
+            {/* {editTargetData && (
+              <RestaurantEditModal
+                onClose={handleCloseEditModal}
+                initialData={editTargetData}
+              />
+            )} */}
           </>
         )}
 

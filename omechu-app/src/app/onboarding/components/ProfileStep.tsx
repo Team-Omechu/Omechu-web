@@ -4,7 +4,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import Input from "@/auth/components/Input";
+import Input from "@/components/common/Input";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 const ProfileStep = () => {
@@ -12,8 +12,8 @@ const ProfileStep = () => {
   const isInvalid =
     nickname.length > 0 && (nickname.length < 2 || nickname.length > 12);
 
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
+  const handleNicknameChange = (value: string) => {
+    setNickname(value);
   };
 
   return (
@@ -30,7 +30,7 @@ const ProfileStep = () => {
         <div className="mb-6 flex flex-col items-center gap-2">
           <button type="button" className="relative">
             <Image
-              src="/profile/profile_default_img.svg"
+              src="/profile/profile_default_img_rotated.svg"
               alt="프로필 사진 선택"
               width={100}
               height={100}
@@ -54,15 +54,13 @@ const ProfileStep = () => {
         <div className="w-full max-w-xs">
           <Input
             label="닉네임"
-            name="nickname"
             placeholder="닉네임을 입력해주세요"
             value={nickname}
             onChange={handleNicknameChange}
-            error={isInvalid ? "한영문자 2-12글자로 입력해주세요" : ""}
+            showError={isInvalid}
+            errorMessage="한영문자 2-12글자로 입력해주세요"
+            description="한영문자 2-12글자로 입력해주세요"
           />
-        </div>
-        <div className="flex flex-col gap-2 text-sm text-[#828282]">
-          한영문자 2-12글자로 입력해주세요
         </div>
       </section>
     </div>
