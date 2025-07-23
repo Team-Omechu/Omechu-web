@@ -15,13 +15,14 @@ export default function GenderStep() {
   const [showModal, setShowModal] = useState(false);
 
   // Zustand에서 상태와 초기화 함수들 가져옴
-  const [gender, setGender] = useState<"남성" | "여성" | null>(null);
+  const gender = useOnboardingStore((state) => state.gender);
+  const setGender = useOnboardingStore((state) => state.setGender);
   const resetGender = useOnboardingStore((state) => state.resetGender);
   const resetAll = useOnboardingStore((state) => state.reset); //전체 초기화 함수
 
   // 성별 버튼 클릭하면 토글 형식으로 선택/취소
-  const handleGenderClick = (selectedGender: "남성" | "여성") => {
-    setGender((prev) => (prev === selectedGender ? null : selectedGender));
+  const handleGenderClick = (value: "남성" | "여성") => {
+    setGender(gender === value ? null : value);
   };
 
   // 건너뛰기 누르면 값 초기화하고 다음 페이지로
