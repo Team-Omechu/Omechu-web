@@ -46,7 +46,7 @@ export default function FoodStep() {
   };
 
   return (
-    <div className="flex h-screen w-auto flex-col">
+    <div className="relative flex min-h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={3}
@@ -57,7 +57,7 @@ export default function FoodStep() {
       />
 
       {/* 메인 영역 */}
-      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
+      <main className="flex h-full w-full flex-col items-center px-4 py-6">
         <section className="my-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             평소 자주 먹거나 좋아하는{"\n"}
@@ -70,18 +70,18 @@ export default function FoodStep() {
           <div className="flex flex-col gap-5">
             {["한식", "양식", "중식", "일식", "다른나라 음식"].map((item) => {
               const isSelected = preferredFood.includes(item);
-              const isDisabled = !isSelected && preferredFood.length >= 2;
+              const isDisabled = !isSelected && preferredFood.length >= 1;
 
               return (
                 <button
-                  key={item}
+                  key={`${item}-${preferredFood.includes(item)}`}
                   onClick={() => {
                     if (!isDisabled) handleClick(item);
                   }}
                   className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition ${
                     isSelected
-                      ? "border-[#FB4746] bg-[#FB4746] text-white"
-                      : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                      ? "border-primary-normal bg-primary-normal text-white"
+                      : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
                   }`}
                 >
                   {item}
@@ -93,19 +93,19 @@ export default function FoodStep() {
       </main>
 
       {/* 하단 버튼 영역: 이전 / 건너뛰기 / 저장 */}
-      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
+      <footer className="absolute bottom-0 flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[2]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+            className="text-grey-normalActive ml-5 text-base dark:font-semibold"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+            className="text-grey-normalActive mr-5 text-base dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>
@@ -117,7 +117,7 @@ export default function FoodStep() {
           className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
             preferredFood.length === 0
               ? "cursor-not-allowed bg-[#A1A1A1] dark:bg-[#555]"
-              : "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]"
+              : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
           }`}
         >
           저장
