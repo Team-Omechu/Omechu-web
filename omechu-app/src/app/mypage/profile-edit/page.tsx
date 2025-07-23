@@ -128,7 +128,7 @@ export default function ProfileEdit() {
         <section className="mt-36">
           <button
             onClick={() => setShowModal(true)}
-            className="h-[45px] w-[335px] rounded-md bg-[#1F9BDA] text-[17px] font-medium text-white hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]"
+            className="bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive h-12 w-80 rounded-md text-lg font-medium text-white"
           >
             저장
           </button>
