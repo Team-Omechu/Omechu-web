@@ -44,11 +44,11 @@ export default function MyPage() {
             />
           </div>
           <div className="font-md font text-lg">제나</div>
-          <div className="text-xs font-normal text-[#828282] dark:text-[#f6f6f6]">
+          <div className="text-grey-normalActive text-xs font-normal">
             leej296@naver.com
           </div>
         </section>
-        <section className="w-full rounded-xl border-[4px] border-[#1F9BDA] bg-white dark:border-[#1774a4] dark:bg-[#7a7a7a]">
+        <section className="border-secondary-normal w-full rounded-lg border-2 bg-white">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
@@ -57,7 +57,7 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(item.href);
                   }}
-                  className="flex w-full items-center justify-between rounded-xl bg-white px-4 pb-2.5 pt-3 text-[#00A3FF] hover:bg-[#f1f1f1] hover:text-[#1c8cc4] active:bg-[#e2e2e2] active:text-[#197cae] dark:bg-[#7a7a7a] dark:text-[#e9f5fb] dark:hover:bg-[#626262] dark:hover:text-[#ddf0f9] dark:active:bg-[#494949] dark:active:text-[#bae0f4]"
+                  className="hover:bg-grey-lightHover active:bg-grey-lightActive hover:text-secondary-normalHover active:text-secondary-normalActive flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-[#00A3FF]"
                 >
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
@@ -70,7 +70,7 @@ export default function MyPage() {
                   </span>
                 </button>
                 {!isLast && (
-                  <div className="mx-auto h-[1.2px] w-[calc(100%-2.5rem)] bg-[#b3d8eb] dark:bg-white" />
+                  <div className="bg-secondary-lightActive mx-auto h-[1.2px] w-[calc(100%-2.5rem)]" />
                 )}
               </div>
             );
