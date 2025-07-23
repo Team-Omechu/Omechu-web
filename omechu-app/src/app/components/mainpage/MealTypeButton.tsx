@@ -15,14 +15,14 @@ const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-[0.3125rem] self-stretch">
+      <div className="flex flex-wrap items-center justify-center gap-[0.3125rem]">
         {items.map((item) => (
           <button
             key={item}
             className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black text-center text-[0.875rem] font-normal leading-normal ${
               selectedItems.includes(item)
-                ? "bg-[#FB4746] text-white"
-                : "bg-white"
+                ? "border-[#FB4746] bg-[#FB4746] text-white hover:bg-[#e2403f] active:bg-[#c93938]"
+                : "border-[#FB4746] bg-white text-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
             }`}
             onClick={() => onToggle(item)}
             disabled={isDisabled(item)}
