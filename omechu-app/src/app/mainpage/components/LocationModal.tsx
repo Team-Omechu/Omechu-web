@@ -19,7 +19,7 @@ export default function LocationModal({
 
   return (
     <div className="flex items-end justify-center pt-2">
-      <div className="h-[16.6875rem] w-[22.525rem] flex-shrink-0 rounded-t-[1.25rem] border-t border-t-[#626262] bg-[#FFFEFD] p-4">
+      <div className="h-[15.5rem] w-[22.525rem] flex-shrink-0 rounded-t-[1.25rem] border-t border-t-[#626262] bg-[#FFFEFD] p-4">
         <div className="mb-2 flex justify-end">
           <button className="text-black" onClick={onClose}>
             ✕
