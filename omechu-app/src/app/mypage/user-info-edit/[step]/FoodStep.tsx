@@ -58,7 +58,7 @@ export default function FoodStep() {
 
       {/* 메인 영역 */}
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+        <section className="mb-12 mt-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             평소 자주 먹거나 좋아하는{"\n"}
             음식이 있나요?
@@ -66,7 +66,7 @@ export default function FoodStep() {
         </section>
 
         {/* 음식 선택 버튼 */}
-        <section className="-mt-4">
+        <section>
           <div className="flex flex-col gap-5">
             {["한식", "양식", "중식", "일식", "다른나라 음식"].map((item) => {
               const isSelected = preferredFood.includes(item);
@@ -81,7 +81,7 @@ export default function FoodStep() {
                   className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
+                      : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
                   }`}
                 >
                   {item}
@@ -99,13 +99,13 @@ export default function FoodStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[2]}`)
             }
-            className="text-grey-normalActive ml-5 text-base dark:font-semibold"
+            className="ml-5 text-base text-grey-normalActive dark:font-semibold"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="text-grey-normalActive mr-5 text-base dark:font-semibold"
+            className="mr-5 text-base text-grey-normalActive dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>
@@ -114,7 +114,7 @@ export default function FoodStep() {
         <button
           onClick={handleSave}
           disabled={preferredFood.length === 0}
-          className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
+          className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             preferredFood.length === 0
               ? "cursor-not-allowed bg-[#A1A1A1] dark:bg-[#555]"
               : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
