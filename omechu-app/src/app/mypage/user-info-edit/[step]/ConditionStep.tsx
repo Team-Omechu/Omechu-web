@@ -47,9 +47,9 @@ export default function ConditionStep() {
         cancelButtonAlign="left"
       />
 
-      {/* 본문 영역 */}
-      <main className="relative flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+      {/* 메인 영역 */}
+      <main className="flex h-full w-full flex-col items-center px-4 py-6">
+        <section className="mb-12 mt-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             체질은 무엇인가요?
           </div>
@@ -69,10 +69,10 @@ export default function ConditionStep() {
                 <button
                   key={`${item}-${constitution.includes(item)}`}
                   onClick={() => handleClick(item)}
-                  className={`h-12 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
+                  className={`h-14 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
+                      : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
                   } `}
                 >
                   {item}
@@ -90,13 +90,13 @@ export default function ConditionStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
-            className="text-grey-normalActive ml-5 text-base"
+            className="ml-5 text-base text-grey-normalActive"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="text-grey-normalActive mr-5 text-base"
+            className="mr-5 text-base text-grey-normalActive"
           >
             건너뛰기 {">"}
           </button>
@@ -108,7 +108,7 @@ export default function ConditionStep() {
             router.push(`/mypage/user-info-edit/${indexToSlug[5]}`)
           }
           disabled={constitution.length === 0}
-          className={`h-12 min-w-full rounded-t-md px-2 pt-1 text-xl font-normal text-white ${
+          className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             constitution.length === 0
               ? "cursor-not-allowed bg-[#A1A1A1]"
               : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
