@@ -83,7 +83,7 @@ export default function GenderStep() {
         <button
           onClick={handleSave}
           disabled={!gender} // 성별 선택 안 하면 저장 비활성화
-          className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
+          className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             gender
               ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
               : "cursor-not-allowed bg-[#A1A1A1]"
