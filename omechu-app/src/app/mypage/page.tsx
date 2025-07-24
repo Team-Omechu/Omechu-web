@@ -33,7 +33,7 @@ export default function MyPage() {
           </button>
         }
       />
-      <main className="flex h-screen w-full flex-col items-center justify-start gap-16 px-10 py-16">
+      <main className="flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 px-10 py-16">
         <section className="flex flex-col items-center">
           <div className="my-4">
             <Image
@@ -44,11 +44,11 @@ export default function MyPage() {
             />
           </div>
           <div className="font-md font text-lg">제나</div>
-          <div className="text-grey-normalActive text-xs font-normal">
+          <div className="text-xs font-normal text-grey-normalActive">
             leej296@naver.com
           </div>
         </section>
-        <section className="border-secondary-normal w-full rounded-lg border-2 bg-white">
+        <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
@@ -57,7 +57,7 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(item.href);
                   }}
-                  className="hover:bg-grey-lightHover active:bg-grey-lightActive hover:text-secondary-normalHover active:text-secondary-normalActive flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-[#00A3FF]"
+                  className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-[#00A3FF] hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive active:text-secondary-normalActive"
                 >
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
@@ -70,7 +70,7 @@ export default function MyPage() {
                   </span>
                 </button>
                 {!isLast && (
-                  <div className="bg-secondary-lightActive mx-auto h-[1.2px] w-[calc(100%-2.5rem)]" />
+                  <div className="mx-auto h-[1.2px] w-[calc(100%-2.5rem)] bg-secondary-lightActive" />
                 )}
               </div>
             );
