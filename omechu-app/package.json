@@ -16,6 +16,8 @@
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.1.1",
     "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-query-devtools": "^5.83.0",
+    "axios": "^1.11.0",
     "date-fns": "^4.1.0",
     "fastest-levenshtein": "^1.0.16",
     "next": "^15.4.2",
