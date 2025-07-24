@@ -48,7 +48,7 @@ export default function GenderStep() {
       />
 
       <main className="h-full] flex w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+        <section className="mb-16 mt-28">
           <h1 className="text-3xl font-medium">성별은 무엇인가요?</h1>
         </section>
 
@@ -62,7 +62,7 @@ export default function GenderStep() {
                 className={`h-14 w-28 rounded-md border-[1px] px-2.5 pt-1 text-xl ${
                   gender === label
                     ? "border-primary-normal bg-primary-normal text-white"
-                    : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
+                    : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
                 } `}
               >
                 {label}
@@ -76,7 +76,7 @@ export default function GenderStep() {
       <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
-          className="text-grey-normalActive mr-5 text-base"
+          className="mr-5 text-base text-grey-normalActive"
         >
           건너뛰기 {">"}
         </button>
