@@ -54,13 +54,13 @@ export default function StateStep() {
       />
 
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+        <section className="mb-16 mt-28">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             지금 어떤 운동 상태에{"\n"}가까운가요?
           </div>
         </section>
 
-        <section className="-mt-4 flex flex-col items-center justify-center">
+        <section className="flex flex-col items-center justify-center">
           <div className="z-10 flex flex-col gap-5">
             {["다이어트 중", "증량 중", "유지 중"].map((label) => (
               <button
@@ -69,7 +69,7 @@ export default function StateStep() {
                 className={`h-12 w-60 rounded-md border-[1px] px-2 pt-1 text-xl ${
                   state === label
                     ? "border-primary-normal bg-primary-normal text-white"
-                    : "border-primary-normal text-primary-normal hover:bg-primary-normalHover bg-white hover:text-white"
+                    : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
                 } `}
               >
                 {label}
@@ -85,13 +85,13 @@ export default function StateStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
             }
-            className="text-grey-normalActive ml-5 text-base"
+            className="ml-5 text-base text-grey-normalActive"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="text-grey-normalActive mr-5 text-base"
+            className="mr-5 text-base text-grey-normalActive"
           >
             건너뛰기 {">"}
           </button>
@@ -101,7 +101,7 @@ export default function StateStep() {
         <button
           onClick={handleNext}
           disabled={!state}
-          className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
+          className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             state
               ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
               : "cursor-not-allowed bg-[#A1A1A1]"
