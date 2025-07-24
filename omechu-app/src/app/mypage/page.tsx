@@ -43,7 +43,7 @@ export default function MyPage() {
               height={75}
             />
           </div>
-          <div className="font-md font text-lg">제나</div>
+          <div className="font-md text-lg">제나</div>
           <div className="text-xs font-normal text-grey-normalActive">
             leej296@naver.com
           </div>
