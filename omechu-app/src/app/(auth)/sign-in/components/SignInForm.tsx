@@ -55,6 +55,20 @@ export default function SignInForm() {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      // 로그인 성공 시 온보딩 페이지로 이동합니다.
+      // TODO: 실제로는 사용자의 온보딩 완료 여부에 따라 분기 처리가 필요합니다.
+      router.push("/onboarding/1");
+    }
+  }, [isSuccess, router]);
+
+  useEffect(() => {
+    if (error) {
+      triggerToast(error.message);
+    }
+  }, [error]);
+
   return (
     <>
       <form
@@ -102,6 +116,7 @@ export default function SignInForm() {
             disabled={isPending}
             className="w-full"
           >
+            {isPending ? "로그인 중..." : "로그인"}
             {isPending ? "로그인 중..." : "로그인"}
           </SquareButton>
         </div>
