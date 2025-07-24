@@ -54,8 +54,8 @@ export default function ProfileEdit() {
           </button>
         }
       />
-      <main className="relative flex h-[calc(100dvh-3.1rem)] w-full flex-col items-center overflow-y-scroll scroll-smooth px-4">
-        <section className="mt-36 flex h-44 items-center justify-center gap-10">
+      <main className="relative flex h-[calc(100dvh-3.1rem)] w-full flex-col items-center px-4 py-32">
+        <section className="mt-24 flex h-44 items-center justify-center gap-10">
           <div className="relative px-3">
             <div className="mb-3">
               <Image
@@ -102,7 +102,7 @@ export default function ProfileEdit() {
             </div>
             <div className="relative">
               <input
-                className="border-grey-darkHover text-grey-darker h-9 w-44 rounded-md border-[1px] px-2.5 py-2.5 text-base placeholder:text-sm"
+                className="h-9 w-44 rounded-md border-[1px] border-grey-darkHover px-2.5 py-2.5 text-base text-grey-darker placeholder:text-sm"
                 type="text"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
@@ -120,15 +120,15 @@ export default function ProfileEdit() {
                 />
               </button>
             </div>
-            <span className="text-grey-normalActive ml-1 text-xs font-normal">
+            <span className="ml-1 mt-0.5 text-xs font-normal text-grey-normalActive">
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
         </section>
-        <section className="mt-36">
+        <section className="mt-28">
           <button
             onClick={() => setShowModal(true)}
-            className="bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive h-12 w-80 rounded-md text-lg font-medium text-white"
+            className="h-12 w-[335px] rounded-md bg-primary-normal text-lg font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           >
             저장
           </button>
@@ -141,7 +141,7 @@ export default function ProfileEdit() {
               confirmText="완료"
               onConfirm={() => {
                 setShowModal(false);
-                router.refresh();
+                router.push("/");
               }}
             />
           </ModalWrapper>
