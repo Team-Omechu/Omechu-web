@@ -4,6 +4,7 @@ import { Noto_Sans_KR } from "next/font/google";
 
 import type { Metadata } from "next";
 
+import ReactQueryProvider from "./lib/providers/ReactQueryProvider";
 import ClientLayout from "./ClientLayout";
 
 const notoSansKR = Noto_Sans_KR({
@@ -31,7 +32,9 @@ export default function RootLayout({
       <body
         className={`min-w-screen-mobile relative mx-auto flex max-h-screen flex-col overflow-x-hidden ${notoSansKR.variable}`}
       >
-        <ClientLayout>{children}</ClientLayout>
+        <ReactQueryProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </ReactQueryProvider>
       </body>
     </html>
   );
