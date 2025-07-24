@@ -37,7 +37,7 @@ export default function AllergyStep() {
 
       {/* 본문 영역 */}
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+        <section className="mb-8 mt-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             알레르기가 있나요?
           </div>
@@ -54,7 +54,7 @@ export default function AllergyStep() {
                   <button
                     key={`${item}-${allergies.includes(item)}`}
                     onClick={() => handleClick(item)}
-                    className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
+                    className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                       isSelected
                         ? "border-[#FB4746] bg-[#FB4746] text-white"
                         : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
@@ -87,7 +87,7 @@ export default function AllergyStep() {
           onClick={() => {
             setShowSaveModal(true);
           }}
-          className="h-12 min-w-full rounded-t-md bg-[#fb4746] p-2 text-xl font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938]"
+          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive"
         >
           제출하기
         </button>
