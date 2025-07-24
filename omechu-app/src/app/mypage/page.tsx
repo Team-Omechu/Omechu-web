@@ -57,7 +57,7 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(item.href);
                   }}
-                  className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-[#00A3FF] hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive active:text-secondary-normalActive"
+                  className="active:text- flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-[#00A3FF] hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive"
                 >
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
