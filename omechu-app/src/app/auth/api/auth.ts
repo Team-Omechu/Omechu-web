@@ -1,5 +1,5 @@
-import type { LoginFormValues } from "../schemas/auth.schema";
-import apiClient from "./client";
+import type { LoginFormValues } from "@/auth/schemas/auth.schema";
+import apiClient from "@/shared/api/client";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {

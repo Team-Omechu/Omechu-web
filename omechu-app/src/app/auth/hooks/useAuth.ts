@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 
-import * as authApi from "@/lib/api/auth";
-import type { LoginFormValues } from "@/lib/schemas/auth.schema";
-import useAuthStore from "@/lib/stores/auth.store";
+import * as authApi from "@/auth/api/auth";
+import type { LoginFormValues } from "@/auth/schemas/auth.schema";
+import useAuthStore from "@/auth/store";
 
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
@@ -24,4 +24,4 @@ export const useLoginMutation = () => {
       console.error("로그인 실패:", error.message);
     },
   });
-}; 
+};
