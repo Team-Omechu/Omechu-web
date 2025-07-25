@@ -3,10 +3,12 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 interface AuthState {
   isLoggedIn: boolean;
+  // 소셜 로그인을 위해 accessToken 필드를 다시 추가하되, nullable로 유지합니다.
   accessToken: string | null;
   // TODO: Add user profile type
   user: any | null;
-  login: (accessToken: string, user: any) => void;
+  // 로그인 시 accessToken은 선택적으로 받도록 수정합니다.
+  login: (user: any, accessToken?: string | null) => void;
   logout: () => void;
 }
 
@@ -16,7 +18,7 @@ const useAuthStore = create<AuthState>()(
       isLoggedIn: false,
       accessToken: null,
       user: null,
-      login: (accessToken, user) =>
+      login: (user, accessToken = null) =>
         set({
           isLoggedIn: true,
           accessToken,
@@ -30,8 +32,8 @@ const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: "auth-storage", // 로컬 스토리지에 저장될 때 사용될 키 이름
-      storage: createJSONStorage(() => localStorage), // (optional) 로컬 스토리지를 사용
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

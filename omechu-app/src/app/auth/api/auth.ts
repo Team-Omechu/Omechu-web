@@ -1,9 +1,11 @@
 import type {
   LoginFormValues,
   SignupFormValues,
+  FindPasswordFormValues,
+  ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
 import apiClient from "@/lib/api/client";
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+// import { useOnboardingStore } from "@/lib/stores/onboarding.store"; // <- 불필요한 import 제거
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
@@ -36,6 +38,17 @@ export interface LoginSuccessData {
   nickname: string;
   created_at: string;
   updated_at: string;
+}
+
+// 이메일 인증번호 전송 성공 시 success 객체 구조
+export interface SendVerificationCodeSuccessData {
+  message: string;
+  code: string;
+}
+
+// 이메일 인증번호 검증 성공 시 success 객체 구조
+export interface VerifyVerificationCodeSuccessData {
+  message: string;
 }
 
 // 온보딩 완료 시 서버로 보낼 데이터 타입
@@ -114,30 +127,41 @@ export const completeOnboarding = async (
 };
 
 /**
- * 토큰 재발급 API
+ * 이메일 인증번호 전송 API
+ * @param email
  */
-export const reissueToken = async (): Promise<{ accessToken: string }> => {
-  // TODO: Define proper type
-  const response =
-    await apiClient.post<ApiResponse<{ accessToken: string }>>("/auth/reissue");
+export const sendVerificationCode = async (
+  email: string,
+): Promise<SendVerificationCodeSuccessData> => {
+  const response = await apiClient.post<
+    ApiResponse<SendVerificationCodeSuccessData>
+  >("/auth/send", { email });
 
   const apiResponse = response.data;
-
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(apiResponse.error?.reason || "토큰 재발급에 실패했습니다.");
+    throw new Error(
+      apiResponse.error?.reason || "인증번호 전송에 실패했습니다.",
+    );
   }
-
   return apiResponse.success;
 };
 
 /**
- * 이메일 인증번호 전송 API
- * @param email
+ * 이메일 인증번호 확인 API
+ * @param data email, code
  */
-export const sendEmailVerificationCode = async (
-  email: string,
-): Promise<void> => {
-  await apiClient.post("/auth/send-verification-code", { email });
+export const verifyVerificationCode = async (data: {
+  email: string;
+  code: string;
+}): Promise<VerifyVerificationCodeSuccessData> => {
+  const response = await apiClient.post<
+    ApiResponse<VerifyVerificationCodeSuccessData>
+  >("/auth/verify", data);
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(apiResponse.error?.reason || "이메일 인증에 실패했습니다.");
+  }
+  return apiResponse.success;
 };
 
 /**

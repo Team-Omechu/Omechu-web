@@ -55,9 +55,8 @@ export default function SignUpPage() {
   const onSubmit = (data: SignupFormValues) => {
     signup(data, {
       onSuccess: (response) => {
-        // TODO: 백엔드에서 회원가입 후 토큰을 주는지 확인 필요.
-        // 우선 DUMMY 토큰으로 로그인 처리하고, 실제 유저 정보를 스토어에 저장.
-        login("DUMMY_ACCESS_TOKEN_AFTER_SIGNUP", response);
+        // 회원가입 성공 후, 세션 방식이므로 토큰 없이 user 정보로만 로그인 처리합니다.
+        login(response);
         router.push("/onboarding/1");
       },
       onError: (error) => {

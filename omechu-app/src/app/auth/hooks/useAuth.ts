@@ -4,10 +4,10 @@ import * as authApi from "@/auth/api/auth";
 import type {
   LoginFormValues,
   SignupFormValues,
-  OnboardingData,
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
+// import type { OnboardingData } from "@/onboarding/api/onboarding";
 import useAuthStore from "@/auth/store";
 
 export const useLoginMutation = () => {
@@ -15,15 +15,9 @@ export const useLoginMutation = () => {
 
   return useMutation<authApi.LoginSuccessData, Error, LoginFormValues>({
     mutationFn: authApi.login,
-    onSuccess: (data) => {
-      // TODO: 백엔드에서 accessToken을 내려주면 그걸 받아서 저장해야 합니다.
-      // 지금은 임시로 더미 토큰을 사용합니다.
-      const MOCK_ACCESS_TOKEN = "DUMMY_ACCESS_TOKEN_FROM_LOGIN";
-      setLoginState(MOCK_ACCESS_TOKEN, data);
-
-      // 성공 후 로직 (예: 메인 페이지로 이동)
-      console.log("로그인 성공:", data);
-      // router.push('/');
+    onSuccess: (userProfile) => {
+      // 일반 로그인이므로 accessToken 없이 userProfile만 넘겨서 로그인 상태로 만듭니다.
+      setLoginState(userProfile);
     },
     onError: (error) => {
       // 실패 시 로직 (예: 토스트 메시지 표시)
@@ -38,20 +32,27 @@ export const useCompleteOnboardingMutation = () => {
   });
 };
 
-export const useSignupMutation = () => {
-  const { signup: setSignupState } = useAuthStore();
+export const useSendVerificationCodeMutation = () => {
+  return useMutation<authApi.SendVerificationCodeSuccessData, Error, string>({
+    mutationFn: (email) => authApi.sendVerificationCode(email),
+  });
+};
 
+export const useVerifyVerificationCodeMutation = () => {
+  return useMutation<
+    authApi.VerifyVerificationCodeSuccessData,
+    Error,
+    { email: string; code: string }
+  >({
+    mutationFn: (data) => authApi.verifyVerificationCode(data),
+  });
+};
+
+export const useSignupMutation = () => {
+  // const { signup: setSignupState } = useAuthStore(); // <- 이 부분이 오류의 원인입니다.
   return useMutation<authApi.SignupSuccessData, Error, SignupFormValues>({
     mutationFn: authApi.signup,
-    onSuccess: (data) => {
-      // 회원가입 성공 시 상태 업데이트
-      setSignupState(data);
-      console.log("회원가입 성공:", data);
-      // router.push('/auth/sign-in');
-    },
-    onError: (error) => {
-      console.error("회원가입 실패:", error.message);
-    },
+    // onSuccess/onError는 사용하는 컴포넌트에서 개별적으로 처리하도록 비워둡니다.
   });
 };
 

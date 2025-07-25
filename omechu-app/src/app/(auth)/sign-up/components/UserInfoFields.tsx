@@ -5,16 +5,56 @@ import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
 import Input from "@/components/common/Input";
+import {
+  useSendVerificationCodeMutation,
+  useVerifyVerificationCodeMutation,
+} from "@/auth/hooks/useAuth";
 import type { SignupFormValues } from "@/auth/schemas/auth.schema";
 
 export default function UserInfoFields() {
   const {
     control,
     watch,
+    getValues,
     formState: { errors },
   } = useFormContext<SignupFormValues>();
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const verificationCode = watch("verificationCode");
+  const email = watch("email");
+
+  const { mutate: sendCode, isPending: isSending } =
+    useSendVerificationCodeMutation();
+  const { mutate: verifyCode, isPending: isVerifying } =
+    useVerifyVerificationCodeMutation();
+
+  const handleSendCode = () => {
+    sendCode(getValues("email"), {
+      onSuccess: (data) => {
+        setIsCodeSent(true);
+        alert(data.message);
+      },
+      onError: (error: any) => {
+        alert(`인증번호 전송 실패: ${error.message}`);
+      },
+    });
+  };
+
+  const handleVerifyCode = () => {
+    if (!verificationCode) return;
+    verifyCode(
+      { email, code: verificationCode },
+      {
+        onSuccess: (data) => {
+          setIsVerified(true);
+          alert(data.message);
+        },
+        onError: (error: any) => {
+          alert(`인증 실패: ${error.message}`);
+        },
+      },
+    );
+  };
 
   return (
     <div className="space-y-4">
@@ -33,11 +73,8 @@ export default function UserInfoFields() {
             errorMessage={errors.email?.message}
             showButton={true}
             buttonText={isCodeSent ? "인증번호 재전송" : "인증번호 전송"}
-            onClick={() => {
-              /* 인증번호 전송 로직 */
-              setIsCodeSent(true);
-            }}
-            disabled={!field.value}
+            onClick={handleSendCode}
+            disabled={!field.value || isSending || isVerified}
           />
         )}
       />
@@ -56,11 +93,14 @@ export default function UserInfoFields() {
               showError={!!errors.verificationCode}
               errorMessage={errors.verificationCode?.message}
               showButton={true}
-              buttonText="인증번호 확인"
-              onClick={() => {
-                /* 인증번호 확인 로직 */
-              }}
-              disabled={!verificationCode || verificationCode.length !== 6}
+              buttonText={isVerified ? "인증 완료" : "인증번호 확인"}
+              onClick={handleVerifyCode}
+              disabled={
+                !verificationCode ||
+                verificationCode.length !== 6 ||
+                isVerifying ||
+                isVerified
+              }
             />
           )}
         />
@@ -104,7 +144,7 @@ export default function UserInfoFields() {
         render={({ field }) => (
           <Input
             label="전화번호"
-            type="tel"
+            type="text"
             placeholder="010-1234-5678"
             value={field.value || ""}
             onChange={field.onChange}
