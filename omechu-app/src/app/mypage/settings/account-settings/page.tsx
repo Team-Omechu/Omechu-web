@@ -44,7 +44,7 @@ export default function AccountSettings() {
               onClick={() =>
                 router.push("/mypage/settings/account-settings/change-password")
               }
-              className="hover:bg-main-normalHover active:bg-main-normalActive"
+              className="hover:bg-main-normalHover active:bg-main-normalHover"
             >
               <div className="flex w-full items-center justify-between px-6 py-3">
                 <h1 className="text-xl font-normal text-[#393939]">

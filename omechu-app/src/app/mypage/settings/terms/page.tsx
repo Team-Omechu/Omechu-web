@@ -47,7 +47,7 @@ export default function Terms() {
             <button
               key={item.id}
               onClick={() => router.push(`${item.url}`)}
-              className="hover:bg-main-normalHover active:bg-main-normalActive"
+              className="hover:bg-main-normalHover active:bg-main-normalHover"
             >
               <li className="flex w-full items-center justify-between px-6 py-3">
                 <div className="text-xl font-normal">{item.title}</div>

@@ -101,7 +101,7 @@ export default function FoodieLog() {
               onClick={() => {
                 setSelectedPeriod(item);
               }}
-              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-[#dfc0e6] ${
+              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-main-normalHover ${
                 selectedPeriod === item
                   ? "border-b-[3px] border-black font-bold text-[#393939]"
                   : "font-normal text-[#716F6C]"

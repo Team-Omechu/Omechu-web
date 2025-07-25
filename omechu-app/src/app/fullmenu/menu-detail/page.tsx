@@ -58,7 +58,7 @@ function MenuDetailClient() {
         }
       />
 
-      <main className="min-h-screen bg-[#F8D5FF] p-4 pt-8 text-sm text-black">
+      <main className="min-h-screen bg-main-normal p-4 pt-8 text-sm text-black">
         <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
           {menu.title}
         </h1>

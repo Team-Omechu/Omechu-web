@@ -38,7 +38,7 @@ export default function FilterModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#F8D5FF]">
+    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-main-normal">
       <Header
         title={"식사 상황 선택"}
         rightChild={

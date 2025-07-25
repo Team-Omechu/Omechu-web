@@ -36,7 +36,7 @@ export default function LocationModal({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen bg-[#F8D5FF]">
+    <div className="fixed inset-0 z-[9999] h-screen w-screen bg-main-normal">
       <Header
         title={"희망 지역 선택"}
         rightChild={
