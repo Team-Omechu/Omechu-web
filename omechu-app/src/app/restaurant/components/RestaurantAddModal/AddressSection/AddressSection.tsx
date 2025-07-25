@@ -23,12 +23,11 @@ export default function AddressSection({
     <>
       <div className="mb-2 text-sm font-medium text-gray-700">주소</div>
       <div className="mb-2 flex items-center gap-2">
-        <input
-          type="text"
+        <textarea
           placeholder="주소지를 입력해 주세요"
           value={address}
           readOnly
-          className={`flex-1 rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-800 ${
+          className={`flex-1 whitespace-normal break-keep rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-800 ${
             address
               ? "border-gray-300 bg-white text-gray-800"
               : "cursor-not-allowed border-gray-300 bg-gray-200 text-gray-400"
