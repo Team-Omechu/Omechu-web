@@ -33,7 +33,7 @@ export default function AccountSettings() {
           </button>
         }
       />
-      <main className="flex flex-col items-center h-screen px-2 py-2">
+      <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-2 py-2">
         <section className="w-full">
           <div className="flex flex-col">
             <div className="flex w-full items-center justify-between px-6 py-3 text-[#393939]">
@@ -65,7 +65,7 @@ export default function AccountSettings() {
         <section className="mt-5">
           <button
             onClick={() => setShowModal(true)}
-            className="h-[45px] w-[335px] rounded-md bg-[#fb4746] text-[17px] font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938]"
+            className="h-[50px] w-[335px] rounded-md bg-[#fb4746] text-[17px] font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938]"
           >
             로그아웃
           </button>

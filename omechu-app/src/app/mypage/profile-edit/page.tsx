@@ -54,7 +54,7 @@ export default function ProfileEdit() {
           </button>
         }
       />
-      <main className="relative flex h-[calc(100dvh-3.1rem)] w-full flex-col items-center px-4 py-32">
+      <main className="relative flex h-[calc(100dvh-3rem)] w-full flex-col items-center px-4 py-32">
         <section className="mt-24 flex h-44 items-center justify-center gap-10">
           <div className="relative px-3">
             <div className="mb-3">

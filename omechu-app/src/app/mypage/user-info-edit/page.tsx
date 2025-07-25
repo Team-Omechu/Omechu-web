@@ -34,7 +34,7 @@ export default function UserInfoEdit() {
           </button>
         }
       />
-      <main className="flex h-[calc(100dvh-3.1rem)] w-full flex-col items-center px-4 py-6">
+      <main className="flex h-[calc(100dvh-3rem)] w-full flex-col items-center px-4 py-6">
         <div className="flex w-full flex-col items-center">
           <section className="mt-10">
             <div className="my-10 text-xl font-medium">
