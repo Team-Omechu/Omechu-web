@@ -45,7 +45,7 @@ export default function Toast({ message, show, className }: ToastProps) {
       className={`absolute left-1/2 z-50 flex w-full -translate-x-1/2 transform justify-center ${className} `}
     >
       <div
-        className={`flex h-16 w-auto items-center justify-center rounded-xl bg-[#828282] px-5 py-3 text-center text-sm text-white shadow-lg backdrop-blur-sm transition-opacity duration-300 ${isHiding ? "opacity-0" : "animate-shake opacity-50"} `}
+        className={`flex h-16 w-auto items-center justify-center rounded-xl bg-grey-normalActive px-5 py-3 text-center text-sm text-white shadow-lg backdrop-blur-sm transition-opacity duration-300 ${isHiding ? "opacity-0" : "animate-shake opacity-50"} `}
       >
         <span className="whitespace-pre-line text-center">{message}</span>
       </div>

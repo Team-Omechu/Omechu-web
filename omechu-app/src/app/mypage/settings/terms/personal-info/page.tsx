@@ -39,7 +39,6 @@ export default function TermForPersonalInfo() {
         ref={mainRef}
         className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
-        {" "}
         {termsForPersonlInfo.map((item, key) => (
           <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {/* 조항 번호, 제목 */}
@@ -51,7 +50,7 @@ export default function TermForPersonalInfo() {
             {/* 조항 내용 */}
             <div
               className={`whitespace-pre-wrap text-base font-normal leading-relaxed ${
-                item.index ? "text-[#828282]" : "text-black"
+                item.index ? "text-grey-normalActive" : "text-black"
               }`}
             >
               {item.content}

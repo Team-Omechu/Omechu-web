@@ -99,11 +99,11 @@ export default function RestaurantReviewCard({
     <>
       <div>
         {/* Card 위 작성일 | 삭제 버튼 */}
-        <section className="mb-1 flex justify-between px-2 text-sm font-normal text-[#828282]">
+        <section className="mb-1 flex justify-between px-2 text-sm font-normal text-grey-normalActive">
           <span>{createdAt}</span>
           <button onClick={() => setShowDeleteModal(true)}>삭제</button>
         </section>
-        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4 duration-300 hover:scale-105">
+        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4 duration-100 hover:scale-105">
           {/* 식당 사진 | 식당 이름 & 평점 | 버튼 | 찜버튼 */}
           <div className="flex h-20 w-full justify-between gap-3">
             {/* 식당 사진 */}
@@ -112,7 +112,7 @@ export default function RestaurantReviewCard({
             {/* 식당 이름 | 평점 */}
             <div className="flex max-h-20 flex-1 flex-col pt-1">
               <div className="flex-1">
-                <span className="text-lg font-normal leading-tight text-[#393939]">
+                <span className="text-lg font-normal leading-tight text-grey-darker">
                   {restaurantName}
                   <button onClick={onNavigate}>
                     <Image
@@ -134,7 +134,7 @@ export default function RestaurantReviewCard({
 
             {/* 추천 수 | 찜 버튼 */}
             <div className="flex h-fit flex-shrink-0 items-start gap-1 pt-1">
-              <span className="text-base font-normal text-[#393939]">
+              <span className="text-base font-normal text-grey-darker">
                 {recommendCount ?? 0}
               </span>
               <button onClick={onLikeToggle}>
@@ -154,7 +154,7 @@ export default function RestaurantReviewCard({
 
           {/* 리뷰 내용 */}
           {reviewText && (
-            <div className="px-1 py-2 text-base font-normal text-[#828282]">
+            <div className="px-1 py-2 text-base font-normal text-grey-normalActive">
               <span>{reviewText}</span>
             </div>
           )}
@@ -180,9 +180,9 @@ export default function RestaurantReviewCard({
               {tags.map((item, index) => (
                 <div
                   key={`${item}-${index}`}
-                  className="flex h-6 w-fit items-center justify-center rounded-3xl border-[1px] border-[#A3A3A3] px-2 pt-0.5"
+                  className="flex h-6 w-fit items-center justify-center rounded-3xl border-[1px] border-grey-normal px-2 pt-0.5"
                 >
-                  <span className="text-sm font-normal text-[#A3A3A3]">
+                  <span className="text-sm font-normal text-grey-normal">
                     {item}
                   </span>
                 </div>

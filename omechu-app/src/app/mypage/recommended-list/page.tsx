@@ -27,6 +27,8 @@ type FoodItem = {
 
 export default function RecommendedList() {
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
+
   const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
 
   // 음식 리스트 초기 정렬 (한글 기준 오름차순)
@@ -93,7 +95,9 @@ export default function RecommendedList() {
     });
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -104,16 +108,15 @@ export default function RecommendedList() {
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.push("/mypage");
             }}
           >
             <Image
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
-              height={30}
+              height={22}
             />
-            <span>처음으로</span>
           </button>
         }
       />
@@ -126,7 +129,10 @@ export default function RecommendedList() {
       />
 
       {/* 메인 섹션 */}
-      <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4">
+      <main
+        ref={mainRef}
+        className="relative mt-2 flex h-screen w-full flex-col items-center gap-3 overflow-y-auto px-2 scrollbar-hide"
+      >
         {/* 검색 창 */}
         <SearchBar
           placeholder="음식명을 검색하세요."
@@ -147,7 +153,7 @@ export default function RecommendedList() {
                     prev === index ? undefined : index,
                   )
                 }
-                className={`rounded-full text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] ${
+                className={`rounded-full text-[15px] text-grey-darker hover:bg-grey-lightActive active:bg-grey-normalActive ${
                   selectedAlphabetIndex === index
                     ? "bg-[#d4f0ff] font-black"
                     : "font-normal"
@@ -168,15 +174,16 @@ export default function RecommendedList() {
               imageUrl={item.imageUrl}
               isExcluded={item.isExcluded}
               onToggle={() => onToggle(item.title)}
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              onClick={() => {}}
             />
           ))}
         </section>
 
         {/* Floating Action Button - 맨 위로 이동 */}
-        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
+        <FloatingActionButton
+          onClick={scrollToTop}
+          className="bottom-4 right-4 z-50"
+        />
       </main>
     </>
   );

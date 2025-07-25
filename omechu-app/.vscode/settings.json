@@ -2,5 +2,7 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "editor.wordWrap": "on",
+  "editor.inlayHints.maximumLength": 100
 }

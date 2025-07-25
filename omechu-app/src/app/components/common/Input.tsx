@@ -85,7 +85,7 @@ export default function Input({
       {/* 라벨 */}
       <label
         htmlFor={inputId}
-        className="text-normal mb-0.5 ml-0.5 text-sm text-[#393939]"
+        className="text-normal mb-0.5 ml-0.5 text-sm text-grey-darker"
       >
         {label}
       </label>
@@ -99,7 +99,7 @@ export default function Input({
           onChange={handleChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
-          className={`h-full w-full rounded-md border-[1px] border-[#626262] pl-4 pt-0.5 text-sm font-normal text-[#393939] placeholder:text-sm placeholder:text-[#828282]`}
+          className={`h-full w-full rounded-md border-[1px] border-grey-darkHover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normalActive`}
         />
 
         {/* 버튼: showButton이 true일 때만 렌더링 */}
@@ -109,8 +109,8 @@ export default function Input({
             onClick={onClick}
             className={`h-full w-fit flex-shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
               disabled
-                ? "bg-[#a3a3a3]" // 비활성화 상태
-                : "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae]" // 활성 상태
+                ? "bg-grey-normal" // 비활성화 상태
+                : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive" // 활성 상태
             }`}
           >
             {buttonText}
@@ -134,13 +134,13 @@ export default function Input({
       )}
       {/* 설명 텍스트 */}
       {description && (
-        <span className="ml-1 mt-1 text-sm font-normal text-[#828282]">
+        <span className="ml-1 mt-1 text-sm font-normal text-grey-normalActive">
           {description}
         </span>
       )}
 
       {!showError && successMessage && (
-        <span className="absolute -bottom-5 ml-1 text-xs font-normal text-[#1F9BDA]">
+        <span className="absolute -bottom-5 ml-1 text-xs font-normal text-secondary-normal">
           {successMessage}
         </span>
       )}

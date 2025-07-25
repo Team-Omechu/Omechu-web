@@ -1,0 +1,85 @@
+---
+alwaysApply: false
+description: "인증이 필요한 페이지(마이페이지 등)를 보호하는 Private Route 구현 전략"
+---
+
+# Private Route 구현 전략
+
+인증된 사용자만 특정 페이지에 접근할 수 있도록 제어하는 `PrivateRoute` 컴포넌트 구현 가이드입니다.
+
+## 핵심 전략
+
+1.  **인증 상태 확인**: 페이지 접근 시 `useAuthStore`를 통해 로그인 상태(`isLoggedIn`)를 확인합니다.
+2.  **리다이렉션**: 비로그인 사용자는 로그인 페이지(`/auth/sign-in`)로 리다이렉트합니다.
+3.  **로딩 처리**: 인증 상태 확인 중 콘텐츠가 깜빡이는 것을 방지하기 위해 로딩 인디케이터를 표시합니다.
+
+## 구현 코드
+
+### 1. `PrivateRoute` 컴포넌트
+
+**경로**: `[omechu-app/src/app/auth/components/PrivateRoute.tsx](mdc:omechu-app/src/app/auth/components/PrivateRoute.tsx)`
+
+```typescript
+"use client";
+
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import useAuthStore from "@/auth/store";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+
+export default function PrivateRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { isLoggedIn } = useAuthStore();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isVerifying, setIsVerifying] = useState(true);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace(`/sign-in?redirectedFrom=${pathname}`);
+    } else {
+      setIsVerifying(false);
+    }
+  }, [isLoggedIn, pathname, router]);
+
+  if (isVerifying) {
+    return <LoadingIndicator />;
+  }
+
+  return <>{children}</>;
+}
+```
+
+### 2. 적용 방법
+
+보호가 필요한 라우트 그룹의 `layout.tsx` 파일에서 `PrivateRoute` 컴포넌트로 `children`을 감싸줍니다.
+
+**예시**: `[omechu-app/src/app/mypage/layout.tsx](mdc:omechu-app/src/app/mypage/layout.tsx)`
+
+```typescript
+import PrivateRoute from "@/auth/components/PrivateRoute";
+import Header from "@/components/common/Header";
+
+export default function MyPageLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <PrivateRoute>
+      <Header title="마이페이지" />
+      {children}
+    </PrivateRoute>
+  );
+}
+```
+
+### 보호 대상 페이지 (예시)
+
+- 마이페이지 (`/mypage/**`)
+- 먹부림일지 작성 (`/my-activity/edit/**`)
+- 설정 (`/mypage/settings/**`)
+- 등등...

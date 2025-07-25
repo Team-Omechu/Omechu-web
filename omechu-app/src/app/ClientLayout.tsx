@@ -85,7 +85,7 @@ export default function ClientLayout({
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-[#F8D5FF] dark:bg-[#baa0bf]`}
+        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-main-normal scrollbar-hide`}
       >
         {children}
       </main>

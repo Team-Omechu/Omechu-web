@@ -60,14 +60,17 @@ export default function MenuDetailPage() {
         className="h-[60px] border-b-0"
       />
 
-      <div className="mt-4 flex flex-col items-center gap-4 p-4">
-        <p className="text-center font-semibold text-[#1F9BDA]">{menu.menu}</p>
+
+      <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
+        <p className="text-center font-semibold text-secondary-normal">
+          {menu.menu}
+        </p>
         <Image
-          src={menu.image_link}
+          src={"/logo/logo.png"}
           alt={menu.menu}
+          className="mx-auto h-24 w-24 rounded"
           width={96}
           height={96}
-          className="rounded"
         />
       </div>
 
@@ -78,7 +81,8 @@ export default function MenuDetailPage() {
       <div className="mx-4 mt-5 flex items-center justify-between">
         <h3 className="text-lg font-semibold">취향 저격! 추천 맛집</h3>
         <button
-          className="text-sm text-[#828282]"
+
+          className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
             router.push(`/restaurant?query=${encodeURIComponent(menu.menu)}`)
           }

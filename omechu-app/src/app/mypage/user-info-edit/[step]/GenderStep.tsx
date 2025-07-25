@@ -21,12 +21,8 @@ export default function GenderStep() {
   const resetAll = useOnboardingStore((state) => state.reset); //전체 초기화 함수
 
   // 성별 버튼 클릭하면 토글 형식으로 선택/취소
-  const handleGenderClick = (selectedGender: "남성" | "여성") => {
-    if (gender === selectedGender) {
-      setGender(null); // 이미 선택되어 있으면 취소
-    } else {
-      setGender(selectedGender); // 아니면 선택
-    }
+  const handleGenderClick = (value: "남성" | "여성") => {
+    setGender(gender === value ? null : value);
   };
 
   // 건너뛰기 누르면 값 초기화하고 다음 페이지로
@@ -42,7 +38,7 @@ export default function GenderStep() {
   };
 
   return (
-    <div className="flex h-screen w-auto flex-col">
+    <div className="relative flex h-screen w-auto flex-col">
       <ProgressBar
         currentStep={1}
         totalSteps={5}
@@ -51,8 +47,8 @@ export default function GenderStep() {
         cancelButtonAlign="left"
       />
 
-      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+      <main className="h-full] flex w-full flex-col items-center px-4 py-6">
+        <section className="mb-16 mt-28">
           <h1 className="text-3xl font-medium">성별은 무엇인가요?</h1>
         </section>
 
@@ -61,12 +57,12 @@ export default function GenderStep() {
           <div className="flex gap-5">
             {["여성", "남성"].map((label) => (
               <button
-                key={label}
+                key={`${label}-${gender === label}`}
                 onClick={() => handleGenderClick(label as "남성" | "여성")}
                 className={`h-14 w-28 rounded-md border-[1px] px-2.5 pt-1 text-xl ${
                   gender === label
-                    ? "border-[#FB4746] bg-[#FB4746] text-white"
-                    : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                    ? "border-primary-normal bg-primary-normal text-white"
+                    : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
                 } `}
               >
                 {label}
@@ -77,25 +73,25 @@ export default function GenderStep() {
       </main>
 
       {/* 건너뛰기 / 저장 버튼 */}
-      <footer className="flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
+      <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
-          className="mr-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+          className="mr-5 text-base text-grey-normalActive"
         >
           건너뛰기 {">"}
         </button>
         <button
           onClick={handleSave}
           disabled={!gender} // 성별 선택 안 하면 저장 비활성화
-          className={`h-12 min-w-full rounded-t-md p-2 text-xl font-normal text-white ${
+          className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             gender
-              ? "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae] dark:bg-[#1774a4] dark:hover:bg-[#135d83] dark:active:bg-[#0e4662]"
-              : "cursor-not-allowed bg-[#A1A1A1] dark:bg-[#555]"
+              ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
+              : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
         >
           저장
         </button>
-      </footer>
+      </section>
 
       {/* 중단 확인 모달 */}
       {showModal && (
@@ -108,7 +104,7 @@ export default function GenderStep() {
             onConfirm={() => {
               resetAll();
               setShowModal(false);
-              router.push(`/mypage/user-info-edit`); // 처음 화면으로 이동
+              router.push("/mypage/user-info-edit"); // 처음 화면으로 이동
             }}
             onClose={() => setShowModal(false)}
           />

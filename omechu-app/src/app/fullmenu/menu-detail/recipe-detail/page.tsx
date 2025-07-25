@@ -47,14 +47,14 @@ function RecipeDetailClient() {
         }
       />
 
-      <main className="min-h-screen bg-[#F8D5FF] p-5 pt-8 text-sm text-black">
+      <main className="min-h-screen bg-main-normal p-5 pt-8 text-sm text-black">
         <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
           {menu.title} 레시피
         </h1>
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
-            src="/logo/logo.svg"
+            src="/logo/logo.png"
             alt={`${menu.title}`}
             className="rounded object-contain"
             width={144}

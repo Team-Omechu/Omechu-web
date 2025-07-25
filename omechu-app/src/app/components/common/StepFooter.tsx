@@ -27,14 +27,20 @@ const StepFooter = ({
       {(showPrev || showNext) && (
         <div className="mb-3 flex justify-between px-5">
           {showPrev ? (
-            <button onClick={onPrev} className="text-base text-[#828282]">
+            <button
+              onClick={onPrev}
+              className="text-base text-grey-normalActive"
+            >
               {"<"} 이전으로
             </button>
           ) : (
             <div />
           )}
           {showNext ? (
-            <button onClick={onNext} className="text-base text-[#828282]">
+            <button
+              onClick={onNext}
+              className="text-base text-grey-normalActive"
+            >
               건너뛰기 {">"}
             </button>
           ) : null}

@@ -10,7 +10,7 @@ import OnboardingStepLayout from "./OnboardingStepLayout";
 const GenderStep = () => {
   const { gender, setGender } = useOnboardingStore();
 
-  const handleGenderSelect = (selectedGender: "여성" | "남성") => {
+  const handleGenderSelect = (selectedGender: "남성" | "여성") => {
     setGender(selectedGender);
   };
 

@@ -27,8 +27,10 @@ const MealStyleGroup = ({ selectedItems, onToggle }: Props) => {
                 key={item}
                 className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[7.8125rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black p-[0.625rem] text-center text-[0.875rem] font-normal leading-normal ${
                   selectedItems.includes(item)
+
                     ? "border-[#FB4746] bg-[#FB4746] text-white"
                     : "border-[#FB4746] bg-white text-black"
+
                 }`}
                 onClick={() => onToggle(item)}
                 disabled={isDisabled(item)}
@@ -37,7 +39,7 @@ const MealStyleGroup = ({ selectedItems, onToggle }: Props) => {
               </button>
             ))}
           </div>
-          <div className="h-px w-full bg-[#828282] opacity-60" />
+          <div className="h-px w-full bg-grey-normalActive opacity-60" />
         </div>
       ))}
     </div>

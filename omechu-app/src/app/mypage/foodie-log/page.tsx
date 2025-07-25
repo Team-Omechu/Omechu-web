@@ -101,9 +101,9 @@ export default function FoodieLog() {
               onClick={() => {
                 setSelectedPeriod(item);
               }}
-              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-[#dfc0e6] ${
+              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-main-normalHover ${
                 selectedPeriod === item
-                  ? "border-b-[3px] border-black font-bold text-[#393939]"
+                  ? "border-b-[3px] border-black font-bold text-grey-darker"
                   : "font-normal text-[#716F6C]"
               }`}
             >
@@ -113,16 +113,16 @@ export default function FoodieLog() {
         </section>
         {/* 기간 입력 Tab (직접입력일 때만 보여짐) */}
         {selectedPeriod === "직접입력" && (
-          <section className="-mt-1 flex h-fit w-full items-center justify-center gap-3 border-t-[1px] border-[#828282] px-1 py-3">
+          <section className="-mt-1 flex h-fit w-full items-center justify-center gap-3 border-t-[1px] border-grey-normalActive px-1 py-3">
             <CustomDatePicker />
           </section>
         )}
 
         {/* 필터 - 추천 순 | 최신 순 */}
-        <section className="-mt-1 flex w-full justify-end gap-3 border-t-[1px] border-[#828282] py-4 pr-3 text-sm text-[#828282]">
+        <section className="-mt-1 flex w-full justify-end gap-3 border-t-[1px] border-grey-normalActive py-4 pr-3 text-sm text-grey-normalActive">
           <button
             className={
-              sortOrder === "MostLogged" ? "font-semibold text-[#393939]" : ""
+              sortOrder === "MostLogged" ? "font-semibold text-grey-darker" : ""
             }
             onClick={() => setSortOrder("MostLogged")}
           >
@@ -131,7 +131,9 @@ export default function FoodieLog() {
           <span>|</span>
           <button
             className={
-              sortOrder === "LatestLogged" ? "font-semibold text-[#393939]" : ""
+              sortOrder === "LatestLogged"
+                ? "font-semibold text-grey-darker"
+                : ""
             }
             onClick={() => setSortOrder("LatestLogged")}
           >

@@ -21,7 +21,7 @@ export default function MyPage() {
   return (
     <>
       <Header
-        className={"border-b-0 hover:bg-[#f8d5ff] dark:hover:bg-[#baa0bf]"}
+        className={"border-b-0"}
         rightChild={
           <button onClick={() => router.push("/mypage/settings")}>
             <Image
@@ -33,7 +33,7 @@ export default function MyPage() {
           </button>
         }
       />
-      <main className="flex h-full w-full flex-col items-center justify-start gap-10 px-8 py-10">
+      <main className="flex max-h-screen w-full flex-col items-center justify-start gap-16 px-10 py-16">
         <section className="flex flex-col items-center">
           <div className="my-4">
             <Image
@@ -43,12 +43,12 @@ export default function MyPage() {
               height={75}
             />
           </div>
-          <div className="font-md font text-lg">제나</div>
-          <div className="text-xs font-normal text-[#828282] dark:text-[#f6f6f6]">
+          <div className="font-md text-lg">제나</div>
+          <div className="text-xs font-normal text-grey-normalActive">
             leej296@naver.com
           </div>
         </section>
-        <section className="w-full rounded-xl border-[4px] border-[#1F9BDA] bg-white dark:border-[#1774a4] dark:bg-[#7a7a7a]">
+        <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
@@ -57,7 +57,7 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(item.href);
                   }}
-                  className="flex w-full items-center justify-between rounded-xl bg-white px-4 pb-2.5 pt-3 text-[#00A3FF] hover:bg-[#f1f1f1] hover:text-[#1c8cc4] active:bg-[#e2e2e2] active:text-[#197cae] dark:bg-[#7a7a7a] dark:text-[#e9f5fb] dark:hover:bg-[#626262] dark:hover:text-[#ddf0f9] dark:active:bg-[#494949] dark:active:text-[#bae0f4]"
+                  className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-secondary-normal hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive active:text-secondary-normalActive"
                 >
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
@@ -70,7 +70,7 @@ export default function MyPage() {
                   </span>
                 </button>
                 {!isLast && (
-                  <div className="mx-auto h-[1.2px] w-[calc(100%-2.5rem)] bg-[#b3d8eb] dark:bg-white" />
+                  <div className="mx-auto h-[1.2px] w-[calc(100%-2.5rem)] bg-secondary-lightActive" />
                 )}
               </div>
             );
