@@ -5,8 +5,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import StepFooter from "@/app/components/common/StepFooter";
-import LocationModal from "@/app/mainpage/components/LocationModal";
+import StepFooter from "@/components/common/StepFooter";
+import LocationModal from "@/mainpage/components/LocationModal";
+import Header from "@/components/common/Header";
 
 export default function LocationAnswerPage() {
   const router = useRouter();
@@ -32,11 +33,12 @@ export default function LocationAnswerPage() {
   };
 
   return (
-    <div className="relative flex h-screen w-full flex-col overflow-x-hidden">
-      <main className="flex w-full flex-1 flex-col items-center justify-center">
+    <div className="relative flex h-screen w-full flex-col">
+      <Header className="border-b-0" />
+      <main className="mb-2 flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center px-4 py-6">
         {/* 질문 */}
-        <div className="font-['Noto Sans KR'] mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
-          <p className="text-xl font-semibold">위치를 입력해주세요</p>
+        <div className="mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
+          <p className="text-[25px] font-semibold">위치를 입력해주세요</p>
           <p className="mt-2 text-[#828282]">주변 맛집 메뉴로 추천해드릴게요</p>
         </div>
 
@@ -55,9 +57,9 @@ export default function LocationAnswerPage() {
             {selectedDistance}
           </div>
         </div>
-        <div className="mt-4 h-[10.625rem] w-[17.5rem] flex-shrink-0 overflow-hidden rounded-[1.25rem] border-[3px] border-[#1F9BDA]">
+        <div className="mt-4 h-[10.625rem] w-[17.5rem] flex-shrink-0 overflow-hidden">
           <Image
-            src="/map.png"
+            src="/map/map.svg"
             alt="지도"
             width={280}
             height={170}

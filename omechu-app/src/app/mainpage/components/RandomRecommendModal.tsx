@@ -1,3 +1,4 @@
+import Header from "@/components/common/Header";
 import Image from "next/image";
 
 type ModalProps = {
@@ -21,12 +22,7 @@ export default function RandomRecommendModal({
   return (
     <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl dark:bg-[#a3a3a3]">
       <button className="absolute right-4 top-4" onClick={onClose}>
-        <Image
-          src={"/close_button.png"}
-          alt="취소버튼"
-          width={18}
-          height={18}
-        />
+        <Image src={"/x/close_big.svg"} alt="취소버튼" width={18} height={18} />
       </button>
       <div className="flex flex-col items-center text-center text-[#00A3FF]">
         <span className="whitespace-pre-line text-[19px] font-semibold">

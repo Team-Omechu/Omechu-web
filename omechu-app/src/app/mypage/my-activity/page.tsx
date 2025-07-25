@@ -6,15 +6,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import FoodCard from "@/app/components/common/FoodCard";
-import Header from "@/app/components/common/Header";
-import LoadingIndicator from "@/app/components/common/LoadingIndicator";
-import FoodReviewCard from "@/app/components/common/RestaurantReviewCard";
-import SortSelector from "@/app/components/common/SortSelector";
-import SelectTabBar from "@/app/components/mypage/SelectTabBar";
-import { Restaurants } from "@/app/constant/restaurant/restaurantList";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import FoodCard from "@/components/common/FoodCard";
+import Header from "@/components/common/Header";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import FoodReviewCard from "@/components/common/RestaurantReviewCard";
+import SortSelector from "@/components/common/SortSelector";
+import SelectTabBar from "@/components/mypage/SelectTabBar";
+import { Restaurants } from "@/constant/restaurant/restaurantList";
 
+import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
 export default function MyActivity() {
@@ -28,6 +29,8 @@ export default function MyActivity() {
   const [visibleCount, setVisibleCount] = useState(5);
 
   const filteredItems = Restaurants;
+
+  const [reviewList, setReviewList] = useState(MOCK_FOOD_REVIEW_CARD_DATA);
 
   const visibleItems = filteredItems.slice(0, visibleCount);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,20 +60,23 @@ export default function MyActivity() {
   );
 
   useEffect(() => {
-    if (selectedIndex !== 0 && selectedIndex !== 1) return; // 두 탭 모두 허용
+    if (selectedIndex !== 0 && selectedIndex !== 1) return;
+
     const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+      root: null,
+      rootMargin: "0px 0px 160px 0px",
+      threshold: 0,
     });
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    const currentLoader = loaderRef.current;
+
+    if (currentLoader) {
+      observer.observe(currentLoader);
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
   }, [observerCallback, selectedIndex]);
@@ -93,6 +99,39 @@ export default function MyActivity() {
     setVisibleCount(5);
   }, [selectedIndex]);
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editTargetId, setEditTargetId] = useState<number | null>(null);
+
+  const handleOpenEditModal = (id: number) => {
+    setEditTargetId(id);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditTargetId(null);
+  };
+
+  const editTargetData = initialRestaurantData.find(
+    (r) => r.id === editTargetId,
+  );
+
+  const handleLikeToggle = (id: number) => {
+    setReviewList((prev) =>
+      prev.map((review) =>
+        review.id === id
+          ? {
+              ...review,
+              isLiked: !review.isLiked,
+              recommendCount: review.isLiked
+                ? (review.recommendCount ?? 1) - 1
+                : (review.recommendCount ?? 0) + 1,
+            }
+          : review,
+      ),
+    );
+  };
+
   return (
     <>
       <Header
@@ -103,7 +142,7 @@ export default function MyActivity() {
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
-              height={30}
+              height={22}
             />
           </Link>
         }
@@ -136,9 +175,11 @@ export default function MyActivity() {
                 }
               />
             </section>
+
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
-              {MOCK_FOOD_REVIEW_CARD_DATA.slice()
+              {reviewList
+                .slice()
                 .sort((a, b) =>
                   sortOrder === "latest"
                     ? new Date(b.createdAt).getTime() -
@@ -146,8 +187,12 @@ export default function MyActivity() {
                     : (b.recommendCount ?? 0) - (a.recommendCount ?? 0),
                 )
                 .slice(0, visibleCount)
-                .map((review, idx) => (
-                  <FoodReviewCard key={review.id} {...review} />
+                .map((review) => (
+                  <FoodReviewCard
+                    key={review.id}
+                    {...review}
+                    onLikeToggle={() => handleLikeToggle(review.id)}
+                  />
                 ))}
             </section>
           </>
@@ -158,7 +203,10 @@ export default function MyActivity() {
             <section className="mt-4 flex flex-col gap-5">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
-                  <button className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]">
+                  <button
+                    onClick={() => handleOpenEditModal(item.id)}
+                    className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]"
+                  >
                     편집
                   </button>
                   <FoodCard
@@ -170,6 +218,12 @@ export default function MyActivity() {
                 </div>
               ))}
             </section>
+            {/* {editTargetData && (
+              <RestaurantEditModal
+                onClose={handleCloseEditModal}
+                initialData={editTargetData}
+              />
+            )} */}
           </>
         )}
 

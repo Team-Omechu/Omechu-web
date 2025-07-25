@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import RoundButton from "@/app/components/common/button/RoundButton";
+import RoundButton from "@/components/common/button/RoundButton";
 
 export default function EmailSentMessage() {
   return (
@@ -11,7 +11,7 @@ export default function EmailSentMessage() {
         <h1 className="text-xl font-medium text-[#393939]">
           비밀번호 재설정 메일을 발송했어요
         </h1>
-        <p className="text-[15px] font-normal text-[#828282]">
+        <p className="text-sm font-normal text-[#828282]">
           보내드린 메일을 확인하신 후,
           <br />
           비밀번호를 다시 설정해 주세요

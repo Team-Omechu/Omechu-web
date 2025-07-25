@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
-import InfoRow from "@/app/components/mypage/InfoRow";
-import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import Header from "@/components/common/Header";
+import InfoRow from "./InfoRow";
+import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function UserInfoEdit() {
@@ -24,24 +24,24 @@ export default function UserInfoEdit() {
       <Header
         title={"기본 상태 입력"}
         leftChild={
-          <button onClick={() => router.push("./")}>
+          <button onClick={() => router.push("/mypage")}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
               alt={"back"}
               width={22}
-              height={30}
+              height={22}
             />
           </button>
         }
       />
-      <main className="flex min-h-[calc(100vh-10rem)] w-full flex-col items-center px-4 py-6">
+      <main className="flex h-[calc(100dvh-3rem)] w-full flex-col items-center px-4 py-6">
         <div className="flex w-full flex-col items-center">
-          <section>
+          <section className="mt-10">
             <div className="my-10 text-xl font-medium">
               {"<"} {nickname || "사용자"}의 기본 상태 {">"}
             </div>
           </section>
-          <section className="mb-14 mt-5 flex w-full flex-col items-start justify-start gap-4 px-6">
+          <section className="mb-14 mt-10 flex w-full flex-col items-start justify-start gap-4 px-12">
             <InfoRow label="성별" content={gender || "None"} />
             <InfoRow label="운동 상태" content={workoutStatus || "None"} />
             <InfoRow
@@ -64,7 +64,7 @@ export default function UserInfoEdit() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
             }
-            className="h-[45px] w-[335px] rounded-md bg-[#fb4746] text-[17px] font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938] dark:bg-[#bc3535] dark:hover:bg-[#972b2a] dark:active:bg-[#71201f]"
+            className="h-12 w-[340px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           >
             다시 입력하기
           </button>

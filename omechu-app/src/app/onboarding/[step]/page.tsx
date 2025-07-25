@@ -4,17 +4,18 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import BottomButton from "@/app/components/common/button/BottomButton";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import AllergyStep from "@/app/onboarding/components/AllergyStep";
-import ConstitutionStep from "@/app/onboarding/components/ConstitutionStep";
-import GenderStep from "@/app/onboarding/components/GenderStep";
-import PreferredFoodStep from "@/app/onboarding/components/PreferredFoodStep";
-import ProfileStep from "@/app/onboarding/components/ProfileStep";
-import WorkoutStatusStep from "@/app/onboarding/components/WorkoutStatusStep";
+import AlertModal from "@/components/common/AlertModal";
+import BottomButton from "@/components/common/button/BottomButton";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ProgressBar from "@/components/common/ProgressBar";
+import StepFooter from "@/components/common/StepFooter";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import AllergyStep from "@/onboarding/components/AllergyStep";
+import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
+import GenderStep from "@/onboarding/components/GenderStep";
+import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
+import ProfileStep from "@/onboarding/components/ProfileStep";
+import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
 
 const ONBOARDING_STEPS = 6;
 
@@ -125,25 +126,16 @@ export default function OnboardingPage() {
         {renderStepComponent()}
       </main>
 
-      <footer className="w-full pb-[env(safe-area-inset-bottom)]">
-        <div className="mb-3 flex justify-between px-5">
-          {step > 1 ? (
-            <button onClick={handlePrev} className="text-base text-[#828282]">
-              {"<"} 이전으로
-            </button>
-          ) : (
-            <div />
-          )}
-          {step > 1 && step < ONBOARDING_STEPS && (
-            <button onClick={handleSkip} className="text-base text-[#828282]">
-              건너뛰기 {">"}
-            </button>
-          )}
-        </div>
+      <StepFooter
+        showPrev={step > 1}
+        onPrev={handlePrev}
+        showNext={step > 1 && step < ONBOARDING_STEPS}
+        onNext={handleSkip}
+      >
         <BottomButton onClick={handleNext} disabled={isNextDisabled}>
           {step === ONBOARDING_STEPS ? "저장" : "다음"}
         </BottomButton>
-      </footer>
+      </StepFooter>
 
       {isModalOpen && (
         <ModalWrapper>

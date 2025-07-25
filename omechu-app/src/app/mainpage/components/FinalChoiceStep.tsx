@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import ListButton from "@/app/components/common/button/ListButton";
+import ListButton from "@/components/common/button/ListButton";
 const FinalChoiceStep = () => {
   const router = useRouter();
 
@@ -11,7 +11,7 @@ const FinalChoiceStep = () => {
       <ListButton
         onClick={() => {
           // TODO: 결과보기 로직
-          router.push("/mainpage");
+          router.push("/mainpage/result");
         }}
         isSelected={false}
         textSize="base"

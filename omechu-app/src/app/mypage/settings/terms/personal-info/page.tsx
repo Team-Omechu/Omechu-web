@@ -5,9 +5,9 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/app/components/common/FloatingActionButton";
-import Header from "@/app/components/common/Header";
-import { termsForPersonlInfo } from "@/app/constant/terms/personlInfo";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import Header from "@/components/common/Header";
+import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
 
 export default function TermForPersonalInfo() {
   const router = useRouter();
@@ -39,7 +39,6 @@ export default function TermForPersonalInfo() {
         ref={mainRef}
         className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
-        {" "}
         {termsForPersonlInfo.map((item, key) => (
           <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {/* 조항 번호, 제목 */}

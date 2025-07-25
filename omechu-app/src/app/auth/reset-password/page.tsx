@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
 import type { ResetPasswordFormValues } from "@/lib/schemas/auth.schema";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
@@ -27,18 +27,20 @@ export default function ResetPasswordPage() {
 
   return (
     <>
-      <div className="flex w-full flex-col items-center gap-8">
-        <div className="flex flex-col gap-3 text-center">
-          <h1 className="text-xl font-medium text-[#393939]">
-            비밀번호 재설정
-          </h1>
-          <p className="text-sm font-normal text-[#828282]">
-            사용하실 새로운 비밀번호를 설정해 주세요
-          </p>
-        </div>
+      <main className="flex flex-1 flex-col items-center justify-center px-4">
+        <div className="flex w-full max-w-sm flex-col items-center gap-8">
+          <div className="flex flex-col gap-3 text-center">
+            <h1 className="text-xl font-medium text-[#393939]">
+              비밀번호 재설정
+            </h1>
+            <p className="text-sm font-normal text-[#828282]">
+              사용하실 새로운 비밀번호를 설정해 주세요
+            </p>
+          </div>
 
-        <ResetPasswordForm onFormSubmit={handleFormSubmit} />
-      </div>
+          <ResetPasswordForm onFormSubmit={handleFormSubmit} />
+        </div>
+      </main>
 
       {isModalOpen && (
         <ModalWrapper>

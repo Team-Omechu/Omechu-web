@@ -18,7 +18,7 @@ export const restaurantList: Restaurant[] = [
     address: "서울특별시 무슨구 무슨동 000-0",
     menu: "짜장면",
     tags: ["아침식사", "데이트", "기념일"],
-    image: "/logo_3d.png",
+    image: "/logo/logo.png",
   },
   {
     name: "sushi house",
@@ -27,7 +27,7 @@ export const restaurantList: Restaurant[] = [
     address: "서울특별시 강남구 테헤란로 123",
     menu: "초밥",
     tags: ["점심식사", "혼밥", "신선한"],
-    image: "/logo_3d.png",
+    image: "/logo/logo.png",
   },
   {
     name: "비스트로 88",
@@ -36,6 +36,6 @@ export const restaurantList: Restaurant[] = [
     address: "서울특별시 종로구 삼청동 456",
     menu: "스테이크",
     tags: ["저녁식사", "분위기좋음", "데이트"],
-    image: "/logo_3d.png",
+    image: "/logo/logo.png",
   },
 ];

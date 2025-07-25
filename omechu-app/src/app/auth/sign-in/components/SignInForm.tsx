@@ -2,27 +2,26 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
-import Checkbox from "@/app/auth/components/Checkbox";
-import Input from "@/app/auth/components/Input";
-import SquareButton from "@/app/components/common/button/SquareButton";
-import Toast from "@/app/components/common/Toast";
+import Checkbox from "@/auth/components/Checkbox";
+import SquareButton from "@/components/common/button/SquareButton";
+import Input from "@/components/common/Input";
+import Toast from "@/components/common/Toast";
 import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
 
 export default function SignInForm() {
-  const [showPassword, setShowPassword] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    register, // register is still needed for checkbox
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
@@ -45,33 +44,37 @@ export default function SignInForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col gap-4"
       >
-        <Input
-          {...register("email")}
-          label="이메일"
-          type="email"
-          placeholder="이메일을 입력해주세요"
-          error={errors.email?.message}
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="이메일"
+              type="email"
+              placeholder="이메일을 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              showError={!!errors.email}
+              errorMessage={errors.email?.message}
+            />
+          )}
         />
-        <Input
-          {...register("password")}
-          label="비밀번호"
-          type={showPassword ? "text" : "password"}
-          placeholder="비밀번호를 입력해주세요"
-          error={errors.password?.message}
-          rightAddon={
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="p-2"
-            >
-              <Image
-                src={showPassword ? "/eye_open.svg" : "/eye_closed.svg"}
-                alt="toggle password visibility"
-                width={24}
-                height={24}
-              />
-            </button>
-          }
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="비밀번호"
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              showError={!!errors.password}
+              errorMessage={errors.password?.message}
+            />
+          )}
         />
 
         <div className="mt-4">

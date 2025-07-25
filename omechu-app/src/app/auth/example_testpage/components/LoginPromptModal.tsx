@@ -2,7 +2,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import RoundButton from "@/app/components/common/button/RoundButton";
+import RoundButton from "@/components/common/button/RoundButton";
 
 type LoginPromptModalProps = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
@@ -24,7 +24,7 @@ const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
 
       <div className="mb-4">
         <Image
-          src="/logo.png"
+          src="/logo/logo.png"
           alt="Omechu Logo"
           width={106}
           height={70}

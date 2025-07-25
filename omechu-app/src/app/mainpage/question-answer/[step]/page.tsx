@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import StepFooter from "@/app/components/common/StepFooter";
-import BudgetStep from "@/app/mainpage/components/BudgetStep";
-import FinalChoiceStep from "@/app/mainpage/components/FinalChoiceStep";
-import MealTimeStep from "@/app/mainpage/components/MealTimeStep";
-import MoodStep from "@/app/mainpage/components/MoodStep";
-import PurposeStep from "@/app/mainpage/components/PurposeStep";
-import WhoStep from "@/app/mainpage/components/WhoStep";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ProgressBar from "@/components/common/ProgressBar";
+import StepFooter from "@/components/common/StepFooter";
+import BudgetStep from "@/mainpage/components/BudgetStep";
+import FinalChoiceStep from "@/mainpage/components/FinalChoiceStep";
+import MealTimeStep from "@/mainpage/components/MealTimeStep";
+import MoodStep from "@/mainpage/components/MoodStep";
+import PurposeStep from "@/mainpage/components/PurposeStep";
+import WhoStep from "@/mainpage/components/WhoStep";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 const QUESTION_STEPS = 6;

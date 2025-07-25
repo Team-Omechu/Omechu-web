@@ -4,10 +4,10 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import AlertModal from "@/app/components/common/AlertModal";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import ProgressBar from "@/app/components/common/ProgressBar";
-import { indexToSlug } from "@/app/constant/UserInfoEditSteps";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ProgressBar from "@/components/common/ProgressBar";
+import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 export default function AllergyStep() {
@@ -25,7 +25,7 @@ export default function AllergyStep() {
   };
 
   return (
-    <div className="flex h-screen w-auto flex-col">
+    <div className="relative flex h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={5}
@@ -37,7 +37,7 @@ export default function AllergyStep() {
 
       {/* 본문 영역 */}
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
-        <section className="my-20">
+        <section className="mb-8 mt-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             알레르기가 있나요?
           </div>
@@ -52,9 +52,9 @@ export default function AllergyStep() {
 
                 return (
                   <button
-                    key={item}
+                    key={`${item}-${allergies.includes(item)}`}
                     onClick={() => handleClick(item)}
-                    className={`h-12 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
+                    className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                       isSelected
                         ? "border-[#FB4746] bg-[#FB4746] text-white"
                         : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
@@ -70,7 +70,7 @@ export default function AllergyStep() {
       </main>
 
       {/* 하단 버튼들 */}
-      <footer className="flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
+      <footer className="absolute bottom-0 flex w-full flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-between">
           <button
             onClick={() =>
@@ -87,7 +87,7 @@ export default function AllergyStep() {
           onClick={() => {
             setShowSaveModal(true);
           }}
-          className="h-12 min-w-full rounded-t-md bg-[#fb4746] p-2 text-xl font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938]"
+          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive"
         >
           제출하기
         </button>

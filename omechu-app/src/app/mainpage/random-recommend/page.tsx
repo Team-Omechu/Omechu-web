@@ -5,12 +5,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/app/components/common/Header";
-import ModalWrapper from "@/app/components/common/ModalWrapper";
-import MealIngredientGroup from "@/app/components/mainpage/MealIngredientButton";
-import MealStyleGroup from "@/app/components/mainpage/MealStyleButton";
-import MealTypeGroup from "@/app/components/mainpage/MealTypeButton";
-import { menus } from "@/app/constant/mainpage/resultData";
+import Header from "@/components/common/Header";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
+import MealStyleGroup from "@/components/mainpage/MealStyleButton";
+import MealTypeGroup from "@/components/mainpage/MealTypeButton";
+import { menus } from "@/constant/mainpage/resultData";
 
 import RandomRecommendModal from "../components/RandomRecommendModal";
 
@@ -48,7 +48,7 @@ export default function RandomRecommendPage() {
     );
   };
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex h-screen w-full flex-col items-center">
       <Header
         leftChild={
           <button
@@ -57,7 +57,7 @@ export default function RandomRecommendPage() {
             }}
           >
             <Image
-              src={"/header_left_arrow.png"}
+              src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
               height={30}
@@ -80,7 +80,7 @@ export default function RandomRecommendPage() {
         {/* 3: style */}
         <MealStyleGroup selectedItems={selectedItems} onToggle={toggleSelect} />
       </div>
-      <button className="relative mt-12" onClick={handleModal}>
+      <button className="relative mt-10" onClick={handleModal}>
         <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">
           Press me!
         </p>
@@ -95,7 +95,7 @@ export default function RandomRecommendPage() {
         <ModalWrapper>
           <RandomRecommendModal
             title={randomMenu?.title}
-            iconSrc="/restaurant_blank.png"
+            iconSrc="/image/image_empty.svg"
             confirmText="선택하기"
             retryText="다시 추천"
             onConfirm={handleConfirm}

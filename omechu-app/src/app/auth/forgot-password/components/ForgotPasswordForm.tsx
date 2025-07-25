@@ -3,10 +3,10 @@
 import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
-import Input from "@/app/auth/components/Input";
-import SquareButton from "@/app/components/common/button/SquareButton";
+import SquareButton from "@/components/common/button/SquareButton";
+import Input from "@/components/common/Input";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,
@@ -20,7 +20,7 @@ export default function ForgotPasswordForm({
   onFormSubmit,
 }: ForgotPasswordFormProps) {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FindPasswordFormValues>({
@@ -33,12 +33,21 @@ export default function ForgotPasswordForm({
         onSubmit={handleSubmit(onFormSubmit)}
         className="flex w-full flex-col gap-2 pt-4"
       >
-        <Input
-          {...register("email")}
-          label="이메일"
-          type="email"
-          placeholder="이메일을 입력해주세요"
-          error={errors.email?.message}
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="이메일"
+              type="email"
+              placeholder="이메일을 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              showError={!!errors.email}
+              errorMessage={errors.email?.message}
+            />
+          )}
         />
         <div className="mt-4">
           <SquareButton
