@@ -56,6 +56,16 @@ export interface RequestPasswordResetSuccessData {
   token: string;
 }
 
+// 온보딩 완료 시 서버 응답 데이터 타입
+export interface OnboardingSuccessData {
+  id: string;
+  email: string;
+  gender: "남성" | "여성";
+  nickname: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // 온보딩 완료 시 서버로 보낼 데이터 타입
 export interface OnboardingData {
   nickname: string;
@@ -113,9 +123,9 @@ export const signup = async (
  */
 export const completeOnboarding = async (
   data: OnboardingData,
-): Promise<any> => {
+): Promise<OnboardingSuccessData> => {
   // TODO: 백엔드 응답 타입 정의
-  const response = await apiClient.patch<ApiResponse<any>>(
+  const response = await apiClient.patch<ApiResponse<OnboardingSuccessData>>(
     "/auth/complete",
     data,
   );
