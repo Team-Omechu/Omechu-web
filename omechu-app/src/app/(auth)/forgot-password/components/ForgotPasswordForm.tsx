@@ -10,7 +10,7 @@ import Input from "@/components/common/Input";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,
-} from "@/lib/schemas/auth.schema";
+} from "@/auth/schemas/auth.schema";
 
 type ForgotPasswordFormProps = {
   onFormSubmit: (data: FindPasswordFormValues) => Promise<void>;
@@ -66,7 +66,7 @@ export default function ForgotPasswordForm({
         <div className="flex items-center justify-center gap-4">
           <span>비밀번호가 생각났어요</span>
           <Link
-            href="/auth/sign-in"
+            href="/sign-in"
             className="font-semibold text-grey-darkActive hover:underline"
           >
             로그인 하기
@@ -75,7 +75,7 @@ export default function ForgotPasswordForm({
         <div className="flex items-center justify-center gap-4">
           <span>계정이 아직 없어요</span>
           <Link
-            href="/auth/sign-up"
+            href="/sign-up"
             className="font-semibold text-grey-darkActive hover:underline"
           >
             회원가입하기

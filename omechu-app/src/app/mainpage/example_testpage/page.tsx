@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import LoginPromptModal from "@/auth/example_testpage/components/LoginPromptModal";
-import LoginPromptModal2 from "@/auth/example_testpage/components/LoginPromptModal2";
+import LoginPromptModal from "@/mainpage/example_testpage/components/LoginPromptModal";
+import LoginPromptModal2 from "@/mainpage/example_testpage/components/LoginPromptModal2";
 import ModalWrapper from "@/components/common/ModalWrapper";
 
 type ModalType = "modal1" | "modal2" | null;
@@ -17,7 +17,7 @@ export default function ExampleTestPage() {
   const handleConfirm = () => {
     setActiveModal(null);
     alert("'로그인 하기' 클릭됨");
-    router.push("/auth/sign-in");
+    router.push("/sign-in");
   };
 
   const handleClose = () => {

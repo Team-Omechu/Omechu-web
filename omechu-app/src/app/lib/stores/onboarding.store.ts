@@ -4,7 +4,8 @@ import { persist } from "zustand/middleware";
 
 type OnboardingState = {
   nickname: string;
-  gender: "여성" | "남성" | null;
+  profileImageUrl: string | null;
+  gender: "남성" | "여성" | null;
   workoutStatus: string | null;
   preferredFood: string[];
   constitution: string[];
@@ -14,7 +15,8 @@ type OnboardingState = {
 
 type OnboardingActions = {
   setNickname: (nickname: string) => void;
-  setGender: (gender: "여성" | "남성" | null) => void;
+  setProfileImageUrl: (url: string) => void;
+  setGender: (gender: "남성" | "여성" | null) => void;
   setWorkoutStatus: (status: string | null) => void;
   setPreferredFood: (foods: string[]) => void; // 타입 정의 추가
   togglePreferredFood: (food: string) => void;
@@ -31,6 +33,7 @@ type OnboardingActions = {
 
 const initialState: OnboardingState = {
   nickname: "",
+  profileImageUrl: null,
   gender: null,
   workoutStatus: null,
   preferredFood: [],
@@ -44,6 +47,7 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
     (set, get) => ({
       ...initialState,
       setNickname: (nickname) => set({ nickname }),
+      setProfileImageUrl: (url) => set({ profileImageUrl: url }),
       setGender: (gender) => set({ gender }),
       setWorkoutStatus: (status) => set({ workoutStatus: status }),
       setPreferredFood: (foods: string[]) => set({ preferredFood: foods }), // 파라미터 타입 추가

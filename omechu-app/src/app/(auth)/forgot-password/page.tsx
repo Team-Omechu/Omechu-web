@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Toast from "@/components/common/Toast";
-import type { FindPasswordFormValues } from "@/lib/schemas/auth.schema";
+import type { FindPasswordFormValues } from "@/auth/schemas/auth.schema";
+import { useRequestPasswordResetMutation } from "@/auth/hooks/useAuth";
 
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
@@ -13,6 +14,7 @@ export default function FindPasswordPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
+  const { mutateAsync: requestReset } = useRequestPasswordResetMutation();
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
@@ -21,14 +23,15 @@ export default function FindPasswordPage() {
   };
 
   const handleFormSubmit = async (data: FindPasswordFormValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    if (data.email === "test@naver.com") {
-      router.push("/auth/forgot-password/sent");
-    } else {
-      triggerToast(
-        "비밀번호 재설정 메일 발송에 실패했습니다. \n 이메일 주소를 다시 확인해 주세요.",
-      );
+    try {
+      await requestReset(data);
+      router.push("/forgot-password/sent");
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다.";
+      triggerToast(`... \n ${message}`);
     }
   };
 

@@ -8,7 +8,7 @@ import Input from "@/components/common/Input";
 import {
   resetPasswordSchema,
   type ResetPasswordFormValues,
-} from "@/lib/schemas/auth.schema";
+} from "@/auth/schemas/auth.schema";
 
 type ResetPasswordFormProps = {
   onFormSubmit: (data: ResetPasswordFormValues) => Promise<void>;
