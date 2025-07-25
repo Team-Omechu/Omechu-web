@@ -1,41 +1,23 @@
-// app/constant/mainpage/restaurantData.ts
-
-export interface Restaurant {
-  name: string;
-  rating: number;
-  reviews: number;
-  address: string;
-  menu: string;
-  tags: string[];
-  image: string;
+export interface RestaurantRequest {
+  x: number;
+  y: number;
+  radius: number;
+  keyword: string;
 }
 
-export const restaurantList: Restaurant[] = [
-  {
-    name: "pier 23",
-    rating: 3.2,
-    reviews: 24,
-    address: "서울특별시 무슨구 무슨동 000-0",
-    menu: "짜장면",
-    tags: ["아침식사", "데이트", "기념일"],
-    image: "/logo/logo.svg",
-  },
-  {
-    name: "sushi house",
-    rating: 4.1,
-    reviews: 57,
-    address: "서울특별시 강남구 테헤란로 123",
-    menu: "초밥",
-    tags: ["점심식사", "혼밥", "신선한"],
-    image: "/logo/logo.svg",
-  },
-  {
-    name: "비스트로 88",
-    rating: 4.5,
-    reviews: 102,
-    address: "서울특별시 종로구 삼청동 456",
-    menu: "스테이크",
-    tags: ["저녁식사", "분위기좋음", "데이트"],
-    image: "/logo/logo.svg",
-  },
-];
+export interface Restaurant {
+  address_name:       string;  // 전체 지번 주소
+  category_group_code:string;  // 카테고리 그룹 코드
+  category_group_name:string;  // 카테고리 그룹 이름
+  category_name:      string;  // 카테고리 상세
+  distance:number;  // 현위치에서의 거리(미터), string으로 내려옴
+  id:number; // 장소 고유 ID
+  phone:string;  // 전화번호
+  place_name:         string;  // 장소명
+  place_url:          string;  // 카카오 맵 장소 URL
+  road_address_name:  string;  // 전체 도로명 주소
+  x:number; // 경도
+  y:number;  // 위도
+}
+
+export type restaurantList = Restaurant[];
