@@ -27,7 +27,11 @@ export default function OnboardingPage() {
   const params = useParams();
   const onboardingStore = useOnboardingStore();
   const { user: authUser, login } = useAuthStore();
-  const { setCurrentStep, reset: resetOnboarding } = onboardingStore;
+  const {
+    setCurrentStep,
+    reset: resetOnboarding,
+    nickname, // reset 후 닉네임을 복원하기 위해 추가
+  } = onboardingStore;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -49,7 +53,14 @@ export default function OnboardingPage() {
       router.replace("/onboarding/1");
       return;
     }
+    // 온보딩 첫 단계 진입 시, 이전 데이터 리셋
+    if (step === 1) {
+      const currentNickname = nickname; // 현재 닉네임 임시 저장
+      resetOnboarding();
+      onboardingStore.setNickname(currentNickname); // 닉네임만 복원
+    }
     setCurrentStep(step);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, router, setCurrentStep]);
 
   const isNextDisabled = useMemo(() => {
@@ -66,7 +77,10 @@ export default function OnboardingPage() {
       case 4:
         return onboardingStore.preferredFood.length === 0;
       case 5:
-        return onboardingStore.constitution.length === 0;
+        return (
+          !onboardingStore.constitution ||
+          onboardingStore.constitution.length === 0
+        );
       default:
         return false;
     }
@@ -76,12 +90,10 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
-      // 마지막 단계에서 "저장" 버튼 클릭 시
-      // 스토어 타입이 API 명세와 일치하므로, 더 이상 변환이 필요 없습니다.
       const dataToSubmit: OnboardingRequestData = {
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: onboardingStore.gender, // 값 변환 로직 제거
+        gender: onboardingStore.gender,
         body_type: onboardingStore.constitution[0] || null,
         state: onboardingStore.workoutStatus,
         prefer: onboardingStore.preferredFood,
