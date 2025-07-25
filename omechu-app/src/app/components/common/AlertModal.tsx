@@ -49,13 +49,13 @@ export default function AlertModal({
   const showCancelButton = !!cancelText;
 
   return (
-    <div className="flex h-fit w-[22rem] flex-col justify-between gap-5 rounded-[20px] border-2 border-[#393939] bg-white px-6 py-6 shadow-xl">
+    <div className="flex h-fit w-[22rem] flex-col justify-between rounded-[20px] border-2 border-[#393939] bg-white px-6 pb-9 pt-14 shadow-xl">
       {/* 상단 여백용 (닫기 버튼 등 들어갈 자리, 현재 비어있음) */}
       <div className="flex justify-end"></div>
 
       {/* 타이틀 및 설명 영역 */}
       <div className="flex flex-col items-center text-center">
-        <span className="whitespace-pre-line text-xl font-medium">{title}</span>
+        <span className="text-xl font-medium whitespace-pre-line">{title}</span>
         {description && (
           <span className="mt-1 whitespace-pre-line text-[15px] font-medium text-[#828282]">
             {description}
