@@ -16,14 +16,14 @@ type FilterModalProps = {
   selected: string[];
 };
 
-export default function LocationModal({
+export default function LocationFilterModal({
   onClose,
   onApply,
   selected,
 }: FilterModalProps) {
   const [tempSelected, setTempSelected] = useState<string[]>(selected);
-  const [selectedCity, setSelectedCity] = useState("서울특별시");
-  const [selectedDistrict, setSelectedDistrict] = useState("강북구");
+  const [selectedCity, setSelectedCity] = useState("서울");
+  const [selectedDistrict, setSelectedDistrict] = useState("강남구");
   const cities = Object.keys(regionData);
   const districts = Object.keys(regionData[selectedCity] || {});
   const towns = regionData[selectedCity]?.[selectedDistrict] || [];
