@@ -23,10 +23,6 @@ export const signupSchema = z
         "영문, 숫자, 특수문자를 모두 포함해야 합니다.",
       ),
     passwordConfirm: z.string().min(1, "비밀번호를 다시 입력해주세요."),
-    phoneNumber: z
-      .string()
-      .min(1, "전화번호를 입력해주세요.")
-      .regex(/^\d{3}-\d{3,4}-\d{4}$/, "010-1234-5678 형식으로 입력해주세요."),
     termsService: z.boolean().refine((val) => val === true, {
       message: "서비스 이용약관에 동의해주세요.",
     }),

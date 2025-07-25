@@ -10,7 +10,6 @@ export interface OnboardingRequestData {
   gender: "남자" | "여자" | null;
   body_type: string | null;
   state: string | null;
-  phoneNumber: string; // `auth.schema.ts`에서 가져오므로 여기선 string으로 처리
   prefer: string[];
   allergy: string[];
 }

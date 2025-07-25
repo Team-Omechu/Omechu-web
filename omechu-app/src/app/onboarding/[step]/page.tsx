@@ -109,7 +109,6 @@ export default function OnboardingPage() {
         gender: convertGenderToEng(onboardingStore.gender),
         body_type: convertBodyTypeToEng(onboardingStore.constitution[0]),
         state: convertStateToEng(onboardingStore.workoutStatus), // DTO에 맞게 exercise 대신 state 사용
-        phoneNumber: authUser?.phoneNumber || "",
         prefer: onboardingStore.preferredFood,
         allergy: onboardingStore.allergies, // DTO에 맞게 allergic 대신 allergy 사용
       };

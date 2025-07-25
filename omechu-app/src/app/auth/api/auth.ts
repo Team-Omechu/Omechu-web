@@ -25,7 +25,6 @@ export interface ApiError {
 export interface SignupSuccessData {
   id: number;
   email: string;
-  phoneNumber: string;
   created_at: string;
   updated_at: string;
 }

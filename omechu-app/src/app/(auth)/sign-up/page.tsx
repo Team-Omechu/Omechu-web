@@ -42,7 +42,6 @@ export default function SignUpPage() {
       password: "",
       passwordConfirm: "",
       verificationCode: "",
-      phoneNumber: "",
       termsService: false,
       termsPrivacy: false,
       termsLocation: false,
