@@ -9,11 +9,16 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import BottomButton from "@/components/common/button/BottomButton";
 import ModalWrapper from "@/components/common/ModalWrapper";
+import Toast from "@/components/common/Toast";
 import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
 import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
 import { termsForService } from "@/constant/terms/service";
-import { signupSchema, type SignupFormValues } from "@/lib/schemas/auth.schema";
-import useAuthStore from "@/lib/stores/auth.store";
+import {
+  signupSchema,
+  type SignupFormValues,
+} from "@/auth/schemas/auth.schema";
+import { useSignupMutation, useLoginMutation } from "@/auth/hooks/useAuth";
+import { useAuthStore } from "@/auth/store";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";
@@ -22,8 +27,12 @@ type ModalType = "service" | "privacy" | "location";
 
 export default function SignUpPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const router = useRouter();
   const { login } = useAuthStore();
+  const { mutate: signup, isPending: isSigningUp } = useSignupMutation();
+  const { mutate: performLogin, isPending: isLoggingIn } = useLoginMutation();
 
   const methods = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -43,29 +52,37 @@ export default function SignUpPage() {
   const {
     handleSubmit,
     setValue,
-    formState: { isSubmitting, isValid },
+    formState: { isValid },
   } = methods;
 
-  const onSubmit = async (data: SignupFormValues) => {
-    try {
-      // TODO: 실제 백엔드 API로 회원가입 요청을 보내는 로직으로 교체해야 합니다.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("회원가입 성공:", data);
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
 
-      const mockApiResponse = {
-        accessToken: "DUMMY_ACCESS_TOKEN_FROM_API",
-        user: {
-          email: data.email,
-        },
-      };
-
-      login(mockApiResponse.accessToken, mockApiResponse.user);
-
-      router.push("/onboarding/1");
-    } catch (error) {
-      console.error("회원가입 실패:", error);
-      // TODO: 사용자에게 에러 메시지를 보여주는 UI 처리
-    }
+  const onSubmit = (data: SignupFormValues) => {
+    signup(data, {
+      onSuccess: () => {
+        performLogin(
+          { email: data.email, password: data.password },
+          {
+            onSuccess: (loginResponse) => {
+              login({ accessToken: "", user: loginResponse });
+              router.push("/onboarding/1");
+            },
+            onError: (error) => {
+              triggerToast(
+                `회원가입 후 로그인에 실패했습니다:\n${error.message}`,
+              );
+            },
+          },
+        );
+      },
+      onError: (error) => {
+        triggerToast(`회원가입에 실패했습니다:\n${error.message}`);
+      },
+    });
   };
 
   return (
@@ -88,9 +105,9 @@ export default function SignUpPage() {
           <BottomButton
             type="submit"
             form="signup-form"
-            disabled={!isValid || isSubmitting}
+            disabled={!isValid || isSigningUp || isLoggingIn}
           >
-            {isSubmitting ? "가입하는 중..." : "가입하기"}
+            {isSigningUp || isLoggingIn ? "가입하는 중..." : "가입하기"}
           </BottomButton>
         </footer>
 
@@ -127,6 +144,7 @@ export default function SignUpPage() {
             />
           </ModalWrapper>
         )}
+        <Toast message={toastMessage} show={showToast} className="bottom-20" />
       </div>
     </FormProvider>
   );

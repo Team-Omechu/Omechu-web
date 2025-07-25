@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
@@ -11,17 +12,21 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
+import { useLoginMutation } from "@/auth/hooks/useAuth";
+import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const router = useRouter();
+
+  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    register, // register is still needed for checkbox
+    formState: { errors },
+    register,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
@@ -32,11 +37,37 @@ export default function SignInForm() {
     setTimeout(() => setShowToast(false), 2500);
   };
 
-  const onSubmit = async (data: LoginFormValues) => {
-    // 가상의 로그인 실패 시나리오
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    triggerToast("이메일 또는 비밀번호가 \n 올바르지 않습니다.");
+  const onSubmit = (data: LoginFormValues) => {
+    login(data);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      // 로그인 성공 시 온보딩 페이지로 이동합니다.
+      // TODO: 실제로는 사용자의 온보딩 완료 여부에 따라 분기 처리가 필요합니다.
+      router.push("/onboarding/1");
+    }
+  }, [isSuccess, router]);
+
+  useEffect(() => {
+    if (error) {
+      triggerToast(error.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      // 로그인 성공 시 온보딩 페이지로 이동합니다.
+      // TODO: 실제로는 사용자의 온보딩 완료 여부에 따라 분기 처리가 필요합니다.
+      router.push("/onboarding/1");
+    }
+  }, [isSuccess, router]);
+
+  useEffect(() => {
+    if (error) {
+      triggerToast(error.message);
+    }
+  }, [error]);
 
   return (
     <>
@@ -82,10 +113,11 @@ export default function SignInForm() {
             type="submit"
             variant="red"
             size="lg"
-            disabled={isSubmitting}
+            disabled={isPending}
             className="w-full"
           >
-            {isSubmitting ? "로그인 중..." : "로그인"}
+            {isPending ? "로그인 중..." : "로그인"}
+            {isPending ? "로그인 중..." : "로그인"}
           </SquareButton>
         </div>
 
@@ -96,11 +128,11 @@ export default function SignInForm() {
             {...register("rememberMe")}
           />
           <div className="flex items-center gap-2">
-            <Link href="/auth/forgot-password" className="hover:underline">
+            <Link href="/forgot-password" className="hover:underline">
               비밀번호 찾기
             </Link>
             <span className="text-gray-300">|</span>
-            <Link href="/auth/sign-up" className="hover:underline">
+            <Link href="/sign-up" className="hover:underline">
               회원가입
             </Link>
           </div>

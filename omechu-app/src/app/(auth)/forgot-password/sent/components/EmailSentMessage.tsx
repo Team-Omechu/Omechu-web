@@ -18,7 +18,7 @@ export default function EmailSentMessage() {
         </p>
       </div>
       <div className="w-full px-24">
-        <Link href="/auth/sign-in" className="w-full">
+        <Link href="/sign-in" className="w-full">
           <RoundButton variant="red" size="lg" className="w-full">
             로그인 하기
           </RoundButton>
