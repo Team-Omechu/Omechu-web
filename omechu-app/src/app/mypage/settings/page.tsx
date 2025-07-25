@@ -32,7 +32,7 @@ export default function Settings() {
           </button>
         }
       />
-      <main className="h-[calc(100dvh-3.1rem)] px-2 py-2">
+      <main className="h-[calc(100dvh-3rem)] px-2 py-2">
         <ul className="flex flex-col">
           {termsList.map((item) => (
             <li
@@ -41,7 +41,7 @@ export default function Settings() {
             >
               <button
                 onClick={() => router.push(`${item.url}`)}
-                className="flex items-center justify-between w-full"
+                className="flex w-full items-center justify-between"
               >
                 <span className="text-[clamp(1.25rem)] font-normal">
                   {item.title}
