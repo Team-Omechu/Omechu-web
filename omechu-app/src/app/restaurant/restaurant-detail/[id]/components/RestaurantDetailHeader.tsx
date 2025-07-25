@@ -18,10 +18,10 @@ export default function RestaurantDetailHeader({
       <h1 className="text-2xl font-bold text-gray-700">{name}</h1>
       <button onClick={onLikeClick}>
         <Image
-          src={isLiked ? "/Heart_Filled.svg" : "/Heart.svg"}
+          src={isLiked ? "/heart/heart_filled.svg" : "/heart/heart_empty.svg"}
           alt="하트"
-          width={20}
-          height={20}
+          width={24}
+          height={24}
         />
       </button>
     </div>

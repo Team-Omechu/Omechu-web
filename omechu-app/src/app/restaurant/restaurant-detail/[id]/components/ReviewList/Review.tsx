@@ -55,7 +55,9 @@ export default function Review({
           <span className="text-sm">{votes}</span>
           <button onClick={onVote}>
             <Image
-              src={isVoted ? "/thumbs-up-fill.png" : "/thumbs-up.png"}
+              src={
+                isVoted ? "/thumb/thumbs-up-fill.svg" : "/thumb/thumbs-up.svg"
+              }
               alt="리뷰 추천 버튼"
               width={18}
               height={18}
@@ -64,7 +66,7 @@ export default function Review({
           </button>
           <button onClick={onClick}>
             <Image
-              src="/menu_dots_vertical.png"
+              src="/menu/menu_dots.svg"
               alt="메뉴"
               width={18}
               height={18}

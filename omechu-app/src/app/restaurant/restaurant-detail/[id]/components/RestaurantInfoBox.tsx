@@ -29,12 +29,7 @@ export default function RestaurantInfoBox({
     <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-[#393939] bg-white p-4">
       {/* 카테고리 */}
       <div className="flex w-full items-center justify-start gap-3">
-        <Image
-          src="/restaurant_menu.png"
-          alt="맛집 메뉴"
-          width={24}
-          height={24}
-        />
+        <Image src="/menu/menu.svg" alt="맛집 메뉴" width={24} height={24} />
         <span className="mt-1 text-lg font-bold text-gray-700">
           {restaurant.category}
         </span>
@@ -44,7 +39,7 @@ export default function RestaurantInfoBox({
       {/* 시간표 */}
       <div className="flex w-full flex-row justify-start gap-5">
         <Image
-          src="/restaurant_time_table.png"
+          src="/clock/clock.svg"
           alt="시간표"
           width={24}
           height={24}
@@ -64,12 +59,12 @@ export default function RestaurantInfoBox({
       <div className="h-[1px] w-full bg-[#828282] opacity-60"></div>
 
       {/* 주소 */}
-      <div className="flex flex-1 gap-3">
+      <div className="flex items-start gap-3">
         <Image
-          src="/restaurant_location.png"
+          src="/location/location.svg"
           alt="위치"
-          width={24}
-          height={24}
+          width={32}
+          height={32}
           className="object-contain"
         />
         <div className="flex w-full flex-col gap-3">
@@ -87,22 +82,21 @@ export default function RestaurantInfoBox({
                 <span className="w-14 text-sm font-bold text-[#393939]">
                   지번
                 </span>
-                <span className="text-sm text-[#828282]">
-                  {restaurant.address.jibun}
-                </span>
-              </div>
-              <div className="flex items-start gap-1">
-                <span className="text-sm text-[#828282]">우편번호</span>
-                <span className="text-sm text-[#828282]">
-                  {restaurant.address.postalCode}
-                </span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-[#828282]">
+                    {restaurant.address.jibun}
+                  </span>
+                  <span className="text-sm text-[#828282]">
+                    우편번호 {restaurant.address.postalCode}
+                  </span>
+                </div>
               </div>
             </>
           )}
         </div>
         <button onClick={onToggleAddress}>
           <Image
-            src={showAddress ? "/arrow_up.png" : "/arrow_down.png"}
+            src={showAddress ? "/arrow/arrow_up.png" : "/arrow/arrow_down.png"}
             alt="상세주소 보기"
             width={30}
             height={30}
