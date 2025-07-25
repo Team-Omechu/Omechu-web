@@ -43,12 +43,12 @@ export default function MyPage() {
               height={75}
             />
           </div>
-          <div className="font-md text-lg">제나</div>
+          <div className="text-lg font-md">제나</div>
           <div className="text-xs font-normal text-grey-normalActive">
             leej296@naver.com
           </div>
         </section>
-        <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
+        <section className="w-full bg-white border-2 rounded-lg border-secondary-normal">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
@@ -57,7 +57,7 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(item.href);
                   }}
-                  className="active:text- flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-[#00A3FF] hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive"
+                  className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-secondary-normal hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive active:text-secondary-normalActive"
                 >
                   <span className="pl-3 text-lg">{item.title}</span>
                   <span className="pr-3">
