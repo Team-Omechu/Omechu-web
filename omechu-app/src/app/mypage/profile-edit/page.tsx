@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,7 +14,8 @@ export default function ProfileEdit() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [nickname, setNickname] = useState("제나"); // 기본값 설정
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<Boolean>(false);
+  const [isValid, setIsValid] = useState(false);
 
   const handleImageClick = () => {
     fileInputRef.current?.click(); // 숨겨진 input 클릭 유도
@@ -34,6 +35,14 @@ export default function ProfileEdit() {
       fileInputRef.current.value = ""; // 실제 input 비우기
     }
   };
+
+  useEffect(() => {
+    if (nickname.length > 1 && nickname.length < 13) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [nickname]);
 
   return (
     <>
@@ -105,7 +114,9 @@ export default function ProfileEdit() {
                 className="h-9 w-44 rounded-md border-[1px] border-grey-darkHover px-2.5 py-2.5 text-base text-grey-darker placeholder:text-sm"
                 type="text"
                 value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e) => {
+                  setNickname(e.target.value);
+                }}
                 placeholder="닉네임을 입력해주세요"
               />
               <button
@@ -120,7 +131,9 @@ export default function ProfileEdit() {
                 />
               </button>
             </div>
-            <span className="ml-1 mt-0.5 text-xs font-normal text-grey-normalActive">
+            <span
+              className={`ml-1 mt-0.5 text-xs font-normal ${isValid ? "text-grey-normalActive" : "text-primary-normalActive"}`}
+            >
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
@@ -128,7 +141,8 @@ export default function ProfileEdit() {
         <section className="mt-28">
           <button
             onClick={() => setShowModal(true)}
-            className="h-12 w-[335px] rounded-md bg-primary-normal text-lg font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+            disabled={!isValid}
+            className={`h-12 w-[335px] rounded-md text-lg font-medium text-white ${isValid ? "bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive" : "cursor-not-allowed bg-grey-normal"}`}
           >
             저장
           </button>
