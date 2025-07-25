@@ -93,7 +93,7 @@ export default function OnboardingPage() {
       const dataToSubmit: OnboardingRequestData = {
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: onboardingStore.gender,
+        gender: onboardingStore.gender === "남성" ? "남자" : "여자",
         body_type: onboardingStore.constitution[0] || null,
         state: onboardingStore.workoutStatus,
         prefer: onboardingStore.preferredFood,
