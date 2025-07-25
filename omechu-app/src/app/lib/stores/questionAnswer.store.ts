@@ -6,7 +6,7 @@ type QuestionAnswerState = {
   mood: number | null;
   who: number | null;
   budget: number | null;
-  exceptions: string[];   // 빈 배열로 초기화
+  exceptions: string[]; // 빈 배열로 초기화
   currentStep: number;
 };
 

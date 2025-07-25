@@ -1,16 +1,16 @@
 // resultData.ts
-export interface RecommendMenuRequest  {
-  mealTime: number|null;
-  purpose: number|null;
-  mood: number|null;
-  with: number|null;
-  budget: number|null;
-  exceptions: string[]|null;
+export interface RecommendMenuRequest {
+  mealTime: number | null;
+  purpose: number | null;
+  mood: number | null;
+  with: number | null;
+  budget: number | null;
+  exceptions: string[] | null;
   weather?: string;
   session?: string;
-};
+}
 
-export interface MenuItem {
+export type MenuItem = {
   menu: string;
   description: string;
   calories: number;
@@ -21,11 +21,11 @@ export interface MenuItem {
   vitamins: string[];
   allergies: string[];
   image_link: string;
-}
+};
 
-export interface MenuListResponse {
-  menus: MenuItem[]
-}
+export type MenuListResponse = {
+  menus: MenuItem[];
+};
 
 export const tagData = [
   { tag: "아침", description: "간단하고 속에 편한 음식" },

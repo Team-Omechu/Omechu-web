@@ -1,13 +1,16 @@
-import { MenuListResponse, RecommendMenuRequest } from "@/constant/mainpage/resultData";
+import {
+  MenuListResponse,
+  RecommendMenuRequest,
+} from "@/constant/mainpage/resultData";
 import apiClient from "@/lib/api/client";
 
 export const getRecommendMenu = async (
-  request: RecommendMenuRequest
+  request: RecommendMenuRequest,
 ): Promise<MenuListResponse> => {
   // POST 로 body 에 실어서 보내기
   const { data } = await apiClient.post<MenuListResponse>(
     "/recommend",
-    request
+    request,
   );
   return data;
 };

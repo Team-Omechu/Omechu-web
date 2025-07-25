@@ -14,7 +14,9 @@ export default function MealAnswerPage() {
   const router = useRouter();
   const exceptions = useQuestionAnswerStore((state) => state.exceptions);
   const addException = useQuestionAnswerStore((state) => state.addException);
-  const removeException = useQuestionAnswerStore((state) => state.removeException);
+  const removeException = useQuestionAnswerStore(
+    (state) => state.removeException,
+  );
 
   const toggleSelect = (item: string) => {
     if (exceptions.includes(item)) {
@@ -33,10 +35,7 @@ export default function MealAnswerPage() {
           contentClassName="flex flex-col items-center justify-start space-y-0"
         >
           <div className="flex w-[310px] flex-col gap-2">
-            <MealTypeGroup
-              selectedItems={exceptions}
-              onToggle={toggleSelect}
-            />
+            <MealTypeGroup selectedItems={exceptions} onToggle={toggleSelect} />
             <MealIngredientGroup
               selectedItems={exceptions}
               onToggle={toggleSelect}

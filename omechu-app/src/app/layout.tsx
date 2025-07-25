@@ -7,7 +7,6 @@ import type { Metadata } from "next";
 import ReactQueryProvider from "./lib/providers/ReactQueryProvider";
 import ClientLayout from "@/ClientLayout";
 
-
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"], // 사용할 폰트 굵기
   variable: "--font-noto-sans-kr", // CSS 변수 이름 설정
@@ -22,7 +21,6 @@ export const metadata: Metadata = {
     icon: "logo.png",
   },
 };
-
 
 export default function RootLayout({
   children,
