@@ -33,7 +33,7 @@ export interface SignupSuccessData {
 export interface LoginSuccessData {
   id: string;
   email: string;
-  gender: "남성" | "여성";
+  gender: number | null; // 타입을 number 또는 null로 수정
   nickname: string;
   created_at: string;
   updated_at: string;

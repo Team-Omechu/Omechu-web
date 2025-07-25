@@ -6,9 +6,10 @@ import type { ApiResponse } from "@/auth/api/auth";
  * - 백엔드 user.dto.js 명세에 따라 최종 수정
  */
 export interface OnboardingRequestData {
+  password?: string; // 비밀번호 필드 추가 (선택적으로)
   nickname: string;
   profileImageUrl: string;
-  gender: "남자" | "여자" | null;
+  gender: "남성" | "여성" | null;
   body_type: string | null;
   state: string | null;
   prefer: string[];

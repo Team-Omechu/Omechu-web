@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 import * as authApi from "@/auth/api/auth";
 import type {
@@ -11,17 +12,19 @@ import type {
 import { useAuthStore } from "@/auth/store";
 
 export const useLoginMutation = () => {
-  const { login: setLoginState } = useAuthStore();
+  const { login: setAuth } = useAuthStore();
 
-  return useMutation<authApi.LoginSuccessData, Error, LoginFormValues>({
-    mutationFn: authApi.login,
-    onSuccess: (userProfile) => {
-      // TODO: API 응답에 accessToken이 포함되어야 합니다. 현재는 임시로 null 처리합니다.
-      setLoginState({ accessToken: "", user: userProfile });
+  return useMutation({
+    mutationFn: (data: LoginFormValues) => authApi.login(data),
+    onSuccess: (response, variables) => {
+      setAuth({
+        accessToken: "",
+        user: response,
+        password: variables.password,
+      });
     },
     onError: (error) => {
-      // 실패 시 로직 (예: 토스트 메시지 표시)
-      console.error("로그인 실패:", error.message);
+      console.error("Login failed:", error);
     },
   });
 };

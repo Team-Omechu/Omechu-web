@@ -26,7 +26,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
   const onboardingStore = useOnboardingStore();
-  const { user: authUser, login } = useAuthStore();
+  const { user: authUser, login, password } = useAuthStore();
   const {
     setCurrentStep,
     reset: resetOnboarding,
@@ -91,9 +91,10 @@ export default function OnboardingPage() {
       router.push(`/onboarding/${step + 1}`);
     } else {
       const dataToSubmit: OnboardingRequestData = {
+        password: password, // 스토어에서 가져온 비밀번호 사용
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: onboardingStore.gender === "남성" ? "남자" : "여자",
+        gender: onboardingStore.gender,
         body_type: onboardingStore.constitution[0] || null,
         state: onboardingStore.workoutStatus,
         prefer: onboardingStore.preferredFood,
@@ -105,7 +106,13 @@ export default function OnboardingPage() {
           if (authUser) {
             login({
               accessToken: "",
-              user: { ...authUser, ...completedProfile },
+              user: {
+                ...authUser,
+                ...completedProfile,
+                gender: completedProfile.gender as unknown as number,
+                state: completedProfile.state as unknown as number,
+              },
+              password: password,
             });
           }
           setIsModalOpen(true);

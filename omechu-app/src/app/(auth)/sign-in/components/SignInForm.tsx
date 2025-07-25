@@ -20,7 +20,13 @@ export default function SignInForm() {
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
 
-  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
+  const {
+    mutate: login,
+    isPending,
+    isSuccess,
+    error,
+    data: loginResult,
+  } = useLoginMutation();
 
   const {
     control,
@@ -42,26 +48,15 @@ export default function SignInForm() {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      // 로그인 성공 시 온보딩 페이지로 이동합니다.
-      // TODO: 실제로는 사용자의 온보딩 완료 여부에 따라 분기 처리가 필요합니다.
-      router.push("/onboarding/1");
+    if (isSuccess && loginResult) {
+      // gender 정보가 null이면 온보딩 미완료로 간주
+      if (loginResult.gender === null) {
+        router.push("/onboarding/1");
+      } else {
+        router.push("/mainpage");
+      }
     }
-  }, [isSuccess, router]);
-
-  useEffect(() => {
-    if (error) {
-      triggerToast(error.message);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      // 로그인 성공 시 온보딩 페이지로 이동합니다.
-      // TODO: 실제로는 사용자의 온보딩 완료 여부에 따라 분기 처리가 필요합니다.
-      router.push("/onboarding/1");
-    }
-  }, [isSuccess, router]);
+  }, [isSuccess, loginResult, router]);
 
   useEffect(() => {
     if (error) {
