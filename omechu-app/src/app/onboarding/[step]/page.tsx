@@ -11,7 +11,7 @@ import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
 import Toast from "@/components/common/Toast";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import useAuthStore from "@/auth/store";
+import { useAuthStore } from "@/auth/store";
 import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
 import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
 import AllergyStep from "@/onboarding/components/AllergyStep";
@@ -22,31 +22,6 @@ import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
 
 const ONBOARDING_STEPS = 6;
-
-// --- 백엔드 DTO에 맞게 값을 변환해주는 함수들 ---
-const convertGenderToEng = (gender: string | null) => {
-  if (gender === "남성") return "male";
-  if (gender === "여성") return "female";
-  return null;
-};
-
-const convertStateToEng = (state: string | null) => {
-  // DTO 파일의 convertExercise 함수 참고
-  if (state?.includes("다이어트")) return "diet";
-  if (state?.includes("벌크업")) return "bulk";
-  if (state?.includes("유지")) return "maintain";
-  return null;
-};
-
-const convertBodyTypeToEng = (bodyType: string | null) => {
-  // DTO 파일의 convertBodyType 함수 참고
-  if (bodyType === "감기") return "cold";
-  if (bodyType === "소화불량") return "indigestion";
-  if (bodyType === "더위 잘 탐") return "heat_type";
-  if (bodyType === "추위 잘 탐") return "cold_type";
-  return null;
-};
-// ----------------------------------------------------
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -106,24 +81,24 @@ export default function OnboardingPage() {
       const dataToSubmit: OnboardingRequestData = {
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: convertGenderToEng(onboardingStore.gender),
-        body_type: convertBodyTypeToEng(onboardingStore.constitution[0]),
-        state: convertStateToEng(onboardingStore.workoutStatus), // DTO에 맞게 exercise 대신 state 사용
+        gender: onboardingStore.gender,
+        body_type: onboardingStore.constitution[0] || null,
+        state: onboardingStore.workoutStatus,
         prefer: onboardingStore.preferredFood,
-        allergy: onboardingStore.allergies, // DTO에 맞게 allergic 대신 allergy 사용
+        allergy: onboardingStore.allergies,
       };
 
       completeOnboarding(dataToSubmit, {
         onSuccess: (completedProfile) => {
           // 온보딩 완료 후 받은 새 프로필 정보로 auth 스토어 업데이트
           if (authUser) {
-            login(
-              {
-                ...authUser,
-                ...completedProfile,
-              },
-              useAuthStore.getState().accessToken,
-            );
+            const accessToken = useAuthStore.getState().accessToken;
+            if (accessToken) {
+              login({
+                accessToken,
+                user: { ...authUser, ...completedProfile },
+              });
+            }
           }
           setIsModalOpen(true);
         },
