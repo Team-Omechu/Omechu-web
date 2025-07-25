@@ -1,26 +1,23 @@
 "use client";
 
-import Image from "next/image";
+import dynamic from "next/dynamic";
 
-interface RestaurantMapPreviewProps {
-  mapImagePath: string;
-  restaurantName: string;
+const KakaoMap = dynamic(() => import("./KakaoMap"), { ssr: false });
+
+interface Props {
+  latitude: number;
+  longitude: number;
+  name: string;
 }
 
 export default function RestaurantMapPreview({
-  mapImagePath,
-  restaurantName,
-}: RestaurantMapPreviewProps) {
+  latitude,
+  longitude,
+  name,
+}: Props) {
   return (
-    <section className="flex w-full items-center justify-center">
-      <div className="h-80 w-80 overflow-hidden border-2 border-[#00A3FF]">
-        <Image
-          src={mapImagePath}
-          alt={`${restaurantName} 지도`}
-          width={330}
-          height={330}
-        />
-      </div>
-    </section>
+    <div className="mt-4 h-[20rem] w-[21rem] rounded-xl shadow-md">
+      <KakaoMap latitude={latitude} longitude={longitude} name={name} />
+    </div>
   );
 }
