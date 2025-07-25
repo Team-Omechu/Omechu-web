@@ -103,14 +103,14 @@ export default function RestaurantReviewCard({
           <span>{createdAt}</span>
           <button onClick={() => setShowDeleteModal(true)}>삭제</button>
         </section>
-        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4 duration-300 hover:scale-105">
+        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4 duration-100 hover:scale-105">
           {/* 식당 사진 | 식당 이름 & 평점 | 버튼 | 찜버튼 */}
-          <div className="flex h-20 w-full justify-between gap-3">
+          <div className="flex justify-between w-full h-20 gap-3">
             {/* 식당 사진 */}
             <RestaurantImage src={restaurantImage} alt="식당 사진" />
 
             {/* 식당 이름 | 평점 */}
-            <div className="flex max-h-20 flex-1 flex-col pt-1">
+            <div className="flex flex-col flex-1 pt-1 max-h-20">
               <div className="flex-1">
                 <span className="text-lg font-normal leading-tight text-[#393939]">
                   {restaurantName}
@@ -133,7 +133,7 @@ export default function RestaurantReviewCard({
             </div>
 
             {/* 추천 수 | 찜 버튼 */}
-            <div className="flex h-fit flex-shrink-0 items-start gap-1 pt-1">
+            <div className="flex items-start flex-shrink-0 gap-1 pt-1 h-fit">
               <span className="text-base font-normal text-[#393939]">
                 {recommendCount ?? 0}
               </span>
@@ -161,7 +161,7 @@ export default function RestaurantReviewCard({
 
           {/* 이미지(없어도 됨) */}
           {Array.isArray(reviewImages) && reviewImages.length > 0 && (
-            <div className="relative mb-4 flex max-h-32 w-full gap-2 overflow-x-scroll">
+            <div className="relative flex w-full gap-2 mb-4 overflow-x-scroll max-h-32">
               {reviewImages.map((imgSrc, i) =>
                 imgSrc ? (
                   <ReviewImage

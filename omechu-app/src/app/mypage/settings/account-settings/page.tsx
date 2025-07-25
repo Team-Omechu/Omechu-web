@@ -33,7 +33,7 @@ export default function AccountSettings() {
           </button>
         }
       />
-      <main className="flex flex-col items-center px-2 py-2">
+      <main className="flex flex-col items-center h-screen px-2 py-2">
         <section className="w-full">
           <div className="flex flex-col">
             <div className="flex w-full items-center justify-between px-6 py-3 text-[#393939]">
@@ -46,7 +46,7 @@ export default function AccountSettings() {
               }
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <div className="flex w-full items-center justify-between px-6 py-3">
+              <div className="flex items-center justify-between w-full px-6 py-3">
                 <h1 className="text-base font-normal text-[#393939]">
                   비밀번호 변경
                 </h1>
