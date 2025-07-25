@@ -44,7 +44,7 @@ export default function AccountSettings() {
               onClick={() =>
                 router.push("/mypage/settings/account-settings/change-password")
               }
-              className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
+              className="hover:bg-main-normalHover active:bg-main-normalActive"
             >
               <div className="flex w-full items-center justify-between px-6 py-3">
                 <h1 className="text-xl font-normal text-[#393939]">
@@ -65,7 +65,7 @@ export default function AccountSettings() {
         <section className="mt-5">
           <button
             onClick={() => setShowModal(true)}
-            className="h-[50px] w-[335px] rounded-md bg-[#fb4746] text-[17px] font-medium text-white hover:bg-[#e2403f] active:bg-[#c93938]"
+            className="h-[50px] w-[335px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           >
             로그아웃
           </button>
