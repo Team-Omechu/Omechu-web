@@ -1,24 +1,14 @@
 "use client";
 
+import { MenuItem } from "@/constant/mainpage/resultData";
 import React from "react";
 
 interface MenuDetail {
-  nutrition: {
-    calories: string;
-    carbs: string;
-    protein: string;
-    fat: string;
-    vitamin: string;
-  };
-  allergens: string[];
+  MenuItem: MenuItem;
   onRecipeClick?: () => void;
 }
 
-export default function MenuInfo({
-  nutrition,
-  allergens,
-  onRecipeClick,
-}: MenuDetail) {
+export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
   return (
     <div>
       <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
@@ -29,23 +19,23 @@ export default function MenuInfo({
           <div className="space-y-1">
             <div className="flex justify-between">
               <span>칼로리</span>
-              <span className="text-[#828282]">{nutrition.calories}</span>
+              <span className="text-[#828282]">{MenuItem.calories}</span>
             </div>
             <div className="flex justify-between">
               <span>탄수화물</span>
-              <span className="text-[#828282]">{nutrition.carbs}</span>
+              <span className="text-[#828282]">{MenuItem.carbohydrates}</span>
             </div>
             <div className="flex justify-between">
               <span>단백질</span>
-              <span className="text-[#828282]">{nutrition.protein}</span>
+              <span className="text-[#828282]">{MenuItem.protein}</span>
             </div>
             <div className="flex justify-between">
               <span>지방</span>
-              <span className="text-[#828282]">{nutrition.fat}</span>
+              <span className="text-[#828282]">{MenuItem.fat}</span>
             </div>
             <div className="flex justify-between">
               <span>비타민</span>
-              <span className="text-[#828282]">{nutrition.vitamin}</span>
+              <span className="text-[#828282]">{MenuItem.vitamins.join(",")}</span>
             </div>
           </div>
 
@@ -53,7 +43,7 @@ export default function MenuInfo({
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
-          <p className="mb-4 text-sm">{allergens.join(",")}</p>
+          <p className="mb-4 text-sm">{MenuItem.allergies.join(",")}</p>
 
           <hr className="my-4 border-gray-200" />
 
