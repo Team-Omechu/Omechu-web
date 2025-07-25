@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { useFormContext, Controller } from "react-hook-form";
 
 import Input from "@/components/common/Input";
@@ -10,6 +9,7 @@ import {
   useVerifyVerificationCodeMutation,
 } from "@/auth/hooks/useAuth";
 import type { SignupFormValues } from "@/auth/schemas/auth.schema";
+import Toast from "@/components/common/Toast";
 
 export default function UserInfoFields() {
   const {
@@ -20,6 +20,8 @@ export default function UserInfoFields() {
   } = useFormContext<SignupFormValues>();
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const verificationCode = watch("verificationCode");
   const email = watch("email");
 
@@ -28,14 +30,20 @@ export default function UserInfoFields() {
   const { mutate: verifyCode, isPending: isVerifying } =
     useVerifyVerificationCodeMutation();
 
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
   const handleSendCode = () => {
     sendCode(getValues("email"), {
       onSuccess: (data) => {
         setIsCodeSent(true);
-        alert(data.message);
+        triggerToast(data.message);
       },
       onError: (error: any) => {
-        alert(`인증번호 전송 실패: ${error.message}`);
+        triggerToast(`인증번호 전송 실패: ${error.message}`);
       },
     });
   };
@@ -47,17 +55,17 @@ export default function UserInfoFields() {
       {
         onSuccess: (data) => {
           setIsVerified(true);
-          alert(data.message);
+          triggerToast(data.message);
         },
         onError: (error: any) => {
-          alert(`인증 실패: ${error.message}`);
+          triggerToast(`인증 실패: ${error.message}`);
         },
       },
     );
   };
 
   return (
-    <div className="space-y-4">
+    <div className="relative space-y-4">
       <Controller
         name="email"
         control={control}
@@ -138,6 +146,7 @@ export default function UserInfoFields() {
           />
         )}
       />
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }
