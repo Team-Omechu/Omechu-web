@@ -41,7 +41,7 @@ export default function Settings() {
             >
               <button
                 onClick={() => router.push(`${item.url}`)}
-                className="flex items-center justify-between w-full"
+                className="flex w-full items-center justify-between"
               >
                 <span className="text-xl font-normal">{item.title}</span>
                 <div>
