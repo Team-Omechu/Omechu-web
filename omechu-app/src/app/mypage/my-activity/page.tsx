@@ -156,7 +156,7 @@ export default function MyActivity() {
 
       <main
         ref={mainRef}
-        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-auto scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
@@ -200,7 +200,7 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {/* 등록한 맛집 목록 */}
-            <section className="flex flex-col gap-5 mt-4">
+            <section className="mt-4 flex flex-col gap-5">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
                   <button

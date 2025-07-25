@@ -65,7 +65,7 @@ export default function AccountSettings() {
         <section className="mt-5">
           <button
             onClick={() => setShowModal(true)}
-            className="bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive h-[50px] w-[335px] rounded-md text-[17px] font-medium text-white"
+            className="h-[50px] w-[335px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           >
             로그아웃
           </button>
