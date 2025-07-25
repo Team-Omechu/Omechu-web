@@ -155,6 +155,57 @@ export default function Restaurant() {
     console.log("검색어:", search);
   };
 
+  const handleClickMyLocation = async () => {
+    if (!navigator.geolocation) {
+      alert("이 브라우저는 위치 정보 기능을 지원하지 않습니다.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        const res = await fetch(
+          `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
+          {
+            headers: {
+              Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_MAP_REST_API_KEY}`,
+            },
+          },
+        );
+
+        const data = await res.json();
+        const region1 = data.documents?.[0]?.region_1depth_name;
+        const region2 = data.documents?.[0]?.region_2depth_name;
+        const region3 = data.documents?.[0]?.region_3depth_name;
+
+        if (!region1 || !region2 || !region3) {
+          alert("주소를 불러올 수 없습니다.");
+          return;
+        }
+
+        const cleanRegion1 = region1
+          .replace("특별", "")
+          .replace("광역", "")
+          .replace("자치", "")
+          .replace("시", "");
+
+        const address = `${cleanRegion1} ${region2} ${region3}`;
+        console.log("정제된 주소:", address);
+
+        // ✅ 중복 방지하고 필터에 추가
+        setSelectedFilters((prev) =>
+          prev.includes(address) ? prev : [...prev, address],
+        );
+      },
+      (error) => {
+        alert("위치 접근이 거부되었거나 실패했습니다.");
+        console.error(error);
+      },
+      { enableHighAccuracy: true },
+    );
+  };
+
   return (
     <main ref={mainRef} className="min-h-screen px-4 pb-20 pt-6">
       <SearchBar
@@ -171,6 +222,7 @@ export default function Restaurant() {
           setSelectedFilters((prev) => prev.filter((t) => t !== tag))
         }
         onOpenFilterModal={() => setIsFilterOpen(true)}
+        onClickMyLocation={handleClickMyLocation}
       />
 
       {isFilterOpen && (
@@ -192,11 +244,11 @@ export default function Restaurant() {
         >
           + 등록하기
         </button>
-        {/* {showAddModal && (
+        {showAddModal && (
           <ModalWrapper>
             <RestaurantAddModal onClose={() => setShowAddModal(false)} />
           </ModalWrapper>
-        )} */}
+        )}
         <SortSelector
           options={sortOptions}
           selected={sortMode}
