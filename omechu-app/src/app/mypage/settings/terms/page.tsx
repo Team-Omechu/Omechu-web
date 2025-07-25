@@ -49,7 +49,7 @@ export default function Terms() {
               onClick={() => router.push(`${item.url}`)}
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <li className="flex items-center justify-between w-full px-6 py-3">
+              <li className="flex w-full items-center justify-between px-6 py-3">
                 <div className="text-xl font-normal">{item.title}</div>
                 <div>
                   <Image

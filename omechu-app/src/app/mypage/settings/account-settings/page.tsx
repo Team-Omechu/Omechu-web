@@ -46,7 +46,7 @@ export default function AccountSettings() {
               }
               className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
             >
-              <div className="flex items-center justify-between w-full px-6 py-3">
+              <div className="flex w-full items-center justify-between px-6 py-3">
                 <h1 className="text-xl font-normal text-[#393939]">
                   비밀번호 변경
                 </h1>
