@@ -53,7 +53,7 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
           />
         </button>
         <Image
-          src={item.images?.[0] || "/logo/logo.svg"}
+          src={item.images?.[0] || "/logo/logo.png"}
           alt={item.menu}
           width={70}
           height={70}

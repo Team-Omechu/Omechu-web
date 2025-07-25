@@ -44,7 +44,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-1/2 z-50 h-20 w-full max-w-screen-mobile -translate-x-1/2 rounded-t-[10px] bg-[#f6f6f6] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:bg-[#7a7a7a]">
+    <div className="fixed bottom-0 left-1/2 z-50 h-20 w-full min-w-[375px] -translate-x-1/2 rounded-t-[10px] bg-[#f6f6f6] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
       <div className="flex w-full justify-between px-5 py-2.5">
         {navItems.map((item, index) => {
           const isActive = pathname === item.routingUrl;
@@ -54,7 +54,7 @@ export default function BottomNav() {
             <div
               key={index}
               onClick={() => router.push(item.routingUrl)}
-              className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-[#e2e2e2] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
+              className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-[#e2e2e2]"
             >
               <Image src={iconSrc} alt={item.imgAlt} width={26} height={26} />
               <span

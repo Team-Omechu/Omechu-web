@@ -19,9 +19,9 @@ export default function InfoRow({ label, content }: InfoProps) {
   const isEmpty = displayContent === "None";
 
   return (
-    <div className="flex items-start gap-6">
+    <div className="flex items-start gap-7">
       {/* 왼쪽 라벨 박스: 성별, 운동 상태 등 */}
-      <div className="flex h-10 w-32 items-center justify-center rounded-md border-[1px] border-[#393939] bg-[#F5F5F5] px-1 dark:bg-[#7a7a7a]">
+      <div className="flex h-10 w-32 items-center justify-center rounded-md border-[1px] border-grey-darker bg-grey-light px-1 pt-1">
         {label}
       </div>
 
@@ -29,8 +29,8 @@ export default function InfoRow({ label, content }: InfoProps) {
       <div
         className={`mt-2 flex-1 whitespace-pre-wrap break-words text-base font-normal ${
           isEmpty
-            ? "font-bold text-[#a3a3a3] dark:text-[#fcdcdc]" // 입력 안 된 경우: 흐리게 표시
-            : "font-bold text-[#393939] dark:text-white" // 입력된 경우: 진하게 표시
+            ? "font-bold text-grey-normal" // 입력 안 된 경우: 흐리게 표시
+            : "font-bold text-grey-darker" // 입력된 경우: 진하게 표시
         }`}
       >
         {displayContent}

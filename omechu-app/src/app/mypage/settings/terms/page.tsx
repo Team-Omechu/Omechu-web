@@ -41,23 +41,21 @@ export default function Terms() {
           </button>
         }
       />
-      <main className="px-2 py-2">
+      <main className="h-[calc(100dvh-3rem)] px-2 py-2">
         <ul className="flex flex-col">
           {termsList.map((item) => (
             <button
               key={item.id}
               onClick={() => router.push(`${item.url}`)}
-              className="hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
+              className="hover:bg-main-normalHover active:bg-main-normalActive"
             >
               <li className="flex w-full items-center justify-between px-6 py-3">
-                <h1 className="text-[clamp(1.25rem)] font-normal">
-                  {item.title}
-                </h1>
+                <div className="text-xl font-normal">{item.title}</div>
                 <div>
                   <Image
                     src={"/right_arrow_black.png"}
                     alt={"오른쪽 이동 버튼"}
-                    width={9}
+                    width={12}
                     height={15}
                   />
                 </div>

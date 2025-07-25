@@ -65,7 +65,7 @@ function MenuDetailClient() {
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
-            src="/logo/logo.svg"
+            src="/logo/logo.png"
             alt={`${menu.title || "메뉴 이미지"}`}
             className="rounded object-contain"
             width={144}

@@ -32,7 +32,7 @@ export default function Settings() {
           </button>
         }
       />
-      <main className="px-2 py-2">
+      <main className="h-[calc(100dvh-3rem)] px-2 py-3">
         <ul className="flex flex-col">
           {termsList.map((item) => (
             <li
@@ -43,14 +43,12 @@ export default function Settings() {
                 onClick={() => router.push(`${item.url}`)}
                 className="flex w-full items-center justify-between"
               >
-                <span className="text-[clamp(1.25rem)] font-normal">
-                  {item.title}
-                </span>
+                <span className="text-xl font-normal">{item.title}</span>
                 <div>
                   <Image
                     src={"/right_arrow_black.png"}
                     alt={"오른쪽 이동 버튼"}
-                    width={9}
+                    width={12}
                     height={15}
                   />
                 </div>

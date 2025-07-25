@@ -30,6 +30,8 @@ export default function MyActivity() {
 
   const filteredItems = Restaurants;
 
+  const [reviewList, setReviewList] = useState(MOCK_FOOD_REVIEW_CARD_DATA);
+
   const visibleItems = filteredItems.slice(0, visibleCount);
   const [isLoading, setIsLoading] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
@@ -114,6 +116,22 @@ export default function MyActivity() {
     (r) => r.id === editTargetId,
   );
 
+  const handleLikeToggle = (id: number) => {
+    setReviewList((prev) =>
+      prev.map((review) =>
+        review.id === id
+          ? {
+              ...review,
+              isLiked: !review.isLiked,
+              recommendCount: review.isLiked
+                ? (review.recommendCount ?? 1) - 1
+                : (review.recommendCount ?? 0) + 1,
+            }
+          : review,
+      ),
+    );
+  };
+
   return (
     <>
       <Header
@@ -124,7 +142,7 @@ export default function MyActivity() {
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
-              height={30}
+              height={22}
             />
           </Link>
         }
@@ -138,7 +156,7 @@ export default function MyActivity() {
 
       <main
         ref={mainRef}
-        className="flex min-h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
@@ -160,7 +178,8 @@ export default function MyActivity() {
 
             {/* 리뷰 카드 리스트 */}
             <section className="flex flex-col items-center gap-7">
-              {MOCK_FOOD_REVIEW_CARD_DATA.slice()
+              {reviewList
+                .slice()
                 .sort((a, b) =>
                   sortOrder === "latest"
                     ? new Date(b.createdAt).getTime() -
@@ -168,8 +187,12 @@ export default function MyActivity() {
                     : (b.recommendCount ?? 0) - (a.recommendCount ?? 0),
                 )
                 .slice(0, visibleCount)
-                .map((review, idx) => (
-                  <FoodReviewCard key={review.id} {...review} />
+                .map((review) => (
+                  <FoodReviewCard
+                    key={review.id}
+                    {...review}
+                    onLikeToggle={() => handleLikeToggle(review.id)}
+                  />
                 ))}
             </section>
           </>
