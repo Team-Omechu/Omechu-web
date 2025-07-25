@@ -35,14 +35,15 @@ export default function MapPage() {
   // 해당 id의 맛집이 없을 경우 예외 처리 (간단한 메시지)
   if (!restaurant) {
     return (
-      <main className="flex h-screen items-center justify-center">
+      <main className="flex max-h-screen items-center justify-center">
         <p className="text-gray-500">존재하지 않는 맛집입니다.</p>
       </main>
     );
   }
 
   // 임시로 사용 중인 지도 이미지 (추후 동적으로 처리 예정이면 여기에 조건문 넣기)
-  const mapImagePath = "/restaurant/오레노라멘합정.png";
+  const latitude = 37.4895246;
+  const longitude = 126.986331;
 
   return (
     <>
@@ -61,7 +62,7 @@ export default function MapPage() {
         }
       />
 
-      <main className="flex h-full w-full flex-col items-center">
+      <main className="flex h-[calc(100dvh-3.1rem)] w-full flex-col items-center">
         <RestaurantDetailHeader
           name={restaurant.name}
           isLiked={isLiked}
@@ -70,8 +71,9 @@ export default function MapPage() {
 
         {/* 지도 이미지 영역 */}
         <RestaurantMapPreview
-          mapImagePath={mapImagePath}
-          restaurantName={restaurant.name}
+          latitude={latitude}
+          longitude={longitude}
+          name={restaurant.name}
         />
       </main>
     </>
