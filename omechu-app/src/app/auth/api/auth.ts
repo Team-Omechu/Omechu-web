@@ -106,10 +106,10 @@ export const login = async (
 export const signup = async (
   data: SignupFormValues,
 ): Promise<SignupSuccessData> => {
-  const { verificationCode, passwordConfirm, ...rest } = data;
+  const { email, password } = data;
   const response = await apiClient.post<ApiResponse<SignupSuccessData>>(
     "/auth/signup",
-    rest,
+    { email, password },
   );
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
