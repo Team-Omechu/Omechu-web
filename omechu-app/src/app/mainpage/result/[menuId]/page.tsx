@@ -9,31 +9,32 @@ import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
 import FoodCard from "@/components/common/FoodCard";
 import { Restaurants } from "@/constant/restaurant/restaurantList";
-import type { MenuItem, MenuListResponse } from "@/constant/mainpage/resultData";
+import type {
+  MenuItem,
+  MenuListResponse,
+} from "@/constant/mainpage/resultData";
 
 export default function MenuDetailPage() {
   const router = useRouter();
   const { menuId } = useParams();
 
-  const decodeMenuId = decodeURIComponent(menuId as string)
+  const decodeMenuId = decodeURIComponent(menuId as string);
 
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
   const cached = queryClient.getQueryData<MenuListResponse>(["recommendMenu"]);
-  const menus:MenuItem[] = Array.isArray(cached) ? cached : [];
+  const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
 
   if (!cached) {
     // 데이터가 없으면 처음으로 돌아가거나 안내
     return <p className="p-4">메뉴 추천을 먼저 받아주세요.</p>;
   }
 
-
   // 전달된 메뉴 이름으로 상세 정보 찾기
   const menu = menus.find((menu) => menu.menu === decodeMenuId);
   if (!menu) {
     return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
   }
-
 
   // 관련 맛집 필터링
   const related = Restaurants.filter(
@@ -60,7 +61,6 @@ export default function MenuDetailPage() {
         className="h-[60px] border-b-0"
       />
 
-
       <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
         <p className="text-center font-semibold text-secondary-normal">
           {menu.menu}
@@ -81,7 +81,6 @@ export default function MenuDetailPage() {
       <div className="mx-4 mt-5 flex items-center justify-between">
         <h3 className="text-lg font-semibold">취향 저격! 추천 맛집</h3>
         <button
-
           className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
             router.push(`/restaurant?query=${encodeURIComponent(menu.menu)}`)

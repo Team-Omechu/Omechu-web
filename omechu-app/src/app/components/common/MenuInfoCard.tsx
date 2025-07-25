@@ -35,7 +35,9 @@ export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
             </div>
             <div className="flex justify-between">
               <span>비타민</span>
-              <span className="text-[#828282]">{MenuItem.vitamins.join(",")}</span>
+              <span className="text-[#828282]">
+                {MenuItem.vitamins.join(",")}
+              </span>
             </div>
           </div>
 
@@ -44,7 +46,6 @@ export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
           <p className="mb-4 text-sm">{MenuItem.allergies.join(",")}</p>
-
 
           <hr className="my-4 border-gray-200" />
 

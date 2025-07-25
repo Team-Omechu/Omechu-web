@@ -21,4 +21,3 @@ export interface Restaurant {
 }
 
 export type restaurantList = Restaurant[];
-

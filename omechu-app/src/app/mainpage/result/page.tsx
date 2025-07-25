@@ -105,7 +105,6 @@ export default function ResultPage() {
 
       <div className="flex gap-2 px-4 py-2">
         <button
-
           className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-grey-normal"
           onClick={handleReshuffle}
         >
@@ -113,7 +112,6 @@ export default function ResultPage() {
         </button>
         <button
           className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
-
           onClick={handleNext}
         >
           선택하기
