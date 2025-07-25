@@ -44,7 +44,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="min-w-screen-mobile fixed bottom-0 left-1/2 z-50 h-20 w-full -translate-x-1/2 rounded-t-[10px] bg-[#f6f6f6] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:bg-[#7a7a7a]">
+    <div className="fixed bottom-0 left-1/2 z-50 h-20 w-full min-w-[375px] -translate-x-1/2 rounded-t-[10px] bg-[#f6f6f6] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:bg-[#7a7a7a]">
       <div className="flex w-full justify-between px-5 py-2.5">
         {navItems.map((item, index) => {
           const isActive = pathname === item.routingUrl;
