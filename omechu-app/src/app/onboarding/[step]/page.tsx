@@ -19,6 +19,7 @@ import GenderStep from "@/onboarding/components/GenderStep";
 import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
+import { LoginSuccessData } from "@/auth/api/auth";
 
 const ONBOARDING_STEPS = 6;
 
@@ -90,11 +91,19 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
+      // '남성' -> '남자', '여성' -> '여자'로 변환하는 로직 추가
+      const genderForApi =
+        onboardingStore.gender === "남성"
+          ? "남자"
+          : onboardingStore.gender === "여성"
+            ? "여자"
+            : null;
+
       const dataToSubmit: OnboardingRequestData = {
         password: password, // 스토어에서 가져온 비밀번호 사용
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: onboardingStore.gender,
+        gender: genderForApi, // 변환된 값을 사용합니다.
         body_type: onboardingStore.constitution[0] || null,
         state: onboardingStore.workoutStatus,
         prefer: onboardingStore.preferredFood,
@@ -104,14 +113,18 @@ export default function OnboardingPage() {
       completeOnboarding(dataToSubmit, {
         onSuccess: (completedProfile) => {
           if (authUser) {
+            const userForLogin: LoginSuccessData = {
+              ...completedProfile,
+              gender:
+                completedProfile.gender === "남자"
+                  ? 1
+                  : completedProfile.gender === "여자"
+                    ? 2
+                    : null,
+            };
             login({
               accessToken: "",
-              user: {
-                ...authUser,
-                ...completedProfile,
-                gender: completedProfile.gender as unknown as number,
-                state: completedProfile.state as unknown as number,
-              },
+              user: userForLogin,
               password: password,
             });
           }

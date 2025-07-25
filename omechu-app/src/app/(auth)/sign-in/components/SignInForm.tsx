@@ -14,6 +14,7 @@ import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { useLoginMutation } from "@/auth/hooks/useAuth";
 import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
+import type { ApiResponse, LoginSuccessData } from "@/auth/api/auth";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
@@ -49,8 +50,7 @@ export default function SignInForm() {
 
   useEffect(() => {
     if (isSuccess && loginResult) {
-      // gender 정보가 null이면 온보딩 미완료로 간주
-      if (loginResult.gender === null) {
+      if (!loginResult.nickname) {
         router.push("/onboarding/1");
       } else {
         router.push("/mainpage");

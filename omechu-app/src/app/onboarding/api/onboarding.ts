@@ -9,7 +9,7 @@ export interface OnboardingRequestData {
   password?: string; // 비밀번호 필드 추가 (선택적으로)
   nickname: string;
   profileImageUrl: string;
-  gender: "남성" | "여성" | null;
+  gender: "남자" | "여자" | null;
   body_type: string | null;
   state: string | null;
   prefer: string[];
@@ -20,14 +20,17 @@ export interface OnboardingRequestData {
  * 온보딩 완료(회원가입 완료) API 성공 응답 데이터 타입
  */
 export interface OnboardingSuccessData {
+  id: string;
   email: string;
   nickname: string;
   profileImageUrl: string;
-  gender: "남성" | "여성";
+  gender: string;
   body_type: string;
   state: string;
   prefer: string[];
   allergy: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 /**
