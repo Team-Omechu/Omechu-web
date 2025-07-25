@@ -21,7 +21,7 @@
 }
 
 .react-datepicker__day-name {
-  @apply h-fit text-[#828282] !important;
+  @apply h-fit text-grey-normalActive !important;
 }
 
 .react-datepicker__month {

@@ -89,7 +89,7 @@ export default function SignUpPage() {
     <FormProvider {...methods}>
       <div className="flex h-screen flex-col">
         <header className="px-4 py-5 text-center">
-          <h1 className="py-10 text-xl font-bold text-[#393939]">
+          <h1 className="py-10 text-xl font-bold text-grey-darker">
             회원 정보를 입력해 주세요
           </h1>
         </header>

@@ -20,7 +20,7 @@ export default function RandomRecommendModal({
   onClose,
 }: ModalProps) {
   return (
-    <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl dark:bg-[#a3a3a3]">
+    <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl dark:bg-grey-normal">
       <button className="absolute right-4 top-4" onClick={onClose}>
         <Image src={"/x/close_big.svg"} alt="취소버튼" width={18} height={18} />
       </button>
@@ -34,13 +34,13 @@ export default function RandomRecommendModal({
       </div>
       <div className="flex justify-center gap-4">
         <button
-          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-white text-[15px] font-normal hover:bg-[#f1f1f1] active:bg-[#e2e2e2] dark:border-none dark:bg-[#7a7a7a] dark:hover:bg-[#626262] dark:active:bg-[#494949]"
+          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-white text-[15px] font-normal hover:bg-[#f1f1f1] active:bg-[#e2e2e2] dark:border-none dark:bg-grey-dark dark:hover:bg-grey-darkHover dark:active:bg-grey-darkActive"
           onClick={onRetry}
         >
           {retryText}
         </button>
         <button
-          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] dark:bg-[#bc3535] dark:hover:bg-[#972b2a] dark:active:bg-[#71201f]"
+          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           onClick={onConfirm}
         >
           {confirmText}

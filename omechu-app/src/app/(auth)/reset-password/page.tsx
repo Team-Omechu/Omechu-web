@@ -37,10 +37,10 @@ export default function ResetPasswordPage() {
       <main className="flex flex-1 flex-col items-center justify-center px-4">
         <div className="flex w-full max-w-sm flex-col items-center gap-8">
           <div className="flex flex-col gap-3 text-center">
-            <h1 className="text-xl font-medium text-[#393939]">
+            <h1 className="text-xl font-medium text-grey-darker">
               비밀번호 재설정
             </h1>
-            <p className="text-sm font-normal text-[#828282]">
+            <p className="text-sm font-normal text-grey-normalActive">
               사용하실 새로운 비밀번호를 설정해 주세요
             </p>
           </div>

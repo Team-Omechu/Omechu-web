@@ -35,8 +35,8 @@ export default function MenuCard({
           className="flex-shrink-0 rounded"
         />
         <div className="flex flex-1 flex-col justify-center">
-          <h3 className="font-semibold text-[#1F9BDA]">{title}</h3>
-          <p className="mt-1 line-clamp-2 text-sm leading-snug text-[#828282]">
+          <h3 className="font-semibold text-secondary-normal">{title}</h3>
+          <p className="mt-1 line-clamp-2 text-sm leading-snug text-grey-normalActive">
             {description}
           </p>
         </div>

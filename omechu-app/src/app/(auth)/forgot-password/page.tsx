@@ -37,8 +37,10 @@ export default function FindPasswordPage() {
     <main className="flex flex-1 flex-col items-center justify-center px-4">
       <div className="flex w-full max-w-sm flex-col items-center gap-6">
         <div className="flex flex-col gap-3 text-center">
-          <h1 className="text-xl font-medium text-[#393939]">비밀번호 찾기</h1>
-          <p className="text-sm font-normal text-[#828282]">
+          <h1 className="text-xl font-medium text-grey-darker">
+            비밀번호 찾기
+          </h1>
+          <p className="text-sm font-normal text-grey-normalActive">
             가입하신 이메일 주소를 입력하여
             <br />
             비밀번호를 재설정하실 수 있어요
