@@ -13,9 +13,9 @@ const ListButton = ({
 }: ListButtonProps) => {
   const baseStyle = `w-full min-h-[3rem] h-auto px-4 py-2 rounded-md border-[1px] text-center flex items-center justify-center transition-colors text-${textSize}`;
   const selectedStyle =
-    "bg-[#FB4746] text-white border-[#FB4746] hover:bg-[#e2403f] active:bg-[#c93938]";
+    "bg-primary-normal text-white border-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive";
   const unselectedStyle =
-    "bg-white text-[#FB4746] border-[#FB4746] hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]";
+    "bg-white text-primary-normal border-primary-normal hover:bg-primary-normalHover hover:text-white active:bg-primary-normalActive";
 
   return (
     <button

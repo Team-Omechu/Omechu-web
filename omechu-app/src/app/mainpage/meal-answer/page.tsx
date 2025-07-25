@@ -50,8 +50,8 @@ export default function MealAnswerPage() {
           <button
             className={`mx-auto mt-8 flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${
               selectedItems.length > 0
-                ? "bg-[#FB4746] text-white hover:bg-[#e2403f] active:bg-[#c93938]"
-                : "border border-black bg-white text-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
+                ? "bg-primary-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+                : "border border-black bg-white text-black hover:bg-primary-normalHover hover:text-white active:bg-primary-normalActive"
             }`}
             onClick={() => router.push("/mainpage/location-answer")}
           >

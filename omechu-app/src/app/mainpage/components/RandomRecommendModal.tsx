@@ -40,7 +40,7 @@ export default function RandomRecommendModal({
           {retryText}
         </button>
         <button
-          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] dark:bg-[#bc3535] dark:hover:bg-[#972b2a] dark:active:bg-[#71201f]"
+          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           onClick={onConfirm}
         >
           {confirmText}

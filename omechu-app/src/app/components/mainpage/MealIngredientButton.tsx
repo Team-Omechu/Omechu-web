@@ -21,8 +21,8 @@ const MealIngredientGroup = ({ selectedItems, onToggle }: Props) => {
             key={item}
             className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black text-center text-[0.875rem] font-normal leading-normal ${
               selectedItems.includes(item)
-                ? "border-[#FB4746] bg-[#FB4746] text-white hover:bg-[#e2403f] active:bg-[#c93938]"
-                : "border-[#FB4746] bg-white text-black hover:bg-[#e2403f] hover:text-white active:bg-[#c93938]"
+                ? "border-primary-normal bg-primary-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+                : "border-primary-normal bg-white text-black hover:bg-primary-normalHover hover:text-white active:bg-primary-normalActive"
             }`}
             onClick={() => onToggle(item)}
             disabled={isDisabled(item)}

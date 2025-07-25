@@ -108,7 +108,7 @@ export default function ResultPage() {
           다시추천
         </button>
         <button
-          className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF] hover:bg-[#e2403f]"
+          className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
           onClick={handleNext}
         >
           선택하기

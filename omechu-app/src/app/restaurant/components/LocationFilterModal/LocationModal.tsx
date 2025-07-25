@@ -111,7 +111,7 @@ export default function LocationModal({
 
         <div className="mt-6 text-center">
           <button
-            className="w-40 rounded-lg bg-[#FB4746] py-4 text-base font-semibold text-white"
+            className="w-40 rounded-lg bg-primary-normal py-4 text-base font-semibold text-white"
             onClick={() => {
               onApply(tempSelected);
               onClose();

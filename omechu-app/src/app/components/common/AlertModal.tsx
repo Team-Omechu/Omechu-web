@@ -78,7 +78,7 @@ export default function AlertModal({
             )}
             <button
               onClick={onConfirm}
-              className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] ${showCancelButton ? "flex-1" : "w-40"}`}
+              className={`h-10 rounded-[30px] bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}
             </button>
@@ -88,7 +88,7 @@ export default function AlertModal({
           <>
             <button
               onClick={onConfirm}
-              className={`h-10 rounded-[30px] bg-[#FB4746] text-[15px] font-normal text-white hover:bg-[#e2403f] active:bg-[#c93938] ${showCancelButton ? "flex-1" : "w-40"}`}
+              className={`h-10 rounded-[30px] bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}
             </button>
