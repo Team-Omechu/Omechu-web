@@ -95,11 +95,8 @@ export default function RecommendedList() {
     });
 
   const scrollToTop = () => {
-    console.log("스크롤 버튼 클릭됨");
     if (mainRef.current) {
       mainRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      console.log("mainRef is null");
     }
   };
 
@@ -134,7 +131,7 @@ export default function RecommendedList() {
       {/* 메인 섹션 */}
       <main
         ref={mainRef}
-        className="relative mt-2 flex h-screen w-full flex-col items-center gap-3 overflow-y-auto px-2 scrollbar-hide"
+        className="relative flex flex-col items-center w-full h-screen gap-3 px-2 mt-2 overflow-y-auto scrollbar-hide"
       >
         {/* 검색 창 */}
         <SearchBar
@@ -185,7 +182,7 @@ export default function RecommendedList() {
         {/* Floating Action Button - 맨 위로 이동 */}
         <FloatingActionButton
           onClick={scrollToTop}
-          className="bottom-4 right-4 z-50"
+          className="z-50 bottom-4 right-4"
         />
       </main>
     </>
