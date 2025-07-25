@@ -62,12 +62,12 @@ export default function ForgotPasswordForm({
         </div>
       </form>
 
-      <div className="text-grey-normalActive flex flex-col items-center gap-1 pt-1 text-sm">
+      <div className="flex flex-col items-center gap-1 pt-1 text-sm text-grey-normalActive">
         <div className="flex items-center justify-center gap-4">
           <span>비밀번호가 생각났어요</span>
           <Link
             href="/sign-in"
-            className="text-grey-darkActive font-semibold hover:underline"
+            className="font-semibold text-grey-darkActive hover:underline"
           >
             로그인 하기
           </Link>
@@ -76,7 +76,7 @@ export default function ForgotPasswordForm({
           <span>계정이 아직 없어요</span>
           <Link
             href="/sign-up"
-            className="text-grey-darkActive font-semibold hover:underline"
+            className="font-semibold text-grey-darkActive hover:underline"
           >
             회원가입하기
           </Link>
