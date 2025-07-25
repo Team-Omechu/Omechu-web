@@ -54,7 +54,7 @@ function RecipeDetailClient() {
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
-            src="/logo/logo.svg"
+            src="/logo/logo.png"
             alt={`${menu.title}`}
             className="rounded object-contain"
             width={144}
