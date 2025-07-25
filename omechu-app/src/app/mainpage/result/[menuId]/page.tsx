@@ -68,7 +68,7 @@ export default function MenuDetailPage() {
           취향 저격! 추천 메뉴 있는 맛집
         </h3>
         <button
-          className="px-4 text-sm text-[#828282]"
+          className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
             router.push(`/restaurant?query=${encodeURIComponent(menu.title)}`)
           }

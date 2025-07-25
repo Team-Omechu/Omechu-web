@@ -50,7 +50,7 @@ export default function TermForService() {
             {/* 조항 내용 */}
             <div
               className={`whitespace-pre-wrap text-base font-normal leading-relaxed ${
-                item.index ? "text-[#828282]" : "text-black"
+                item.index ? "text-grey-normalActive" : "text-black"
               }`}
             >
               {item.content}

@@ -40,8 +40,8 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
   };
 
   return (
-    <div className="space-y-3 text-[#626262]">
-      <h2 className="text-center text-lg text-[#393939]">
+    <div className="space-y-3 text-grey-darkHover">
+      <h2 className="text-center text-lg text-grey-darker">
         서비스 약관에 동의해 주세요
       </h2>
       <Checkbox

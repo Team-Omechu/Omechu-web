@@ -44,7 +44,7 @@ export default function SelectTabBar({
           className={`h-12 flex-1 text-lg font-medium ${className} ${
             selectedIndex === index
               ? "border-b-[3px] border-black bg-secondary-normal text-white"
-              : "border-b-2 border-b-[#828282] bg-white text-[#828282]"
+              : "border-b-2 border-b-grey-normalActive bg-white text-grey-normalActive"
           }`}
         >
           {item}

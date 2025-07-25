@@ -37,9 +37,11 @@ export default function LocationAnswerPage() {
       <Header className="border-b-0" />
       <main className="mb-2 flex min-h-[calc(100vh-9rem)] w-full flex-col items-center justify-center px-4 py-6">
         {/* 질문 */}
-        <div className="mb-10 flex flex-col items-center justify-center text-center text-[#393939]">
+        <div className="mb-10 flex flex-col items-center justify-center text-center text-grey-darker">
           <p className="text-[25px] font-semibold">위치를 입력해주세요</p>
-          <p className="mt-2 text-[#828282]">주변 맛집 메뉴로 추천해드릴게요</p>
+          <p className="mt-2 text-grey-normalActive">
+            주변 맛집 메뉴로 추천해드릴게요
+          </p>
         </div>
 
         {/* 체크박스 + 텍스트 + 거리 라벨 */}
@@ -50,7 +52,7 @@ export default function LocationAnswerPage() {
             onChange={handleCheckboxChange}
             className="h-[1.25rem] w-[1.25rem] flex-shrink-0"
           />
-          <label className="font-['Inter'] text-[1.25rem] font-normal leading-normal text-[#393939]">
+          <label className="font-['Inter'] text-[1.25rem] font-normal leading-normal text-grey-darker">
             내 주변
           </label>
           <div className="flex h-[1.125rem] w-[5.875rem] flex-shrink-0 items-center justify-center rounded-[0.3125rem] border border-[#333] bg-white text-sm text-black">

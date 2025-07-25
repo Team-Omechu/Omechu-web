@@ -49,7 +49,7 @@ export default function AlertModal({
   const showCancelButton = !!cancelText;
 
   return (
-    <div className="flex h-fit w-[22rem] flex-col justify-between rounded-[20px] border-2 border-[#393939] bg-white px-6 pb-9 pt-14 shadow-xl">
+    <div className="flex h-fit w-[22rem] flex-col justify-between rounded-[20px] border-2 border-grey-darker bg-white px-6 pb-9 pt-14 shadow-xl">
       {/* 상단 여백용 (닫기 버튼 등 들어갈 자리, 현재 비어있음) */}
       <div className="flex justify-end"></div>
 
@@ -57,7 +57,7 @@ export default function AlertModal({
       <div className="flex flex-col items-center text-center">
         <span className="whitespace-pre-line text-xl font-medium">{title}</span>
         {description && (
-          <span className="mt-1 whitespace-pre-line text-[15px] font-medium text-[#828282]">
+          <span className="mt-1 whitespace-pre-line text-[15px] font-medium text-grey-normalActive">
             {description}
           </span>
         )}
@@ -71,7 +71,7 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-[1px] border-[#626262] bg-white text-[15px] font-normal text-[#626262] hover:bg-[#f1f1f1] active:bg-[#e2e2e2]"
+                className="h-10 flex-1 rounded-[30px] border-[1px] border-grey-darkHover bg-white text-[15px] font-normal text-grey-darkHover hover:bg-[#f1f1f1] active:bg-[#e2e2e2]"
               >
                 {cancelText}
               </button>

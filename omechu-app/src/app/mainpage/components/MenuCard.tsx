@@ -36,7 +36,7 @@ export default function MenuCard({
         />
         <div className="flex flex-1 flex-col justify-center">
           <h3 className="font-semibold text-secondary-normal">{title}</h3>
-          <p className="mt-1 line-clamp-2 text-sm leading-snug text-[#828282]">
+          <p className="mt-1 line-clamp-2 text-sm leading-snug text-grey-normalActive">
             {description}
           </p>
         </div>

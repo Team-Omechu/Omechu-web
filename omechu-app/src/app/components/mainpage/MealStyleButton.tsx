@@ -37,7 +37,7 @@ const MealStyleGroup = ({ selectedItems, onToggle }: Props) => {
               </button>
             ))}
           </div>
-          <div className="h-px w-full bg-[#828282] opacity-60" />
+          <div className="h-px w-full bg-grey-normalActive opacity-60" />
         </div>
       ))}
     </div>

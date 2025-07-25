@@ -97,7 +97,7 @@ export default function ProfileEdit() {
             </button>
           </div>
           <div className="itmes-center mb-8 flex flex-col gap-1">
-            <div className="text-lg font-medium text-[#393939] dark:text-[#f1f1f1]">
+            <div className="text-lg font-medium text-grey-darker dark:text-[#f1f1f1]">
               닉네임
             </div>
             <div className="relative">

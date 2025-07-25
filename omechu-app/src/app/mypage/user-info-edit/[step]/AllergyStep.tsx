@@ -76,7 +76,7 @@ export default function AllergyStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+            className="ml-5 text-base text-grey-normalActive dark:font-semibold dark:text-white"
           >
             {"<"} 이전으로
           </button>

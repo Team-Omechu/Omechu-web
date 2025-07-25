@@ -102,7 +102,7 @@ export default function ResultPage() {
 
       <div className="mt-4 flex h-[50px] justify-between gap-2 px-4">
         <button
-          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-[#A3A3A3]"
+          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-grey-normal"
           onClick={handleReshuffle}
         >
           다시추천
