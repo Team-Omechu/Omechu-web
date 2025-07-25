@@ -18,7 +18,7 @@ import {
   type SignupFormValues,
 } from "@/auth/schemas/auth.schema";
 import { useSignupMutation, useLoginMutation } from "@/auth/hooks/useAuth";
-import useAuthStore from "@/auth/store";
+import { useAuthStore } from "@/auth/store";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";
@@ -68,7 +68,7 @@ export default function SignUpPage() {
           { email: data.email, password: data.password },
           {
             onSuccess: (loginResponse) => {
-              login(loginResponse);
+              login({ accessToken: "", user: loginResponse });
               router.push("/onboarding/1");
             },
             onError: (error) => {

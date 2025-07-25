@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware";
 type OnboardingState = {
   nickname: string;
   profileImageUrl: string | null;
-  gender: "여자" | "남자" | null;
+  gender: "남자" | "여자" | null;
   workoutStatus: string | null;
   preferredFood: string[];
   constitution: string[];
@@ -16,7 +16,7 @@ type OnboardingState = {
 type OnboardingActions = {
   setNickname: (nickname: string) => void;
   setProfileImageUrl: (url: string) => void;
-  setGender: (gender: "여자" | "남자" | null) => void;
+  setGender: (gender: "남자" | "여자" | null) => void;
   setWorkoutStatus: (status: string | null) => void;
   setPreferredFood: (foods: string[]) => void; // 타입 정의 추가
   togglePreferredFood: (food: string) => void;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
 import { useParams, useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -39,6 +38,12 @@ export default function OnboardingPage() {
 
   const step = Number(params.step);
 
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
   useEffect(() => {
     if (isNaN(step) || step < 1 || step > ONBOARDING_STEPS) {
       router.replace("/onboarding/1");
@@ -67,21 +72,16 @@ export default function OnboardingPage() {
     }
   }, [step, onboardingStore]);
 
-  const triggerToast = (msg: string) => {
-    setToastMessage(msg);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
-  };
-
   const handleNext = () => {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
       // 마지막 단계에서 "저장" 버튼 클릭 시
+      // 스토어 타입이 API 명세와 일치하므로, 더 이상 변환이 필요 없습니다.
       const dataToSubmit: OnboardingRequestData = {
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: onboardingStore.gender,
+        gender: onboardingStore.gender, // 값 변환 로직 제거
         body_type: onboardingStore.constitution[0] || null,
         state: onboardingStore.workoutStatus,
         prefer: onboardingStore.preferredFood,
@@ -90,15 +90,11 @@ export default function OnboardingPage() {
 
       completeOnboarding(dataToSubmit, {
         onSuccess: (completedProfile) => {
-          // 온보딩 완료 후 받은 새 프로필 정보로 auth 스토어 업데이트
           if (authUser) {
-            const accessToken = useAuthStore.getState().accessToken;
-            if (accessToken) {
-              login({
-                accessToken,
-                user: { ...authUser, ...completedProfile },
-              });
-            }
+            login({
+              accessToken: "",
+              user: { ...authUser, ...completedProfile },
+            });
           }
           setIsModalOpen(true);
         },
@@ -111,14 +107,12 @@ export default function OnboardingPage() {
 
   const handlePrev = () => router.back();
   const handleSkip = () => {
-    // TODO: 일단 시작하기 로직. 현재는 다음으로 넘김
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     }
   };
 
   const handleRecommend = () => {
-    // 모달의 '추천받기' 버튼 클릭 시
     resetOnboarding();
     router.push("/");
   };
@@ -151,7 +145,6 @@ export default function OnboardingPage() {
       case 6:
         return <AllergyStep />;
       default:
-        // useEffect에서 처리하지만, 만약을 위한 방어 코드
         return null;
     }
   };
