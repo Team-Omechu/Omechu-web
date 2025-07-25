@@ -68,13 +68,17 @@ export const useLogoutMutation = () => {
 };
 
 export const useRequestPasswordResetMutation = () => {
-  return useMutation<void, Error, FindPasswordFormValues>({
+  return useMutation<
+    authApi.RequestPasswordResetSuccessData,
+    Error,
+    FindPasswordFormValues
+  >({
     mutationFn: authApi.requestPasswordReset,
   });
 };
 
 export const useResetPasswordMutation = () => {
-  return useMutation<void, Error, ResetPasswordFormValues>({
+  return useMutation<string, Error, ResetPasswordFormValues>({
     mutationFn: authApi.resetPassword,
   });
 };

@@ -51,6 +51,12 @@ export interface VerifyVerificationCodeSuccessData {
   message: string;
 }
 
+// 비밀번호 재설정 요청 성공 시 success 객체 구조
+export interface RequestPasswordResetSuccessData {
+  message: string;
+  token: string;
+}
+
 // 온보딩 완료 시 서버로 보낼 데이터 타입
 export interface OnboardingData {
   nickname: string;
@@ -169,8 +175,17 @@ export const verifyVerificationCode = async (data: {
  */
 export const requestPasswordReset = async (
   data: FindPasswordFormValues,
-): Promise<void> => {
-  await apiClient.post("/auth/reset-request", data);
+): Promise<RequestPasswordResetSuccessData> => {
+  const response = await apiClient.post<
+    ApiResponse<RequestPasswordResetSuccessData>
+  >("/auth/reset-request", data);
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(
+      apiResponse.error?.reason || "비밀번호 재설정 요청에 실패했습니다.",
+    );
+  }
+  return apiResponse.success;
 };
 
 /**
@@ -178,8 +193,18 @@ export const requestPasswordReset = async (
  */
 export const resetPassword = async (
   data: ResetPasswordFormValues,
-): Promise<void> => {
-  await apiClient.patch("/auth/reset-passwd", data);
+): Promise<string> => {
+  const response = await apiClient.patch<ApiResponse<string>>(
+    "/auth/passwd",
+    { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
+  );
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(
+      apiResponse.error?.reason || "비밀번호 재설정에 실패했습니다.",
+    );
+  }
+  return apiResponse.success;
 };
 
 /**

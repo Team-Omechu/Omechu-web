@@ -18,12 +18,14 @@ export default function ResetPasswordPage() {
 
   const handleFormSubmit = (data: ResetPasswordFormValues) => {
     resetPassword(data, {
-      onSuccess: () => {
+      onSuccess: (message) => {
+        console.log("비밀번호 재설정 성공:", message);
         setIsModalOpen(true);
       },
       onError: (error) => {
         // Handle error, e.g., show a toast
         console.error(error.message);
+        alert(`비밀번호 재설정에 실패했습니다: ${error.message}`);
       },
     });
   };
