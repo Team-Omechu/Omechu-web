@@ -12,28 +12,59 @@ import ImageUploader from "./ImageUploader";
 import RatingSelector from "./RatingSelector";
 import TagSelector from "./TagSelector";
 import TextReview from "./TextReview";
+import { useMutation } from "@tanstack/react-query";
+import { postReview, ReviewRequest } from "../../../api/review";
 
 interface ReviewModalProps {
+  restaurantId: number;
   restaurantName: string;
   onClose: () => void;
-  onSubmit: (
-    rating: number,
-    tags: string[],
-    images: File[],
-    comment: string,
-  ) => void;
 }
 
 export default function ReviewAddModal({
+  restaurantId,
   restaurantName,
   onClose,
-  onSubmit,
 }: ReviewModalProps) {
   const [rating, setRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [comment, setComment] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const usePostReview = () => {
+    return useMutation({
+      mutationFn: ({ id, data }: { id: number; data: ReviewRequest }) =>
+        postReview(id, data),
+    });
+  };
+
+  const { mutate: submitReview, isPending, isSuccess } = usePostReview();
+
+  const handleSubmit = () => {
+    submitReview(
+      {
+        id: restaurantId,
+        data: {
+          rating,
+          tag: selectedTags,
+          reviewText: comment,
+          imageUrl: [],
+        },
+      },
+      {
+        onSuccess: () => {
+          setShowConfirmModal(true);
+        },
+        onError: (err) => {
+          console.error("리뷰 등록 실패", err);
+          alert("리뷰 등록에 실패했습니다.");
+        },
+      },
+    );
+  };
+
+  const isFormValid = rating > 0 && selectedTags.length > 0;
 
   return (
     <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#F8D5FF] px-4 py-5 scrollbar-hide">
@@ -77,11 +108,13 @@ export default function ReviewAddModal({
 
       {/* 제출 버튼 */}
       <button
-        onClick={() => {
-          setShowConfirmModal(true);
-          onSubmit(rating, selectedTags, images, comment);
-        }}
-        className="mb-4 w-full rounded-md bg-[#FF5B5B] py-2 font-bold text-white"
+        onClick={handleSubmit}
+        disabled={!isFormValid || isPending}
+        className={`mb-4 w-full rounded-md py-2 font-bold text-white ${
+          !isFormValid || isPending
+            ? "cursor-not-allowed bg-gray-400"
+            : "bg-[#FF5B5B]"
+        }`}
       >
         전달하기
       </button>
