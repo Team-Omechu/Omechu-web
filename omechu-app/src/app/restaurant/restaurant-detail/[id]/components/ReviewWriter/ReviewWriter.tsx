@@ -6,10 +6,11 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ReviewAddModal from "@/restaurant/restaurant-detail/[id]/components/ReviewWriter/ReviewAddModal/ReviewAddModal";
 
 interface Props {
+  restaurantId: number;
   restaurantName: string;
 }
 
-export default function ReviewWriter({ restaurantName }: Props) {
+export default function ReviewWriter({ restaurantId, restaurantName }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -30,12 +31,9 @@ export default function ReviewWriter({ restaurantName }: Props) {
         {showModal && (
           <ModalWrapper>
             <ReviewAddModal
+              restaurantId={restaurantId}
               restaurantName={restaurantName}
               onClose={() => setShowModal(false)}
-              onSubmit={(rating, tags, images, comment) => {
-                console.log({ rating, tags, images, comment });
-                setShowModal(false);
-              }}
             />
           </ModalWrapper>
         )}
