@@ -12,20 +12,15 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { useLoginMutation } from "@/lib/hooks/useAuth";
-import { loginSchema, LoginFormValues } from "@/lib/schemas/auth.schema";
+import { useLoginMutation } from "@/auth/hooks/useAuth";
+import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
 
-  const {
-    mutate: login,
-    isPending,
-    isSuccess,
-    error,
-  } = useLoginMutation();
+  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
   const {
     control,

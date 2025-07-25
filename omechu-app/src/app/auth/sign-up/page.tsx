@@ -12,8 +12,11 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
 import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
 import { termsForService } from "@/constant/terms/service";
-import { signupSchema, type SignupFormValues } from "@/lib/schemas/auth.schema";
-import useAuthStore from "@/lib/stores/auth.store";
+import {
+  signupSchema,
+  type SignupFormValues,
+} from "@/auth/schemas/auth.schema";
+import useAuthStore from "@/auth/store";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";

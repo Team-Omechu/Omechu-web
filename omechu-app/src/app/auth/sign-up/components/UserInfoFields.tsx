@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
 import Input from "@/components/common/Input";
-import type { SignupFormValues } from "@/lib/schemas/auth.schema";
+import type { SignupFormValues } from "@/auth/schemas/auth.schema";
 
 export default function UserInfoFields() {
   const {

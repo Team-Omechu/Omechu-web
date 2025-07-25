@@ -10,7 +10,7 @@ import Input from "@/components/common/Input";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,
-} from "@/lib/schemas/auth.schema";
+} from "@/auth/schemas/auth.schema";
 
 type ForgotPasswordFormProps = {
   onFormSubmit: (data: FindPasswordFormValues) => Promise<void>;
