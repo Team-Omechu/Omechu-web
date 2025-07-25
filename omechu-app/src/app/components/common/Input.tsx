@@ -110,7 +110,7 @@ export default function Input({
             className={`h-full w-fit flex-shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
               disabled
                 ? "bg-[#a3a3a3]" // 비활성화 상태
-                : "bg-[#1F9BDA] hover:bg-[#1c8cc4] active:bg-[#197cae]" // 활성 상태
+                : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive" // 활성 상태
             }`}
           >
             {buttonText}
@@ -140,7 +140,7 @@ export default function Input({
       )}
 
       {!showError && successMessage && (
-        <span className="absolute -bottom-5 ml-1 text-xs font-normal text-[#1F9BDA]">
+        <span className="absolute -bottom-5 ml-1 text-xs font-normal text-secondary-normal">
           {successMessage}
         </span>
       )}

@@ -43,7 +43,7 @@ export default function SelectTabBar({
           onClick={() => onSelect(index)}
           className={`h-12 flex-1 text-lg font-medium ${className} ${
             selectedIndex === index
-              ? "border-b-[3px] border-black bg-[#1f9bda] text-white"
+              ? "border-b-[3px] border-black bg-secondary-normal text-white"
               : "border-b-2 border-b-[#828282] bg-white text-[#828282]"
           }`}
         >
