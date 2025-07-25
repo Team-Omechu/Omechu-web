@@ -67,8 +67,8 @@ export default function ChangePassword() {
         }
       />
 
-      <main className="mt-16 flex flex-col items-center px-4 py-2">
-        <section className="flex w-full flex-col gap-4 px-3">
+      <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
+        <section className="flex flex-col w-full gap-4 px-3 pt-16">
           <Input
             label="기존 비밀번호"
             type="password"
@@ -123,7 +123,7 @@ export default function ChangePassword() {
           />
         </section>
 
-        <section className="relative mt-5 flex w-full flex-col items-center">
+        <section className="relative flex flex-col items-center w-full mt-5">
           <Toast
             message={toastMessage}
             show={showToast}
@@ -141,7 +141,7 @@ export default function ChangePassword() {
                 setShowModal(true);
               }
             }}
-            className={`mt-48 h-[45px] min-w-80 rounded-md text-[17px] font-medium text-white transition ${
+            className={`mt-48 h-[50px] w-[335px] rounded-md text-[17px] font-medium text-white transition ${
               isFormValid
                 ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
                 : "bg-gray-300"
