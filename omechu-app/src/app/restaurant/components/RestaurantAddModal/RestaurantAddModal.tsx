@@ -16,7 +16,7 @@ import RestaurantNameInput from "./RestaurantNameInput";
 import {
   registerRestaurant,
   RegisterRestaurantPayload,
-} from "@/restaurant/api/restaurant";
+} from "@/restaurant/api/registerRestaurant";
 import { uploadImageToS3 } from "@/restaurant/api/uploadImage";
 
 interface RestaurantAddModalProps {
