@@ -1,29 +1,35 @@
 "use client";
 
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import type { ResetPasswordFormValues } from "@/auth/schemas/auth.schema";
 import { useResetPasswordMutation } from "@/auth/hooks/useAuth";
+import Toast from "@/components/common/Toast";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const router = useRouter();
   const { mutateAsync: resetPassword } = useResetPasswordMutation();
 
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
   const handleFormSubmit = async (data: ResetPasswordFormValues) => {
     try {
-      const message = await resetPassword(data);
-      console.log("비밀번호 재설정 성공:", message);
+      await resetPassword(data);
       setIsModalOpen(true);
     } catch (error: any) {
-      console.error(error.message);
-      alert(`비밀번호 재설정에 실패했습니다: ${error.message}`);
+      triggerToast(`비밀번호 재설정에 실패했습니다: ${error.message}`);
     }
   };
 
@@ -59,6 +65,7 @@ export default function ResetPasswordPage() {
           />
         </ModalWrapper>
       )}
+      <Toast message={toastMessage} show={showToast} />
     </>
   );
 }
