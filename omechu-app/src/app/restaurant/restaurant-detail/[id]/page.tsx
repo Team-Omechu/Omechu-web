@@ -32,9 +32,6 @@ export default function RestaurantDetail() {
   // 사용자가 클릭한 별점 저장 (후기 작성용)
   // const [rating, setRating] = useState(0); // 0~5점
 
-  // 후기 작성 모달 열림 여부
-  const [showReviewModal, setShowReviewModal] = useState(false);
-
   // 현재 옵션 메뉴가 열려있는 후기의 ID (없으면 null)
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
   // 신고 모달 상태값
@@ -147,7 +144,10 @@ export default function RestaurantDetail() {
         </section>
 
         {/* 후기 작성 칸 */}
-        <ReviewWriter restaurantName={restaurant.name} />
+        <ReviewWriter
+          restaurantId={restaurant.id}
+          restaurantName={restaurant.name}
+        />
 
         {/* 후기 */}
         <section className="flex w-full flex-col gap-2">
