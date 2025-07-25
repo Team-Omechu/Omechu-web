@@ -14,7 +14,7 @@ export default function FindPasswordPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
-  const { mutate: requestReset, isPending } = useRequestPasswordResetMutation();
+  const { mutateAsync: requestReset } = useRequestPasswordResetMutation();
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
@@ -22,17 +22,15 @@ export default function FindPasswordPage() {
     setTimeout(() => setShowToast(false), 2500);
   };
 
-  const handleFormSubmit = (data: FindPasswordFormValues) => {
-    requestReset(data, {
-      onSuccess: () => {
-        router.push("/forgot-password/sent");
-      },
-      onError: (error) => {
-        triggerToast(
-          `비밀번호 재설정 메일 발송에 실패했습니다. \n ${error.message}`,
-        );
-      },
-    });
+  const handleFormSubmit = async (data: FindPasswordFormValues) => {
+    try {
+      await requestReset(data);
+      router.push("/forgot-password/sent");
+    } catch (error: any) {
+      triggerToast(
+        `비밀번호 재설정 메일 발송에 실패했습니다. \n ${error.message}`,
+      );
+    }
   };
 
   return (
