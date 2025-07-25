@@ -25,7 +25,7 @@ export default function AllergyStep() {
   };
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       {/* 상단 진행 바 */}
       <ProgressBar
         currentStep={5}
@@ -37,8 +37,8 @@ export default function AllergyStep() {
 
       {/* 본문 영역 */}
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
-        <section className="mt-20 mb-8">
-          <div className="px-10 text-3xl font-medium leading-relaxed text-center whitespace-pre">
+        <section className="mb-8 mt-20">
+          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             알레르기가 있나요?
           </div>
         </section>
