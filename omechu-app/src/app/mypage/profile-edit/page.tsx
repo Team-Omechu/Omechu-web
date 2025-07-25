@@ -90,14 +90,14 @@ export default function ProfileEdit() {
               style={{ display: "none" }}
             />
             <button
-              className="ml-1 text-center text-sm font-normal text-[#48528E] dark:text-[#e9f5fb]"
+              className="ml-1 text-center text-sm font-normal text-[#48528E] dark:text-secondary-light"
               onClick={handleDeleteImage}
             >
               사진지우기
             </button>
           </div>
           <div className="itmes-center mb-8 flex flex-col gap-1">
-            <div className="text-lg font-medium text-grey-darker dark:text-[#f1f1f1]">
+            <div className="text-lg font-medium text-grey-darker dark:text-grey-lightHover">
               닉네임
             </div>
             <div className="relative">

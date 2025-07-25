@@ -71,7 +71,7 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-[1px] border-grey-darkHover bg-white text-[15px] font-normal text-grey-darkHover hover:bg-[#f1f1f1] active:bg-[#e2e2e2]"
+                className="h-10 flex-1 rounded-[30px] border-[1px] border-grey-darkHover bg-white text-[15px] font-normal text-grey-darkHover hover:bg-grey-lightHover active:bg-grey-lightActive"
               >
                 {cancelText}
               </button>
@@ -95,7 +95,7 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-[#f1f1f1] active:bg-[#e2e2e2]"
+                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive"
               >
                 {cancelText}
               </button>
