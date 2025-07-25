@@ -8,7 +8,7 @@ import type {
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
 // import type { OnboardingData } from "@/onboarding/api/onboarding";
-import useAuthStore from "@/auth/store";
+import { useAuthStore } from "@/auth/store";
 
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
@@ -16,8 +16,8 @@ export const useLoginMutation = () => {
   return useMutation<authApi.LoginSuccessData, Error, LoginFormValues>({
     mutationFn: authApi.login,
     onSuccess: (userProfile) => {
-      // 일반 로그인이므로 accessToken 없이 userProfile만 넘겨서 로그인 상태로 만듭니다.
-      setLoginState(userProfile);
+      // TODO: API 응답에 accessToken이 포함되어야 합니다. 현재는 임시로 null 처리합니다.
+      setLoginState({ accessToken: "", user: userProfile });
     },
     onError: (error) => {
       // 실패 시 로직 (예: 토스트 메시지 표시)
