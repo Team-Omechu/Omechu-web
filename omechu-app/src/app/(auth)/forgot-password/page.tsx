@@ -26,10 +26,12 @@ export default function FindPasswordPage() {
     try {
       await requestReset(data);
       router.push("/forgot-password/sent");
-    } catch (error: any) {
-      triggerToast(
-        `비밀번호 재설정 메일 발송에 실패했습니다. \n ${error.message}`,
-      );
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다.";
+      triggerToast(`... \n ${message}`);
     }
   };
 
