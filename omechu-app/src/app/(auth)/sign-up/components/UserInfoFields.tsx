@@ -98,6 +98,22 @@ export default function UserInfoFields() {
           />
         )}
       />
+      <Controller
+        name="phoneNumber"
+        control={control}
+        render={({ field }) => (
+          <Input
+            label="전화번호"
+            type="tel"
+            placeholder="010-1234-5678"
+            value={field.value || ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            showError={!!errors.phoneNumber}
+            errorMessage={errors.phoneNumber?.message}
+          />
+        )}
+      />
     </div>
   );
 }

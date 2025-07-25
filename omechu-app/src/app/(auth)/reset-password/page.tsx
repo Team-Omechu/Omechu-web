@@ -7,17 +7,25 @@ import { useRouter } from "next/navigation";
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import type { ResetPasswordFormValues } from "@/auth/schemas/auth.schema";
+import { useResetPasswordMutation } from "@/auth/hooks/useAuth";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
+  const { mutate: resetPassword, isPending } = useResetPasswordMutation();
 
-  const handleFormSubmit = async (data: ResetPasswordFormValues) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsModalOpen(true);
+  const handleFormSubmit = (data: ResetPasswordFormValues) => {
+    resetPassword(data, {
+      onSuccess: () => {
+        setIsModalOpen(true);
+      },
+      onError: (error) => {
+        // Handle error, e.g., show a toast
+        console.error(error.message);
+      },
+    });
   };
 
   const handleModalConfirm = () => {

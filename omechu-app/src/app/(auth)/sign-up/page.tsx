@@ -16,6 +16,7 @@ import {
   signupSchema,
   type SignupFormValues,
 } from "@/auth/schemas/auth.schema";
+import { useSignupMutation } from "@/auth/hooks/useAuth";
 import useAuthStore from "@/auth/store";
 
 import SignUpForm from "./components/SignUpForm";
@@ -27,6 +28,7 @@ export default function SignUpPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
   const router = useRouter();
   const { login } = useAuthStore();
+  const { mutate: signup, isPending } = useSignupMutation();
 
   const methods = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -36,6 +38,7 @@ export default function SignUpPage() {
       password: "",
       passwordConfirm: "",
       verificationCode: "",
+      phoneNumber: "",
       termsService: false,
       termsPrivacy: false,
       termsLocation: false,
@@ -49,26 +52,19 @@ export default function SignUpPage() {
     formState: { isSubmitting, isValid },
   } = methods;
 
-  const onSubmit = async (data: SignupFormValues) => {
-    try {
-      // TODO: 실제 백엔드 API로 회원가입 요청을 보내는 로직으로 교체해야 합니다.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("회원가입 성공:", data);
-
-      const mockApiResponse = {
-        accessToken: "DUMMY_ACCESS_TOKEN_FROM_API",
-        user: {
-          email: data.email,
-        },
-      };
-
-      login(mockApiResponse.accessToken, mockApiResponse.user);
-
-      router.push("/onboarding/1");
-    } catch (error) {
-      console.error("회원가입 실패:", error);
-      // TODO: 사용자에게 에러 메시지를 보여주는 UI 처리
-    }
+  const onSubmit = (data: SignupFormValues) => {
+    signup(data, {
+      onSuccess: (response) => {
+        // TODO: 백엔드에서 회원가입 후 토큰을 주는지 확인 필요.
+        // 우선 DUMMY 토큰으로 로그인 처리하고, 실제 유저 정보를 스토어에 저장.
+        login("DUMMY_ACCESS_TOKEN_AFTER_SIGNUP", response);
+        router.push("/onboarding/1");
+      },
+      onError: (error) => {
+        console.error("회원가입 실패:", error);
+        alert(`회원가입에 실패했습니다: ${error.message}`);
+      },
+    });
   };
 
   return (
@@ -91,9 +87,9 @@ export default function SignUpPage() {
           <BottomButton
             type="submit"
             form="signup-form"
-            disabled={!isValid || isSubmitting}
+            disabled={!isValid || isPending}
           >
-            {isSubmitting ? "가입하는 중..." : "가입하기"}
+            {isPending ? "가입하는 중..." : "가입하기"}
           </BottomButton>
         </footer>
 

@@ -10,6 +10,9 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import useAuthStore from "@/auth/store";
+import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
+import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
 import AllergyStep from "@/onboarding/components/AllergyStep";
 import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
 import GenderStep from "@/onboarding/components/GenderStep";
@@ -22,10 +25,14 @@ const ONBOARDING_STEPS = 6;
 export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
-  const store = useOnboardingStore();
-  const { setCurrentStep, reset } = store;
+  const onboardingStore = useOnboardingStore();
+  const { user: authUser, login } = useAuthStore();
+  const { setCurrentStep, reset: resetOnboarding } = onboardingStore;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
+
+  const { mutate: completeOnboarding, isPending: isCompleting } =
+    useCompleteOnboardingMutation();
 
   const step = Number(params.step);
 
@@ -40,35 +47,73 @@ export default function OnboardingPage() {
   const isNextDisabled = useMemo(() => {
     switch (step) {
       case 1:
-        return store.nickname.length < 2 || store.nickname.length > 12;
+        return (
+          onboardingStore.nickname.length < 2 ||
+          onboardingStore.nickname.length > 12
+        );
       case 2:
-        return !store.gender;
+        return !onboardingStore.gender;
       case 3:
-        return !store.workoutStatus;
+        return !onboardingStore.workoutStatus;
       case 4:
-        return store.preferredFood.length === 0;
+        return onboardingStore.preferredFood.length === 0;
       case 5:
-        return store.constitution.length === 0;
+        return onboardingStore.constitution.length === 0;
       default:
         return false;
     }
-  }, [step, store]);
+  }, [step, onboardingStore]);
 
   const handleNext = () => {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
-      // TODO: 온보딩 완료 처리 로직 (e.g., 서버에 데이터 전송)
-      setIsModalOpen(true);
+      // 마지막 단계에서 "저장" 버튼 클릭 시
+      const dataToSubmit: OnboardingRequestData = {
+        nickname: onboardingStore.nickname,
+        profileImageUrl: "", // TODO: 프로필 이미지 기능 구현 시 URL 설정
+        gender:
+          onboardingStore.gender === "남성"
+            ? "남자"
+            : onboardingStore.gender === "여성"
+              ? "여자"
+              : null,
+        body_type: onboardingStore.constitution[0] || null,
+        state: onboardingStore.workoutStatus,
+        phoneNumber: authUser?.phoneNumber || "", // 회원가입 직후이므로 authUser에 정보가 있음
+        prefer: onboardingStore.preferredFood,
+        allergy: onboardingStore.allergies,
+      };
+
+      completeOnboarding(dataToSubmit, {
+        onSuccess: (completedProfile) => {
+          // 온보딩 완료 후 받은 새 프로필 정보로 auth 스토어 업데이트
+          if (authUser) {
+            login(useAuthStore.getState().accessToken!, {
+              ...authUser,
+              ...completedProfile,
+            });
+          }
+          setIsModalOpen(true);
+        },
+        onError: (error) => {
+          alert(`정보 저장에 실패했습니다: ${error.message}`);
+        },
+      });
     }
   };
 
   const handlePrev = () => router.back();
-  const handleSkip = () => handleNext();
+  const handleSkip = () => {
+    // TODO: 일단 시작하기 로직. 현재는 다음으로 넘김
+    if (step < ONBOARDING_STEPS) {
+      router.push(`/onboarding/${step + 1}`);
+    }
+  };
 
   const handleRecommend = () => {
-    // TODO: 온보딩 완료 데이터 서버 전송
-    reset();
+    // 모달의 '추천받기' 버튼 클릭 시
+    resetOnboarding();
     router.push("/");
   };
 
@@ -77,7 +122,7 @@ export default function OnboardingPage() {
   };
 
   const handleConfirmSkip = () => {
-    reset();
+    resetOnboarding();
     router.push("/");
   };
 
@@ -132,8 +177,15 @@ export default function OnboardingPage() {
         showNext={step > 1 && step < ONBOARDING_STEPS}
         onNext={handleSkip}
       >
-        <BottomButton onClick={handleNext} disabled={isNextDisabled}>
-          {step === ONBOARDING_STEPS ? "저장" : "다음"}
+        <BottomButton
+          onClick={handleNext}
+          disabled={isNextDisabled || isCompleting}
+        >
+          {isCompleting
+            ? "저장하는 중..."
+            : step === ONBOARDING_STEPS
+              ? "저장"
+              : "다음"}
         </BottomButton>
       </StepFooter>
 
