@@ -149,7 +149,7 @@ export default function MyActivity() {
       />
       {/* 목록 정렬 탭 */}
       <SelectTabBar
-        tabs={["리뷰", "등록한 맛집"]}
+        tabs={["후기", "등록한 맛집"]}
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
       />

@@ -103,7 +103,7 @@ export default function RestaurantReviewCard({
           <span>{createdAt}</span>
           <button onClick={() => setShowDeleteModal(true)}>삭제</button>
         </section>
-        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4 duration-100 hover:scale-105">
+        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4">
           {/* 식당 사진 | 식당 이름 & 평점 | 버튼 | 찜버튼 */}
           <div className="flex h-20 w-full justify-between gap-3">
             {/* 식당 사진 */}
