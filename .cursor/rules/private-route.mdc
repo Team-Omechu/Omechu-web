@@ -39,7 +39,7 @@ export default function PrivateRoute({
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.replace(`/auth/sign-in?redirectedFrom=${pathname}`);
+      router.replace(`/sign-in?redirectedFrom=${pathname}`);
     } else {
       setIsVerifying(false);
     }

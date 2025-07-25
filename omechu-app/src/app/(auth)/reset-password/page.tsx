@@ -32,7 +32,7 @@ export default function ResetPasswordPage() {
 
   const handleModalConfirm = () => {
     setIsModalOpen(false);
-    router.push("/auth/sign-in");
+    router.push("/sign-in");
   };
 
   return (

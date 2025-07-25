@@ -17,7 +17,7 @@ export default function ExampleTestPage() {
   const handleConfirm = () => {
     setActiveModal(null);
     alert("'로그인 하기' 클릭됨");
-    router.push("/auth/sign-in");
+    router.push("/sign-in");
   };
 
   const handleClose = () => {

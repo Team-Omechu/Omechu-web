@@ -12,7 +12,7 @@ export default function LogoutTestPage() {
     logout(undefined, {
       onSuccess: () => {
         alert("로그아웃 되었습니다.");
-        router.replace("/auth/sign-in");
+        router.replace("/sign-in");
       },
       onError: (error) => {
         alert(`로그아웃 실패: ${error.message}`);

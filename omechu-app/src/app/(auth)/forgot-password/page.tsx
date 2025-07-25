@@ -25,7 +25,7 @@ export default function FindPasswordPage() {
   const handleFormSubmit = (data: FindPasswordFormValues) => {
     requestReset(data, {
       onSuccess: () => {
-        router.push("/auth/forgot-password/sent");
+        router.push("/forgot-password/sent");
       },
       onError: (error) => {
         triggerToast(

@@ -113,11 +113,11 @@ export default function SignInForm() {
             {...register("rememberMe")}
           />
           <div className="flex items-center gap-2">
-            <Link href="/auth/forgot-password" className="hover:underline">
+            <Link href="/forgot-password" className="hover:underline">
               비밀번호 찾기
             </Link>
             <span className="text-gray-300">|</span>
-            <Link href="/auth/sign-up" className="hover:underline">
+            <Link href="/sign-up" className="hover:underline">
               회원가입
             </Link>
           </div>
