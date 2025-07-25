@@ -9,6 +9,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import BottomButton from "@/components/common/button/BottomButton";
 import ModalWrapper from "@/components/common/ModalWrapper";
+import Toast from "@/components/common/Toast";
 import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
 import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
 import { termsForService } from "@/constant/terms/service";
@@ -16,7 +17,7 @@ import {
   signupSchema,
   type SignupFormValues,
 } from "@/auth/schemas/auth.schema";
-import { useSignupMutation } from "@/auth/hooks/useAuth";
+import { useSignupMutation, useLoginMutation } from "@/auth/hooks/useAuth";
 import useAuthStore from "@/auth/store";
 
 import SignUpForm from "./components/SignUpForm";
@@ -26,9 +27,12 @@ type ModalType = "service" | "privacy" | "location";
 
 export default function SignUpPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const router = useRouter();
   const { login } = useAuthStore();
-  const { mutate: signup, isPending } = useSignupMutation();
+  const { mutate: signup, isPending: isSigningUp } = useSignupMutation();
+  const { mutate: performLogin, isPending: isLoggingIn } = useLoginMutation();
 
   const methods = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -49,19 +53,35 @@ export default function SignUpPage() {
   const {
     handleSubmit,
     setValue,
-    formState: { isSubmitting, isValid },
+    formState: { isValid },
   } = methods;
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
 
   const onSubmit = (data: SignupFormValues) => {
     signup(data, {
-      onSuccess: (response) => {
-        // 회원가입 성공 후, 세션 방식이므로 토큰 없이 user 정보로만 로그인 처리합니다.
-        login(response);
-        router.push("/onboarding/1");
+      onSuccess: () => {
+        performLogin(
+          { email: data.email, password: data.password },
+          {
+            onSuccess: (loginResponse) => {
+              login(loginResponse);
+              router.push("/onboarding/1");
+            },
+            onError: (error) => {
+              triggerToast(
+                `회원가입 후 로그인에 실패했습니다:\n${error.message}`,
+              );
+            },
+          },
+        );
       },
       onError: (error) => {
-        console.error("회원가입 실패:", error);
-        alert(`회원가입에 실패했습니다: ${error.message}`);
+        triggerToast(`회원가입에 실패했습니다:\n${error.message}`);
       },
     });
   };
@@ -86,9 +106,9 @@ export default function SignUpPage() {
           <BottomButton
             type="submit"
             form="signup-form"
-            disabled={!isValid || isPending}
+            disabled={!isValid || isSigningUp || isLoggingIn}
           >
-            {isPending ? "가입하는 중..." : "가입하기"}
+            {isSigningUp || isLoggingIn ? "가입하는 중..." : "가입하기"}
           </BottomButton>
         </footer>
 
@@ -125,6 +145,7 @@ export default function SignUpPage() {
             />
           </ModalWrapper>
         )}
+        <Toast message={toastMessage} show={showToast} className="bottom-20" />
       </div>
     </FormProvider>
   );

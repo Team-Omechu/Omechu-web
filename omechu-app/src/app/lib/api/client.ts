@@ -25,6 +25,7 @@ apiClient.interceptors.request.use(
 // 응답 인터셉터:
 // 복잡한 토큰 재발급 로직을 모두 제거합니다.
 // 401(Unauthorized) 에러는 "로그인이 필요하다"는 명확한 신호로만 해석합니다.
+/*
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -38,6 +39,13 @@ apiClient.interceptors.response.use(
     }
     return Promise.reject(error);
   },
+);
+*/
+
+// 응답 인터셉터 로직을 잠시 비활성화하고, 간단하게 에러를 그대로 반환하도록 수정합니다.
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject(error),
 );
 
 export default apiClient;

@@ -9,6 +9,7 @@ import BottomButton from "@/components/common/button/BottomButton";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
+import Toast from "@/components/common/Toast";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import useAuthStore from "@/auth/store";
 import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
@@ -22,6 +23,31 @@ import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
 
 const ONBOARDING_STEPS = 6;
 
+// --- 백엔드 DTO에 맞게 값을 변환해주는 함수들 ---
+const convertGenderToEng = (gender: string | null) => {
+  if (gender === "남성") return "male";
+  if (gender === "여성") return "female";
+  return null;
+};
+
+const convertStateToEng = (state: string | null) => {
+  // DTO 파일의 convertExercise 함수 참고
+  if (state?.includes("다이어트")) return "diet";
+  if (state?.includes("벌크업")) return "bulk";
+  if (state?.includes("유지")) return "maintain";
+  return null;
+};
+
+const convertBodyTypeToEng = (bodyType: string | null) => {
+  // DTO 파일의 convertBodyType 함수 참고
+  if (bodyType === "감기") return "cold";
+  if (bodyType === "소화불량") return "indigestion";
+  if (bodyType === "더위 잘 탐") return "heat_type";
+  if (bodyType === "추위 잘 탐") return "cold_type";
+  return null;
+};
+// ----------------------------------------------------
+
 export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
@@ -30,6 +56,8 @@ export default function OnboardingPage() {
   const { setCurrentStep, reset: resetOnboarding } = onboardingStore;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   const { mutate: completeOnboarding, isPending: isCompleting } =
     useCompleteOnboardingMutation();
@@ -64,6 +92,12 @@ export default function OnboardingPage() {
     }
   }, [step, onboardingStore]);
 
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
   const handleNext = () => {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
@@ -71,33 +105,31 @@ export default function OnboardingPage() {
       // 마지막 단계에서 "저장" 버튼 클릭 시
       const dataToSubmit: OnboardingRequestData = {
         nickname: onboardingStore.nickname,
-        profileImageUrl: "", // TODO: 프로필 이미지 기능 구현 시 URL 설정
-        gender:
-          onboardingStore.gender === "남성"
-            ? "남자"
-            : onboardingStore.gender === "여성"
-              ? "여자"
-              : null,
-        body_type: onboardingStore.constitution[0] || null,
-        state: onboardingStore.workoutStatus,
-        phoneNumber: authUser?.phoneNumber || "", // 회원가입 직후이므로 authUser에 정보가 있음
+        profileImageUrl: onboardingStore.profileImageUrl || "",
+        gender: convertGenderToEng(onboardingStore.gender),
+        body_type: convertBodyTypeToEng(onboardingStore.constitution[0]),
+        state: convertStateToEng(onboardingStore.workoutStatus), // DTO에 맞게 exercise 대신 state 사용
+        phoneNumber: authUser?.phoneNumber || "",
         prefer: onboardingStore.preferredFood,
-        allergy: onboardingStore.allergies,
+        allergy: onboardingStore.allergies, // DTO에 맞게 allergic 대신 allergy 사용
       };
 
       completeOnboarding(dataToSubmit, {
         onSuccess: (completedProfile) => {
           // 온보딩 완료 후 받은 새 프로필 정보로 auth 스토어 업데이트
           if (authUser) {
-            login(useAuthStore.getState().accessToken!, {
-              ...authUser,
-              ...completedProfile,
-            });
+            login(
+              {
+                ...authUser,
+                ...completedProfile,
+              },
+              useAuthStore.getState().accessToken,
+            );
           }
           setIsModalOpen(true);
         },
         onError: (error) => {
-          alert(`정보 저장에 실패했습니다: ${error.message}`);
+          triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
         },
       });
     }
@@ -214,6 +246,7 @@ export default function OnboardingPage() {
           />
         </ModalWrapper>
       )}
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }
