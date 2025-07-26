@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import apiClient from "@/lib/api/client";
+import { useProfile } from "./hooks/useProfile";
 
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
@@ -11,35 +11,10 @@ import Header from "../components/common/Header";
 export default function MyPage() {
   const router = useRouter();
 
-  // 프로필 상태
-  const [profile, setProfile] = useState<{
-    profileImageUrl?: string | null;
-    nickname?: string;
-    email?: string;
-    [key: string]: any;
-  } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   // 실제로는 로그인 사용자 id를 store/context 등에서 받아와야 함
   const userId = 1;
-
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await apiClient.get(`/test/profile/${userId}`);
-        setProfile(res.data.success);
-        console.log("profile:", res.data.success);
-      } catch (err) {
-        setError("프로필 정보를 불러올 수 없습니다.");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProfile();
-  }, [userId]);
+  const [imgError, setImgError] = useState(false);
+  const { profile, loading, error } = useProfile(userId);
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -49,12 +24,6 @@ export default function MyPage() {
     { title: "활동 내역", href: "/mypage/my-activity" },
     { title: "찜 목록", href: "/mypage/favorites" },
   ];
-
-  // console.log("profile:", profile);
-  // console.log("profile:", profile?.success);
-  // console.log(profile?.success.nickname);
-  // console.log(profile?.success.email);
-  console.log(profile?.profileImageUrl);
 
   return (
     <>
@@ -82,13 +51,14 @@ export default function MyPage() {
             ) : (
               <Image
                 src={
-                  profile?.profileImageUrl
+                  !imgError && !!profile?.profileImageUrl
                     ? profile.profileImageUrl
                     : "/profile/profile_default_img.svg"
                 }
                 alt="profile"
                 width={75}
                 height={75}
+                onError={() => setImgError(true)}
               />
             )}
           </div>

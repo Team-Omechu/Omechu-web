@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import apiClient from "@/lib/api/client";
+
 import {
   getPresignedUrl,
   uploadToS3,
