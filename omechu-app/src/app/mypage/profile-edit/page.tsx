@@ -9,11 +9,12 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 
+import { useProfile } from "../hooks/useProfile";
 import {
   getPresignedUrl,
   uploadToS3,
   updateProfile,
-} from "./api/updateProfile";
+} from "../api/updateProfile";
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -21,15 +22,26 @@ export default function ProfileEdit() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
-  const [nickname, setNickname] = useState("제나"); // 기본값 설정
+  const [nickname, setNickname] = useState(""); // 기본값 설정
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  const userId = 1; // 실제는 store/context에서
+  const { profile, loading, error: profileError } = useProfile(userId);
+
+  // 상태와 동기화 (처음 한 번만)
+  useEffect(() => {
+    if (profile) {
+      setProfileImageUrl(profile.profileImageUrl ?? null);
+      setNickname(profile.nickname ?? "");
+    }
+  }, [profile]);
 
   const handleSave = async () => {
     setIsLoading(true);
-    setError(null);
+    setSaveError(null);
     try {
       let imageUrl = profileImageUrl;
       // 1. 이미지 파일이 있을 때만 presigned + S3 업로드
@@ -50,7 +62,7 @@ export default function ProfileEdit() {
       });
       setShowModal(true); // 성공시 모달
     } catch (e: any) {
-      setError("프로필 수정에 실패했습니다.");
+      setSaveError("프로필 수정에 실패했습니다.");
     } finally {
       setIsLoading(false);
     }
@@ -108,11 +120,18 @@ export default function ProfileEdit() {
           <div className="relative px-3">
             <div className="mb-3">
               <Image
-                src={imagePreview || "/profile/profile_default_img_rotated.svg"}
-                alt={"changeProfileImage"}
+                src={
+                  imagePreview
+                    ? imagePreview
+                    : !!profileImageUrl
+                      ? profileImageUrl
+                      : "/profile/profile_default_img_rotated.svg"
+                }
+                alt="changeProfileImage"
                 width={73}
                 height={73}
                 priority
+                onError={() => setProfileImageUrl(null)}
               />
             </div>
             <button
@@ -182,7 +201,7 @@ export default function ProfileEdit() {
           >
             {isLoading ? "저장 중..." : "저장"}
           </button>
-          {error && <div className="mt-2 text-red-500">{error}</div>}
+          {saveError && <div className="mt-2 text-red-500">{saveError}</div>}
         </section>
         {showModal && (
           <ModalWrapper>
