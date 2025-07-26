@@ -94,8 +94,6 @@ export default function ProfileEdit() {
     setIsValid(nickname.length > 1 && nickname.length < 13);
   }, [nickname]);
 
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-
   return (
     <>
       <Header
