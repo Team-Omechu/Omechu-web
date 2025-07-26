@@ -8,14 +8,53 @@ import { useRouter } from "next/navigation";
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
+import apiClient from "@/lib/api/client";
+import {
+  getPresignedUrl,
+  uploadToS3,
+  updateProfile,
+} from "./api/updateProfile";
 
 export default function ProfileEdit() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [nickname, setNickname] = useState("제나"); // 기본값 설정
-  const [showModal, setShowModal] = useState<Boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      let imageUrl = profileImageUrl;
+      // 1. 이미지 파일이 있을 때만 presigned + S3 업로드
+      if (profileImageFile) {
+        const { uploadUrl, fileUrl } = await getPresignedUrl(
+          profileImageFile.name,
+          profileImageFile.type,
+        );
+        await uploadToS3(uploadUrl, profileImageFile);
+        imageUrl = fileUrl;
+        setProfileImageUrl(fileUrl); // 미리 상태에 저장
+      }
+
+      // 2. PATCH 호출 (닉네임/이미지 URL)
+      await updateProfile({
+        nickname,
+        ...(imageUrl ? { profileImageUrl: imageUrl } : {}),
+      });
+      setShowModal(true); // 성공시 모달
+    } catch (e: any) {
+      setError("프로필 수정에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleImageClick = () => {
     fileInputRef.current?.click(); // 숨겨진 input 클릭 유도
@@ -24,6 +63,7 @@ export default function ProfileEdit() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setProfileImageFile(file);
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
     }
@@ -31,18 +71,18 @@ export default function ProfileEdit() {
 
   const handleDeleteImage = () => {
     setImagePreview(null);
+    setProfileImageFile(null);
+    setProfileImageUrl(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; // 실제 input 비우기
     }
   };
 
   useEffect(() => {
-    if (nickname.length > 1 && nickname.length < 13) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+    setIsValid(nickname.length > 1 && nickname.length < 13);
   }, [nickname]);
+
+  console.log(process.env.NEXT_PUBLIC_API_URL);
 
   return (
     <>
@@ -68,11 +108,7 @@ export default function ProfileEdit() {
           <div className="relative px-3">
             <div className="mb-3">
               <Image
-                src={
-                  imagePreview
-                    ? imagePreview
-                    : "/profile/profile_default_img_rotated.svg"
-                }
+                src={imagePreview || "/profile/profile_default_img_rotated.svg"}
                 alt={"changeProfileImage"}
                 width={73}
                 height={73}
@@ -105,7 +141,7 @@ export default function ProfileEdit() {
               사진지우기
             </button>
           </div>
-          <div className="itmes-center mb-8 flex flex-col gap-1">
+          <div className="mb-8 flex flex-col items-center gap-1">
             <div className="text-lg font-medium text-grey-darker dark:text-grey-lightHover">
               닉네임
             </div>
@@ -140,12 +176,13 @@ export default function ProfileEdit() {
         </section>
         <section className="mt-28">
           <button
-            onClick={() => setShowModal(true)}
-            disabled={!isValid}
+            onClick={handleSave}
+            disabled={!isValid || isLoading}
             className={`h-12 w-[335px] rounded-md text-lg font-medium text-white ${isValid ? "bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive" : "cursor-not-allowed bg-grey-normal"}`}
           >
-            저장
+            {isLoading ? "저장 중..." : "저장"}
           </button>
+          {error && <div className="mt-2 text-red-500">{error}</div>}
         </section>
         {showModal && (
           <ModalWrapper>
