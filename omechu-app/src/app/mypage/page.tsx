@@ -2,12 +2,44 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import apiClient from "@/lib/api/client";
 
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
 
 export default function MyPage() {
   const router = useRouter();
+
+  // 프로필 상태
+  const [profile, setProfile] = useState<{
+    profileImageUrl?: string | null;
+    nickname?: string;
+    email?: string;
+    [key: string]: any;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // 실제로는 로그인 사용자 id를 store/context 등에서 받아와야 함
+  const userId = 1;
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await apiClient.get(`/test/profile/${userId}`);
+        setProfile(res.data.success);
+        console.log("profile:", res.data.success);
+      } catch (err) {
+        setError("프로필 정보를 불러올 수 없습니다.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProfile();
+  }, [userId]);
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -17,6 +49,12 @@ export default function MyPage() {
     { title: "활동 내역", href: "/mypage/my-activity" },
     { title: "찜 목록", href: "/mypage/favorites" },
   ];
+
+  // console.log("profile:", profile);
+  // console.log("profile:", profile?.success);
+  // console.log(profile?.success.nickname);
+  // console.log(profile?.success.email);
+  console.log(profile?.profileImageUrl);
 
   return (
     <>
@@ -36,16 +74,29 @@ export default function MyPage() {
       <main className="flex max-h-screen w-full flex-col items-center justify-start gap-16 px-10 py-16">
         <section className="flex flex-col items-center">
           <div className="my-4">
-            <Image
-              src={"/profile/profile_default_img.svg"}
-              alt={"profile"}
-              width={75}
-              height={75}
-            />
+            {/* 로딩/에러/정상 분기 */}
+            {loading ? (
+              <div className="h-[75px] w-[75px] animate-pulse rounded-full bg-gray-200" />
+            ) : error ? (
+              <div className="text-sm text-red-500">{error}</div>
+            ) : (
+              <Image
+                src={
+                  profile?.profileImageUrl
+                    ? profile.profileImageUrl
+                    : "/profile/profile_default_img.svg"
+                }
+                alt="profile"
+                width={75}
+                height={75}
+              />
+            )}
           </div>
-          <div className="font-md text-lg">제나</div>
+          <div className="font-md text-lg">
+            {loading ? "로딩 중..." : profile?.nickname || "-"}
+          </div>
           <div className="text-xs font-normal text-grey-normalActive">
-            leej296@naver.com
+            {loading ? "" : profile?.email || ""}
           </div>
         </section>
         <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
