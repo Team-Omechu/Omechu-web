@@ -16,6 +16,7 @@ import {
   tagData,
 } from "@/constant/mainpage/resultData";
 import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -28,6 +29,8 @@ export default function ResultPage() {
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
+  const {setKeyword} = useLocationAnswerStore();
+
   useEffect(() => {
     setFilteredMenus(menus);
   }, [data]);
@@ -35,6 +38,7 @@ export default function ResultPage() {
   const handleNext = () => {
     if (openMenu != null) {
       router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
+      setKeyword(openMenu)
     } else {
       alert("메뉴를 선택해 주세요");
     }

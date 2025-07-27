@@ -1,3 +1,4 @@
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import { useState } from "react";
 
 export type LocationModalProps = {
@@ -9,13 +10,19 @@ export default function LocationModal({
   onClose,
   onSelect,
 }: LocationModalProps) {
-  const distances = ["가까이", "적당히", "멀리"];
-  const [selected, setSelected] = useState<string>("가까이");
+  const distances = [
+    {label:"가까이",value: 500}, 
+    {label: "적당히", value: 1000},
+    {label:"멀리",value: 3000}];
+  const [selected, setSelected] = useState<number>(500);
+  const {setRadius} = useLocationAnswerStore();
 
-  const handleSelect = (d: string) => {
-    setSelected(d);
-    onSelect(d);
+  const handleSelect = (value: number , label: string) => {
+    setSelected(value);
+    onSelect(label);
+    setRadius(value);
   };
+
 
   return (
     <div className="flex items-end justify-center pt-2">
@@ -25,16 +32,16 @@ export default function LocationModal({
             ✕
           </button>
         </div>
-        {distances.map((d) => (
-          <div key={d} className="flex items-center py-3">
+        {distances.map(({label,value}) => (
+          <div key={value} className="flex items-center py-3">
             <button
-              onClick={() => handleSelect(d)}
+              onClick={() => handleSelect(value,label)}
               className="flex items-center gap-2"
             >
               <span
-                className={`h-4 w-4 rounded-full border border-black ${selected === d ? "bg-red-500" : "bg-white"}`}
+                className={`h-4 w-4 rounded-full border border-black ${selected === value ? "bg-red-500" : "bg-white"}`}
               />
-              <span className="text-black">{d}</span>
+              <span className="text-black">{label}</span>
             </button>
           </div>
         ))}

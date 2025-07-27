@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,12 +8,15 @@ import { useRouter } from "next/navigation";
 import StepFooter from "@/components/common/StepFooter";
 import LocationModal from "@/mainpage/components/LocationModal";
 import Header from "@/components/common/Header";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 
 export default function LocationAnswerPage() {
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
+
+  const {setX, setY} = useLocationAnswerStore.getState();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -31,6 +34,22 @@ export default function LocationAnswerPage() {
     setIsChecked(false);
     setSelectedDistance("");
   };
+
+    const handleLocation = async () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setX(latitude);
+        setY(longitude);
+      },(error) => {
+        console.error("위치 정보를 가져오는 중 오류 발생",error);
+      }
+    );
+  }
+  
+  useEffect(()=>{
+    handleLocation
+  },[])
 
   return (
     <div className="relative flex h-screen w-full flex-col">
