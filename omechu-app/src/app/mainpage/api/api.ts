@@ -1,3 +1,4 @@
+import { Restaurant, restaurantList, RestaurantRequest } from "@/constant/mainpage/RestaurantData";
 import {
   MenuListResponse,
   RecommendMenuRequest,
@@ -14,3 +15,14 @@ export const getRecommendMenu = async (
   );
   return data;
 };
+
+export const getRestaurants = async (
+  request: RestaurantRequest
+): Promise<Restaurant[]> => {
+  const {data} = await apiClient.post<Restaurant[]>(
+    "/fetch-google-places",
+    request
+  )
+
+  return data;
+}
