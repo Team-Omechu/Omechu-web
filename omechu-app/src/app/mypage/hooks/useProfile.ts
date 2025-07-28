@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchProfile } from "../api/profile";
+import { getProfile } from "../api/profile";
 
 export function useProfile(userId: number) {
   const [profile, setProfile] = useState<any>(null);
@@ -10,7 +10,7 @@ export function useProfile(userId: number) {
     let mounted = true;
     setLoading(true);
     setError(null);
-    fetchProfile(userId)
+    getProfile(userId)
       .then((data) => {
         if (mounted) setProfile(data);
       })
