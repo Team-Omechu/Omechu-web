@@ -43,23 +43,35 @@ export default function Favorites() {
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
-  // dummy용
-  /*   const filteredItems = search.trim()
-    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-    : Restaurants; */
+  //* dummy용
+  // const filteredItems = search.trim()
+  // ? Restaurants.filter((item) => item.menu.includes(search.trim()))
+  // : Restaurants;
 
-  // 실제 api 데이터 연동
+  // const sortedItems = [...filteredItems].sort((a, b) => {
+  //   const aIdx = Restaurants.indexOf(a);
+  //   const bIdx = Restaurants.indexOf(b);
+  //   return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
+  // });
+
+  // const visibleItems = sortedItems.slice(0, visibleCount);
+
+  //* 실제 api 데이터 연동
   const filteredItems = search.trim()
     ? hearts.filter((item) =>
         item.signatureMenu?.join(",").includes(search.trim()),
       )
     : hearts;
 
-  const similarItems = Restaurants.filter(
-    (item) =>
-      distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
-      !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
-  );
+  const sortedItems = [...filteredItems].sort((a, b) => {
+    // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
+    // 여기선 placeId 사용(서버 데이터 기준)
+    return sortOrder === "latest"
+      ? b.placeId - a.placeId
+      : a.placeId - b.placeId;
+  });
+
+  const visibleItems = sortedItems.slice(0, visibleCount);
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -107,14 +119,6 @@ export default function Favorites() {
     }
   }, [isLoading]);
 
-  const sortedItems = [...filteredItems].sort((a, b) => {
-    const aIdx = Restaurants.indexOf(a);
-    const bIdx = Restaurants.indexOf(b);
-    return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
-  });
-
-  const visibleItems = sortedItems.slice(0, visibleCount);
-
   return (
     <>
       <Header
@@ -155,12 +159,37 @@ export default function Favorites() {
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            {visibleItems.map((item, idx) => (
+            {/* {visibleItems.map((item, idx) => (
               <FoodCard
                 key={idx}
                 item={item}
                 onClick={() =>
                   router.push(`/restaurant/restaurant-detail/${item.id}`)
+                }
+              />
+            ))} */}
+            {visibleItems.map((item) => (
+              <FoodCard
+                key={item.placeId}
+                item={{
+                  id: item.placeId,
+                  name: item.placeName,
+                  images: [item.placeImageUrl],
+                  rating: item.placePoint,
+                  menu: item.signatureMenu?.[0] ?? "",
+                  tags: item.summary ?? [],
+                  address: {
+                    road: item.address,
+                    jibun: "",
+                    postalCode: "",
+                  },
+                  reviews: 0, // 없으면 0, 필요 시 API 수정
+                  isLiked: true, // 찜 목록 -> true
+                  category: "", // 카테고리 없으면 빈 값
+                  timetable: [], // 없음 -> 빈 배열
+                }}
+                onClick={() =>
+                  router.push(`/restaurant/restaurant-detail/${item.placeId}`)
                 }
               />
             ))}
