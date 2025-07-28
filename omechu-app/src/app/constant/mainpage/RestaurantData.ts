@@ -3,7 +3,7 @@ export interface RestaurantRequest {
   longitude: number | null;
   radius: number | null;
   keyword: string | null;
-  pageSize: number; // 맛집 데이터를 몇개 줄 지 정하는 타입. 
+  pageSize: number; // 맛집 데이터를 몇개 줄 지 정하는 타입.
 }
 
 export interface Restaurant {

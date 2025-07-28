@@ -29,7 +29,7 @@ export default function ResultPage() {
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
-  const {setKeyword} = useLocationAnswerStore();
+  const { setKeyword } = useLocationAnswerStore();
 
   useEffect(() => {
     setFilteredMenus(menus);
@@ -38,7 +38,7 @@ export default function ResultPage() {
   const handleNext = () => {
     if (openMenu != null) {
       router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
-      setKeyword(openMenu)
+      setKeyword(openMenu);
     } else {
       alert("메뉴를 선택해 주세요");
     }

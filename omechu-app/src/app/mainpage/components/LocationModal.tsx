@@ -11,18 +11,18 @@ export default function LocationModal({
   onSelect,
 }: LocationModalProps) {
   const distances = [
-    {label:"가까이",value: 500}, 
-    {label: "적당히", value: 1000},
-    {label:"멀리",value: 3000}];
+    { label: "가까이", value: 500 },
+    { label: "적당히", value: 1000 },
+    { label: "멀리", value: 3000 },
+  ];
   const [selected, setSelected] = useState<number>(500);
-  const {setRadius} = useLocationAnswerStore();
+  const { setRadius } = useLocationAnswerStore();
 
-  const handleSelect = (value: number , label: string) => {
+  const handleSelect = (value: number, label: string) => {
     setSelected(value);
     onSelect(label);
     setRadius(value);
   };
-
 
   return (
     <div className="flex items-end justify-center pt-2">
@@ -32,10 +32,10 @@ export default function LocationModal({
             ✕
           </button>
         </div>
-        {distances.map(({label,value}) => (
+        {distances.map(({ label, value }) => (
           <div key={value} className="flex items-center py-3">
             <button
-              onClick={() => handleSelect(value,label)}
+              onClick={() => handleSelect(value, label)}
               className="flex items-center gap-2"
             >
               <span

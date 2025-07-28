@@ -16,7 +16,7 @@ export default function LocationAnswerPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
 
-  const {setX, setY} = useLocationAnswerStore.getState();
+  const { setX, setY } = useLocationAnswerStore.getState();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -35,17 +35,18 @@ export default function LocationAnswerPage() {
     setSelectedDistance("");
   };
 
-    const handleLocation = async () => {
+  const handleLocation = async () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         setX(latitude);
         setY(longitude);
-      },(error) => {
-        console.error("위치 정보를 가져오는 중 오류 발생",error);
-      }
+      },
+      (error) => {
+        console.error("위치 정보를 가져오는 중 오류 발생", error);
+      },
     );
-  }
+  };
 
   return (
     <div className="relative flex h-screen w-full flex-col">
@@ -86,7 +87,10 @@ export default function LocationAnswerPage() {
 
         {/* 결과 보기 버튼 */}
         <button
-          onClick={() => {router.push("/mainpage/result"); handleLocation();}}
+          onClick={() => {
+            router.push("/mainpage/result");
+            handleLocation();
+          }}
           className="mt-10 flex h-[2.8125rem] w-[17.375rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[0.625rem] text-[16px] font-medium text-white"
         >
           결과 보기
