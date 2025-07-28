@@ -11,12 +11,12 @@ import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import TagCard from "../components/TagCard";
 import {
-  MenuItem,
-  MenuListResponse,
-  tagData,
+  MenuItem
 } from "@/constant/mainpage/resultData";
 import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import MainLoading from "@/components/mainpage/MainLoading";
+import { useTagStore } from "@/lib/stores/tagData.store";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -30,6 +30,7 @@ export default function ResultPage() {
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
   const { setKeyword } = useLocationAnswerStore();
+  const {tagData} = useTagStore();
 
   useEffect(() => {
     setFilteredMenus(menus);
@@ -48,6 +49,9 @@ export default function ResultPage() {
   const handleReshuffle = () => {
     refetch();
     setOpenMenu(null);
+    if(isLoading){
+      return <MainLoading/>
+    }
   };
 
   const handleExclude = () => {
@@ -60,6 +64,10 @@ export default function ResultPage() {
     setShowModal(false);
     setExcludeMenu(null);
   };
+
+  if(isLoading){
+    return <MainLoading/>
+  }
 
   return (
     <div className="flex h-screen flex-col">
@@ -82,8 +90,6 @@ export default function ResultPage() {
       />
 
       <div className="mt-3 flex flex-col px-4">
-        {isLoading && <p>로딩 중...</p>}
-        {error && <p className="text-red-500">에러: {error.message}</p>}
         {!isLoading &&
           !error &&
           filteredMenus.map((menu) => (
