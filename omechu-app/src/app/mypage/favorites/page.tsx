@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchHeartList } from "../api/favorites";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +19,27 @@ export default function Favorites() {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
+  const [hearts, setHearts] = useState<any[]>([]);
+
+  const userId = 1;
+
+  // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchHeartList(userId);
+        // 1. 배열인지 체크 (서버 에러 포함)
+        if (!Array.isArray(data)) {
+          setHearts([]); // 배열이 아니면 무조건 빈 배열!
+          return;
+        }
+        setHearts(data); // 배열일 때만 정상 저장
+      } catch (e) {
+        setHearts([]); // 네트워크/기타 에러도 빈 배열로!
+      }
+    };
+    fetchData();
+  }, []);
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
@@ -100,9 +122,9 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="min-h-full w-full px-6 pb-8 pt-3">
+      <main className="w-full min-h-full px-6 pt-3 pb-8">
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
+        <section className="flex justify-end w-full gap-1 pt-2 pb-3 pr-1 text-sm text-grey-normalActive">
           <button
             className={
               sortOrder === "latest" ? "font-semibold text-grey-darker" : ""
@@ -140,8 +162,8 @@ export default function Favorites() {
         <div ref={loaderRef} className="h-[1px]" />
 
         {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
+          <div className="flex items-center justify-center h-20 mt-4">
+            <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
