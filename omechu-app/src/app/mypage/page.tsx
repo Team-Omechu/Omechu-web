@@ -40,7 +40,7 @@ export default function MyPage() {
           </button>
         }
       />
-      <main className="flex max-h-screen w-full flex-col items-center justify-start gap-16 px-10 py-16">
+      <main className="flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 px-10 py-16">
         <section className="flex flex-col items-center">
           <div className="my-4">
             {/* 로딩/에러/정상 분기 */}
@@ -62,14 +62,14 @@ export default function MyPage() {
               />
             )}
           </div>
-          <div className="font-md text-lg">
+          <div className="text-lg font-md">
             {loading ? "로딩 중..." : profile?.nickname || "-"}
           </div>
           <div className="text-xs font-normal text-grey-normalActive">
             {loading ? "" : profile?.email || ""}
           </div>
         </section>
-        <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
+        <section className="w-full bg-white border-2 rounded-lg border-secondary-normal">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
