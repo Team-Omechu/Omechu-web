@@ -47,3 +47,8 @@ export const login = async (
 
   return apiResponse.success;
 };
+
+// 추가 - 이삭
+export const logout = async (): Promise<void> => {
+  await apiClient.post("/auth/logout");
+};

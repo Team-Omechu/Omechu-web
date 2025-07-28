@@ -11,18 +11,16 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 
-const userEmail: string = "dlapdlf@gmail.com";
-
 export default function AccountSettings() {
   const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState(""); // 기본값 설정
+  const [email, setEmail] = useState("");
 
-  const userId = 1; // 실제는 store/context에서
+  const userId = 1; // 하드코딩된 id => 추후 로그인 세션으로 변경
   const { profile, loading, error: profileError } = useProfile(userId);
 
-  // 상태와 동기화 (처음 한 번만)
+  // 동기화
   useEffect(() => {
     if (profile) {
       setEmail(profile.email ?? "");
