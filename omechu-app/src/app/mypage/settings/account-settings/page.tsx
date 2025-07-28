@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+
+import { useProfile } from "../../hooks/useProfile";
 
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
@@ -12,8 +14,21 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 const userEmail: string = "dlapdlf@gmail.com";
 
 export default function AccountSettings() {
-  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
+
+  const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState(""); // 기본값 설정
+
+  const userId = 1; // 실제는 store/context에서
+  const { profile, loading, error: profileError } = useProfile(userId);
+
+  // 상태와 동기화 (처음 한 번만)
+  useEffect(() => {
+    if (profile) {
+      setEmail(profile.email ?? "");
+    }
+  }, [profile]);
+
   return (
     <>
       <Header
@@ -36,9 +51,15 @@ export default function AccountSettings() {
       <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-2 py-4">
         <section className="w-full">
           <div className="flex flex-col">
-            <div className="flex w-full items-center justify-between px-6 py-3 text-grey-darker">
+            <div className="flex items-center justify-between w-full px-6 py-3 text-grey-darker">
               <h1 className="text-xl font-normal">가입 정보</h1>
-              <div>{userEmail}</div>
+              {loading ? (
+                <div className="text-grey-darker">불러오는 중...</div>
+              ) : profileError ? (
+                <div className="text-red-500">오류가 발생했습니다.</div>
+              ) : (
+                <div>{email}</div>
+              )}
             </div>
             <button
               onClick={() =>
@@ -46,7 +67,7 @@ export default function AccountSettings() {
               }
               className="hover:bg-main-normalHover active:bg-main-normalHover"
             >
-              <div className="flex w-full items-center justify-between px-6 py-3">
+              <div className="flex items-center justify-between w-full px-6 py-3">
                 <h1 className="text-xl font-normal text-grey-darker">
                   비밀번호 변경
                 </h1>
