@@ -6,15 +6,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { useProfile } from "../../hooks/useProfile";
+import { logout } from "@/lib/api/auth";
 
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
+import Toast from "@/components/common/Toast";
 
 export default function AccountSettings() {
   const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: "" });
   const [email, setEmail] = useState("");
 
   const userId = 1; // 하드코딩된 id => 추후 로그인 세션으로 변경
@@ -26,6 +29,16 @@ export default function AccountSettings() {
       setEmail(profile.email ?? "");
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (toast.show) {
+      const timer = setTimeout(
+        () => setToast((t) => ({ ...t, show: false })),
+        2000,
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [toast.show]);
 
   return (
     <>
@@ -81,13 +94,20 @@ export default function AccountSettings() {
             </button>
           </div>
         </section>
-        <section className="mt-5">
+        <section className="relative my-5">
           <button
             onClick={() => setShowModal(true)}
             className="h-[50px] w-[335px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           >
             로그아웃
           </button>
+          {toast && (
+            <Toast
+              message={toast.message}
+              show={toast.show}
+              className="-bottom-28"
+            />
+          )}
         </section>
         {showModal && (
           <ModalWrapper>
@@ -96,7 +116,15 @@ export default function AccountSettings() {
               confirmText="아니요"
               cancelText="네"
               onConfirm={() => setShowModal(false)}
-              onClose={() => router.push("/mypage")}
+              onClose={async () => {
+                try {
+                  await logout();
+                  router.push("/mainpage");
+                } catch (e) {
+                  setToast({ show: true, message: "로그아웃에 실패했습니다." });
+                  setShowModal(false);
+                }
+              }}
               swapButtonOrder={true}
             />
           </ModalWrapper>
