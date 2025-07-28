@@ -1,6 +1,6 @@
 export interface RestaurantRequest {
-  x: number | null;
-  y: number | null;
+  latitude: number | null;
+  longitude: number | null;
   radius: number | null;
   keyword: string | null;
   pageSize: number; // 맛집 데이터를 몇개 줄 지 정하는 타입. 
