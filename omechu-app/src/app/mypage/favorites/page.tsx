@@ -43,9 +43,17 @@ export default function Favorites() {
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
-  const filteredItems = search.trim()
+  // dummy용
+  /*   const filteredItems = search.trim()
     ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-    : Restaurants;
+    : Restaurants; */
+
+  // 실제 api 데이터 연동
+  const filteredItems = search.trim()
+    ? hearts.filter((item) =>
+        item.signatureMenu?.join(",").includes(search.trim()),
+      )
+    : hearts;
 
   const similarItems = Restaurants.filter(
     (item) =>
@@ -122,7 +130,7 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="w-full min-h-full px-6 pt-3 pb-8">
+      <main className="w-full px-6 pt-3 pb-8 min-h-sceen">
         {/* 필터 - 최신 순 | 오래된 순 */}
         <section className="flex justify-end w-full gap-1 pt-2 pb-3 pr-1 text-sm text-grey-normalActive">
           <button
