@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useProfile } from "./hooks/useProfile";
 
 import BottomNav from "../components/common/Bottom";
