@@ -7,8 +7,8 @@ function useGetRestaurants() {
     const {x,y,radius,keyword} = useLocationAnswerStore();
 
     const payload: RestaurantRequest = {
-        x,
-        y,
+        latitude: x,
+        longitude: y,
         radius,
         keyword,
         pageSize: 3
