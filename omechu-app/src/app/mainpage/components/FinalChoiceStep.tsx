@@ -3,16 +3,21 @@
 import { useRouter } from "next/navigation";
 
 import ListButton from "@/components/common/button/ListButton";
+import { handleLocation } from "../utils/handleLocation";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 const FinalChoiceStep = () => {
   const router = useRouter();
+  const {setX, setY} = useLocationAnswerStore();
+
+  const handleClick= () => {
+    router.push("/mainpage/result"); 
+    handleLocation(setX,setY);
+  }
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5">
       <ListButton
-        onClick={() => {
-          // TODO: 결과보기 로직
-          router.push("/mainpage/result");
-        }}
+        onClick={handleClick}
         isSelected={false}
         textSize="base"
       >

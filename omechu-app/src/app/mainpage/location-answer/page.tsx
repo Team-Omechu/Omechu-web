@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import StepFooter from "@/components/common/StepFooter";
 import LocationModal from "@/mainpage/components/LocationModal";
 import Header from "@/components/common/Header";
+import { handleLocation } from "../utils/handleLocation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 
 export default function LocationAnswerPage() {
@@ -15,8 +16,7 @@ export default function LocationAnswerPage() {
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
-
-  const { setX, setY } = useLocationAnswerStore.getState();
+  const{setX, setY} = useLocationAnswerStore();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -35,18 +35,10 @@ export default function LocationAnswerPage() {
     setSelectedDistance("");
   };
 
-  const handleLocation = async () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setX(latitude);
-        setY(longitude);
-      },
-      (error) => {
-        console.error("위치 정보를 가져오는 중 오류 발생", error);
-      },
-    );
-  };
+  const handleClick = () => {
+    router.push("/mainpage/result");
+    handleLocation(setX, setY);
+  }
 
   return (
     <div className="relative flex h-screen w-full flex-col">
@@ -87,10 +79,7 @@ export default function LocationAnswerPage() {
 
         {/* 결과 보기 버튼 */}
         <button
-          onClick={() => {
-            router.push("/mainpage/result");
-            handleLocation();
-          }}
+          onClick={handleClick}
           className="mt-10 flex h-[2.8125rem] w-[17.375rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[0.625rem] text-[16px] font-medium text-white"
         >
           결과 보기
