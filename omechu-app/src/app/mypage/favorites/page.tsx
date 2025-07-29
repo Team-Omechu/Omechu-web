@@ -44,34 +44,34 @@ export default function Favorites() {
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
   //* dummy용
-  // const filteredItems = search.trim()
-  // ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-  // : Restaurants;
-
-  // const sortedItems = [...filteredItems].sort((a, b) => {
-  //   const aIdx = Restaurants.indexOf(a);
-  //   const bIdx = Restaurants.indexOf(b);
-  //   return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
-  // });
-
-  // const visibleItems = sortedItems.slice(0, visibleCount);
-
-  //* 실제 api 데이터 연동
   const filteredItems = search.trim()
-    ? hearts.filter((item) =>
-        item.signatureMenu?.join(",").includes(search.trim()),
-      )
-    : hearts;
+    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
+    : Restaurants;
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
-    // 여기선 placeId 사용(서버 데이터 기준)
-    return sortOrder === "latest"
-      ? b.placeId - a.placeId
-      : a.placeId - b.placeId;
+    const aIdx = Restaurants.indexOf(a);
+    const bIdx = Restaurants.indexOf(b);
+    return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
+
+  //* 실제 api 데이터 연동
+  // const filteredItems = search.trim()
+  //   ? hearts.filter((item) =>
+  //       item.signatureMenu?.join(",").includes(search.trim()),
+  //     )
+  //   : hearts;
+
+  // const sortedItems = [...filteredItems].sort((a, b) => {
+  //   // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
+  //   // 여기선 placeId 사용(서버 데이터 기준)
+  //   return sortOrder === "latest"
+  //     ? b.placeId - a.placeId
+  //     : a.placeId - b.placeId;
+  // });
+
+  // const visibleItems = sortedItems.slice(0, visibleCount);
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
