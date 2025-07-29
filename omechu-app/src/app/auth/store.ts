@@ -5,13 +5,17 @@ import type { LoginSuccessData } from "./api/auth";
 
 interface AuthState {
   isLoggedIn: boolean;
-  // 소셜 로그인을 위해 accessToken 필드를 다시 추가하되, nullable로 유지합니다.
   accessToken: string | null;
-  // TODO: Add user profile type
+  password?: string; // password 필드 추가
   user: LoginSuccessData | null;
-  login: (data: { accessToken: string; user: LoginSuccessData }) => void;
+  login: (data: {
+    accessToken: string;
+    user: LoginSuccessData;
+    password?: string;
+  }) => void;
   logout: () => void;
   setUser: (user: LoginSuccessData) => void;
+  setPassword: (password: string) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -20,18 +24,27 @@ export const useAuthStore = create<AuthState>()(
       isLoggedIn: false,
       accessToken: null,
       user: null,
-      login: (data: { accessToken: string; user: LoginSuccessData }) =>
+      password: "",
+      login: (data) =>
         set({
           isLoggedIn: true,
           accessToken: data.accessToken,
           user: data.user,
+          password: data.password,
         }),
-      logout: () => set({ isLoggedIn: false, user: null, accessToken: null }),
-      setUser: (user: LoginSuccessData) => set({ user }),
+      logout: () =>
+        set({
+          isLoggedIn: false,
+          user: null,
+          accessToken: null,
+          password: "",
+        }),
+      setUser: (user) => set({ user }),
+      setPassword: (password) => set({ password }),
     }),
     {
-      name: "auth-storage", // 로컬 스토리지에 저장될 때 사용될 키
-      storage: createJSONStorage(() => localStorage), // localStorage를 사용
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

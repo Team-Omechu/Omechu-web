@@ -30,9 +30,8 @@ export default function SignUpPage() {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const router = useRouter();
-  const { login } = useAuthStore();
+  const { setPassword } = useAuthStore();
   const { mutate: signup, isPending: isSigningUp } = useSignupMutation();
-  const { mutate: performLogin, isPending: isLoggingIn } = useLoginMutation();
 
   const methods = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -64,20 +63,8 @@ export default function SignUpPage() {
   const onSubmit = (data: SignupFormValues) => {
     signup(data, {
       onSuccess: () => {
-        performLogin(
-          { email: data.email, password: data.password },
-          {
-            onSuccess: (loginResponse) => {
-              login({ accessToken: "", user: loginResponse });
-              router.push("/onboarding/1");
-            },
-            onError: (error) => {
-              triggerToast(
-                `회원가입 후 로그인에 실패했습니다:\n${error.message}`,
-              );
-            },
-          },
-        );
+        setPassword(data.password);
+        router.push("/onboarding/1");
       },
       onError: (error) => {
         triggerToast(`회원가입에 실패했습니다:\n${error.message}`);
@@ -105,9 +92,9 @@ export default function SignUpPage() {
           <BottomButton
             type="submit"
             form="signup-form"
-            disabled={!isValid || isSigningUp || isLoggingIn}
+            disabled={!isValid || isSigningUp}
           >
-            {isSigningUp || isLoggingIn ? "가입하는 중..." : "가입하기"}
+            {isSigningUp ? "가입하는 중..." : "가입하기"}
           </BottomButton>
         </footer>
 

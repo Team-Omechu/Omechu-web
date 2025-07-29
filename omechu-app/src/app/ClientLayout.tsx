@@ -19,11 +19,11 @@ export default function ClientLayout({
     "/mainpage/random-recommend",
 
     // 로그인, 회원가입, 온보딩 페이지
-    "/auth/sign-in",
-    "/auth/sign-up",
-    "/auth/forgot-password",
-    "/auth/forgot-password/sent",
-    "/auth/reset-password",
+    "/sign-in",
+    "/sign-up",
+    "/forgot-password",
+    "/forgot-password/sent",
+    "/reset-password",
 
     // 온보딩 페이지
     "/onboarding/1",
