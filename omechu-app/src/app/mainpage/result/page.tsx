@@ -24,6 +24,7 @@ export default function ResultPage() {
   const [showModal, setShowModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const {reset} = useTagStore();
 
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
 
@@ -74,7 +75,7 @@ export default function ResultPage() {
       <Header
         leftChild={
           <button
-            onClick={() => router.push("/mainpage")}
+            onClick={() => {router.push("/mainpage"); reset()}}
             className="flex items-center font-bold"
           >
             <Image
