@@ -158,8 +158,8 @@ export default function ProfileEdit() {
               사진지우기
             </button>
           </div>
-          <div className="mb-8 flex flex-col items-center gap-1">
-            <div className="text-lg font-medium text-grey-darker dark:text-grey-lightHover">
+          <div className="mb-8 flex flex-col items-start gap-1">
+            <div className="ml-1 text-lg font-medium text-grey-darker dark:text-grey-lightHover">
               닉네임
             </div>
             <div className="relative">
