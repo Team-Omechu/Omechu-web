@@ -7,7 +7,7 @@ export default function MainPage() {
   const router = useRouter();
 
   return (
-    <div className="relative flex h-[calc(100dvh-4.7rem)] w-full justify-center overflow-hidden">
+    <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden scrollbar-hide">
       {/* 메인 배경 이미지 */}
       <Image
         src="/mainpage/mainpage.svg"
