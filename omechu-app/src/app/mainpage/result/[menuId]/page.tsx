@@ -13,17 +13,20 @@ import type {
   MenuListResponse,
 } from "@/constant/mainpage/resultData";
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import { Restaurant } from "@/constant/mainpage/RestaurantData";
+import FoodCardEx from "@/mainpage/components/FoodCardEx";
 
 export default function MenuDetailPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const { x, y, radius, keyword } = useLocationAnswerStore();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
-  console.log(data);
+  console.log(data)
+
+  const restaurants: Restaurant[] = Array.isArray(data)? data : []
+  console.log(restaurants)
 
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
@@ -40,7 +43,6 @@ export default function MenuDetailPage() {
   if (!menu) {
     return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
   }
-  console.log(x, y, radius, keyword);
 
   // 관련 맛집 필터링 추후 삭제 예정.
   const related = Restaurants.filter(
@@ -97,9 +99,9 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-3 space-y-2 px-4">
-        {related.length > 0 ? (
-          related.map((item) => (
-            <FoodCard
+        {
+          restaurants.map((item) => (
+            <FoodCardEx
               key={item.id}
               item={item}
               onClick={() =>
@@ -107,9 +109,7 @@ export default function MenuDetailPage() {
               }
             />
           ))
-        ) : (
-          <p className="text-sm text-gray-500">추천 맛집이 없습니다.</p>
-        )}
+}
       </div>
     </div>
   );
