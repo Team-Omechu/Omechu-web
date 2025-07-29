@@ -13,6 +13,7 @@ import { distance } from "fastest-levenshtein";
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
 import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
+import { likePlace, unlikePlace } from "../api/favorites";
 
 export default function Favorites() {
   const router = useRouter();
@@ -44,34 +45,58 @@ export default function Favorites() {
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
   //* dummy용
+  // const filteredItems = search.trim()
+  // ? Restaurants.filter((item) => item.menu.includes(search.trim()))
+  // : Restaurants;
+
+  // const sortedItems = [...filteredItems].sort((a, b) => {
+  //   const aIdx = Restaurants.indexOf(a);
+  //   const bIdx = Restaurants.indexOf(b);
+  //   return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
+  // });
+
+  // const visibleItems = sortedItems.slice(0, visibleCount);
+
+  //* 실제 api 데이터 연동
   const filteredItems = search.trim()
-    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-    : Restaurants;
+    ? hearts.filter((item) =>
+        item.signatureMenu?.join(",").includes(search.trim()),
+      )
+    : hearts;
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    const aIdx = Restaurants.indexOf(a);
-    const bIdx = Restaurants.indexOf(b);
-    return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
+    // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
+    // 여기선 placeId 사용(서버 데이터 기준)
+    return sortOrder === "latest"
+      ? b.placeId - a.placeId
+      : a.placeId - b.placeId;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
 
-  //* 실제 api 데이터 연동
-  // const filteredItems = search.trim()
-  //   ? hearts.filter((item) =>
-  //       item.signatureMenu?.join(",").includes(search.trim()),
-  //     )
-  //   : hearts;
+  const handleLike = async (restaurantId: number) => {
+    try {
+      await likePlace(userId, restaurantId);
+      // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
+      setHearts((prev) =>
+        prev.map((item) =>
+          item.placeId === restaurantId ? { ...item, isLiked: true } : item,
+        ),
+      );
+    } catch (e) {
+      alert("찜 등록 실패");
+    }
+  };
 
-  // const sortedItems = [...filteredItems].sort((a, b) => {
-  //   // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
-  //   // 여기선 placeId 사용(서버 데이터 기준)
-  //   return sortOrder === "latest"
-  //     ? b.placeId - a.placeId
-  //     : a.placeId - b.placeId;
-  // });
-
-  // const visibleItems = sortedItems.slice(0, visibleCount);
+  const handleUnlike = async (restaurantId: number) => {
+    try {
+      await unlikePlace(userId, restaurantId);
+      // setHearts에서 해당 아이템만 isLiked: false 처리 (또는 리스트에서 제거)
+      setHearts((prev) => prev.filter((item) => item.placeId !== restaurantId));
+    } catch (e) {
+      alert("찜 해제 실패");
+    }
+  };
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -191,6 +216,8 @@ export default function Favorites() {
                 onClick={() =>
                   router.push(`/restaurant/restaurant-detail/${item.placeId}`)
                 }
+                onLike={() => handleLike(item.placeId)}
+                onUnlike={() => handleUnlike(item.placeId)}
               />
             ))}
           </div>
