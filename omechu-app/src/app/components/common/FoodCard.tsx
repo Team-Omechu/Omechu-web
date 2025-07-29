@@ -35,7 +35,7 @@ export default function FoodCard({
 
   return (
     <div
-      className="flex items-start justify-between p-3 bg-white border border-black shadow-md rounded-xl"
+      className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md"
       onClick={onClick}
     >
       <div className="flex-1">
@@ -48,7 +48,7 @@ export default function FoodCard({
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.address.road}</p>
         <p className="mb-1 text-sm font-bold text-blue-600">{item.menu}</p>
-        <div className="flex flex-wrap gap-2 mt-1 text-xs">
+        <div className="mt-1 flex flex-wrap gap-2 text-xs">
           {item.tags.map((tag, i) => (
             <span
               key={i}
@@ -59,7 +59,7 @@ export default function FoodCard({
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-2 place-items-end">
+      <div className="flex flex-col place-items-end gap-2">
         <button onClick={handleLikeClick}>
           <Image
             src={isLiked ? "/heart/heart_filled.svg" : "/heart/heart_empty.svg"}

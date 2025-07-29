@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { fetchRestaurants } from "../api/myActivity";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,11 +20,52 @@ import { Restaurants } from "@/constant/restaurant/restaurantList";
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
+type MyRestaurant = {
+  id: number;
+  name: string;
+  repre_menu?: string;
+  rating?: number;
+  images?: { link: string }[];
+  address?: string;
+};
+
 export default function MyActivity() {
   const router = useRouter();
-  const mainRef = useRef<HTMLDivElement>(null);
+
+  const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const userId = "1";
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (selectedIndex !== 1) return; // 등록한 맛집 탭에서만
+
+    setLoading(true);
+    setError(null);
+
+    fetchRestaurants(userId)
+      .then((data) => {
+        // data를 필요한 형태로 가공
+        setMyRestaurants(
+          data.results.map((item: any) => ({
+            id: item.placeId,
+            name: item.placeName,
+            repre_menu: item.signatureMenu?.[0] ?? "",
+            rating: item.placePoint,
+            images: [{ link: item.placeImageUrl }],
+            address: item.address,
+            // ...필요에 따라 추가
+          })),
+        );
+      })
+      .catch(() => setError("맛집 목록을 불러오지 못했습니다."))
+      .finally(() => setLoading(false));
+  }, [selectedIndex]);
+
+  const mainRef = useRef<HTMLDivElement>(null);
+
   const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
     "recommended",
   );
@@ -200,7 +243,7 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {/* 등록한 맛집 목록 */}
-            <section className="mt-4 flex flex-col gap-5">
+            {/* <section className="flex flex-col gap-5 mt-4">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
                   <button
@@ -217,13 +260,52 @@ export default function MyActivity() {
                   />
                 </div>
               ))}
-            </section>
+            </section> */}
             {/* {editTargetData && (
               <RestaurantEditModal
                 onClose={handleCloseEditModal}
                 initialData={editTargetData}
               />
             )} */}
+
+            <section>
+              {loading && <div>로딩 중...</div>}
+              {error && <div>{error}</div>}
+              {!loading &&
+                !error &&
+                myRestaurants.map((item) => (
+                  <FoodCard
+                    key={item.placeId}
+                    item={{
+                      id: item.placeId,
+                      name: item.placeName,
+                      images: [item.placeImageUrl],
+                      rating: item.placePoint,
+                      menu: item.signatureMenu?.[0] ?? "",
+                      tags: item.summary ?? [],
+                      address: {
+                        road: item.address,
+                        jibun: "",
+                        postalCode: "",
+                      },
+                      reviews: 0, // 없으면 0, 필요 시 API 수정
+                      isLiked: true, // 찜 목록 -> true
+                      category: "", // 카테고리 없으면 빈 값
+                      timetable: [], // 없음 -> 빈 배열
+                    }}
+                    onClick={() =>
+                      router.push(
+                        `/restaurant/restaurant-detail/${item.placeId}`,
+                      )
+                    }
+                    onLike={() => handleLike(item.placeId)}
+                    onUnlike={() => handleUnlike(item.placeId)}
+                  />
+                ))}
+              {!loading && !error && myRestaurants.length === 0 && (
+                <div>등록한 맛집이 없습니다.</div>
+              )}
+            </section>
           </>
         )}
 

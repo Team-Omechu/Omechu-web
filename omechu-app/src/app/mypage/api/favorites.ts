@@ -1,5 +1,6 @@
 import apiClient from "@/lib/api/client";
 
+// * 찜 목록 조회 API
 export const fetchHeartList = async (userId: string | number) => {
   const { data } = await apiClient.get(`/test/hearts/${userId}`);
   if (Array.isArray(data)) return data;

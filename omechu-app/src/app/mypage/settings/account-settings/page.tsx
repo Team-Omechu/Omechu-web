@@ -62,7 +62,7 @@ export default function AccountSettings() {
       <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-2 py-4">
         <section className="w-full">
           <div className="flex flex-col">
-            <div className="flex items-center justify-between w-full px-6 py-3 text-grey-darker">
+            <div className="flex w-full items-center justify-between px-6 py-3 text-grey-darker">
               <h1 className="text-xl font-normal">가입 정보</h1>
               {loading ? (
                 <div className="text-grey-darker">불러오는 중...</div>
@@ -78,7 +78,7 @@ export default function AccountSettings() {
               }
               className="hover:bg-main-normalHover active:bg-main-normalHover"
             >
-              <div className="flex items-center justify-between w-full px-6 py-3">
+              <div className="flex w-full items-center justify-between px-6 py-3">
                 <h1 className="text-xl font-normal text-grey-darker">
                   비밀번호 변경
                 </h1>

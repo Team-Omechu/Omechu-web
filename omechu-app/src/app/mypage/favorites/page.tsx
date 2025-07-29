@@ -159,9 +159,9 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="w-full px-6 pt-3 pb-8 min-h-sceen">
+      <main className="min-h-sceen w-full px-6 pb-8 pt-3">
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section className="flex justify-end w-full gap-1 pt-2 pb-3 pr-1 text-sm text-grey-normalActive">
+        <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
           <button
             className={
               sortOrder === "latest" ? "font-semibold text-grey-darker" : ""
@@ -226,8 +226,8 @@ export default function Favorites() {
         <div ref={loaderRef} className="h-[1px]" />
 
         {isLoading && (
-          <div className="flex items-center justify-center h-20 mt-4">
-            <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
+          <div className="mt-4 flex h-20 items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
