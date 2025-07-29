@@ -9,9 +9,9 @@ export interface OnboardingRequestData {
   password?: string; // 비밀번호 필드 추가 (선택적으로)
   nickname: string;
   profileImageUrl: string;
-  gender: "남자" | "여자" | null;
+  gender: "male" | "female" | null;
   body_type: string | null;
-  state: string | null;
+  state: "dieting" | "bulking" | "maintaining" | null;
   prefer: string[];
   allergy: string[];
 }

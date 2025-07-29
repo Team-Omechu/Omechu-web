@@ -20,6 +20,13 @@ import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
 import { LoginSuccessData } from "@/auth/api/auth";
+import {
+  GENDER_MAP,
+  EXERCISE_MAP,
+  PREFER_MAP,
+  ALLERGY_MAP,
+  CONSTITUTION_MAP,
+} from "@/onboarding/utils/enum-mapper";
 
 const ONBOARDING_STEPS = 6;
 
@@ -91,23 +98,32 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
-      // '남성' -> '남자', '여성' -> '여자'로 변환하는 로직 추가
-      const genderForApi =
-        onboardingStore.gender === "남성"
-          ? "남자"
-          : onboardingStore.gender === "여성"
-            ? "여자"
-            : null;
+      const genderForApi = onboardingStore.gender
+        ? GENDER_MAP[onboardingStore.gender]
+        : null;
+      const stateForApi = onboardingStore.workoutStatus
+        ? EXERCISE_MAP[onboardingStore.workoutStatus]
+        : null;
+      const preferForApi = onboardingStore.preferredFood.map(
+        (p) => PREFER_MAP[p],
+      );
+      const allergyForApi = onboardingStore.allergies.map(
+        (a) => ALLERGY_MAP[a],
+      );
+      const constitutionForApi =
+        onboardingStore.constitution.length > 0
+          ? CONSTITUTION_MAP[onboardingStore.constitution[0]]
+          : null;
 
       const dataToSubmit: OnboardingRequestData = {
-        password: password, // 스토어에서 가져온 비밀번호 사용
+        password: password,
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: genderForApi, // 변환된 값을 사용합니다.
-        body_type: onboardingStore.constitution[0] || null,
-        state: onboardingStore.workoutStatus,
-        prefer: onboardingStore.preferredFood,
-        allergy: onboardingStore.allergies,
+        gender: genderForApi as "male" | "female" | null,
+        body_type: constitutionForApi,
+        state: stateForApi as "dieting" | "bulking" | "maintaining" | null,
+        prefer: preferForApi,
+        allergy: allergyForApi,
       };
 
       completeOnboarding(dataToSubmit, {
