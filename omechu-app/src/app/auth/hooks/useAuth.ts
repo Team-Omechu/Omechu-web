@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import * as authApi from "@/auth/api/auth";
+import * as authApi from "@/lib/api/auth";
 import type {
   LoginFormValues,
   SignupFormValues,

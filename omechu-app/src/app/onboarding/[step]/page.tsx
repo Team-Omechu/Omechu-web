@@ -19,7 +19,7 @@ import GenderStep from "@/onboarding/components/GenderStep";
 import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
-import { LoginSuccessData } from "@/auth/api/auth";
+import { LoginSuccessData } from "@/lib/api/auth";
 import {
   GENDER_MAP,
   EXERCISE_MAP,
@@ -133,10 +133,10 @@ export default function OnboardingPage() {
               ...completedProfile,
               gender:
                 completedProfile.gender === "남자"
-                  ? 1
+                  ? "남성"
                   : completedProfile.gender === "여자"
-                    ? 2
-                    : null,
+                    ? "여성"
+                    : "남성", // 기본값 혹은 예외처리
             };
             login({
               accessToken: "",
