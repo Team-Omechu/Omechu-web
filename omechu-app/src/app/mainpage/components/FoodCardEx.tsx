@@ -22,11 +22,11 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
           <span>{item.displayName.text}</span>
           <span className="flex items-center gap-1 text-xs font-normal text-yellow-500">
             ⭐ {item.rating}
-            <span className="text-yellow-500">({item.id})</span>
+            <span className="text-yellow-500">({item.userRatingCount})</span>
           </span>
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.formattedAddress}</p>
-        <p className="mb-1 text-sm font-bold text-blue-600">{item.id}</p>
+        <p className="mb-1 text-sm font-bold text-blue-600">{item.formattedAddress}</p>
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
         </div>
       </div>
