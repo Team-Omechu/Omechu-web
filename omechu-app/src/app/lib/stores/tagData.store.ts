@@ -9,7 +9,7 @@ type TagActions = {
   setTagData: (tags: TagData[]) => void;
   addTag: (tag: string, description:string) => void;
   removeTag: (tag: string) => void;
-  reset: () => void
+  tagDataReset: () => void
 };
 
 const initialTagData: TagData[] = []; // 초기엔 빈 배열, 필요하면 기본값
@@ -20,5 +20,5 @@ export const useTagStore = create<TagState & TagActions>((set, get) => ({
   addTag: (tag,description) => set({ tagData: [...get().tagData, {tag,description}] }),
   removeTag: (tag) =>
     set({ tagData: get().tagData.filter((t) => t.tag !== tag) }),
-  reset: () => set({tagData:initialTagData}),
+  tagDataReset: () => set({tagData:initialTagData}),
 }));

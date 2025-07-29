@@ -12,13 +12,13 @@ type LocationAnswerActions = {
   setY: (y: number) => void;
   setRadius: (radius: number) => void;
   setKeyword: (keyword: string) => void;
-  reset: () => void;
+  locationReset: () => void;
 };
 
 const initialState: LocationAnswerState = {
   x: null,
   y: null,
-  radius: null,
+  radius: 500,
   keyword: null,
 };
 
@@ -30,5 +30,5 @@ export const useLocationAnswerStore = create<
   setY: (y) => set({ y }),
   setRadius: (radius) => set({ radius }),
   setKeyword: (keyword) => set({ keyword }),
-  reset: () => set(initialState),
+  locationReset: () => set(initialState),
 }));

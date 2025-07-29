@@ -19,7 +19,7 @@ type QuestionAnswerActions = {
   setCurrentStep: (step: number) => void;
   addException: (exception: string) => void;
   removeException: (exception: string) => void;
-  reset: () => void;
+  questionReset: () => void;
 };
 
 const initialState: QuestionAnswerState = {
@@ -52,5 +52,5 @@ export const useQuestionAnswerStore = create<
     const { exceptions } = get();
     set({ exceptions: exceptions.filter((e) => e !== exception) });
   },
-  reset: () => set(initialState),
+  questionReset: () => set(initialState),
 }));
