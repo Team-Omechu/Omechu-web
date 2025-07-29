@@ -17,6 +17,7 @@ import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useTagStore } from "@/lib/stores/tagData.store";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -24,7 +25,9 @@ export default function ResultPage() {
   const [showModal, setShowModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const {reset} = useTagStore();
+  const {tagDataReset} = useTagStore();
+  const {locationReset} = useLocationAnswerStore();
+  const {questionReset} = useQuestionAnswerStore();
 
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
 
@@ -66,6 +69,13 @@ export default function ResultPage() {
     setExcludeMenu(null);
   };
 
+  const handleClick = () => {
+    router.push("/mainpage");
+    tagDataReset();
+    locationReset();
+    questionReset();
+  }
+
   if(isLoading){
     return <MainLoading/>
   }
@@ -75,7 +85,7 @@ export default function ResultPage() {
       <Header
         leftChild={
           <button
-            onClick={() => {router.push("/mainpage"); reset()}}
+            onClick={handleClick}
             className="flex items-center font-bold"
           >
             <Image

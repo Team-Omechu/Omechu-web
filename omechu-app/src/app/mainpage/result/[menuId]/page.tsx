@@ -6,8 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
-import FoodCard from "@/components/common/FoodCard";
-import { Restaurants } from "@/constant/restaurant/restaurantList";
 import type {
   MenuItem,
   MenuListResponse,
@@ -15,23 +13,37 @@ import type {
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 export default function MenuDetailPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
+  const{radius} = useLocationAnswerStore();
+  const {tagDataReset} = useTagStore();
+  const {locationReset} = useLocationAnswerStore();
+  const {questionReset} = useQuestionAnswerStore();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
+  console.log(radius)
 
-  console.log(data)
 
   const restaurants: Restaurant[] = Array.isArray(data)? data : []
-  console.log(restaurants)
+
 
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
   const cached = queryClient.getQueryData<MenuListResponse>(["recommendMenu"]);
   const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
+
+  const handleClick = () => {
+    router.push("/mainpage")
+    tagDataReset();
+    locationReset();
+    questionReset();
+  }
 
   if (!cached) {
     // 데이터가 없으면 처음으로 돌아가거나 안내
@@ -44,17 +56,12 @@ export default function MenuDetailPage() {
     return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
   }
 
-  // 관련 맛집 필터링 추후 삭제 예정.
-  const related = Restaurants.filter(
-    (r) => r.menu.includes(menu.menu) || r.tags.includes(menu.menu),
-  );
-
   return (
     <div className="flex w-full flex-col">
       <Header
         leftChild={
           <button
-            onClick={() => router.push("/mainpage")}
+            onClick={handleClick}
             className="flex items-center font-bold"
           >
             <Image
