@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
 
-export function useProfile(userId: number) {
+export function useProfile(userId?: number) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -10,6 +10,14 @@ export function useProfile(userId: number) {
     let mounted = true;
     setLoading(true);
     setError(null);
+
+    if (userId == null) {
+      setProfile(null);
+      setLoading(false);
+      setError("로그인이 필요합니다.");
+      return;
+    }
+
     getProfile(userId)
       .then((data) => {
         if (mounted) setProfile(data);
@@ -20,6 +28,7 @@ export function useProfile(userId: number) {
       .finally(() => {
         if (mounted) setLoading(false);
       });
+
     return () => {
       mounted = false;
     };

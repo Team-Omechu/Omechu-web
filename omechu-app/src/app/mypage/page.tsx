@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useProfile } from "./hooks/useProfile";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
@@ -11,8 +12,9 @@ import Header from "../components/common/Header";
 export default function MyPage() {
   const router = useRouter();
 
-  // 실제로는 로그인 사용자 id를 store/context 등에서 받아와야 함
-  const userId = 1;
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id;
+
   const [imgError, setImgError] = useState(false);
   const { profile, loading, error } = useProfile(userId);
 

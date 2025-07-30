@@ -53,3 +53,14 @@ export const login = async (
 export const logout = async (): Promise<void> => {
   await apiClient.post("/auth/logout");
 };
+
+//* 현재 로그인된 유저 정보 조회
+// * 추가 - 이삭
+export const getCurrentUser = async (): Promise<LoginSuccessData> => {
+  const response =
+    await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
+  if (response.data.resultType === "FAIL" || !response.data.success) {
+    throw new Error(response.data.error?.reason || "유저 조회 실패");
+  }
+  return response.data.success;
+};
