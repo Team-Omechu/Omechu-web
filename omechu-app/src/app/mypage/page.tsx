@@ -16,15 +16,8 @@ export default function MyPage() {
   const userId = user?.id;
 
   const [imgError, setImgError] = useState(false);
-  let profile, loading, error;
 
-  if (userId) {
-    ({ profile, loading, error } = useProfile(userId));
-  } else {
-    profile = null;
-    loading = false;
-    error = "로그인이 필요합니다.";
-  }
+  const { profile, loading, error } = useProfile(userId);
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -35,6 +28,7 @@ export default function MyPage() {
     { title: "찜 목록", href: "/mypage/favorites" },
   ];
 
+  console.log(useAuthStore.getState().user);
   return (
     <>
       <Header

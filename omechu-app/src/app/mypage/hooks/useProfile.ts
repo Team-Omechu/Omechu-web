@@ -22,8 +22,11 @@ export function useProfile(userId?: string) {
       .then((data) => {
         if (mounted) setProfile(data);
       })
-      .catch(() => {
-        if (mounted) setError("프로필 정보를 불러올 수 없습니다.");
+      .catch((err) => {
+        if (mounted) {
+          if (err?.response?.status === 401) setError("로그인이 필요합니다.");
+          else setError("프로필 정보를 불러올 수 없습니다.");
+        }
       })
       .finally(() => {
         if (mounted) setLoading(false);

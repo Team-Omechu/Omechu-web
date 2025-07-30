@@ -1,15 +1,21 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
 import type { LoginSuccessData } from "@/lib/api/auth";
 
-// 타입 정의
-interface AuthState {
+interface AuthStore {
   user: LoginSuccessData | null;
   setUser: (user: LoginSuccessData) => void;
-  clearUser: () => void;
+  logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
-}));
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+      logout: () => set({ user: null }),
+    }),
+    { name: "auth-store" }, // localStorage key
+  ),
+);
