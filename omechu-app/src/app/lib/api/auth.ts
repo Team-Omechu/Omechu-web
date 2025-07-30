@@ -85,6 +85,8 @@ export const login = async (
   const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
+    // * 이삭 추가 부분
+    { withCredentials: true },
   );
 
   const apiResponse = response.data;
