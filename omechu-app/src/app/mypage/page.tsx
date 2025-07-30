@@ -14,12 +14,10 @@ export default function MyPage() {
 
   // 전역 상태에서 user 객체 가져오기
   const user = useAuthStore((state) => state.user);
-  const userId = user?.id ? Number(user.id) : undefined; // id는 number로 변환
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile, loading, error } = useProfile(userId);
 
   const [imgError, setImgError] = useState(false);
-
-  // userId가 undefined일 때는 useProfile을 호출하지 않음
-  const { profile, loading, error } = useProfile(userId);
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },

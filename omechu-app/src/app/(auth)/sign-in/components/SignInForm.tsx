@@ -12,7 +12,7 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/lib/hooks/useAuth";
 import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
