@@ -1,16 +1,17 @@
 import apiClient from "@/lib/api/client";
-import type { ApiResponse } from "@/auth/api/auth";
+import type { ApiResponse } from "@/lib/api/auth";
 
 /**
  * 온보딩 완료(회원가입 완료) API 요청 데이터 타입
  * - 백엔드 user.dto.js 명세에 따라 최종 수정
  */
 export interface OnboardingRequestData {
+  password?: string; // 비밀번호 필드 추가 (선택적으로)
   nickname: string;
   profileImageUrl: string;
-  gender: "남자" | "여자" | null;
+  gender: "male" | "female" | null;
   body_type: string | null;
-  state: string | null;
+  state: "dieting" | "bulking" | "maintaining" | null;
   prefer: string[];
   allergy: string[];
 }
@@ -19,14 +20,17 @@ export interface OnboardingRequestData {
  * 온보딩 완료(회원가입 완료) API 성공 응답 데이터 타입
  */
 export interface OnboardingSuccessData {
+  id: string;
   email: string;
   nickname: string;
   profileImageUrl: string;
-  gender: "남성" | "여성";
+  gender: string;
   body_type: string;
   state: string;
   prefer: string[];
   allergy: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 /**

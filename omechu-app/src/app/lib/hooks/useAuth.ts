@@ -3,11 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import type { LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useAuthStore } from "@/auth/store";
 import * as authApi from "@/lib/api/auth";
+import type { LoginSuccessData } from "@/lib/api/auth";
 
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
 
-  return useMutation<authApi.LoginSuccessData, Error, LoginFormValues>({
+  return useMutation<LoginSuccessData, Error, LoginFormValues>({
     mutationFn: authApi.login,
     onSuccess: (data) => {
       // TODO: 백엔드에서 accessToken을 내려주면 그걸 받아서 저장해야 합니다.

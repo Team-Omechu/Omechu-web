@@ -19,6 +19,14 @@ import GenderStep from "@/onboarding/components/GenderStep";
 import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
+import { LoginSuccessData } from "@/lib/api/auth";
+import {
+  GENDER_MAP,
+  EXERCISE_MAP,
+  PREFER_MAP,
+  ALLERGY_MAP,
+  CONSTITUTION_MAP,
+} from "@/onboarding/utils/enum-mapper";
 
 const ONBOARDING_STEPS = 6;
 
@@ -26,7 +34,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
   const onboardingStore = useOnboardingStore();
-  const { user: authUser, login } = useAuthStore();
+  const { user: authUser, login, password } = useAuthStore();
   const {
     setCurrentStep,
     reset: resetOnboarding,
@@ -90,22 +98,50 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
+      const genderForApi = onboardingStore.gender
+        ? GENDER_MAP[onboardingStore.gender]
+        : null;
+      const stateForApi = onboardingStore.workoutStatus
+        ? EXERCISE_MAP[onboardingStore.workoutStatus]
+        : null;
+      const preferForApi = onboardingStore.preferredFood.map(
+        (p) => PREFER_MAP[p],
+      );
+      const allergyForApi = onboardingStore.allergies.map(
+        (a) => ALLERGY_MAP[a],
+      );
+      const constitutionForApi =
+        onboardingStore.constitution.length > 0
+          ? CONSTITUTION_MAP[onboardingStore.constitution[0]]
+          : null;
+
       const dataToSubmit: OnboardingRequestData = {
+        password: password,
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: onboardingStore.gender === "남성" ? "남자" : "여자",
-        body_type: onboardingStore.constitution[0] || null,
-        state: onboardingStore.workoutStatus,
-        prefer: onboardingStore.preferredFood,
-        allergy: onboardingStore.allergies,
+        gender: genderForApi as "male" | "female" | null,
+        body_type: constitutionForApi,
+        state: stateForApi as "dieting" | "bulking" | "maintaining" | null,
+        prefer: preferForApi,
+        allergy: allergyForApi,
       };
 
       completeOnboarding(dataToSubmit, {
         onSuccess: (completedProfile) => {
           if (authUser) {
+            const userForLogin: LoginSuccessData = {
+              ...completedProfile,
+              gender:
+                completedProfile.gender === "남자"
+                  ? "남성"
+                  : completedProfile.gender === "여자"
+                    ? "여성"
+                    : "남성", // 기본값 혹은 예외처리
+            };
             login({
               accessToken: "",
-              user: { ...authUser, ...completedProfile },
+              user: userForLogin,
+              password: password,
             });
           }
           setIsModalOpen(true);
