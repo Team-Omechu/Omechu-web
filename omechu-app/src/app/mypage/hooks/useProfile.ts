@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
 
-export function useProfile(userId?: number) {
+export function useProfile(userId?: string) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

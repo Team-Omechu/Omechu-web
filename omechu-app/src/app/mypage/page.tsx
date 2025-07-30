@@ -16,7 +16,15 @@ export default function MyPage() {
   const userId = user?.id;
 
   const [imgError, setImgError] = useState(false);
-  const { profile, loading, error } = useProfile(userId);
+  let profile, loading, error;
+
+  if (userId) {
+    ({ profile, loading, error } = useProfile(userId));
+  } else {
+    profile = null;
+    loading = false;
+    error = "로그인이 필요합니다.";
+  }
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
