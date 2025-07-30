@@ -18,16 +18,20 @@ import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { useAuthStore } from "@/auth/store";
+import LoginPromptModal from "../example_testpage/components/LoginPromptModal";
 
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRecommendMenu();
   const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const {tagDataReset} = useTagStore();
   const {locationReset} = useLocationAnswerStore();
   const {questionReset} = useQuestionAnswerStore();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
 
@@ -35,6 +39,17 @@ export default function ResultPage() {
 
   const { setKeyword } = useLocationAnswerStore();
   const {tagData} = useTagStore();
+
+  const login = false;
+
+  const handleExcludeCLick = (menuName: string) => {
+    if (!login){
+      setShowLoginModal(true);
+      return;
+    }
+    setExcludeMenu(menuName)
+    setShowModal(true);
+  }
 
   useEffect(() => {
     setFilteredMenus(menus);
@@ -76,6 +91,14 @@ export default function ResultPage() {
     questionReset();
   }
 
+  const handleNextClick = () => {
+    if(!login){  
+      setShowLoginModal(true);
+      return;
+    }
+    handleNext();
+  }
+
   if(isLoading){
     return <MainLoading/>
   }
@@ -106,10 +129,7 @@ export default function ResultPage() {
           filteredMenus.map((menu) => (
             <div key={menu.menu} className="relative mb-4">
               <ExcludeButton
-                onClick={() => {
-                  setExcludeMenu(menu.menu);
-                  setShowModal(true);
-                }}
+                onClick={() => {handleExcludeCLick(menu.menu)}}
               />
               <MenuCard
                 title={menu.menu}
@@ -133,7 +153,7 @@ export default function ResultPage() {
         </button>
         <button
           className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
-          onClick={handleNext}
+          onClick={handleNextClick}
         >
           선택하기
         </button>
@@ -157,6 +177,13 @@ export default function ResultPage() {
             onClose={() => setShowModal(false)}
             swapButtonOrder
           />
+        </ModalWrapper>
+      )}
+      {showLoginModal && (
+        <ModalWrapper>
+        <LoginPromptModal
+        onClose={()=>{setShowLoginModal(false)}}
+        onConfirm={()=>{router.push("/sign-in")}}/>
         </ModalWrapper>
       )}
     </div>
