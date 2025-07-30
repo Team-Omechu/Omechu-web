@@ -275,31 +275,30 @@ export default function MyActivity() {
                 !error &&
                 myRestaurants.map((item) => (
                   <FoodCard
-                    key={item.placeId}
+                    key={item.id}
                     item={{
-                      id: item.placeId,
-                      name: item.placeName,
-                      images: [item.placeImageUrl],
-                      rating: item.placePoint,
-                      menu: item.signatureMenu?.[0] ?? "",
-                      tags: item.summary ?? [],
+                      id: item.id,
+                      name: item.name,
+                      menu: item.repre_menu || "",
+                      rating: item.rating || 0,
+                      images: item.images
+                        ? item.images.map((img) => img.link)
+                        : [],
+                      // address 구조를 API 응답에 따라 맞춤 (예시: jibun/postalCode는 빈 값 처리)
                       address: {
-                        road: item.address,
+                        road: item.address || "",
                         jibun: "",
                         postalCode: "",
                       },
-                      reviews: 0, // 없으면 0, 필요 시 API 수정
-                      isLiked: true, // 찜 목록 -> true
-                      category: "", // 카테고리 없으면 빈 값
-                      timetable: [], // 없음 -> 빈 배열
+                      tags: [], // 필요하면 추가
+                      isLiked: false, // 필요하면 추가
+                      reviews: 0, // 필요하면 추가
+                      category: "", // 필요하면 추가
+                      timetable: [], // 필요하면 추가
                     }}
                     onClick={() =>
-                      router.push(
-                        `/restaurant/restaurant-detail/${item.placeId}`,
-                      )
+                      router.push(`/restaurant/restaurant-detail/${item.id}`)
                     }
-                    onLike={() => handleLike(item.placeId)}
-                    onUnlike={() => handleUnlike(item.placeId)}
                   />
                 ))}
               {!loading && !error && myRestaurants.length === 0 && (

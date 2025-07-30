@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
 
-export function useProfile(userId?: string) {
+// userId는 number 타입으로 사용합니다.
+export function useProfile(userId?: number) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -11,7 +12,7 @@ export function useProfile(userId?: string) {
     setLoading(true);
     setError(null);
 
-    if (userId == null) {
+    if (!userId) {
       setProfile(null);
       setLoading(false);
       setError("로그인이 필요합니다.");

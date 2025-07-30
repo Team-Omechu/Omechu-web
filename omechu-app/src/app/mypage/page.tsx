@@ -12,11 +12,13 @@ import Header from "../components/common/Header";
 export default function MyPage() {
   const router = useRouter();
 
+  // 전역 상태에서 user 객체 가져오기
   const user = useAuthStore((state) => state.user);
-  const userId = user?.id;
+  const userId = user?.id ? Number(user.id) : undefined; // id는 number로 변환
 
   const [imgError, setImgError] = useState(false);
 
+  // userId가 undefined일 때는 useProfile을 호출하지 않음
   const { profile, loading, error } = useProfile(userId);
 
   const menuList: { title: string; href: string }[] = [
@@ -28,7 +30,12 @@ export default function MyPage() {
     { title: "찜 목록", href: "/mypage/favorites" },
   ];
 
-  console.log(useAuthStore.getState().user);
+  console.log("userId:", userId);
+  console.log("profile:", profile);
+  console.log("loading:", loading);
+  console.log("error:", error);
+
+  // console.log(useAuthStore.getState().user);
   return (
     <>
       <Header

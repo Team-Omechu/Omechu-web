@@ -28,7 +28,7 @@ export default function ProfileEdit() {
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  const userId = 1; // 실제는 store/context에서
+  const userId = "15"; // 실제는 store/context에서
   const { profile, loading, error: profileError } = useProfile(userId);
 
   // 상태와 동기화 (처음 한 번만)
