@@ -64,7 +64,7 @@ export default function UserInfoEdit() {
               className="opacity-25"
               cx="12"
               cy="12"
-              r="10"
+              r="12"
               stroke="currentColor"
               strokeWidth="4"
             />

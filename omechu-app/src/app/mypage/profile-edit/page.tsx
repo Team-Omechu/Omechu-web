@@ -15,6 +15,7 @@ import {
   uploadToS3,
   updateProfile,
 } from "../api/updateProfile";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -27,9 +28,12 @@ export default function ProfileEdit() {
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const nicknameRegex = /^[A-Za-z가-힣]{2,12}$/; // 2~12글자, 한글/영문만 허용
 
-  const userId = "15"; // 실제는 store/context에서
-  const { profile, loading, error: profileError } = useProfile(userId);
+  // 전역 상태에서 user 객체 가져오기
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile, loading, error } = useProfile(userId);
 
   // 상태와 동기화 (처음 한 번만)
   useEffect(() => {
@@ -38,6 +42,25 @@ export default function ProfileEdit() {
       setNickname(profile.nickname ?? "");
     }
   }, [profile]);
+
+  // if (loading) {
+  //   return (
+  //     <div className="flex h-[80vh] items-center justify-center">
+  //       <div className="text-lg text-gray-600">로딩 중...</div>
+  //     </div>
+  //   );
+  // }
+  // if (error) {
+  //   return (
+  //     <div className="flex h-[80vh] items-center justify-center">
+  //       <div className="text-lg text-red-500">오류: {error}</div>
+  //     </div>
+  //   );
+  // }
+
+  useEffect(() => {
+    setIsValid(nicknameRegex.test(nickname));
+  }, [nickname]);
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -89,10 +112,6 @@ export default function ProfileEdit() {
       fileInputRef.current.value = ""; // 실제 input 비우기
     }
   };
-
-  useEffect(() => {
-    setIsValid(nickname.length > 1 && nickname.length < 13);
-  }, [nickname]);
 
   return (
     <>
@@ -215,6 +234,18 @@ export default function ProfileEdit() {
           </ModalWrapper>
         )}
       </main>
+      {/* {error && (
+        <ModalWrapper>
+          <AlertModal
+            title="로그인이 필요합니다"
+            description="로그인 후 이용해 주세요."
+            confirmText="확인"
+            onConfirm={() => {
+              router.push("/sign-in");
+            }}
+          />
+        </ModalWrapper>
+      )} */}
     </>
   );
 }
