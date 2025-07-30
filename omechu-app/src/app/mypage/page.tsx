@@ -33,7 +33,6 @@ export default function MyPage() {
   console.log("loading:", loading);
   console.log("error:", error);
 
-  // console.log(useAuthStore.getState().user);
   return (
     <>
       <Header
