@@ -153,7 +153,7 @@ export default function RecommendedList() {
                     prev === index ? undefined : index,
                   )
                 }
-                className={`rounded-full text-[15px] text-[#393939] hover:bg-[#e2e2e2] active:bg-[#828282] ${
+                className={`rounded-full text-[15px] text-grey-darker hover:bg-grey-lightActive active:bg-grey-normalActive ${
                   selectedAlphabetIndex === index
                     ? "bg-[#d4f0ff] font-black"
                     : "font-normal"

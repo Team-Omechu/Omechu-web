@@ -20,7 +20,7 @@ const ProfileStep = () => {
     <div className="flex w-full flex-col items-center px-4 py-6">
       <section className="my-20">
         <div className="whitespace-pre p-10 text-center text-3xl font-medium leading-relaxed">
-          <div className="text-center text-2xl font-semibold text-[#1F9BDA]">
+          <div className="text-center text-2xl font-semibold text-secondary-normal">
             반가워요!
           </div>
           <h1 className="text-2xl font-normal text-black">
@@ -46,7 +46,7 @@ const ProfileStep = () => {
           </button>
           <button
             type="button"
-            className="text-center text-sm font-normal text-[#48528E] dark:text-[#e9f5fb]"
+            className="text-center text-sm font-normal text-[#48528E] dark:text-secondary-light"
           >
             사진지우기
           </button>

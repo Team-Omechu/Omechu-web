@@ -56,8 +56,8 @@ export default function AllergyStep() {
                     onClick={() => handleClick(item)}
                     className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                       isSelected
-                        ? "border-[#FB4746] bg-[#FB4746] text-white"
-                        : "border-[#FB4746] bg-white text-[#FB4746] hover:bg-[#e2403f] hover:text-white"
+                        ? "border-primary-normal bg-primary-normal text-white"
+                        : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
                     } `}
                   >
                     {item}
@@ -76,7 +76,7 @@ export default function AllergyStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
-            className="ml-5 text-base text-[#828282] dark:font-semibold dark:text-white"
+            className="ml-5 text-base text-grey-normalActive dark:font-semibold dark:text-white"
           >
             {"<"} 이전으로
           </button>

@@ -102,10 +102,10 @@ export default function Favorites() {
       />
       <main className="min-h-full w-full px-6 pb-8 pt-3">
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-[#828282]">
+        <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
           <button
             className={
-              sortOrder === "latest" ? "font-semibold text-[#393939]" : ""
+              sortOrder === "latest" ? "font-semibold text-grey-darker" : ""
             }
             onClick={() => setSortOrder("latest")}
           >
@@ -114,7 +114,7 @@ export default function Favorites() {
           <span>|</span>
           <button
             className={
-              sortOrder === "oldest" ? "font-semibold text-[#393939]" : ""
+              sortOrder === "oldest" ? "font-semibold text-grey-darker" : ""
             }
             onClick={() => setSortOrder("oldest")}
           >

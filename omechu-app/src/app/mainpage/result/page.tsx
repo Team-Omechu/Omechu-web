@@ -102,13 +102,13 @@ export default function ResultPage() {
 
       <div className="mt-4 flex h-[50px] justify-between gap-2 px-4">
         <button
-          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-[#A3A3A3]"
+          className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-grey-normal"
           onClick={handleReshuffle}
         >
           다시추천
         </button>
         <button
-          className="flex-1 rounded-md bg-[#FB4746] px-4 py-2 text-[#FFF] hover:bg-[#e2403f]"
+          className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
           onClick={handleNext}
         >
           선택하기

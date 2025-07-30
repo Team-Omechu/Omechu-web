@@ -19,7 +19,7 @@ export default function CustomDatePicker() {
       type="button"
       onClick={onClick}
       ref={ref}
-      className="flex h-fit w-32 items-center gap-2 rounded-md bg-[#F2F2F2] px-4 pb-1 pt-1.5 text-sm text-[#393939] shadow-sm"
+      className="flex h-fit w-32 items-center gap-2 rounded-md bg-[#F2F2F2] px-4 pb-1 pt-1.5 text-sm text-grey-darker shadow-sm"
     >
       <Image
         src="/calender/uil_calender.svg"
@@ -57,7 +57,7 @@ export default function CustomDatePicker() {
             height={26}
           />
         </button>
-        <span className="text-xl font-normal text-[#393939]">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
+        <span className="text-xl font-normal text-grey-darker">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
         <button
           onClick={increaseMonth}
           className="rounded px-2 py-1 text-sm hover:bg-gray-200"

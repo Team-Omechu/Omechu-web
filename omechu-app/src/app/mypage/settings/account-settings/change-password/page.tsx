@@ -143,7 +143,7 @@ export default function ChangePassword() {
             }}
             className={`mt-48 h-[50px] w-[335px] rounded-md text-[17px] font-medium text-white transition ${
               isFormValid
-                ? "bg-[#fb4746] hover:bg-[#e2403f] active:bg-[#c93938]"
+                ? "bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive"
                 : "bg-gray-300"
             }`}
           >

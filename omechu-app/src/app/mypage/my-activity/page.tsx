@@ -160,7 +160,7 @@ export default function MyActivity() {
       >
         {selectedIndex === 0 && (
           <>
-            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-[#828282]">
+            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
               {/* 필터 - 추천 순 | 최신 순 */}
               <SortSelector
                 options={[
@@ -205,7 +205,7 @@ export default function MyActivity() {
                 <div key={item.id} className="flex flex-col">
                   <button
                     onClick={() => handleOpenEditModal(item.id)}
-                    className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-[#828282]"
+                    className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-grey-normalActive"
                   >
                     편집
                   </button>

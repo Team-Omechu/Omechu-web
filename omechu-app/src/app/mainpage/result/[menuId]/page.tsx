@@ -47,7 +47,9 @@ export default function MenuDetailPage() {
       />
 
       <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
-        <p className="text-center font-semibold text-[#1F9BDA]">{menu.title}</p>
+        <p className="text-center font-semibold text-secondary-normal">
+          {menu.title}
+        </p>
         <Image
           src={"/logo/logo.png"}
           alt={menu.title}
@@ -66,7 +68,7 @@ export default function MenuDetailPage() {
           취향 저격! 추천 메뉴 있는 맛집
         </h3>
         <button
-          className="px-4 text-sm text-[#828282]"
+          className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
             router.push(`/restaurant?query=${encodeURIComponent(menu.title)}`)
           }

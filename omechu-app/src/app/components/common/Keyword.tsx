@@ -15,7 +15,7 @@ export default function Keyword({
     <button
       onClick={onClick}
       className={`h-7 w-20 rounded-full border border-gray-400 text-sm ${className} ${
-        selected ? "bg-[#FB4746] text-white" : "bg-white text-gray-600"
+        selected ? "bg-primary-normal text-white" : "bg-white text-gray-600"
       }`}
     >
       {label}
