@@ -10,9 +10,7 @@ import MenuCard from "@/mainpage/components/MenuCard";
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import TagCard from "../components/TagCard";
-import {
-  MenuItem
-} from "@/constant/mainpage/resultData";
+import { MenuItem } from "@/constant/mainpage/resultData";
 import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
@@ -28,9 +26,9 @@ export default function ResultPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const {tagDataReset} = useTagStore();
-  const {locationReset} = useLocationAnswerStore();
-  const {questionReset} = useQuestionAnswerStore();
+  const { tagDataReset } = useTagStore();
+  const { locationReset } = useLocationAnswerStore();
+  const { questionReset } = useQuestionAnswerStore();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
@@ -38,18 +36,18 @@ export default function ResultPage() {
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
   const { setKeyword } = useLocationAnswerStore();
-  const {tagData} = useTagStore();
+  const { tagData } = useTagStore();
 
   const login = false;
 
   const handleExcludeCLick = (menuName: string) => {
-    if (!login){
+    if (!login) {
       setShowLoginModal(true);
       return;
     }
-    setExcludeMenu(menuName)
+    setExcludeMenu(menuName);
     setShowModal(true);
-  }
+  };
 
   useEffect(() => {
     setFilteredMenus(menus);
@@ -68,8 +66,8 @@ export default function ResultPage() {
   const handleReshuffle = () => {
     refetch();
     setOpenMenu(null);
-    if(isLoading){
-      return <MainLoading/>
+    if (isLoading) {
+      return <MainLoading />;
     }
   };
 
@@ -89,28 +87,25 @@ export default function ResultPage() {
     tagDataReset();
     locationReset();
     questionReset();
-  }
+  };
 
   const handleNextClick = () => {
-    if(!login){  
+    if (!login) {
       setShowLoginModal(true);
       return;
     }
     handleNext();
-  }
+  };
 
-  if(isLoading){
-    return <MainLoading/>
+  if (isLoading) {
+    return <MainLoading />;
   }
 
   return (
     <div className="flex h-screen flex-col">
       <Header
         leftChild={
-          <button
-            onClick={handleClick}
-            className="flex items-center font-bold"
-          >
+          <button onClick={handleClick} className="flex items-center font-bold">
             <Image
               src="/header_left_arrow.png"
               alt="back"
@@ -129,7 +124,9 @@ export default function ResultPage() {
           filteredMenus.map((menu) => (
             <div key={menu.menu} className="relative mb-4">
               <ExcludeButton
-                onClick={() => {handleExcludeCLick(menu.menu)}}
+                onClick={() => {
+                  handleExcludeCLick(menu.menu);
+                }}
               />
               <MenuCard
                 title={menu.menu}
@@ -181,9 +178,14 @@ export default function ResultPage() {
       )}
       {showLoginModal && (
         <ModalWrapper>
-        <LoginPromptModal
-        onClose={()=>{setShowLoginModal(false)}}
-        onConfirm={()=>{router.push("/sign-in")}}/>
+          <LoginPromptModal
+            onClose={() => {
+              setShowLoginModal(false);
+            }}
+            onConfirm={() => {
+              router.push("/sign-in");
+            }}
+          />
         </ModalWrapper>
       )}
     </div>

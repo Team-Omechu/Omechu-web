@@ -14,11 +14,11 @@ import { purposeOptions } from "@/constant/mainpage/Option";
 const PurposeStep = () => {
   const router = useRouter();
   const { purpose, setPurpose } = useQuestionAnswerStore();
-  const {addTag} = useTagStore();
+  const { addTag } = useTagStore();
 
-  const handleSelect = (value: number, label: string, description:string) => {
+  const handleSelect = (value: number, label: string, description: string) => {
     setPurpose(value);
-    addTag(label,description)
+    addTag(label, description);
     router.push("/mainpage/question-answer/3");
   };
 
@@ -27,7 +27,7 @@ const PurposeStep = () => {
       {purposeOptions.map(({ label, value, description }) => (
         <ListButton
           key={value}
-          onClick={() => handleSelect(value,label,description)}
+          onClick={() => handleSelect(value, label, description)}
           isSelected={purpose === value}
           textSize="base"
         >

@@ -14,11 +14,11 @@ import { whoOptions } from "@/constant/mainpage/Option";
 const WhoStep = () => {
   const router = useRouter();
   const { who, setWho } = useQuestionAnswerStore();
-  const {addTag} = useTagStore();
+  const { addTag } = useTagStore();
 
-  const handleSelect = (value: number, label:string, description:string) => {
+  const handleSelect = (value: number, label: string, description: string) => {
     setWho(value);
-    addTag(label, description)
+    addTag(label, description);
     router.push("/mainpage/question-answer/5");
   };
 
@@ -27,7 +27,7 @@ const WhoStep = () => {
       {whoOptions.map(({ label, value, description }) => (
         <ListButton
           key={value}
-          onClick={() => handleSelect(value,label, description)}
+          onClick={() => handleSelect(value, label, description)}
           isSelected={who === value}
           textSize="base"
         >

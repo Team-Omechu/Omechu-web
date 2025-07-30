@@ -18,8 +18,17 @@ export interface Restaurant {
   };
   rating: number;
   userRatingCount: number;
-  priceLevel: "PRICE_LEVEL_INEXPENSIVE" | "PRICE_LEVEL_MODERATE" | "PRICE_LEVEL_EXPENSIVE" | "PRICE_LEVEL_VERY_EXPENSIVE" | string;
-  businessStatus: "OPERATIONAL" | "CLOSED_TEMPORARILY" | "CLOSED_PERMANENTLY" | string;
+  priceLevel:
+    | "PRICE_LEVEL_INEXPENSIVE"
+    | "PRICE_LEVEL_MODERATE"
+    | "PRICE_LEVEL_EXPENSIVE"
+    | "PRICE_LEVEL_VERY_EXPENSIVE"
+    | string;
+  businessStatus:
+    | "OPERATIONAL"
+    | "CLOSED_TEMPORARILY"
+    | "CLOSED_PERMANENTLY"
+    | string;
 }
 
 export type restaurantList = Restaurant[];

@@ -11,12 +11,12 @@ import { budgetOptions } from "@/constant/mainpage/Option";
 const BudgetStep = () => {
   const router = useRouter();
   const { budget, setBudget } = useQuestionAnswerStore();
-  const {addTag} = useTagStore();
+  const { addTag } = useTagStore();
   // 각 옵션에 순서대로 value(1,2,3) 할당
 
-  const handleSelect = (value: number, label: string, description:string) => {
+  const handleSelect = (value: number, label: string, description: string) => {
     setBudget(value);
-    addTag(label, description)
+    addTag(label, description);
     router.push("/mainpage/question-answer/6");
   };
 

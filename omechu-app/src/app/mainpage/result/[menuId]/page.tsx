@@ -21,17 +21,15 @@ export default function MenuDetailPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const{radius} = useLocationAnswerStore();
-  const {tagDataReset} = useTagStore();
-  const {locationReset} = useLocationAnswerStore();
-  const {questionReset} = useQuestionAnswerStore();
+  const { radius } = useLocationAnswerStore();
+  const { tagDataReset } = useTagStore();
+  const { locationReset } = useLocationAnswerStore();
+  const { questionReset } = useQuestionAnswerStore();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
-  console.log(radius)
+  console.log(radius);
 
-
-  const restaurants: Restaurant[] = Array.isArray(data)? data : []
-
+  const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
 
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
@@ -39,11 +37,11 @@ export default function MenuDetailPage() {
   const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
 
   const handleClick = () => {
-    router.push("/mainpage")
+    router.push("/mainpage");
     tagDataReset();
     locationReset();
     questionReset();
-  }
+  };
 
   if (!cached) {
     // 데이터가 없으면 처음으로 돌아가거나 안내
@@ -60,10 +58,7 @@ export default function MenuDetailPage() {
     <div className="flex w-full flex-col">
       <Header
         leftChild={
-          <button
-            onClick={handleClick}
-            className="flex items-center font-bold"
-          >
+          <button onClick={handleClick} className="flex items-center font-bold">
             <Image
               src="/header_left_arrow.png"
               alt="back"
@@ -106,17 +101,15 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-3 space-y-2 px-4">
-        {
-          restaurants.map((item) => (
-            <FoodCardEx
-              key={item.id}
-              item={item}
-              onClick={() =>
-                router.push(`/restaurant/restaurant-detail/${item.id}`)
-              }
-            />
-          ))
-}
+        {restaurants.map((item) => (
+          <FoodCardEx
+            key={item.id}
+            item={item}
+            onClick={() =>
+              router.push(`/restaurant/restaurant-detail/${item.id}`)
+            }
+          />
+        ))}
       </div>
     </div>
   );

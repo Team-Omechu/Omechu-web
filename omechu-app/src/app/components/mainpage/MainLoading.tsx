@@ -14,19 +14,20 @@ const MainLoading = () => {
           }
         `}
       </style>
-<div
-  className="min-h-screen h-screen flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
-  style={{ backgroundImage: "url('/image/loading-bg.svg')",
-    backgroundSize: "1000px 700px"
-   }}
->
-  <div
-    className="animate-food-cycle h-[170px] w-[175px] bg-[url('/image/food-sprite.svg')]"
-    style={{
-      backgroundSize: "525px 170px",
-    }}
-  ></div>
-</div>
+      <div
+        className="flex h-screen min-h-screen items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/image/loading-bg.svg')",
+          backgroundSize: "1000px 700px",
+        }}
+      >
+        <div
+          className="animate-food-cycle h-[170px] w-[175px] bg-[url('/image/food-sprite.svg')]"
+          style={{
+            backgroundSize: "525px 170px",
+          }}
+        ></div>
+      </div>
     </>
   );
 };

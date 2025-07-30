@@ -28,6 +28,6 @@ export type MenuListResponse = {
 };
 
 export type TagData = {
-  tag:string,
-  description: string
-}
+  tag: string;
+  description: string;
+};

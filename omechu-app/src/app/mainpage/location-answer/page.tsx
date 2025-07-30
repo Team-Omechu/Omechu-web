@@ -16,7 +16,7 @@ export default function LocationAnswerPage() {
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
-  const{setX, setY} = useLocationAnswerStore();
+  const { setX, setY } = useLocationAnswerStore();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -38,7 +38,7 @@ export default function LocationAnswerPage() {
   const handleClick = () => {
     router.push("/mainpage/result");
     handleLocation(setX, setY);
-  }
+  };
 
   return (
     <div className="relative flex h-screen w-full flex-col">

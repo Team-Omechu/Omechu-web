@@ -31,7 +31,7 @@ export default function QuestionAnswerPage() {
     questionReset();
     router.push("/mainpage");
     setShowModal(false);
-  }
+  };
 
   useEffect(() => {
     if (isNaN(step) || step < 1 || step > QUESTION_STEPS) {

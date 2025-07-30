@@ -1,8 +1,20 @@
 export const mealTimeOptions = [
   { label: "아침", value: 1, description: "간단하고 속에 편한 음식" },
-  { label: "점심", value: 2, description: "활동을 위한 에너지를 줄 수 있는 식사" },
-  { label: "저녁", value: 3, description: "하루를 마무리할 때 먹기 좋은 포만감 높은 식사" },
-  { label: "야식", value: 4, description: "부담이 적고 간편하거나 입맛 당기는 별미" },
+  {
+    label: "점심",
+    value: 2,
+    description: "활동을 위한 에너지를 줄 수 있는 식사",
+  },
+  {
+    label: "저녁",
+    value: 3,
+    description: "하루를 마무리할 때 먹기 좋은 포만감 높은 식사",
+  },
+  {
+    label: "야식",
+    value: 4,
+    description: "부담이 적고 간편하거나 입맛 당기는 별미",
+  },
 ];
 
 export const purposeOptions = [

@@ -14,11 +14,11 @@ import { mealTimeOptions } from "@/constant/mainpage/Option";
 const MealTimeStep = () => {
   const router = useRouter();
   const { mealTime, setMealTime } = useQuestionAnswerStore();
-  const {addTag} = useTagStore();
+  const { addTag } = useTagStore();
 
-  const handleSelect = (value: number, label:string, description:string) => {
+  const handleSelect = (value: number, label: string, description: string) => {
     setMealTime(value);
-    addTag(label,description);
+    addTag(label, description);
     router.push("/mainpage/question-answer/2");
   };
 
@@ -27,7 +27,7 @@ const MealTimeStep = () => {
       {mealTimeOptions.map(({ label, value, description }) => (
         <ListButton
           key={value}
-          onClick={() => handleSelect(value,label,description)}
+          onClick={() => handleSelect(value, label, description)}
           isSelected={mealTime === value}
           textSize="base"
         >

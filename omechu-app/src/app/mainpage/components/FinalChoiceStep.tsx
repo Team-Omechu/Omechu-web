@@ -7,20 +7,16 @@ import { handleLocation } from "../utils/handleLocation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 const FinalChoiceStep = () => {
   const router = useRouter();
-  const {setX, setY} = useLocationAnswerStore();
+  const { setX, setY } = useLocationAnswerStore();
 
-  const handleClick= () => {
-    router.push("/mainpage/result"); 
-    handleLocation(setX,setY);
-  }
+  const handleClick = () => {
+    router.push("/mainpage/result");
+    handleLocation(setX, setY);
+  };
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5">
-      <ListButton
-        onClick={handleClick}
-        isSelected={false}
-        textSize="base"
-      >
+      <ListButton onClick={handleClick} isSelected={false} textSize="base">
         결과 바로 보기
       </ListButton>
       <ListButton
