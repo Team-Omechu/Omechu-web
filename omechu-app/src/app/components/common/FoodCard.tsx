@@ -23,11 +23,11 @@ export default function FoodCard({
     e.stopPropagation();
 
     if (isLiked) {
-      // 이미 찜 상태라면 → 해제 콜백
+      // 찜 해제
       setIsLiked(false);
       onUnlike && onUnlike();
     } else {
-      // 찜이 아니라면 → 등록 콜백
+      // 찜 등록
       setIsLiked(true);
       onLike && onLike();
     }

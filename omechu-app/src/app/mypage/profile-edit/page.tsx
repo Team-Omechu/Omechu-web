@@ -16,6 +16,7 @@ import {
   updateProfile,
 } from "../api/updateProfile";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function ProfileEdit() {
   const user = useAuthStore((state) => state.user);
   const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
   const { profile, loading, error } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
 
   // 상태와 동기화 (처음 한 번만)
   useEffect(() => {
@@ -43,24 +45,22 @@ export default function ProfileEdit() {
     }
   }, [profile]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex h-[80vh] items-center justify-center">
-  //       <div className="text-lg text-gray-600">로딩 중...</div>
-  //     </div>
-  //   );
-  // }
-  // if (error) {
-  //   return (
-  //     <div className="flex h-[80vh] items-center justify-center">
-  //       <div className="text-lg text-red-500">오류: {error}</div>
-  //     </div>
-  //   );
-  // }
-
   useEffect(() => {
     setIsValid(nicknameRegex.test(nickname));
   }, [nickname]);
+
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => setMinLoading(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoading(false);
+    }
+  }, [loading]);
+
+  if (loading || minLoading) {
+    return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
+  }
 
   const handleSave = async () => {
     setIsLoading(true);
