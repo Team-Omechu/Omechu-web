@@ -1,15 +1,15 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import type { User } from "@/lib/api/auth"; // 경로 확인
+import type { LoginSuccessData } from "@/lib/api/auth"; // 경로 확인
 
 interface AuthState {
   isLoggedIn: boolean;
   accessToken: string | null;
-  user: User | null; // 타입을 User로 변경
-  login: (data: { accessToken: string; user: User }) => void; // 타입을 User로 변경
+  user: LoginSuccessData | null;
+  login: (data: { accessToken: string; user: LoginSuccessData }) => void;
   logout: () => void;
-  setUser: (user: User) => void; // 타입을 User로 변경
+  setUser: (user: LoginSuccessData) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
