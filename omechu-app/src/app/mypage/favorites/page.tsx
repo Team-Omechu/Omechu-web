@@ -186,7 +186,7 @@ export default function Favorites() {
       />
       <main
         ref={mainRef}
-        className="relative h-screen w-full overflow-y-auto px-6 pb-8 pt-3 scrollbar-hide"
+        className="relative h-[calc(100dvh-3rem)] w-full overflow-y-auto px-6 pb-8 pt-3 scrollbar-hide"
       >
         {/* 필터 - 최신 순 | 오래된 순 */}
         <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
