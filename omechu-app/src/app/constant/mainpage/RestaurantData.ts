@@ -1,41 +1,34 @@
-// app/constant/mainpage/restaurantData.ts
-
-export interface Restaurant {
-  name: string;
-  rating: number;
-  reviews: number;
-  address: string;
-  menu: string;
-  tags: string[];
-  image: string;
+export interface RestaurantRequest {
+  latitude: number | null;
+  longitude: number | null;
+  radius: number | null;
+  keyword: string | null;
+  pageSize: number; // 맛집 데이터를 몇개 줄 지 정하는 타입.
 }
 
-export const restaurantList: Restaurant[] = [
-  {
-    name: "pier 23",
-    rating: 3.2,
-    reviews: 24,
-    address: "서울특별시 무슨구 무슨동 000-0",
-    menu: "짜장면",
-    tags: ["아침식사", "데이트", "기념일"],
-    image: "/logo/logo.png",
-  },
-  {
-    name: "sushi house",
-    rating: 4.1,
-    reviews: 57,
-    address: "서울특별시 강남구 테헤란로 123",
-    menu: "초밥",
-    tags: ["점심식사", "혼밥", "신선한"],
-    image: "/logo/logo.png",
-  },
-  {
-    name: "비스트로 88",
-    rating: 4.5,
-    reviews: 102,
-    address: "서울특별시 종로구 삼청동 456",
-    menu: "스테이크",
-    tags: ["저녁식사", "분위기좋음", "데이트"],
-    image: "/logo/logo.png",
-  },
-];
+export interface Restaurant {
+  id: string;
+  displayName: {
+    text: string;
+  };
+  formattedAddress: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  rating: number;
+  userRatingCount: number;
+  priceLevel:
+    | "PRICE_LEVEL_INEXPENSIVE"
+    | "PRICE_LEVEL_MODERATE"
+    | "PRICE_LEVEL_EXPENSIVE"
+    | "PRICE_LEVEL_VERY_EXPENSIVE"
+    | string;
+  businessStatus:
+    | "OPERATIONAL"
+    | "CLOSED_TEMPORARILY"
+    | "CLOSED_PERMANENTLY"
+    | string;
+}
+
+export type restaurantList = Restaurant[];

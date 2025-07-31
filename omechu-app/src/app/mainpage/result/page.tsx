@@ -1,73 +1,113 @@
+// src/app/mainpage/result/page.tsx (ResultPage)
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-import AlertModal from "@/components/common/AlertModal";
-import ModalWrapper from "@/components/common/ModalWrapper";
-import { menus as defaultMenus, tagData } from "@/constant/mainpage/resultData";
-import MenuCard from "@/mainpage/components/MenuCard";
-
-import ExcludeButton from "../components/ExcludeButton";
-import TagCard from "../components/TagCard";
 import Header from "@/components/common/Header";
 import Image from "next/image";
-
-function getRandomMenus() {
-  const shuffled = [...defaultMenus].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, 3);
-}
+import ExcludeButton from "../components/ExcludeButton";
+import MenuCard from "@/mainpage/components/MenuCard";
+import AlertModal from "@/components/common/AlertModal";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import TagCard from "../components/TagCard";
+import { MenuItem } from "@/constant/mainpage/resultData";
+import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import MainLoading from "@/components/mainpage/MainLoading";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { useAuthStore } from "@/auth/store";
+import LoginPromptModal from "../example_testpage/components/LoginPromptModal";
+import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 
 export default function ResultPage() {
   const router = useRouter();
+  const { data, isLoading, error, refetch } = useGetRecommendMenu();
   const [showModal, setShowModal] = useState(false);
-  const [selectedMenuIdForExclude, setSelectedMenuIdForExclude] = useState<
-    number | null
-  >(null);
-  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
-  const [menus, setMenus] = useState<typeof defaultMenus | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const { tagDataReset } = useTagStore();
+  const { locationReset } = useLocationAnswerStore();
+  const { questionReset } = useQuestionAnswerStore();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  const menus: MenuItem[] = Array.isArray(data) ? data : [];
+
+  const [filteredMenus, setFilteredMenus] = useState(menus);
+
+  const { setKeyword } = useLocationAnswerStore();
+  const { tagData } = useTagStore();
+
+  const handleExcludeCLick = (menuName: string) => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+    setExcludeMenu(menuName);
+    setShowModal(true);
+  };
 
   useEffect(() => {
-    setMenus(getRandomMenus);
-  }, []);
+    setFilteredMenus(menus);
+  }, [data]);
 
   const handleNext = () => {
-    if (openMenuId !== null) {
-      router.push(`/mainpage/result/${openMenuId}`);
+    if (openMenu != null) {
+      router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
+      setKeyword(openMenu);
     } else {
       alert("메뉴를 선택해 주세요");
     }
   };
 
+  // ← 여기서 refetch()를 호출
   const handleReshuffle = () => {
-    setMenus(getRandomMenus());
-    setOpenMenuId(null);
+    refetch();
+    setOpenMenu(null);
+    if (isLoading) {
+      return <MainLoading />;
+    }
   };
 
   const handleExclude = () => {
-    if (selectedMenuIdForExclude !== null && menus) {
-      setMenus(menus.filter((m) => m.id !== selectedMenuIdForExclude));
-      if (openMenuId === selectedMenuIdForExclude) {
-        setOpenMenuId(null);
-      }
+    if (excludeMenu != null) {
+      setFilteredMenus((prev) =>
+        prev.filter((menu) => menu.menu !== excludeMenu),
+      );
+      if (openMenu === excludeMenu) setOpenMenu(null);
     }
     setShowModal(false);
-    setSelectedMenuIdForExclude(null);
+    setExcludeMenu(null);
   };
 
+  const handleClick = () => {
+    router.push("/mainpage");
+    tagDataReset();
+    locationReset();
+    questionReset();
+  };
+
+  const handleNextClick = () => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+    handleNext();
+  };
+
+  if (isLoading) {
+    return <MainLoading />;
+  }
+
   return (
-    <div className="flex h-screen w-full flex-col">
+    <div className="flex h-screen flex-col">
       <Header
         leftChild={
-          <button
-            onClick={() => {
-              router.push("/mainpage");
-            }}
-            className="flex items-center font-bold"
-          >
+          <button onClick={handleClick} className="flex items-center font-bold">
             <Image
-              src={"/header_left_arrow.png"}
-              alt={"changeProfileImage"}
+              src="/header_left_arrow.png"
+              alt="back"
               width={22}
               height={30}
             />
@@ -77,47 +117,47 @@ export default function ResultPage() {
         className="h-[60px] border-b-0"
       />
 
-      <div className="mt-3 flex flex-col gap-4 px-4">
-        {menus?.map((menu) => (
-          <div key={menu.id} className="relative">
-            <ExcludeButton
-              onClick={() => {
-                setSelectedMenuIdForExclude(menu.id);
-                setShowModal(true);
-              }}
-            />
-            <MenuCard
-              title={menu.title}
-              description={menu.description}
-              image={menu.image}
-              // 클릭 시 토글: 이미 선택된 메뉴는 다시 누르면 해제
-              onClick={() =>
-                setOpenMenuId(openMenuId === menu.id ? null : menu.id)
-              }
-              selected={openMenuId === menu.id}
-            />
-          </div>
-        ))}
+      <div className="mt-3 flex flex-col px-4">
+        {!isLoading &&
+          !error &&
+          filteredMenus.map((menu) => (
+            <div key={menu.menu} className="relative mb-4">
+              <ExcludeButton
+                onClick={() => {
+                  handleExcludeCLick(menu.menu);
+                }}
+              />
+              <MenuCard
+                title={menu.menu}
+                description={menu.description}
+                image={menu.image_link || "/image/image_empty.svg"}
+                onClick={() =>
+                  setOpenMenu(openMenu === menu.menu ? null : menu.menu)
+                }
+                selected={openMenu === menu.menu}
+              />
+            </div>
+          ))}
       </div>
 
-      <div className="mt-4 flex h-[50px] justify-between gap-2 px-4">
+      <div className="flex gap-2 px-4 py-2">
         <button
           className="flex-1 rounded-md border border-gray-500 bg-[#FFF] px-4 py-2 text-black hover:bg-grey-normal"
           onClick={handleReshuffle}
         >
-          다시추천
+          다시 추천
         </button>
         <button
           className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
-          onClick={handleNext}
+          onClick={handleNextClick}
         >
           선택하기
         </button>
       </div>
 
-      <div className="px-4">
-        <div className="mt-5 rounded-md border border-black bg-white p-3 text-sm">
-          {tagData?.map(({ tag, description }) => (
+      <div className="px-4 py-2">
+        <div className="rounded-md border bg-white p-3 text-sm">
+          {tagData.map(({ tag, description }) => (
             <TagCard key={tag} tag={tag} description={description} />
           ))}
         </div>
@@ -126,15 +166,24 @@ export default function ResultPage() {
       {showModal && (
         <ModalWrapper>
           <AlertModal
-            title={"추천 목록에서 메뉴를\n제외하시겠어요?"}
+            title="추천 목록에서 메뉴를 제외하시겠어요?"
             cancelText="취소"
             confirmText="제외하기"
             onConfirm={handleExclude}
+            onClose={() => setShowModal(false)}
+            swapButtonOrder
+          />
+        </ModalWrapper>
+      )}
+      {showLoginModal && (
+        <ModalWrapper>
+          <LoginPromptModal2
             onClose={() => {
-              setShowModal(false);
-              setSelectedMenuIdForExclude(null);
+              setShowLoginModal(false);
             }}
-            swapButtonOrder={true}
+            onConfirm={() => {
+              router.push("/sign-in");
+            }}
           />
         </ModalWrapper>
       )}

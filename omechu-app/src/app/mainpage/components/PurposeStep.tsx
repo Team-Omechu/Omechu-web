@@ -8,27 +8,30 @@ import ListButton from "@/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { purposeOptions } from "@/constant/mainpage/Option";
 
 const PurposeStep = () => {
   const router = useRouter();
   const { purpose, setPurpose } = useQuestionAnswerStore();
-  const options = ["든든한 한 끼 식사", "술 겸 안주", "간식", "기념일 식사"];
+  const { addTag } = useTagStore();
 
-  const handleSelect = (option: string) => {
-    setPurpose(option);
+  const handleSelect = (value: number, label: string, description: string) => {
+    setPurpose(value);
+    addTag(label, description);
     router.push("/mainpage/question-answer/3");
   };
 
   return (
     <QuestionAnswerLayout title="식사 목적은 무엇인가요?">
-      {options.map((option) => (
+      {purposeOptions.map(({ label, value, description }) => (
         <ListButton
-          key={option}
-          onClick={() => handleSelect(option)}
-          isSelected={purpose === option}
+          key={value}
+          onClick={() => handleSelect(value, label, description)}
+          isSelected={purpose === value}
           textSize="base"
         >
-          {option}
+          {label}
         </ListButton>
       ))}
     </QuestionAnswerLayout>

@@ -1,22 +1,25 @@
 import { create } from "zustand";
 
 type QuestionAnswerState = {
-  mealTime: string | null;
-  purpose: string | null;
-  mood: string | null;
-  who: string | null;
-  budget: string | null;
+  mealTime: number | null;
+  purpose: number | null;
+  mood: number | null;
+  who: number | null;
+  budget: number | null;
+  exceptions: string[]; // 빈 배열로 초기화
   currentStep: number;
 };
 
 type QuestionAnswerActions = {
-  setMealTime: (mealTime: string) => void;
-  setPurpose: (purpose: string) => void;
-  setMood: (mood: string) => void;
-  setWho: (who: string) => void;
-  setBudget: (budget: string) => void;
+  setMealTime: (mealTime: number) => void;
+  setPurpose: (purpose: number) => void;
+  setMood: (mood: number) => void;
+  setWho: (who: number) => void;
+  setBudget: (budget: number) => void;
   setCurrentStep: (step: number) => void;
-  reset: () => void;
+  addException: (exception: string) => void;
+  removeException: (exception: string) => void;
+  questionReset: () => void;
 };
 
 const initialState: QuestionAnswerState = {
@@ -25,12 +28,13 @@ const initialState: QuestionAnswerState = {
   mood: null,
   who: null,
   budget: null,
+  exceptions: [],
   currentStep: 1,
 };
 
 export const useQuestionAnswerStore = create<
   QuestionAnswerState & QuestionAnswerActions
->((set) => ({
+>((set, get) => ({
   ...initialState,
   setMealTime: (mealTime) => set({ mealTime }),
   setPurpose: (purpose) => set({ purpose }),
@@ -38,5 +42,15 @@ export const useQuestionAnswerStore = create<
   setWho: (who) => set({ who }),
   setBudget: (budget) => set({ budget }),
   setCurrentStep: (step) => set({ currentStep: step }),
-  reset: () => set(initialState),
+  addException: (exception) => {
+    const { exceptions } = get();
+    if (!exceptions.includes(exception)) {
+      set({ exceptions: [...exceptions, exception] });
+    }
+  },
+  removeException: (exception) => {
+    const { exceptions } = get();
+    set({ exceptions: exceptions.filter((e) => e !== exception) });
+  },
+  questionReset: () => set(initialState),
 }));
