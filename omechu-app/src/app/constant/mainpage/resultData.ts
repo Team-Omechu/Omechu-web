@@ -46,7 +46,8 @@ export type menuType = {
 export const menus1: MenuItem[] = [
   {
     menu: "카레라이스",
-    description: "매콤한 향신료와 따뜻한 밥이 어우러져 기분을 북돋아주고 활력을 주는 한 그릇 요리",
+    description:
+      "매콤한 향신료와 따뜻한 밥이 어우러져 기분을 북돋아주고 활력을 주는 한 그릇 요리",
     calories: 500,
     carbohydrates: 90,
     protein: 10,
@@ -58,7 +59,8 @@ export const menus1: MenuItem[] = [
   },
   {
     menu: "연어 아보카도 샌드위치",
-    description: "오메가3가 풍부한 연어와 기분을 안정시켜주는 아보카도 조합, 비주얼도 예쁘서 기분 전환",
+    description:
+      "오메가3가 풍부한 연어와 기분을 안정시켜주는 아보카도 조합, 비주얼도 예쁘서 기분 전환",
     calories: 600,
     carbohydrates: 72,
     protein: 18,
@@ -70,7 +72,8 @@ export const menus1: MenuItem[] = [
   },
   {
     menu: "된장찌개와 보리밥",
-    description: "구수한 된장향과 따뜻한 국물이 마음을 안정시키고 든든한 에너지를 채워주는 전통 한식 조합",
+    description:
+      "구수한 된장향과 따뜻한 국물이 마음을 안정시키고 든든한 에너지를 채워주는 전통 한식 조합",
     calories: 500,
     carbohydrates: 82,
     protein: 13,
@@ -195,7 +198,7 @@ export const menus: menuType[] = [
     description:
       "오메가3가 풍부한 연어와 기분을 안정시켜주는 아보카도 조합, 비주얼도 예쁘서 기분 전환",
     image: "/logo/logo.png",
-    nutrition:600,
+    nutrition: 600,
     allergens: ["연어", "밀"],
     recipeUrl: "#",
   },
@@ -261,7 +264,7 @@ export const menus: menuType[] = [
     title: "그릭 요거트 볼",
     description: "신선한 과일과 그래놀라가 어우러진 가볍고 건강한 디저트",
     image: "/logo_3d.png",
-    nutrition:500,
+    nutrition: 500,
     allergens: ["유제품", "견과류"],
     recipeUrl: "#",
   },
@@ -270,7 +273,7 @@ export const menus: menuType[] = [
     title: "스시 정식",
     description: "신선한 생선과 밥이 조화를 이루는 정갈한 일식 한상",
     image: "/logo_3d.png",
-    nutrition:500,
+    nutrition: 500,
     allergens: ["생선", "대두"],
     recipeUrl: "#",
   },
@@ -279,8 +282,8 @@ export const menus: menuType[] = [
     title: "비빔국수",
     description: "매콤달콤한 양념과 탱글한 면발이 입맛을 돋우는 여름 별미",
     image: "/logo_3d.png",
-    nutrition:500,
+    nutrition: 500,
     allergens: ["밀", "계란"],
     recipeUrl: "#",
   },
-]
+];

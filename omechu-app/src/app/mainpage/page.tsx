@@ -10,7 +10,7 @@ import { se } from "date-fns/locale";
 
 export default function MainPage() {
   const router = useRouter();
-  const {isLoggedIn} = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
 
   const handleStartClick = () => {
@@ -20,7 +20,6 @@ export default function MainPage() {
       setShowModal(true);
     }
   };
-
 
   return (
     <div className="relative flex w-full justify-center overflow-hidden">
@@ -50,8 +49,12 @@ export default function MainPage() {
       {showModal && (
         <ModalWrapper>
           <LoginPromptModal
-          onClose={()=>{setShowModal(false); router.push("mainpage/question-answer/1")}}
-          onConfirm={()=>router.push("/sign-in")}/>
+            onClose={() => {
+              setShowModal(false);
+              router.push("mainpage/question-answer/1");
+            }}
+            onConfirm={() => router.push("/sign-in")}
+          />
         </ModalWrapper>
       )}
     </div>

@@ -74,10 +74,7 @@ function MenuDetailClient() {
         </div>
 
         <section className="px-4">
-          <MenuInfo
-           MenuItem={menu}
-            onRecipeClick={handleClick}
-          />
+          <MenuInfo MenuItem={menu} onRecipeClick={handleClick} />
         </section>
       </main>
     </>
