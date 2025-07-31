@@ -40,23 +40,21 @@ export default function MyActivity() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    if (selectedIndex !== 1) return; // 등록한 맛집 탭에서만
+    if (selectedIndex !== 1) return;
 
     setLoading(true);
     setError(null);
 
     fetchRestaurants(userId)
       .then((data) => {
-        // data를 필요한 형태로 가공
         setMyRestaurants(
-          data.results.map((item: any) => ({
-            id: item.placeId,
-            name: item.placeName,
-            repre_menu: item.signatureMenu?.[0] ?? "",
-            rating: item.placePoint,
-            images: [{ link: item.placeImageUrl }],
-            address: item.address,
-            // ...필요에 따라 추가
+          (data.success.data ?? []).map((item) => ({
+            id: Number(item.id), // string to number
+            name: item.name,
+            repre_menu: "", // API에서 오면 반영
+            rating: item.rating ?? 0,
+            images: [], // 추후 반영
+            address: item.address ?? "",
           })),
         );
       })
