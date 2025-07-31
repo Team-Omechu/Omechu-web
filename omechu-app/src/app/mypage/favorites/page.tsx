@@ -31,7 +31,6 @@ export default function Favorites() {
   const [minLoading, setMinLoading] = useState(true);
 
   console.log("[디버깅] user:", user);
-  console.log("[디버깅] userId:", userId);
 
   // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
   useEffect(() => {
@@ -43,6 +42,7 @@ export default function Favorites() {
     const fetchData = async () => {
       try {
         const data = await fetchHeartList(userId);
+        console.log("[디버깅] fetchHeartList 응답:", data);
         if (!Array.isArray(data)) {
           setHearts([]);
           return;
