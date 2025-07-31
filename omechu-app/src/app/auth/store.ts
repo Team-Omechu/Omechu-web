@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import type { LoginSuccessData } from "./api/auth";
+import type { LoginSuccessData } from "@/lib/api/auth";
 
 interface AuthState {
   isLoggedIn: boolean;

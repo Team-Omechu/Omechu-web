@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchHeartList } from "../api/favorites";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -12,24 +13,103 @@ import { distance } from "fastest-levenshtein";
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
 import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
+import { likePlace, unlikePlace } from "../api/favorites";
+import { useAuthStore } from "@/auth/store";
+import { useProfile } from "../hooks/useProfile";
 
 export default function Favorites() {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
+  const [hearts, setHearts] = useState<any[]>([]);
+
+  const user = useAuthStore((state) => state.user);
+
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile, loading, error: profileError } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
+
+  console.log("[디버깅] user:", user);
+  console.log("[디버깅] userId:", userId);
+
+  // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
+  useEffect(() => {
+    if (!userId) {
+      setHearts([]);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const data = await fetchHeartList(userId);
+        if (!Array.isArray(data)) {
+          setHearts([]);
+          return;
+        }
+        setHearts(data);
+      } catch (e) {
+        setHearts([]);
+      }
+    };
+    fetchData();
+  }, [userId]);
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
-  const filteredItems = search.trim()
-    ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-    : Restaurants;
+  //* dummy용
+  // const filteredItems = search.trim()
+  // ? Restaurants.filter((item) => item.menu.includes(search.trim()))
+  // : Restaurants;
 
-  const similarItems = Restaurants.filter(
-    (item) =>
-      distance(item.menu, search.trim()) <= 2 && // 유사 거리 임계값 조정 가능
-      !item.menu.includes(search.trim()), // 정확 검색에 이미 포함된 건 제외
-  );
+  // const sortedItems = [...filteredItems].sort((a, b) => {
+  //   const aIdx = Restaurants.indexOf(a);
+  //   const bIdx = Restaurants.indexOf(b);
+  //   return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
+  // });
+
+  // const visibleItems = sortedItems.slice(0, visibleCount);
+
+  //* 실제 api 데이터 연동
+  const filteredItems = search.trim()
+    ? hearts.filter((item) =>
+        item.signatureMenu?.join(",").includes(search.trim()),
+      )
+    : hearts;
+
+  const sortedItems = [...filteredItems].sort((a, b) => {
+    // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
+    // 여기선 placeId 사용(서버 데이터 기준)
+    return sortOrder === "latest"
+      ? b.placeId - a.placeId
+      : a.placeId - b.placeId;
+  });
+
+  const visibleItems = sortedItems.slice(0, visibleCount);
+
+  const handleLike = async (restaurantId: number) => {
+    try {
+      await likePlace(userId, restaurantId);
+      // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
+      setHearts((prev) =>
+        prev.map((item) =>
+          item.placeId === restaurantId ? { ...item, isLiked: true } : item,
+        ),
+      );
+    } catch (e) {
+      alert("찜 등록 실패");
+    }
+  };
+
+  const handleUnlike = async (restaurantId: number) => {
+    try {
+      await unlikePlace(userId, restaurantId);
+      // setHearts에서 해당 아이템만 isLiked: false 처리 (또는 리스트에서 제거)
+      setHearts((prev) => prev.filter((item) => item.placeId !== restaurantId));
+    } catch (e) {
+      alert("찜 해제 실패");
+    }
+  };
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -77,14 +157,6 @@ export default function Favorites() {
     }
   }, [isLoading]);
 
-  const sortedItems = [...filteredItems].sort((a, b) => {
-    const aIdx = Restaurants.indexOf(a);
-    const bIdx = Restaurants.indexOf(b);
-    return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
-  });
-
-  const visibleItems = sortedItems.slice(0, visibleCount);
-
   return (
     <>
       <Header
@@ -100,7 +172,7 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="min-h-full w-full px-6 pb-8 pt-3">
+      <main className="min-h-sceen w-full px-6 pb-8 pt-3">
         {/* 필터 - 최신 순 | 오래된 순 */}
         <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
           <button
@@ -125,13 +197,40 @@ export default function Favorites() {
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            {visibleItems.map((item, idx) => (
+            {/* {visibleItems.map((item, idx) => (
               <FoodCard
                 key={idx}
                 item={item}
                 onClick={() =>
                   router.push(`/restaurant/restaurant-detail/${item.id}`)
                 }
+              />
+            ))} */}
+            {visibleItems.map((item) => (
+              <FoodCard
+                key={item.placeId}
+                item={{
+                  id: item.placeId,
+                  name: item.placeName,
+                  images: [item.placeImageUrl],
+                  rating: item.placePoint,
+                  menu: item.signatureMenu?.[0] ?? "",
+                  tags: item.summary ?? [],
+                  address: {
+                    road: item.address,
+                    jibun: "",
+                    postalCode: "",
+                  },
+                  reviews: 0, // 없으면 0, 필요 시 API 수정
+                  isLiked: true, // 찜 목록 -> true
+                  category: "", // 카테고리 없으면 빈 값
+                  timetable: [], // 없음 -> 빈 배열
+                }}
+                onClick={() =>
+                  router.push(`/restaurant/restaurant-detail/${item.placeId}`)
+                }
+                onLike={() => handleLike(item.placeId)}
+                onUnlike={() => handleUnlike(item.placeId)}
               />
             ))}
           </div>
