@@ -12,6 +12,8 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import Toast from "@/components/common/Toast";
+import { useAuthStore } from "@/auth/store";
+import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
 export default function AccountSettings() {
   const router = useRouter();
@@ -20,12 +22,18 @@ export default function AccountSettings() {
   const [toast, setToast] = useState({ show: false, message: "" });
   const [email, setEmail] = useState("");
 
-  const userId = 1; // 하드코딩된 id => 추후 로그인 세션으로 변경
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
   const { profile, loading, error: profileError } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
+
+  console.log("[디버깅] user:", user);
+  console.log("[디버깅] userId:", userId);
 
   // 동기화
   useEffect(() => {
     if (profile) {
+      console.log("[디버깅] profile 응답값:", profile);
       setEmail(profile.email ?? "");
     }
   }, [profile]);
@@ -39,6 +47,19 @@ export default function AccountSettings() {
       return () => clearTimeout(timer);
     }
   }, [toast.show]);
+
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => setMinLoading(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoading(false);
+    }
+  }, [loading]);
+
+  if (loading || minLoading) {
+    return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
+  }
 
   return (
     <>

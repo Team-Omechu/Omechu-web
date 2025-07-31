@@ -15,7 +15,7 @@ import {
   uploadToS3,
   updateProfile,
 } from "../api/updateProfile";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/auth/store";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
 export default function ProfileEdit() {

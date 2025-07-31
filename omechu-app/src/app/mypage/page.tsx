@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useProfile } from "./hooks/useProfile";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/auth/store";
 
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
@@ -123,7 +123,7 @@ export default function MyPage() {
           })}
         </section>
       </main>
-      {error && (
+      {/* {error && (
         <ModalWrapper>
           <AlertModal
             title="로그인이 필요합니다"
@@ -134,7 +134,7 @@ export default function MyPage() {
             }}
           />
         </ModalWrapper>
-      )}
+      )} */}
       <BottomNav />
     </>
   );
