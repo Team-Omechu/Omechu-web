@@ -27,7 +27,7 @@ export default function StateStep() {
     if (state === value) {
       setStatus(null);
     } else {
-      setStatus(value);
+      setStatus(value as "다이어트 중" | "증량 중" | "유지 중" | null);
     }
   };
 
