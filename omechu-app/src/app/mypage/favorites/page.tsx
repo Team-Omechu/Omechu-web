@@ -67,13 +67,21 @@ export default function Favorites() {
 
   const visibleItems = sortedItems.slice(0, visibleCount);
 
+  useEffect(() => {
+    if (visibleCount > hearts.length) {
+      setVisibleCount(hearts.length);
+    }
+  }, [hearts.length]);
+
   const handleLike = async (restaurantId: number) => {
     try {
       await likePlace(userId, restaurantId);
       // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
       setHearts((prev) =>
         prev.map((item) =>
-          item.placeId === restaurantId ? { ...item, isLiked: true } : item,
+          item.restaurant.id === restaurantId
+            ? { ...item, isLiked: true }
+            : item,
         ),
       );
     } catch (e) {
@@ -84,8 +92,12 @@ export default function Favorites() {
   const handleUnlike = async (restaurantId: number) => {
     try {
       await unlikePlace(userId, restaurantId);
-      // setHearts에서 해당 아이템만 isLiked: false 처리 (또는 리스트에서 제거)
-      setHearts((prev) => prev.filter((item) => item.placeId !== restaurantId));
+      setHearts((prev) =>
+        prev.filter((item) => item.restaurant.id !== restaurantId),
+      );
+      setVisibleCount((prev) =>
+        prev > hearts.length - 1 ? hearts.length - 1 : prev,
+      );
     } catch (e) {
       alert("찜 해제 실패");
     }
@@ -226,9 +238,9 @@ export default function Favorites() {
                 }
               />
             ))} */}
-            {visibleItems.map((item, index) => (
+            {visibleItems.map((item) => (
               <FoodCard
-                key={`${item.restaurant.id} - ${index}`}
+                key={item.restaurant.id}
                 item={{
                   id: item.restaurant.id,
                   name: item.restaurant.name, // ← name
