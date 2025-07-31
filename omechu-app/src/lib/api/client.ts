@@ -1,18 +1,19 @@
 import axios, { type AxiosInstance } from "axios";
-// 경로 수정: @가 src/app을 가리키므로, 상위 폴더로 나가서 참조합니다.
 import { useAuthStore } from "@/auth/store";
 
 const apiClient: AxiosInstance = axios.create({
-  // 기본 baseURL은 외부 API 서버로 설정합니다.
   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  withCredentials: true,
+  withCredentials: true, // 기본 설정 유지
 });
 
 // 요청 인터셉터
 apiClient.interceptors.request.use(
   (config) => {
-    // ★★★ 이 로그는 브라우저 개발자 콘솔에서 확인해야 합니다! ★★★
     console.log("[API Client] Intercepting request for URL:", config.url);
+
+    // 모든 요청에 대해 withCredentials를 true로 명시적으로 설정하여
+    // cross-origin 요청에서도 쿠키가 전송되도록 보장합니다.
+    config.withCredentials = true;
 
     if (config.url?.startsWith("/api/")) {
       console.log("[API Client] URL starts with /api/. Changing baseURL.");
@@ -24,7 +25,8 @@ apiClient.interceptors.request.use(
         "[API Client] URL does NOT start with /api/. Using default baseURL:",
         process.env.NEXT_PUBLIC_API_URL,
       );
-      config.baseURL = process.env.NEXT_PUBLIC_API_URL;
+      // baseURL을 다시 설정할 필요가 없습니다. create에서 이미 설정됨.
+      // config.baseURL = process.env.NEXT_PUBLIC_API_URL;
     }
     return config;
   },
@@ -35,7 +37,6 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // 401 에러(인증 실패) 시, 스토어의 유저 정보를 비웁니다.
     if (error.response?.status === 401) {
       const { user } = useAuthStore.getState();
       if (user) {
