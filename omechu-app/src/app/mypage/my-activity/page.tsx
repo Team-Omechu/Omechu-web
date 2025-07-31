@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { fetchRestaurants } from "../api/myActivity";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,11 +20,52 @@ import { Restaurants } from "@/constant/restaurant/restaurantList";
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 
+type MyRestaurant = {
+  id: number;
+  name: string;
+  repre_menu?: string;
+  rating?: number;
+  images?: { link: string }[];
+  address?: string;
+};
+
 export default function MyActivity() {
   const router = useRouter();
-  const mainRef = useRef<HTMLDivElement>(null);
+
+  const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const userId = "1";
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (selectedIndex !== 1) return; // 등록한 맛집 탭에서만
+
+    setLoading(true);
+    setError(null);
+
+    fetchRestaurants(userId)
+      .then((data) => {
+        // data를 필요한 형태로 가공
+        setMyRestaurants(
+          data.results.map((item: any) => ({
+            id: item.placeId,
+            name: item.placeName,
+            repre_menu: item.signatureMenu?.[0] ?? "",
+            rating: item.placePoint,
+            images: [{ link: item.placeImageUrl }],
+            address: item.address,
+            // ...필요에 따라 추가
+          })),
+        );
+      })
+      .catch(() => setError("맛집 목록을 불러오지 못했습니다."))
+      .finally(() => setLoading(false));
+  }, [selectedIndex]);
+
+  const mainRef = useRef<HTMLDivElement>(null);
+
   const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
     "recommended",
   );
@@ -149,7 +192,7 @@ export default function MyActivity() {
       />
       {/* 목록 정렬 탭 */}
       <SelectTabBar
-        tabs={["리뷰", "등록한 맛집"]}
+        tabs={["후기", "등록한 맛집"]}
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
       />
@@ -200,7 +243,7 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {/* 등록한 맛집 목록 */}
-            <section className="mt-4 flex flex-col gap-5">
+            {/* <section className="flex flex-col gap-5 mt-4">
               {visibleItems.map((item, idx) => (
                 <div key={item.id} className="flex flex-col">
                   <button
@@ -217,13 +260,51 @@ export default function MyActivity() {
                   />
                 </div>
               ))}
-            </section>
+            </section> */}
             {/* {editTargetData && (
               <RestaurantEditModal
                 onClose={handleCloseEditModal}
                 initialData={editTargetData}
               />
             )} */}
+
+            <section>
+              {loading && <div>로딩 중...</div>}
+              {error && <div>{error}</div>}
+              {!loading &&
+                !error &&
+                myRestaurants.map((item) => (
+                  <FoodCard
+                    key={item.id}
+                    item={{
+                      id: item.id,
+                      name: item.name,
+                      menu: item.repre_menu || "",
+                      rating: item.rating || 0,
+                      images: item.images
+                        ? item.images.map((img) => img.link)
+                        : [],
+                      // address 구조를 API 응답에 따라 맞춤 (예시: jibun/postalCode는 빈 값 처리)
+                      address: {
+                        road: item.address || "",
+                        jibun: "",
+                        postalCode: "",
+                      },
+                      tags: [], // 필요하면 추가
+                      isLiked: false, // 필요하면 추가
+                      reviews: 0, // 필요하면 추가
+                      category: "", // 필요하면 추가
+                      timetable: [], // 필요하면 추가
+                    }}
+                    onClick={() =>
+                      router.push(`/restaurant/restaurant-detail/${item.id}`)
+                    }
+                  />
+                ))}
+              {!loading && !error && myRestaurants.length === 0 && (
+                <div>등록한 맛집이 없습니다.</div>
+              )}
+            </section>
           </>
         )}
 
