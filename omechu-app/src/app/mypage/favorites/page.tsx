@@ -30,8 +30,6 @@ export default function Favorites() {
   const { profile, loading, error: profileError } = useProfile(userId);
   const [minLoading, setMinLoading] = useState(true);
 
-  console.log("[디버깅] user:", user);
-
   // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
   useEffect(() => {
     if (!userId) {
@@ -206,31 +204,33 @@ export default function Favorites() {
                 }
               />
             ))} */}
-            {visibleItems.map((item) => (
+            {visibleItems.map((item, index) => (
               <FoodCard
-                key={item.placeId}
+                key={`${item.restaurant.id} - ${index}`}
                 item={{
-                  id: item.placeId,
-                  name: item.placeName,
-                  images: [item.placeImageUrl],
-                  rating: item.placePoint,
-                  menu: item.signatureMenu?.[0] ?? "",
-                  tags: item.summary ?? [],
+                  id: item.restaurant.id,
+                  name: item.restaurant.name, // ← name
+                  images: [], // 이미지 없으면 빈 배열
+                  rating: item.restaurant.rating, // 평점 없으면 null
+                  menu: "", // 대표메뉴 없으면 빈 값
+                  tags: [], // 태그 없으면 빈 배열
                   address: {
-                    road: item.address,
+                    road: item.restaurant.address,
                     jibun: "",
                     postalCode: "",
                   },
-                  reviews: 0, // 없으면 0, 필요 시 API 수정
-                  isLiked: true, // 찜 목록 -> true
-                  category: "", // 카테고리 없으면 빈 값
-                  timetable: [], // 없음 -> 빈 배열
+                  reviews: 0,
+                  isLiked: true,
+                  category: "",
+                  timetable: [],
                 }}
                 onClick={() =>
-                  router.push(`/restaurant/restaurant-detail/${item.placeId}`)
+                  router.push(
+                    `/restaurant/restaurant-detail/${item.restaurant.id}`,
+                  )
                 }
-                onLike={() => handleLike(item.placeId)}
-                onUnlike={() => handleUnlike(item.placeId)}
+                onLike={() => handleLike(Number(item.restaurant.id))}
+                onUnlike={() => handleUnlike(Number(item.restaurant.id))}
               />
             ))}
           </div>
