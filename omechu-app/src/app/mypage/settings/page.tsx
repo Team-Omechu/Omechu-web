@@ -46,7 +46,7 @@ export default function Settings() {
                 <span className="text-xl font-normal">{item.title}</span>
                 <div>
                   <Image
-                    src={"/right_arrow_black.png"}
+                    src={"/arrow/right_arrow_black.svg"}
                     alt={"오른쪽 이동 버튼"}
                     width={12}
                     height={15}
