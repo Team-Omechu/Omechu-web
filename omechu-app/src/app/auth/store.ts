@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware"; // persist는 사용자 정보를 
 import type { LoginSuccessData } from "../../lib/api/auth";
 
 interface AuthState {
+  isLoggedIn: boolean;
   user: LoginSuccessData | null;
   // user 정보만 설정하거나 초기화하는 액션만 남깁니다.
   setUser: (user: LoginSuccessData | null) => void;
@@ -12,8 +13,9 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
+      isLoggedIn: false,
       user: null,
-      setUser: (user) => set({ user }),
+      setUser: (user) => set({ user, isLoggedIn: !!user }),
     }),
     {
       name: "auth-user-storage", // localStorage에 저장될 키 이름
