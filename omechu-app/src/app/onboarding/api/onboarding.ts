@@ -1,5 +1,5 @@
-import apiClient from "@/lib/api/client";
-import type { ApiResponse } from "@/lib/api/auth";
+import apiClient from "../../../lib/api/client";
+import type { ApiResponse } from "../../../lib/api/auth";
 
 /**
  * 온보딩 완료(회원가입 완료) API 요청 데이터 타입

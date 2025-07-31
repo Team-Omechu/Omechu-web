@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import * as authApi from "@/lib/api/auth";
+import * as authApi from "../../../lib/api/auth";
 import type {
   LoginFormValues,
   SignupFormValues,
@@ -11,23 +11,22 @@ import type {
 import { useAuthStore } from "@/auth/store";
 
 export const useLoginMutation = () => {
-  const { login: setAuth } = useAuthStore();
-  const router = useRouter(); // onSuccess에서 라우팅을 위해 추가
+  const { setUser } = useAuthStore();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: (data: LoginFormValues) => authApi.login(data),
     onSuccess: (response) => {
-      // TODO: 백엔드에서 실제 accessToken을 내려주면 "DUMMY_ACCESS_TOKEN"을 교체해야 합니다.
-      setAuth({
-        accessToken: "DUMMY_ACCESS_TOKEN", // 임시 토큰
-        user: response,
-      });
-      // 로그인 성공 후 메인 페이지로 이동
-      router.push("/");
+      setUser(response);
+      // 로그인 성공 후 온보딩 여부에 따라 페이지 이동
+      if (!response.nickname) {
+        router.push("/onboarding/1");
+      } else {
+        router.push("/");
+      }
     },
     onError: (error) => {
       console.error("Login failed:", error);
-      // 사용자에게 실패 피드백 (예: alert, toast)
       alert("이메일 또는 비밀번호가 일치하지 않습니다.");
     },
   });
@@ -79,12 +78,19 @@ export const useSignupMutation = () => {
 };
 
 export const useLogoutMutation = () => {
-  const { logout: clearAuthState } = useAuthStore();
+  const { setUser } = useAuthStore();
+  const queryClient = useQueryClient();
+
   return useMutation<void, Error>({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      clearAuthState();
-      // redirect to login page or home page
+      // 서버에서 세션을 파기하고 쿠키를 삭제하라는 응답을 보낼 것입니다.
+      // 프론트에서는 스토어의 user 정보만 비워줍니다.
+      setUser(null);
+      // 다른 쿼리 캐시도 정리할 수 있습니다.
+      queryClient.clear();
+      // 로그인 페이지나 홈으로 이동
+      window.location.href = "/sign-in"; // 페이지를 완전히 새로고침하여 상태를 초기화
     },
   });
 };

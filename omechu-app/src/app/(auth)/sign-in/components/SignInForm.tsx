@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
@@ -12,26 +11,14 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { useAuthStore } from "@/auth/store";
 import { loginSchema, type LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/auth/hooks/useAuth";
-import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const router = useRouter();
 
-  //* 이삭 추가한 부분
-  const setUser = useAuthStore((state) => state.setUser);
-
-  const {
-    mutate: login,
-    isPending,
-    isSuccess,
-    error,
-    data: loginResult,
-  } = useLoginMutation();
+  const { mutate: login, isPending, error } = useLoginMutation();
 
   const {
     control,
@@ -49,25 +36,10 @@ export default function SignInForm() {
   };
 
   const onSubmit = (data: LoginFormValues) => {
+    // 'rememberMe'는 이제 사용되지 않으므로 무시됩니다.
+    // 쿠키의 만료 기간은 전적으로 서버가 결정합니다.
     login(data);
   };
-
-  console.log("loginResult", loginResult);
-
-  //* 이삭 수정 부분
-  useEffect(() => {
-    if (isSuccess && loginResult) {
-      // setUser(loginResult); >>> 로그인 후 상태 저장
-      setUser(loginResult);
-      // console.log("저장된 user", loginResult);
-
-      if (!loginResult.nickname) {
-        router.push("/onboarding/1");
-      } else {
-        router.push("/mainpage");
-      }
-    }
-  }, [isSuccess, loginResult, router, setUser]);
 
   useEffect(() => {
     if (error) {
@@ -130,7 +102,7 @@ export default function SignInForm() {
           <Checkbox
             id="remember-me"
             label="로그인 상태 유지"
-            {...register("rememberMe")}
+            {...register("rememberMe")} // 이 값은 이제 서버가 쿠키 만료시간을 결정하는 데 사용될 수 있습니다. (현재는 프론트에서 사용 안함)
           />
           <div className="flex items-center gap-2">
             <Link href="/forgot-password" className="hover:underline">

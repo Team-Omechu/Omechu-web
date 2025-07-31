@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import type { LoginSuccessData } from "@/lib/api/auth";
+import type { LoginSuccessData } from "../../../lib/api/auth";
 
 interface AuthStore {
   user: LoginSuccessData | null;

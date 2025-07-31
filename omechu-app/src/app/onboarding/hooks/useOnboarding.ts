@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import * as onboardingApi from "@/onboarding/api/onboarding";
 import { useAuthStore } from "@/auth/store";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import type { LoginSuccessData } from "@/lib/api/auth";
+import type { LoginSuccessData } from "../../../lib/api/auth";
 
 const PREFER_MAP: Record<string, string> = {
   한식: "korean",
@@ -36,7 +36,7 @@ export const useOnboarding = () => {
     allergies,
     reset: resetOnboarding,
   } = useOnboardingStore();
-  const { user: authUser, login } = useAuthStore();
+  const { user: authUser, setUser } = useAuthStore();
 
   const { mutate: completeOnboarding, isPending: isCompleting } = useMutation<
     onboardingApi.OnboardingSuccessData,
@@ -52,10 +52,7 @@ export const useOnboarding = () => {
       };
 
       if (authUser) {
-        login({
-          accessToken: "",
-          user: userForAuthStore,
-        });
+        setUser(userForAuthStore);
       }
       router.push("/onboarding/complete");
     },
