@@ -12,7 +12,7 @@ import {
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
-import { menus } from "@/constant/mainpage/resultData";
+import { menus1 } from "@/constant/mainpage/resultData";
 
 export default function MenuDetail() {
   return (
@@ -28,7 +28,7 @@ function MenuDetailClient() {
   const menuId = searchParams.get("menuId");
   console.log("menuId →", menuId);
 
-  const menu = menus.find((item) => item.id === Number(menuId));
+  const menu = menus1.find((item) => item.id === Number(menuId));
 
   if (!menu) {
     return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
@@ -60,13 +60,13 @@ function MenuDetailClient() {
 
       <main className="min-h-screen bg-main-normal p-4 pt-8 text-sm text-black">
         <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
-          {menu.title}
+          {menu.menu}
         </h1>
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
             src="/logo/logo.png"
-            alt={`${menu.title || "메뉴 이미지"}`}
+            alt={`${menu.menu || "메뉴 이미지"}`}
             className="rounded object-contain"
             width={144}
             height={144}
@@ -74,11 +74,7 @@ function MenuDetailClient() {
         </div>
 
         <section className="px-4">
-          <MenuInfo
-            nutrition={menu.nutrition}
-            allergens={menu.allergens}
-            onRecipeClick={handleClick}
-          />
+          <MenuInfo MenuItem={menu} onRecipeClick={handleClick} />
         </section>
       </main>
     </>

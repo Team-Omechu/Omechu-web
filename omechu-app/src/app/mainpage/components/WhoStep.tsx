@@ -8,27 +8,30 @@ import ListButton from "@/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { whoOptions } from "@/constant/mainpage/Option";
 
 const WhoStep = () => {
   const router = useRouter();
   const { who, setWho } = useQuestionAnswerStore();
-  const options = ["혼자", "연인", "친구들", "가족들"];
+  const { addTag } = useTagStore();
 
-  const handleSelect = (option: string) => {
-    setWho(option);
+  const handleSelect = (value: number, label: string, description: string) => {
+    setWho(value);
+    addTag(label, description);
     router.push("/mainpage/question-answer/5");
   };
 
   return (
     <QuestionAnswerLayout title={"혼자 식사하시나요\n누구와 함께 하시나요?"}>
-      {options.map((option) => (
+      {whoOptions.map(({ label, value, description }) => (
         <ListButton
-          key={option}
-          onClick={() => handleSelect(option)}
-          isSelected={who === option}
+          key={value}
+          onClick={() => handleSelect(value, label, description)}
+          isSelected={who === value}
           textSize="base"
         >
-          {option}
+          {label}
         </ListButton>
       ))}
     </QuestionAnswerLayout>
