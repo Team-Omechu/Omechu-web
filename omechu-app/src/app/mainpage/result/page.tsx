@@ -18,6 +18,7 @@ import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { useAuthStore } from "@/auth/store";
 import LoginPromptModal from "../example_testpage/components/LoginPromptModal";
+import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -90,7 +91,7 @@ export default function ResultPage() {
   };
 
   const handleNextClick = () => {
-    if (!login) {
+    if (login) {
       setShowLoginModal(true);
       return;
     }
@@ -178,7 +179,7 @@ export default function ResultPage() {
       )}
       {showLoginModal && (
         <ModalWrapper>
-          <LoginPromptModal
+          <LoginPromptModal2
             onClose={() => {
               setShowLoginModal(false);
             }}
