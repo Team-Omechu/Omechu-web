@@ -18,7 +18,7 @@ function useGetRestaurants() {
     pageSize: 3,
   };
   return useQuery<restaurantList>({
-    queryKey: ["Restaurants",payload],
+    queryKey: ["Restaurants", payload],
     queryFn: () => getRestaurants(payload),
     staleTime: 1000 * 60 * 5,
   });

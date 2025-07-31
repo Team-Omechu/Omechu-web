@@ -14,7 +14,7 @@ export default function MainPage() {
   const [showModal, setShowModal] = useState(false);
 
   const handleStartClick = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
       router.push("mainpage/question-answer/1");
     } else {
       setShowModal(true);

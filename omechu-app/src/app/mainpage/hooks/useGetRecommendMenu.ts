@@ -19,7 +19,7 @@ function useGetRecommendMenu() {
     exceptions,
   };
   return useQuery<MenuListResponse>({
-    queryKey: ["recommendMenu",payload],
+    queryKey: ["recommendMenu", payload],
     queryFn: () => getRecommendMenu(payload),
     staleTime: 1000 * 60 * 5,
   });

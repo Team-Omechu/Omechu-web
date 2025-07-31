@@ -39,10 +39,8 @@ export default function ResultPage() {
   const { setKeyword } = useLocationAnswerStore();
   const { tagData } = useTagStore();
 
-  const login = false;
-
   const handleExcludeCLick = (menuName: string) => {
-    if (!login) {
+    if (!isLoggedIn) {
       setShowLoginModal(true);
       return;
     }
@@ -91,7 +89,7 @@ export default function ResultPage() {
   };
 
   const handleNextClick = () => {
-    if (login) {
+    if (!isLoggedIn) {
       setShowLoginModal(true);
       return;
     }
