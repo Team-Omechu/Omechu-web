@@ -11,6 +11,9 @@ import Header from "../components/common/Header";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import AlertModal from "@/components/common/AlertModal";
+import LoginPromptModal2 from "@/mainpage/example_testpage/components/LoginPromptModal2";
+
+type ModalType = "modal1" | "modal2" | null;
 
 export default function MyPage() {
   const router = useRouter();
@@ -22,10 +25,11 @@ export default function MyPage() {
   const [minLoading, setMinLoading] = useState(true);
 
   const [imgError, setImgError] = useState(false);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
 
   useEffect(() => {
     if (loading) {
-      const timer = setTimeout(() => setMinLoading(false), 3000);
+      const timer = setTimeout(() => setMinLoading(false), 2000);
       return () => clearTimeout(timer);
     } else {
       setMinLoading(false);
@@ -49,6 +53,17 @@ export default function MyPage() {
   console.log("profile:", profile);
   console.log("loading:", loading);
   console.log("error:", error);
+
+  const handleConfirm = () => {
+    setActiveModal(null);
+    alert("'로그인 하기' 클릭됨");
+    router.push("/sign-in");
+  };
+
+  const handleClose = () => {
+    setActiveModal(null);
+    alert("모달 닫힘");
+  };
 
   return (
     <>
@@ -123,18 +138,11 @@ export default function MyPage() {
           })}
         </section>
       </main>
-      {/* {error && (
+      {error && (
         <ModalWrapper>
-          <AlertModal
-            title="로그인이 필요합니다"
-            description="로그인 후 이용해 주세요."
-            confirmText="확인"
-            onConfirm={() => {
-              router.push("/sign-in");
-            }}
-          />
+          <LoginPromptModal2 onConfirm={handleConfirm} onClose={handleClose} />
         </ModalWrapper>
-      )} */}
+      )}
       <BottomNav />
     </>
   );

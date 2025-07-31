@@ -14,6 +14,8 @@ import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
 import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
 import { likePlace, unlikePlace } from "../api/favorites";
+import { useAuthStore } from "@/auth/store";
+import { useProfile } from "../hooks/useProfile";
 
 export default function Favorites() {
   const router = useRouter();
@@ -22,25 +24,36 @@ export default function Favorites() {
   const [visibleCount, setVisibleCount] = useState(8);
   const [hearts, setHearts] = useState<any[]>([]);
 
-  const userId = 1;
+  const user = useAuthStore((state) => state.user);
+
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile, loading, error: profileError } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
+
+  console.log("[디버깅] user:", user);
+  console.log("[디버깅] userId:", userId);
 
   // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
   useEffect(() => {
+    if (!userId) {
+      setHearts([]);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const data = await fetchHeartList(userId);
-        // 1. 배열인지 체크 (서버 에러 포함)
         if (!Array.isArray(data)) {
-          setHearts([]); // 배열이 아니면 무조건 빈 배열!
+          setHearts([]);
           return;
         }
-        setHearts(data); // 배열일 때만 정상 저장
+        setHearts(data);
       } catch (e) {
-        setHearts([]); // 네트워크/기타 에러도 빈 배열로!
+        setHearts([]);
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
