@@ -27,7 +27,6 @@ export default function MenuDetailPage() {
   const { questionReset } = useQuestionAnswerStore();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
-  console.log(radius);
 
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
 
