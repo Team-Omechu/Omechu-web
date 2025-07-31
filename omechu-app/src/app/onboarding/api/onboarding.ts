@@ -9,9 +9,9 @@ export interface OnboardingRequestData {
   password?: string; // 비밀번호 필드 추가 (선택적으로)
   nickname: string;
   profileImageUrl: string;
-  gender: "MALE" | "FEMALE" | null;
+  gender: "남성" | "여성" | null;
   body_type: string | null; // constitution -> body_type
-  state: "DIET" | "BULK_UP" | "MAINTAIN" | null; // exercise -> state
+  state: "다이어트 중" | "증량 중" | "유지 중" | null; // exercise -> state
   prefer: string[];
   allergy: string[];
 }
@@ -24,9 +24,9 @@ export interface OnboardingSuccessData {
   email: string;
   nickname: string;
   profileImageUrl: string;
-  gender: "MALE" | "FEMALE"; // string -> 구체적인 타입으로 변경
+  gender: "남성" | "여성"; // string -> 구체적인 타입으로 변경
   body_type: string; // constitution -> body_type
-  state: "DIET" | "BULK_UP" | "MAINTAIN"; // exercise -> state
+  state: "다이어트 중" | "증량 중" | "유지 중"; // exercise -> state
   prefer: string[];
   allergy: string[];
   created_at: string;
