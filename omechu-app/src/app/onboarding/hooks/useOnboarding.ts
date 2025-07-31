@@ -19,7 +19,7 @@ export const useOnboarding = () => {
     allergies,
     reset: resetOnboarding,
   } = useOnboardingStore();
-  const { user: authUser, login, password } = useAuthStore();
+  const { user: authUser, login } = useAuthStore();
 
   const { mutate: completeOnboarding, isPending: isCompleting } = useMutation<
     onboardingApi.OnboardingSuccessData,
@@ -32,7 +32,6 @@ export const useOnboarding = () => {
         login({
           accessToken: "", // 토큰은 로그인 시 별도 관리되므로 빈 값으로 전달
           user: completedProfile,
-          password: password,
         });
       }
       router.push("/onboarding/complete"); // 완료 페이지로 이동
@@ -42,14 +41,13 @@ export const useOnboarding = () => {
 
   const submitOnboardingData = () => {
     const dataToSubmit: onboardingApi.OnboardingRequestData = {
-      password: password,
       nickname: nickname,
       profileImageUrl: profileImageUrl || "",
       gender: gender,
       body_type: constitution.length > 0 ? constitution[0] : null,
       state: workoutStatus,
-      prefer: preferredFood,
-      allergy: allergies,
+      prefer: preferredFood || [],
+      allergy: allergies || [],
     };
     completeOnboarding(dataToSubmit);
   };
