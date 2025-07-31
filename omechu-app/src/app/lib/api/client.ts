@@ -13,9 +13,9 @@ const apiClient: AxiosInstance = axios.create({
 // 일반 로그인 사용자는 store.accessToken이 null이므로 아무것도 실행되지 않습니다.
 apiClient.interceptors.request.use(
   (config) => {
-    const { accessToken } = useAuthStore.getState();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const { user } = useAuthStore.getState();
+    if (user) {
+      config.headers.Authorization = `Bearer ${user.id}`;
     }
     return config;
   },
@@ -29,9 +29,9 @@ apiClient.interceptors.response.use(
     // 서버로부터 401 응답을 받으면, 클라이언트의 로그인 상태를 동기화(로그아웃)합니다.
     // PrivateRoute가 이 상태 변화를 감지하고 로그인 페이지로 보낼 것입니다.
     if (error.response?.status === 401) {
-      const { isLoggedIn } = useAuthStore.getState();
-      if (isLoggedIn) {
-        useAuthStore.getState().logout();
+      const { user } = useAuthStore.getState();
+      if (user) {
+        useAuthStore.getState().setUser(null);
       }
     }
     return Promise.reject(error);
