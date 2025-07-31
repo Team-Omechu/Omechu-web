@@ -16,9 +16,11 @@ import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 �
 import { likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/auth/store";
 import { useProfile } from "../hooks/useProfile";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
 
 export default function Favorites() {
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
@@ -155,6 +157,14 @@ export default function Favorites() {
     }
   }, [isLoading]);
 
+  const scrollToTop = () => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <Header
@@ -170,7 +180,10 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="min-h-sceen w-full px-6 pb-8 pt-3">
+      <main
+        ref={mainRef}
+        className="relative h-screen w-full overflow-y-auto px-6 pb-8 pt-3 scrollbar-hide"
+      >
         {/* 필터 - 최신 순 | 오래된 순 */}
         <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
           <button
@@ -244,6 +257,7 @@ export default function Favorites() {
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
     </>
   );
