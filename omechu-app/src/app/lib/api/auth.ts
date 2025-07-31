@@ -85,6 +85,8 @@ export const login = async (
   const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
+    // * 이삭 추가 부분
+    { withCredentials: true },
   );
 
   const apiResponse = response.data;
@@ -220,4 +222,39 @@ export const resetPassword = async (
  */
 export const logout = async (): Promise<void> => {
   await apiClient.post("/auth/logout");
+};
+
+/**
+ * 비밀번호 변경 API
+ * @param data { currentPassword: string, newPassword: string }
+ * @returns 성공 시 메시지(string)
+ * 추가 - 이삭
+ */
+export const changePassword = async (data: {
+  currentPassword: string;
+  newPassword: string;
+}): Promise<string> => {
+  const response = await apiClient.patch<ApiResponse<string>>(
+    "/auth/change-passwd",
+    data,
+    { withCredentials: true },
+  );
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(
+      apiResponse.error?.reason || "비밀번호 변경에 실패했습니다.",
+    );
+  }
+  return apiResponse.success;
+};
+
+//* 현재 로그인된 유저 정보 조회
+// * 추가 - 이삭
+export const getCurrentUser = async (): Promise<LoginSuccessData> => {
+  const response =
+    await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
+  if (response.data.resultType === "FAIL" || !response.data.success) {
+    throw new Error(response.data.error?.reason || "유저 조회 실패");
+  }
+  return response.data.success;
 };

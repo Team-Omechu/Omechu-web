@@ -7,14 +7,30 @@ import { RestaurantType } from "@/constant/restaurant/restaurantList";
 type FoodCardProps = {
   item: RestaurantType; // 타입은 foodItems 데이터 구조에 맞게 정의
   onClick: () => void;
+  onLike?: () => void;
+  onUnlike?: () => void;
 };
 
-export default function FoodCard({ item, onClick }: FoodCardProps) {
+export default function FoodCard({
+  item,
+  onClick,
+  onLike,
+  onUnlike,
+}: FoodCardProps) {
   const [isLiked, setIsLiked] = useState(item.isLiked ?? false);
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked((prev) => !prev);
+
+    if (isLiked) {
+      // 찜 해제
+      setIsLiked(false);
+      onUnlike && onUnlike();
+    } else {
+      // 찜 등록
+      setIsLiked(true);
+      onLike && onLike();
+    }
   };
 
   return (

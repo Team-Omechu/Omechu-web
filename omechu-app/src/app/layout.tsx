@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`relative mx-auto flex max-h-screen min-w-[375px] flex-col overflow-x-hidden ${notoSansKR.variable}`}
+        className={`relative mx-auto flex min-h-screen min-w-[375px] flex-col overflow-x-hidden ${notoSansKR.variable}`}
       >
         <ReactQueryProvider>
           <ClientLayout>{children}</ClientLayout>
