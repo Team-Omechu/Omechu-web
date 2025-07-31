@@ -72,8 +72,8 @@ export default function MyPage() {
         rightChild={
           <button onClick={() => router.push("/mypage/settings")}>
             <Image
-              src={"/setting.png"}
-              alt={"setting"}
+              src={"/setting/setting.svg"}
+              alt={"설정"}
               width={25}
               height={25}
             />
@@ -138,11 +138,11 @@ export default function MyPage() {
           })}
         </section>
       </main>
-      {error && (
+      {/* {error && (
         <ModalWrapper>
           <LoginPromptModal2 onConfirm={handleConfirm} onClose={handleClose} />
         </ModalWrapper>
-      )}
+      )} */}
       <BottomNav />
     </>
   );
