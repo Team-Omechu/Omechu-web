@@ -2,15 +2,17 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // 인증된 사용자만 접근 가능한 페이지 경로 (prefix)
-const PROTECTED_PATHS = ["/onboarding", "/mypage", "/fullmenu", "/restaurant"];
+const PROTECTED_PATHS = [
+  "/onboarding",
+  "/mypage",
+  "/fullmenu",
+  "/restaurant",
+  "/reset-password",
+  "/change-password",
+];
 
 // 인증되지 않은 사용자만 접근 가능한 페이지 경로 (prefix)
-const PUBLIC_ONLY_PATHS = [
-  "/sign-in",
-  "/sign-up",
-  "/forgot-password",
-  "/reset-password",
-];
+const PUBLIC_ONLY_PATHS = ["/sign-in", "/sign-up", "/forgot-password"];
 
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
