@@ -151,7 +151,7 @@ export default function AccountSettings() {
           </ModalWrapper>
         )}
       </main>
-      {profileError && (
+      {/* {profileError && (
         <ModalWrapper>
           <AlertModal
             title="로그인이 필요합니다"
@@ -162,7 +162,7 @@ export default function AccountSettings() {
             }}
           />
         </ModalWrapper>
-      )}
+      )} */}
     </>
   );
 }
