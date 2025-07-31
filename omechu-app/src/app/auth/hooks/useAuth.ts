@@ -13,18 +13,25 @@ import { useAuthStore } from "@/auth/store";
 
 export const useLoginMutation = () => {
   const { login: setAuth } = useAuthStore();
+  const router = useRouter(); // onSuccess에서 라우팅을 위해 추가
 
   return useMutation({
     mutationFn: (data: LoginFormValues) => authApi.login(data),
     onSuccess: (response, variables) => {
+      // lib/hooks/useAuth.ts의 누락된 password 전달 로직을 추가합니다.
+      // 백엔드 응답에 accessToken이 포함된다면 여기서 처리해야 합니다.
       setAuth({
-        accessToken: "",
+        accessToken: "DUMMY_ACCESS_TOKEN", // 임시 토큰
         user: response,
         password: variables.password,
       });
+      // 로그인 성공 후 메인 페이지로 이동
+      router.push("/");
     },
     onError: (error) => {
       console.error("Login failed:", error);
+      // 사용자에게 실패 피드백 (예: alert, toast)
+      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
     },
   });
 };
