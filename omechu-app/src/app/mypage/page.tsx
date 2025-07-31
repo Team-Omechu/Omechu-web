@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProfile } from "./hooks/useProfile";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
+import { LoadingSpinner } from "@/components/common/LoadingIndicator";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import AlertModal from "@/components/common/AlertModal";
 
 export default function MyPage() {
   const router = useRouter();
@@ -16,8 +19,22 @@ export default function MyPage() {
   const user = useAuthStore((state) => state.user);
   const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
   const { profile, loading, error } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
 
   const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => setMinLoading(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoading(false);
+    }
+  }, [loading]);
+
+  if (loading || minLoading) {
+    return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
+  }
 
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -106,6 +123,18 @@ export default function MyPage() {
           })}
         </section>
       </main>
+      {error && (
+        <ModalWrapper>
+          <AlertModal
+            title="로그인이 필요합니다"
+            description="로그인 후 이용해 주세요."
+            confirmText="확인"
+            onConfirm={() => {
+              router.push("/sign-in");
+            }}
+          />
+        </ModalWrapper>
+      )}
       <BottomNav />
     </>
   );
