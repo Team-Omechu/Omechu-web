@@ -5,6 +5,7 @@
 
 export type RestaurantType = {
   id: number;
+  GooglePlaceId?: string;
   name: string;
   category?: string;
   rating: number;
@@ -27,6 +28,7 @@ export type RestaurantType = {
 export const Restaurants: RestaurantType[] = [
   {
     id: 1,
+    GooglePlaceId: "ChIJm26UcZyhfDURkuYARFNUpp8",
     name: "오레노 라멘 합정 본점",
     category: "라멘",
     rating: 4.6,
