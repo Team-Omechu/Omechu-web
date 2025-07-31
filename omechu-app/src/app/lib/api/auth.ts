@@ -22,7 +22,7 @@ export interface ApiError {
 }
 
 // 공통 사용자 정보 타입
-export interface User {
+export interface LoginSuccessData {
   id: string;
   email: string;
   nickname: string;
@@ -91,8 +91,10 @@ function handleApiResponse<T>(
  * 로그인 API
  * @param data email, password
  */
-export const login = async (data: LoginFormValues): Promise<User> => {
-  const response = await apiClient.post<ApiResponse<User>>(
+export const login = async (
+  data: LoginFormValues,
+): Promise<LoginSuccessData> => {
+  const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
     // * 이삭 추가 부분
@@ -121,8 +123,8 @@ export const signup = async (
  */
 export const completeOnboarding = async (
   data: OnboardingData,
-): Promise<User> => {
-  const response = await apiClient.patch<ApiResponse<User>>(
+): Promise<LoginSuccessData> => {
+  const response = await apiClient.patch<ApiResponse<LoginSuccessData>>(
     "/auth/complete",
     data,
   );
@@ -213,7 +215,8 @@ export const changePassword = async (data: {
 
 //* 현재 로그인된 유저 정보 조회
 // * 추가 - 이삭
-export const getCurrentUser = async (): Promise<User> => {
-  const response = await apiClient.get<ApiResponse<User>>(`/profile/me`);
+export const getCurrentUser = async (): Promise<LoginSuccessData> => {
+  const response =
+    await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
   return handleApiResponse(response, "유저 조회에 실패했습니다.");
 };

@@ -15,7 +15,7 @@ import Toast from "@/components/common/Toast";
 import { useAuthStore } from "@/auth/store";
 import { loginSchema, type LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/auth/hooks/useAuth";
-import type { ApiResponse, User } from "@/lib/api/auth";
+import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
