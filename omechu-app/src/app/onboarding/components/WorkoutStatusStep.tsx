@@ -7,8 +7,7 @@ import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
-const options = ["다이어트 중", "증량 중", "유지 중"];
-
+const options = ["다이어트 중", "증량 중", "유지 중"] as const;
 const WorkoutStatusStep = () => {
   const { workoutStatus, setWorkoutStatus } = useOnboardingStore();
 
@@ -17,9 +16,7 @@ const WorkoutStatusStep = () => {
       {options.map((option) => (
         <ListButton
           key={option}
-          onClick={() =>
-            setWorkoutStatus(option as "다이어트 중" | "증량 중" | "유지 중")
-          }
+          onClick={() => setWorkoutStatus(option)}
           isSelected={workoutStatus === option}
         >
           {option}

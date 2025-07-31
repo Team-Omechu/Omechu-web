@@ -43,7 +43,7 @@ export default function SignInForm() {
 
   useEffect(() => {
     if (error) {
-      triggerToast(error.message);
+      triggerToast(error.reason);
     }
   }, [error]);
 

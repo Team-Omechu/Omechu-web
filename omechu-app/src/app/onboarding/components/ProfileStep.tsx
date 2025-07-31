@@ -6,6 +6,7 @@ import Image from "next/image";
 import Input from "@/components/common/Input";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { getPresignedUrl, uploadImageToS3 } from "@/lib/api/image";
+import Toast from "@/components/common/Toast";
 
 const ProfileStep = () => {
   const { nickname, setNickname, profileImageUrl, setProfileImageUrl } =
@@ -33,7 +34,11 @@ const ProfileStep = () => {
     if (!file) return;
 
     if (!["image/jpeg", "image/png"].includes(file.type)) {
-      alert("JPEG 또는 PNG 파일만 업로드할 수 있습니다.");
+      Toast({
+        message: "JPEG 또는 PNG 파일만 업로드할 수 있습니다.",
+        show: true,
+        className: "bg-red-500",
+      });
       return;
     }
 
@@ -44,7 +49,11 @@ const ProfileStep = () => {
       setProfileImageUrl(fileUrl);
     } catch (error) {
       console.error("이미지 업로드에 실패했습니다.", error);
-      alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+      Toast({
+        message: "이미지 업로드에 실패했습니다. 다시 시도해주세요.",
+        show: true,
+        className: "bg-red-500",
+      });
     } finally {
       setIsUploading(false);
       if (imageInputRef.current) {

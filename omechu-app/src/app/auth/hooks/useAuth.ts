@@ -12,22 +12,20 @@ import { useAuthStore } from "@/auth/store";
 
 export const useLoginMutation = () => {
   const { setUser } = useAuthStore();
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (data: LoginFormValues) => authApi.login(data),
-    onSuccess: (response) => {
-      setUser(response);
-      // 로그인 성공 후 온보딩 여부에 따라 페이지 이동
-      if (!response.nickname) {
-        router.push("/onboarding/1");
-      } else {
-        router.push("/");
-      }
+  return useMutation<
+    authApi.LoginSuccessData,
+    authApi.ApiError,
+    LoginFormValues
+  >({
+    mutationFn: authApi.login,
+    onSuccess: (data) => {
+      setUser(data);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       console.error("Login failed:", error);
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
     },
   });
 };
