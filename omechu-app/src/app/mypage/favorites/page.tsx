@@ -8,15 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { distance } from "fastest-levenshtein";
-
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
-import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
 import { likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/auth/store";
-import { useProfile } from "../hooks/useProfile";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
 
 export default function Favorites() {
   const router = useRouter();
@@ -28,9 +25,7 @@ export default function Favorites() {
 
   const user = useAuthStore((state) => state.user);
 
-  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
-  const { profile, loading, error: profileError } = useProfile(userId);
-  const [minLoading, setMinLoading] = useState(true);
+  const userId = user?.id ? Number(user.id) : undefined;
 
   // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
   useEffect(() => {
@@ -57,19 +52,6 @@ export default function Favorites() {
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
-  //* dummy용
-  // const filteredItems = search.trim()
-  // ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-  // : Restaurants;
-
-  // const sortedItems = [...filteredItems].sort((a, b) => {
-  //   const aIdx = Restaurants.indexOf(a);
-  //   const bIdx = Restaurants.indexOf(b);
-  //   return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
-  // });
-
-  // const visibleItems = sortedItems.slice(0, visibleCount);
-
   //* 실제 api 데이터 연동
   const filteredItems = search.trim()
     ? hearts.filter((item) =>
@@ -78,11 +60,9 @@ export default function Favorites() {
     : hearts;
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
-    // 여기선 placeId 사용(서버 데이터 기준)
     return sortOrder === "latest"
-      ? b.placeId - a.placeId
-      : a.placeId - b.placeId;
+      ? b.restaurant.id - a.restaurant.id
+      : a.restaurant.id - b.restaurant.id;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
@@ -123,7 +103,7 @@ export default function Favorites() {
         visibleCount < filteredItems.length
       ) {
         setIsLoading(true); // 로딩 상태 시작
-        setVisibleCount((prev) => Math.min(prev + 18, filteredItems.length)); // 다음 항목 18개 추가
+        setVisibleCount((prev) => Math.min(prev + 5, filteredItems.length)); // 다음 항목 5개 추가
       }
     },
     [isLoading, visibleCount, filteredItems.length],
@@ -165,6 +145,36 @@ export default function Favorites() {
     }
   };
 
+  // IntersectionObserver 등록 및 해제
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null, // 뷰포트를 기준으로 관찰
+      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
+      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+    });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [observerCallback]);
+
+  // 로딩 상태를 일정 시간 후 자동 해제 (로딩 애니메이션 표시 목적)
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1800); // 1.8초 후 로딩 해제
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
   return (
     <>
       <Header
@@ -204,7 +214,6 @@ export default function Favorites() {
             오래된 순
           </button>
         </section>
-
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
@@ -250,13 +259,7 @@ export default function Favorites() {
         </section>
 
         <div ref={loaderRef} className="h-[1px]" />
-
-        {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
-            <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator />}
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
     </>
