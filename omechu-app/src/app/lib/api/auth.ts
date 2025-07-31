@@ -1,3 +1,4 @@
+import type { AxiosResponse } from "axios";
 import type {
   LoginFormValues,
   SignupFormValues,
@@ -20,16 +21,26 @@ export interface ApiError {
   data?: unknown;
 }
 
-// 로그인 성공 시 success 객체 구조
-export interface LoginSuccessData {
+// 공통 사용자 정보 타입
+export interface User {
   id: string;
   email: string;
   nickname: string;
   profileImageUrl: string;
-  gender: "남성" | "여성"; // string -> 구체적인 타입으로 변경
+  gender: "남성" | "여성";
   body_type: string;
   state: string;
   prefer: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+// 로그인 성공 시 success 객체 구조
+export interface LoginSuccessData {
+  id: string;
+  email: string;
+  gender: "남성" | "여성";
+  nickname: string;
   created_at: string;
   updated_at: string;
 }
@@ -45,6 +56,12 @@ export interface SignupSuccessData {
 // 이메일 인증번호 전송 성공 시 success 객체 구조
 export interface SendVerificationCodeSuccessData {
   message: string;
+  code: string;
+}
+
+// 이메일 인증번호 검증 파라미터
+export interface VerifyVerificationCodeParams {
+  email: string;
   code: string;
 }
 
@@ -81,6 +98,17 @@ export interface OnboardingData {
   preferredFood: string[];
   constitution: string[];
   allergy: string[];
+}
+
+function handleApiResponse<T>(
+  response: AxiosResponse<ApiResponse<T>>,
+  defaultErrorMessage: string,
+): T {
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(apiResponse.error?.reason || defaultErrorMessage);
+  }
+  return apiResponse.success;
 }
 
 /**
@@ -120,11 +148,7 @@ export const signup = async (
     "/auth/signup",
     { email, password },
   );
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(apiResponse.error?.reason || "회원가입에 실패했습니다.");
-  }
-  return apiResponse.success;
+  return handleApiResponse(response, "회원가입에 실패했습니다.");
 };
 
 /**
@@ -132,22 +156,12 @@ export const signup = async (
  */
 export const completeOnboarding = async (
   data: OnboardingData,
-): Promise<OnboardingSuccessData> => {
-  // TODO: 백엔드 응답 타입 정의
-  const response = await apiClient.patch<ApiResponse<OnboardingSuccessData>>(
+): Promise<User> => {
+  const response = await apiClient.patch<ApiResponse<User>>(
     "/auth/complete",
     data,
   );
-
-  const apiResponse = response.data;
-
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "온보딩 정보 저장에 실패했습니다.",
-    );
-  }
-
-  return apiResponse.success;
+  return handleApiResponse(response, "온보딩 정보 저장에 실패했습니다.");
 };
 
 /**
@@ -160,32 +174,20 @@ export const sendVerificationCode = async (
   const response = await apiClient.post<
     ApiResponse<SendVerificationCodeSuccessData>
   >("/auth/send", { email });
-
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "인증번호 전송에 실패했습니다.",
-    );
-  }
-  return apiResponse.success;
+  return handleApiResponse(response, "인증번호 전송에 실패했습니다.");
 };
 
 /**
  * 이메일 인증번호 확인 API
  * @param data email, code
  */
-export const verifyVerificationCode = async (data: {
-  email: string;
-  code: string;
-}): Promise<VerifyVerificationCodeSuccessData> => {
+export const verifyVerificationCode = async (
+  data: VerifyVerificationCodeParams,
+): Promise<VerifyVerificationCodeSuccessData> => {
   const response = await apiClient.post<
     ApiResponse<VerifyVerificationCodeSuccessData>
   >("/auth/verify", data);
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(apiResponse.error?.reason || "이메일 인증에 실패했습니다.");
-  }
-  return apiResponse.success;
+  return handleApiResponse(response, "이메일 인증에 실패했습니다.");
 };
 
 /**
@@ -197,13 +199,7 @@ export const requestPasswordReset = async (
   const response = await apiClient.post<
     ApiResponse<RequestPasswordResetSuccessData>
   >("/auth/reset-request", data);
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "비밀번호 재설정 요청에 실패했습니다.",
-    );
-  }
-  return apiResponse.success;
+  return handleApiResponse(response, "비밀번호 재설정 요청에 실패했습니다.");
 };
 
 /**
@@ -216,13 +212,7 @@ export const resetPassword = async (
     "/auth/passwd",
     { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
   );
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "비밀번호 재설정에 실패했습니다.",
-    );
-  }
-  return apiResponse.success;
+  return handleApiResponse(response, "비밀번호 재설정에 실패했습니다.");
 };
 
 /**
