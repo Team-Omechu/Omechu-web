@@ -34,20 +34,21 @@ export function middleware(request: NextRequest) {
   }
 
   // --- 인증 관련 로직 시작 ---
-  const isLoggedIn = request.cookies.has("connect.sid"); // 세션 쿠키 이름은 백엔드 설정에 따라 확인 필요
+  console.log(`[Middleware] Path: ${pathname}`);
+  console.log("[Middleware] All Cookies:", request.cookies.getAll());
+  const isLoggedIn = request.cookies.has("connect.sid");
+  console.log(`[Middleware] isLoggedIn: ${isLoggedIn}`);
 
   if (isLoggedIn) {
-    // 로그인한 사용자가 Public-Only 페이지에 접근 시, 마이페이지로 리디렉션
+    // 로그인한 사용자가 Public-Only 페이지에 접근 시, 메인페이지로 리디렉션
     if (PUBLIC_ONLY_PATHS.some((path) => pathname.startsWith(path))) {
-      return NextResponse.redirect(new URL("/mypage", request.url));
+      console.log("[Middleware] Redirecting logged-in user to /mainpage");
+      return NextResponse.redirect(new URL("/mainpage", request.url));
     }
   } else {
     // 로그인하지 않은 사용자가 보호된 페이지에 접근 시, 로그인 페이지로 리디렉션
     if (PROTECTED_PATHS.some((path) => pathname.startsWith(path))) {
-      // 리디렉션 후 원래 가려던 경로를 쿼리 파라미터로 추가할 수 있습니다 (선택 사항).
-      // const url = new URL("/sign-in", request.url);
-      // url.searchParams.set("redirect_to", pathname);
-      // return NextResponse.redirect(url);
+      console.log("[Middleware] Redirecting logged-out user to /sign-in");
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
   }
