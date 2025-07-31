@@ -6,7 +6,7 @@ type OnboardingState = {
   nickname: string;
   profileImageUrl: string | null;
   gender: "남성" | "여성" | null;
-  workoutStatus: string | null;
+  workoutStatus: "다이어트 중" | "증량 중" | "유지 중" | null;
   preferredFood: string[];
   constitution: string[];
   allergies: string[];
@@ -15,10 +15,12 @@ type OnboardingState = {
 
 type OnboardingActions = {
   setNickname: (nickname: string) => void;
-  setProfileImageUrl: (url: string) => void;
+  setProfileImageUrl: (url: string | null) => void;
   setGender: (gender: "남성" | "여성" | null) => void;
-  setWorkoutStatus: (status: string | null) => void;
-  setPreferredFood: (foods: string[]) => void; // 타입 정의 추가
+  setWorkoutStatus: (
+    status: "다이어트 중" | "증량 중" | "유지 중" | null,
+  ) => void;
+  setPreferredFood: (foods: string[]) => void;
   togglePreferredFood: (food: string) => void;
   toggleConstitution: (item: string) => void;
   toggleAllergy: (allergy: string) => void;
@@ -50,7 +52,7 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
       setProfileImageUrl: (url) => set({ profileImageUrl: url }),
       setGender: (gender) => set({ gender }),
       setWorkoutStatus: (status) => set({ workoutStatus: status }),
-      setPreferredFood: (foods: string[]) => set({ preferredFood: foods }), // 파라미터 타입 추가
+      setPreferredFood: (foods: string[]) => set({ preferredFood: foods }),
 
       togglePreferredFood: (food) => {
         const exists = get().preferredFood.includes(food);
