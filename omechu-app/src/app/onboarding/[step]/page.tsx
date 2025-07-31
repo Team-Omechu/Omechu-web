@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
 import { useParams, useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -9,66 +8,160 @@ import BottomButton from "@/components/common/button/BottomButton";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
+import Toast from "@/components/common/Toast";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { useAuthStore } from "@/auth/store";
+import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
+import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
 import AllergyStep from "@/onboarding/components/AllergyStep";
 import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
 import GenderStep from "@/onboarding/components/GenderStep";
 import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
+import { LoginSuccessData } from "@/lib/api/auth";
+import {
+  GENDER_MAP,
+  EXERCISE_MAP,
+  PREFER_MAP,
+  ALLERGY_MAP,
+  CONSTITUTION_MAP,
+} from "@/onboarding/utils/enum-mapper";
 
 const ONBOARDING_STEPS = 6;
 
 export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
-  const store = useOnboardingStore();
-  const { setCurrentStep, reset } = store;
+  const onboardingStore = useOnboardingStore();
+  const { user: authUser, login, password } = useAuthStore();
+  const {
+    setCurrentStep,
+    reset: resetOnboarding,
+    nickname, // reset 후 닉네임을 복원하기 위해 추가
+  } = onboardingStore;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+
+  const { mutate: completeOnboarding, isPending: isCompleting } =
+    useCompleteOnboardingMutation();
 
   const step = Number(params.step);
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
 
   useEffect(() => {
     if (isNaN(step) || step < 1 || step > ONBOARDING_STEPS) {
       router.replace("/onboarding/1");
       return;
     }
+    // 온보딩 첫 단계 진입 시, 이전 데이터 리셋
+    if (step === 1) {
+      const currentNickname = nickname; // 현재 닉네임 임시 저장
+      resetOnboarding();
+      onboardingStore.setNickname(currentNickname); // 닉네임만 복원
+    }
     setCurrentStep(step);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, router, setCurrentStep]);
 
   const isNextDisabled = useMemo(() => {
     switch (step) {
       case 1:
-        return store.nickname.length < 2 || store.nickname.length > 12;
+        return (
+          onboardingStore.nickname.length < 2 ||
+          onboardingStore.nickname.length > 12
+        );
       case 2:
-        return !store.gender;
+        return !onboardingStore.gender;
       case 3:
-        return !store.workoutStatus;
+        return !onboardingStore.workoutStatus;
       case 4:
-        return store.preferredFood.length === 0;
+        return onboardingStore.preferredFood.length === 0;
       case 5:
-        return store.constitution.length === 0;
+        return (
+          !onboardingStore.constitution ||
+          onboardingStore.constitution.length === 0
+        );
       default:
         return false;
     }
-  }, [step, store]);
+  }, [step, onboardingStore]);
 
   const handleNext = () => {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
-      // TODO: 온보딩 완료 처리 로직 (e.g., 서버에 데이터 전송)
-      setIsModalOpen(true);
+      const genderForApi = onboardingStore.gender
+        ? GENDER_MAP[onboardingStore.gender]
+        : null;
+      const stateForApi = onboardingStore.workoutStatus
+        ? EXERCISE_MAP[onboardingStore.workoutStatus]
+        : null;
+      const preferForApi = onboardingStore.preferredFood.map(
+        (p) => PREFER_MAP[p],
+      );
+      const allergyForApi = onboardingStore.allergies.map(
+        (a) => ALLERGY_MAP[a],
+      );
+      const constitutionForApi =
+        onboardingStore.constitution.length > 0
+          ? CONSTITUTION_MAP[onboardingStore.constitution[0]]
+          : null;
+
+      const dataToSubmit: OnboardingRequestData = {
+        password: password,
+        nickname: onboardingStore.nickname,
+        profileImageUrl: onboardingStore.profileImageUrl || "",
+        gender: genderForApi as "male" | "female" | null,
+        body_type: constitutionForApi,
+        state: stateForApi as "dieting" | "bulking" | "maintaining" | null,
+        prefer: preferForApi,
+        allergy: allergyForApi,
+      };
+
+      completeOnboarding(dataToSubmit, {
+        onSuccess: (completedProfile) => {
+          if (authUser) {
+            const userForLogin: LoginSuccessData = {
+              ...completedProfile,
+              gender:
+                completedProfile.gender === "남자"
+                  ? "남성"
+                  : completedProfile.gender === "여자"
+                    ? "여성"
+                    : "남성", // 기본값 혹은 예외처리
+            };
+            login({
+              accessToken: "",
+              user: userForLogin,
+              password: password,
+            });
+          }
+          setIsModalOpen(true);
+        },
+        onError: (error) => {
+          triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
+        },
+      });
     }
   };
 
   const handlePrev = () => router.back();
-  const handleSkip = () => handleNext();
+  const handleSkip = () => {
+    if (step < ONBOARDING_STEPS) {
+      router.push(`/onboarding/${step + 1}`);
+    }
+  };
 
   const handleRecommend = () => {
-    // TODO: 온보딩 완료 데이터 서버 전송
-    reset();
+    resetOnboarding();
     router.push("/");
   };
 
@@ -77,7 +170,7 @@ export default function OnboardingPage() {
   };
 
   const handleConfirmSkip = () => {
-    reset();
+    resetOnboarding();
     router.push("/");
   };
 
@@ -100,7 +193,6 @@ export default function OnboardingPage() {
       case 6:
         return <AllergyStep />;
       default:
-        // useEffect에서 처리하지만, 만약을 위한 방어 코드
         return null;
     }
   };
@@ -132,8 +224,15 @@ export default function OnboardingPage() {
         showNext={step > 1 && step < ONBOARDING_STEPS}
         onNext={handleSkip}
       >
-        <BottomButton onClick={handleNext} disabled={isNextDisabled}>
-          {step === ONBOARDING_STEPS ? "저장" : "다음"}
+        <BottomButton
+          onClick={handleNext}
+          disabled={isNextDisabled || isCompleting}
+        >
+          {isCompleting
+            ? "저장하는 중..."
+            : step === ONBOARDING_STEPS
+              ? "저장"
+              : "다음"}
         </BottomButton>
       </StepFooter>
 
@@ -162,6 +261,7 @@ export default function OnboardingPage() {
           />
         </ModalWrapper>
       )}
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }

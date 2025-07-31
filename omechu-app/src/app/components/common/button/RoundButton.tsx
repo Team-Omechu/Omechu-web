@@ -15,10 +15,10 @@ const RoundButton = ({
     "rounded-full font-medium flex items-center justify-center transition-colors border";
 
   const variantStyles = {
-    red: "bg-[#FB4746] text-white border-transparent hover:bg-[#e2403f] active:bg-[#c93938]",
+    red: "bg-primary-normal text-white border-transparent hover:bg-primary-normalHover active:bg-primary-normalActive",
     white:
       "bg-white text-black border-black hover:bg-gray-100 active:bg-gray-200",
-    gray: "bg-white text-[#939393] border-[#939393] hover:bg-gray-100 active:bg-gray-200",
+    gray: "bg-white text-grey-normalHover border-grey-normalHover hover:bg-gray-100 active:bg-gray-200",
   };
 
   const sizeStyles = {

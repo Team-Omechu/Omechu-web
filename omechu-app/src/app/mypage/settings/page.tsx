@@ -37,7 +37,7 @@ export default function Settings() {
           {termsList.map((item) => (
             <li
               key={item.id}
-              className="flex w-full flex-col px-6 py-3 hover:bg-[#dfc0e6] active:bg-[#c6aacc]"
+              className="flex w-full flex-col px-6 py-3 hover:bg-main-normalHover active:bg-[#c6aacc]"
             >
               <button
                 onClick={() => router.push(`${item.url}`)}
