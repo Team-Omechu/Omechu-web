@@ -35,16 +35,6 @@ export interface User {
   updated_at: string;
 }
 
-// 로그인 성공 시 success 객체 구조
-export interface LoginSuccessData {
-  id: string;
-  email: string;
-  gender: "남성" | "여성";
-  nickname: string;
-  created_at: string;
-  updated_at: string;
-}
-
 // 회원가입 성공 시 success 객체 구조
 export interface SignupSuccessData {
   id: number;
@@ -76,20 +66,6 @@ export interface RequestPasswordResetSuccessData {
   token: string;
 }
 
-// 온보딩 완료 시 서버 응답 데이터 타입
-export interface OnboardingSuccessData {
-  id: string;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  gender: "남성" | "여성"; // string -> 구체적인 타입으로 변경
-  body_type: string;
-  state: string;
-  prefer: string[];
-  created_at: string;
-  updated_at: string;
-}
-
 // 온보딩 완료 시 서버로 보낼 데이터 타입
 export interface OnboardingData {
   nickname: string;
@@ -115,25 +91,14 @@ function handleApiResponse<T>(
  * 로그인 API
  * @param data email, password
  */
-export const login = async (
-  data: LoginFormValues,
-): Promise<LoginSuccessData> => {
-  const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
+export const login = async (data: LoginFormValues): Promise<User> => {
+  const response = await apiClient.post<ApiResponse<User>>(
     "/auth/login",
     data,
     // * 이삭 추가 부분
     { withCredentials: true },
   );
-
-  const apiResponse = response.data;
-
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    // resultType이 FAIL이거나 success 필드가 없을 경우, 에러를 발생시켜
-    // TanStack Query의 onError 콜백을 트리거합니다.
-    throw new Error(apiResponse.error?.reason || "로그인에 실패했습니다.");
-  }
-
-  return apiResponse.success;
+  return handleApiResponse(response, "로그인에 실패했습니다.");
 };
 
 /**
@@ -248,11 +213,7 @@ export const changePassword = async (data: {
 
 //* 현재 로그인된 유저 정보 조회
 // * 추가 - 이삭
-export const getCurrentUser = async (): Promise<LoginSuccessData> => {
-  const response =
-    await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
-  if (response.data.resultType === "FAIL" || !response.data.success) {
-    throw new Error(response.data.error?.reason || "유저 조회 실패");
-  }
-  return response.data.success;
+export const getCurrentUser = async (): Promise<User> => {
+  const response = await apiClient.get<ApiResponse<User>>(`/profile/me`);
+  return handleApiResponse(response, "유저 조회에 실패했습니다.");
 };
