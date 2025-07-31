@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { changePassword } from "@/lib/api/auth";
 
 // 공용 컴포넌트
 import AlertModal from "@/components/common/AlertModal";
@@ -12,7 +13,7 @@ import Input from "@/components/common/Input";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import Toast from "@/components/common/Toast";
 
-const SAMPLE_PASSWORD = "kang@1234"; // 테스트용 기존 비밀번호
+// const SAMPLE_PASSWORD = "kang@1234"; // 테스트용 기존 비밀번호
 
 export default function ChangePassword() {
   const router = useRouter();
@@ -130,15 +131,18 @@ export default function ChangePassword() {
             className={"bottom-20"}
           />
           <button
-            onClick={() => {
-              if (inputPassword !== SAMPLE_PASSWORD) {
-                triggerToast("비밀번호를 다시 확인해주세요!");
-                setPasswordMatched(false);
-                return;
-              }
-              setPasswordMatched(true);
-              if (isFormValid) {
-                setShowModal(true);
+            onClick={async () => {
+              // 실제 API 호출
+              if (!isFormValid) return;
+
+              try {
+                await changePassword({
+                  currentPassword: inputPassword,
+                  newPassword: inputNewPassword,
+                });
+                setShowModal(true); // 성공 시 모달
+              } catch (e: any) {
+                triggerToast(e.message || "비밀번호 변경에 실패했습니다.");
               }
             }}
             className={`mt-48 h-[50px] w-[335px] rounded-md text-[17px] font-medium text-white transition ${

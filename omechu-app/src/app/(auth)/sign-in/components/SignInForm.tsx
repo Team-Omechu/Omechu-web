@@ -22,6 +22,9 @@ export default function SignInForm() {
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
 
+  //* 이삭 추가한 부분
+  const setUser = useAuthStore((state) => state.setUser);
+
   const {
     mutate: login,
     isPending,
@@ -49,15 +52,22 @@ export default function SignInForm() {
     login(data);
   };
 
+  console.log("loginResult", loginResult);
+
+  //* 이삭 수정 부분
   useEffect(() => {
     if (isSuccess && loginResult) {
+      // setUser(loginResult); >>> 로그인 후 상태 저장
+      setUser(loginResult);
+      // console.log("저장된 user", loginResult);
+
       if (!loginResult.nickname) {
         router.push("/onboarding/1");
       } else {
         router.push("/mainpage");
       }
     }
-  }, [isSuccess, loginResult, router]);
+  }, [isSuccess, loginResult, router, setUser]);
 
   useEffect(() => {
     if (error) {
