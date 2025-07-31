@@ -5,6 +5,8 @@ import { Restaurant } from "@/lib/types/restaurant";
 type FoodCardProps = {
   item: Restaurant;
   onClick: () => void;
+  onLike?: () => void;
+  onUnlike?: () => void;
 };
 
 export default function FoodCard({ item, onClick }: FoodCardProps) {
@@ -12,7 +14,16 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked((prev) => !prev);
+
+    if (isLiked) {
+      // 찜 해제
+      setIsLiked(false);
+      onUnlike && onUnlike();
+    } else {
+      // 찜 등록
+      setIsLiked(true);
+      onLike && onLike();
+    }
   };
 
   return (

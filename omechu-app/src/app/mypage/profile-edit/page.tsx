@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,12 +9,87 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 
+import { useProfile } from "../hooks/useProfile";
+import {
+  getPresignedUrl,
+  uploadToS3,
+  updateProfile,
+} from "../api/updateProfile";
+import { useAuthStore } from "@/auth/store";
+import { LoadingSpinner } from "@/components/common/LoadingIndicator";
+
 export default function ProfileEdit() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [nickname, setNickname] = useState("제나"); // 기본값 설정
-  const [showModal, setShowModal] = useState(false);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+  const [nickname, setNickname] = useState(""); // 기본값 설정
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const nicknameRegex = /^[A-Za-z가-힣]{2,12}$/; // 2~12글자, 한글/영문만 허용
+
+  // 전역 상태에서 user 객체 가져오기
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile, loading, error } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
+
+  // 상태와 동기화 (처음 한 번만)
+  useEffect(() => {
+    if (profile) {
+      setProfileImageUrl(profile.profileImageUrl ?? null);
+      setNickname(profile.nickname ?? "");
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    setIsValid(nicknameRegex.test(nickname));
+  }, [nickname]);
+
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => setMinLoading(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoading(false);
+    }
+  }, [loading]);
+
+  if (loading || minLoading) {
+    return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
+  }
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    setSaveError(null);
+    try {
+      let imageUrl = profileImageUrl;
+      // 1. 이미지 파일이 있을 때만 presigned + S3 업로드
+      if (profileImageFile) {
+        const { uploadUrl, fileUrl } = await getPresignedUrl(
+          profileImageFile.name,
+          profileImageFile.type,
+        );
+        await uploadToS3(uploadUrl, profileImageFile);
+        imageUrl = fileUrl;
+        setProfileImageUrl(fileUrl); // 미리 상태에 저장
+      }
+
+      // 2. PATCH 호출 (닉네임/이미지 URL)
+      await updateProfile({
+        nickname,
+        ...(imageUrl ? { profileImageUrl: imageUrl } : {}),
+      });
+      setShowModal(true); // 성공시 모달
+    } catch (e: any) {
+      setSaveError("프로필 수정에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleImageClick = () => {
     fileInputRef.current?.click(); // 숨겨진 input 클릭 유도
@@ -23,6 +98,7 @@ export default function ProfileEdit() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setProfileImageFile(file);
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
     }
@@ -30,6 +106,8 @@ export default function ProfileEdit() {
 
   const handleDeleteImage = () => {
     setImagePreview(null);
+    setProfileImageFile(null);
+    setProfileImageUrl(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; // 실제 input 비우기
     }
@@ -62,12 +140,15 @@ export default function ProfileEdit() {
                 src={
                   imagePreview
                     ? imagePreview
-                    : "/profile/profile_default_img_rotated.svg"
+                    : !!profileImageUrl
+                      ? profileImageUrl
+                      : "/profile/profile_default_img_rotated.svg"
                 }
-                alt={"changeProfileImage"}
+                alt="changeProfileImage"
                 width={73}
                 height={73}
                 priority
+                onError={() => setProfileImageUrl(null)}
               />
             </div>
             <button
@@ -96,8 +177,8 @@ export default function ProfileEdit() {
               사진지우기
             </button>
           </div>
-          <div className="itmes-center mb-8 flex flex-col gap-1">
-            <div className="text-lg font-medium text-grey-darker dark:text-grey-lightHover">
+          <div className="mb-8 flex flex-col items-start gap-1">
+            <div className="ml-1 text-lg font-medium text-grey-darker dark:text-grey-lightHover">
               닉네임
             </div>
             <div className="relative">
@@ -105,7 +186,9 @@ export default function ProfileEdit() {
                 className="h-9 w-44 rounded-md border-[1px] border-grey-darkHover px-2.5 py-2.5 text-base text-grey-darker placeholder:text-sm"
                 type="text"
                 value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e) => {
+                  setNickname(e.target.value);
+                }}
                 placeholder="닉네임을 입력해주세요"
               />
               <button
@@ -120,18 +203,22 @@ export default function ProfileEdit() {
                 />
               </button>
             </div>
-            <span className="ml-1 mt-0.5 text-xs font-normal text-grey-normalActive">
+            <span
+              className={`ml-1 mt-0.5 text-xs font-normal ${isValid ? "text-grey-normalActive" : "text-primary-normalActive"}`}
+            >
               한영문자 2-12글자로 입력해주세요
             </span>
           </div>
         </section>
         <section className="mt-28">
           <button
-            onClick={() => setShowModal(true)}
-            className="h-12 w-[335px] rounded-md bg-primary-normal text-lg font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+            onClick={handleSave}
+            disabled={!isValid || isLoading}
+            className={`h-12 w-[335px] rounded-md text-lg font-medium text-white ${isValid ? "bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive" : "cursor-not-allowed bg-grey-normal"}`}
           >
-            저장
+            {isLoading ? "저장 중..." : "저장"}
           </button>
+          {saveError && <div className="mt-2 text-red-500">{saveError}</div>}
         </section>
         {showModal && (
           <ModalWrapper>
@@ -147,6 +234,18 @@ export default function ProfileEdit() {
           </ModalWrapper>
         )}
       </main>
+      {/* {error && (
+        <ModalWrapper>
+          <AlertModal
+            title="로그인이 필요합니다"
+            description="로그인 후 이용해 주세요."
+            confirmText="확인"
+            onConfirm={() => {
+              router.push("/sign-in");
+            }}
+          />
+        </ModalWrapper>
+      )} */}
     </>
   );
 }
