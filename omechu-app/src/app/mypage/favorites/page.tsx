@@ -8,11 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { distance } from "fastest-levenshtein";
-
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
-import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
 import { likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/auth/store";
 import { useProfile } from "../hooks/useProfile";
@@ -208,29 +205,31 @@ export default function Favorites() {
             ))} */}
             {visibleItems.map((item) => (
               <FoodCard
-                key={item.placeId}
+                key={item.restaurantId}
                 item={{
-                  id: item.placeId,
-                  name: item.placeName,
-                  images: [item.placeImageUrl],
-                  rating: item.placePoint,
-                  menu: item.signatureMenu?.[0] ?? "",
-                  tags: item.summary ?? [],
+                  id: Number(item.restaurantId),
+                  name: item.restaurant.name,
+                  images: [], // 만약 이미지 있으면 item.restaurant.image 등으로
+                  rating: item.restaurant.rating,
+                  menu: "", // 필요시 추가
+                  tags: [], // 필요시 추가
                   address: {
-                    road: item.address,
+                    road: item.restaurant.address,
                     jibun: "",
                     postalCode: "",
                   },
-                  reviews: 0, // 없으면 0, 필요 시 API 수정
-                  isLiked: true, // 찜 목록 -> true
-                  category: "", // 카테고리 없으면 빈 값
-                  timetable: [], // 없음 -> 빈 배열
+                  reviews: 0,
+                  isLiked: true,
+                  category: "",
+                  timetable: [],
                 }}
                 onClick={() =>
-                  router.push(`/restaurant/restaurant-detail/${item.placeId}`)
+                  router.push(
+                    `/restaurant/restaurant-detail/${item.restaurantId}`,
+                  )
                 }
-                onLike={() => handleLike(item.placeId)}
-                onUnlike={() => handleUnlike(item.placeId)}
+                onLike={() => handleLike(Number(item.restaurantId))}
+                onUnlike={() => handleUnlike(Number(item.restaurantId))}
               />
             ))}
           </div>
