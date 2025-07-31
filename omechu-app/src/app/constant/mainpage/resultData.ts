@@ -32,7 +32,6 @@ export type TagData = {
   description: string;
 };
 
-
 export type menuType = {
   id: number;
   title: string;
