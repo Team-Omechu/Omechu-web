@@ -37,7 +37,6 @@ export default function Favorites() {
     const fetchData = async () => {
       try {
         const data = await fetchHeartList(userId);
-        console.log("[디버깅] fetchHeartList 응답:", data);
         if (!Array.isArray(data)) {
           setHearts([]);
           return;
