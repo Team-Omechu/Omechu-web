@@ -108,6 +108,8 @@ export default function Favorites() {
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
+  const ITEMS_PER_FETCH = 5;
+
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
@@ -118,7 +120,9 @@ export default function Favorites() {
         visibleCount < filteredItems.length
       ) {
         setIsLoading(true); // 로딩 상태 시작
-        setVisibleCount((prev) => Math.min(prev + 5, filteredItems.length)); // 다음 항목 5개 추가
+        setVisibleCount((prev) =>
+          Math.min(prev + ITEMS_PER_FETCH, filteredItems.length),
+        ); // 다음 항목 5개 추가
       }
     },
     [isLoading, visibleCount, filteredItems.length],
