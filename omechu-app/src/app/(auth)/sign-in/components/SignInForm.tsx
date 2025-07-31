@@ -14,7 +14,7 @@ import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { useAuthStore } from "@/auth/store";
 import { loginSchema, type LoginFormValues } from "@/auth/schemas/auth.schema";
-import { useLoginMutation } from "@/lib/hooks/useAuth";
+import { useLoginMutation } from "@/auth/hooks/useAuth";
 import type { ApiResponse, User } from "@/lib/api/auth";
 
 export default function SignInForm() {
