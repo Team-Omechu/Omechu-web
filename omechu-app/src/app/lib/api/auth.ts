@@ -24,8 +24,12 @@ export interface ApiError {
 export interface LoginSuccessData {
   id: string;
   email: string;
-  gender: "남성" | "여성";
   nickname: string;
+  profileImageUrl: string;
+  gender: "남성" | "여성"; // string -> 구체적인 타입으로 변경
+  body_type: string;
+  state: string;
+  prefer: string[];
   created_at: string;
   updated_at: string;
 }
@@ -59,8 +63,12 @@ export interface RequestPasswordResetSuccessData {
 export interface OnboardingSuccessData {
   id: string;
   email: string;
-  gender: "남성" | "여성";
   nickname: string;
+  profileImageUrl: string;
+  gender: "남성" | "여성"; // string -> 구체적인 타입으로 변경
+  body_type: string;
+  state: string;
+  prefer: string[];
   created_at: string;
   updated_at: string;
 }

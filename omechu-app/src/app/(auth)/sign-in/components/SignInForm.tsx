@@ -13,8 +13,8 @@ import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { useAuthStore } from "@/auth/store";
-import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
-import { useLoginMutation } from "@/lib/hooks/useAuth";
+import { loginSchema, type LoginFormValues } from "@/auth/schemas/auth.schema";
+import { useLoginMutation } from "@/auth/hooks/useAuth";
 import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
 
 export default function SignInForm() {
@@ -112,7 +112,6 @@ export default function SignInForm() {
             disabled={isPending}
             className="w-full"
           >
-            {isPending ? "로그인 중..." : "로그인"}
             {isPending ? "로그인 중..." : "로그인"}
           </SquareButton>
         </div>
