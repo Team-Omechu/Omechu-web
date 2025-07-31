@@ -122,24 +122,6 @@ export default function Favorites() {
   );
 
   useEffect(() => {
-    const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
-    });
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    };
-  }, [observerCallback]);
-
-  useEffect(() => {
     if (isLoading) {
       const timer = setTimeout(() => {
         setIsLoading(false);
