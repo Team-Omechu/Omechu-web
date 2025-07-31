@@ -130,7 +130,7 @@ export default function ResultPage() {
               <MenuCard
                 title={menu.menu}
                 description={menu.description}
-                image={"/image/image_empty.svg"}
+                image={menu.image_link || "/image/image_empty.svg"}
                 onClick={() =>
                   setOpenMenu(openMenu === menu.menu ? null : menu.menu)
                 }
