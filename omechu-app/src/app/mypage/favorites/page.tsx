@@ -92,12 +92,15 @@ export default function Favorites() {
   const handleUnlike = async (restaurantId: number) => {
     try {
       await unlikePlace(userId, restaurantId);
-      setHearts((prev) =>
-        prev.filter((item) => item.restaurant.id !== restaurantId),
-      );
-      setVisibleCount((prev) =>
-        prev > hearts.length - 1 ? hearts.length - 1 : prev,
-      );
+      setHearts((prevHearts) => {
+        const newHearts = prevHearts.filter(
+          (item) => item.restaurant.id !== restaurantId,
+        );
+        setVisibleCount((prevVisible) =>
+          Math.min(prevVisible, newHearts.length),
+        );
+        return newHearts;
+      });
     } catch (e) {
       alert("찜 해제 실패");
     }
