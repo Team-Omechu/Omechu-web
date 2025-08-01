@@ -24,6 +24,7 @@ export default function SignInForm() {
 
   //* 이삭 추가한 부분
   const setUser = useAuthStore((state) => state.setUser);
+  const loginAction = useAuthStore((state) => state.login);
 
   const {
     mutate: login,
@@ -59,6 +60,11 @@ export default function SignInForm() {
     if (isSuccess && loginResult) {
       // setUser(loginResult); >>> 로그인 후 상태 저장
       setUser(loginResult);
+      loginAction({
+        accessToken: "",
+        user: loginResult,
+        password: "",
+      });
       // console.log("저장된 user", loginResult);
 
       if (!loginResult.nickname) {
@@ -67,7 +73,7 @@ export default function SignInForm() {
         router.push("/mainpage");
       }
     }
-  }, [isSuccess, loginResult, router, setUser]);
+  }, [isSuccess, loginResult, router, setUser, loginAction]);
 
   useEffect(() => {
     if (error) {
