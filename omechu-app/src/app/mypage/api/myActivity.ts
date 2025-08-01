@@ -90,7 +90,6 @@ export async function fetchMyPlaces(
   limit = 10,
   cursor?: number,
 ): Promise<FetchMyPlaceResponse> {
-  // query string 조립
   let query = `?limit=${limit}`;
   if (cursor !== undefined) query += `&cursor=${cursor}`;
   const res = await apiClient.get<FetchMyPlaceResponse>(
