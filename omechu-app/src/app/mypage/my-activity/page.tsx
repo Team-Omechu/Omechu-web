@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { fetchRestaurants } from "../api/myActivity";
+import { fetchMyPlaces } from "../api/myActivity";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Image from "next/image";
@@ -37,7 +37,6 @@ export default function MyActivity() {
   // 전역 상태에서 user 객체 가져오기
   const user = useAuthStore((state) => state.user);
   const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
-  const { profile } = useProfile(userId);
   const [minLoading, setMinLoading] = useState(true);
 
   const [loading, setLoading] = useState(false);
@@ -53,15 +52,15 @@ export default function MyActivity() {
     setLoading(true);
     setError(null);
 
-    fetchRestaurants(userId)
-      .then((data) => {
+    fetchMyPlaces(userId)
+      .then((data: any) => {
         setMyRestaurants(
-          (data.success.data ?? []).map((item) => ({
-            id: Number(item.id), // string to number
+          (data.success.data ?? []).map((item: any) => ({
+            id: Number(item.id),
             name: item.name,
-            repre_menu: "", // API에서 오면 반영
+            repre_menu: "", // 아직 메뉴 정보는 빈 값
             rating: item.rating ?? 0,
-            images: [], // 추후 반영
+            images: [], // 이미지도 빈 배열(추후 반영)
             address: item.address ?? "",
           })),
         );
