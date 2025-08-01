@@ -3,38 +3,37 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useProfile } from "./hooks/useProfile";
-import { useAuthStore } from "@/auth/store";
+import { useProfileQuery } from "./hooks/useProfileQuery";
 
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import AlertModal from "@/components/common/AlertModal";
 import LoginPromptModal2 from "@/mainpage/example_testpage/components/LoginPromptModal2";
 
 type ModalType = "modal1" | "modal2" | null;
 
 export default function MyPage() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const router = useRouter();
 
-  // 전역 상태에서 user 객체 가져오기
-  const { profile, loading, error } = useProfile();
+  const { data: profile, isLoading, error } = useProfileQuery();
   const [minLoading, setMinLoading] = useState(true);
 
   const [imgError, setImgError] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
+  // 최초 마운트 시 2초간 minLoading 유지
   useEffect(() => {
-    if (loading) {
-      const timer = setTimeout(() => setMinLoading(false), 2000);
-      return () => clearTimeout(timer);
-    } else {
-      setMinLoading(false);
-    }
-  }, [loading]);
+    const timer = setTimeout(() => setMinLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if (loading || minLoading) {
+  // 실제 데이터 로딩까지 고려
+  if (isLoading || minLoading) {
     return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
   }
 
@@ -48,7 +47,7 @@ export default function MyPage() {
   ];
 
   console.log("profile:", profile);
-  console.log("loading:", loading);
+  console.log("loading:", isLoading);
   console.log("error:", error);
 
   const handleConfirm = () => {
@@ -61,6 +60,8 @@ export default function MyPage() {
     setActiveModal(null);
     alert("모달 닫힘");
   };
+
+  if (!mounted) return null; // CSR에서만 렌더링
 
   return (
     <>
@@ -81,10 +82,16 @@ export default function MyPage() {
         <section className="flex flex-col items-center">
           <div className="my-4">
             {/* 로딩/에러/정상 분기 */}
-            {loading ? (
+            {isLoading ? (
               <div className="h-[75px] w-[75px] animate-pulse rounded-full bg-gray-200" />
             ) : error ? (
-              <div className="text-sm text-red-500">{error}</div>
+              <div className="text-sm text-red-500">
+                {typeof error === "string"
+                  ? error
+                  : error?.message
+                    ? error.message
+                    : "알 수 없는 오류"}
+              </div>
             ) : (
               <Image
                 src={
@@ -100,10 +107,10 @@ export default function MyPage() {
             )}
           </div>
           <div className="text-lg font-md">
-            {loading ? "로딩 중..." : profile?.nickname || "-"}
+            {isLoading ? "로딩 중..." : profile?.nickname || "-"}
           </div>
           <div className="text-xs font-normal text-grey-normalActive">
-            {loading ? "" : profile?.email || ""}
+            {isLoading ? "" : profile?.email || ""}
           </div>
         </section>
         <section className="w-full bg-white border-2 rounded-lg border-secondary-normal">
@@ -135,11 +142,11 @@ export default function MyPage() {
           })}
         </section>
       </main>
-      {/* {error && (
+      {error && (
         <ModalWrapper>
           <LoginPromptModal2 onConfirm={handleConfirm} onClose={handleClose} />
         </ModalWrapper>
-      )} */}
+      )}
       <BottomNav />
     </>
   );
