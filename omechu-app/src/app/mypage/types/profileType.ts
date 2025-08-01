@@ -11,3 +11,14 @@ export interface ProfileType {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface UpdateProfileBody {
+  email?: string;
+  nickname?: string;
+  body_type?: string;
+  gender?: string;
+  exercise?: string;
+  prefer?: string[];
+  allergy?: string[];
+  profileImageUrl?: string;
+}
