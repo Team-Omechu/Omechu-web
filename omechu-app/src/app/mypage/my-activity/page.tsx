@@ -33,77 +33,87 @@ type MyRestaurant = {
 };
 
 export default function MyActivity() {
-  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  // 전역 상태에서 user 객체 가져오기
-  const user = useAuthStore((state) => state.user);
-  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const router = useRouter();
+  const {
+    profile,
+    loading: profileLoading,
+    error: profileError,
+  } = useProfile();
+
   const [minLoading, setMinLoading] = useState(true);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
-
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
+  const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
+    "recommended",
+  );
+  const [visibleCount, setVisibleCount] = useState(5);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const filteredItems = Restaurants;
+
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  const LODAING_TIMEOUT = 1800;
+
   useEffect(() => {
-    if (selectedIndex !== 1) return;
+    if (selectedIndex !== 0) return;
+    if (!profile?.id) return; // id 없으면 fetch 금지!
 
     setLoading(true);
     setError(null);
 
-    fetchMyPlaces(userId)
-      .then((data: any) => {
+    fetchMyReviews(profile.id)
+      .then((res) => {
+        // 타입, 데이터 체크
+        if (!res.success || !Array.isArray(res.success.data)) {
+          setReviewList([]);
+          setError("리뷰 데이터를 불러오지 못했습니다.");
+          return;
+        }
+        setReviewList(res.success.data);
+      })
+      .catch(() => setError("리뷰 불러오기 실패"))
+      .finally(() => setLoading(false));
+  }, [selectedIndex, profile?.id]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (selectedIndex !== 1) return;
+    if (!profile?.id) return;
+
+    setLoading(true);
+    setError(null);
+
+    fetchMyPlaces(profile.id)
+      .then((data) => {
         setMyRestaurants(
-          (data.success.data ?? []).map((item: any) => ({
+          (data.success?.data ?? []).map((item: any) => ({
             id: Number(item.id),
             name: item.name || "-",
             repre_menu:
               Array.isArray(item.repre_menu) && item.repre_menu.length > 0
-                ? item.repre_menu[0].menu
+                ? (item.repre_menu[0]?.menu ?? "")
                 : "",
             rating: item.rating ?? 0,
-            images: item.rest_image ? [item.rest_image] : [],
+            images: item.rest_image ? [{ link: item.rest_image }] : [],
             address: item.address ?? "",
-            reviews: item._count?.review ?? 0,
           })),
         );
       })
       .catch(() => setError("맛집 목록을 불러오지 못했습니다."))
       .finally(() => setLoading(false));
-  }, [userId, selectedIndex]);
-
-  useEffect(() => {
-    if (selectedIndex !== 0 || !userId) return;
-
-    setLoading(true);
-    setError(null);
-
-    fetchMyReviews(userId)
-      .then((data) => {
-        setReviewList(data.success.data ?? []);
-      })
-      .catch(() => setError("리뷰 목록을 불러오지 못했습니다."))
-      .finally(() => setLoading(false));
-  }, [userId, selectedIndex]);
-
-  const mainRef = useRef<HTMLDivElement>(null);
-
-  const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
-    "recommended",
-  );
-  const [visibleCount, setVisibleCount] = useState(5);
-
-  const filteredItems = Restaurants;
-
-  const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
-
-  const visibleItems = filteredItems.slice(0, visibleCount);
-  const [isLoading, setIsLoading] = useState(false);
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-
-  const LODAING_TIMEOUT = 1800;
+  }, [selectedIndex, profile?.id]);
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -190,7 +200,7 @@ export default function MyActivity() {
           ? {
               ...review,
               isLiked: false,
-              recommendCount: review.like
+              like: review.like
                 ? (review.like ?? 1) - 1
                 : (review.like ?? 0) + 1,
             }
@@ -201,14 +211,16 @@ export default function MyActivity() {
 
   const handleDeleteReview = (id: number) => {
     // TODO: 리뷰 삭제 기능 구현
-    console.log("삭제할 리뷰 id:", id);
   };
 
-  const handleNavigateToRestaurant = (restaurantId?: string) => {
+  const handleNavigateToRestaurant = (restaurantId?: string | number) => {
     if (!restaurantId) return;
-    // TODO: 해당 맛집 상세로 이동
     router.push(`/restaurant/restaurant-detail/${restaurantId}`);
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>
@@ -245,100 +257,107 @@ export default function MyActivity() {
                   { label: "추천 순", value: "recommended" },
                   { label: "최신 순", value: "latest" },
                 ]}
-                selected={
-                  sortOrder === "recommended" ? "recommended" : "latest"
-                }
+                selected={sortOrder}
                 onSelect={(value) =>
                   setSortOrder(value === "latest" ? "latest" : "recommended")
                 }
               />
             </section>
 
-            {/* 리뷰 카드 리스트 */}
-            <section className="flex flex-col items-center gap-7">
-              {reviewList
-                .slice()
-                .sort((a, b) =>
-                  sortOrder === "latest"
-                    ? new Date(b.created_at).getTime() -
-                      new Date(a.created_at).getTime()
-                    : (b.like ?? 0) - (a.like ?? 0),
-                )
-                .slice(0, visibleCount)
-                .map((review) => (
-                  <FoodReviewCard
-                    key={review.id}
-                    id={Number(review.id)} // string to number
-                    createdAt={review.created_at}
-                    restaurantName={review.restaurant?.name ?? "-"}
-                    rating={review.rating ?? 0}
-                    reviewText={review.text ?? ""}
-                    recommendCount={review.like ?? 0}
-                    isLiked={false}
-                    onLikeToggle={() => handleLikeToggle(Number(review.id))}
-                    restaurantImage={review.restaurant?.rest_image ?? ""}
-                    reviewImages={
-                      Array.isArray(review.reviewImages)
-                        ? review.reviewImages
-                        : []
-                    }
-                    tags={
-                      Array.isArray(review.tag) && review.tag.length > 0
-                        ? review.tag
-                        : Array.isArray(review.restaurant?.tags)
-                          ? review.restaurant.tags.map((t) => t.tag)
-                          : []
-                    }
-                    onDelete={() => handleDeleteReview(Number(review.id))}
-                    onNavigate={() =>
-                      handleNavigateToRestaurant(String(review.restaurant?.id))
-                    }
-                  />
-                ))}
-            </section>
+            {loading && <div>로딩 중...</div>}
+            {error && <div className="text-red-600">{error}</div>}
+            {!loading && !error && (
+              <section className="flex flex-col items-center gap-7">
+                {reviewList.length === 0 ? (
+                  <div className="text-grey-normalActive">
+                    작성한 후기가 없습니다.
+                  </div>
+                ) : (
+                  reviewList
+                    .slice()
+                    .sort((a, b) =>
+                      sortOrder === "latest"
+                        ? new Date(b.created_at).getTime() -
+                          new Date(a.created_at).getTime()
+                        : (b.like ?? 0) - (a.like ?? 0),
+                    )
+                    .slice(0, visibleCount)
+                    .map((review) => (
+                      <FoodReviewCard
+                        key={review.id}
+                        id={Number(review.id)}
+                        createdAt={review.created_at}
+                        restaurantName={review.restaurant?.name ?? "-"}
+                        rating={review.rating ?? 0}
+                        reviewText={review.text ?? ""}
+                        recommendCount={review.like ?? 0}
+                        isLiked={false} // 서버에 없으면 false
+                        onLikeToggle={() => handleLikeToggle(Number(review.id))}
+                        restaurantImage={review.restaurant?.rest_image ?? ""}
+                        reviewImages={
+                          Array.isArray(review.reviewImages)
+                            ? review.reviewImages
+                            : []
+                        }
+                        tags={
+                          Array.isArray(review.tag) && review.tag.length > 0
+                            ? review.tag
+                            : []
+                        }
+                        onDelete={() => handleDeleteReview(Number(review.id))}
+                        onNavigate={() =>
+                          handleNavigateToRestaurant(
+                            String(review.restaurant?.id),
+                          )
+                        }
+                      />
+                    ))
+                )}
+              </section>
+            )}
           </>
         )}
         {selectedIndex === 1 && (
           <section className="flex flex-col gap-5 px-2">
             {loading && <div>로딩 중...</div>}
-            {error && <div>{error}</div>}
+            {error && <div className="text-red-600">{error}</div>}
             {!loading &&
               !error &&
-              myRestaurants.map((item) => (
-                <div key={item.id} className="flex w-full flex-col">
-                  <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
-                    편집
-                  </span>
-                  <FoodCard
-                    item={{
-                      id: item.id,
-                      name: item.name,
-                      menu: item.repre_menu || "",
-                      rating: item.rating || 0,
-                      images: item.images
-                        ? item.images.map((img) => img.link)
-                        : [],
-                      // address 구조를 API 응답에 따라 맞춤 (예시: jibun/postalCode는 빈 값 처리)
-                      address: {
-                        road: item.address || "",
-                        jibun: "",
-                        postalCode: "",
-                      },
-                      tags: [], // 필요하면 추가
-                      isLiked: false, // 필요하면 추가
-                      reviews: 0, // 필요하면 추가
-                      category: "", // 필요하면 추가
-                      timetable: [], // 필요하면 추가
-                    }}
-                    onClick={() =>
-                      router.push(`/restaurant/restaurant-detail/${item.id}`)
-                    }
-                  />
-                </div>
+              (myRestaurants.length > 0 ? (
+                myRestaurants.map((item) => (
+                  <div key={item.id} className="flex w-full flex-col">
+                    <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
+                      편집
+                    </span>
+                    <FoodCard
+                      item={{
+                        id: item.id,
+                        name: item.name,
+                        menu: item.repre_menu || "",
+                        rating: item.rating || 0,
+                        images: item.images
+                          ? item.images.map((img) => img.link ?? "")
+                          : [],
+                        address: {
+                          road: item.address || "",
+                          jibun: "",
+                          postalCode: "",
+                        },
+                        tags: [],
+                        isLiked: false,
+                        reviews: 0,
+                        category: "",
+                        timetable: [],
+                      }}
+                      onClick={() =>
+                        router.push(`/restaurant/restaurant-detail/${item.id}`)
+                      }
+                    />
+                  </div>
+                ))
+              ) : (
+                <div>등록한 맛집이 없습니다.</div>
               ))}
-            {!loading && !error && myRestaurants.length === 0 && (
-              <div>등록한 맛집이 없습니다.</div>
-            )}
           </section>
         )}
 

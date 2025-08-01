@@ -61,6 +61,7 @@ export async function fetchMyReviews(
   userId: number,
 ): Promise<FetchMyReviewsResponse> {
   const res = await apiClient.get<FetchMyReviewsResponse>(`/reviews/${userId}`);
+  console.log("[DEBUG] 내 리뷰 응답:", res.data);
   const fixedData = res.data.success.data.map((item) => ({
     ...item,
     id: Number(item.id),
