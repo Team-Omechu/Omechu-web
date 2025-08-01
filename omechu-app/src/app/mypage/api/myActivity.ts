@@ -33,7 +33,18 @@ export interface MyReviewItem {
     name: string;
     address: string;
     rating: number;
+    monday?: string;
+    tuesday?: string;
+    wednesday?: string;
+    thursday?: string;
+    friday?: string;
+    saturday?: string;
+    sunday?: string;
+    google_place_id?: string | null;
+    representativeMenus?: string[];
+    tags?: { tag: string; count: number }[];
   };
+  reviewImages?: string[];
 }
 
 export interface FetchMyReviewsResponse {
@@ -50,7 +61,27 @@ export async function fetchMyReviews(
   userId: number,
 ): Promise<FetchMyReviewsResponse> {
   const res = await apiClient.get<FetchMyReviewsResponse>(`/reviews/${userId}`);
-  return res.data;
+  const fixedData = res.data.success.data.map((item) => ({
+    ...item,
+    id: Number(item.id),
+    user_id: Number(item.user_id),
+    rest_id: Number(item.rest_id),
+    restaurant: {
+      ...item.restaurant,
+      id: Number(item.restaurant.id),
+      // 대표메뉴/태그 등은 그대로 사용, 필요시 추가 가공
+      representativeMenus: item.restaurant.representativeMenus ?? [],
+      tags: item.restaurant.tags ?? [],
+    },
+    reviewImages: item.reviewImages ?? [],
+  }));
+  return {
+    ...res.data,
+    success: {
+      ...res.data.success,
+      data: fixedData,
+    },
+  };
 }
 
 // limit, cursor 등 옵션 파라미터 필요시 추가
