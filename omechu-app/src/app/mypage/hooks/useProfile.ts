@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
 
 // userId는 number 타입으로 사용합니다.
-export function useProfile(userId?: number) {
+export function useProfile() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -12,14 +12,7 @@ export function useProfile(userId?: number) {
     setLoading(true);
     setError(null);
 
-    if (!userId) {
-      setProfile(null);
-      setLoading(false);
-      setError("로그인이 필요합니다.");
-      return;
-    }
-
-    getProfile(userId)
+    getProfile()
       .then((data) => {
         if (mounted) setProfile(data);
       })
@@ -36,7 +29,7 @@ export function useProfile(userId?: number) {
     return () => {
       mounted = false;
     };
-  }, [userId]);
+  }, []);
 
   return { profile, loading, error };
 }
