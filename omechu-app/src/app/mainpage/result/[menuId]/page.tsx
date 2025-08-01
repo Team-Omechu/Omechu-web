@@ -16,6 +16,7 @@ import FoodCardEx from "@/mainpage/components/FoodCardEx";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -24,7 +25,8 @@ export default function MenuDetailPage() {
   const { radius } = useLocationAnswerStore();
   const { tagDataReset } = useTagStore();
   const { locationReset } = useLocationAnswerStore();
-  const { questionReset } = useQuestionAnswerStore();
+  const { questionReset, mealTime,purpose, mood, who, budget, exceptions } = useQuestionAnswerStore();
+  const payload = {mealTime, purpose, mood, with: who, budget, exceptions};
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
@@ -32,7 +34,7 @@ export default function MenuDetailPage() {
 
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
-  const cached = queryClient.getQueryData<MenuListResponse>(["recommendMenu"]);
+  const cached = queryClient.getQueryData<MenuListResponse>(["recommendMenu", payload]);
   const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
 
   const handleClick = () => {
@@ -100,6 +102,7 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-3 space-y-2 px-4">
+        {isLoading && <LoadingIndicator/>}
         {restaurants.map((item) => (
           <FoodCardEx
             key={item.id}
