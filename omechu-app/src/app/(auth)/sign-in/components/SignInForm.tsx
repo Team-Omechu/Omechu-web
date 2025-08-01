@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // useRouter 임포트 추가
+import { useState, useEffect } from "react";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
@@ -11,15 +12,26 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { loginSchema, type LoginFormValues } from "@/auth/schemas/auth.schema";
-import { useLoginMutation } from "@/auth/hooks/useAuth";
+import { useAuthStore } from "@/auth/store";
+import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
+import { useLoginMutation } from "@/lib/hooks/useAuth";
+import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const router = useRouter(); // useRouter 훅 사용
+  const router = useRouter();
 
-  const { mutate: login, isPending } = useLoginMutation();
+  //* 이삭 추가한 부분
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const {
+    mutate: login,
+    isPending,
+    isSuccess,
+    error,
+    data: loginResult,
+  } = useLoginMutation();
 
   const {
     control,
@@ -51,6 +63,29 @@ export default function SignInForm() {
       },
     });
   };
+
+  console.log("loginResult", loginResult);
+
+  //* 이삭 수정 부분
+  useEffect(() => {
+    if (isSuccess && loginResult) {
+      // setUser(loginResult); >>> 로그인 후 상태 저장
+      setUser(loginResult);
+      // console.log("저장된 user", loginResult);
+
+      if (!loginResult.nickname) {
+        router.push("/onboarding/1");
+      } else {
+        router.push("/mainpage");
+      }
+    }
+  }, [isSuccess, loginResult, router, setUser]);
+
+  useEffect(() => {
+    if (error) {
+      triggerToast(error.message);
+    }
+  }, [error]);
 
   return (
     <>
