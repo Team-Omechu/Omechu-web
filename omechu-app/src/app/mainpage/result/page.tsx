@@ -106,7 +106,7 @@ export default function ResultPage() {
         leftChild={
           <button onClick={handleClick} className="flex items-center font-bold">
             <Image
-              src="/header_left_arrow.png"
+              src="/arrow/left-header-arrow.svg"
               alt="back"
               width={22}
               height={30}
@@ -166,7 +166,7 @@ export default function ResultPage() {
       {showModal && (
         <ModalWrapper>
           <AlertModal
-            title="추천 목록에서 메뉴를 제외하시겠어요?"
+            title={"추천 목록에서 메뉴를\n 제외하시겠어요?"}
             cancelText="취소"
             confirmText="제외하기"
             onConfirm={handleExclude}
