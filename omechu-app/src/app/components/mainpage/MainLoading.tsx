@@ -15,14 +15,14 @@ const MainLoading = () => {
         `}
       </style>
       <div
-        className="flex h-screen min-h-screen items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="flex h-screen min-h-screen w-screen items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('/image/loading-bg.svg')",
           backgroundSize: "1000px 700px",
         }}
       >
         <div
-          className="animate-food-cycle h-[170px] w-[175px] bg-[url('/image/food-sprite.svg')]"
+          className="animate-food-cycle h-[170px] w-[175px] bg-[url('/image/food-sprite.svg')] -translate-y-6"
           style={{
             backgroundSize: "525px 170px",
           }}
