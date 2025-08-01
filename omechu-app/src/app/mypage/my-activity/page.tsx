@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { fetchRestaurants } from "../api/myActivity";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +20,7 @@ import { Restaurants } from "@/constant/restaurant/restaurantList";
 
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
+import { useProfile } from "../hooks/useProfile";
 
 type MyRestaurant = {
   id: number;
@@ -32,10 +34,16 @@ type MyRestaurant = {
 export default function MyActivity() {
   const router = useRouter();
 
-  const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
+  // 전역 상태에서 user 객체 가져오기
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile } = useProfile(userId);
+  const [minLoading, setMinLoading] = useState(true);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const userId = "1";
+
+  const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -60,7 +68,7 @@ export default function MyActivity() {
       })
       .catch(() => setError("맛집 목록을 불러오지 못했습니다."))
       .finally(() => setLoading(false));
-  }, [selectedIndex]);
+  }, [userId, selectedIndex]);
 
   const mainRef = useRef<HTMLDivElement>(null);
 
@@ -239,41 +247,17 @@ export default function MyActivity() {
           </>
         )}
         {selectedIndex === 1 && (
-          <>
-            {/* 등록한 맛집 목록 */}
-            {/* <section className="flex flex-col gap-5 mt-4">
-              {visibleItems.map((item, idx) => (
-                <div key={item.id} className="flex flex-col">
-                  <button
-                    onClick={() => handleOpenEditModal(item.id)}
-                    className="w-full pb-0.5 pr-1 text-end text-sm font-normal text-grey-normalActive"
-                  >
+          <section className="flex flex-col gap-5 px-2">
+            {loading && <div>로딩 중...</div>}
+            {error && <div>{error}</div>}
+            {!loading &&
+              !error &&
+              myRestaurants.map((item) => (
+                <div key={item.id} className="flex w-full flex-col">
+                  <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
                     편집
-                  </button>
+                  </span>
                   <FoodCard
-                    item={item}
-                    onClick={() =>
-                      router.push(`/restaurant/restaurant-detail/${item.id}`)
-                    }
-                  />
-                </div>
-              ))}
-            </section> */}
-            {/* {editTargetData && (
-              <RestaurantEditModal
-                onClose={handleCloseEditModal}
-                initialData={editTargetData}
-              />
-            )} */}
-
-            <section>
-              {loading && <div>로딩 중...</div>}
-              {error && <div>{error}</div>}
-              {!loading &&
-                !error &&
-                myRestaurants.map((item) => (
-                  <FoodCard
-                    key={item.id}
                     item={{
                       id: item.id,
                       name: item.name,
@@ -298,12 +282,12 @@ export default function MyActivity() {
                       router.push(`/restaurant/restaurant-detail/${item.id}`)
                     }
                   />
-                ))}
-              {!loading && !error && myRestaurants.length === 0 && (
-                <div>등록한 맛집이 없습니다.</div>
-              )}
-            </section>
-          </>
+                </div>
+              ))}
+            {!loading && !error && myRestaurants.length === 0 && (
+              <div>등록한 맛집이 없습니다.</div>
+            )}
+          </section>
         )}
 
         <div ref={loaderRef} className="h-[1px]" />
