@@ -19,9 +19,7 @@ export default function MyPage() {
   const router = useRouter();
 
   // 전역 상태에서 user 객체 가져오기
-  const user = useAuthStore((state) => state.user);
-  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
-  const { profile, loading, error } = useProfile(userId);
+  const { profile, loading, error } = useProfile();
   const [minLoading, setMinLoading] = useState(true);
 
   const [imgError, setImgError] = useState(false);
@@ -49,7 +47,6 @@ export default function MyPage() {
     { title: "찜 목록", href: "/mypage/favorites" },
   ];
 
-  console.log("userId:", userId);
   console.log("profile:", profile);
   console.log("loading:", loading);
   console.log("error:", error);
