@@ -14,7 +14,28 @@ export interface UserProfile {
   updated_at: string;
 }
 
-export async function getProfile(): Promise<UserProfile> {
-  const res = await apiClient.get(`/profile`);
-  return res.data.success;
+export class ProfileApiError extends Error {
+  constructor(
+    public code: number,
+    public info?: any,
+  ) {
+    super("Profile API Error");
+    this.name = "ProfileApiError";
+  }
+}
+
+export async function getProfile(): Promise<UserProfile | null> {
+  try {
+    const res = await apiClient.get("/profile");
+    const data = res.data.success;
+    return {
+      ...data,
+      prefer: data.prefer ?? [],
+      allergy: data.allergy ?? [],
+      profileImageUrl: data.profileImageUrl ?? null,
+    };
+  } catch (error: any) {
+    const code = error?.response?.status ?? 500;
+    throw new ProfileApiError(code, error.response?.data);
+  }
 }
