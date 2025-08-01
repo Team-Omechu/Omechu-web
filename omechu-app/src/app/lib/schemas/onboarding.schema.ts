@@ -11,7 +11,7 @@ export const profileSchema = z.object({
 
 // 온보딩 - 성별 선택 스키마
 export const genderSchema = z.object({
-  gender: z.enum(["female", "male"], {
+  gender: z.enum(["남성", "여성"], {
     errorMap: () => ({ message: "성별을 선택해주세요." }),
   }),
 });

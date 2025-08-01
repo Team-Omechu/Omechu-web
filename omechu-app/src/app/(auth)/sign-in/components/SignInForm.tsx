@@ -49,7 +49,19 @@ export default function SignInForm() {
   };
 
   const onSubmit = (data: LoginFormValues) => {
-    login(data);
+    login(data, {
+      onSuccess: () => {
+        triggerToast("로그인 성공!");
+        setTimeout(() => router.push("/mainpage"), 1000); // 1초 후 메인페이지로 이동
+      },
+      onError: (error: any) => {
+        // error.response.data.message 에 실제 백엔드 에러 메시지가 담겨있을 수 있습니다.
+        const message =
+          error.response?.data?.message ||
+          "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.";
+        triggerToast(message);
+      },
+    });
   };
 
   console.log("loginResult", loginResult);
@@ -122,7 +134,6 @@ export default function SignInForm() {
             disabled={isPending}
             className="w-full"
           >
-            {isPending ? "로그인 중..." : "로그인"}
             {isPending ? "로그인 중..." : "로그인"}
           </SquareButton>
         </div>

@@ -17,8 +17,7 @@ import {
   signupSchema,
   type SignupFormValues,
 } from "@/auth/schemas/auth.schema";
-import { useSignupMutation, useLoginMutation } from "@/auth/hooks/useAuth";
-import { useAuthStore } from "@/auth/store";
+import { useSignupMutation } from "@/auth/hooks/useAuth";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";
@@ -30,7 +29,6 @@ export default function SignUpPage() {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const router = useRouter();
-  const { setPassword } = useAuthStore();
   const { mutate: signup, isPending: isSigningUp } = useSignupMutation();
 
   const methods = useForm<SignupFormValues>({
@@ -63,7 +61,6 @@ export default function SignUpPage() {
   const onSubmit = (data: SignupFormValues) => {
     signup(data, {
       onSuccess: () => {
-        setPassword(data.password);
         router.push("/onboarding/1");
       },
       onError: (error) => {

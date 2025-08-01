@@ -1,27 +1,28 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import * as authApi from "@/lib/api/auth";
+import * as authApi from "../../../lib/api/auth";
 import type {
   LoginFormValues,
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
-// import type { OnboardingData } from "@/onboarding/api/onboarding";
 import { useAuthStore } from "@/auth/store";
 
 export const useLoginMutation = () => {
-  const { login: setAuth } = useAuthStore();
+  const { setUser } = useAuthStore();
+  const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (data: LoginFormValues) => authApi.login(data),
-    onSuccess: (response, variables) => {
-      setAuth({
-        accessToken: "",
-        user: response,
-        password: variables.password,
-      });
+  return useMutation<
+    authApi.LoginSuccessData,
+    authApi.ApiError,
+    LoginFormValues
+  >({
+    mutationFn: authApi.login,
+    onSuccess: (data) => {
+      setUser(data);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       console.error("Login failed:", error);
@@ -31,26 +32,22 @@ export const useLoginMutation = () => {
 
 export const useCompleteOnboardingMutation = () => {
   const router = useRouter();
-  const { login: storeLogin } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   return useMutation({
-    mutationFn: (data: authApi.OnboardingData) => {
-      // 서버로 보내기 직전, gender 값을 백엔드 명세에 맞게 변환합니다.
-      const transformedData = {
-        ...data,
-        gender: data.gender === "남성" ? "남자" : "여자",
-      };
-      return authApi.completeOnboarding(transformedData as any);
-    },
+    mutationFn: (data: authApi.OnboardingData) =>
+      authApi.completeOnboarding(data),
     onSuccess: (data) => {
-      // 온보딩 성공 시 스토어의 유저 정보를 업데이트하고 메인페이지로 이동
-      storeLogin(data as any);
-      router.push("/mainpage");
-      `ㅁ`;
+      // 온보딩 성공 시 스토어의 유저 정보만 업데이트
+      setUser(data);
+      // 자동 로그인이 되지 않으므로 로그인 페이지로 이동하여 사용자에게 로그인을 유도
+      alert("회원가입이 완료되었습니다. 다시 로그인해주세요.");
+      router.push("/sign-in");
     },
     onError: (error) => {
       // TODO: 에러 처리 로직 (예: 토스트 메시지)
       console.error("Onboarding failed:", error);
+      alert(`온보딩 처리 중 오류가 발생했습니다: ${error.message}`);
     },
   });
 };
@@ -72,7 +69,6 @@ export const useVerifyVerificationCodeMutation = () => {
 };
 
 export const useSignupMutation = () => {
-  // const { signup: setSignupState } = useAuthStore(); // <- 이 부분이 오류의 원인입니다.
   return useMutation<authApi.SignupSuccessData, Error, SignupFormValues>({
     mutationFn: authApi.signup,
     // onSuccess/onError는 사용하는 컴포넌트에서 개별적으로 처리하도록 비워둡니다.
@@ -80,12 +76,19 @@ export const useSignupMutation = () => {
 };
 
 export const useLogoutMutation = () => {
-  const { logout: clearAuthState } = useAuthStore();
+  const { setUser } = useAuthStore();
+  const queryClient = useQueryClient();
+
   return useMutation<void, Error>({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      clearAuthState();
-      // redirect to login page or home page
+      // 서버에서 세션을 파기하고 쿠키를 삭제하라는 응답을 보낼 것입니다.
+      // 프론트에서는 스토어의 user 정보만 비워줍니다.
+      setUser(null);
+      // 다른 쿼리 캐시도 정리할 수 있습니다.
+      queryClient.clear();
+      // 로그인 페이지나 홈으로 이동
+      window.location.href = "/sign-in"; // 페이지를 완전히 새로고침하여 상태를 초기화
     },
   });
 };

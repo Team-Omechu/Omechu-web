@@ -1,50 +1,24 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware"; // persist는 사용자 정보를 새로고침 시 유지하기 위해 여전히 유용합니다.
 
-import type { LoginSuccessData } from "@/lib/api/auth";
+import type { LoginSuccessData } from "../../lib/api/auth";
 
 interface AuthState {
   isLoggedIn: boolean;
-  accessToken: string | null;
-  password?: string; // password 필드 추가
   user: LoginSuccessData | null;
-  login: (data: {
-    accessToken: string;
-    user: LoginSuccessData;
-    password?: string;
-  }) => void;
-  logout: () => void;
-  setUser: (user: LoginSuccessData) => void;
-  setPassword: (password: string) => void;
+  // user 정보만 설정하거나 초기화하는 액션만 남깁니다.
+  setUser: (user: LoginSuccessData | null) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       isLoggedIn: false,
-      accessToken: null,
       user: null,
-      password: "",
-      login: (data) =>
-        set({
-          isLoggedIn: true,
-          accessToken: data.accessToken,
-          user: data.user,
-          password: data.password,
-        }),
-      logout: () =>
-        set({
-          isLoggedIn: false,
-          user: null,
-          accessToken: null,
-          password: "",
-        }),
-      setUser: (user) => set({ user }),
-      setPassword: (password) => set({ password }),
+      setUser: (user) => set({ user, isLoggedIn: !!user }),
     }),
     {
-      name: "auth-storage",
-      storage: createJSONStorage(() => localStorage),
+      name: "auth-user-storage", // localStorage에 저장될 키 이름
     },
   ),
 );

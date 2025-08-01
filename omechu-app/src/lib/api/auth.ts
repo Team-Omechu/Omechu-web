@@ -1,4 +1,5 @@
 import type { AxiosResponse } from "axios";
+// 경로 수정: @가 src/app을 가리키므로, 상위 폴더로 나가서 참조합니다.
 import type {
   LoginFormValues,
   SignupFormValues,
@@ -7,21 +8,17 @@ import type {
 } from "@/auth/schemas/auth.schema";
 import apiClient from "./client";
 
-// API 응답의 기본 구조
+// --- API 타입 정의 (기존 코드와 동일) ---
 export interface ApiResponse<T> {
   resultType: "SUCCESS" | "FAIL";
   error: ApiError | null;
   success: T | null;
 }
-
-// API 에러 객체 구조
 export interface ApiError {
   errorCode: string;
   reason: string;
   data?: unknown;
 }
-
-// 공통 사용자 정보 타입
 export interface LoginSuccessData {
   id: string;
   email: string;
@@ -34,39 +31,27 @@ export interface LoginSuccessData {
   created_at: string;
   updated_at: string;
 }
-
-// 회원가입 성공 시 success 객체 구조
 export interface SignupSuccessData {
   id: number;
   email: string;
   created_at: string;
   updated_at: string;
 }
-
-// 이메일 인증번호 전송 성공 시 success 객체 구조
 export interface SendVerificationCodeSuccessData {
   message: string;
   code: string;
 }
-
-// 이메일 인증번호 검증 파라미터
 export interface VerifyVerificationCodeParams {
   email: string;
   code: string;
 }
-
-// 이메일 인증번호 검증 성공 시 success 객체 구조
 export interface VerifyVerificationCodeSuccessData {
   message: string;
 }
-
-// 비밀번호 재설정 요청 성공 시 success 객체 구조
 export interface RequestPasswordResetSuccessData {
   message: string;
   token: string;
 }
-
-// 온보딩 완료 시 서버로 보낼 데이터 타입
 export interface OnboardingData {
   nickname: string;
   gender: "여성" | "남성" | null;
@@ -87,30 +72,35 @@ function handleApiResponse<T>(
   return apiResponse.success;
 }
 
+// --- API 함수 정의 ---
+
 /**
- * 로그인 API
- * @param data email, password
+ * 로그인 API (프록시 경유)
  */
 export const login = async (
   data: LoginFormValues,
 ): Promise<LoginSuccessData> => {
   const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
-    "/auth/login",
+    "/api/auth/login", // client.ts가 이 경로를 보고 내부 프록시로 보냅니다.
     data,
-    // * 이삭 추가 부분
-    { withCredentials: true },
   );
   return handleApiResponse(response, "로그인에 실패했습니다.");
 };
 
 /**
- * 회원가입 API
- * @param data email, password 등 회원가입 정보
+ * 로그아웃 API (프록시 경유)
  */
+export const logout = async (): Promise<void> => {
+  await apiClient.post("/api/auth/logout"); // client.ts가 이 경로를 보고 내부 프록시로 보냅니다.
+};
+
+// --- 아래 함수들은 프록시가 필요 없으므로 기존 로직을 유지합니다 ---
+
 export const signup = async (
   data: SignupFormValues,
 ): Promise<SignupSuccessData> => {
   const { email, password } = data;
+  // 이 경로는 '/api/'로 시작하지 않으므로, client.ts가 외부 API로 보냅니다.
   const response = await apiClient.post<ApiResponse<SignupSuccessData>>(
     "/auth/signup",
     { email, password },
@@ -118,9 +108,6 @@ export const signup = async (
   return handleApiResponse(response, "회원가입에 실패했습니다.");
 };
 
-/**
- * 회원가입 완료 (온보딩 데이터 전송) API
- */
 export const completeOnboarding = async (
   data: OnboardingData,
 ): Promise<LoginSuccessData> => {
@@ -131,10 +118,6 @@ export const completeOnboarding = async (
   return handleApiResponse(response, "온보딩 정보 저장에 실패했습니다.");
 };
 
-/**
- * 이메일 인증번호 전송 API
- * @param email
- */
 export const sendVerificationCode = async (
   email: string,
 ): Promise<SendVerificationCodeSuccessData> => {
@@ -144,10 +127,6 @@ export const sendVerificationCode = async (
   return handleApiResponse(response, "인증번호 전송에 실패했습니다.");
 };
 
-/**
- * 이메일 인증번호 확인 API
- * @param data email, code
- */
 export const verifyVerificationCode = async (
   data: VerifyVerificationCodeParams,
 ): Promise<VerifyVerificationCodeSuccessData> => {
@@ -157,9 +136,6 @@ export const verifyVerificationCode = async (
   return handleApiResponse(response, "이메일 인증에 실패했습니다.");
 };
 
-/**
- * 비밀번호 재설정 요청 API
- */
 export const requestPasswordReset = async (
   data: FindPasswordFormValues,
 ): Promise<RequestPasswordResetSuccessData> => {
@@ -169,32 +145,15 @@ export const requestPasswordReset = async (
   return handleApiResponse(response, "비밀번호 재설정 요청에 실패했습니다.");
 };
 
-/**
- * 비밀번호 재설정 API
- */
 export const resetPassword = async (
   data: ResetPasswordFormValues,
 ): Promise<string> => {
-  const response = await apiClient.patch<ApiResponse<string>>(
-    "/auth/passwd",
-    { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
-  );
+  const response = await apiClient.patch<ApiResponse<string>>("/auth/passwd", {
+    newPassword: data.password,
+  });
   return handleApiResponse(response, "비밀번호 재설정에 실패했습니다.");
 };
 
-/**
- * 로그아웃 API
- */
-export const logout = async (): Promise<void> => {
-  await apiClient.post("/auth/logout");
-};
-
-/**
- * 비밀번호 변경 API
- * @param data { currentPassword: string, newPassword: string }
- * @returns 성공 시 메시지(string)
- * 추가 - 이삭
- */
 export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
@@ -213,8 +172,6 @@ export const changePassword = async (data: {
   return apiResponse.success;
 };
 
-//* 현재 로그인된 유저 정보 조회
-// * 추가 - 이삭
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   const response =
     await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);

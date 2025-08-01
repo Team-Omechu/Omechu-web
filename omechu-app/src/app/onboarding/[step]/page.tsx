@@ -10,23 +10,13 @@ import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
 import Toast from "@/components/common/Toast";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useAuthStore } from "@/auth/store";
-import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
-import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
+import { useOnboarding } from "@/onboarding/hooks/useOnboarding"; // 커스텀 훅 import
 import AllergyStep from "@/onboarding/components/AllergyStep";
 import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
 import GenderStep from "@/onboarding/components/GenderStep";
 import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
 import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
-import { LoginSuccessData } from "@/lib/api/auth";
-import {
-  GENDER_MAP,
-  EXERCISE_MAP,
-  PREFER_MAP,
-  ALLERGY_MAP,
-  CONSTITUTION_MAP,
-} from "@/onboarding/utils/enum-mapper";
 
 const ONBOARDING_STEPS = 6;
 
@@ -34,19 +24,19 @@ export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
   const onboardingStore = useOnboardingStore();
-  const { user: authUser, login, password } = useAuthStore();
   const {
     setCurrentStep,
-    reset: resetOnboarding,
-    nickname, // reset 후 닉네임을 복원하기 위해 추가
+    nickname,
+    reset: resetOnboardingStore,
   } = onboardingStore;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 복잡한 로직을 모두 커스텀 훅으로 위임
+  const { submitOnboardingData, isCompleting, resetOnboarding } =
+    useOnboarding();
+
   const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
-
-  const { mutate: completeOnboarding, isPending: isCompleting } =
-    useCompleteOnboardingMutation();
 
   const step = Number(params.step);
 
@@ -61,11 +51,10 @@ export default function OnboardingPage() {
       router.replace("/onboarding/1");
       return;
     }
-    // 온보딩 첫 단계 진입 시, 이전 데이터 리셋
     if (step === 1) {
-      const currentNickname = nickname; // 현재 닉네임 임시 저장
-      resetOnboarding();
-      onboardingStore.setNickname(currentNickname); // 닉네임만 복원
+      const currentNickname = nickname;
+      resetOnboardingStore();
+      onboardingStore.setNickname(currentNickname);
     }
     setCurrentStep(step);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,10 +74,7 @@ export default function OnboardingPage() {
       case 4:
         return onboardingStore.preferredFood.length === 0;
       case 5:
-        return (
-          !onboardingStore.constitution ||
-          onboardingStore.constitution.length === 0
-        );
+        return onboardingStore.constitution.length === 0;
       default:
         return false;
     }
@@ -98,58 +84,8 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
-      const genderForApi = onboardingStore.gender
-        ? GENDER_MAP[onboardingStore.gender]
-        : null;
-      const stateForApi = onboardingStore.workoutStatus
-        ? EXERCISE_MAP[onboardingStore.workoutStatus]
-        : null;
-      const preferForApi = onboardingStore.preferredFood.map(
-        (p) => PREFER_MAP[p],
-      );
-      const allergyForApi = onboardingStore.allergies.map(
-        (a) => ALLERGY_MAP[a],
-      );
-      const constitutionForApi =
-        onboardingStore.constitution.length > 0
-          ? CONSTITUTION_MAP[onboardingStore.constitution[0]]
-          : null;
-
-      const dataToSubmit: OnboardingRequestData = {
-        password: password,
-        nickname: onboardingStore.nickname,
-        profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: genderForApi as "male" | "female" | null,
-        body_type: constitutionForApi,
-        state: stateForApi as "dieting" | "bulking" | "maintaining" | null,
-        prefer: preferForApi,
-        allergy: allergyForApi,
-      };
-
-      completeOnboarding(dataToSubmit, {
-        onSuccess: (completedProfile) => {
-          if (authUser) {
-            const userForLogin: LoginSuccessData = {
-              ...completedProfile,
-              gender:
-                completedProfile.gender === "남자"
-                  ? "남성"
-                  : completedProfile.gender === "여자"
-                    ? "여성"
-                    : "남성", // 기본값 혹은 예외처리
-            };
-            login({
-              accessToken: "",
-              user: userForLogin,
-              password: password,
-            });
-          }
-          setIsModalOpen(true);
-        },
-        onError: (error) => {
-          triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
-        },
-      });
+      // 데이터 제출 로직 호출
+      submitOnboardingData();
     }
   };
 
@@ -158,15 +94,6 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     }
-  };
-
-  const handleRecommend = () => {
-    resetOnboarding();
-    router.push("/");
-  };
-
-  const handleRecheck = () => {
-    setIsModalOpen(false);
   };
 
   const handleConfirmSkip = () => {
@@ -236,18 +163,7 @@ export default function OnboardingPage() {
         </BottomButton>
       </StepFooter>
 
-      {isModalOpen && (
-        <ModalWrapper>
-          <AlertModal
-            title="저장 완료!"
-            description="이제 맛있는 메뉴 추천을 받아볼까요?"
-            confirmText="추천받기"
-            cancelText="내 정보 다시 보기"
-            onConfirm={handleRecommend}
-            onClose={handleRecheck}
-          />
-        </ModalWrapper>
-      )}
+      {/* 성공 모달은 이제 /onboarding/complete 페이지에서 처리합니다. */}
 
       {isSkipModalOpen && (
         <ModalWrapper>
