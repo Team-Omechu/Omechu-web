@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../api/profile";
+import { fetchProfile } from "../api/profile";
+import { ProfileType } from "../types/ProfileType";
 
 // userId는 number 타입으로 사용합니다.
 export function useProfile() {
@@ -12,7 +13,7 @@ export function useProfile() {
     setLoading(true);
     setError(null);
 
-    getProfile()
+    fetchProfile()
       .then((data) => {
         if (mounted) setProfile(data);
       })
