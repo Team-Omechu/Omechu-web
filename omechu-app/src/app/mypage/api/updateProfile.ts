@@ -22,12 +22,9 @@ export const uploadToS3 = async (uploadUrl: string, file: File) => {
 };
 
 // 프로필 정보 PATCH
-export const updateProfile = async (
-  userId: string | number, // userId를 인자로 받음
-  body: {
-    nickname: string;
-    profileImageUrl?: string;
-  },
-) => {
-  return apiClient.patch(`/profile/${userId}`, body);
+export const updateProfile = async (body: {
+  nickname: string;
+  profileImageUrl?: string;
+}) => {
+  return apiClient.patch(`/profile`, body);
 };
