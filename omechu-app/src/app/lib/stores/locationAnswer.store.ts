@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 type LocationAnswerState = {
   x: number | null;
@@ -24,11 +25,19 @@ const initialState: LocationAnswerState = {
 
 export const useLocationAnswerStore = create<
   LocationAnswerState & LocationAnswerActions
->((set) => ({
-  ...initialState,
-  setX: (x) => set({ x }),
-  setY: (y) => set({ y }),
-  setRadius: (radius) => set({ radius }),
-  setKeyword: (keyword) => set({ keyword }),
-  locationReset: () => set(initialState),
-}));
+>()(
+  persist(
+    (set) => ({
+      ...initialState,
+      setX: (x) => set({ x }),
+      setY: (y) => set({ y }),
+      setRadius: (radius) => set({ radius }),
+      setKeyword: (keyword) => set({ keyword }),
+      locationReset: () => set(initialState),
+    }),
+    {
+      name: "location-answer-storage", // localStorage에 저장될 key
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);

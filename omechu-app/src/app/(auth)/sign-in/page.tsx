@@ -23,7 +23,7 @@ export default function SignInPage() {
 
         <div className="relative flex w-full items-center">
           <hr className="w-full border-t border-gray-300" />
-          <span className="absolute left-1/2 -translate-x-1/2 bg-white px-2 text-xs text-gray-400">
+          <span className="absolute left-1/2 -translate-x-1/2 bg-main-normal px-2 text-xs text-gray-400">
             or
           </span>
         </div>
