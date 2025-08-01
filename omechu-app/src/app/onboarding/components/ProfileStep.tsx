@@ -46,7 +46,7 @@ const ProfileStep = () => {
           </button>
           <button
             type="button"
-            className="text-center text-sm font-normal text-[#48528E] dark:text-secondary-light"
+            className="text-center text-sm font-normal text-[#48528E] underline dark:text-[#48528E]"
           >
             사진지우기
           </button>

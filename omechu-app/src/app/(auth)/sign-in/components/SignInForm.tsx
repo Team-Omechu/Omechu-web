@@ -123,7 +123,6 @@ export default function SignInForm() {
             className="w-full"
           >
             {isPending ? "로그인 중..." : "로그인"}
-            {isPending ? "로그인 중..." : "로그인"}
           </SquareButton>
         </div>
 
