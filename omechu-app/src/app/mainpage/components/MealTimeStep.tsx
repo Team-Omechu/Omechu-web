@@ -8,27 +8,30 @@ import ListButton from "@/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { mealTimeOptions } from "@/constant/mainpage/Option";
 
 const MealTimeStep = () => {
   const router = useRouter();
   const { mealTime, setMealTime } = useQuestionAnswerStore();
-  const options = ["아침", "점심", "저녁", "야식"];
+  const { addTag } = useTagStore();
 
-  const handleSelect = (option: string) => {
-    setMealTime(option);
+  const handleSelect = (value: number, label: string, description: string) => {
+    setMealTime(value);
+    addTag(label, description);
     router.push("/mainpage/question-answer/2");
   };
 
   return (
     <QuestionAnswerLayout title="언제 먹는 건가요?">
-      {options.map((option) => (
+      {mealTimeOptions.map(({ label, value, description }) => (
         <ListButton
-          key={option}
-          onClick={() => handleSelect(option)}
-          isSelected={mealTime === option}
+          key={value}
+          onClick={() => handleSelect(value, label, description)}
+          isSelected={mealTime === value}
           textSize="base"
         >
-          {option}
+          {label}
         </ListButton>
       ))}
     </QuestionAnswerLayout>

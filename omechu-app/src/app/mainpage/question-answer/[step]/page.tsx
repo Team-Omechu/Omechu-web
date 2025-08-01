@@ -22,10 +22,16 @@ export default function QuestionAnswerPage() {
   const router = useRouter();
   const params = useParams();
   const store = useQuestionAnswerStore();
-  const { setCurrentStep, reset } = store;
+  const { setCurrentStep, questionReset } = store;
   const [showModal, setShowModal] = useState(false);
 
   const step = Number(params.step);
+
+  const handleConfirm = () => {
+    questionReset();
+    router.push("/mainpage");
+    setShowModal(false);
+  };
 
   useEffect(() => {
     if (isNaN(step) || step < 1 || step > QUESTION_STEPS) {
@@ -89,11 +95,7 @@ export default function QuestionAnswerPage() {
         <ModalWrapper>
           <AlertModal
             title="메뉴 추천을 중단하시겠어요?"
-            onConfirm={() => {
-              reset();
-              router.push("/mainpage");
-              setShowModal(false);
-            }}
+            onConfirm={handleConfirm}
             onClose={() => setShowModal(false)}
             confirmText="그만하기"
             cancelText="취소"

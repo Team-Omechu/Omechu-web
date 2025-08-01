@@ -63,11 +63,11 @@ export default function ProfileEdit() {
   }
 
   const handleSave = async () => {
+    if (!userId) return; // 안전 장치
     setIsLoading(true);
     setSaveError(null);
     try {
       let imageUrl = profileImageUrl;
-      // 1. 이미지 파일이 있을 때만 presigned + S3 업로드
       if (profileImageFile) {
         const { uploadUrl, fileUrl } = await getPresignedUrl(
           profileImageFile.name,
@@ -75,15 +75,13 @@ export default function ProfileEdit() {
         );
         await uploadToS3(uploadUrl, profileImageFile);
         imageUrl = fileUrl;
-        setProfileImageUrl(fileUrl); // 미리 상태에 저장
+        setProfileImageUrl(fileUrl);
       }
-
-      // 2. PATCH 호출 (닉네임/이미지 URL)
-      await updateProfile({
+      await updateProfile(userId, {
         nickname,
         ...(imageUrl ? { profileImageUrl: imageUrl } : {}),
       });
-      setShowModal(true); // 성공시 모달
+      setShowModal(true);
     } catch (e: any) {
       setSaveError("프로필 수정에 실패했습니다.");
     } finally {

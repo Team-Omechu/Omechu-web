@@ -8,32 +8,30 @@ import ListButton from "@/components/common/button/ListButton";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 import QuestionAnswerLayout from "./QuestionAnswerLayout";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { moodOptions } from "@/constant/mainpage/Option";
 
 const MoodStep = () => {
   const router = useRouter();
   const { mood, setMood } = useQuestionAnswerStore();
-  const options = [
-    "들뜨고 신나요",
-    "지치고 피곤해요",
-    "슬프고 울적해요",
-    "화나고 답답해요",
-  ];
+  const { addTag } = useTagStore();
 
-  const handleSelect = (option: string) => {
-    setMood(option);
+  const handleSelect = (value: number, label: string, description: string) => {
+    setMood(value);
+    addTag(label, description);
     router.push("/mainpage/question-answer/4");
   };
 
   return (
     <QuestionAnswerLayout title="기분 상태는 어떤가요?">
-      {options.map((option) => (
+      {moodOptions.map(({ label, value, description }) => (
         <ListButton
-          key={option}
-          onClick={() => handleSelect(option)}
-          isSelected={mood === option}
+          key={value}
+          onClick={() => handleSelect(value, label, description)}
+          isSelected={mood === value}
           textSize="base"
         >
-          {option}
+          {label}
         </ListButton>
       ))}
     </QuestionAnswerLayout>
