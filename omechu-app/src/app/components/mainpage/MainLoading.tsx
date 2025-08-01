@@ -22,7 +22,7 @@ const MainLoading = () => {
         }}
       >
         <div
-          className="animate-food-cycle h-[170px] w-[175px] bg-[url('/image/food-sprite.svg')] -translate-y-6"
+          className="animate-food-cycle h-[170px] w-[175px] -translate-y-6 bg-[url('/image/food-sprite.svg')]"
           style={{
             backgroundSize: "525px 170px",
           }}

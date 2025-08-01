@@ -15,17 +15,20 @@ type TagActions = {
 
 const initialTagData: TagData[] = []; // 초기엔 빈 배열, 필요하면 기본값
 
-export const useTagStore = create<TagState & TagActions>()(persist(
-  (set, get) => ({
-  tagData: initialTagData,
-  setTagData: (tags) => set({ tagData: tags }),
-  addTag: (tag, description) =>
-    set({ tagData: [...get().tagData, { tag, description }] }),
-  removeTag: (tag) =>
-    set({ tagData: get().tagData.filter((t) => t.tag !== tag) }),
-  tagDataReset: () => set({ tagData: initialTagData }),
-}),{
-  name: "tag-data-storage", // localStorage에 저장될 key
-  storage: createJSONStorage(()=> localStorage),  // localStorage를 사용
-}
-))
+export const useTagStore = create<TagState & TagActions>()(
+  persist(
+    (set, get) => ({
+      tagData: initialTagData,
+      setTagData: (tags) => set({ tagData: tags }),
+      addTag: (tag, description) =>
+        set({ tagData: [...get().tagData, { tag, description }] }),
+      removeTag: (tag) =>
+        set({ tagData: get().tagData.filter((t) => t.tag !== tag) }),
+      tagDataReset: () => set({ tagData: initialTagData }),
+    }),
+    {
+      name: "tag-data-storage", // localStorage에 저장될 key
+      storage: createJSONStorage(() => localStorage), // localStorage를 사용
+    },
+  ),
+);

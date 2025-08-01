@@ -35,26 +35,31 @@ const initialState: QuestionAnswerState = {
 
 export const useQuestionAnswerStore = create<
   QuestionAnswerState & QuestionAnswerActions
->()(persist((set, get) => ({
-  ...initialState,
-  setMealTime: (mealTime) => set({ mealTime }),
-  setPurpose: (purpose) => set({ purpose }),
-  setMood: (mood) => set({ mood }),
-  setWho: (who) => set({ who }),
-  setBudget: (budget) => set({ budget }),
-  setCurrentStep: (step) => set({ currentStep: step }),
-  addException: (exception) => {
-    const { exceptions } = get();
-    if (!exceptions.includes(exception)) {
-      set({ exceptions: [...exceptions, exception] });
-    }
-  },
-  removeException: (exception) => {
-    const { exceptions } = get();
-    set({ exceptions: exceptions.filter((e) => e !== exception) });
-  },
-  questionReset: () => set(initialState),
-}),{
-  name: "question-answer-storage", // localStorage에 저장될 key
-  storage: createJSONStorage(() => localStorage),
-}));
+>()(
+  persist(
+    (set, get) => ({
+      ...initialState,
+      setMealTime: (mealTime) => set({ mealTime }),
+      setPurpose: (purpose) => set({ purpose }),
+      setMood: (mood) => set({ mood }),
+      setWho: (who) => set({ who }),
+      setBudget: (budget) => set({ budget }),
+      setCurrentStep: (step) => set({ currentStep: step }),
+      addException: (exception) => {
+        const { exceptions } = get();
+        if (!exceptions.includes(exception)) {
+          set({ exceptions: [...exceptions, exception] });
+        }
+      },
+      removeException: (exception) => {
+        const { exceptions } = get();
+        set({ exceptions: exceptions.filter((e) => e !== exception) });
+      },
+      questionReset: () => set(initialState),
+    }),
+    {
+      name: "question-answer-storage", // localStorage에 저장될 key
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);

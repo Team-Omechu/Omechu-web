@@ -23,7 +23,9 @@ const initialState: LocationAnswerState = {
   keyword: null,
 };
 
-export const useLocationAnswerStore = create<LocationAnswerState & LocationAnswerActions>()(
+export const useLocationAnswerStore = create<
+  LocationAnswerState & LocationAnswerActions
+>()(
   persist(
     (set) => ({
       ...initialState,
@@ -36,6 +38,6 @@ export const useLocationAnswerStore = create<LocationAnswerState & LocationAnswe
     {
       name: "location-answer-storage", // localStorage에 저장될 key
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );
