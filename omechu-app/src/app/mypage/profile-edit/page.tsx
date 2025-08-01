@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -9,8 +11,7 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "../api/profile";
+import { useProfile } from "../hooks/useProfile";
 import {
   getPresignedUrl,
   uploadToS3,
@@ -18,22 +19,8 @@ import {
 } from "../api/updateProfile";
 import { useAuthStore } from "@/auth/store";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
-import { useProfileQuery } from "../hooks/useProfileQuery";
 
 export default function ProfileEdit() {
-  const { data: profile, isLoading, error } = useProfileQuery();
-  const queryClient = useQueryClient();
-  const mutation = useMutation(updateProfile, {
-    onSuccess: () => {
-      // 저장 성공 시 프로필 데이터 다시 패칭
-      queryClient.invalidateQueries(["profile"]);
-      setShowModal(true);
-    },
-    onError: () => {
-      setSaveError("프로필 수정에 실패했습니다.");
-    },
-  });
-
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -42,12 +29,14 @@ export default function ProfileEdit() {
   const [nickname, setNickname] = useState(""); // 기본값 설정
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const nicknameRegex = /^[A-Za-z가-힣]{2,12}$/; // 2~12글자, 한글/영문만 허용
 
   // 전역 상태에서 user 객체 가져오기
   const user = useAuthStore((state) => state.user);
   const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
+  const { profile, loading, error } = useProfile();
   const [minLoading, setMinLoading] = useState(true);
 
   // 상태와 동기화 (처음 한 번만)
@@ -59,20 +48,42 @@ export default function ProfileEdit() {
   }, [profile]);
 
   useEffect(() => {
+    if (profile?.nickname !== undefined) {
+      setNickname(profile.nickname);
+    }
+  }, [profile?.nickname]);
+
+  useEffect(() => {
     setIsValid(nicknameRegex.test(nickname));
   }, [nickname]);
 
+  const canSave = isValid && nickname !== profile?.nickname && !isLoading;
+
+  try {
+  } catch (e: any) {
+    if (e.response?.data?.message) {
+      setSaveError(e.response.data.message);
+    } else {
+      setSaveError("프로필 수정에 실패했습니다.");
+    }
+  }
+
   useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => setMinLoading(false), 3000);
+    if (loading) {
+      const timer = setTimeout(() => setMinLoading(false), 1000);
       return () => clearTimeout(timer);
     } else {
       setMinLoading(false);
     }
-  }, [isLoading]);
+  }, [loading]);
 
-  if (isLoading || minLoading) {
-    return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
+  if (loading || minLoading) {
+    return (
+      <LoadingSpinner
+        label="프로필 정보 불러오는 중..."
+        className="h-[calc(100dvh-3rem)]"
+      />
+    );
   }
 
   const handleSave = async () => {
@@ -134,7 +145,7 @@ export default function ProfileEdit() {
               router.push("/mypage");
             }}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
@@ -147,7 +158,7 @@ export default function ProfileEdit() {
         <section className="flex items-center justify-center gap-10 mt-24 h-44">
           <div className="relative px-3">
             <div className="mb-3">
-              <Image
+              <img
                 src={
                   imagePreview
                     ? imagePreview
@@ -155,10 +166,8 @@ export default function ProfileEdit() {
                       ? profileImageUrl
                       : "/profile/profile_default_img_rotated.svg"
                 }
-                alt="changeProfileImage"
                 width={73}
                 height={73}
-                priority
                 onError={() => setProfileImageUrl(null)}
               />
             </div>
@@ -166,9 +175,9 @@ export default function ProfileEdit() {
               className="absolute right-1 top-1"
               onClick={handleImageClick}
             >
-              <Image
+              <img
                 src="/profile/camera.svg"
-                alt="upisLoadingImage"
+                alt="uploadingImage"
                 width={25}
                 height={20}
               />
@@ -206,7 +215,7 @@ export default function ProfileEdit() {
                 className="absolute right-2 top-2"
                 onClick={() => setNickname("")}
               >
-                <Image
+                <img
                   src={"/x/cancel.svg"}
                   alt={"초기화"}
                   width={20}
