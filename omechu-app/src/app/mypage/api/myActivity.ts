@@ -17,7 +17,7 @@ export interface FetchRestaurantsResponse {
 }
 
 export async function fetchRestaurants(
-  userId: string,
+  userId: number | undefined,
 ): Promise<FetchRestaurantsResponse> {
   const res = await apiClient.get<FetchRestaurantsResponse>(
     `/restaurants/${userId}`,
