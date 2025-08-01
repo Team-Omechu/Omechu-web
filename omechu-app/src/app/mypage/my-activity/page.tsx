@@ -102,7 +102,7 @@ export default function MyActivity() {
         setMyRestaurants(
           (data.success?.data ?? []).map((item: any) => ({
             id: Number(item.id),
-            name: item.address || "-",
+            name: "",
             repre_menu:
               Array.isArray(item.repre_menu) && item.repre_menu.length > 0
                 ? (item.repre_menu[0]?.menu ?? "")

@@ -99,14 +99,14 @@ export default function MyPage() {
               />
             )}
           </div>
-          <div className="font-md text-lg">
+          <div className="text-lg font-md">
             {loading ? "로딩 중..." : profile?.nickname || "-"}
           </div>
           <div className="text-xs font-normal text-grey-normalActive">
             {loading ? "" : profile?.email || ""}
           </div>
         </section>
-        <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
+        <section className="w-full bg-white border-2 rounded-lg border-secondary-normal">
           {menuList.map((item, index) => {
             const isLast = index === menuList.length - 1;
             return (
