@@ -1,6 +1,6 @@
 import apiClient from "@/lib/api/client";
 
-export async function getProfile(userId: number) {
-  const res = await apiClient.get(`/profile/${userId}`);
+export async function getProfile() {
+  const res = await apiClient.get(`/profile`);
   return res.data.success;
 }
