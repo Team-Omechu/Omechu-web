@@ -17,6 +17,42 @@ export interface FetchMyPlaceResponse {
   };
 }
 
+export interface MyReviewItem {
+  id: number;
+  user_id: number;
+  rest_id: number;
+  rating: number;
+  tag: string[];
+  text: string;
+  created_at: string;
+  like: number;
+  restaurant: {
+    id: number;
+    rest_image: string;
+    location: string;
+    name: string;
+    address: string;
+    rating: number;
+  };
+}
+
+export interface FetchMyReviewsResponse {
+  resultType: string;
+  error: null | any;
+  success: {
+    data: MyReviewItem[];
+    hasNextPage?: boolean;
+    nextCursor?: number | null;
+  };
+}
+
+export async function fetchMyReviews(
+  userId: number,
+): Promise<FetchMyReviewsResponse> {
+  const res = await apiClient.get<FetchMyReviewsResponse>(`/reviews/${userId}`);
+  return res.data;
+}
+
 // limit, cursor 등 옵션 파라미터 필요시 추가
 export async function fetchMyPlaces(
   limit = 10,
