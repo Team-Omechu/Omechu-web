@@ -1,35 +1,46 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import Header from "@/components/common/Header";
 import InfoRow from "./InfoRow";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useEffect, useState } from "react";
-import apiClient from "@/lib/api/client";
+
+import { getProfile } from "../api/profile";
 
 type ProfileType = {
   nickname: string;
-  gender?: string;
-  workoutStatus?: string;
-  preferredFood: string[];
-  constitution: string[];
-  allergies: string[];
+  gender?: string | null;
+  workoutStatus?: string | null; // exercise 필드 매핑
+  preferredFood: string[]; // prefer 필드 매핑
+  constitution: string[]; // body_type 필드 매핑, 배열로 변환
+  allergies: string[]; // allergy 필드 매핑
+  profileImageUrl?: string | null; // 이미지 URL
 };
 
 export default function UserInfoEdit() {
   const router = useRouter();
-  const userId = 1;
   const [profile, setProfile] = useState<ProfileType | null>(null);
-  const [error, setError] = useState(""); // 오류 메시지 상태 추가
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const res = await apiClient.get(`/profile`); // 엔드포인트 변경
-        setProfile(res.data.success);
+        const data = await getProfile();
+
+        const profileData: ProfileType = {
+          nickname: data.nickname,
+          gender: data.gender,
+          workoutStatus: data.exercise || null,
+          preferredFood: Array.isArray(data.prefer) ? data.prefer : [],
+          constitution: data.body_type ? [data.body_type] : [],
+          allergies: Array.isArray(data.allergy) ? data.allergy : [],
+          profileImageUrl: data.profileImageUrl || null,
+        };
+        console.log("[DEBUG] 프로필 데이터:", data);
+        setProfile(profileData);
       } catch (err) {
         const error = err as any;
         if (error.response?.status === 401) {
@@ -40,14 +51,12 @@ export default function UserInfoEdit() {
       }
     }
     fetchProfile();
-  }, [router]);
+  }, []);
 
   if (error)
     return (
       <main className="flex min-h-[calc(100dvh-3rem)] w-full items-center justify-center">
-        {/* <div className="px-6 py-8 text-center rounded-lg shadow bg-red-50"> */}
         <span className="text-base text-red-600">{error}</span>
-        {/* </div> */}
       </main>
     );
   if (!profile)
@@ -55,7 +64,7 @@ export default function UserInfoEdit() {
       <main className="flex min-h-[calc(100dvh-3rem)] w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="h-8 w-8 animate-spin text-primary-normal"
+            className="w-8 h-8 animate-spin text-primary-normal"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -79,14 +88,6 @@ export default function UserInfoEdit() {
       </main>
     );
 
-  // Zustand 상태 가져오기
-  // const nickname = useOnboardingStore((state) => state.nickname);
-  // const gender = useOnboardingStore((state) => state.gender);
-  // const workoutStatus = useOnboardingStore((state) => state.workoutStatus);
-  // const preferredFood = useOnboardingStore((state) => state.preferredFood);
-  // const constitution = useOnboardingStore((state) => state.constitution);
-  // const allergies = useOnboardingStore((state) => state.allergies);
-
   return (
     <>
       <Header
@@ -103,36 +104,38 @@ export default function UserInfoEdit() {
         }
       />
       <main className="flex h-[calc(100dvh-3rem)] w-full flex-col items-center px-4 py-6">
-        <div className="flex w-full flex-col items-center">
+        <div className="flex flex-col items-center w-full">
           <section className="mt-10">
             <div className="my-10 text-xl font-medium">
-              {"<"} {profile?.nickname || "로딩 중..."}의 기본 상태 {">"}
+              {"<"} {profile.nickname || "로딩 중..."}의 기본 상태 {">"}
             </div>
           </section>
-          <section className="mb-14 mt-10 flex w-full flex-col items-start justify-start gap-4 px-12">
-            <InfoRow label="성별" content={profile?.gender || "None"} />
+          <section className="flex flex-col items-start justify-start w-full gap-4 px-12 mt-10 mb-14">
+            <InfoRow label="성별" content={profile.gender || "None"} />
             <InfoRow
               label="운동 상태"
-              content={profile?.workoutStatus || "None"}
+              content={profile.workoutStatus || "None"}
             />
             <InfoRow
               label="선호 음식"
               content={
-                profile?.preferredFood.length
-                  ? profile?.preferredFood
+                profile.preferredFood.length > 0
+                  ? profile.preferredFood
                   : ["None"]
               }
             />
             <InfoRow
               label="체질"
               content={
-                profile?.constitution.length ? profile?.constitution : ["None"]
+                profile.constitution.length > 0
+                  ? profile.constitution
+                  : ["None"]
               }
             />
             <InfoRow
               label="알레르기"
               content={
-                profile?.allergies.length ? profile?.allergies : ["None"]
+                profile.allergies.length > 0 ? profile.allergies : ["None"]
               }
             />
           </section>
