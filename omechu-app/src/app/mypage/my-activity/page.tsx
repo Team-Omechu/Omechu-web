@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { fetchMyPlaces } from "../api/myActivity";
+import { fetchMyPlaces, MyReviewItem } from "../api/myActivity";
+import { fetchMyReviews } from "../api/myActivity";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Image from "next/image";
@@ -57,15 +58,33 @@ export default function MyActivity() {
         setMyRestaurants(
           (data.success.data ?? []).map((item: any) => ({
             id: Number(item.id),
-            name: item.name,
-            repre_menu: "", // 아직 메뉴 정보는 빈 값
+            name: item.name || "-",
+            repre_menu:
+              Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+                ? item.repre_menu[0].menu
+                : "",
             rating: item.rating ?? 0,
-            images: [], // 이미지도 빈 배열(추후 반영)
+            images: item.rest_image ? [item.rest_image] : [],
             address: item.address ?? "",
+            reviews: item._count?.review ?? 0,
           })),
         );
       })
       .catch(() => setError("맛집 목록을 불러오지 못했습니다."))
+      .finally(() => setLoading(false));
+  }, [userId, selectedIndex]);
+
+  useEffect(() => {
+    if (selectedIndex !== 0 || !userId) return;
+
+    setLoading(true);
+    setError(null);
+
+    fetchMyReviews(userId)
+      .then((data) => {
+        setReviewList(data.success.data ?? []);
+      })
+      .catch(() => setError("리뷰 목록을 불러오지 못했습니다."))
       .finally(() => setLoading(false));
   }, [userId, selectedIndex]);
 
@@ -78,7 +97,7 @@ export default function MyActivity() {
 
   const filteredItems = Restaurants;
 
-  const [reviewList, setReviewList] = useState(MOCK_FOOD_REVIEW_CARD_DATA);
+  const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
 
   const visibleItems = filteredItems.slice(0, visibleCount);
   const [isLoading, setIsLoading] = useState(false);
@@ -170,14 +189,25 @@ export default function MyActivity() {
         review.id === id
           ? {
               ...review,
-              isLiked: !review.isLiked,
-              recommendCount: review.isLiked
-                ? (review.recommendCount ?? 1) - 1
-                : (review.recommendCount ?? 0) + 1,
+              isLiked: false,
+              recommendCount: review.like
+                ? (review.like ?? 1) - 1
+                : (review.like ?? 0) + 1,
             }
           : review,
       ),
     );
+  };
+
+  const handleDeleteReview = (id: number) => {
+    // TODO: 리뷰 삭제 기능 구현
+    console.log("삭제할 리뷰 id:", id);
+  };
+
+  const handleNavigateToRestaurant = (restaurantId?: string) => {
+    if (!restaurantId) return;
+    // TODO: 해당 맛집 상세로 이동
+    router.push(`/restaurant/restaurant-detail/${restaurantId}`);
   };
 
   return (
@@ -230,16 +260,39 @@ export default function MyActivity() {
                 .slice()
                 .sort((a, b) =>
                   sortOrder === "latest"
-                    ? new Date(b.createdAt).getTime() -
-                      new Date(a.createdAt).getTime()
-                    : (b.recommendCount ?? 0) - (a.recommendCount ?? 0),
+                    ? new Date(b.created_at).getTime() -
+                      new Date(a.created_at).getTime()
+                    : (b.like ?? 0) - (a.like ?? 0),
                 )
                 .slice(0, visibleCount)
                 .map((review) => (
                   <FoodReviewCard
                     key={review.id}
-                    {...review}
-                    onLikeToggle={() => handleLikeToggle(review.id)}
+                    id={Number(review.id)} // string to number
+                    createdAt={review.created_at}
+                    restaurantName={review.restaurant?.name ?? "-"}
+                    rating={review.rating ?? 0}
+                    reviewText={review.text ?? ""}
+                    recommendCount={review.like ?? 0}
+                    isLiked={false}
+                    onLikeToggle={() => handleLikeToggle(Number(review.id))}
+                    restaurantImage={review.restaurant?.rest_image ?? ""}
+                    reviewImages={
+                      Array.isArray(review.reviewImages)
+                        ? review.reviewImages
+                        : []
+                    }
+                    tags={
+                      Array.isArray(review.tag) && review.tag.length > 0
+                        ? review.tag
+                        : Array.isArray(review.restaurant?.tags)
+                          ? review.restaurant.tags.map((t) => t.tag)
+                          : []
+                    }
+                    onDelete={() => handleDeleteReview(Number(review.id))}
+                    onNavigate={() =>
+                      handleNavigateToRestaurant(String(review.restaurant?.id))
+                    }
                   />
                 ))}
             </section>
