@@ -11,7 +11,7 @@ export class ProfileApiError extends Error {
   }
 }
 
-export async function fetchProfile(): Promise<ProfileType | null> {
+export async function fetchProfile(): Promise<ProfileType> {
   try {
     const res = await apiClient.get("/profile");
     const data = res.data.success;
