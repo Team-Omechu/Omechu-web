@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Image from "next/image";
@@ -27,12 +29,7 @@ export default function MenuSection({ menuList }: MenuSectionProps) {
             >
               <span className="pl-3 text-lg">{item.title}</span>
               <span className="pr-3">
-                <Image
-                  src={"/arrow/right_arrow.svg"}
-                  alt={"메뉴 이동 버튼"}
-                  width={13}
-                  height={13}
-                />
+                <img src={"/arrow/right_arrow.svg"} width={13} height={13} />
               </span>
             </button>
             {!isLast && (
