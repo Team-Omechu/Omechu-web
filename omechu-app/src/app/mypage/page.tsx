@@ -1,18 +1,10 @@
-import { fetchProfile } from "./api/profile";
+/* eslint-disable @next/next/no-img-element */
 import ProfileSection from "./ProfileSection";
 import MenuSection from "./MenuSection";
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
 
 export default async function MyPage() {
-  let profile = null;
-  let error = null;
-  try {
-    profile = await fetchProfile();
-  } catch (e) {
-    error = "프로필 정보를 불러올 수 없습니다.";
-  }
-
   const menuList: { title: string; href: string }[] = [
     { title: "프로필 관리", href: "/mypage/profile-edit" },
     { title: "기본 상태 입력", href: "/mypage/user-info-edit" },
@@ -28,7 +20,6 @@ export default async function MyPage() {
         className={"border-b-0"}
         rightChild={
           <a href="/mypage/settings">
-            {/* next/link는 서버컴포넌트에서 사용 가능 */}
             <img src="/setting/setting.svg" alt="설정" width={25} height={25} />
           </a>
         }
