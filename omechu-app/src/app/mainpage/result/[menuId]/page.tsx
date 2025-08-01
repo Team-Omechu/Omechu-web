@@ -61,7 +61,7 @@ export default function MenuDetailPage() {
         leftChild={
           <button onClick={handleClick} className="flex items-center font-bold">
             <Image
-              src="/header_left_arrow.png"
+              src="/arrow/left-header-arrow.svg"
               alt="back"
               width={22}
               height={30}
