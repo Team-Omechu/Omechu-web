@@ -1,26 +1,32 @@
 import apiClient from "@/lib/api/client";
 
-export interface RestaurantItem {
+export interface MyPlaceItem {
   id: number;
-  name: string;
+  rest_image?: string;
   address?: string;
   rating?: number;
-  // images?: string[]; // 추후 API에서 제공되면 반영
+  repre_menu?: { menu: string }[];
+  _count?: { review: number };
 }
 
-export interface FetchRestaurantsResponse {
+export interface FetchMyPlaceResponse {
   resultType: string;
   error: null | any;
   success: {
-    data: RestaurantItem[];
+    data: MyPlaceItem[];
   };
 }
 
-export async function fetchRestaurants(
-  userId: number | undefined,
-): Promise<FetchRestaurantsResponse> {
-  const res = await apiClient.get<FetchRestaurantsResponse>(
-    `/restaurants/${userId}`,
+// limit, cursor 등 옵션 파라미터 필요시 추가
+export async function fetchMyPlaces(
+  limit = 10,
+  cursor?: number,
+): Promise<FetchMyPlaceResponse> {
+  // query string 조립
+  let query = `?limit=${limit}`;
+  if (cursor !== undefined) query += `&cursor=${cursor}`;
+  const res = await apiClient.get<FetchMyPlaceResponse>(
+    `/profile/myPlace${query}`,
   );
   return res.data;
 }
