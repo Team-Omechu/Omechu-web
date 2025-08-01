@@ -1,18 +1,5 @@
 import apiClient from "@/lib/api/client";
-
-export interface UserProfile {
-  id: number;
-  email: string;
-  nickname: string | null;
-  body_type: string | null;
-  gender: string | null;
-  exercise: string | null;
-  prefer: string[];
-  allergy: string[];
-  profileImageUrl: string | null;
-  created_at: string;
-  updated_at: string;
-}
+import { ProfileType } from "../types/ProfileType";
 
 export class ProfileApiError extends Error {
   constructor(
@@ -24,7 +11,7 @@ export class ProfileApiError extends Error {
   }
 }
 
-export async function fetchProfile(): Promise<UserProfile | null> {
+export async function fetchProfile(): Promise<ProfileType | null> {
   try {
     const res = await apiClient.get("/profile");
     const data = res.data.success;
