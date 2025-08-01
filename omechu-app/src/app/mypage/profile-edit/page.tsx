@@ -34,7 +34,7 @@ export default function ProfileEdit() {
   // 전역 상태에서 user 객체 가져오기
   const user = useAuthStore((state) => state.user);
   const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
-  const { profile, loading, error } = useProfile(userId);
+  const { profile, loading, error } = useProfile();
   const [minLoading, setMinLoading] = useState(true);
 
   // 상태와 동기화 (처음 한 번만)
@@ -77,7 +77,7 @@ export default function ProfileEdit() {
         imageUrl = fileUrl;
         setProfileImageUrl(fileUrl);
       }
-      await updateProfile(userId, {
+      await updateProfile({
         nickname,
         ...(imageUrl ? { profileImageUrl: imageUrl } : {}),
       });
