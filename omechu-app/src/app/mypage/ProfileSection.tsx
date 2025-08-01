@@ -1,17 +1,17 @@
 // ProfileSection.tsx
 "use client";
 
-import type { ProfileType } from "./types/profileType";
 import { useProfileQuery } from "./hooks/useProfileQuery";
+import AuthErrorModal from "./AuthErrorModalSection";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components/common/LoadingIndicator";
+import ModalWrapper from "@/components/common/ModalWrapper";
 
 export default function ProfileSection() {
   const { data: profile, isLoading, error } = useProfileQuery();
+  const [modalOpen, setModalOpen] = useState(false);
 
-  if (isLoading) {
-    return (
-      <div className="h-[75px] w-[75px] animate-pulse rounded-full bg-gray-200" />
-    );
-  }
+  const handleAuthError = () => setModalOpen(true);
 
   if (error) {
     return (
@@ -22,6 +22,17 @@ export default function ProfileSection() {
             ? (error as any).message
             : "알 수 없는 오류"}
       </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <main className="h-fit">
+        <LoadingSpinner
+          label="프로필 정보 불러오는 중..."
+          className="mb-9.5 mt-6"
+        />
+      </main>
     );
   }
 
@@ -37,6 +48,12 @@ export default function ProfileSection() {
       <div className="text-xs font-normal text-grey-normalActive">
         {profile?.email || ""}
       </div>
+      {modalOpen && (
+        <AuthErrorModal
+          onConfirm={() => setModalOpen(false)}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
     </section>
   );
 }
