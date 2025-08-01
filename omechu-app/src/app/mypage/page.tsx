@@ -14,10 +14,6 @@ import LoginPromptModal2 from "@/mainpage/example_testpage/components/LoginPromp
 type ModalType = "modal1" | "modal2" | null;
 
 export default function MyPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   const router = useRouter();
 
   const { data: profile, isLoading, error } = useProfileQuery();
@@ -61,8 +57,6 @@ export default function MyPage() {
     alert("모달 닫힘");
   };
 
-  if (!mounted) return null; // CSR에서만 렌더링
-
   return (
     <>
       <Header
@@ -78,7 +72,7 @@ export default function MyPage() {
           </button>
         }
       />
-      <main className="flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 px-10 py-16">
+      <main className="flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 overflow-y-auto px-10 py-16 scrollbar-hide">
         <section className="flex flex-col items-center">
           <div className="my-4">
             {/* 로딩/에러/정상 분기 */}
@@ -93,16 +87,13 @@ export default function MyPage() {
                     : "알 수 없는 오류"}
               </div>
             ) : (
-              <Image
+              // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
+              <img
                 src={
-                  !imgError && !!profile?.profileImageUrl
-                    ? profile.profileImageUrl
-                    : "/profile/profile_default_img.svg"
+                  profile?.profileImageUrl || "/profile/profile_default_img.svg"
                 }
-                alt="profile"
                 width={75}
                 height={75}
-                onError={() => setImgError(true)}
               />
             )}
           </div>
@@ -115,6 +106,7 @@ export default function MyPage() {
         </section>
         <section className="w-full bg-white border-2 rounded-lg border-secondary-normal">
           {menuList.map((item, index) => {
+            console.log("profile.profileImageUrl:", profile?.profileImageUrl);
             const isLast = index === menuList.length - 1;
             return (
               <div key={index}>

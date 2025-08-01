@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "../api/profile";
-import { ProfileType } from "../types/ProfileType";
+import { ProfileType } from "../types/profileType";
 
 export function useProfileQuery() {
   return useQuery<ProfileType, Error>({

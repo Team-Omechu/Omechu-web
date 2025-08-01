@@ -1,5 +1,5 @@
 import apiClient from "@/lib/api/client";
-import { ProfileType } from "../types/ProfileType";
+import { ProfileType } from "../types/profileType";
 
 export class ProfileApiError extends Error {
   constructor(
