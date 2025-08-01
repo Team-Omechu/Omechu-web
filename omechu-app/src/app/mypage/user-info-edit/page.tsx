@@ -28,7 +28,7 @@ export default function UserInfoEdit() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const res = await apiClient.get(`/profile/${userId}`);
+        const res = await apiClient.get(`/profile`); // 엔드포인트 변경
         setProfile(res.data.success);
       } catch (err) {
         const error = err as any;
@@ -40,7 +40,7 @@ export default function UserInfoEdit() {
       }
     }
     fetchProfile();
-  }, [router, userId]);
+  }, [router]);
 
   if (error)
     return (
