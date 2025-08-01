@@ -230,18 +230,20 @@ export default function Favorites() {
               <FoodCard
                 key={item.restaurant.id}
                 item={{
-                  id: item.restaurant.id,
-                  name: item.restaurant.name, // ← name
-                  images: [], // 이미지 없으면 빈 배열
-                  rating: item.restaurant.rating, // 평점 없으면 null
-                  menu: "", // 대표메뉴 없으면 빈 값
-                  tags: [], // 태그 없으면 빈 배열
+                  id: Number(item.restaurant.id),
+                  name: item.restaurant.name,
+                  images: item.restaurant.rest_image
+                    ? [item.restaurant.rest_image]
+                    : [], // 단일 이미지라도 배열로
+                  rating: item.restaurant.rating ?? 0,
+                  menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
+                  tags: item.tags,
                   address: {
-                    road: item.restaurant.address,
+                    road: item.restaurant.address ?? "",
                     jibun: "",
                     postalCode: "",
                   },
-                  reviews: 0,
+                  reviews: item.restaurant.reviewCount ?? 0,
                   isLiked: true,
                   category: "",
                   timetable: [],
