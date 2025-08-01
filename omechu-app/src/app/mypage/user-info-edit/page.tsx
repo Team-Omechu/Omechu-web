@@ -64,7 +64,7 @@ export default function UserInfoEdit() {
       <main className="flex min-h-[calc(100dvh-3rem)] w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="w-8 h-8 animate-spin text-primary-normal"
+            className="h-8 w-8 animate-spin text-primary-normal"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -104,13 +104,13 @@ export default function UserInfoEdit() {
         }
       />
       <main className="flex h-[calc(100dvh-3rem)] w-full flex-col items-center px-4 py-6">
-        <div className="flex flex-col items-center w-full">
+        <div className="flex w-full flex-col items-center">
           <section className="mt-10">
             <div className="my-10 text-xl font-medium">
               {"<"} {profile.nickname || "로딩 중..."}의 기본 상태 {">"}
             </div>
           </section>
-          <section className="flex flex-col items-start justify-start w-full gap-4 px-12 mt-10 mb-14">
+          <section className="mb-14 mt-10 flex w-full flex-col items-start justify-start gap-4 px-12">
             <InfoRow label="성별" content={profile.gender || "None"} />
             <InfoRow
               label="운동 상태"
