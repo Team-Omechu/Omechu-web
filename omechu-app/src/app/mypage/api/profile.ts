@@ -16,15 +16,17 @@ export async function fetchProfile(): Promise<ProfileType | null> {
     const res = await apiClient.get("/profile");
     const data = res.data.success;
     return {
-      ...data,
       id: Number(data.id),
+      email: data.email ?? "",
       nickname: data.nickname ?? "",
-      body_type: data.body_type ?? "",
+      bodyType: data.body_type ?? "",
       gender: data.gender ?? "",
       exercise: data.exercise ?? "",
       prefer: Array.isArray(data.prefer) ? data.prefer : [],
       allergy: Array.isArray(data.allergy) ? data.allergy : [],
       profileImageUrl: data.profileImageUrl ?? null,
+      createdAt: data.created_at ?? "",
+      updatedAt: data.updated_at ?? "",
     };
   } catch (error: any) {
     const code = error?.response?.status ?? 500;
