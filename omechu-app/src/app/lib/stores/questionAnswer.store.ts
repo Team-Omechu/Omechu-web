@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type QuestionAnswerState = {
   mealTime: number | null;
@@ -34,7 +35,7 @@ const initialState: QuestionAnswerState = {
 
 export const useQuestionAnswerStore = create<
   QuestionAnswerState & QuestionAnswerActions
->((set, get) => ({
+>()(persist((set, get) => ({
   ...initialState,
   setMealTime: (mealTime) => set({ mealTime }),
   setPurpose: (purpose) => set({ purpose }),
@@ -53,4 +54,7 @@ export const useQuestionAnswerStore = create<
     set({ exceptions: exceptions.filter((e) => e !== exception) });
   },
   questionReset: () => set(initialState),
+}),{
+  name: "question-answer-storage", // localStorage에 저장될 key
+  storage: createJSONStorage(() => localStorage),
 }));
