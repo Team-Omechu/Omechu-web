@@ -17,7 +17,7 @@ export default function MenuSection({ menuList }: MenuSectionProps) {
   const router = useRouter();
 
   return (
-    <section className="w-full bg-white border-2 rounded-lg border-secondary-normal">
+    <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
       {menuList.map((item, index) => {
         const isLast = index === menuList.length - 1;
         return (

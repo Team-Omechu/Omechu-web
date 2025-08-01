@@ -1,7 +1,7 @@
 export default function LoadingIndicator() {
   return (
-    <div className="flex items-center justify-center h-20 mt-4">
-      <div className="w-6 h-6 border-4 border-gray-300 rounded-full animate-spin border-t-gray-800" />
+    <div className="mt-4 flex h-20 items-center justify-center">
+      <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
       <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
     </div>
   );
@@ -19,7 +19,7 @@ export function LoadingSpinner({
     <main className={`flex w-full items-center justify-center ${className}`}>
       <div className="flex flex-col items-center gap-4">
         <svg
-          className="w-8 h-8 animate-spin text-primary-normal"
+          className="h-8 w-8 animate-spin text-primary-normal"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
