@@ -237,7 +237,9 @@ export default function Favorites() {
                     : [], // 단일 이미지라도 배열로
                   rating: item.restaurant.rating ?? 0,
                   menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
-                  tags: item.tags,
+                  tags: Array.isArray(item.restaurant.tags)
+                    ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)
+                    : [],
                   address: {
                     road: item.restaurant.address ?? "",
                     jibun: "",
