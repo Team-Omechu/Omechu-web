@@ -130,16 +130,6 @@ export default function Favorites() {
     [isLoading, visibleCount, filteredItems.length],
   );
 
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1800); // 1.8초 후 로딩 해제
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
-
   const scrollToTop = () => {
     if (mainRef.current) {
       mainRef.current.scrollTo({ top: 0, behavior: "smooth" });
@@ -166,17 +156,6 @@ export default function Favorites() {
       }
     };
   }, [observerCallback]);
-
-  // 로딩 상태를 일정 시간 후 자동 해제 (로딩 애니메이션 표시 목적)
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1800); // 1.8초 후 로딩 해제
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
 
   return (
     <>
