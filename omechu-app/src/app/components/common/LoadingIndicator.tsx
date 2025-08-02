@@ -8,9 +8,15 @@ export default function LoadingIndicator() {
 }
 
 //* 이삭 추가
-export function LoadingSpinner({ label = "로딩 중..." }: { label?: string }) {
+export function LoadingSpinner({
+  label = "로딩 중...",
+  className = "",
+}: {
+  label?: string;
+  className?: string;
+}) {
   return (
-    <main className="flex min-h-[calc(100dvh-3rem)] w-full items-center justify-center">
+    <main className={`flex w-full items-center justify-center ${className}`}>
       <div className="flex flex-col items-center gap-4">
         <svg
           className="h-8 w-8 animate-spin text-primary-normal"

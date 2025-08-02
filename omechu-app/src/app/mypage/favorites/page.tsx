@@ -8,17 +8,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { distance } from "fastest-levenshtein";
-
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
-import { Restaurants } from "@/constant/restaurant/restaurantList"; // 음식 데이터
 import { likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/auth/store";
-import { useProfile } from "../hooks/useProfile";
+import FloatingActionButton from "@/components/common/FloatingActionButton";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
 
 export default function Favorites() {
   const router = useRouter();
+  const mainRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
@@ -26,12 +25,7 @@ export default function Favorites() {
 
   const user = useAuthStore((state) => state.user);
 
-  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
-  const { profile, loading, error: profileError } = useProfile(userId);
-  const [minLoading, setMinLoading] = useState(true);
-
-  console.log("[디버깅] user:", user);
-  console.log("[디버깅] userId:", userId);
+  const userId = user?.id ? Number(user.id) : undefined;
 
   // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
   useEffect(() => {
@@ -57,19 +51,6 @@ export default function Favorites() {
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
-  //* dummy용
-  // const filteredItems = search.trim()
-  // ? Restaurants.filter((item) => item.menu.includes(search.trim()))
-  // : Restaurants;
-
-  // const sortedItems = [...filteredItems].sort((a, b) => {
-  //   const aIdx = Restaurants.indexOf(a);
-  //   const bIdx = Restaurants.indexOf(b);
-  //   return sortOrder === "latest" ? bIdx - aIdx : aIdx - bIdx;
-  // });
-
-  // const visibleItems = sortedItems.slice(0, visibleCount);
-
   //* 실제 api 데이터 연동
   const filteredItems = search.trim()
     ? hearts.filter((item) =>
@@ -78,14 +59,18 @@ export default function Favorites() {
     : hearts;
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    // 예: 최신순/오래된순을 id 또는 createdAt, placeId 등으로 구현
-    // 여기선 placeId 사용(서버 데이터 기준)
     return sortOrder === "latest"
-      ? b.placeId - a.placeId
-      : a.placeId - b.placeId;
+      ? b.restaurant.id - a.restaurant.id
+      : a.restaurant.id - b.restaurant.id;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
+
+  useEffect(() => {
+    if (visibleCount > hearts.length) {
+      setVisibleCount(hearts.length);
+    }
+  }, [hearts.length]);
 
   const handleLike = async (restaurantId: number) => {
     try {
@@ -93,7 +78,9 @@ export default function Favorites() {
       // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
       setHearts((prev) =>
         prev.map((item) =>
-          item.placeId === restaurantId ? { ...item, isLiked: true } : item,
+          item.restaurant.id === restaurantId
+            ? { ...item, isLiked: true }
+            : item,
         ),
       );
     } catch (e) {
@@ -104,14 +91,23 @@ export default function Favorites() {
   const handleUnlike = async (restaurantId: number) => {
     try {
       await unlikePlace(userId, restaurantId);
-      // setHearts에서 해당 아이템만 isLiked: false 처리 (또는 리스트에서 제거)
-      setHearts((prev) => prev.filter((item) => item.placeId !== restaurantId));
+      setHearts((prevHearts) => {
+        const newHearts = prevHearts.filter(
+          (item) => item.restaurant.id !== restaurantId,
+        );
+        setVisibleCount((prevVisible) =>
+          Math.min(prevVisible, newHearts.length),
+        );
+        return newHearts;
+      });
     } catch (e) {
       alert("찜 해제 실패");
     }
   };
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const ITEMS_PER_FETCH = 5;
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -123,12 +119,33 @@ export default function Favorites() {
         visibleCount < filteredItems.length
       ) {
         setIsLoading(true); // 로딩 상태 시작
-        setVisibleCount((prev) => Math.min(prev + 18, filteredItems.length)); // 다음 항목 18개 추가
+        setVisibleCount((prev) =>
+          Math.min(prev + ITEMS_PER_FETCH, filteredItems.length),
+        ); // 다음 항목 5개 추가
       }
     },
     [isLoading, visibleCount, filteredItems.length],
   );
 
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1800); // 1.8초 후 로딩 해제
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
+  const scrollToTop = () => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // IntersectionObserver 등록 및 해제
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
       root: null, // 뷰포트를 기준으로 관찰
@@ -147,6 +164,7 @@ export default function Favorites() {
     };
   }, [observerCallback]);
 
+  // 로딩 상태를 일정 시간 후 자동 해제 (로딩 애니메이션 표시 목적)
   useEffect(() => {
     if (isLoading) {
       const timer = setTimeout(() => {
@@ -172,7 +190,10 @@ export default function Favorites() {
           </Link>
         }
       />
-      <main className="min-h-sceen w-full px-6 pb-8 pt-3">
+      <main
+        ref={mainRef}
+        className="relative h-[calc(100dvh-3rem)] w-full overflow-y-auto px-6 pb-8 pt-3 scrollbar-hide"
+      >
         {/* 필터 - 최신 순 | 오래된 순 */}
         <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normalActive">
           <button
@@ -193,7 +214,6 @@ export default function Favorites() {
             오래된 순
           </button>
         </section>
-
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
@@ -208,42 +228,43 @@ export default function Favorites() {
             ))} */}
             {visibleItems.map((item) => (
               <FoodCard
-                key={item.placeId}
+                key={item.restaurant.id}
                 item={{
-                  id: item.placeId,
-                  name: item.placeName,
-                  images: [item.placeImageUrl],
-                  rating: item.placePoint,
-                  menu: item.signatureMenu?.[0] ?? "",
-                  tags: item.summary ?? [],
+                  id: Number(item.restaurant.id),
+                  name: item.restaurant.name,
+                  images: item.restaurant.rest_image
+                    ? [item.restaurant.rest_image]
+                    : [], // 단일 이미지라도 배열로
+                  rating: item.restaurant.rating ?? 0,
+                  menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
+                  tags: Array.isArray(item.restaurant.tags)
+                    ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)
+                    : [],
                   address: {
-                    road: item.address,
+                    road: item.restaurant.address ?? "",
                     jibun: "",
                     postalCode: "",
                   },
-                  reviews: 0, // 없으면 0, 필요 시 API 수정
-                  isLiked: true, // 찜 목록 -> true
-                  category: "", // 카테고리 없으면 빈 값
-                  timetable: [], // 없음 -> 빈 배열
+                  reviews: item.restaurant.reviewCount ?? 0,
+                  isLiked: true,
+                  category: "",
+                  timetable: [],
                 }}
                 onClick={() =>
-                  router.push(`/restaurant/restaurant-detail/${item.placeId}`)
+                  router.push(
+                    `/restaurant/restaurant-detail/${item.restaurant.id}`,
+                  )
                 }
-                onLike={() => handleLike(item.placeId)}
-                onUnlike={() => handleUnlike(item.placeId)}
+                onLike={() => handleLike(Number(item.restaurant.id))}
+                onUnlike={() => handleUnlike(Number(item.restaurant.id))}
               />
             ))}
           </div>
         </section>
 
         <div ref={loaderRef} className="h-[1px]" />
-
-        {isLoading && (
-          <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-gray-800" />
-            <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator />}
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
     </>
   );
