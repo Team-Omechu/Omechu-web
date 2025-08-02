@@ -18,7 +18,7 @@ const LoginPromptModal2 = ({ onConfirm, onClose }: LoginPromptModal2Props) => {
 
       <div className="mb-4">
         <Image
-          src="/logo.png"
+          src="/logo/logo.png"
           alt="Omechu Logo"
           width={106}
           height={70}

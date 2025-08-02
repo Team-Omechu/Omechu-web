@@ -3,26 +3,21 @@
 
 import { useProfileQuery } from "./hooks/useProfileQuery";
 import AuthErrorModal from "./AuthErrorModalSection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
+import { useRouter } from "next/navigation";
 
 export default function ProfileSection() {
   const { data: profile, isLoading, error } = useProfileQuery();
   const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
 
-  const handleAuthError = () => setModalOpen(true);
-
-  if (error) {
-    return (
-      <div className="text-sm text-red-500">
-        {typeof error === "string"
-          ? error
-          : error && typeof error === "object" && "message" in error
-            ? (error as any).message
-            : "알 수 없는 오류"}
-      </div>
-    );
-  }
+  useEffect(() => {
+    // 프로필 데이터가 없고, 로딩도 아니면
+    if (!isLoading && !profile) {
+      setModalOpen(true);
+    }
+  }, [profile, isLoading]);
 
   if (isLoading) {
     return (
@@ -49,7 +44,10 @@ export default function ProfileSection() {
       </div>
       {modalOpen && (
         <AuthErrorModal
-          onConfirm={() => setModalOpen(false)}
+          onConfirm={() => {
+            setModalOpen(false);
+            router.push("/sign-in");
+          }}
           onClose={() => setModalOpen(false)}
         />
       )}
