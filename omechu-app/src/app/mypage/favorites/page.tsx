@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -181,9 +183,9 @@ export default function Favorites() {
         title={"찜 목록"}
         leftChild={
           <Link href={"/mypage"}>
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              // alt={"changeProfileImage"}
               width={22}
               height={30}
             />
@@ -217,15 +219,6 @@ export default function Favorites() {
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            {/* {visibleItems.map((item, idx) => (
-              <FoodCard
-                key={idx}
-                item={item}
-                onClick={() =>
-                  router.push(`/restaurant/restaurant-detail/${item.id}`)
-                }
-              />
-            ))} */}
             {visibleItems.map((item) => (
               <FoodCard
                 key={item.restaurant.id}

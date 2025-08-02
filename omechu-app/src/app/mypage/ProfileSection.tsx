@@ -1,4 +1,3 @@
-// ProfileSection.tsx
 "use client";
 
 import { useProfileQuery } from "./hooks/useProfileQuery";
