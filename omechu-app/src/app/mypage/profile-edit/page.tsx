@@ -254,18 +254,6 @@ export default function ProfileEdit() {
           </ModalWrapper>
         )}
       </main>
-      {/* {error && (
-        <ModalWrapper>
-          <AlertModal
-            title="로그인이 필요합니다"
-            description="로그인 후 이용해 주세요."
-            confirmText="확인"
-            onConfirm={() => {
-              router.push("/sign-in");
-            }}
-          />
-        </ModalWrapper>
-      )} */}
     </>
   );
 }
