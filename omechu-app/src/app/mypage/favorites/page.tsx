@@ -16,6 +16,7 @@ import { likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/auth/store";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
+import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 
 export default function Favorites() {
   const router = useRouter();
