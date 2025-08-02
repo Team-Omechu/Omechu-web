@@ -28,11 +28,6 @@ export default async function MyPage() {
       <main className="flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 overflow-y-auto px-10 py-16 scrollbar-hide">
         <ProfileSection />
         <MenuSection menuList={menuList} />
-        {/* <AuthErrorModal
-          open={!!error}
-          onConfirm={handleConfirm}
-          onClose={handleClose}
-        /> */}
       </main>
       <BottomNav />
     </>
