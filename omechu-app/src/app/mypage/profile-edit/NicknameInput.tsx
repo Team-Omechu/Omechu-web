@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 interface Props {
   nickname: string;
@@ -7,7 +8,7 @@ interface Props {
 
 export default function NicknameInput({ nickname, onChange, isValid }: Props) {
   return (
-    <div className="flex flex-col items-start gap-1 mb-8">
+    <div className="mb-8 flex flex-col items-start gap-1">
       <div className="ml-1 text-lg font-medium text-grey-darker">닉네임</div>
       <div className="relative">
         <input

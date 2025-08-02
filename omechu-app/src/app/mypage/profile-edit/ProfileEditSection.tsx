@@ -82,8 +82,8 @@ export default function ProfileEditSection() {
   }
 
   return (
-    <main className="relative flex flex-col items-center px-4 py-32 overflow-y-auto scrollbar-hide">
-      <section className="flex items-center justify-center gap-10 mt-24 h-44">
+    <main className="relative flex flex-col items-center overflow-y-auto px-4 py-32 scrollbar-hide">
+      <section className="mt-24 flex h-44 items-center justify-center gap-10">
         <ProfileImageUploader
           imagePreview={imagePreview}
           profileImageUrl={profileImageUrl}
