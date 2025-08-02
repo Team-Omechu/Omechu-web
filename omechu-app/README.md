@@ -301,3 +301,4 @@ onboarding/
 - page.tsx — 루트 홈 페이지
 - loading.tsx / error.tsx — Suspense 로딩·에러 UI
 - globals.css / page.module.css — Tailwind 외 전역·모듈 CSS
+```
