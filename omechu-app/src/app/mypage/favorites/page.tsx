@@ -23,6 +23,8 @@ export default function Favorites() {
   const mainRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
   const [visibleCount, setVisibleCount] = useState(8);
   const [hearts, setHearts] = useState<any[]>([]);
 
@@ -30,23 +32,21 @@ export default function Favorites() {
 
   const userId = user?.id ? Number(user.id) : undefined;
 
-  // 예시: 서버 응답이 비정상일 때 기본값을 빈 배열로!
   useEffect(() => {
     if (!userId) {
       setHearts([]);
+      setIsInitialLoading(false);
       return;
     }
-
     const fetchData = async () => {
+      setIsInitialLoading(true);
       try {
         const data = await fetchHeartList(userId);
-        if (!Array.isArray(data)) {
-          setHearts([]);
-          return;
-        }
-        setHearts(data);
+        setHearts(Array.isArray(data) ? data : []);
       } catch (e) {
         setHearts([]);
+      } finally {
+        setIsInitialLoading(false);
       }
     };
     fetchData();
@@ -198,41 +198,49 @@ export default function Favorites() {
         </section>
         {/* 찜 목록 */}
         <section className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4">
-            {visibleItems.map((item) => (
-              <FoodCard
-                key={item.restaurant.id}
-                item={{
-                  id: Number(item.restaurant.id),
-                  name: item.restaurant.name,
-                  images: item.restaurant.rest_image
-                    ? [item.restaurant.rest_image]
-                    : [], // 단일 이미지라도 배열로
-                  rating: item.restaurant.rating ?? 0,
-                  menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
-                  tags: Array.isArray(item.restaurant.tags)
-                    ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)
-                    : [],
-                  address: {
-                    road: item.restaurant.address ?? "",
-                    jibun: "",
-                    postalCode: "",
-                  },
-                  reviews: item.restaurant.reviewCount ?? 0,
-                  isLiked: true,
-                  category: "",
-                  timetable: [],
-                }}
-                onClick={() =>
-                  router.push(
-                    `/restaurant/restaurant-detail/${item.restaurant.id}`,
-                  )
-                }
-                onLike={() => handleLike(Number(item.restaurant.id))}
-                onUnlike={() => handleUnlike(Number(item.restaurant.id))}
-              />
-            ))}
-          </div>
+          {isInitialLoading ? (
+            <div className="flex flex-col gap-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <SkeletonFoodCard key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {visibleItems.map((item) => (
+                <FoodCard
+                  key={item.restaurant.id}
+                  item={{
+                    id: Number(item.restaurant.id),
+                    name: item.restaurant.name,
+                    images: item.restaurant.rest_image
+                      ? [item.restaurant.rest_image]
+                      : [], // 단일 이미지라도 배열로
+                    rating: item.restaurant.rating ?? 0,
+                    menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
+                    tags: Array.isArray(item.restaurant.tags)
+                      ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)
+                      : [],
+                    address: {
+                      road: item.restaurant.address ?? "",
+                      jibun: "",
+                      postalCode: "",
+                    },
+                    reviews: item.restaurant.reviewCount ?? 0,
+                    isLiked: true,
+                    category: "",
+                    timetable: [],
+                  }}
+                  onClick={() =>
+                    router.push(
+                      `/restaurant/restaurant-detail/${item.restaurant.id}`,
+                    )
+                  }
+                  onLike={() => handleLike(Number(item.restaurant.id))}
+                  onUnlike={() => handleUnlike(Number(item.restaurant.id))}
+                />
+              ))}
+            </div>
+          )}
         </section>
 
         <div ref={loaderRef} className="h-[1px]" />
