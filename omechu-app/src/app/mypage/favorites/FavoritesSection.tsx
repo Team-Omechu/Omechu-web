@@ -139,9 +139,13 @@ export default function Favorites() {
   // 데이터 증가 후 isLoading을 해제
   useEffect(() => {
     if (isLoading) {
-      setIsLoading(false);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1800); // 1.8초 후 로딩 해제
+
+      return () => clearTimeout(timer);
     }
-  }, [visibleCount, isLoading]);
+  }, [isLoading]);
 
   const scrollToTop = () => {
     if (mainRef.current) {
