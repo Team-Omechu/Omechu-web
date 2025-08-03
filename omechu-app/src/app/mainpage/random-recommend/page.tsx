@@ -10,42 +10,36 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/components/mainpage/MealStyleButton";
 import MealTypeGroup from "@/components/mainpage/MealTypeButton";
-import { menus } from "@/constant/mainpage/resultData";
 
 import RandomRecommendModal from "../components/RandomRecommendModal";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { handleLocation } from "../utils/handleLocation";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import { set } from "date-fns";
 
 export default function RandomRecommendPage() {
   const router = useRouter();
-
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [randomMenu, setRandomMenu] = useState<(typeof menus)[0] | null>(null);
+    const exceptions = useQuestionAnswerStore((state) => state.exceptions);
+    const addException = useQuestionAnswerStore((state) => state.addException);
+    const removeException = useQuestionAnswerStore(
+      (state) => state.removeException,
+    );
+    const { questionReset } = useQuestionAnswerStore();
+    const{setX,setY} = useLocationAnswerStore();
 
-  const getRandomMenu = () => menus[Math.floor(Math.random() * menus.length)];
 
   const handleModal = () => {
-    setRandomMenu(getRandomMenu());
     setShowModal(true);
+    handleLocation(setX,setY);
   };
 
-  const handleRetry = () => {
-    setRandomMenu(getRandomMenu());
-  };
-
-  const handleConfirm = () => {
-    if (randomMenu) {
-      router.push(`/mainpage/result/${randomMenu.id}`);
+    const toggleSelect = (item: string) => {
+    if (exceptions.includes(item)) {
+      removeException(item);
+    } else if (exceptions.length < 3) {
+      addException(item);
     }
-  };
-
-  const toggleSelect = (item: string) => {
-    setSelectedItems((prev) =>
-      prev.includes(item)
-        ? prev.filter((v) => v !== item)
-        : prev.length < 3
-          ? [...prev, item]
-          : prev,
-    );
   };
   return (
     <div className="flex h-screen w-full flex-col items-center">
@@ -54,6 +48,7 @@ export default function RandomRecommendPage() {
           <button
             onClick={() => {
               router.push("/mainpage");
+              questionReset();
             }}
           >
             <Image
@@ -69,16 +64,16 @@ export default function RandomRecommendPage() {
 
       <div className="mt-5 flex flex-col gap-2">
         {/* 1: type */}
-        <MealTypeGroup selectedItems={selectedItems} onToggle={toggleSelect} />
+        <MealTypeGroup selectedItems={exceptions} onToggle={toggleSelect} />
 
         {/* 2: ingredient */}
         <MealIngredientGroup
-          selectedItems={selectedItems}
+          selectedItems={exceptions}
           onToggle={toggleSelect}
         />
 
         {/* 3: style */}
-        <MealStyleGroup selectedItems={selectedItems} onToggle={toggleSelect} />
+        <MealStyleGroup selectedItems={exceptions} onToggle={toggleSelect} />
       </div>
       <button className="relative mt-10" onClick={handleModal}>
         <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">
@@ -94,12 +89,8 @@ export default function RandomRecommendPage() {
       {showModal && (
         <ModalWrapper>
           <RandomRecommendModal
-            title={randomMenu?.title}
-            iconSrc="/image/image_empty.svg"
             confirmText="선택하기"
             retryText="다시 추천"
-            onConfirm={handleConfirm}
-            onRetry={handleRetry}
             onClose={() => setShowModal(false)}
           />
         </ModalWrapper>

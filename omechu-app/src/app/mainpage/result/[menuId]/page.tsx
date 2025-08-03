@@ -59,6 +59,8 @@ export default function MenuDetailPage() {
     return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
   }
 
+  console.log(menu);
+
   return (
     <div className="flex w-full flex-col">
       <Header
@@ -112,7 +114,7 @@ export default function MenuDetailPage() {
             key={item.id}
             item={item}
             onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id}`)
+              router.push(`/restaurant/restaurant-detail/${item.id2}`)
             }
           />
         ))}
