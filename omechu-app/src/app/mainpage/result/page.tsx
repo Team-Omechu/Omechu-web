@@ -17,12 +17,11 @@ import MainLoading from "@/components/mainpage/MainLoading";
 import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { useAuthStore } from "@/auth/store";
-import LoginPromptModal from "../example_testpage/components/LoginPromptModal";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 
 export default function ResultPage() {
   const router = useRouter();
-  const { data, isLoading, error, refetch } = useGetRecommendMenu();
+  const { data, isLoading, error, refetch, isRefetching } = useGetRecommendMenu();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
@@ -88,15 +87,7 @@ export default function ResultPage() {
     questionReset();
   };
 
-  const handleNextClick = () => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-    handleNext();
-  };
-
-  if (isLoading) {
+  if (isLoading || isRefetching) {
     return <MainLoading />;
   }
 
@@ -149,7 +140,7 @@ export default function ResultPage() {
         </button>
         <button
           className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
-          onClick={handleNextClick}
+          onClick={handleNext}
         >
           선택하기
         </button>

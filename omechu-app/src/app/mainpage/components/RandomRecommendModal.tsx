@@ -16,7 +16,7 @@ export default function RandomRecommendModal({
   onClose,
 }: ModalProps) {
   const router = useRouter();
-  const {data, isLoading, error, refetch} = useGetRecommendMenu();
+  const {data, isLoading, error, refetch, isRefetching} = useGetRecommendMenu();
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
   const randomMenu = menus[Math.floor(Math.random() * menus.length)];
   const {setKeyword} = useLocationAnswerStore();
@@ -32,7 +32,9 @@ export default function RandomRecommendModal({
     refetch();
   }; 
 
-  if(isLoading){
+  console.log(randomMenu)
+
+  if(isLoading || isRefetching){
     return <MainLoading />;
   }
   return (
