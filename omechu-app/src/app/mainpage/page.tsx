@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoginPromptModal from "./example_testpage/components/LoginPromptModal";
-import { se } from "date-fns/locale";
 
 export default function MainPage() {
   const router = useRouter();
@@ -49,11 +48,12 @@ export default function MainPage() {
       {showModal && (
         <ModalWrapper>
           <LoginPromptModal
-            onClose={() => {
+            onSkip={() => {
               setShowModal(false);
               router.push("mainpage/question-answer/1");
             }}
             onConfirm={() => router.push("/sign-in")}
+            onClose={() => setShowModal(false)}
           />
         </ModalWrapper>
       )}
