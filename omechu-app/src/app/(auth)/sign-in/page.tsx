@@ -28,7 +28,10 @@ export default function SignInPage() {
           </span>
         </div>
 
-        <button className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]">
+        <a
+          href="https://omechu-api.log8.kr/auth/kakao"
+          className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]"
+        >
           <Image
             src="/kakao/kakao.svg"
             alt="카카오 아이콘"
@@ -36,7 +39,7 @@ export default function SignInPage() {
             height={24}
           />
           카카오 로그인
-        </button>
+        </a>
       </div>
     </main>
   );

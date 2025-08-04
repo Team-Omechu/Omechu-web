@@ -1,8 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-
+import { usePathname, useRouter } from "next/navigation";
 import BottomNav from "./components/common/Bottom";
+import { useEffect } from "react";
+import { useUserQuery } from "@/lib/hooks/useAuth";
+import { useAuthStore } from "@/auth/store";
 
 export default function ClientLayout({
   children,
@@ -10,6 +12,41 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: sessionUser, isSuccess, isError } = useUserQuery();
+  const { isLoggedIn, login: loginAction } = useAuthStore();
+
+  useEffect(() => {
+    if (isLoggedIn || isError) {
+      return;
+    }
+
+    if (isSuccess && sessionUser) {
+      loginAction({
+        accessToken: "DUMMY_TOKEN_FOR_KAKAO_LOGIN",
+        user: sessionUser,
+      });
+
+      console.log("Session restored via Kakao login:", sessionUser);
+
+      if (!sessionUser.nickname) {
+        router.push("/onboarding/1");
+      } else if (
+        pathname.startsWith("/sign-in") ||
+        pathname.startsWith("/sign-up")
+      ) {
+        router.push("/mainpage");
+      }
+    }
+  }, [
+    isSuccess,
+    isError,
+    sessionUser,
+    isLoggedIn,
+    loginAction,
+    router,
+    pathname,
+  ]);
 
   const noBottomNavRoutes = [
     // 메인페이지
