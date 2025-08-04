@@ -113,6 +113,7 @@ export default function MenuDetailPage() {
           <FoodCardEx
             key={item.id}
             item={item}
+            menu={menu.menu}
             onClick={() =>
               router.push(`/restaurant/restaurant-detail/${item.id2}`)
             }
