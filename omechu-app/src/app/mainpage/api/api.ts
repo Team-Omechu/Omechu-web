@@ -1,3 +1,4 @@
+import { ProfileResponse } from "@/constant/mainpage/profile";
 import {
   restaurantList,
   RestaurantRequest,
@@ -29,3 +30,8 @@ export const getRestaurants = async (
 
   return data;
 };
+
+export const getProfile = async (): Promise<ProfileResponse> =>{
+  const {data} = await apiClient.get<ProfileResponse>("/profile");
+  return data;
+}

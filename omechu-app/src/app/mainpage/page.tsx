@@ -6,14 +6,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoginPromptModal from "./example_testpage/components/LoginPromptModal";
+import { useProfileQuery } from "./hooks/useGetProfile";
 
 export default function MainPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
+  const {data } = useProfileQuery();
+
+  console.log(data)
 
   const handleStartClick = () => {
-    if (!isLoggedIn) {
+    if (data?.error === null) {
       router.push("mainpage/question-answer/1");
     } else {
       setShowModal(true);

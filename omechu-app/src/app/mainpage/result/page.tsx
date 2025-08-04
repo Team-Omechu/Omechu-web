@@ -18,6 +18,8 @@ import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { useAuthStore } from "@/auth/store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
+import { useQueryClient } from "@tanstack/react-query";
+import { ProfileResponse } from "@/constant/mainpage/profile";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -37,9 +39,13 @@ export default function ResultPage() {
 
   const { setKeyword } = useLocationAnswerStore();
   const { tagData } = useTagStore();
+  const queryClient = useQueryClient();
+  const cached = queryClient.getQueryData<ProfileResponse>(["profile"]);
+
+  const userId = cached?.success?.id;
 
   const handleExcludeCLick = (menuName: string) => {
-    if (!isLoggedIn) {
+    if (userId == null) {
       setShowLoginModal(true);
       return;
     }
