@@ -15,7 +15,6 @@ import RandomRecommendModal from "../components/RandomRecommendModal";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { handleLocation } from "../utils/handleLocation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
-import { set } from "date-fns";
 
 export default function RandomRecommendPage() {
   const router = useRouter();
@@ -25,7 +24,6 @@ export default function RandomRecommendPage() {
     const removeException = useQuestionAnswerStore(
       (state) => state.removeException,
     );
-    const { questionReset } = useQuestionAnswerStore();
     const{setX,setY} = useLocationAnswerStore();
 
 
@@ -48,7 +46,6 @@ export default function RandomRecommendPage() {
           <button
             onClick={() => {
               router.push("/mainpage");
-              questionReset();
             }}
           >
             <Image

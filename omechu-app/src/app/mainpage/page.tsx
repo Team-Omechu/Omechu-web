@@ -7,22 +7,36 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoginPromptModal from "./example_testpage/components/LoginPromptModal";
 import { useProfileQuery } from "./hooks/useGetProfile";
+import { useTagStore } from "@/lib/stores/tagData.store";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 export default function MainPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
   const {data } = useProfileQuery();
-
-  console.log(data)
+  const { tagDataReset } = useTagStore();
+  const { locationReset } = useLocationAnswerStore();
+  const { questionReset } = useQuestionAnswerStore();
 
   const handleStartClick = () => {
     if (data?.error === null) {
+      tagDataReset();
+      locationReset();
+      questionReset();
       router.push("mainpage/question-answer/1");
     } else {
       setShowModal(true);
     }
   };
+
+  const handleRandomClick = () => {
+      tagDataReset();
+      locationReset();
+      questionReset();
+      router.push("mainpage/random-recommend");
+  }
 
   return (
     <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden scrollbar-hide">
@@ -44,7 +58,7 @@ export default function MainPage() {
         </button>
         <button
           className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] border border-[#00A3FF] bg-[#FFF] p-[1.25rem] text-[#00A3FF] hover:bg-secondary-lightHover hover:text-white active:bg-secondary-lightActive active:text-white"
-          onClick={() => router.push("mainpage/random-recommend")}
+          onClick={handleRandomClick}
         >
           <span className="pt-1">랜덤추천</span>
         </button>

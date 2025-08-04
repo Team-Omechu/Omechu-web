@@ -15,7 +15,6 @@ import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useTagStore } from "@/lib/stores/tagData.store";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { useAuthStore } from "@/auth/store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 import { useQueryClient } from "@tanstack/react-query";
@@ -28,9 +27,6 @@ export default function ResultPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const { tagDataReset } = useTagStore();
-  const { locationReset } = useLocationAnswerStore();
-  const { questionReset } = useQuestionAnswerStore();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
@@ -86,13 +82,6 @@ export default function ResultPage() {
     setExcludeMenu(null);
   };
 
-  const handleClick = () => {
-    router.push("/mainpage");
-    tagDataReset();
-    locationReset();
-    questionReset();
-  };
-
   if (isLoading || isRefetching) {
     return <MainLoading />;
   }
@@ -101,7 +90,7 @@ export default function ResultPage() {
     <div className="flex h-screen flex-col">
       <Header
         leftChild={
-          <button onClick={handleClick} className="flex items-center font-bold">
+          <button onClick={()=> router.push("/mainpage")} className="flex items-center font-bold">
             <Image
               src="/arrow/left-header-arrow.svg"
               alt="back"
