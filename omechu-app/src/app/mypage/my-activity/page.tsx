@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { fetchMyPlaces, MyReviewItem } from "../api/myActivity";
 import { fetchMyReviews } from "../api/myActivity";
-import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -102,13 +101,13 @@ export default function MyActivity() {
         setMyRestaurants(
           (data.success?.data ?? []).map((item: any) => ({
             id: Number(item.id),
-            name: "",
+            name: item.name || "-",
             repre_menu:
               Array.isArray(item.repre_menu) && item.repre_menu.length > 0
                 ? (item.repre_menu[0]?.menu ?? "")
                 : "",
             rating: item.rating ?? 0,
-            images: item.rest_image ? [item.rest_image] : [],
+            images: item.rest_image ? [{ link: item.rest_image }] : [],
             address: item.address ?? "",
             reviews: item._count?.review ?? 0,
           })),
@@ -253,11 +252,11 @@ export default function MyActivity() {
 
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
+        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-auto scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
-            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
+            <section className="flex justify-end w-full gap-1 pt-1 pb-3 pr-5 text-sm text-grey-normalActive">
               {/* 필터 - 추천 순 | 최신 순 */}
               <SortSelector
                 options={[
@@ -332,8 +331,8 @@ export default function MyActivity() {
               !error &&
               (myRestaurants.length > 0 ? (
                 myRestaurants.map((item) => (
-                  <div key={item.id} className="flex w-full flex-col">
-                    <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
+                  <div key={item.id} className="flex flex-col w-full">
+                    <span className="w-full pr-2 text-xs text-end text-grey-normalActive">
                       편집
                     </span>
                     <FoodCard
