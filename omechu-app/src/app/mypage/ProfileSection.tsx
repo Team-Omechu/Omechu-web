@@ -38,7 +38,7 @@ export default function ProfileSection() {
         width={75}
         height={75}
       />
-      <div className="text-lg font-md">{profile?.nickname || "-"}</div>
+      <div className="font-md text-lg">{profile?.nickname || "-"}</div>
       <div className="text-xs font-normal text-grey-normalActive">
         {profile?.email || ""}
       </div>
