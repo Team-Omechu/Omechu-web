@@ -21,6 +21,7 @@ import { Restaurants } from "@/constant/restaurant/restaurantList";
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { MOCK_FOOD_REVIEW_CARD_DATA } from "./MOCK_FOOD_REVIEW_CARD_DATA";
 import { useProfile } from "../hooks/useProfile";
+import { likePlace, unlikePlace } from "../api/favorites";
 
 type MyRestaurant = {
   id: number;
@@ -336,6 +337,22 @@ export default function MyActivity() {
                       편집
                     </span>
                     <FoodCard
+                      onLike={async () => {
+                        await likePlace(profile?.id, item.id);
+                        setMyRestaurants((prev) =>
+                          prev.map((r) =>
+                            r.id === item.id ? { ...r, isLiked: true } : r,
+                          ),
+                        );
+                      }}
+                      onUnlike={async () => {
+                        await unlikePlace(profile?.id, item.id);
+                        setMyRestaurants((prev) =>
+                          prev.map((r) =>
+                            r.id === item.id ? { ...r, isLiked: false } : r,
+                          ),
+                        );
+                      }}
                       item={{
                         id: item.id,
                         name: item.name,
