@@ -23,6 +23,7 @@ import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { useProfile } from "../hooks/useProfile";
 import { likePlace, unlikePlace } from "../api/favorites";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
+import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 
 type MyRestaurant = {
   id: number;
@@ -277,7 +278,11 @@ export default function MyActivity() {
 
             {/* 로딩, 에러, 리스트 분기 */}
             {loading ? (
-              <LoadingIndicator />
+              <div className="flex flex-col gap-6">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <SkeletonRestaurantReviewCard key={i} />
+                ))}
+              </div>
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
