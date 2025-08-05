@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function ProfileSection() {
   const { data: profile, isLoading, error } = useProfileQuery();
+
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
@@ -37,7 +38,7 @@ export default function ProfileSection() {
         width={75}
         height={75}
       />
-      <div className="font-md text-lg">{profile?.nickname || "-"}</div>
+      <div className="text-lg font-md">{profile?.nickname || "-"}</div>
       <div className="text-xs font-normal text-grey-normalActive">
         {profile?.email || ""}
       </div>
