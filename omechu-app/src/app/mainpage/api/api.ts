@@ -1,3 +1,4 @@
+import { mukburimResponse } from "@/constant/mainpage/mukburim";
 import { ProfileResponse } from "@/constant/mainpage/profile";
 import {
   restaurantList,
@@ -33,5 +34,12 @@ export const getRestaurants = async (
 
 export const getProfile = async (): Promise<ProfileResponse> =>{
   const {data} = await apiClient.get<ProfileResponse>("/profile");
+  return data;
+}
+
+export const postMukburim = async (menuName: string): Promise<mukburimResponse> => {
+  const {data} = await apiClient.post<mukburimResponse>("/mukburim", {
+    menu_name: menuName,
+  });
   return data;
 }

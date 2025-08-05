@@ -4,6 +4,7 @@ import { MenuItem } from "@/constant/mainpage/resultData";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useRouter } from "next/navigation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import usePostMukburim from "../hooks/usePostMukburim";
 
 type ModalProps = {
   confirmText: string;
@@ -17,6 +18,7 @@ export default function RandomRecommendModal({
 }: ModalProps) {
   const router = useRouter();
   const {data, isLoading, error, refetch, isRefetching} = useGetRecommendMenu();
+  const {mutate} = usePostMukburim();
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
   const randomMenu = menus[Math.floor(Math.random() * menus.length)];
   const {setKeyword} = useLocationAnswerStore();
@@ -26,13 +28,13 @@ export default function RandomRecommendModal({
       router.push(`/mainpage/result/${randomMenu.menu}`);
     }
     setKeyword(randomMenu.menu);
+    mutate(randomMenu.menu);
   };
 
   const handleRetry = () => {
     refetch();
   }; 
 
-  console.log(randomMenu)
 
   if(isLoading || isRefetching){
     return <MainLoading />;

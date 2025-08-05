@@ -19,10 +19,12 @@ import { useAuthStore } from "@/auth/store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProfileResponse } from "@/constant/mainpage/profile";
+import usePostMukburim from "../hooks/usePostMukburim";
 
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } = useGetRecommendMenu();
+  const {mutate,} = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
@@ -57,6 +59,7 @@ export default function ResultPage() {
     if (openMenu != null) {
       router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
       setKeyword(openMenu);
+      mutate(openMenu);
     } else {
       alert("메뉴를 선택해 주세요");
     }
@@ -81,6 +84,7 @@ export default function ResultPage() {
     setShowModal(false);
     setExcludeMenu(null);
   };
+
 
   if (isLoading || isRefetching) {
     return <MainLoading />;
