@@ -258,12 +258,12 @@ export default function MyActivity() {
 
       <main
         ref={mainRef}
-        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-auto scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
             {/* 후기탭: 필터 */}
-            <section className="flex justify-end w-full gap-1 pt-1 pb-3 pr-5 text-sm text-grey-normalActive">
+            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
               <SortSelector
                 options={[
                   { label: "추천 순", value: "recommended" },
@@ -286,7 +286,7 @@ export default function MyActivity() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex flex-col items-center w-full gap-7">
+              <section className="flex w-full flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
                   <div className="text-grey-normalActive">
                     작성한 후기가 없습니다.
@@ -349,7 +349,7 @@ export default function MyActivity() {
           <>
             {/* 등록한 맛집 탭 */}
             {loading ? (
-              <div className="flex flex-col w-full gap-4">
+              <div className="flex w-full flex-col gap-4">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <SkeletonFoodCard key={i} />
                 ))}
@@ -357,14 +357,14 @@ export default function MyActivity() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex flex-col w-full gap-5 px-2">
+              <section className="flex w-full flex-col gap-5 px-2">
                 {myRestaurants.length === 0 ? (
                   <div>등록한 맛집이 없습니다.</div>
                 ) : (
                   <>
                     {myRestaurants.slice(0, visibleCount).map((item) => (
-                      <div key={item.id} className="flex flex-col w-full">
-                        <span className="w-full pr-2 text-xs text-end text-grey-normalActive">
+                      <div key={item.id} className="flex w-full flex-col">
+                        <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
                           편집
                         </span>
                         <FoodCard
