@@ -7,6 +7,7 @@ import { fetchMyReviews } from "../api/myActivity";
 
 import Image from "next/image";
 import Link from "next/link";
+import AuthErrorModal from "../AuthErrorModalSection";
 import { useRouter } from "next/navigation";
 
 import FloatingActionButton from "@/components/common/FloatingActionButton";
@@ -44,6 +45,14 @@ export default function MyActivity() {
     loading: profileLoading,
     error: profileError,
   } = useProfile();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    // 401 인증 오류로 추정되는 케이스 (필요에 따라 조건 조정)
+    if (!profileLoading && profileError) {
+      setModalOpen(true);
+    }
+  }, [profileLoading, profileError]);
 
   const [minLoading, setMinLoading] = useState(true);
 
@@ -389,6 +398,18 @@ export default function MyActivity() {
         {isLoading && <LoadingIndicator />}
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
+      {modalOpen && (
+        <AuthErrorModal
+          onConfirm={() => {
+            setModalOpen(false);
+            router.push("/sign-in");
+          }}
+          onClose={() => {
+            setModalOpen(false);
+            router.push("/sign-in");
+          }}
+        />
+      )}
     </>
   );
 }
