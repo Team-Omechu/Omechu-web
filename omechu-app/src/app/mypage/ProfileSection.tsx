@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function ProfileSection() {
   const { data: profile, isLoading, error } = useProfileQuery();
+
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
