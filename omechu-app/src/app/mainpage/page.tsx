@@ -14,7 +14,7 @@ export default function MainPage() {
   const [showModal, setShowModal] = useState(false);
 
   const handleStartClick = () => {
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
       router.push("mainpage/question-answer/1");
     } else {
       setShowModal(true);
@@ -29,7 +29,7 @@ export default function MainPage() {
         alt="메인 페이지"
         width={375}
         height={800}
-        className="h-full w-full object-cover"
+        className="object-cover"
       />
       {/* 버튼들 */}
       <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 transform gap-4">
