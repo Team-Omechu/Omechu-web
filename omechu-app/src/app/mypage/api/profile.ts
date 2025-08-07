@@ -1,4 +1,4 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "./axios";
 import { ProfileType } from "../types/profileType";
 
 export class ProfileApiError extends Error {
@@ -13,7 +13,7 @@ export class ProfileApiError extends Error {
 
 export async function fetchProfile(): Promise<ProfileType> {
   try {
-    const res = await apiClient.get("/profile");
+    const res = await axiosInstance.get("/profile");
     const data = res.data.success;
     return {
       id: Number(data.id),

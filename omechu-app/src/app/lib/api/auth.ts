@@ -4,7 +4,7 @@ import type {
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
-import axiosInstance from "@/lib/api/axios";
+import axiosInstance from "@/mypage/api/axios";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
@@ -86,8 +86,8 @@ export const login = async (
   const response = await axiosInstance.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
-    // 소셜 로그인과 폼 로그인 모두 JWT 기반으로 동작하므로 쿠키 의존 제거
-    undefined,
+    // * 이삭 추가 부분
+    { withCredentials: true },
   );
 
   const apiResponse = response.data;
@@ -237,6 +237,7 @@ export const changePassword = async (data: {
   const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/change-passwd",
     data,
+    { withCredentials: true },
   );
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
@@ -251,7 +252,7 @@ export const changePassword = async (data: {
 // * 추가 - 이삭
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   const response =
-    await axiosInstance.get<ApiResponse<LoginSuccessData>>(`/profile`);
+    await axiosInstance.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
   if (response.data.resultType === "FAIL" || !response.data.success) {
     throw new Error(response.data.error?.reason || "유저 조회 실패");
   }
