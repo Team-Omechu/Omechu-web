@@ -101,7 +101,7 @@ export default function ResultPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex flex-col h-screen">
       <Header
         leftChild={
           <button onClick={handleClick} className="flex items-center font-bold">
@@ -117,7 +117,7 @@ export default function ResultPage() {
         className="h-[60px] border-b-0"
       />
 
-      <div className="mt-3 flex flex-col px-4">
+      <div className="flex flex-col px-4 mt-3">
         {!isLoading &&
           !error &&
           filteredMenus.map((menu) => (
@@ -156,7 +156,7 @@ export default function ResultPage() {
       </div>
 
       <div className="px-4 py-2">
-        <div className="rounded-md border bg-white p-3 text-sm">
+        <div className="p-3 text-sm bg-white border rounded-md">
           {tagData.map(({ tag, description }) => (
             <TagCard key={tag} tag={tag} description={description} />
           ))}

@@ -59,6 +59,10 @@ export default function SignInForm() {
   useEffect(() => {
     if (isSuccess && loginResult) {
       // user 정보와 accessToken을 분리해서 저장
+      setUser({
+        ...loginResult,
+        accessToken: loginResult.accessToken,
+      });
       loginAction({
         accessToken: loginResult.accessToken,
         user: loginResult,
