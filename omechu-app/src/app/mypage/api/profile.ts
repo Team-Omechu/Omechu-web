@@ -32,6 +32,7 @@ export async function fetchProfile(): Promise<ProfileType> {
     const code = error?.response?.status ?? 500;
     // 디버깅 콘솔.로그
     console.error("[getProfile] 에러:", error?.response ?? error);
+    console.error("[getProfile] 에러:", error?.response ?? error);
     throw new ProfileApiError(code, error.response?.data);
   }
 }
