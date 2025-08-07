@@ -17,7 +17,7 @@ export async function fetchGooglePlaceInfo(placeId: string) {
         latitude: location.lat,
         longitude: location.lng,
       },
-  };
+    };
   } catch (error) {
     console.error("Google Place Details API 오류:", error);
     return null;
