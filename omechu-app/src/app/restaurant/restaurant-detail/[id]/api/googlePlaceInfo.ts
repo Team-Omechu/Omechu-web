@@ -15,13 +15,33 @@ export interface PlaceInfo {
       time: string;
     }[];
   };
+  } catch (error) {
+    console.error("Google Place Details API 오류:", error);
+    return null;
+  }
 }
 
-export const fetchGooglePlaceInfo = async (
-  placeId: string,
-): Promise<PlaceInfo> => {
-  const res = await axios.get<PlaceInfo>(
-    `${process.env.NEXT_PUBLIC_API_URL}/place-detail/${placeId}`,
-  );
-  return res.data;
-};
+export async function fetchLatLngFromAddress(address: string) {
+  try {
+    const res = await fetch(
+      `/api/geocode?address=${encodeURIComponent(address)}`,
+    );
+    const data = await res.json();
+
+    const location = data.results?.[0]?.geometry?.location;
+
+    if (!location) {
+      throw new Error("Geocoding 실패");
+    }
+
+    return {
+      location: {
+        latitude: location.lat,
+        longitude: location.lng,
+      },
+    };
+  } catch (error) {
+    console.error("주소 → 좌표 변환 실패:", error);
+    return null;
+  }
+}
