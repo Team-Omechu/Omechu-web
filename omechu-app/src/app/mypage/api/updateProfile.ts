@@ -1,8 +1,8 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "./axios";
 
 // presigned URL 받기
 export const getPresignedUrl = async (fileName: string, fileType: string) => {
-  const { data } = await apiClient.post("/image/upload?directory=profile", {
+  const { data } = await axiosInstance.post("/image/upload?directory=profile", {
     fileName,
     fileType,
   });
@@ -26,5 +26,5 @@ export const updateProfile = async (body: {
   nickname: string;
   profileImageUrl?: string;
 }) => {
-  return apiClient.patch(`/profile`, body);
+  return axiosInstance.patch(`/profile`, body);
 };

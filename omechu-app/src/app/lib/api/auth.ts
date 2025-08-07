@@ -252,7 +252,7 @@ export const changePassword = async (data: {
 // * 추가 - 이삭
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   const response =
-    await axiosInstance.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
+    await axiosInstance.get<ApiResponse<LoginSuccessData>>(`/profile`);
   if (response.data.resultType === "FAIL" || !response.data.success) {
     throw new Error(response.data.error?.reason || "유저 조회 실패");
   }
