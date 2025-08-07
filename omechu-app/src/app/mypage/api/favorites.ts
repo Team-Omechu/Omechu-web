@@ -1,8 +1,8 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "../api/axios";
 
 // * 찜 목록 조회 API
 export const fetchHeartList = async (userId: number | undefined) => {
-  const { data } = await apiClient.get(`/hearts/${userId}`);
+  const { data } = await axiosInstance.get(`/hearts/${userId}`);
   // 서버 응답 형태: { resultType, error, success: { data: [...] } }
   if (data?.success?.data && Array.isArray(data.success.data)) {
     return data.success.data;
@@ -15,7 +15,7 @@ export const likePlace = async (
   userId: number | undefined,
   restaurantId: number | undefined,
 ) => {
-  return apiClient.post("/heart", {
+  return axiosInstance.post("/heart", {
     userId,
     restaurantId,
   });
@@ -26,7 +26,7 @@ export const unlikePlace = async (
   userId: number | undefined,
   restaurantId: number | undefined,
 ) => {
-  return apiClient.delete("/heart", {
+  return axiosInstance.delete("/heart", {
     data: { userId, restaurantId },
   });
 };
