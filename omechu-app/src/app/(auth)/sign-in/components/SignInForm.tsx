@@ -58,14 +58,16 @@ export default function SignInForm() {
   //* 이삭 수정 부분
   useEffect(() => {
     if (isSuccess && loginResult) {
-      // setUser(loginResult); >>> 로그인 후 상태 저장
-      setUser(loginResult);
+      // user 정보와 accessToken을 분리해서 저장
+      setUser({
+        ...loginResult,
+        accessToken: loginResult.accessToken,
+      });
       loginAction({
-        accessToken: "",
+        accessToken: loginResult.accessToken,
         user: loginResult,
         password: "",
       });
-      // console.log("저장된 user", loginResult);
 
       if (!loginResult.nickname) {
         router.push("/onboarding/1");
@@ -85,7 +87,7 @@ export default function SignInForm() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col gap-4"
+        className="flex flex-col w-full gap-4"
       >
         <Controller
           name="email"
@@ -132,7 +134,7 @@ export default function SignInForm() {
           </SquareButton>
         </div>
 
-        <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+        <div className="flex items-center justify-between mt-2 text-sm text-gray-600">
           <Checkbox
             id="remember-me"
             label="로그인 상태 유지"
