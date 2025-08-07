@@ -4,7 +4,7 @@ import type {
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
-import apiClient from "./client";
+import axiosInstance from "@/mypage/api/axios";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
@@ -28,6 +28,7 @@ export interface LoginSuccessData {
   nickname: string;
   created_at: string;
   updated_at: string;
+  accessToken: string; // 이삭 추가
 }
 
 // 회원가입 성공 시 success 객체 구조
@@ -82,7 +83,7 @@ export interface OnboardingData {
 export const login = async (
   data: LoginFormValues,
 ): Promise<LoginSuccessData> => {
-  const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
+  const response = await axiosInstance.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
     // * 이삭 추가 부분
@@ -108,7 +109,7 @@ export const signup = async (
   data: SignupFormValues,
 ): Promise<SignupSuccessData> => {
   const { email, password } = data;
-  const response = await apiClient.post<ApiResponse<SignupSuccessData>>(
+  const response = await axiosInstance.post<ApiResponse<SignupSuccessData>>(
     "/auth/signup",
     { email, password },
   );
@@ -126,10 +127,9 @@ export const completeOnboarding = async (
   data: OnboardingData,
 ): Promise<OnboardingSuccessData> => {
   // TODO: 백엔드 응답 타입 정의
-  const response = await apiClient.patch<ApiResponse<OnboardingSuccessData>>(
-    "/auth/complete",
-    data,
-  );
+  const response = await axiosInstance.patch<
+    ApiResponse<OnboardingSuccessData>
+  >("/auth/complete", data);
 
   const apiResponse = response.data;
 
@@ -149,7 +149,7 @@ export const completeOnboarding = async (
 export const sendVerificationCode = async (
   email: string,
 ): Promise<SendVerificationCodeSuccessData> => {
-  const response = await apiClient.post<
+  const response = await axiosInstance.post<
     ApiResponse<SendVerificationCodeSuccessData>
   >("/auth/send", { email });
 
@@ -170,7 +170,7 @@ export const verifyVerificationCode = async (data: {
   email: string;
   code: string;
 }): Promise<VerifyVerificationCodeSuccessData> => {
-  const response = await apiClient.post<
+  const response = await axiosInstance.post<
     ApiResponse<VerifyVerificationCodeSuccessData>
   >("/auth/verify", data);
   const apiResponse = response.data;
@@ -186,7 +186,7 @@ export const verifyVerificationCode = async (data: {
 export const requestPasswordReset = async (
   data: FindPasswordFormValues,
 ): Promise<RequestPasswordResetSuccessData> => {
-  const response = await apiClient.post<
+  const response = await axiosInstance.post<
     ApiResponse<RequestPasswordResetSuccessData>
   >("/auth/reset-request", data);
   const apiResponse = response.data;
@@ -204,7 +204,7 @@ export const requestPasswordReset = async (
 export const resetPassword = async (
   data: ResetPasswordFormValues,
 ): Promise<string> => {
-  const response = await apiClient.patch<ApiResponse<string>>(
+  const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/passwd",
     { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
   );
@@ -221,7 +221,7 @@ export const resetPassword = async (
  * 로그아웃 API
  */
 export const logout = async (): Promise<void> => {
-  await apiClient.post("/auth/logout");
+  await axiosInstance.post("/auth/logout");
 };
 
 /**
@@ -234,7 +234,7 @@ export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
 }): Promise<string> => {
-  const response = await apiClient.patch<ApiResponse<string>>(
+  const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/change-passwd",
     data,
     { withCredentials: true },
@@ -252,7 +252,7 @@ export const changePassword = async (data: {
 // * 추가 - 이삭
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   const response =
-    await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
+    await axiosInstance.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
   if (response.data.resultType === "FAIL" || !response.data.success) {
     throw new Error(response.data.error?.reason || "유저 조회 실패");
   }
