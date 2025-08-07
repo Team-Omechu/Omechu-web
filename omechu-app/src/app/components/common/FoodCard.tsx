@@ -9,7 +9,12 @@ type FoodCardProps = {
   onUnlike?: () => void;
 };
 
-export default function FoodCard({ item, onClick }: FoodCardProps) {
+export default function FoodCard({
+  item,
+  onClick,
+  onLike,
+  onUnlike,
+}: FoodCardProps) {
   const [isLiked, setIsLiked] = useState(item.like ?? false);
 
   const handleLikeClick = (e: React.MouseEvent) => {
@@ -18,11 +23,11 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
     if (isLiked) {
       // 찜 해제
       setIsLiked(false);
-      onUnlike && onUnlike();
+      isLiked && onUnlike && onUnlike();
     } else {
       // 찜 등록
       setIsLiked(true);
-      onLike && onLike();
+      isLiked && onLike && onLike();
     }
   };
 
@@ -42,27 +47,19 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
           </span>
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.address}</p>
-        {item.menu && (
-          <p className="mb-1 text-sm font-bold text-blue-600">{item.menu}</p>
+        {item.menus && (
+          <p className="mb-1 text-sm font-bold text-blue-600">
+            {item.menus[0]}
+          </p>
         )}
 
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
-          {item.tags?.map((tag, i) => (
+          {item.rest_tag?.map((tag, i) => (
             <span
               key={i}
               className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
             >
-              {tag}
-            </span>
-          ))}
-
-          {/* rest_tag 기반 태그 출력용 (서버 응답용) */}
-          {item.rest_tag?.map((tagObj, i) => (
-            <span
-              key={i}
-              className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
-            >
-              {tagObj.tag}
+              {tag.tag}
             </span>
           ))}
         </div>
@@ -79,7 +76,7 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
         </button>
         <Image
           src={item.images?.[0] || "/logo/logo.png"}
-          alt={item.menu ?? "음식"}
+          alt={item.menus[0] ?? "음식"}
           width={70}
           height={70}
           className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
