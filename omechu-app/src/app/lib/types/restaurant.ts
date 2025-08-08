@@ -1,12 +1,31 @@
 export type Restaurant = {
   id: number;
   name: string;
+  address: string;
   rating: number;
-  reviews?: number; // 개수
-  like?: boolean; // 맛집 좋아요 상태
-  menu?: string; // 대표 메뉴
-  tags?: string[]; // 문자열 배열
-  rest_tag?: { tag: string; count: number }[];
-  address: string; // 도로명 주소 전체 문자열
-  images?: string[]; // 썸네일 이미지
+  images: string[];
+  rest_tag: { tag: string; count: number }[];
+  menus: string[];
+  like: boolean;
+  reviews: number;
 };
+
+export interface OpeningHour {
+  days_of_the_week: string; // ex) "월", "화"
+  time: string; // ex) "11:00-19:00"
+}
+
+export interface ReviewImage {
+  id: number;
+  link: string;
+}
+
+export interface RestaurantDetail {
+  id: number;
+  name: string;
+  address: string;
+  rating: number;
+  currentOpeningHours: OpeningHour[];
+  googlePlaceId: string | null;
+  reviewImages: ReviewImage[];
+}
