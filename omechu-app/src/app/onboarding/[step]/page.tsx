@@ -126,30 +126,30 @@ export default function OnboardingPage() {
         allergy: allergyForApi,
       };
 
-      completeOnboarding(dataToSubmit, {
-        onSuccess: (completedProfile) => {
-          if (authUser) {
-            const userForLogin: LoginSuccessData = {
-              ...completedProfile,
-              gender:
-                completedProfile.gender === "남자"
-                  ? "남성"
-                  : completedProfile.gender === "여자"
-                    ? "여성"
-                    : "남성", // 기본값 혹은 예외처리
-            };
-            login({
-              accessToken: "",
-              user: userForLogin,
-              password: password,
-            });
-          }
-          setIsModalOpen(true);
-        },
-        onError: (error) => {
-          triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
-        },
-      });
+      // completeOnboarding(dataToSubmit, {
+      //   onSuccess: (completedProfile) => {
+      //     if (authUser) {
+      //       const userForLogin: LoginSuccessData = {
+      //         ...completedProfile,
+      //         gender:
+      //           completedProfile.gender === "남자"
+      //             ? "남성"
+      //             : completedProfile.gender === "여자"
+      //               ? "여성"
+      //               : "남성", // 기본값 혹은 예외처리
+      //       };
+      //       login({
+      //         accessToken: "",
+      //         user: userForLogin,
+      //         password: password,
+      //       });
+      //     }
+      //     setIsModalOpen(true);
+      //   },
+      //   onError: (error) => {
+      //     triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
+      //   },
+      // });
     }
   };
 
@@ -202,7 +202,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="relative flex h-screen w-auto flex-col">
+    <div className="relative flex flex-col w-auto h-screen">
       <header>
         <ProgressBar
           currentStep={step}
@@ -214,7 +214,7 @@ export default function OnboardingPage() {
         />
       </header>
 
-      <main className="flex w-full flex-1 flex-col items-center px-4 py-6">
+      <main className="flex flex-col items-center flex-1 w-full px-4 py-6">
         {renderStepComponent()}
       </main>
 
