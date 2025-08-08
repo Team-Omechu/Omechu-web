@@ -77,6 +77,29 @@ export interface OnboardingData {
   allergy: string[];
 }
 
+// 내부 유틸: store/localStorage 어디에 저장됐든 accessToken 읽기
+const readAccessToken = (): string | null => {
+  // 1) 우선 zustand store에서 시도
+  const fromStore = useAuthStore.getState().user?.accessToken;
+  if (fromStore) return fromStore;
+
+  // 2) 과거/현재 키들을 순회하며 로컬스토리지에서 탐색
+  try {
+    const candidateKeys = ["auth-store", "auth-storage", "auth-user-storage"];
+    for (const key of candidateKeys) {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+      const parsed = JSON.parse(raw);
+      const token =
+        parsed?.state?.user?.accessToken ?? parsed?.state?.accessToken ?? null;
+      if (token) return token;
+    }
+  } catch (e) {
+    console.warn("[AUTH] readAccessToken localStorage parse error:", e);
+  }
+  return null;
+};
+
 /**
  * 로그인 API
  * @param data email, password
@@ -222,21 +245,30 @@ export const resetPassword = async (
  * 로그아웃 API
  */
 export const logout = async (): Promise<void> => {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = readAccessToken();
 
   if (!accessToken) {
-    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
+    throw new Error(
+      "accessToken을 찾을 수 없습니다. (store/localStorage 확인 필요)",
+    );
   }
+
+  console.log(
+    "[DEBUG] logout() -> call /auth/logout, token(head 12):",
+    accessToken.slice(0, 12),
+  );
 
   await axiosInstance.post(
     "/auth/logout",
     {},
     {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { Authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
     },
   );
+
+  // 서버 호출 성공 시에만 store 정리
+  useAuthStore.getState().logout?.();
 };
 
 /**
@@ -265,9 +297,8 @@ export const changePassword = async (data: {
 
 // 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
-  // zustand store에서 accessToken을 직접 꺼냄
-  const accessToken = useAuthStore.getState().user?.accessToken;
-
+  // zustand store와 localStorage를 모두 고려하여 accessToken 읽기
+  const accessToken = readAccessToken();
   if (!accessToken) {
     throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
   }
