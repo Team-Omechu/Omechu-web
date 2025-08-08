@@ -2,7 +2,7 @@ export type ProfileResponse = {
   resultType: string;
   error: null;
   success: {
-    id: string;
+    id: number;
     email: string;
     nickname: string;
     body_type: string;
@@ -15,3 +15,8 @@ export type ProfileResponse = {
     updated_at: string;      // ISO 날짜 문자열
   };
 };
+
+export type heartResponse = {
+  userId: number;
+  restaurantId: number;
+}

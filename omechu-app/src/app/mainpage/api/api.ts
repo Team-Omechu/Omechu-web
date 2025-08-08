@@ -1,5 +1,5 @@
 import { mukburimResponse } from "@/constant/mainpage/mukburim";
-import { ProfileResponse } from "@/constant/mainpage/profile";
+import {ProfileResponse } from "@/constant/mainpage/profile";
 import {
   restaurantList,
   RestaurantRequest,
@@ -42,4 +42,28 @@ export const postMukburim = async (menuName: string): Promise<mukburimResponse> 
     menu_name: menuName,
   });
   return data;
+}
+
+export const addHeart = async(userId?:number , restaurantId?:number) => {
+  const response = await apiClient.post("/heart",{
+    userId: userId,
+    restaurantId: restaurantId,
+  });
+  if (response.status !== 200) {
+    throw new Error("Failed to add heart");
+  }
+  return response;
+}
+
+export const deleteHeart = async(userId?:number ,restaurantId?:number) => {
+  const response = await apiClient.delete("/heart",{
+    data:{
+      userId:userId,
+      restaurantId:restaurantId,
+    }
+  });
+  if (response.status !== 200) {
+    throw new Error("Failed to delete heart");
+  }
+  return response;
 }

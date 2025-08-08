@@ -13,8 +13,6 @@ import type {
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
-import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 
@@ -102,6 +100,7 @@ export default function MenuDetailPage() {
             key={item.id}
             item={item}
             menu={menu.menu}
+            restaurantId={item.id2}
             onClick={() =>
               router.push(`/restaurant/restaurant-detail/${item.id2}`)
             }

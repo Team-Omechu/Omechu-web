@@ -24,7 +24,7 @@ import usePostMukburim from "../hooks/usePostMukburim";
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } = useGetRecommendMenu();
-  const {mutate,} = usePostMukburim();
+  const {mutate} = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);

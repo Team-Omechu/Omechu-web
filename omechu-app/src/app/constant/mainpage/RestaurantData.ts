@@ -14,7 +14,7 @@ export interface Restaurant {
   formattedAddress: string;
   rating: number;
   userRatingCount: number;
-  id2: string;
+  id2: number;
 }
 
 export type restaurantList = Restaurant[];
