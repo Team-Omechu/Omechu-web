@@ -20,8 +20,8 @@ import LocationModal from "./LocationFilterModal/LocationModal";
 import RestaurantAddModal from "./RestaurantAddModal/RestaurantAddModal";
 
 import { suggestionList } from "@/constant/suggestionList";
-import { useRestaurantFetcher } from "@/lib/hooks/useRestaurantFetcher";
 import type { Restaurant } from "@/lib/types/restaurant";
+import { useRestaurantList } from "../api/restaurantList";
 
 export default function Restaurant() {
   const keywordList = [
@@ -63,22 +63,25 @@ export default function Restaurant() {
   const [showAddModal, setShowAddModal] = useState(false);
 
   const { restaurantList, fetchRestaurants, isLoading, hasMore, reset } =
-    useRestaurantFetcher(selectedFilters, selectedKeywords);
+    useRestaurantList();
 
   // 검색어를 이용한 필터링
   const filteredItems = search.trim()
     ? restaurantList.filter(
         (item) =>
           item.name?.includes(search.trim()) ||
-          item.menu?.includes(search.trim()),
+          item.menus?.includes(search.trim()),
       )
     : restaurantList;
 
-  const similarItems: Restaurant[] = restaurantList.filter(
-    (item) =>
-      distance(item.name, search.trim()) <= 2 &&
-      !item.name.includes(search.trim()),
-  );
+  const similarItems: Restaurant[] = restaurantList.filter((item) => {
+    const name = item?.name ?? "";
+    const keyword = search?.trim() ?? "";
+
+    if (!name || !keyword) return false;
+
+    return distance(name, keyword) <= 2 && !name.includes(keyword);
+  });
 
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
