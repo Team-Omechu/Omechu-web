@@ -10,7 +10,9 @@ import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
 import ReportModal from "@/restaurant/restaurant-detail/[id]/components/ReportModal";
+import { getRestaurantDetail } from "@/restaurant/api/restaurantList";
 import { getReviews } from "@/restaurant/restaurant-detail/[id]/api/review";
+import { MostTag } from "@/lib/types/review";
 import { ReviewProps } from "@/lib/types/review";
 
 import RestaurantDetailHeader from "./components/RestaurantDetailHeader";
@@ -18,12 +20,14 @@ import RestaurantImageCarousel from "./components/RestaurantImageCarousel";
 import RestaurantInfoBox from "./components/RestaurantInfoBox";
 import ReviewList from "./components/ReviewList/ReviewList";
 import ReviewWriter from "./components/ReviewWriter/ReviewWriter";
+import type { RestaurantDetail } from "@/lib/types/restaurant";
 
 export default function RestaurantDetail() {
   const router = useRouter(); // 페이지 이동을 위한 라우터 훅
   const params = useParams();
-  const id = Number((params as { id: string }).id);
+  const id = Number(params?.id);
 
+  const [restaurants, setRestaurants] = useState<RestaurantDetail | null>(null);
   const [showAddress, setShowAddress] = useState(false);
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -31,8 +35,11 @@ export default function RestaurantDetail() {
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
   const [reviews, setReviews] = useState<ReviewProps[]>([]);
+  const [reviewCount, setReviewCount] = useState(0);
+  const [avgRating, setAvgRating] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [mostTags, setMostTags] = useState<MostTag[]>([]);
 
   const sortOptions: SortOption[] = [
     { label: "추천 순", value: "recommend" },
@@ -42,31 +49,38 @@ export default function RestaurantDetail() {
   const [sortMode, setSortMode] = useState<SortValue>("recommend");
 
   useEffect(() => {
-    async function fetchReviews() {
+    if (!id || Number.isNaN(id)) return;
+
+    async function fetchData() {
       try {
-        const data = await getReviews(id);
+        // 1. 맛집 상세 정보는 무조건 먼저 가져옴
+        const restaurantData = await getRestaurantDetail(id);
+        setRestaurants(restaurantData);
 
-        const parsed = data.map((item) => ({
-          id: item.id,
-          rating: item.rating,
-          content: item.text,
-          tags: item.tags,
-          createdDate: new Date(item.createdAt).toLocaleDateString("ko-KR"),
-          profileImgUrl: item.user.profileImgUrl,
-          userId: item.user.nickname,
-          votes: 0,
-          isVoted: false,
-        }));
+        // 2. 리뷰 정보는 실패 가능성이 있으므로 별도 처리
+        try {
+          const reviewResult = await getReviews(id);
+          setReviews(reviewResult.reviews);
+          setReviewCount(reviewResult.allReviewCount);
+          setAvgRating(reviewResult.avgRating);
+          setMostTags(reviewResult.mostTags ?? []);
+        } catch (reviewErr) {
+          console.warn("리뷰 로딩 실패:", reviewErr);
 
-        setReviews(parsed);
+          // FAIL(C004: 리뷰 없음)일 수 있으므로 기본값 설정
+          setReviews([]);
+          setReviewCount(0);
+          setAvgRating(0);
+          setMostTags([]);
+        }
       } catch (e) {
-        console.error("리뷰 로딩 실패:", e);
+        console.error("맛집 정보 로딩 실패:", e);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchReviews();
+    fetchData();
   }, [id]);
 
   const handleLikeClick = (e: React.MouseEvent) => {
@@ -74,9 +88,16 @@ export default function RestaurantDetail() {
     setIsLiked((prev) => !prev);
   };
 
-  const restaurant = Restaurants.find((item) => item.id === id);
+  if (loading) {
+    return (
+      <main className="flex h-screen items-center justify-center">
+        <p className="text-gray-400">로딩 중...</p>
+      </main>
+    );
+  }
 
-  if (!restaurant) {
+  console.log("맛집 상세 정보:", restaurants);
+  if (!restaurants) {
     return (
       <main className="flex h-screen items-center justify-center">
         <p className="text-gray-500">존재하지 않는 맛집입니다.</p>
@@ -122,17 +143,28 @@ export default function RestaurantDetail() {
         {/* 맛집 제목, 사진 */}
         <section className="flex w-full flex-col items-center justify-between gap-2">
           <RestaurantDetailHeader
-            name={restaurant.name}
+            name={restaurants.name}
             isLiked={isLiked}
             onLikeClick={handleLikeClick}
           />
-          <RestaurantImageCarousel images={restaurant.images} />
+          <RestaurantImageCarousel
+            images={restaurants.reviewImages.map((img) => img.link)}
+          />
         </section>
         {/* 맛집 정보 */}
         <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-[#393939] bg-white p-4">
           {/* 정보 - 메뉴 종류 */}
           <RestaurantInfoBox
-            restaurant={restaurant}
+            restaurant={{
+              id: restaurants.id,
+              googlePlaceId: restaurants.googlePlaceId,
+              timetable: restaurants.currentOpeningHours,
+              address: {
+                road: restaurants.address, // 주소 전체를 도로명처럼 처리
+                jibun: restaurants.address, // 현재 API에는 따로 없음
+                postalCode: "", // 우편번호도 없음
+              },
+            }}
             showAddress={showAddress}
             onToggleAddress={() => setShowAddress((prev) => !prev)}
           />
@@ -140,26 +172,26 @@ export default function RestaurantDetail() {
 
         {/* 후기 작성 칸 */}
         <ReviewWriter
-          restaurantId={restaurant.id}
-          restaurantName={restaurant.name}
+          restaurantId={restaurants.id}
+          restaurantName={restaurants.name}
         />
 
         {/* 후기 */}
         <section className="flex w-full flex-col gap-2">
           <div className="flex justify-between px-2 py-2">
             {/* 후기 평점 - 후기 개수 */}
-            {restaurant && (
+            {restaurants && (
               <div className="flex w-full justify-between px-2 py-2">
                 <div className="flex gap-2 text-xl font-medium text-[#1F9BDA]">
-                  <span>{restaurant.rating.toFixed(1)}</span>
+                  <span>{avgRating.toFixed(1)}</span>
                   <span>
-                    {"★".repeat(Math.round(restaurant.rating)) +
-                      "☆".repeat(5 - Math.round(restaurant.rating))}
+                    {"★".repeat(Math.round(restaurants.rating)) +
+                      "☆".repeat(5 - Math.round(restaurants.rating))}
                   </span>
                 </div>
                 <div className="flex gap-1 text-base font-medium text-[#828282]">
                   <span>후기</span>
-                  <span className="font-bold">{restaurant.reviews}</span>
+                  <span className="font-bold">{reviewCount}</span>
                   <span>건</span>
                 </div>
               </div>
@@ -168,12 +200,12 @@ export default function RestaurantDetail() {
 
           {/* 후기 관련 태그 */}
           <div className="flex flex-wrap justify-center gap-1 px-4">
-            {(reviewTags[restaurant.id] || []).map((item, index) => (
+            {mostTags.map((item, index) => (
               <div
                 key={index}
                 className="mt-1 w-fit rounded-3xl border-[1px] border-[#393939] bg-white px-4 py-1 text-sm font-normal duration-300 hover:scale-105"
               >
-                {item}
+                {item.tag}
               </div>
             ))}
           </div>
