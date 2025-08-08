@@ -5,7 +5,9 @@ import type { LoginSuccessData } from "@/lib/api/auth";
 
 interface AuthStore {
   user: LoginSuccessData | null;
+  accessToken: string;
   setUser: (user: LoginSuccessData) => void;
+  setAccessToken: (token: string) => void;
   logout: () => void;
 }
 
@@ -13,9 +15,15 @@ export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
       user: null,
-      setUser: (user) => set({ user }),
-      logout: () => set({ user: null }),
+      accessToken: "", // 토큰을 위한 상태 추가
+      setUser: (user) =>
+        set({
+          user,
+          accessToken: user.accessToken || "", // 로그인 응답에 토큰이 있을 경우 저장
+        }),
+      setAccessToken: (token) => set({ accessToken: token }),
+      logout: () => set({ user: null, accessToken: "" }),
     }),
-    { name: "auth-store" }, // localStorage key
+    { name: "auth-store" },
   ),
 );
