@@ -1,4 +1,4 @@
-import axiosInstance from "./axios";
+import axiosInstance from "@/lib/api/axios";
 
 // presigned URL 받기
 export const getPresignedUrl = async (fileName: string, fileType: string) => {

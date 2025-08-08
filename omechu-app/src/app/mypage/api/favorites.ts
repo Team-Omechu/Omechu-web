@@ -1,4 +1,4 @@
-import axiosInstance from "../api/axios";
+import axiosInstance from "@/lib/api/axios";
 
 // * 찜 목록 조회 API
 export const fetchHeartList = async (userId: number | undefined) => {
