@@ -14,11 +14,11 @@ import { moodOptions } from "@/constant/mainpage/Option";
 const MoodStep = () => {
   const router = useRouter();
   const { mood, setMood } = useQuestionAnswerStore();
-  const { addTag } = useTagStore();
+  const { setMoodTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
     setMood(value);
-    addTag(label, description);
+    setMoodTag(label, description);
     router.push("/mainpage/question-answer/4");
   };
 
