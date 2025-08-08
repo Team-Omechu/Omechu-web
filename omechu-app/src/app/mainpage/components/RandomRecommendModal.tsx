@@ -17,11 +17,12 @@ export default function RandomRecommendModal({
   onClose,
 }: ModalProps) {
   const router = useRouter();
-  const {data, isLoading, error, refetch, isRefetching} = useGetRecommendMenu();
-  const {mutate} = usePostMukburim();
+  const { data, isLoading, error, refetch, isRefetching } =
+    useGetRecommendMenu();
+  const { mutate } = usePostMukburim();
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
   const randomMenu = menus[Math.floor(Math.random() * menus.length)];
-  const {setKeyword} = useLocationAnswerStore();
+  const { setKeyword } = useLocationAnswerStore();
 
   const handleConfirm = () => {
     if (randomMenu) {
@@ -33,10 +34,9 @@ export default function RandomRecommendModal({
 
   const handleRetry = () => {
     refetch();
-  }; 
+  };
 
-
-  if(isLoading || isRefetching){
+  if (isLoading || isRefetching) {
     return <MainLoading />;
   }
   return (
@@ -50,7 +50,12 @@ export default function RandomRecommendModal({
         </span>
       </div>
       <div className="flex flex-col items-center">
-        <Image src={randomMenu.image_link || "/image/image_empty.svg"} alt="랜덤추천메뉴" width={120} height={120} />
+        <Image
+          src={randomMenu.image_link || "/image/image_empty.svg"}
+          alt="랜덤추천메뉴"
+          width={120}
+          height={120}
+        />
       </div>
       <div className="flex justify-center gap-4">
         <button

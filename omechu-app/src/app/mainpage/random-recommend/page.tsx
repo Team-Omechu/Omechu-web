@@ -19,20 +19,19 @@ import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 export default function RandomRecommendPage() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-    const exceptions = useQuestionAnswerStore((state) => state.exceptions);
-    const addException = useQuestionAnswerStore((state) => state.addException);
-    const removeException = useQuestionAnswerStore(
-      (state) => state.removeException,
-    );
-    const{setX,setY} = useLocationAnswerStore();
-
+  const exceptions = useQuestionAnswerStore((state) => state.exceptions);
+  const addException = useQuestionAnswerStore((state) => state.addException);
+  const removeException = useQuestionAnswerStore(
+    (state) => state.removeException,
+  );
+  const { setX, setY } = useLocationAnswerStore();
 
   const handleModal = () => {
     setShowModal(true);
-    handleLocation(setX,setY);
+    handleLocation(setX, setY);
   };
 
-    const toggleSelect = (item: string) => {
+  const toggleSelect = (item: string) => {
     if (exceptions.includes(item)) {
       removeException(item);
     } else if (exceptions.length < 3) {

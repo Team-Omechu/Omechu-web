@@ -15,7 +15,7 @@ export default function MainPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
-  const {data } = useProfileQuery();
+  const { data } = useProfileQuery();
   const { tagDataReset } = useTagStore();
   const { locationReset } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
@@ -32,11 +32,11 @@ export default function MainPage() {
   };
 
   const handleRandomClick = () => {
-      tagDataReset();
-      locationReset();
-      questionReset();
-      router.push("mainpage/random-recommend");
-  }
+    tagDataReset();
+    locationReset();
+    questionReset();
+    router.push("mainpage/random-recommend");
+  };
 
   return (
     <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden scrollbar-hide">

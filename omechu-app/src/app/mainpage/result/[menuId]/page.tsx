@@ -20,7 +20,7 @@ export default function MenuDetailPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const {mealTime, purpose, mood, who, budget, exceptions } =
+  const { mealTime, purpose, mood, who, budget, exceptions } =
     useQuestionAnswerStore();
   const payload = { mealTime, purpose, mood, with: who, budget, exceptions };
 
@@ -51,7 +51,10 @@ export default function MenuDetailPage() {
     <div className="flex w-full flex-col">
       <Header
         leftChild={
-          <button onClick={()=>router.push("/mainpage")} className="flex items-center font-bold">
+          <button
+            onClick={() => router.push("/mainpage")}
+            className="flex items-center font-bold"
+          >
             <Image
               src="/arrow/left-header-arrow.svg"
               alt="back"

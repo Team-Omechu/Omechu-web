@@ -1,5 +1,5 @@
 import { mukburimResponse } from "@/constant/mainpage/mukburim";
-import {ProfileResponse } from "@/constant/mainpage/profile";
+import { ProfileResponse } from "@/constant/mainpage/profile";
 import {
   restaurantList,
   RestaurantRequest,
@@ -32,20 +32,22 @@ export const getRestaurants = async (
   return data;
 };
 
-export const getProfile = async (): Promise<ProfileResponse> =>{
-  const {data} = await apiClient.get<ProfileResponse>("/profile");
+export const getProfile = async (): Promise<ProfileResponse> => {
+  const { data } = await apiClient.get<ProfileResponse>("/profile");
   return data;
-}
+};
 
-export const postMukburim = async (menuName: string): Promise<mukburimResponse> => {
-  const {data} = await apiClient.post<mukburimResponse>("/mukburim", {
+export const postMukburim = async (
+  menuName: string,
+): Promise<mukburimResponse> => {
+  const { data } = await apiClient.post<mukburimResponse>("/mukburim", {
     menu_name: menuName,
   });
   return data;
-}
+};
 
-export const addHeart = async(userId?:number , restaurantId?:number) => {
-  const response = await apiClient.post("/heart",{
+export const addHeart = async (userId?: number, restaurantId?: number) => {
+  const response = await apiClient.post("/heart", {
     userId: userId,
     restaurantId: restaurantId,
   });
@@ -53,17 +55,17 @@ export const addHeart = async(userId?:number , restaurantId?:number) => {
     throw new Error("Failed to add heart");
   }
   return response;
-}
+};
 
-export const deleteHeart = async(userId?:number ,restaurantId?:number) => {
-  const response = await apiClient.delete("/heart",{
-    data:{
-      userId:userId,
-      restaurantId:restaurantId,
-    }
+export const deleteHeart = async (userId?: number, restaurantId?: number) => {
+  const response = await apiClient.delete("/heart", {
+    data: {
+      userId: userId,
+      restaurantId: restaurantId,
+    },
   });
   if (response.status !== 200) {
     throw new Error("Failed to delete heart");
   }
   return response;
-}
+};

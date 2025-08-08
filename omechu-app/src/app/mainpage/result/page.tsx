@@ -23,8 +23,9 @@ import usePostMukburim from "../hooks/usePostMukburim";
 
 export default function ResultPage() {
   const router = useRouter();
-  const { data, isLoading, error, refetch, isRefetching } = useGetRecommendMenu();
-  const {mutate} = usePostMukburim();
+  const { data, isLoading, error, refetch, isRefetching } =
+    useGetRecommendMenu();
+  const { mutate } = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
@@ -85,7 +86,6 @@ export default function ResultPage() {
     setExcludeMenu(null);
   };
 
-
   if (isLoading || isRefetching) {
     return <MainLoading />;
   }
@@ -94,7 +94,10 @@ export default function ResultPage() {
     <div className="flex h-screen flex-col">
       <Header
         leftChild={
-          <button onClick={()=> router.push("/mainpage")} className="flex items-center font-bold">
+          <button
+            onClick={() => router.push("/mainpage")}
+            className="flex items-center font-bold"
+          >
             <Image
               src="/arrow/left-header-arrow.svg"
               alt="back"

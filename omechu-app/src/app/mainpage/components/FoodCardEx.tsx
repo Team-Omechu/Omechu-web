@@ -12,10 +12,15 @@ type FoodCardProps = {
   onClick: () => void;
 };
 
-export default function FoodCard({ item, onClick, menu, restaurantId }: FoodCardProps) {
-  const [isLiked,setIsLiked] = useState(false);
-  const {mutate: addHeart} = usePostHeart(restaurantId);
-  const {mutate: deleteHeart} = useDeleteHeart(restaurantId);
+export default function FoodCard({
+  item,
+  onClick,
+  menu,
+  restaurantId,
+}: FoodCardProps) {
+  const [isLiked, setIsLiked] = useState(false);
+  const { mutate: addHeart } = usePostHeart(restaurantId);
+  const { mutate: deleteHeart } = useDeleteHeart(restaurantId);
 
   const handleHeartClick = () => {
     if (isLiked) {
@@ -45,7 +50,7 @@ export default function FoodCard({ item, onClick, menu, restaurantId }: FoodCard
       <div className="flex flex-col place-items-end gap-2">
         <button onClick={handleHeartClick}>
           <Image
-            src={isLiked?"/heart/heart_empty.svg":"/heart/heart_full.svg"}
+            src={isLiked ? "/heart/heart_empty.svg" : "/heart/heart_full.svg"}
             alt="하트"
             width={20}
             height={20}
