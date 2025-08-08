@@ -222,7 +222,21 @@ export const resetPassword = async (
  * 로그아웃 API
  */
 export const logout = async (): Promise<void> => {
-  await axiosInstance.post("/auth/logout");
+  const accessToken = useAuthStore.getState().user?.accessToken;
+
+  if (!accessToken) {
+    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
+  }
+
+  await axiosInstance.post(
+    "/auth/logout",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
 };
 
 /**
