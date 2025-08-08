@@ -1,4 +1,4 @@
-import axiosInstance from "./axios";
+import axiosInstance from "@/lib/api/axios";
 import { ProfileType } from "../types/profileType";
 
 export class ProfileApiError extends Error {
