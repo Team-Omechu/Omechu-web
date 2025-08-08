@@ -202,7 +202,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="relative flex flex-col w-auto h-screen">
+    <div className="relative flex h-screen w-auto flex-col">
       <header>
         <ProgressBar
           currentStep={step}
@@ -214,7 +214,7 @@ export default function OnboardingPage() {
         />
       </header>
 
-      <main className="flex flex-col items-center flex-1 w-full px-4 py-6">
+      <main className="flex w-full flex-1 flex-col items-center px-4 py-6">
         {renderStepComponent()}
       </main>
 
