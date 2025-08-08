@@ -85,7 +85,7 @@ const readAccessToken = (): string | null => {
 
   // 2) 과거/현재 키들을 순회하며 로컬스토리지에서 탐색
   try {
-    const candidateKeys = ["auth-store", "auth-storage", "auth-user-storage"];
+    const candidateKeys = ["auth-storage", "auth-store", "auth-user-storage"];
     for (const key of candidateKeys) {
       const raw = localStorage.getItem(key);
       if (!raw) continue;
