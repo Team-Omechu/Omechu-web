@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 interface Props {
   restaurant: {
     id: number;
-    GooglePlaceId?: string;
+    googlePlaceId?: string | null;
     category?: string;
     timetable: { days_of_the_week: string; time: string }[];
     address: {
