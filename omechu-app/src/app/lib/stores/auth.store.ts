@@ -24,6 +24,7 @@ export const useAuthStore = create<AuthStore>()(
       setAccessToken: (token) => set({ accessToken: token }),
       logout: () => set({ user: null, accessToken: "" }),
     }),
-    { name: "auth-store" },
+    // LocalStorage에 저장되는 key 이름 통일
+    { name: "auth-storage" },
   ),
 );
