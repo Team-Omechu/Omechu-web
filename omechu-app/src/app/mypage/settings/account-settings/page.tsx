@@ -57,7 +57,9 @@ export default function AccountSettings() {
   }, [loading]);
 
   if (loading || minLoading) {
-    return <LoadingSpinner label="프로필 정보 불러오는 중..." />;
+    return (
+      <LoadingSpinner label="프로필 정보 불러오는 중..." className="h-screen" />
+    );
   }
 
   return (
@@ -144,6 +146,7 @@ export default function AccountSettings() {
                   setToast({ show: true, message: "로그아웃에 실패했습니다." });
                   setShowModal(false);
                 }
+                setShowModal(false);
               }}
               swapButtonOrder={true}
             />
