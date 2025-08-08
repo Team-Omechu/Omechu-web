@@ -4,7 +4,8 @@ import type {
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
-import axiosInstance from "@/mypage/api/axios";
+import axiosInstance from "@/lib/api/axios";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
@@ -251,8 +252,18 @@ export const changePassword = async (data: {
 //* 현재 로그인된 유저 정보 조회
 // * 추가 - 이삭
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
-  const response =
-    await axiosInstance.get<ApiResponse<LoginSuccessData>>(`/profile`);
+  // accessToken을 zustand에서 직접 꺼냄
+  const accessToken = useAuthStore.getState().user?.accessToken;
+  const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
+    `/profile`,
+    accessToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      : undefined,
+  );
   if (response.data.resultType === "FAIL" || !response.data.success) {
     throw new Error(response.data.error?.reason || "유저 조회 실패");
   }

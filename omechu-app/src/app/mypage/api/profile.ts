@@ -1,5 +1,6 @@
 import axiosInstance from "@/lib/api/axios";
 import { ProfileType } from "../types/profileType";
+import { useAuthStore } from "@/auth/store";
 
 export class ProfileApiError extends Error {
   constructor(
@@ -13,7 +14,14 @@ export class ProfileApiError extends Error {
 
 export async function fetchProfile(): Promise<ProfileType> {
   try {
-    const res = await axiosInstance.get("/profile");
+    const accessToken =
+      useAuthStore.getState().accessToken ||
+      localStorage.getItem("accessToken");
+    const res = await axiosInstance.get("/profile", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // 불필요!
+      },
+    });
     const data = res.data.success;
     return {
       id: Number(data.id),
