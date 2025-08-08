@@ -237,7 +237,6 @@ export const changePassword = async (data: {
   const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/change-passwd",
     data,
-    { withCredentials: true },
   );
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
