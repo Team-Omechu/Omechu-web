@@ -34,7 +34,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
   const onboardingStore = useOnboardingStore();
-  const { user: authUser, login, password } = useAuthStore();
+  const { user: authUser, login, password, accessToken } = useAuthStore();
   const {
     setCurrentStep,
     reset: resetOnboarding,
@@ -126,30 +126,37 @@ export default function OnboardingPage() {
         allergy: allergyForApi,
       };
 
-      // completeOnboarding(dataToSubmit, {
-      //   onSuccess: (completedProfile) => {
-      //     if (authUser) {
-      //       const userForLogin: LoginSuccessData = {
-      //         ...completedProfile,
-      //         gender:
-      //           completedProfile.gender === "남자"
-      //             ? "남성"
-      //             : completedProfile.gender === "여자"
-      //               ? "여성"
-      //               : "남성", // 기본값 혹은 예외처리
-      //       };
-      //       login({
-      //         accessToken: "",
-      //         user: userForLogin,
-      //         password: password,
-      //       });
-      //     }
-      //     setIsModalOpen(true);
-      //   },
-      //   onError: (error) => {
-      //     triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
-      //   },
-      // });
+      completeOnboarding(dataToSubmit, {
+        onSuccess: (completedProfile) => {
+          if (authUser) {
+            const normalizeGender = (g: string): "남성" | "여성" => {
+              if (g === "male" || g === "남자" || g === "남성") return "남성";
+              if (g === "female" || g === "여자" || g === "여성") return "여성";
+              return "남성";
+            };
+
+            const userForLogin: LoginSuccessData = {
+              id: completedProfile.id,
+              email: completedProfile.email,
+              gender: normalizeGender(completedProfile.gender),
+              nickname: completedProfile.nickname,
+              created_at: completedProfile.created_at,
+              updated_at: completedProfile.updated_at,
+              accessToken: accessToken ?? "",
+            };
+
+            login({
+              accessToken: accessToken ?? "",
+              user: userForLogin,
+              password: password,
+            });
+          }
+          setIsModalOpen(true);
+        },
+        onError: (error) => {
+          triggerToast(`정보 저장에 실패했습니다:\n${error.message}`);
+        },
+      });
     }
   };
 
