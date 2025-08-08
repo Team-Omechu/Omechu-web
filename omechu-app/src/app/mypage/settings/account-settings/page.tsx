@@ -24,12 +24,10 @@ export default function AccountSettings() {
 
   const user = useAuthStore((state) => state.user);
 
-  const userId = user?.id ? Number(user.id) : undefined; // id가 string이면 변환, number면 그대로
-  const { profile, loading, error: profileError } = useProfile(userId);
+  const { profile, loading, error: profileError } = useProfile();
   const [minLoading, setMinLoading] = useState(true);
 
   console.log("[디버깅] user:", user);
-  console.log("[디버깅] userId:", userId);
 
   // 동기화
   useEffect(() => {
