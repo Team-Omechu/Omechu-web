@@ -249,23 +249,28 @@ export const changePassword = async (data: {
   return apiResponse.success;
 };
 
-//* 현재 로그인된 유저 정보 조회
-// * 추가 - 이삭
+// 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
-  // accessToken을 zustand에서 직접 꺼냄
+  // zustand store에서 accessToken을 직접 꺼냄
   const accessToken = useAuthStore.getState().user?.accessToken;
-  const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
-    `/profile`,
-    accessToken
-      ? {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      : undefined,
-  );
-  if (response.data.resultType === "FAIL" || !response.data.success) {
-    throw new Error(response.data.error?.reason || "유저 조회 실패");
+
+  if (!accessToken) {
+    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
   }
-  return response.data.success;
+
+  const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
+    "/profile",
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(apiResponse.error?.reason || "유저 조회 실패");
+  }
+
+  return apiResponse.success;
 };
