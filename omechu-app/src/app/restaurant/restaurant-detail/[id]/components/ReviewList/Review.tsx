@@ -43,6 +43,7 @@ export default function Review({
             alt={profileImgUrl}
             width={30}
             height={30}
+            className="h-7 w-7 rounded-full object-cover"
           />
           <span className="text-base font-semibold text-[#393939]">
             {userId}
