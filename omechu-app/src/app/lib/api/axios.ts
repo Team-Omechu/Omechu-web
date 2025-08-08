@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "../stores/auth.store";
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -20,8 +20,8 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      const { isLoggedIn } = useAuthStore.getState();
-      if (isLoggedIn) {
+      const { user } = useAuthStore.getState();
+      if (user) {
         useAuthStore.getState().logout();
       }
     }
