@@ -18,7 +18,6 @@ import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 export default function ProfileEditSection() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
-  const userId = user?.id ? Number(user.id) : undefined;
   const { profile, loading } = useProfile();
 
   // 상태
@@ -46,7 +45,7 @@ export default function ProfileEditSection() {
 
   // 저장
   const handleSave = async () => {
-    if (!userId) return;
+    console.log("디버그용 저장 클릭");
     setIsLoading(true);
     setSaveError(null);
     try {
