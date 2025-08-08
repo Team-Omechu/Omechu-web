@@ -6,11 +6,15 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import Header from "@/components/common/Header";
-import { Restaurants } from "@/constant/restaurant/restaurantList";
 import RestaurantDetailHeader from "@/restaurant/restaurant-detail/[id]/components/RestaurantDetailHeader";
+import { getRestaurantDetail } from "@/restaurant/api/restaurantList";
 
 import RestaurantMapPreview from "./components/RestaurantMapPreview";
-import { fetchGooglePlaceInfo } from "../api/googlePlaceInfo";
+import { RestaurantDetail } from "@/lib/types/restaurant";
+import {
+  fetchGooglePlaceInfo,
+  fetchLatLngFromAddress,
+} from "../api/googlePlaceInfo";
 
 export default function MapPage() {
   const router = useRouter();
@@ -22,7 +26,7 @@ export default function MapPage() {
   const id = Number((params as { id: string }).id);
 
   // id에 해당하는 맛집 데이터 찾기
-  const restaurant = Restaurants.find((r) => r.id === id);
+  const [restaurant, setRestaurant] = useState<RestaurantDetail | null>(null);
 
   // 좋아요 상태 관리 (임시로 하트 클릭 시 토글)
   const [isLiked, setIsLiked] = useState(false);
@@ -32,22 +36,34 @@ export default function MapPage() {
     longitude: number;
   } | null>(null);
 
+  useEffect(() => {
+    if (!id) return;
+
+    getRestaurantDetail(id)
+      .then((res) => {
+        setRestaurant(res);
+        console.log("맛집 정보:", res);
+
+        if (res.googlePlaceId) {
+          fetchGooglePlaceInfo(res.googlePlaceId).then((info) =>
+            setLocation(info?.location ?? null),
+          );
+        } else if (res.address) {
+          fetchLatLngFromAddress(res.address).then((info) =>
+            setLocation(info?.location ?? null),
+          );
+        }
+      })
+      .catch((err) => {
+        console.error("맛집 정보 불러오기 실패:", err);
+      });
+  }, [id]);
+
   // 하트 클릭 시 좋아요 상태 토글
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLiked((prev) => !prev);
   };
-
-  useEffect(() => {
-    if (!restaurant) return;
-    if (!restaurant.GooglePlaceId) return;
-
-    fetchGooglePlaceInfo(restaurant.GooglePlaceId)
-      .then((res) => setLocation(res.location))
-      .catch((err) => {
-        console.error("위치 정보를 불러오는 데 실패했습니다:", err);
-      });
-  }, [restaurant]);
 
   // 해당 id의 맛집이 없을 경우 예외 처리 (간단한 메시지)
   if (!restaurant) {
