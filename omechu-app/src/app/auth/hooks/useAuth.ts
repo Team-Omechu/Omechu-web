@@ -18,7 +18,7 @@ export const useLoginMutation = () => {
     mutationFn: (data: LoginFormValues) => authApi.login(data),
     onSuccess: (response, variables) => {
       setAuth({
-        accessToken: "",
+        accessToken: response.accessToken,
         user: response,
         password: variables.password,
       });

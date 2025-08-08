@@ -86,8 +86,8 @@ export const login = async (
   const response = await axiosInstance.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
-    // * 이삭 추가 부분
-    { withCredentials: true },
+    // 소셜 로그인과 폼 로그인 모두 JWT 기반으로 동작하므로 쿠키 의존 제거
+    undefined,
   );
 
   const apiResponse = response.data;
