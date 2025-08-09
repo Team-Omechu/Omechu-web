@@ -2,7 +2,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 import { changePassword } from "@/lib/api/auth";
 
@@ -28,6 +27,8 @@ export default function ChangePassword() {
     boolean | null
   >(null);
 
+  const [pending, setPending] = useState(false);
+
   const hasPasswordError = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
     return !regex.test(password);
@@ -41,11 +42,62 @@ export default function ChangePassword() {
   const [showToast, setShowToast] = useState(false);
 
   const triggerToast = (msg: string) => {
+    console.log("[TOAST] trigger:", msg);
     setToastMessage(msg);
     setShowToast(true);
+    // 필요시 기존 타이머 clear 로직 추가 가능
     setTimeout(() => {
+      console.log("[TOAST] hide");
       setShowToast(false);
     }, 2500);
+  };
+
+  const handleSubmit = async () => {
+    console.log("[BTN] clicked");
+    if (pending) {
+      console.log("[BTN] ignored (pending)");
+      return;
+    }
+
+    // 폼 유효성 실패도 토스트로 알려줌
+    if (!isFormValid) {
+      console.log("[VALIDATION] invalid form");
+      if (hasPasswordError(inputNewPassword)) {
+        triggerToast("비밀번호 형식을 확인해주세요.");
+      } else if (inputNewPassword !== inputConfirmPassword) {
+        triggerToast("새 비밀번호가 일치하지 않습니다.");
+      } else {
+        triggerToast("입력이 올바르지 않습니다.");
+      }
+      return;
+    }
+
+    try {
+      setPending(true);
+      console.log("[API] changePassword start", {
+        currentPassword: !!inputPassword,
+        newPasswordLen: inputNewPassword.length,
+      });
+
+      await changePassword({
+        currentPassword: inputPassword,
+        newPassword: inputNewPassword,
+      });
+
+      console.log("[API] changePassword success");
+      setShowModal(true); // 성공 모달
+    } catch (e: any) {
+      // Axios 에러 바디 우선 파싱
+      const serverMsg =
+        e?.response?.data?.error?.reason ||
+        e?.response?.data?.message ||
+        e?.message ||
+        "비밀번호 변경에 실패했습니다.";
+      console.log("[API] changePassword fail:", e?.response || e);
+      triggerToast(serverMsg);
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
@@ -67,6 +119,13 @@ export default function ChangePassword() {
       />
 
       <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
+        {/* 토스트: 위치 이슈 방지를 위해 고정 포지션 예시 */}
+        <Toast
+          message={toastMessage}
+          show={showToast}
+          className="absolute bottom-72 left-1/2 z-[9999] -translate-x-1/2"
+        />
+
         <section className="flex w-full flex-col gap-4 px-3 pt-16">
           <Input
             label="기존 비밀번호"
@@ -123,33 +182,16 @@ export default function ChangePassword() {
         </section>
 
         <section className="relative mt-5 flex w-full flex-col items-center">
-          <Toast
-            message={toastMessage}
-            show={showToast}
-            className={"bottom-20"}
-          />
           <button
-            onClick={async () => {
-              // 실제 API 호출
-              if (!isFormValid) return;
-
-              try {
-                await changePassword({
-                  currentPassword: inputPassword,
-                  newPassword: inputNewPassword,
-                });
-                setShowModal(true); // 성공 시 모달
-              } catch (e: any) {
-                triggerToast(e.message || "비밀번호 변경에 실패했습니다.");
-              }
-            }}
+            onClick={handleSubmit}
+            disabled={pending}
             className={`mt-48 h-[50px] w-[335px] rounded-md text-[17px] font-medium text-white transition ${
               isFormValid
                 ? "bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive"
                 : "bg-gray-300"
-            }`}
+            } ${pending ? "cursor-not-allowed opacity-70" : ""}`}
           >
-            비밀번호 변경하기
+            {pending ? "변경 중..." : "비밀번호 변경하기"}
           </button>
         </section>
 
