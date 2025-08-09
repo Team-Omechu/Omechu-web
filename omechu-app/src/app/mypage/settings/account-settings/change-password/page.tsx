@@ -1,8 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { changePassword } from "@/lib/api/auth";
 
@@ -12,8 +12,6 @@ import Header from "@/components/common/Header";
 import Input from "@/components/common/Input";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import Toast from "@/components/common/Toast";
-
-// const SAMPLE_PASSWORD = "kang@1234"; // 테스트용 기존 비밀번호
 
 export default function ChangePassword() {
   const router = useRouter();
@@ -58,7 +56,7 @@ export default function ChangePassword() {
           <button
             onClick={() => router.push("/mypage/settings/account-settings")}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"뒤로가기"}
               width={22}
