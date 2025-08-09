@@ -4,15 +4,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fetchHeartList } from "../api/favorites";
+import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
+import { useAuthStore } from "@/auth/store";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
-import { likePlace, unlikePlace } from "../api/favorites";
-import { useAuthStore } from "@/auth/store";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
@@ -30,11 +29,10 @@ export default function Favorites() {
   const [hearts, setHearts] = useState<any[]>([]);
 
   const user = useAuthStore((state) => state.user);
-
-  const userId = user?.id ? Number(user.id) : undefined;
+  const accessToken = user?.accessToken;
 
   useEffect(() => {
-    if (!userId) {
+    if (!accessToken) {
       setModalOpen(true);
       setHearts([]);
       setIsInitialLoading(false);
@@ -43,7 +41,7 @@ export default function Favorites() {
     const fetchData = async () => {
       setIsInitialLoading(true);
       try {
-        const data = await fetchHeartList(userId);
+        const data = await fetchHeartList();
         setHearts(Array.isArray(data) ? data : []);
       } catch (e: any) {
         // 401 에러일 때
@@ -56,21 +54,28 @@ export default function Favorites() {
       }
     };
     fetchData();
-  }, [userId]);
+  }, [accessToken]);
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
   //* 실제 api 데이터 연동
-  const filteredItems = search.trim()
-    ? hearts.filter((item) =>
-        item.signatureMenu?.join(",").includes(search.trim()),
-      )
-    : hearts;
+  const filteredItems = (() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return hearts;
+    return hearts.filter((item) => {
+      const name = (item.restaurant?.name ?? "").toLowerCase();
+      const menus: string[] = item.restaurant?.representativeMenus ?? [];
+      const menuHit = menus.some((m: string) =>
+        (m ?? "").toLowerCase().includes(q),
+      );
+      return name.includes(q) || menuHit;
+    });
+  })();
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    return sortOrder === "latest"
-      ? b.restaurant.id - a.restaurant.id
-      : a.restaurant.id - b.restaurant.id;
+    const aid = Number(a.restaurant.id);
+    const bid = Number(b.restaurant.id);
+    return sortOrder === "latest" ? bid - aid : aid - bid;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
@@ -83,7 +88,7 @@ export default function Favorites() {
 
   const handleLike = async (restaurantId: number) => {
     try {
-      await likePlace(userId, restaurantId);
+      await likePlace(restaurantId);
       // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
       setHearts((prev) =>
         prev.map((item) =>
@@ -99,7 +104,7 @@ export default function Favorites() {
 
   const handleUnlike = async (restaurantId: number) => {
     try {
-      await unlikePlace(userId, restaurantId);
+      await unlikePlace(restaurantId);
       setHearts((prevHearts) => {
         const newHearts = prevHearts.filter(
           (item) => item.restaurant.id !== restaurantId,
@@ -168,11 +173,14 @@ export default function Favorites() {
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
+      observer.disconnect();
     };
   }, [observerCallback]);
+
+  // Reset visibleCount when search changes so infinite scroll starts from the top
+  useEffect(() => {
+    setVisibleCount((prev) => Math.min(8, filteredItems.length));
+  }, [search]);
 
   return (
     <>
@@ -217,7 +225,7 @@ export default function Favorites() {
         <section className="flex flex-col gap-4">
           {isInitialLoading ? (
             <div className="flex flex-col gap-3">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: 6 }).map((_, i) => (
                 <SkeletonFoodCard key={i} />
               ))}
             </div>
