@@ -49,7 +49,7 @@ export default function FoodCard({
         <p className="mb-3 text-sm text-gray-500">{item.address.road}</p>
         <p className="mb-1 text-sm font-bold text-blue-600">{item.menu}</p>
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
-          {item.tags.map((tag, i) => (
+          {(item.tags ?? []).map((tag, i) => (
             <span
               key={i}
               className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
