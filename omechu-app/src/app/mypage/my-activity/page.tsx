@@ -368,7 +368,7 @@ export default function MyActivity() {
                         </span>
                         <FoodCard
                           onLike={async () => {
-                            await likePlace(profile?.id, item.id);
+                            await likePlace(item?.id);
                             setMyRestaurants((prev) =>
                               prev.map((r) =>
                                 r.id === item.id ? { ...r, isLiked: true } : r,
@@ -376,7 +376,7 @@ export default function MyActivity() {
                             );
                           }}
                           onUnlike={async () => {
-                            await unlikePlace(profile?.id, item.id);
+                            await unlikePlace(item?.id);
                             setMyRestaurants((prev) =>
                               prev.map((r) =>
                                 r.id === item.id ? { ...r, isLiked: false } : r,
