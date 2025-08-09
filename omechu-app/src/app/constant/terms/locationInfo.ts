@@ -1,4 +1,4 @@
-export const termsForLocationlInfo: {
+export const termsForLocationInfo: {
   index: number | null;
   about: string | null;
   content: string;
