@@ -31,6 +31,33 @@ export default function Favorites() {
   const user = useAuthStore((state) => state.user);
   const accessToken = user?.accessToken;
 
+  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+
+    if (!accessToken) {
+      setModalOpen(true);
+      setHearts([]);
+      setIsInitialLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      setIsInitialLoading(true);
+      try {
+        const data = await fetchHeartList();
+        setHearts(Array.isArray(data) ? data : []);
+      } catch (e: any) {
+        if (e?.response?.status === 401) setModalOpen(true);
+        setHearts([]);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+    fetchData();
+  }, [hasHydrated, accessToken]);
+
   useEffect(() => {
     if (!accessToken) {
       setModalOpen(true);
