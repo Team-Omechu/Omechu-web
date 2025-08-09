@@ -10,7 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import BottomButton from "@/components/common/button/BottomButton";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import Toast from "@/components/common/Toast";
-import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
+import { termsForLocationInfo } from "@/constant/terms/locationInfo";
 import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
 import { termsForService } from "@/constant/terms/service";
 import {
@@ -113,7 +113,7 @@ export default function SignUpPage() {
                   ? termsForService
                   : activeModal === "privacy"
                     ? termsForPersonlInfo
-                    : termsForLocationlInfo
+                    : termsForLocationInfo
               }
               onConfirm={() => {
                 if (activeModal) {
