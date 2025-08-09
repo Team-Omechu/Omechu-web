@@ -16,13 +16,13 @@ import Header from "@/components/common/Header";
 import FoodReviewCard from "@/components/common/RestaurantReviewCard";
 import SortSelector from "@/components/common/SortSelector";
 import SelectTabBar from "@/components/mypage/SelectTabBar";
-import { Restaurants } from "@/constant/restaurant/restaurantList";
 
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import { useAuthStore } from "@/auth/store";
 import { likePlace, unlikePlace } from "../api/favorites";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
+import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
 type MyRestaurant = {
   id: number;
@@ -63,7 +63,7 @@ export default function MyActivity() {
     if (!hasHydrated) return; // 1) 스토어 복원 대기
     if (selectedIndex !== 0) return; // 2) 후기 탭일 때만
 
-    // 3) 토큰 없으면 조용히 대기(모달 X). 목록만 비워두고 종료
+    // 3) 토큰이 없으면 모달을 띄우지 않고 패치만 중단 (깜빡임 방지)
     if (!accessToken) {
       setReviewList([]);
       return;
@@ -93,8 +93,8 @@ export default function MyActivity() {
     if (!hasHydrated) return;
     if (selectedIndex !== 1) return;
 
+    // 토큰이 없으면 모달을 띄우지 않고 패치만 중단 (깜빡임 방지)
     if (!accessToken) {
-      // 토큰 없으면 대기 (모달 X)
       setMyRestaurants([]);
       return;
     }
@@ -256,7 +256,7 @@ export default function MyActivity() {
 
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col items-center overflow-auto px-2 pb-8 pt-3 scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-y-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {selectedIndex === 0 && (
           <>
@@ -286,8 +286,8 @@ export default function MyActivity() {
             ) : (
               <section className="flex w-full flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="text-grey-normalActive">
-                    작성한 후기가 없습니다.
+                  <div className="flex h-24 w-full justify-center py-8">
+                    <LoadingSpinner label="작성한 후기를 불러오는 중..." />
                   </div>
                 ) : (
                   <>
@@ -421,7 +421,7 @@ export default function MyActivity() {
         )}
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
-      {modalOpen && (
+      {hasHydrated && modalOpen && (
         <AuthErrorModal
           onConfirm={() => {
             setModalOpen(false);
