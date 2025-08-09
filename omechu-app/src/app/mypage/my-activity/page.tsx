@@ -1,29 +1,32 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-
-import { fetchMyPlaces, MyReviewItem } from "../api/myActivity";
-import { fetchMyReviews } from "../api/myActivity";
-
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import AuthErrorModal from "../AuthErrorModalSection";
 import { useRouter } from "next/navigation";
 
+import Header from "@/components/common/Header";
+import SelectTabBar from "@/components/mypage/SelectTabBar";
+import SortSelector from "@/components/common/SortSelector";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import FoodCard from "@/components/common/FoodCard";
-import Header from "@/components/common/Header";
 import FoodReviewCard from "@/components/common/RestaurantReviewCard";
-import SortSelector from "@/components/common/SortSelector";
-import SelectTabBar from "@/components/mypage/SelectTabBar";
-
-import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
-import { useAuthStore } from "@/auth/store";
-import { likePlace, unlikePlace } from "../api/favorites";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
+import AuthErrorModal from "../AuthErrorModalSection";
+import { useAuthStore } from "@/auth/store";
+import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
+
+import {
+  fetchMyPlaces,
+  fetchMyReviews,
+  type MyReviewItem,
+} from "../api/myActivity";
+import { likePlace, unlikePlace } from "../api/favorites";
+
+/*            타입/상수           */
 type MyRestaurant = {
   id: number;
   name: string;
@@ -34,37 +37,57 @@ type MyRestaurant = {
   reviews?: number;
 };
 
+const ITEMS_PER_PAGE = 5;
+const IO_ROOT_MARGIN = "0px 0px 160px 0px"; // 하단 BottomNav 고려
+const IO_THRESHOLD = 0;
+const LOADING_DELAY_MS = 1800;
+
+/*            유틸리티            */
+// ISO 문자열 → 'YYYY.MM.DD HH:mm' (로컬 타임존)
+const formatDate = (iso?: string) => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  return `${y}.${m}.${day} ${hh}:${mm}`;
+};
+
+/*          컴포넌트 본문         */
 export default function MyActivity() {
   const router = useRouter();
-  // JWT 기반: 토큰 하이드레이션 후 유효성 체크
+
+  // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
   const accessToken = user?.accessToken;
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
+
+  // 공통 UI 상태
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // 서버 패칭 로딩
+  const [listLoading, setListLoading] = useState(false); // 무한 스크롤 로딩
+  const [error, setError] = useState<string | null>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
+  // 탭/리스트 상태
+  const [selectedIndex, setSelectedIndex] = useState(0); // 0: 후기 / 1: 등록한 맛집
   const [sortOrder, setSortOrder] = useState<"recommended" | "latest">(
     "recommended",
   );
-  const [visibleCount, setVisibleCount] = useState(5);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-  const mainRef = useRef<HTMLDivElement>(null);
+  // 데이터
+  const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
+  const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
 
-  const LOADING_TIMEOUT = 1800;
-
+  /*        데이터 패칭(후기)       */
   useEffect(() => {
-    if (!hasHydrated) return; // 1) 스토어 복원 대기
-    if (selectedIndex !== 0) return; // 2) 후기 탭일 때만
-
-    // 3) 토큰이 없으면 모달을 띄우지 않고 패치만 중단 (깜빡임 방지)
+    if (!hasHydrated || selectedIndex !== 0) return;
     if (!accessToken) {
+      // 깜빡임 방지: 모달은 여기서 열지 않음. 패칭만 중단.
       setReviewList([]);
       return;
     }
@@ -74,26 +97,25 @@ export default function MyActivity() {
 
     fetchMyReviews()
       .then((res: any) => {
-        if (!res.success || !Array.isArray(res.success.data)) {
+        const list = res.success?.data;
+        if (!Array.isArray(list)) {
           setReviewList([]);
           setError("리뷰 데이터를 불러오지 못했습니다.");
           return;
         }
-        setReviewList(res.success.data);
-        setModalOpen(false); // 성공하면 혹시 켜져있던 모달 닫기
+        setReviewList(list);
+        setModalOpen(false);
       })
       .catch((e: any) => {
-        if (e?.response?.status === 401) setModalOpen(true); // ← 여기서만 모달
+        if (e?.response?.status === 401) setModalOpen(true);
         setError("리뷰 불러오기 실패");
       })
       .finally(() => setLoading(false));
   }, [hasHydrated, accessToken, selectedIndex]);
 
+  /*     데이터 패칭(등록한 맛집)    */
   useEffect(() => {
-    if (!hasHydrated) return;
-    if (selectedIndex !== 1) return;
-
-    // 토큰이 없으면 모달을 띄우지 않고 패치만 중단 (깜빡임 방지)
+    if (!hasHydrated || selectedIndex !== 1) return;
     if (!accessToken) {
       setMyRestaurants([]);
       return;
@@ -105,75 +127,60 @@ export default function MyActivity() {
     fetchMyPlaces(10, 10)
       .then((data: any) => {
         const places = data.success?.data ?? [];
-        setMyRestaurants(
-          places.map((item: any) => ({
-            id: Number(item.id),
-            name: item.name || "-",
-            repre_menu:
-              Array.isArray(item.repre_menu) && item.repre_menu.length > 0
-                ? (item.repre_menu[0]?.menu ?? "")
-                : "",
-            rating: item.rating ?? 0,
-            images: item.rest_image ? [{ link: item.rest_image }] : [],
-            address: item.address ?? "",
-            reviews: item._count?.review ?? 0,
-          })),
-        );
-        setModalOpen(false); // 성공 시 모달 닫기
+        const mapped: MyRestaurant[] = places.map((item: any) => ({
+          id: Number(item.id),
+          name: item.name || "-",
+          repre_menu:
+            Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+              ? (item.repre_menu[0]?.menu ?? "")
+              : "",
+          rating: item.rating ?? 0,
+          images: item.rest_image ? [{ link: item.rest_image }] : [],
+          address: item.address ?? "",
+          reviews: item._count?.review ?? 0,
+        }));
+        setMyRestaurants(mapped);
+        setModalOpen(false);
       })
       .catch((err: any) => {
-        if (err?.response?.status === 401) setModalOpen(true); // ← 여기서만 모달
+        if (err?.response?.status === 401) setModalOpen(true);
         setError("맛집 목록을 불러오지 못했습니다.");
       })
       .finally(() => setLoading(false));
   }, [hasHydrated, accessToken, selectedIndex]);
 
+  /*        무한 스크롤 설정        */
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
+      if (!target.isIntersecting || listLoading) return;
 
-      if (!target.isIntersecting || isLoading) return;
-
-      setIsLoading(true);
-
-      if (selectedIndex === 0) {
-        // 리뷰 탭
-        setVisibleCount((prev) => Math.min(prev + 5, reviewList.length));
-      } else if (selectedIndex === 1) {
-        // 등록한 맛집 탭
-        setVisibleCount((prev) => Math.min(prev + 5, myRestaurants.length));
-      }
+      setListLoading(true);
+      setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
     },
-    [isLoading, selectedIndex, reviewList.length, myRestaurants.length],
+    [listLoading],
   );
 
   useEffect(() => {
-    if (selectedIndex !== 0 && selectedIndex !== 1) return;
-
-    if (
-      (selectedIndex === 0 && visibleCount >= reviewList.length) ||
-      (selectedIndex === 1 && visibleCount >= myRestaurants.length)
-    ) {
-      return;
-    }
+    // 현재 탭 리스트 길이보다 더 보여주려고 할 경우만 관찰
+    const total =
+      selectedIndex === 0
+        ? reviewList.length
+        : selectedIndex === 1
+          ? myRestaurants.length
+          : 0;
+    if (visibleCount >= total) return;
 
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
-      rootMargin: "0px 0px 160px 0px",
-      threshold: 0,
+      rootMargin: IO_ROOT_MARGIN,
+      threshold: IO_THRESHOLD,
     });
 
-    const currentLoader = loaderRef.current;
+    const node = loaderRef.current;
+    if (node) observer.observe(node);
 
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-
-    return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
-    };
+    return () => observer.disconnect();
   }, [
     observerCallback,
     selectedIndex,
@@ -182,72 +189,85 @@ export default function MyActivity() {
     myRestaurants.length,
   ]);
 
+  // 로딩 딜레이 종료
   useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, LOADING_TIMEOUT); // 1.8초 후 로딩 해제
+    if (!listLoading) return;
+    const t = setTimeout(() => setListLoading(false), LOADING_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [listLoading]);
 
-      return () => clearTimeout(timer);
+  // 탭 전환 시 목록 개수 초기화
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [selectedIndex]);
+
+  /*           파생 값 메모         */
+  const sortedReviews = useMemo(() => {
+    if (sortOrder === "latest") {
+      return [...reviewList].sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
     }
-  }, [isLoading]);
+    return [...reviewList].sort((a, b) => (b.like ?? 0) - (a.like ?? 0));
+  }, [reviewList, sortOrder]);
 
+  const visibleReviews = useMemo(
+    () => sortedReviews.slice(0, visibleCount),
+    [sortedReviews, visibleCount],
+  );
+
+  const visiblePlaces = useMemo(
+    () => myRestaurants.slice(0, visibleCount),
+    [myRestaurants, visibleCount],
+  );
+
+  /*            이벤트 핸들러        */
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    setVisibleCount(5);
-  }, [selectedIndex]);
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editTargetId, setEditTargetId] = useState<number | null>(null);
-
-  const editTargetData = initialRestaurantData.find(
-    (r) => r.id === editTargetId,
-  );
-
   const handleLikeToggle = (id: number) => {
+    // 더미 토글 (API 연동 전용 UI 반영)
     setReviewList((prev) =>
-      prev.map((review) =>
-        review.id === id
+      prev.map((r) =>
+        r.id === id
           ? {
-              ...review,
+              ...r,
               isLiked: false,
-              like: review.like
-                ? (review.like ?? 1) - 1
-                : (review.like ?? 0) + 1,
+              like: r.like ? r.like - 1 : (r.like ?? 0) + 1,
             }
-          : review,
+          : r,
       ),
     );
   };
 
   const handleDeleteReview = (id: number) => {
-    // TODO: 리뷰 삭제 기능 구현
+    // TODO: 리뷰 삭제 기능
   };
 
   const handleNavigateToRestaurant = (restaurantId?: string | number) => {
-    if (!restaurantId) return;
-    router.push(`/restaurant/restaurant-detail/${restaurantId}`);
+    if (restaurantId)
+      router.push(`/restaurant/restaurant-detail/${restaurantId}`);
   };
 
+  /*              렌더링            */
   return (
     <>
       <Header
-        title={"활동 내역"}
+        title="활동 내역"
         leftChild={
-          <Link href={"/mypage"}>
+          <Link href="/mypage">
             <Image
-              src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              src="/arrow/left-header-arrow.svg"
+              alt="back"
               width={22}
               height={22}
             />
           </Link>
         }
       />
-      {/* 목록 정렬 탭 */}
+
       <SelectTabBar
         tabs={["후기", "등록한 맛집"]}
         selectedIndex={selectedIndex}
@@ -258,9 +278,9 @@ export default function MyActivity() {
         ref={mainRef}
         className="flex h-screen w-full flex-col items-center overflow-y-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
+        {/* 후기 탭 */}
         {selectedIndex === 0 && (
           <>
-            {/* 후기탭: 필터 */}
             <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
               <SortSelector
                 options={[
@@ -268,13 +288,12 @@ export default function MyActivity() {
                   { label: "최신 순", value: "latest" },
                 ]}
                 selected={sortOrder}
-                onSelect={(value) =>
-                  setSortOrder(value === "latest" ? "latest" : "recommended")
+                onSelect={(v) =>
+                  setSortOrder(v === "latest" ? "latest" : "recommended")
                 }
               />
             </section>
 
-            {/* 로딩, 에러, 리스트 분기 */}
             {loading ? (
               <div className="flex flex-col gap-6">
                 {Array.from({ length: 4 }).map((_, i) => (
@@ -291,48 +310,32 @@ export default function MyActivity() {
                   </div>
                 ) : (
                   <>
-                    {reviewList
-                      .slice()
-                      .sort((a, b) =>
-                        sortOrder === "latest"
-                          ? new Date(b.created_at).getTime() -
-                            new Date(a.created_at).getTime()
-                          : (b.like ?? 0) - (a.like ?? 0),
-                      )
-                      .slice(0, visibleCount)
-                      .map((review) => (
-                        <FoodReviewCard
-                          key={review.id}
-                          id={Number(review.id)}
-                          createdAt={review.created_at}
-                          restaurantName={review.restaurant?.name ?? "-"}
-                          rating={review.rating ?? 0}
-                          reviewText={review.text ?? ""}
-                          recommendCount={review.like ?? 0}
-                          isLiked={false}
-                          onLikeToggle={() =>
-                            handleLikeToggle(Number(review.id))
-                          }
-                          restaurantImage={review.restaurant?.rest_image ?? ""}
-                          reviewImages={
-                            Array.isArray(review.reviewImages)
-                              ? review.reviewImages
-                              : []
-                          }
-                          tags={
-                            Array.isArray(review.tag) && review.tag.length > 0
-                              ? review.tag
-                              : []
-                          }
-                          onDelete={() => handleDeleteReview(Number(review.id))}
-                          onNavigate={() =>
-                            handleNavigateToRestaurant(
-                              String(review.restaurant?.id),
-                            )
-                          }
-                        />
-                      ))}
-                    {/* 무한스크롤 트리거 */}
+                    {visibleReviews.map((review) => (
+                      <FoodReviewCard
+                        key={review.id}
+                        id={Number(review.id)}
+                        createdAt={formatDate(review.created_at)}
+                        restaurantName={review.restaurant?.name ?? "-"}
+                        rating={review.rating ?? 0}
+                        reviewText={review.text ?? ""}
+                        recommendCount={review.like ?? 0}
+                        isLiked={false}
+                        onLikeToggle={() => handleLikeToggle(Number(review.id))}
+                        restaurantImage={review.restaurant?.rest_image ?? ""}
+                        reviewImages={
+                          Array.isArray(review.reviewImages)
+                            ? review.reviewImages
+                            : []
+                        }
+                        tags={Array.isArray(review.tag) ? review.tag : []}
+                        onDelete={() => handleDeleteReview(Number(review.id))}
+                        onNavigate={() =>
+                          handleNavigateToRestaurant(
+                            String(review.restaurant?.id),
+                          )
+                        }
+                      />
+                    ))}
                     {reviewList.length > visibleCount && (
                       <div ref={loaderRef} className="h-[1px]" />
                     )}
@@ -343,9 +346,9 @@ export default function MyActivity() {
           </>
         )}
 
+        {/* 등록한 맛집 탭 */}
         {selectedIndex === 1 && (
           <>
-            {/* 등록한 맛집 탭 */}
             {loading ? (
               <div className="flex w-full flex-col gap-4">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -360,14 +363,14 @@ export default function MyActivity() {
                   <div>등록한 맛집이 없습니다.</div>
                 ) : (
                   <>
-                    {myRestaurants.slice(0, visibleCount).map((item) => (
+                    {visiblePlaces.map((item) => (
                       <div key={item.id} className="flex w-full flex-col">
                         <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
                           편집
                         </span>
                         <FoodCard
                           onLike={async () => {
-                            await likePlace(item?.id);
+                            await likePlace(item.id);
                             setMyRestaurants((prev) =>
                               prev.map((r) =>
                                 r.id === item.id ? { ...r, isLiked: true } : r,
@@ -375,7 +378,7 @@ export default function MyActivity() {
                             );
                           }}
                           onUnlike={async () => {
-                            await unlikePlace(item?.id);
+                            await unlikePlace(item.id);
                             setMyRestaurants((prev) =>
                               prev.map((r) =>
                                 r.id === item.id ? { ...r, isLiked: false } : r,
@@ -409,7 +412,6 @@ export default function MyActivity() {
                         />
                       </div>
                     ))}
-                    {/* 무한스크롤 트리거 */}
                     {myRestaurants.length > visibleCount && (
                       <div ref={loaderRef} className="h-[1px]" />
                     )}
@@ -419,8 +421,11 @@ export default function MyActivity() {
             )}
           </>
         )}
+
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
+
+      {/* 인증 모달: 하이드레이션 이후에만 판단 */}
       {hasHydrated && modalOpen && (
         <AuthErrorModal
           onConfirm={() => {
