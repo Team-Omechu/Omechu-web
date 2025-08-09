@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import Header from "@/components/common/Header";
@@ -23,7 +23,7 @@ export default function Settings() {
               router.push("./");
             }}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
@@ -45,7 +45,7 @@ export default function Settings() {
               >
                 <span className="text-xl font-normal">{item.title}</span>
                 <div>
-                  <Image
+                  <img
                     src={"/arrow/right_arrow_black.svg"}
                     alt={"오른쪽 이동 버튼"}
                     width={12}
