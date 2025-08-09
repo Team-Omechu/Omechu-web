@@ -36,6 +36,8 @@ export default function Favorites() {
   useEffect(() => {
     if (!hasHydrated) return;
 
+    setModalOpen(false);
+
     if (!accessToken) {
       setModalOpen(true);
       setHearts([]);
@@ -57,31 +59,6 @@ export default function Favorites() {
     };
     fetchData();
   }, [hasHydrated, accessToken]);
-
-  useEffect(() => {
-    if (!accessToken) {
-      setModalOpen(true);
-      setHearts([]);
-      setIsInitialLoading(false);
-      return;
-    }
-    const fetchData = async () => {
-      setIsInitialLoading(true);
-      try {
-        const data = await fetchHeartList();
-        setHearts(Array.isArray(data) ? data : []);
-      } catch (e: any) {
-        // 401 에러일 때
-        if (e?.response?.status === 401) {
-          setModalOpen(true);
-        }
-        setHearts([]);
-      } finally {
-        setIsInitialLoading(false);
-      }
-    };
-    fetchData();
-  }, [accessToken]);
 
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
@@ -112,39 +89,6 @@ export default function Favorites() {
       setVisibleCount(hearts.length);
     }
   }, [hearts.length]);
-
-  const handleLike = async (restaurantId: number) => {
-    try {
-      await likePlace(restaurantId);
-      // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
-      setHearts((prev) =>
-        prev.map((item) =>
-          item.restaurant.id === restaurantId
-            ? { ...item, isLiked: true }
-            : item,
-        ),
-      );
-    } catch (e) {
-      alert("찜 등록 실패");
-    }
-  };
-
-  const handleUnlike = async (restaurantId: number) => {
-    try {
-      await unlikePlace(restaurantId);
-      setHearts((prevHearts) => {
-        const newHearts = prevHearts.filter(
-          (item) => item.restaurant.id !== restaurantId,
-        );
-        setVisibleCount((prevVisible) =>
-          Math.min(prevVisible, newHearts.length),
-        );
-        return newHearts;
-      });
-    } catch (e) {
-      alert("찜 해제 실패");
-    }
-  };
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -208,6 +152,74 @@ export default function Favorites() {
   useEffect(() => {
     setVisibleCount((prev) => Math.min(8, filteredItems.length));
   }, [search]);
+
+  const isRefreshingRef = useRef(false);
+
+  const refreshHearts = useCallback(async () => {
+    if (isRefreshingRef.current) return;
+    isRefreshingRef.current = true;
+    try {
+      const data = await fetchHeartList();
+      setHearts(Array.isArray(data) ? data : []);
+      // 현재 개수보다 줄었으면 visibleCount 보정
+      setVisibleCount((prev) => Math.min(prev, data?.length ?? 0));
+    } finally {
+      isRefreshingRef.current = false;
+    }
+  }, []);
+
+  const handleLike = async (restaurantId: number) => {
+    // 1) 낙관적 반영 (UI 즉시)
+    setHearts(
+      (prev) =>
+        prev.some((h) => Number(h.restaurant.id) === restaurantId)
+          ? prev.map((h) =>
+              Number(h.restaurant.id) === restaurantId
+                ? { ...h, isLiked: true }
+                : h,
+            )
+          : prev, // (찜 목록 페이지라면 보통 이미 존재. 다른 페이지에서 들어오는 케이스면 새 카드 push 로직 추가)
+    );
+
+    try {
+      await likePlace(restaurantId);
+    } catch (e) {
+      // 실패 시 롤백
+      setHearts((prev) =>
+        prev.map((h) =>
+          Number(h.restaurant.id) === restaurantId
+            ? { ...h, isLiked: false }
+            : h,
+        ),
+      );
+      alert("찜 등록 실패");
+      return;
+    }
+
+    // 2) 서버 최신 상태로 동기화(리스트 재로딩)
+    refreshHearts();
+  };
+
+  const handleUnlike = async (restaurantId: number) => {
+    // 1) 낙관적 반영 (UI 즉시 제거)
+    setHearts((prev) => {
+      const next = prev.filter((h) => Number(h.restaurant.id) !== restaurantId);
+      setVisibleCount((v) => Math.min(v, next.length));
+      return next;
+    });
+
+    try {
+      await unlikePlace(restaurantId);
+    } catch (e) {
+      // 실패 시 롤백: 서버 상태 다시 받아와서 복구
+      alert("찜 해제 실패");
+      refreshHearts();
+      return;
+    }
+
+    // 2) 서버 최신 상태로 동기화
+    refreshHearts();
+  };
 
   return (
     <>
