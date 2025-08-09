@@ -58,14 +58,12 @@ export default function SignInForm() {
   //* 이삭 수정 부분
   useEffect(() => {
     if (isSuccess && loginResult) {
-      // setUser(loginResult); >>> 로그인 후 상태 저장
-      setUser(loginResult);
+      // user 정보와 accessToken을 분리해서 저장
       loginAction({
-        accessToken: "",
+        accessToken: loginResult.accessToken,
         user: loginResult,
         password: "",
       });
-      // console.log("저장된 user", loginResult);
 
       if (!loginResult.nickname) {
         router.push("/onboarding/1");

@@ -23,12 +23,12 @@ export default function TermForService() {
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.back();
             }}
           >
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              alt={"뒤로가기"}
               width={22}
               height={30}
             />
@@ -40,7 +40,10 @@ export default function TermForService() {
         className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
         {termsForService.map((item, key) => (
-          <section key={key} className="mb-5 flex flex-col justify-start gap-1">
+          <section
+            key={item.index}
+            className="mb-5 flex flex-col justify-start gap-1"
+          >
             {/* 조항 번호, 제목 */}
             {item.index && (
               <div className="text-base font-bold">

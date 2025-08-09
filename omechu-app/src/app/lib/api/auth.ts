@@ -4,7 +4,8 @@ import type {
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
-import apiClient from "./client";
+import axiosInstance from "@/lib/api/axios";
+import { useAuthStore } from "../stores/auth.store";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
@@ -28,6 +29,7 @@ export interface LoginSuccessData {
   nickname: string;
   created_at: string;
   updated_at: string;
+  accessToken: string; // 이삭 추가
 }
 
 // 회원가입 성공 시 success 객체 구조
@@ -75,6 +77,29 @@ export interface OnboardingData {
   allergy: string[];
 }
 
+// 내부 유틸: store/localStorage 어디에 저장됐든 accessToken 읽기
+const readAccessToken = (): string | null => {
+  // 1) 우선 zustand store에서 시도
+  const fromStore = useAuthStore.getState().user?.accessToken;
+  if (fromStore) return fromStore;
+
+  // 2) 과거/현재 키들을 순회하며 로컬스토리지에서 탐색
+  try {
+    const candidateKeys = ["auth-storage", "auth-store", "auth-user-storage"];
+    for (const key of candidateKeys) {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+      const parsed = JSON.parse(raw);
+      const token =
+        parsed?.state?.user?.accessToken ?? parsed?.state?.accessToken ?? null;
+      if (token) return token;
+    }
+  } catch (e) {
+    console.warn("[AUTH] readAccessToken localStorage parse error:", e);
+  }
+  return null;
+};
+
 /**
  * 로그인 API
  * @param data email, password
@@ -82,7 +107,7 @@ export interface OnboardingData {
 export const login = async (
   data: LoginFormValues,
 ): Promise<LoginSuccessData> => {
-  const response = await apiClient.post<ApiResponse<LoginSuccessData>>(
+  const response = await axiosInstance.post<ApiResponse<LoginSuccessData>>(
     "/auth/login",
     data,
     // * 이삭 추가 부분
@@ -108,7 +133,7 @@ export const signup = async (
   data: SignupFormValues,
 ): Promise<SignupSuccessData> => {
   const { email, password } = data;
-  const response = await apiClient.post<ApiResponse<SignupSuccessData>>(
+  const response = await axiosInstance.post<ApiResponse<SignupSuccessData>>(
     "/auth/signup",
     { email, password },
   );
@@ -126,10 +151,9 @@ export const completeOnboarding = async (
   data: OnboardingData,
 ): Promise<OnboardingSuccessData> => {
   // TODO: 백엔드 응답 타입 정의
-  const response = await apiClient.patch<ApiResponse<OnboardingSuccessData>>(
-    "/auth/complete",
-    data,
-  );
+  const response = await axiosInstance.patch<
+    ApiResponse<OnboardingSuccessData>
+  >("/auth/complete", data);
 
   const apiResponse = response.data;
 
@@ -149,7 +173,7 @@ export const completeOnboarding = async (
 export const sendVerificationCode = async (
   email: string,
 ): Promise<SendVerificationCodeSuccessData> => {
-  const response = await apiClient.post<
+  const response = await axiosInstance.post<
     ApiResponse<SendVerificationCodeSuccessData>
   >("/auth/send", { email });
 
@@ -170,7 +194,7 @@ export const verifyVerificationCode = async (data: {
   email: string;
   code: string;
 }): Promise<VerifyVerificationCodeSuccessData> => {
-  const response = await apiClient.post<
+  const response = await axiosInstance.post<
     ApiResponse<VerifyVerificationCodeSuccessData>
   >("/auth/verify", data);
   const apiResponse = response.data;
@@ -186,7 +210,7 @@ export const verifyVerificationCode = async (data: {
 export const requestPasswordReset = async (
   data: FindPasswordFormValues,
 ): Promise<RequestPasswordResetSuccessData> => {
-  const response = await apiClient.post<
+  const response = await axiosInstance.post<
     ApiResponse<RequestPasswordResetSuccessData>
   >("/auth/reset-request", data);
   const apiResponse = response.data;
@@ -204,7 +228,7 @@ export const requestPasswordReset = async (
 export const resetPassword = async (
   data: ResetPasswordFormValues,
 ): Promise<string> => {
-  const response = await apiClient.patch<ApiResponse<string>>(
+  const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/passwd",
     { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
   );
@@ -221,7 +245,30 @@ export const resetPassword = async (
  * 로그아웃 API
  */
 export const logout = async (): Promise<void> => {
-  await apiClient.post("/auth/logout");
+  const accessToken = readAccessToken();
+
+  if (!accessToken) {
+    throw new Error(
+      "accessToken을 찾을 수 없습니다. (store/localStorage 확인 필요)",
+    );
+  }
+
+  console.log(
+    "[DEBUG] logout() -> call /auth/logout, token(head 12):",
+    accessToken.slice(0, 12),
+  );
+
+  await axiosInstance.post(
+    "/auth/logout",
+    {},
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
+    },
+  );
+
+  // 서버 호출 성공 시에만 store 정리
+  useAuthStore.getState().logout?.();
 };
 
 /**
@@ -234,11 +281,25 @@ export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
 }): Promise<string> => {
-  const response = await apiClient.patch<ApiResponse<string>>(
+  const accessToken = readAccessToken();
+  if (!accessToken) {
+    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
+  }
+
+  console.log("[DEBUG] changePassword 호출");
+  console.log("[DEBUG] Token(head 12):", accessToken.slice(0, 12));
+  console.log("[DEBUG] Request Body:", data);
+
+  const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/change-passwd",
     data,
-    { withCredentials: true },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
   );
+
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
     throw new Error(
@@ -248,13 +309,27 @@ export const changePassword = async (data: {
   return apiResponse.success;
 };
 
-//* 현재 로그인된 유저 정보 조회
-// * 추가 - 이삭
+// 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
-  const response =
-    await apiClient.get<ApiResponse<LoginSuccessData>>(`/profile/me`);
-  if (response.data.resultType === "FAIL" || !response.data.success) {
-    throw new Error(response.data.error?.reason || "유저 조회 실패");
+  // zustand store와 localStorage를 모두 고려하여 accessToken 읽기
+  const accessToken = readAccessToken();
+  if (!accessToken) {
+    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
   }
-  return response.data.success;
+
+  const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
+    "/profile",
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  const apiResponse = response.data;
+  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    throw new Error(apiResponse.error?.reason || "유저 조회 실패");
+  }
+
+  return apiResponse.success;
 };

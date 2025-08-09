@@ -1,8 +1,9 @@
-import apiClient from "@/lib/api/client";
+import { useAuthStore } from "@/auth/store";
+import axiosInstance from "@/lib/api/axios";
 
 // presigned URL 받기
 export const getPresignedUrl = async (fileName: string, fileType: string) => {
-  const { data } = await apiClient.post("/image/upload?directory=profile", {
+  const { data } = await axiosInstance.post("/image/upload?directory=profile", {
     fileName,
     fileType,
   });
@@ -22,12 +23,13 @@ export const uploadToS3 = async (uploadUrl: string, file: File) => {
 };
 
 // 프로필 정보 PATCH
-export const updateProfile = async (
-  userId: string | number, // userId를 인자로 받음
-  body: {
-    nickname: string;
-    profileImageUrl?: string;
-  },
-) => {
-  return apiClient.patch(`/profile/${userId}`, body);
+export const updateProfile = async (body: {
+  nickname: string;
+  profileImageUrl?: string;
+}) => {
+  const accessToken = useAuthStore.getState().user?.accessToken;
+
+  return axiosInstance.patch(`/profile`, body, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+  });
 };
