@@ -8,7 +8,7 @@ import Header from "@/components/common/Header";
 import InfoRow from "./InfoRow";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 
-import { getProfile } from "../api/profile";
+import { fetchProfile as fetchProfileApi } from "../api/profile";
 
 type ProfileType = {
   nickname: string;
@@ -26,16 +26,16 @@ export default function UserInfoEdit() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchProfile() {
+    async function loadProfile() {
       try {
-        const data = await getProfile();
+        const data = await fetchProfileApi();
 
         const profileData: ProfileType = {
           nickname: data.nickname,
           gender: data.gender,
           workoutStatus: data.exercise || null,
           preferredFood: Array.isArray(data.prefer) ? data.prefer : [],
-          constitution: data.body_type ? [data.body_type] : [],
+          constitution: data.bodyType ? [data.bodyType] : [],
           allergies: Array.isArray(data.allergy) ? data.allergy : [],
           profileImageUrl: data.profileImageUrl || null,
         };
@@ -50,7 +50,7 @@ export default function UserInfoEdit() {
         }
       }
     }
-    fetchProfile();
+    loadProfile();
   }, []);
 
   if (error)
