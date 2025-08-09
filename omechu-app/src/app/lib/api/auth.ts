@@ -281,11 +281,21 @@ export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
 }): Promise<string> => {
+  const accessToken = readAccessToken();
+  if (!accessToken) {
+    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
+  }
+
   const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/change-passwd",
     data,
-    { withCredentials: true },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
   );
+
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
     throw new Error(
