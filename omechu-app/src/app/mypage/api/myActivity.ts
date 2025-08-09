@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/lib/api/auth";
 import axiosInstance from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
@@ -61,7 +62,6 @@ export interface FetchMyReviewsResponse {
   };
 }
 
-// This endpoint now uses JWT token in Authorization header and no longer requires userId parameter.
 export async function fetchMyReviews(): Promise<FetchMyReviewsResponse> {
   const accessToken = useAuthStore.getState().user?.accessToken;
   if (!accessToken) {
@@ -126,4 +126,27 @@ export async function fetchMyPlaces(
       data: fixed,
     },
   };
+}
+
+// 리뷰 좋아요/취소
+export async function toggleReviewLike(
+  restId: number,
+  reviewId: number,
+  like: boolean,
+) {
+  const accessToken = useAuthStore.getState().user?.accessToken;
+  if (!accessToken) {
+    throw new Error("No access token. Please login first.");
+  }
+  const res = await axiosInstance.patch<
+    ApiResponse<{ reviewId: string; restId: string }>
+  >(
+    `/place/${restId}/like/${reviewId}`,
+    { like },
+    { headers: { Authorization: `Bearer ${accessToken}` } },
+  );
+  if (res.data.resultType === "FAIL") {
+    throw new Error(res.data.error?.reason || "리뷰 좋아요 변경 실패");
+  }
+  return res.data.success;
 }

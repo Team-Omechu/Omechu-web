@@ -22,6 +22,7 @@ import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 import {
   fetchMyPlaces,
   fetchMyReviews,
+  toggleReviewLike,
   type MyReviewItem,
 } from "../api/myActivity";
 import { likePlace, unlikePlace } from "../api/favorites";
@@ -227,19 +228,44 @@ export default function MyActivity() {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleLikeToggle = (id: number) => {
-    // 더미 토글 (API 연동 전용 UI 반영)
+  const handleLikeToggle = async (
+    restId: number,
+    reviewId: number,
+    currentLiked: boolean,
+  ) => {
+    // 1) 낙관적 업데이트
     setReviewList((prev) =>
       prev.map((r) =>
-        r.id === id
-          ? {
+        Number(r.id) !== reviewId
+          ? r
+          : {
               ...r,
-              isLiked: false,
-              like: r.like ? r.like - 1 : (r.like ?? 0) + 1,
-            }
-          : r,
+              isLiked: !currentLiked,
+              like: Math.max(0, (r.like ?? 0) + (currentLiked ? -1 : 1)),
+            },
       ),
     );
+
+    try {
+      // 2) 서버 반영
+      await toggleReviewLike(restId, reviewId, !currentLiked);
+    } catch (e) {
+      // 3) 실패 시 롤백
+      setReviewList((prev) =>
+        prev.map((r) =>
+          Number(r.id) !== reviewId
+            ? r
+            : {
+                ...r,
+                isLiked: currentLiked,
+                like: Math.max(0, (r.like ?? 0) + (currentLiked ? 1 : -1)),
+              },
+        ),
+      );
+      console.error(e);
+      // 필요하면 토스트
+      // toast.error("좋아요 변경에 실패했습니다.");
+    }
   };
 
   const handleDeleteReview = (id: number) => {
@@ -319,8 +345,14 @@ export default function MyActivity() {
                         rating={review.rating ?? 0}
                         reviewText={review.text ?? ""}
                         recommendCount={review.like ?? 0}
-                        isLiked={false}
-                        onLikeToggle={() => handleLikeToggle(Number(review.id))}
+                        isLiked={!!review.like} // 서버에 필드가 없으면 클라이언트에서 관리
+                        onLikeToggle={() =>
+                          handleLikeToggle(
+                            Number(review.restaurant?.id),
+                            Number(review.id),
+                            !!review.like,
+                          )
+                        }
                         restaurantImage={review.restaurant?.rest_image ?? ""}
                         reviewImages={
                           Array.isArray(review.reviewImages)
