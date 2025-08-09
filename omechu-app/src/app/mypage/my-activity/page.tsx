@@ -19,7 +19,7 @@ import SelectTabBar from "@/components/mypage/SelectTabBar";
 import { Restaurants } from "@/constant/restaurant/restaurantList";
 
 import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
-import { useProfile } from "../hooks/useProfile";
+import { useAuthStore } from "@/auth/store";
 import { likePlace, unlikePlace } from "../api/favorites";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
@@ -31,23 +31,16 @@ type MyRestaurant = {
   rating?: number;
   images?: { link: string }[];
   address?: string;
+  reviews?: number;
 };
 
 export default function MyActivity() {
   const router = useRouter();
-  const {
-    profile,
-    loading: profileLoading,
-    error: profileError,
-  } = useProfile();
+  // JWT 기반: 토큰 하이드레이션 후 유효성 체크
+  const user = useAuthStore((s) => s.user);
+  const accessToken = user?.accessToken;
+  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
   const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    // 401 인증 오류로 추정되는 케이스 (필요에 따라 조건 조정)
-    if (!profileLoading && profileError) {
-      setModalOpen(true);
-    }
-  }, [profileLoading, profileError]);
 
   const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -61,53 +54,59 @@ export default function MyActivity() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const filteredItems = Restaurants;
-
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
-  const LODAING_TIMEOUT = 1800;
+  const LOADING_TIMEOUT = 1800;
 
   useEffect(() => {
-    if (selectedIndex !== 0) return;
-    if (!profile?.id) return; // id 없으면 fetch 금지!
+    if (!hasHydrated) return; // 1) 스토어 복원 대기
+    if (selectedIndex !== 0) return; // 2) 후기 탭일 때만
 
-    console.log("[DEBUG] useEffect fired", {
-      selectedIndex,
-      profileId: profile?.id,
-    });
+    // 3) 토큰 없으면 조용히 대기(모달 X). 목록만 비워두고 종료
+    if (!accessToken) {
+      setReviewList([]);
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
-    fetchMyReviews(profile.id)
-      .then((res) => {
-        // 타입, 데이터 체크
+    fetchMyReviews()
+      .then((res: any) => {
         if (!res.success || !Array.isArray(res.success.data)) {
           setReviewList([]);
           setError("리뷰 데이터를 불러오지 못했습니다.");
           return;
         }
         setReviewList(res.success.data);
+        setModalOpen(false); // 성공하면 혹시 켜져있던 모달 닫기
       })
-      .catch(() => setError("리뷰 불러오기 실패"))
+      .catch((e: any) => {
+        if (e?.response?.status === 401) setModalOpen(true); // ← 여기서만 모달
+        setError("리뷰 불러오기 실패");
+      })
       .finally(() => setLoading(false));
-  }, [selectedIndex, profile?.id]);
+  }, [hasHydrated, accessToken, selectedIndex]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!hasHydrated) return;
     if (selectedIndex !== 1) return;
-    if (!profile?.id) return;
+
+    if (!accessToken) {
+      // 토큰 없으면 대기 (모달 X)
+      setMyRestaurants([]);
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
     fetchMyPlaces(10, 10)
       .then((data: any) => {
-        console.log("[DEBUG] fetchMyPlaces 응답 데이터:", data);
         const places = data.success?.data ?? [];
         setMyRestaurants(
-          (data.success?.data ?? []).map((item: any) => ({
+          places.map((item: any) => ({
             id: Number(item.id),
             name: item.name || "-",
             repre_menu:
@@ -120,14 +119,14 @@ export default function MyActivity() {
             reviews: item._count?.review ?? 0,
           })),
         );
-        console.log("[DEBUG] 상태에 세팅된 myRestaurants:", places);
+        setModalOpen(false); // 성공 시 모달 닫기
       })
-      .catch((err) => {
-        console.error("[ERROR] fetchMyPlaces 실패:", err);
+      .catch((err: any) => {
+        if (err?.response?.status === 401) setModalOpen(true); // ← 여기서만 모달
         setError("맛집 목록을 불러오지 못했습니다.");
       })
       .finally(() => setLoading(false));
-  }, [selectedIndex, profile?.id]);
+  }, [hasHydrated, accessToken, selectedIndex]);
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -187,7 +186,7 @@ export default function MyActivity() {
     if (isLoading) {
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, LODAING_TIMEOUT); // 1.8초 후 로딩 해제
+      }, LOADING_TIMEOUT); // 1.8초 후 로딩 해제
 
       return () => clearTimeout(timer);
     }
@@ -278,7 +277,7 @@ export default function MyActivity() {
             {/* 로딩, 에러, 리스트 분기 */}
             {loading ? (
               <div className="flex flex-col gap-6">
-                {Array.from({ length: 3 }).map((_, i) => (
+                {Array.from({ length: 4 }).map((_, i) => (
                   <SkeletonRestaurantReviewCard key={i} />
                 ))}
               </div>
