@@ -303,9 +303,9 @@ export default function MyActivity() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex w-full flex-col items-center gap-7">
+              <section className="`w-full flex flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="flex h-24 w-full justify-center py-8">
+                  <div className="flex w-full items-end justify-center py-8">
                     <LoadingSpinner label="작성한 후기를 불러오는 중..." />
                   </div>
                 ) : (
@@ -350,8 +350,8 @@ export default function MyActivity() {
         {selectedIndex === 1 && (
           <>
             {loading ? (
-              <div className="flex w-full flex-col gap-4">
-                {Array.from({ length: 5 }).map((_, i) => (
+              <div className="flex w-full flex-col items-center gap-7 pt-3">
+                {Array.from({ length: 8 }).map((_, i) => (
                   <SkeletonFoodCard key={i} />
                 ))}
               </div>
@@ -360,7 +360,9 @@ export default function MyActivity() {
             ) : (
               <section className="flex w-full flex-col gap-5 px-2">
                 {myRestaurants.length === 0 ? (
-                  <div>등록한 맛집이 없습니다.</div>
+                  <div className="flex w-full items-end justify-center py-8">
+                    <LoadingSpinner label="작성한 후기를 불러오는 중..." />
+                  </div>
                 ) : (
                   <>
                     {visiblePlaces.map((item) => (
