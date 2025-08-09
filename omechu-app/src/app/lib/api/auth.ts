@@ -286,6 +286,10 @@ export const changePassword = async (data: {
     throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
   }
 
+  console.log("[DEBUG] changePassword 호출");
+  console.log("[DEBUG] Token(head 12):", accessToken.slice(0, 12));
+  console.log("[DEBUG] Request Body:", data);
+
   const response = await axiosInstance.patch<ApiResponse<string>>(
     "/auth/change-passwd",
     data,
