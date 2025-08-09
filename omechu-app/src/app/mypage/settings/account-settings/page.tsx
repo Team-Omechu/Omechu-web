@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,47 +21,56 @@ export default function AccountSettings() {
 
   const [showModal, setShowModal] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "" });
-  const [email, setEmail] = useState("");
+  const [email] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const user = useAuthStore((state) => state.user);
 
   const { profile, loading, error: profileError } = useProfile();
   const [minLoading, setMinLoading] = useState(true);
 
-  console.log("[디버깅] user:", user);
-
-  // 동기화
+  // 토스트 자동 닫힘
   useEffect(() => {
-    if (profile) {
-      console.log("[디버깅] profile 응답값:", profile);
-      setEmail(profile.email ?? "");
-    }
-  }, [profile]);
-
-  useEffect(() => {
-    if (toast.show) {
-      const timer = setTimeout(
-        () => setToast((t) => ({ ...t, show: false })),
-        2000,
-      );
-      return () => clearTimeout(timer);
-    }
+    if (!toast.show) return;
+    const t = setTimeout(
+      () => setToast((prev) => ({ ...prev, show: false })),
+      2000,
+    );
+    return () => clearTimeout(t);
   }, [toast.show]);
 
   useEffect(() => {
+    // 최소 로딩 시간 보장 + 로딩 종료 시 즉시 해제
     if (loading) {
-      const timer = setTimeout(() => setMinLoading(false), 3000);
-      return () => clearTimeout(timer);
+      setMinLoading(true);
+      const t = setTimeout(() => setMinLoading(false), 800);
+      return () => clearTimeout(t);
     } else {
       setMinLoading(false);
     }
   }, [loading]);
 
+  // 최종 로딩 스피너
   if (loading || minLoading) {
     return (
       <LoadingSpinner label="프로필 정보 불러오는 중..." className="h-screen" />
     );
   }
+
+  const handleLogoutConfirm = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    try {
+      await logout(); // API 호출
+      useAuthStore.getState().logout(); // 클라이언트 상태도 정리
+      router.push("/mainpage"); // 이동
+    } catch (e) {
+      setToast({ show: true, message: "로그아웃에 실패했습니다." });
+      setShowModal(false);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <>
@@ -72,7 +82,7 @@ export default function AccountSettings() {
               router.push("./");
             }}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
@@ -91,7 +101,7 @@ export default function AccountSettings() {
               ) : profileError ? (
                 <div className="text-red-500">오류가 발생했습니다.</div>
               ) : (
-                <div>{email}</div>
+                <div>{profile?.email ?? null}</div>
               )}
             </div>
             <button
@@ -105,7 +115,7 @@ export default function AccountSettings() {
                   비밀번호 변경
                 </h1>
                 <div>
-                  <Image
+                  <img
                     src={"/arrow/right_arrow_black.svg"}
                     alt={"오른쪽 이동 버튼"}
                     width={12}
