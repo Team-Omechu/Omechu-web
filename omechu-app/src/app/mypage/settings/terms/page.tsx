@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import Header from "@/components/common/Header";
@@ -32,7 +32,7 @@ export default function Terms() {
               router.push("/mypage/settings");
             }}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
@@ -41,7 +41,7 @@ export default function Terms() {
           </button>
         }
       />
-      <main className="h-[calc(100dvh-3rem)] px-2 py-2">
+      <main className="h-[calc(100dvh-3rem)] overflow-y-hidden px-2 py-2 scrollbar-hide">
         <ul className="flex flex-col">
           {termsList.map((item) => (
             <button
@@ -52,7 +52,7 @@ export default function Terms() {
               <li className="flex w-full items-center justify-between px-6 py-3">
                 <div className="text-xl font-normal">{item.title}</div>
                 <div>
-                  <Image
+                  <img
                     src={"/arrow/right_arrow_black.svg"}
                     alt={"오른쪽 이동 버튼"}
                     width={12}
