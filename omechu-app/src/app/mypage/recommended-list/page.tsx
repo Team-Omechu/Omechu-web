@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import FloatingActionButton from "@/components/common/FloatingActionButton";
@@ -204,7 +204,7 @@ export default function RecommendedList() {
               router.push("/mypage");
             }}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"changeProfileImage"}
               width={22}
