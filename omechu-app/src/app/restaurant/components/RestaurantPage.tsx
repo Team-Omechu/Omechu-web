@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { distance } from "fastest-levenshtein";
 
@@ -54,7 +54,20 @@ export default function Restaurant() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   const [search, setSearch] = useState("");
-  const [sortMode, setSortMode] = useState<SortValue>("recommend");
+  const SORT_KEY = "restaurantSortMode";
+  // 기존: const [sortMode, setSortMode] = useState<SortValue>("recommend");
+  const [sortMode, setSortMode] = useState<SortValue>(() => {
+    if (typeof window === "undefined") return "recommend"; // SSR 안전망
+    const saved = localStorage.getItem(SORT_KEY) as SortValue | null;
+    return saved ?? "recommend";
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(SORT_KEY, sortMode);
+    } catch {}
+  }, [sortMode]);
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isSearched, setIsSearched] = useState(false);
@@ -64,6 +77,25 @@ export default function Restaurant() {
 
   const { restaurantList, fetchRestaurants, isLoading, hasMore, reset } =
     useRestaurantList();
+
+  // 최근 본 음식점 ID를 로컬 스토리지에 저장하는 로직
+  const RECENT_KEY = "recentViewedRestaurants";
+  const [recentIds, setRecentIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(RECENT_KEY);
+      if (saved) setRecentIds(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  const recordRecent = useCallback((id: number) => {
+    setRecentIds((prev) => {
+      const next = [id, ...prev.filter((x) => x !== id)].slice(0, 100);
+      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
 
   // 검색어를 이용한 필터링
   const filteredItems = search.trim()
@@ -135,6 +167,26 @@ export default function Restaurant() {
     fetchRestaurants();
   }, [selectedFilters, selectedKeywords]);
 
+  const baseItems = filteredItems; // 검색/필터 적용된 목록을 정렬의 입력으로
+  const sortedItems = useMemo(() => {
+    if (sortMode === "recommend") {
+      return [...baseItems].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+    }
+    if (sortMode === "recent") {
+      const rank = new Map<number, number>();
+      recentIds.forEach((id, idx) => rank.set(id, idx));
+      const originalIndex = new Map<number, number>();
+      baseItems.forEach((r, idx) => originalIndex.set(r.id, idx));
+      return [...baseItems].sort((a, b) => {
+        const ra = rank.has(a.id) ? rank.get(a.id)! : Infinity;
+        const rb = rank.has(b.id) ? rank.get(b.id)! : Infinity;
+        if (ra !== rb) return ra - rb;
+        return (originalIndex.get(a.id) ?? 0) - (originalIndex.get(b.id) ?? 0);
+      });
+    }
+    return baseItems;
+  }, [sortMode, baseItems, recentIds]);
+
   const handleSearch = (search: string) => {
     router.push(`/restaurant?query=${search}`);
     setIsSearched(true);
@@ -190,6 +242,11 @@ export default function Restaurant() {
       },
       { enableHighAccuracy: true },
     );
+  };
+
+  const handleItemClick = (id: number) => {
+    recordRecent(id);
+    router.push(`/restaurant/restaurant-detail/${id}`);
   };
 
   return (
@@ -269,16 +326,14 @@ export default function Restaurant() {
         <SearchResultEmpty
           search={search}
           similarItems={similarItems}
-          onItemClick={(id) =>
-            router.push(`/restaurant/restaurant-detail/${id}`)
-          }
+          onItemClick={(id) => handleItemClick(id)}
         />
       )}
 
       {/* 음식 카드 리스트 */}
       <FoodCardList
-        items={restaurantList}
-        onItemClick={(id) => router.push(`/restaurant/restaurant-detail/${id}`)}
+        items={sortedItems}
+        onItemClick={(id) => handleItemClick(id)}
       />
 
       <div ref={loaderRef} className="h-[1px]" />
