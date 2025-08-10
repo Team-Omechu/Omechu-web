@@ -28,6 +28,8 @@ export default function MenuDetailPage() {
 
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
 
+  console.log("Restaurants Data:", restaurants);
+
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
   const cached = queryClient.getQueryData<MenuListResponse>([
@@ -104,9 +106,7 @@ export default function MenuDetailPage() {
             item={item}
             menu={menu.menu}
             restaurantId={item.id2}
-            onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id2}`)
-            }
+
           />
         ))}
       </div>

@@ -8,13 +8,13 @@ import {
   MenuListResponse,
   RecommendMenuRequest,
 } from "@/constant/mainpage/resultData";
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 
 export const getRecommendMenu = async (
   request: RecommendMenuRequest,
 ): Promise<MenuListResponse> => {
   // POST 로 body 에 실어서 보내기
-  const { data } = await apiClient.post<MenuListResponse>(
+  const { data } = await axiosInstance.post<MenuListResponse>(
     "/recommend",
     request,
   );
@@ -24,7 +24,7 @@ export const getRecommendMenu = async (
 export const getRestaurants = async (
   request: RestaurantRequest,
 ): Promise<restaurantList> => {
-  const { data } = await apiClient.post<restaurantList>(
+  const { data } = await axiosInstance.post<restaurantList>(
     "/fetch-google-places",
     request,
   );
@@ -33,21 +33,21 @@ export const getRestaurants = async (
 };
 
 export const getProfile = async (): Promise<ProfileResponse> => {
-  const { data } = await apiClient.get<ProfileResponse>("/profile");
+  const { data } = await axiosInstance.get<ProfileResponse>("/profile");
   return data;
 };
 
 export const postMukburim = async (
   menuName: string,
 ): Promise<mukburimResponse> => {
-  const { data } = await apiClient.post<mukburimResponse>("/mukburim", {
+  const { data } = await axiosInstance.post<mukburimResponse>("/mukburim", {
     menu_name: menuName,
   });
   return data;
 };
 
 export const addHeart = async (userId?: number, restaurantId?: number) => {
-  const response = await apiClient.post("/heart", {
+  const response = await axiosInstance.post("/heart", {
     userId: userId,
     restaurantId: restaurantId,
   });
@@ -58,7 +58,7 @@ export const addHeart = async (userId?: number, restaurantId?: number) => {
 };
 
 export const deleteHeart = async (userId?: number, restaurantId?: number) => {
-  const response = await apiClient.delete("/heart", {
+  const response = await axiosInstance.delete("/heart", {
     data: {
       userId: userId,
       restaurantId: restaurantId,

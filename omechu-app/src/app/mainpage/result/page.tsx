@@ -17,8 +17,6 @@ import MainLoading from "@/components/mainpage/MainLoading";
 import { useTagStore } from "@/lib/stores/tagData.store";
 import { useAuthStore } from "@/auth/store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
-import { useQueryClient } from "@tanstack/react-query";
-import { ProfileResponse } from "@/constant/mainpage/profile";
 import usePostMukburim from "../hooks/usePostMukburim";
 
 export default function ResultPage() {
@@ -37,14 +35,9 @@ export default function ResultPage() {
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
   const { setKeyword } = useLocationAnswerStore();
-  const { tagData } = useTagStore();
-  const queryClient = useQueryClient();
-  const cached = queryClient.getQueryData<ProfileResponse>(["profile"]);
-
-  const userId = cached?.success?.id;
 
   const handleExcludeCLick = (menuName: string) => {
-    if (userId == null) {
+    if (isLoggedIn === false) {
       setShowLoginModal(true);
       return;
     }
@@ -150,9 +143,7 @@ export default function ResultPage() {
 
       <div className="px-4 py-2">
         <div className="rounded-md border bg-white p-3 text-sm">
-          {tagData.map(({ tag, description }) => (
-            <TagCard key={tag} tag={tag} description={description} />
-          ))}
+            <TagCard/>
         </div>
       </div>
 

@@ -6,22 +6,24 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoginPromptModal from "./example_testpage/components/LoginPromptModal";
-import { useProfileQuery } from "./hooks/useGetProfile";
 import { useTagStore } from "@/lib/stores/tagData.store";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { useProfileQuery } from "./hooks/useGetProfile";
 
 export default function MainPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
-  const { data } = useProfileQuery();
   const { tagDataReset } = useTagStore();
   const { locationReset } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
+  const {data} = useProfileQuery();
+
+  console.log("Profile Data:", data);
 
   const handleStartClick = () => {
-    if (data?.error === null) {
+    if (isLoggedIn) {
       tagDataReset();
       locationReset();
       questionReset();
