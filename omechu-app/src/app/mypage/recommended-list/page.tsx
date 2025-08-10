@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -15,8 +14,11 @@ import {
   filteredChoSeong,
   HANGUL_CHO_SEONG,
 } from "@/constant/choSeong";
-import { initialFoodList } from "@/constant/initialFoodList";
 import { suggestionList } from "@/constant/suggestionList";
+
+import AuthErrorModal from "../AuthErrorModalSection";
+import { useAuthStore } from "@/auth/store";
+import { fetchRecommendManagement } from "../api/recommend";
 
 // FoodItem 타입을 정의하거나 import
 type FoodItem = {
@@ -31,14 +33,16 @@ export default function RecommendedList() {
 
   const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
 
-  // 음식 리스트 초기 정렬 (한글 기준 오름차순)
-  const sortedFoodList: FoodItem[] = [...initialFoodList]
-    .map((item) => ({
-      ...item,
-      imageUrl: item.imageUrl ?? "", // 기본값을 빈 문자열로 설정
-    }))
-    .sort((a, b) => a.title.localeCompare(b.title, "ko"));
-  const [foodList, setFoodList] = useState<FoodItem[]>(sortedFoodList);
+  // 인증/하이드레이션
+  const user = useAuthStore((s) => s.user);
+  const accessToken = user?.accessToken;
+  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
+
+  // 서버 데이터/상태
+  const [foodList, setFoodList] = useState<FoodItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [selectedIndex, setSelectedIndex] = useState(0); // 추천/제외 탭 인덱스
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
@@ -47,6 +51,57 @@ export default function RecommendedList() {
 
   const [searchTerm, setSearchTerm] = useState(""); // input에 입력 중인 검색어
   const [submittedTerm, setSubmittedTerm] = useState(""); // 검색 확정된 키워드
+
+  // 서버에서 추천/제외 목록 불러오기
+  useEffect(() => {
+    if (!hasHydrated) return;
+
+    // 토큰 없으면 로그인 요구 모달
+    if (!accessToken) {
+      setModalOpen(true);
+      setFoodList([]);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    fetchRecommendManagement()
+      .then((res: any) => {
+        // 응답 구조:
+        // { success: { summary, recommendMenus: [...], exceptedMenus: [...] } }
+        const recommend = res?.success?.recommendMenus ?? [];
+        const excepted = res?.success?.exceptedMenus ?? [];
+
+        // recommendMenus / exceptedMenus 를 하나의 리스트로 합치며 isExcluded 플래그를 세팅
+        const merged: FoodItem[] = [
+          ...recommend.map((m: any) => ({
+            title: m.name ?? "",
+            imageUrl: m.image_link ?? "",
+            isExcluded: false,
+          })),
+          ...excepted.map((m: any) => ({
+            title: m.name ?? "",
+            imageUrl: m.image_link ?? "",
+            isExcluded: true,
+          })),
+        ]
+          // 타이틀 정렬 (한글 기준)
+          .sort((a, b) => a.title.localeCompare(b.title, "ko"));
+
+        setFoodList(merged);
+        setModalOpen(false);
+      })
+      .catch((e: any) => {
+        if (e?.response?.status === 401) {
+          setModalOpen(true);
+        } else {
+          setError("추천 목록을 불러오지 못했습니다.");
+        }
+        setFoodList([]);
+      })
+      .finally(() => setLoading(false));
+  }, [hasHydrated, accessToken]);
 
   // 검색 실행 핸들러
   const handleSearch = (term: string) => {
@@ -167,16 +222,34 @@ export default function RecommendedList() {
 
         {/* 필터링된 음식 리스트 */}
         <section className="grid grid-cols-3 gap-4">
-          {filteredFoodList.map((item, index) => (
-            <FoodBox
-              key={`${item.title}-${index}`}
-              title={item.title}
-              imageUrl={item.imageUrl}
-              isExcluded={item.isExcluded}
-              onToggle={() => onToggle(item.title)}
-              onClick={() => {}}
-            />
-          ))}
+          {loading ? (
+            // 간단한 로딩 스켈레톤
+            Array.from({ length: 9 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-28 w-28 animate-pulse rounded-xl border border-gray-200 bg-gray-100"
+              />
+            ))
+          ) : error ? (
+            <div className="col-span-3 w-full py-10 text-center text-red-600">
+              {error}
+            </div>
+          ) : filteredFoodList.length === 0 ? (
+            <div className="col-span-3 w-full py-10 text-center text-gray-500">
+              항목이 없습니다.
+            </div>
+          ) : (
+            filteredFoodList.map((item, index) => (
+              <FoodBox
+                key={`${item.title}-${index}`}
+                title={item.title}
+                imageUrl={item.imageUrl}
+                isExcluded={item.isExcluded}
+                onToggle={() => onToggle(item.title)}
+                onClick={() => {}}
+              />
+            ))
+          )}
         </section>
 
         {/* Floating Action Button - 맨 위로 이동 */}
@@ -185,6 +258,20 @@ export default function RecommendedList() {
           className="bottom-4 right-4 z-50"
         />
       </main>
+
+      {/* 인증 모달: 하이드레이션 이후에만 판단 */}
+      {hasHydrated && modalOpen && (
+        <AuthErrorModal
+          onConfirm={() => {
+            setModalOpen(false);
+            router.push("/sign-in");
+          }}
+          onClose={() => {
+            setModalOpen(false);
+            router.push("/sign-in");
+          }}
+        />
+      )}
     </>
   );
 }

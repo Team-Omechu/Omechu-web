@@ -108,7 +108,15 @@ export default function MyActivityClient() {
         }
         const normalized = list.map((r: any) => ({
           ...r,
-          isLiked: Boolean(r.isLiked ?? (r.like > 0 ? false : false)),
+          isLiked: Boolean(
+            r.isLiked ??
+              r.is_liked ??
+              r.myLike ??
+              r.my_like ??
+              r.liked ??
+              r.userLiked ??
+              (typeof r.like === "number" ? r.like > 0 : false),
+          ),
         }));
         setReviewList(normalized);
         setModalOpen(false);
@@ -144,6 +152,17 @@ export default function MyActivityClient() {
           images: item.rest_image ? [{ link: item.rest_image }] : [],
           address: item.address ?? "",
           reviews: item._count?.review ?? 0,
+          // 서버에서 내려올 수 있는 다양한 필드명을 보수적으로 처리
+          isLiked: Boolean(
+            item.isLiked ??
+              item.is_liked ??
+              item.isHearted ??
+              item.hearted ??
+              item.my_heart ??
+              item.myHeart ??
+              item.favorited ??
+              item.is_favorite,
+          ),
         }));
         setMyRestaurants(mapped);
         setModalOpen(false);
@@ -461,12 +480,20 @@ export default function MyActivityClient() {
                         </span>
                         <FoodCard
                           onLike={() => {
+                            if (item.isLiked) return; // 이미 찜 상태면 중복 호출 방지
+                            if (likePending.has(Number(item.id))) return; // 진행 중이면 무시
                             handlePlaceLike(Number(item.id));
                             console.log("[like] id:", item.id, typeof item.id);
                           }}
                           onUnlike={() => {
+                            if (!item.isLiked) return; // 이미 해제 상태면 중복 호출 방지
+                            if (likePending.has(Number(item.id))) return; // 진행 중이면 무시
                             handlePlaceUnlike(Number(item.id));
-                            console.log("[like] id:", item.id, typeof item.id);
+                            console.log(
+                              "[unlike] id:",
+                              item.id,
+                              typeof item.id,
+                            );
                           }}
                           item={{
                             id: item.id,
