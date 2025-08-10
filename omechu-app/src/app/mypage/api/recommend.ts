@@ -69,11 +69,8 @@ function normalizeSuccess(
   };
 }
 
-/**
- * 추천목록 관리 데이터 조회
- * - GET /recommend/management
- * - 인터셉터가 불안하면 Authorization 헤더를 명시적으로 붙임
- */
+// * 추천목록 관리 데이터 조회
+// * - GET /recommend/management
 export async function fetchRecommendManagement(): Promise<FetchRecommendManagementResponse> {
   const accessToken = useAuthStore.getState().user?.accessToken;
   if (!accessToken) {
@@ -99,4 +96,66 @@ export async function fetchRecommendManagement(): Promise<FetchRecommendManageme
     ...res.data,
     success: normalized,
   };
+}
+
+// * 추천목록에서 제외 목록으로 추가
+// * - POST /recommend/except
+export async function exceptMenu(params: {
+  menuId?: number;
+  menuName?: string;
+}) {
+  const accessToken = useAuthStore.getState().user?.accessToken;
+  if (!accessToken) {
+    throw new Error("No access token. Please login first.");
+  }
+
+  const body =
+    typeof params.menuId === "number"
+      ? { menuId: params.menuId }
+      : { menuName: params.menuName };
+
+  const res = await axiosInstance.post("/recommend/except", body, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (res.data.resultType === "FAIL" || !res.data.success) {
+    throw new Error(res.data.error?.reason || "제외 목록 추가 실패");
+  }
+
+  return res.data.success;
+}
+
+// * 제외 목록에서 제거 (다시 추천 받도록 설정)
+// * - POST /recommend/except/remove
+export type RemoveExceptResult = {
+  success: boolean;
+  message: string;
+};
+
+export async function removeExceptMenu(params: {
+  menuId?: number;
+  menuName?: string;
+}): Promise<RemoveExceptResult> {
+  const accessToken = useAuthStore.getState().user?.accessToken;
+  if (!accessToken) {
+    throw new Error("No access token. Please login first.");
+  }
+
+  const body =
+    typeof params.menuId === "number"
+      ? { menuId: params.menuId }
+      : { menuName: params.menuName };
+
+  const res = await axiosInstance.post("/recommend/except/remove", body, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (res.data.resultType === "FAIL" || !res.data.success) {
+    throw new Error(
+      res.data.error?.reason || "제외 목록에서 제거에 실패했습니다.",
+    );
+  }
+
+  // 서버 응답은 { success: { success: boolean, message: string } } 형태
+  return res.data.success as RemoveExceptResult;
 }

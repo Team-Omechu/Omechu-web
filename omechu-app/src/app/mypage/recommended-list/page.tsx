@@ -22,6 +22,7 @@ import { fetchRecommendManagement } from "../api/recommend";
 
 // FoodItem 타입을 정의하거나 import
 type FoodItem = {
+  id?: number;
   title: string;
   imageUrl: string;
   isExcluded: boolean;
@@ -76,18 +77,18 @@ export default function RecommendedList() {
         // recommendMenus / exceptedMenus 를 하나의 리스트로 합치며 isExcluded 플래그를 세팅
         const merged: FoodItem[] = [
           ...recommend.map((m: any) => ({
+            id: Number(m.id), // ← 추가
             title: m.name ?? "",
             imageUrl: m.image_link ?? "",
             isExcluded: false,
           })),
           ...excepted.map((m: any) => ({
+            id: Number(m.id), // ← 추가
             title: m.name ?? "",
             imageUrl: m.image_link ?? "",
             isExcluded: true,
           })),
-        ]
-          // 타이틀 정렬 (한글 기준)
-          .sort((a, b) => a.title.localeCompare(b.title, "ko"));
+        ].sort((a, b) => a.title.localeCompare(b.title, "ko"));
 
         setFoodList(merged);
         setModalOpen(false);
