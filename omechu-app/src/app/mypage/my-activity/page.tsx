@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +17,6 @@ import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
 import AuthErrorModal from "../AuthErrorModalSection";
 import { useAuthStore } from "@/auth/store";
-import initialRestaurantData from "./edit/[id]/INITIAL_RESTAURANT_DATA";
 
 import {
   fetchMyPlaces,
@@ -26,6 +25,7 @@ import {
   type MyReviewItem,
 } from "../api/myActivity";
 import { likePlace, unlikePlace } from "../api/favorites";
+import Toast from "@/components/common/Toast";
 
 /*            타입/상수           */
 type MyRestaurant = {
@@ -36,6 +36,7 @@ type MyRestaurant = {
   images?: { link: string }[];
   address?: string;
   reviews?: number;
+  isLiked?: boolean;
 };
 
 const ITEMS_PER_PAGE = 5;
@@ -84,6 +85,10 @@ export default function MyActivity() {
   const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
   const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
 
+  // 토스트
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
   /*        데이터 패칭(후기)       */
   useEffect(() => {
     if (!hasHydrated || selectedIndex !== 0) return;
@@ -104,7 +109,11 @@ export default function MyActivity() {
           setError("리뷰 데이터를 불러오지 못했습니다.");
           return;
         }
-        setReviewList(list);
+        const normalized = list.map((r: any) => ({
+          ...r,
+          isLiked: Boolean(r.isLiked ?? (r.like > 0 ? false : false)),
+        }));
+        setReviewList(normalized);
         setModalOpen(false);
       })
       .catch((e: any) => {
@@ -263,8 +272,9 @@ export default function MyActivity() {
         ),
       );
       console.error(e);
-      // 필요하면 토스트
-      // toast.error("좋아요 변경에 실패했습니다.");
+      setToastMessage("좋아요 변경에 실패했습니다.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2500);
     }
   };
 
@@ -284,7 +294,7 @@ export default function MyActivity() {
         title="활동 내역"
         leftChild={
           <Link href="/mypage">
-            <Image
+            <img
               src="/arrow/left-header-arrow.svg"
               alt="back"
               width={22}
@@ -329,10 +339,10 @@ export default function MyActivity() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="`w-full flex flex-col items-center gap-7">
+              <section className="flex w-full flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="flex w-full items-end justify-center py-8">
-                    <LoadingSpinner label="작성한 후기를 불러오는 중..." />
+                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
+                    작성한 후기가 없습니다.
                   </div>
                 ) : (
                   <>
@@ -345,12 +355,12 @@ export default function MyActivity() {
                         rating={review.rating ?? 0}
                         reviewText={review.text ?? ""}
                         recommendCount={review.like ?? 0}
-                        isLiked={!!review.like} // 서버에 필드가 없으면 클라이언트에서 관리
+                        isLiked={Boolean(review.like)}
                         onLikeToggle={() =>
                           handleLikeToggle(
                             Number(review.restaurant?.id),
                             Number(review.id),
-                            !!review.like,
+                            Boolean(review.like),
                           )
                         }
                         restaurantImage={review.restaurant?.rest_image ?? ""}
@@ -392,8 +402,8 @@ export default function MyActivity() {
             ) : (
               <section className="flex w-full flex-col gap-5 px-2">
                 {myRestaurants.length === 0 ? (
-                  <div className="flex w-full items-end justify-center py-8">
-                    <LoadingSpinner label="작성한 후기를 불러오는 중..." />
+                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
+                    등록한 맛집이 없습니다.
                   </div>
                 ) : (
                   <>
@@ -433,7 +443,7 @@ export default function MyActivity() {
                               postalCode: "",
                             },
                             tags: [],
-                            isLiked: false,
+                            isLiked: item.isLiked,
                             reviews: 0,
                             category: "",
                             timetable: [],
@@ -457,6 +467,11 @@ export default function MyActivity() {
         )}
 
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
+
+        {/* 좋아요 오류 - 토스트 */}
+        {showToast && (
+          <Toast message={toastMessage} show={showToast} className="w-full" />
+        )}
       </main>
 
       {/* 인증 모달: 하이드레이션 이후에만 판단 */}
