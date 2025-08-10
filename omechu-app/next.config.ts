@@ -5,8 +5,14 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     domains: [
-      "omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com",
       "s3.amazonaws.com",
+      "omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com",
+    ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com",
+      },
     ],
   },
 };

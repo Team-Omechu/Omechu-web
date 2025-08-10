@@ -1,10 +1,13 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 
 // * 찜 목록 조회 API
 export const fetchHeartList = async (userId: number | undefined) => {
-  const { data } = await apiClient.get(`/hearts/${userId}`);
-  if (Array.isArray(data)) return data;
-  return []; // 배열이 아니면 무조건 빈 배열 리턴
+  const { data } = await axiosInstance.get(`/hearts/${userId}`);
+  // 서버 응답 형태: { resultType, error, success: { data: [...] } }
+  if (data?.success?.data && Array.isArray(data.success.data)) {
+    return data.success.data;
+  }
+  return [];
 };
 
 //* 찜 등록 API
@@ -12,7 +15,7 @@ export const likePlace = async (
   userId: number | undefined,
   restaurantId: number | undefined,
 ) => {
-  return apiClient.post("/heart", {
+  return axiosInstance.post("/heart", {
     userId,
     restaurantId,
   });
@@ -23,7 +26,7 @@ export const unlikePlace = async (
   userId: number | undefined,
   restaurantId: number | undefined,
 ) => {
-  return apiClient.delete("/heart", {
+  return axiosInstance.delete("/heart", {
     data: { userId, restaurantId },
   });
 };
