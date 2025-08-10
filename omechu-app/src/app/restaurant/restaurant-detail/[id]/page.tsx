@@ -222,6 +222,7 @@ export default function RestaurantDetail() {
 
             {/* 후기 목록 */}
             <ReviewList
+              restId={restaurants.id}
               reviews={sortedReviews}
               localVotes={localVotes}
               votedReviewIds={votedReviewIds}

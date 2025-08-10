@@ -2,8 +2,11 @@
 
 import Review from "@/restaurant/restaurant-detail/[id]/components/ReviewList/Review";
 import type { ReviewProps } from "@/restaurant/restaurant-detail/[id]/components/ReviewList/Review";
+import { setReviewLike } from "@/restaurant/restaurant-detail/[id]/api/review";
+import { useEffect, useState } from "react";
 
 interface ReviewListProps {
+  restId: number;
   reviews: Omit<
     ReviewProps,
     "onVote" | "onReport" | "onClick" | "isOptionOpen" | "isVoted"
@@ -18,6 +21,7 @@ interface ReviewListProps {
 }
 
 export default function ReviewList({
+  restId,
   reviews,
   localVotes,
   votedReviewIds,
@@ -27,11 +31,37 @@ export default function ReviewList({
   setActiveOptionId,
   onReport,
 }: ReviewListProps) {
+  const [pending, setPending] = useState<Record<number, boolean>>({});
+  const [likedById, setLikedById] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    setLikedById((prev) => {
+      const next = { ...prev };
+      for (const r of reviews) {
+        if (next[r.id] === undefined) {
+          next[r.id] = votedReviewIds.includes(r.id);
+        }
+      }
+      return next;
+    });
+  }, [reviews, votedReviewIds]);
+
+  // 좋아요 상태를 관리하는 상태 추가
+  const setLikedState = (reviewId: number, isLiked: boolean) => {
+    setLikedById((m) => ({ ...m, [reviewId]: isLiked }));
+    setVotedReviewIds((ids) =>
+      isLiked
+        ? Array.from(new Set([...ids, reviewId]))
+        : ids.filter((id) => id !== reviewId),
+    );
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {reviews.map((item) => {
         const currentVotes = localVotes[item.id] ?? item.votes;
-        const isVoted = votedReviewIds.includes(item.id);
+        const isVoted = likedById[item.id] ?? false;
+        const isPending = !!pending[item.id];
 
         return (
           <Review
@@ -45,21 +75,43 @@ export default function ReviewList({
             content={item.content}
             tags={item.tags}
             images={item.images}
-            onVote={() => {
-              if (isVoted) {
-                setVotedReviewIds((prev) =>
-                  prev.filter((id) => id !== item.id),
+            onVote={async () => {
+              if (isPending) return;
+
+              const prevVoted = isVoted;
+              const prevVotes = currentVotes;
+              const nextVoted = !prevVoted;
+
+              setPending((p) => ({ ...p, [item.id]: true }));
+
+              // 1) 옵티미스틱: 좋아요 여부 + 카운트 동시 반영
+              setLikedState(item.id, nextVoted);
+              setLocalVotes((v) => ({
+                ...v,
+                [item.id]: (v[item.id] ?? item.votes) + (nextVoted ? 1 : -1),
+              }));
+
+              try {
+                // 2) 서버 반영
+                const { likeCount, isLiked } = await setReviewLike(
+                  restId,
+                  item.id,
+                  nextVoted,
                 );
-                setLocalVotes((prev) => ({
-                  ...prev,
-                  [item.id]: (prev[item.id] ?? item.votes) - 1,
-                }));
-              } else {
-                setVotedReviewIds((prev) => [...prev, item.id]);
-                setLocalVotes((prev) => ({
-                  ...prev,
-                  [item.id]: (prev[item.id] ?? item.votes) + 1,
-                }));
+
+                // 3) 서버 확정 (없으면 낙관값 유지)
+                const safeCount = likeCount ?? prevVotes + (nextVoted ? 1 : -1);
+                const safeVoted = isLiked ?? nextVoted;
+
+                setLocalVotes((v) => ({ ...v, [item.id]: safeCount }));
+                setLikedState(item.id, safeVoted);
+              } catch (e) {
+                // 4) 롤백: 좋아요 여부 + 카운트 동시 복구
+                setLocalVotes((v) => ({ ...v, [item.id]: prevVotes }));
+                setLikedState(item.id, prevVoted);
+                console.error("리뷰 좋아요 실패:", e);
+              } finally {
+                setPending((p) => ({ ...p, [item.id]: false }));
               }
             }}
             isVoted={isVoted}
