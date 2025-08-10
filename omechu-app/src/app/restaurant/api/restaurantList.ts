@@ -1,6 +1,5 @@
 import apiClient from "@/lib/api/client";
 import { Restaurant, RestaurantDetail } from "@/lib/types/restaurant";
-import axios from "axios";
 import { useCallback, useState } from "react";
 
 interface OpeningHour {
@@ -48,13 +47,12 @@ export function useRestaurantList() {
           cursor: cursor.toString(),
           limit: "8",
         },
-        withCredentials: true,
       });
 
-      const data = res.data.success;
+      const data = res.data?.success;
       console.log("🍽️ 맛집 리스트 로딩:", data);
 
-      const fetched = (data.restData ?? []).map(mapApiToRestaurant);
+      const fetched = (data?.restData ?? []).map(mapApiToRestaurant);
       console.log("🍽️ 맛집 리스트 매핑 완료:", fetched);
 
       setRestaurantList((prev) => [...prev, ...fetched]);
@@ -89,16 +87,12 @@ export function useRestaurantList() {
 export const registerRestaurant = async (
   payload: RegisterRestaurantPayload,
 ) => {
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/place`,
-    payload,
-    {
-      withCredentials: true, // ✅ 쿠키 포함
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const response = await apiClient.post(`/place`, payload, {
+    withCredentials: true, // ✅ 쿠키 포함
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
   return response.data;
 };
 
@@ -120,22 +114,8 @@ function mapApiToRestaurantDetail(apiData: any): RestaurantDetail {
 export async function getRestaurantDetail(
   id: number,
 ): Promise<RestaurantDetail> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/place/detail/${id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // 쿠키를 포함하기 위해
-      cache: "no-store",
-    },
-  );
-
-  if (!res.ok) throw new Error("맛집 정보를 불러오는 데 실패했습니다");
-
-  const json = await res.json();
-
+  const res = await apiClient.get(`/place/detail/${id}`);
+  const json = res.data;
   console.log("맛집 상세 정보 로딩:", json);
   return mapApiToRestaurantDetail(json);
 }
