@@ -26,6 +26,19 @@ export interface ReviewListResult {
   mostTags?: MostTag[];
 }
 
+export interface ReviewLikeRequest {
+  like: boolean;
+}
+
+export interface ReviewLikeResponse {
+  success?: {
+    reviewId?: number;
+    like?: number; // 최신 좋아요 수
+    isLiked?: boolean; // 현재 내 좋아요 여부
+  };
+  [key: string]: any;
+}
+
 // ✅ 토큰 기반: apiClient 사용
 export const postReview = async (id: number, data: ReviewRequest) => {
   const res = await apiClient.post(`/place/review/${id}`, data, {
@@ -81,4 +94,44 @@ export async function getMostTags(
   result: ReviewListResult,
 ): Promise<MostTag[]> {
   return Promise.resolve(result.mostTags ?? []);
+}
+
+export async function setReviewLike(
+  restId: number,
+  reviewId: number,
+  like: boolean,
+): Promise<{ likeCount: number | null; isLiked: boolean | null }> {
+  const res = await apiClient.patch(
+    `/place/${restId}/like/${reviewId}`,
+    { like },
+    { headers: { "Content-Type": "application/json" } },
+  );
+
+  const raw = res.data;
+  const srv = raw?.success ?? raw; // 서버 래핑 유무 대비
+
+  const likeCount = typeof srv?.like === "number" ? srv.like : null; // ⚠️ null 허용
+  const isLiked = typeof srv?.isLiked === "boolean" ? srv.isLiked : null; // ⚠️ null 허용
+
+  return { likeCount, isLiked };
+}
+
+export async function toggleReviewLike(
+  restId: number,
+  reviewId: number,
+  currentIsLiked: boolean,
+  currentVotes: number,
+): Promise<{ likeCount: number; isLiked: boolean }> {
+  const { likeCount, isLiked } = await setReviewLike(
+    restId,
+    reviewId,
+    !currentIsLiked,
+  );
+
+  // 서버가 값을 안 준 경우 낙관적으로 계산
+  const safeCount =
+    likeCount !== null ? likeCount : currentVotes + (currentIsLiked ? -1 : 1);
+  const safeLiked = isLiked !== null ? isLiked : !currentIsLiked;
+
+  return { likeCount: safeCount, isLiked: safeLiked };
 }
