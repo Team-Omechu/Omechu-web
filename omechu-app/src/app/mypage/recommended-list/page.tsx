@@ -23,6 +23,7 @@ import {
   exceptMenu,
   removeExceptMenu,
 } from "../api/recommend";
+import Toast from "@/components/common/Toast";
 
 // FoodItem 타입을 정의하거나 import
 type FoodItem = {
@@ -37,6 +38,7 @@ export default function RecommendedList() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
+  const pendingRef = useRef<Set<number | string>>(new Set());
 
   // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
@@ -48,6 +50,10 @@ export default function RecommendedList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // 토스트 알림
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const [selectedIndex, setSelectedIndex] = useState(0); // 추천/제외 탭 인덱스
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<
@@ -112,27 +118,47 @@ export default function RecommendedList() {
   const handleSearch = (term: string) => {
     const trimmed = term.trim();
 
+    // 입력이 비면 검색 해제
     if (trimmed === "") {
-      if (!isJustResetRef.current) {
-        setSubmittedTerm("");
-      }
+      setSubmittedTerm("");
+      isJustResetRef.current = false;
       return;
     }
 
+    // 같은 키워드는 무시
     if (trimmed === submittedTerm) return;
+
+    // 새로운 키워드 제출
     setSubmittedTerm(trimmed);
     isJustResetRef.current = true;
     setSearchTerm("");
+    // 다음 틱에 리셋 플래그 초기화 (불필요한 차단 방지)
+    setTimeout(() => {
+      isJustResetRef.current = false;
+    }, 0);
   };
   // 한글 자음 추출 함수 (초성 기준 분류용)
   const getInitialConsonant = (char: string): string => {
-    const code = char.charCodeAt(0) - 0xac00;
-    const choIndex = Math.floor(code / 588);
+    if (!char) return "";
+    const code = char.charCodeAt(0);
+
+    // 한글 음절 범위 (AC00-D7A3) 외 문자면 그대로 첫 글자 반환
+    if (code < 0xac00 || code > 0xd7a3) {
+      return char[0];
+    }
+
+    const choIndex = Math.floor((code - 0xac00) / 588);
     return HANGUL_CHO_SEONG[choIndex] ?? "";
   };
 
-  // 추천/제외 toggle 기능 (낙관적 업데이트 + 실패 시 롤백)
+  // 추천/제외 toggle 기능 (중복 클릭 방지 + 토스트 알림)
   const onToggle = async (target: FoodItem) => {
+    const key = typeof target.id === "number" ? target.id : target.title;
+
+    // 중복 클릭 방지
+    if (pendingRef.current.has(key)) return;
+    pendingRef.current.add(key);
+
     // 1) 낙관적 업데이트
     setFoodList((prev) =>
       prev.map((it) =>
@@ -150,6 +176,7 @@ export default function RecommendedList() {
         } else {
           await exceptMenu({ menuName: target.title });
         }
+        setToastMessage(`'${target.title}'를 제외 목록에 추가했습니다.`);
       } else {
         // 제외 목록에서 제거
         if (typeof target.id === "number") {
@@ -157,7 +184,10 @@ export default function RecommendedList() {
         } else {
           await removeExceptMenu({ menuName: target.title });
         }
+        setToastMessage(`'${target.title}'를 제외 목록에서 해제했습니다.`);
       }
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
     } catch (e) {
       // 2) 실패 시 롤백
       setFoodList((prev) =>
@@ -167,9 +197,12 @@ export default function RecommendedList() {
             : it,
         ),
       );
-      // 최소한의 안내
       console.error(e);
-      alert("변경을 적용하지 못했어요. 잠시 후 다시 시도해주세요.");
+      setToastMessage("변경을 적용하지 못했어요. 잠시 후 다시 시도해주세요.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 0);
+    } finally {
+      pendingRef.current.delete(key);
     }
   };
 
@@ -279,7 +312,7 @@ export default function RecommendedList() {
           ) : (
             filteredFoodList.map((item, index) => (
               <FoodBox
-                key={`${item.title}-${index}`}
+                key={item.id ?? `${item.title}-${index}`}
                 title={item.title}
                 imageUrl={item.imageUrl}
                 isExcluded={item.isExcluded}
@@ -309,6 +342,11 @@ export default function RecommendedList() {
             router.push("/sign-in");
           }}
         />
+      )}
+
+      {/* 토스트 알림 */}
+      {showToast && (
+        <Toast message={toastMessage} show={showToast} className="bottom-40" />
       )}
     </>
   );
