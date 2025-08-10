@@ -18,7 +18,11 @@ import { suggestionList } from "@/constant/suggestionList";
 
 import AuthErrorModal from "../AuthErrorModalSection";
 import { useAuthStore } from "@/auth/store";
-import { fetchRecommendManagement } from "../api/recommend";
+import {
+  fetchRecommendManagement,
+  exceptMenu,
+  removeExceptMenu,
+} from "../api/recommend";
 
 // FoodItem 타입을 정의하거나 import
 type FoodItem = {
@@ -127,13 +131,46 @@ export default function RecommendedList() {
     return HANGUL_CHO_SEONG[choIndex] ?? "";
   };
 
-  // 추천/제외 toggle 기능
-  const onToggle = (title: string) => {
+  // 추천/제외 toggle 기능 (낙관적 업데이트 + 실패 시 롤백)
+  const onToggle = async (target: FoodItem) => {
+    // 1) 낙관적 업데이트
     setFoodList((prev) =>
-      prev.map((item) =>
-        item.title === title ? { ...item, isExcluded: !item.isExcluded } : item,
+      prev.map((it) =>
+        it.title === target.title ? { ...it, isExcluded: !it.isExcluded } : it,
       ),
     );
+
+    const willExclude = !target.isExcluded; // 토글 후 상태 기준으로 API 선택
+
+    try {
+      if (willExclude) {
+        // 제외 목록에 추가
+        if (typeof target.id === "number") {
+          await exceptMenu({ menuId: target.id });
+        } else {
+          await exceptMenu({ menuName: target.title });
+        }
+      } else {
+        // 제외 목록에서 제거
+        if (typeof target.id === "number") {
+          await removeExceptMenu({ menuId: target.id });
+        } else {
+          await removeExceptMenu({ menuName: target.title });
+        }
+      }
+    } catch (e) {
+      // 2) 실패 시 롤백
+      setFoodList((prev) =>
+        prev.map((it) =>
+          it.title === target.title
+            ? { ...it, isExcluded: target.isExcluded }
+            : it,
+        ),
+      );
+      // 최소한의 안내
+      console.error(e);
+      alert("변경을 적용하지 못했어요. 잠시 후 다시 시도해주세요.");
+    }
   };
 
   // 필터링된 음식 리스트 반환
@@ -246,7 +283,7 @@ export default function RecommendedList() {
                 title={item.title}
                 imageUrl={item.imageUrl}
                 isExcluded={item.isExcluded}
-                onToggle={() => onToggle(item.title)}
+                onToggle={() => onToggle(item)}
                 onClick={() => {}}
               />
             ))
