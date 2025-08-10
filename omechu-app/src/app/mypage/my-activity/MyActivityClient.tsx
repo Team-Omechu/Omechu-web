@@ -86,6 +86,8 @@ export default function MyActivityClient() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
+  const [likePending, setLikePending] = useState<Set<number>>(new Set());
+
   /* 후기 패칭 */
   useEffect(() => {
     if (!hasHydrated || selectedIndex !== 0) return;
@@ -277,6 +279,62 @@ export default function MyActivityClient() {
     setModalOpen(!accessToken);
   }, [hasHydrated, accessToken]);
 
+  const handlePlaceLike = async (restaurantId: number) => {
+    if (likePending.has(restaurantId)) return;
+    setLikePending((prev) => new Set(prev).add(restaurantId));
+
+    // 낙관적 업데이트
+    setMyRestaurants((prev) =>
+      prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: true } : r)),
+    );
+
+    try {
+      await likePlace(restaurantId);
+    } catch {
+      // 실패 롤백
+      setMyRestaurants((prev) =>
+        prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: false } : r)),
+      );
+      setToastMessage("찜 등록에 실패했습니다.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    } finally {
+      setLikePending((prev) => {
+        const next = new Set(prev);
+        next.delete(restaurantId);
+        return next;
+      });
+    }
+  };
+
+  const handlePlaceUnlike = async (restaurantId: number) => {
+    if (likePending.has(restaurantId)) return;
+    setLikePending((prev) => new Set(prev).add(restaurantId));
+
+    // 낙관적 업데이트
+    setMyRestaurants((prev) =>
+      prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: false } : r)),
+    );
+
+    try {
+      await unlikePlace(restaurantId);
+    } catch {
+      // 실패 롤백
+      setMyRestaurants((prev) =>
+        prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: true } : r)),
+      );
+      setToastMessage("찜 해제에 실패했습니다.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    } finally {
+      setLikePending((prev) => {
+        const next = new Set(prev);
+        next.delete(restaurantId);
+        return next;
+      });
+    }
+  };
+
   return (
     <>
       <Header
@@ -402,21 +460,13 @@ export default function MyActivityClient() {
                           편집
                         </span>
                         <FoodCard
-                          onLike={async () => {
-                            await likePlace(item.id);
-                            setMyRestaurants((prev) =>
-                              prev.map((r) =>
-                                r.id === item.id ? { ...r, isLiked: true } : r,
-                              ),
-                            );
+                          onLike={() => {
+                            handlePlaceLike(Number(item.id));
+                            console.log("[like] id:", item.id, typeof item.id);
                           }}
-                          onUnlike={async () => {
-                            await unlikePlace(item.id);
-                            setMyRestaurants((prev) =>
-                              prev.map((r) =>
-                                r.id === item.id ? { ...r, isLiked: false } : r,
-                              ),
-                            );
+                          onUnlike={() => {
+                            handlePlaceUnlike(Number(item.id));
+                            console.log("[like] id:", item.id, typeof item.id);
                           }}
                           item={{
                             id: item.id,

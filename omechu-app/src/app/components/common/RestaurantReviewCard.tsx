@@ -63,11 +63,12 @@ export default function RestaurantReviewCard({
     const [imgSrc, setImgSrc] = useState(src || "/image/image_empty.svg");
 
     return (
-      <img
+      <Image
         src={imgSrc}
         alt={alt}
         width={70}
         height={70}
+        className="object-cover"
         onError={() => {
           if (imgSrc !== "/image/image_empty.svg") {
             setImgSrc("/image/image_empty.svg");
@@ -85,10 +86,12 @@ export default function RestaurantReviewCard({
 
     return (
       <div className="relative h-[100px] min-w-[100px] flex-shrink-0">
-        <img
+        <Image
+          className="object-cover"
+          width={100}
+          height={100}
           src={imgSrc}
           alt={alt}
-          className="object-cover"
           onError={() => setImgSrc("/image/image_empty.svg")}
         />
       </div>
@@ -115,7 +118,7 @@ export default function RestaurantReviewCard({
                 <span className="text-lg font-normal leading-tight text-grey-darker">
                   {restaurantName}
                   <button onClick={onNavigate}>
-                    <img
+                    <Image
                       src="/arrow/right_arrow_navigate_next.svg"
                       alt={"이동 버튼"}
                       width={25}
@@ -161,7 +164,7 @@ export default function RestaurantReviewCard({
 
           {/* 이미지(없어도 됨) */}
           {Array.isArray(reviewImages) && reviewImages.length > 0 && (
-            <div className="relative mb-4 flex max-h-32 w-full gap-2 overflow-x-scroll">
+            <div className="relative mb-4 flex max-h-32 w-full gap-3 overflow-x-scroll">
               {reviewImages.map((imgSrc, i) =>
                 imgSrc ? (
                   <ReviewImage

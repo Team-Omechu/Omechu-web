@@ -21,15 +21,25 @@ export async function fetchHeartList() {
 
 // 찜 등록
 export async function likePlace(restaurantId: number) {
-  const { data } = await axiosInstance.post(
-    "/heart",
-    { restaurantId },
-    { headers: authHeader() },
-  );
-  if (data.resultType === "FAIL" || !data.success) {
-    throw new Error(data.error?.reason ?? "찜 등록 실패");
+  try {
+    const { data } = await axiosInstance.post(
+      "/heart",
+      { restaurantId },
+      { headers: authHeader() },
+    );
+    if (data.resultType === "FAIL" || !data.success) {
+      throw new Error(data.error?.reason ?? "찜 등록 실패");
+    }
+    return data.success;
+  } catch (err: any) {
+    const msg = err?.response?.data?.error?.reason ?? "";
+    const status = err?.response?.status;
+
+    if (status === 409 || /duplicate|already|exists|이미/i.test(msg)) {
+      return { already: true };
+    }
+    throw err;
   }
-  return data.success;
 }
 
 // 찜 해제
