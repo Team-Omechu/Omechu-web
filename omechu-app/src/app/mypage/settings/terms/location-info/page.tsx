@@ -1,13 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRef } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import Header from "@/components/common/Header";
-import { termsForLocationlInfo } from "@/constant/terms/locationInfo";
+import { termsForLocationInfo } from "@/constant/terms/locationInfo";
 
 export default function TermForLocationInfo() {
   const router = useRouter();
@@ -23,12 +23,12 @@ export default function TermForLocationInfo() {
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.back();
             }}
           >
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              alt={"뒤로가기"}
               width={22}
               height={30}
             />
@@ -37,9 +37,9 @@ export default function TermForLocationInfo() {
       />
       <main
         ref={mainRef}
-        className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
+        className="relative h-[calc(100dvh-3rem)] w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
-        {termsForLocationlInfo.map((item, key) => (
+        {termsForLocationInfo.map((item, key) => (
           <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {/* 조항 번호, 제목 */}
             {item.index && (

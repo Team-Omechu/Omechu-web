@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
+import apiClient from "@/lib/api/client";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -14,14 +14,51 @@ export default function AllergyStep() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false); // 중단 모달
   const [showSaveModal, setShowSaveModal] = useState(false); // 제출 완료 모달
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Zustand에서 알레르기 관련 상태랑 토글 함수 가져옴
+  // AllergyStep.tsx 상단, useOnboardingStore로 전체 상태 가져오기
+  const nickname = useOnboardingStore((state) => state.nickname);
+  const gender = useOnboardingStore((state) => state.gender);
+  const workoutStatus = useOnboardingStore((state) => state.workoutStatus);
+  const preferredFood = useOnboardingStore((state) => state.preferredFood);
+  const constitution = useOnboardingStore((state) => state.constitution);
   const allergies = useOnboardingStore((state) => state.allergies);
+  const profileImageUrl = useOnboardingStore((state) => state.profileImageUrl); // 예시
+
   const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
 
   // 버튼 클릭하면 선택/해제
   const handleClick = (item: string) => {
     toggleAllergy(item);
+  };
+
+  // 프로필 업데이트 API 호출 함수
+  const updateProfile = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const requestBody = {
+        nickname,
+        gender,
+        exercise: workoutStatus,
+        prefer: preferredFood.length === 0 ? ["없음"] : preferredFood,
+        constitution: constitution.length === 0 ? ["없음"] : constitution,
+        allergy: allergies.length === 0 ? ["없음"] : allergies,
+      };
+
+      const response = await apiClient.patch("/profile", requestBody);
+      console.log("프로필 업데이트 성공:", response.data);
+
+      setShowSaveModal(true);
+    } catch (err) {
+      console.error("프로필 업데이트 실패:", err);
+      setError("프로필 저장에 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,7 +89,7 @@ export default function AllergyStep() {
 
                 return (
                   <button
-                    key={`${item}-${allergies.includes(item)}`}
+                    key={`${item}-${isSelected}`}
                     onClick={() => handleClick(item)}
                     className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                       isSelected
@@ -84,12 +121,11 @@ export default function AllergyStep() {
 
         {/* 제출 버튼 */}
         <button
-          onClick={() => {
-            setShowSaveModal(true);
-          }}
-          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive"
+          onClick={updateProfile}
+          disabled={loading}
+          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive disabled:opacity-50"
         >
-          제출하기
+          {loading ? "저장 중..." : "제출하기"}
         </button>
       </footer>
 
@@ -129,6 +165,12 @@ export default function AllergyStep() {
             }}
           />
         </ModalWrapper>
+      )}
+
+      {error && (
+        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+          {error}
+        </div>
       )}
     </div>
   );

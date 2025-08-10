@@ -23,12 +23,12 @@ export default function TermForPersonalInfo() {
         leftChild={
           <button
             onClick={() => {
-              router.push("./");
+              router.back();
             }}
           >
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              alt={"뒤로가기"}
               width={22}
               height={30}
             />
@@ -37,13 +37,13 @@ export default function TermForPersonalInfo() {
       />
       <main
         ref={mainRef}
-        className="relative h-screen w-full overflow-scroll overflow-x-hidden px-7 py-9 scrollbar-hide"
+        className="relative h-[calc(100dvh-3rem)] w-full overflow-y-auto overflow-x-hidden px-7 py-9 scrollbar-hide"
       >
         {termsForPersonlInfo.map((item, key) => (
           <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {/* 조항 번호, 제목 */}
             {item.index && (
-              <div className="text-base font-bold">
+              <div className="text-base font-bold" key={item.index}>
                 제 {item.index}조 ({item.about})
               </div>
             )}
@@ -58,8 +58,8 @@ export default function TermForPersonalInfo() {
           </section>
         ))}
         {/* Floating Action Button - 맨 위로 이동 */}
+        <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
       </main>
-      <FloatingActionButton onClick={scrollToTop} />
     </>
   );
 }
