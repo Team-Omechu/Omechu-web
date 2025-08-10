@@ -36,6 +36,8 @@ type FoodItem = {
 export default function RecommendedList() {
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
 
   const isJustResetRef = useRef(false); // 최근 입력 초기화 여부 체크
   const pendingRef = useRef<Set<number | string>>(new Set());
@@ -43,7 +45,6 @@ export default function RecommendedList() {
   // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
   const accessToken = user?.accessToken;
-  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
 
   // 서버 데이터/상태
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
@@ -63,13 +64,16 @@ export default function RecommendedList() {
   const [searchTerm, setSearchTerm] = useState(""); // input에 입력 중인 검색어
   const [submittedTerm, setSubmittedTerm] = useState(""); // 검색 확정된 키워드
 
+  useEffect(() => {
+    if (hasHydrated) setReady(true);
+  }, [hasHydrated]);
+
   // 서버에서 추천/제외 목록 불러오기
   useEffect(() => {
-    if (!hasHydrated) return;
+    if (!ready) return; // 하이드레이션 끝나기 전이면 아무 것도 안 함
 
-    // 토큰 없으면 로그인 요구 모달
     if (!accessToken) {
-      setModalOpen(true);
+      // 자동 모달 오픈 금지: 초기엔 그냥 데이터만 비워두고 끝
       setFoodList([]);
       return;
     }
@@ -112,7 +116,7 @@ export default function RecommendedList() {
         setFoodList([]);
       })
       .finally(() => setLoading(false));
-  }, [hasHydrated, accessToken]);
+  }, [hasHydrated, accessToken, ready]);
 
   // 검색 실행 핸들러
   const handleSearch = (term: string) => {
@@ -295,7 +299,7 @@ export default function RecommendedList() {
         <section className="grid grid-cols-3 gap-4">
           {loading ? (
             // 간단한 로딩 스켈레톤
-            Array.from({ length: 9 }).map((_, i) => (
+            Array.from({ length: 15 }).map((_, i) => (
               <div
                 key={i}
                 className="h-28 w-28 animate-pulse rounded-xl border border-gray-200 bg-gray-100"
