@@ -14,11 +14,11 @@ import { purposeOptions } from "@/constant/mainpage/Option";
 const PurposeStep = () => {
   const router = useRouter();
   const { purpose, setPurpose } = useQuestionAnswerStore();
-  const { addTag } = useTagStore();
+  const { setPurposeTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
     setPurpose(value);
-    addTag(label, description);
+    setPurposeTag(label, description);
     router.push("/mainpage/question-answer/3");
   };
 

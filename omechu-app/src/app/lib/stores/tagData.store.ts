@@ -2,29 +2,47 @@ import { TagData } from "@/constant/mainpage/resultData";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-type TagState = {
-  tagData: TagData[];
+export type TagState = {
+  mealTimeTag: TagData | null;
+  purposeTag: TagData | null;
+  moodTag: TagData | null;
+  whoTag: TagData | null;
+  budgetTag: TagData | null;
 };
 
 type TagActions = {
-  setTagData: (tags: TagData[]) => void;
-  addTag: (tag: string, description: string) => void;
-  removeTag: (tag: string) => void;
+  setMealTimeTag: (tag: string, description: string) => void;
+  setPurposeTag: (tag: string, description: string) => void;
+  setMoodTag: (tag: string, description: string) => void;
+  setWhoTag: (tag: string, description: string) => void;
+  setBudgetTag: (tag: string, description: string) => void;
   tagDataReset: () => void;
 };
 
-const initialTagData: TagData[] = []; // 초기엔 빈 배열, 필요하면 기본값
+const initialTagData: TagState = {
+  mealTimeTag: null,
+  purposeTag: null,
+  moodTag: null,
+  whoTag: null,
+  budgetTag: null,
+};
+// 초기엔 빈 배열, 필요하면 기본값
 
 export const useTagStore = create<TagState & TagActions>()(
   persist(
-    (set, get) => ({
-      tagData: initialTagData,
-      setTagData: (tags) => set({ tagData: tags }),
-      addTag: (tag, description) =>
-        set({ tagData: [...get().tagData, { tag, description }] }),
-      removeTag: (tag) =>
-        set({ tagData: get().tagData.filter((t) => t.tag !== tag) }),
-      tagDataReset: () => set({ tagData: initialTagData }),
+    (set) => ({
+      ...initialTagData,
+      setMealTimeTag: (tag: string, description: string) =>
+        set({ mealTimeTag: { tag, description } }),
+      setPurposeTag: (tag: string, description: string) =>
+        set({ purposeTag: { tag, description } }),
+      setMoodTag: (tag: string, description: string) =>
+        set({ moodTag: { tag, description } }),
+      setWhoTag: (tag: string, description: string) =>
+        set({ whoTag: { tag, description } }),
+      setBudgetTag: (tag: string, description: string) =>
+        set({ budgetTag: { tag, description } }),
+      tagDataReset: () => set(initialTagData),
     }),
     {
       name: "tag-data-storage", // localStorage에 저장될 key
