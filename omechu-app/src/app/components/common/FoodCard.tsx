@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 
 import { RestaurantType } from "@/constant/restaurant/restaurantList";
+import { Restaurant } from "@/lib/types/restaurant";
 
 type FoodCardProps = {
   item: Restaurant;
@@ -49,7 +50,7 @@ export default function FoodCard({
   onLike,
   onUnlike,
 }: FoodCardProps) {
-  const [isLiked, setIsLiked] = useState(normalizeIsLiked(item.isLiked));
+  const [isLiked, setIsLiked] = useState(normalizeIsLiked(item.like));
   const [heartBusy, setHeartBusy] = useState(false);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
@@ -76,8 +77,8 @@ export default function FoodCard({
   };
 
   useEffect(() => {
-    setIsLiked(Boolean(item.isLiked));
-  }, [item.isLiked]);
+    setIsLiked(Boolean(item.like));
+  }, [item.like]);
 
   return (
     <div
@@ -102,7 +103,7 @@ export default function FoodCard({
         )}
 
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
-          {item.rest_tag?.map((tag, i) => (
+          {item.rest_tag?.map((tag: { tag: string }, i: number) => (
             <span
               key={i}
               className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
