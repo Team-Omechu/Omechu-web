@@ -9,6 +9,7 @@ import FoodBox from "@/components/common/FoodBox";
 import Header from "@/components/common/Header";
 import SearchBar from "@/components/common/SearchBar";
 import SelectTabBar from "@/components/mypage/SelectTabBar";
+import SkeletonUIFoodBox from "@/components/common/SkeletonUIFoodBox";
 import {
   consonantGroupMap,
   filteredChoSeong,
@@ -300,10 +301,7 @@ export default function RecommendedList() {
           {loading ? (
             // 간단한 로딩 스켈레톤
             Array.from({ length: 15 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-28 w-28 animate-pulse rounded-xl border border-gray-200 bg-gray-100"
-              />
+              <SkeletonUIFoodBox key={i} />
             ))
           ) : error ? (
             <div className="col-span-3 w-full py-10 text-center text-red-600">
