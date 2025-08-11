@@ -9,19 +9,31 @@ import type {
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
 // import type { OnboardingData } from "@/onboarding/api/onboarding";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 export const useLoginMutation = () => {
   const { login: setAuth } = useAuthStore();
 
   return useMutation({
     mutationFn: (data: LoginFormValues) => authApi.login(data),
-    onSuccess: (response, variables) => {
+    onSuccess: async (tokens: any, variables) => {
+      // tokens: { userId, accessToken, refreshToken } 형태를 기대
+      // 우선 토큰 저장 후 프로필로 user 세팅
       setAuth({
-        accessToken: response.accessToken,
-        user: response,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user: {
+          id: tokens.userId,
+          email: "",
+          gender: "남성",
+          nickname: "",
+          created_at: "",
+          updated_at: "",
+        },
         password: variables.password,
       });
+      const me = await authApi.getCurrentUser();
+      useAuthStore.getState().setUser(me);
     },
     onError: (error) => {
       console.error("Login failed:", error);

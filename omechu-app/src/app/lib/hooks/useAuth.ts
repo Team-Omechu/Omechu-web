@@ -1,19 +1,31 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type { LoginFormValues } from "@/auth/schemas/auth.schema";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import * as authApi from "@/lib/api/auth";
 import type { LoginSuccessData } from "@/lib/api/auth";
 
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
 
-  return useMutation<LoginSuccessData, Error, LoginFormValues>({
+  return useMutation<any, Error, LoginFormValues>({
     mutationFn: authApi.login,
-    onSuccess: (data) => {
-      const accessToken = data.accessToken;
-      setLoginState({ accessToken, user: data });
-      console.log("로그인 성공:", data);
+    onSuccess: async (tokens, variables) => {
+      setLoginState({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user: {
+          id: tokens.userId,
+          email: "",
+          gender: "남성",
+          nickname: "",
+          created_at: "",
+          updated_at: "",
+        } as LoginSuccessData,
+        password: (variables as any).password,
+      } as any);
+      const me = await authApi.getCurrentUser();
+      useAuthStore.getState().setUser(me);
     },
     onError: (error) => {
       // 실패 시 로직 (예: 토스트 메시지 표시)

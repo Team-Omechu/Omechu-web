@@ -15,7 +15,7 @@ import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 
 import AuthErrorModal from "../AuthErrorModalSection";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import {
   fetchMyPlaces,
