@@ -498,21 +498,19 @@ export default function MyActivityClient() {
                           item={{
                             id: item.id,
                             name: item.name,
-                            menu: item.repre_menu || "",
+                            menus: Array.isArray(item.repre_menu)
+                              ? item.repre_menu
+                              : typeof item.repre_menu === "string"
+                                ? [item.repre_menu]
+                                : [],
                             rating: item.rating || 0,
                             images: item.images
                               ? item.images.map((img) => img.link ?? "")
                               : [],
-                            address: {
-                              road: item.address || "",
-                              jibun: "",
-                              postalCode: "",
-                            },
-                            tags: [],
-                            isLiked: item.isLiked,
+                            address: item.address ?? "",
+                            rest_tag: [],
+                            like: item.isLiked ?? false,
                             reviews: 0,
-                            category: "",
-                            timetable: [],
                           }}
                           onClick={() =>
                             router.push(

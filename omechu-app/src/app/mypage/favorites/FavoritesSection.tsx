@@ -283,19 +283,13 @@ export default function Favorites() {
                       ? [item.restaurant.rest_image]
                       : [], // 단일 이미지라도 배열로
                     rating: item.restaurant.rating ?? 0,
-                    menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
-                    tags: Array.isArray(item.restaurant.tags)
+                    menus: item.restaurant.representativeMenus ?? [], // 대표 메뉴가 있을 때 첫 번째만
+                    rest_tag: Array.isArray(item.restaurant.tags)
                       ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)
                       : [],
-                    address: {
-                      road: item.restaurant.address ?? "",
-                      jibun: "",
-                      postalCode: "",
-                    },
+                    address: item.restaurant.address ?? "",
                     reviews: item.restaurant.reviewCount ?? 0,
-                    isLiked: true,
-                    category: "",
-                    timetable: [],
+                    like: true,
                   }}
                   onClick={() =>
                     router.push(
