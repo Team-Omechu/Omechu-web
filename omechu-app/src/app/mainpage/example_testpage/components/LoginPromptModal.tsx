@@ -7,7 +7,7 @@ import RoundButton from "@/components/common/button/RoundButton";
 type LoginPromptModalProps = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
   onClose: () => void; // "X" 버튼 클릭 시
-  onSkip: () => void; // "그냥 추천받기" 버튼 클릭 시
+  onSkip?: () => void; // "그냥 추천받기" 버튼 클릭 시
 };
 
 const LoginPromptModal = ({
