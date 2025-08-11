@@ -1,5 +1,3 @@
-// src/app/mypage/api/recommend.ts
-
 import axiosInstance from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import type { ApiResponse } from "@/lib/api/auth";
@@ -72,7 +70,7 @@ function normalizeSuccess(
 
 // * 추천목록 관리 데이터 조회
 // * - GET /recommend/management
-export async function fetchRecommendManagement(): Promise<FetchRecommendManagementResponse> {
+export async function fetchRecommendManagement(): Promise<RecommendManagementData> {
   const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token. Please login first.");
