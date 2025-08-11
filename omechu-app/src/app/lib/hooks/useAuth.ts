@@ -1,10 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import type { LoginFormValues } from "@/auth/schemas/auth.schema";
+import type {
+  LoginFormValues,
+  SignupFormValues,
+  FindPasswordFormValues,
+  ResetPasswordFormValues,
+} from "@/auth/schemas/auth.schema";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import * as authApi from "@/lib/api/auth";
 import type { LoginSuccessData } from "@/lib/api/auth";
 
+// 로그인
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
 
@@ -28,12 +34,62 @@ export const useLoginMutation = () => {
       useAuthStore.getState().setUser(me);
     },
     onError: (error) => {
-      // 실패 시 로직 (예: 토스트 메시지 표시)
       console.error("로그인 실패:", error.message);
     },
   });
 };
 
+// 회원가입
+export const useSignupMutation = () => {
+  return useMutation<authApi.SignupSuccessData, Error, SignupFormValues>({
+    mutationFn: authApi.signup,
+  });
+};
+
+// 로그아웃
+export const useLogoutMutation = () => {
+  return useMutation<void, Error>({
+    mutationFn: authApi.logout,
+  });
+};
+
+// 이메일 인증코드 전송
+export const useSendVerificationCodeMutation = () => {
+  return useMutation<authApi.SendVerificationCodeSuccessData, Error, string>({
+    mutationFn: (email) => authApi.sendVerificationCode(email),
+  });
+};
+
+// 이메일 인증코드 검증
+export const useVerifyVerificationCodeMutation = () => {
+  return useMutation<
+    authApi.VerifyVerificationCodeSuccessData,
+    Error,
+    { email: string; code: string }
+  >({
+    mutationFn: (data) => authApi.verifyVerificationCode(data),
+  });
+};
+
+// 비밀번호 재설정 요청
+export const useRequestPasswordResetMutation = () => {
+  return useMutation<
+    authApi.RequestPasswordResetSuccessData,
+    Error,
+    FindPasswordFormValues
+  >({
+    mutationFn: authApi.requestPasswordReset,
+  });
+};
+
+// 비밀번호 재설정
+export const useResetPasswordMutation = () => {
+  return useMutation<string, Error, ResetPasswordFormValues>({
+    mutationFn: authApi.resetPassword,
+  });
+};
+
+// 현재 사용자 조회
 export const useUserQuery = () => {
   return useQuery({
     // queryKey는 TanStack Query가 데이터를 캐싱하고 관리하는 데 사용하는 고유 키입니다.

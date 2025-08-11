@@ -8,7 +8,7 @@ import UserInfoSetupButton from "./UserInfoSetupButton";
 import UserInfoSetupLayout from "./UserInfoSetupLayout";
 
 const ConditionStep = () => {
-  const { constitution, toggleConstitution } = useUserInfoSetupStore();
+  const { bodyType, toggleBodyType } = useUserInfoSetupStore();
   const options = [
     "감기에 잘 걸리는 편이에요",
     "소화가 잘 안 되는 날이 많아요",
@@ -21,8 +21,8 @@ const ConditionStep = () => {
       {options.map((option) => (
         <UserInfoSetupButton
           key={option}
-          onClick={() => toggleConstitution(option)}
-          isSelected={constitution.includes(option)}
+          onClick={() => toggleBodyType(option)}
+          isSelected={bodyType.includes(option)}
         >
           {option}
         </UserInfoSetupButton>

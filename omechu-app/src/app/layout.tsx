@@ -5,7 +5,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import type { Metadata } from "next";
 
 import ReactQueryProvider from "./lib/providers/ReactQueryProvider";
-import ClientLayout from "@/ClientLayout";
+import ClientLayout from "./ClientLayout";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"], // 사용할 폰트 굵기

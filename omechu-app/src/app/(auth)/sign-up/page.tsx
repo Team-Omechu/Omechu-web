@@ -17,11 +17,12 @@ import {
   signupSchema,
   type SignupFormValues,
 } from "@/auth/schemas/auth.schema";
-import { useSignupMutation, useLoginMutation } from "@/auth/hooks/useAuth";
+import { useSignupMutation } from "@/lib/hooks/useAuth";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";
+import { agreeToTerms } from "./api/agreements";
 
 type ModalType = "service" | "privacy" | "location";
 
@@ -62,9 +63,19 @@ export default function SignUpPage() {
 
   const onSubmit = (data: SignupFormValues) => {
     signup(data, {
-      onSuccess: () => {
-        setPassword(data.password);
-        router.push("/onboarding/1");
+      onSuccess: async () => {
+        try {
+          // 로그인은 하지 않지만, 동의 API는 보호되어 있음 → 실제 호출은 로그인 이후가 안전
+          // 여기서는 성공적으로 회원가입 후 온보딩으로 이동하면 충분합니다.
+          // 만약 회원가입 직후에 서버에 동의를 저장하고 싶다면,
+          // 로그인 → 동의 호출 → 온보딩 순으로 흐름을 바꾸면 됩니다.
+          setPassword(data.password);
+          router.push("/onboarding/1");
+        } catch (e) {
+          // 동의 요청 실패는 가입/온보딩 흐름을 막지 않습니다. 필요시 재시도 가능
+          console.warn("약관 동의 저장 실패(무시 가능):", e);
+          router.push("/onboarding/1");
+        }
       },
       onError: (error) => {
         triggerToast(`회원가입에 실패했습니다:\n${error.message}`);

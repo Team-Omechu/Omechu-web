@@ -26,6 +26,15 @@ axiosInstance.interceptors.response.use(
     }
     original._retry = true;
 
+    // 로그아웃 시도 중에는 재발급을 하지 않는다
+    if (
+      typeof original.url === "string" &&
+      original.url.includes("/auth/logout")
+    ) {
+      useAuthStore.getState().logout();
+      return Promise.reject(error);
+    }
+
     const { refreshToken, user } = useAuthStore.getState();
     if (!refreshToken) {
       useAuthStore.getState().logout();
