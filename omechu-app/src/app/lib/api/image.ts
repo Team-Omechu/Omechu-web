@@ -15,13 +15,19 @@ export const getPresignedUrl = async (
   return data as { uploadUrl: string; fileUrl: string };
 };
 
-export const uploadToS3 = async (uploadUrl: string, file: File) => {
+export const uploadToS3 = async (
+  uploadUrl: string,
+  file: File,
+  options?: { acl?: "public-read" },
+) => {
+  const headers: Record<string, string> = {
+    "Content-Type": file.type,
+  };
+  if (options?.acl) headers["x-amz-acl"] = options.acl;
+
   await fetch(uploadUrl, {
     method: "PUT",
-    headers: {
-      "Content-Type": file.type,
-      "x-amz-acl": "public-read",
-    },
+    headers,
     body: file,
   });
 };

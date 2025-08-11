@@ -35,7 +35,7 @@ const ProfileStep = () => {
         file.type,
         "profile",
       );
-      await uploadToS3(uploadUrl, file);
+      await uploadToS3(uploadUrl, file, { acl: "public-read" });
       setProfileImageUrl(fileUrl);
     } catch (err) {
       console.error("이미지 업로드 실패", err);
@@ -43,6 +43,14 @@ const ProfileStep = () => {
       setIsUploading(false);
     }
   };
+
+  React.useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   const handleImageDelete = () => {
     setImagePreview(null);
