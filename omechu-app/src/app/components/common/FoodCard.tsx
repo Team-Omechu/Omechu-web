@@ -21,22 +21,18 @@ type ServerRestaurant = {
   isLiked?: boolean; // 서버가 주면 사용, 없으면 false로
 };
 
-export function normalizeRestaurant(s: ServerRestaurant): RestaurantType {
+// 서버 응답 → Restaurant 로 변환
+export function normalizeRestaurant(s: ServerRestaurant): Restaurant {
   return {
     id: Number(s.id),
     name: s.name ?? "-",
+    address: s.address ?? "", // ← 문자열
     rating: s.rating ?? 0,
-    reviews: 0, // 서버에서 오면 바꿔 넣기
-    isLiked: Boolean(s.isLiked), // 없으면 false
-    menu: (s.representativeMenus?.[0] ?? "").toString(),
-    tags: [], // 서버 제공 시 매핑
     images: s.rest_image ? [s.rest_image] : [],
-    address: {
-      road: s.address ?? "",
-      jibun: "",
-      postalCode: "",
-    },
-    timetable: [], // 서버 제공 시 매핑
+    rest_tag: [],
+    menus: s.representativeMenus ?? [],
+    like: Boolean(s.isLiked),
+    reviews: 0,
   };
 }
 
