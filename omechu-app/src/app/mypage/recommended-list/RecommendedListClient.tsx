@@ -29,7 +29,7 @@ import Toast from "@/components/common/Toast";
 type FoodItem = {
   id?: number;
   title: string;
-  image_link: string;
+  imageUrl: string;
   isExcluded: boolean;
 };
 
@@ -334,7 +334,7 @@ export default function RecommendedList() {
               <FoodBox
                 key={item.id ?? `${item.title}-${index}`}
                 title={item.title}
-                imageUrl={item.image_link}
+                imageUrl={item.imageUrl}
                 isExcluded={item.isExcluded}
                 onToggle={() => onToggle(item)}
                 onClick={() => {}}
