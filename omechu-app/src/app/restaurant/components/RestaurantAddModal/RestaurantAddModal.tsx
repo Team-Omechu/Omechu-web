@@ -13,6 +13,11 @@ import BusinessHoursSelector from "./BusinessHoursSelector/BusinessHoursSelector
 import ImageUploader from "./ImageUploader";
 import MenuInputList from "./MenuInputList";
 import RestaurantNameInput from "./RestaurantNameInput";
+import {
+  registerRestaurant,
+  RegisterRestaurantPayload,
+} from "@/restaurant/api/restaurantList";
+import { uploadImageToS3 } from "@/restaurant/api/uploadImage";
 
 interface RestaurantAddModalProps {
   onClose: () => void;
@@ -38,9 +43,63 @@ export default function RestaurantAddModal({
       selectedDays.length > 0 &&
       startTime &&
       endTime &&
-      address.trim() !== "" &&
-      imageFile !== null
+      address.trim() !== ""
     );
+  };
+
+  const handleRegisterClick = async (params: {
+    restaurantName: string;
+    menus: string[];
+    selectedDays: string[];
+    startTime: string;
+    endTime: string;
+    address: string;
+    detailAddress: string;
+    imageFile?: File | null | undefined;
+    onSuccess: () => void;
+    onError: (error: unknown) => void;
+  }) => {
+    const {
+      restaurantName,
+      menus,
+      selectedDays,
+      startTime,
+      endTime,
+      address,
+      detailAddress,
+      imageFile,
+      onSuccess,
+      onError,
+    } = params;
+
+    try {
+      let imageUrl: string | undefined = undefined;
+      if (imageFile) {
+        imageUrl = await uploadImageToS3(imageFile);
+      }
+
+      const openingHour = selectedDays.reduce(
+        (acc, day) => {
+          acc[day.toLowerCase()] = `${startTime}-${endTime}`;
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+
+      const payload: RegisterRestaurantPayload = {
+        ...(imageUrl && { imageUrl }),
+        name: restaurantName,
+        repre_menu: menus.filter((m) => m.trim() !== ""),
+        opening_hour: openingHour,
+        address: `${address} ${detailAddress}`.trim(),
+      };
+
+      await registerRestaurant(payload);
+      onSuccess();
+      console.log("등록: ", payload);
+    } catch (error) {
+      onError(error);
+    }
   };
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -178,8 +237,21 @@ export default function RestaurantAddModal({
         }`}
         onClick={() => {
           if (!isFormValid()) return;
-          setIsConfirmOpen(true);
-          // 여기서 API 저장 요청도 함께 실행 가능
+          handleRegisterClick({
+            restaurantName,
+            menus,
+            selectedDays,
+            startTime,
+            endTime,
+            address,
+            detailAddress,
+            imageFile,
+            onSuccess: () => setIsConfirmOpen(true),
+            onError: (error) => {
+              alert("등록에 실패했습니다.");
+              console.error(error);
+            },
+          });
         }}
       >
         등록하기

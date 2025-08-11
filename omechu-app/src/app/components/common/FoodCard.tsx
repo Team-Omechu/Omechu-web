@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 
-import { RestaurantType } from "@/constant/restaurant/restaurantList";
+import { Restaurant } from "@/lib/types/restaurant";
 
 type FoodCardProps = {
-  item: RestaurantType; // 타입은 foodItems 데이터 구조에 맞게 정의
+  item: Restaurant;
   onClick: () => void;
   onLike?: () => void;
   onUnlike?: () => void;
@@ -20,22 +20,18 @@ type ServerRestaurant = {
   isLiked?: boolean; // 서버가 주면 사용, 없으면 false로
 };
 
-export function normalizeRestaurant(s: ServerRestaurant): RestaurantType {
+// 서버 응답 → Restaurant 로 변환
+export function normalizeRestaurant(s: ServerRestaurant): Restaurant {
   return {
     id: Number(s.id),
     name: s.name ?? "-",
+    address: s.address ?? "", // ← 문자열
     rating: s.rating ?? 0,
-    reviews: 0, // 서버에서 오면 바꿔 넣기
-    isLiked: Boolean(s.isLiked), // 없으면 false
-    menu: (s.representativeMenus?.[0] ?? "").toString(),
-    tags: [], // 서버 제공 시 매핑
     images: s.rest_image ? [s.rest_image] : [],
-    address: {
-      road: s.address ?? "",
-      jibun: "",
-      postalCode: "",
-    },
-    timetable: [], // 서버 제공 시 매핑
+    rest_tag: [],
+    menus: s.representativeMenus ?? [],
+    like: Boolean(s.isLiked),
+    reviews: 0,
   };
 }
 
@@ -49,7 +45,7 @@ export default function FoodCard({
   onLike,
   onUnlike,
 }: FoodCardProps) {
-  const [isLiked, setIsLiked] = useState(normalizeIsLiked(item.isLiked));
+  const [isLiked, setIsLiked] = useState(normalizeIsLiked(item.like));
   const [heartBusy, setHeartBusy] = useState(false);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
@@ -76,8 +72,8 @@ export default function FoodCard({
   };
 
   useEffect(() => {
-    setIsLiked(Boolean(item.isLiked));
-  }, [item.isLiked]);
+    setIsLiked(Boolean(item.like));
+  }, [item.like]);
 
   return (
     <div
@@ -89,36 +85,41 @@ export default function FoodCard({
           <span>{item.name}</span>
           <span className="flex items-center gap-1 text-xs font-normal text-yellow-500">
             ⭐ {item.rating}
-            <span className="text-yellow-500">({item.reviews})</span>
+            {item.reviews !== undefined && (
+              <span className="text-yellow-500">({item.reviews})</span>
+            )}
           </span>
         </div>
-        <p className="mb-3 text-sm text-gray-500">{item.address.road}</p>
-        <p className="mb-1 text-sm font-bold text-blue-600">{item.menu}</p>
+        <p className="mb-3 text-sm text-gray-500">{item.address}</p>
+        {item.menus && (
+          <p className="mb-1 text-sm font-bold text-blue-600">
+            {item.menus[0]}
+          </p>
+        )}
+
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
-          {(item.tags ?? []).map((tag, i) => (
+          {item.rest_tag?.map((tag: { tag: string }, i: number) => (
             <span
               key={i}
               className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
             >
-              {tag}
+              {tag.tag}
             </span>
           ))}
         </div>
       </div>
+
       <div className="flex flex-col place-items-end gap-2">
         <button onClick={handleLikeClick}>
           <img
             src={isLiked ? "/heart/heart_filled.svg" : "/heart/heart_empty.svg"}
             alt="하트"
-            width={20}
-            height={20}
+            className="h-5 w-5"
           />
         </button>
         <img
           src={item.images?.[0] || "/logo/logo.png"}
-          alt={item.menu}
-          width={70}
-          height={70}
+          alt={item.menus[0] ?? "음식"}
           className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
         />
       </div>
