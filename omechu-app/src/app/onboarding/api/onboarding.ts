@@ -1,4 +1,4 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 import type { ApiResponse } from "@/lib/api/auth";
 
 /**
@@ -40,10 +40,9 @@ export const completeOnboarding = async (
   data: OnboardingRequestData,
 ): Promise<OnboardingSuccessData> => {
   // `handleUpdateUserInfo` 컨트롤러가 /auth/complete 엔드포인트에 연결되어 있다고 가정
-  const response = await apiClient.patch<ApiResponse<OnboardingSuccessData>>(
-    "/auth/complete",
-    data,
-  );
+  const response = await axiosInstance.patch<
+    ApiResponse<OnboardingSuccessData>
+  >("/auth/complete", data);
 
   const apiResponse = response.data;
 

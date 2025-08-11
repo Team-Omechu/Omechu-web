@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

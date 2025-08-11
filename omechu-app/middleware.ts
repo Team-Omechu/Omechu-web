@@ -12,13 +12,13 @@ const UNAUTHENTICATED_PATHS = [
   // 예: /about, /terms
 ];
 
-// 인증된 사용자가 접근해서는 안 되는 페이지 경로 목록
-const AUTH_REDIRECT_PATHS = ["/sign-in", "/sign-up"];
+// 인증된 사용자가 접근해서는 안 되는 페이지 경로 목록 (JWT로 클라이언트에서 처리)
+const AUTH_REDIRECT_PATHS: string[] = [];
 
 // NOTE: middleware 함수는 모든 요청에 대해 실행되어 라우팅 또는 리디렉션 등을 처리할 수 있음
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
-  const isLoggedIn = request.cookies.has("connect.sid"); // 세션 쿠키 이름 확인 필요
+  // NOTE: JWT 기반으로 전환됨. 미들웨어에서는 더 이상 인증 여부를 판단하지 않음.
 
   // CASE 1: /restaurant-detail?id=123 형식으로 접근 시 → /restaurant-detail/123 으로 리디렉션
   if (pathname === "/restaurant-detail" && searchParams.has("id")) {
@@ -38,29 +38,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // CASE 3: 로그인한 사용자가 /sign-in, /sign-up 페이지 접근 시 → /mainpage 로 리디렉션
-  if (
-    isLoggedIn &&
-    AUTH_REDIRECT_PATHS.some((path) => pathname.startsWith(path))
-  ) {
-    return NextResponse.redirect(new URL("/mainpage", request.url));
-  }
-
-  // CASE 4: 로그인하지 않은 사용자가 보호된 페이지 접근 시 → /sign-in 으로 리디렉션
-  // (인증이 필요 없는 페이지 목록에 포함되지 않은 모든 경로를 보호된 페이지로 간주)
-  if (
-    !isLoggedIn &&
-    !UNAUTHENTICATED_PATHS.some((path) => pathname.startsWith(path))
-  ) {
-    // 동적 경로를 포함한 모든 보호된 경로를 처리
-    if (
-      !pathname.startsWith("/restaurant-detail") &&
-      !pathname.startsWith("/auth") &&
-      !pathname.startsWith("/api")
-    ) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-  }
+  // 인증 관련 리다이렉트는 제거함. 라우팅 가드/리다이렉트는 클라이언트 측에서 처리.
 
   // 기본적으로는 요청을 그대로 통과시킴
   return NextResponse.next();

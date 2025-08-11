@@ -18,7 +18,7 @@ import {
   type SignupFormValues,
 } from "@/auth/schemas/auth.schema";
 import { useSignupMutation, useLoginMutation } from "@/auth/hooks/useAuth";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";

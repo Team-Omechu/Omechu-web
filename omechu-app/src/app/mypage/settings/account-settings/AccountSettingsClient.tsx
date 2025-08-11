@@ -11,7 +11,7 @@ import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import Toast from "@/components/common/Toast";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 
 export default function AccountSettingsClient() {
