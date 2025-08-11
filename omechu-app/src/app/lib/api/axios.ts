@@ -55,11 +55,16 @@ axiosInstance.interceptors.response.use(
       const newAccess = res.data?.success?.accessToken;
       if (!newAccess) throw new Error("No access token returned");
 
-      useAuthStore.getState().login({
-        accessToken: newAccess,
-        refreshToken,
-        user: user!,
-      });
+      if (user) {
+        useAuthStore.getState().login({
+          accessToken: newAccess,
+          refreshToken,
+          user,
+        });
+      } else {
+        useAuthStore.getState().setAccessToken(newAccess);
+        useAuthStore.getState().setRefreshToken(refreshToken);
+      }
 
       original.headers = {
         ...(original.headers || {}),
