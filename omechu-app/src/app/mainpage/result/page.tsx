@@ -1,7 +1,7 @@
 // src/app/mainpage/result/page.tsx (ResultPage)
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/common/Header";
 import Image from "next/image";
@@ -29,7 +29,7 @@ export default function ResultPage() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  const menus: MenuItem[] = Array.isArray(data) ? data : [];
+  const menus: MenuItem[] = useMemo(()=>(Array.isArray(data) ? data : []), [data]);
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
@@ -46,7 +46,7 @@ export default function ResultPage() {
 
   useEffect(() => {
     setFilteredMenus(menus);
-  }, [data]);
+  }, [menus]);
 
   const handleNext = () => {
     if (openMenu != null) {
@@ -115,7 +115,7 @@ export default function ResultPage() {
               <MenuCard
                 title={menu.menu}
                 description={menu.description}
-                image={menu.image_link || "/image/image_empty.svg"}
+                image={`https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/${menu.menu}.png`}
                 onClick={() =>
                   setOpenMenu(openMenu === menu.menu ? null : menu.menu)
                 }
