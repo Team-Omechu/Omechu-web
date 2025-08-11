@@ -38,17 +38,17 @@ export const getProfile = async (): Promise<ProfileResponse> => {
 };
 
 export const postMukburim = async (
-  menuName: string,
+  menuName: string, userId?: number
 ): Promise<mukburimResponse> => {
   const { data } = await axiosInstance.post<mukburimResponse>("/mukburim", {
     menu_name: menuName,
+    userId: userId,
   });
   return data;
 };
 
-export const addHeart = async (userId?: number, restaurantId?: number) => {
+export const addHeart = async (restaurantId?: number) => {
   const response = await axiosInstance.post("/heart", {
-    userId: userId,
     restaurantId: restaurantId,
   });
   if (response.status !== 200) {
@@ -57,10 +57,9 @@ export const addHeart = async (userId?: number, restaurantId?: number) => {
   return response;
 };
 
-export const deleteHeart = async (userId?: number, restaurantId?: number) => {
+export const deleteHeart = async ( restaurantId?: number) => {
   const response = await axiosInstance.delete("/heart", {
     data: {
-      userId: userId,
       restaurantId: restaurantId,
     },
   });

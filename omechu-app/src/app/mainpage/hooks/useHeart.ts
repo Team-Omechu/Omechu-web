@@ -3,13 +3,8 @@ import { addHeart, deleteHeart } from "../api/api";
 import { ProfileResponse } from "@/constant/mainpage/profile";
 
 function usePostHeart(restaurantId: number) {
-  const queryClient = useQueryClient();
-  const cached = queryClient.getQueryData<ProfileResponse>(["profile"]);
-
-  const userId = cached?.success?.id;
-
   return useMutation({
-    mutationFn: () => addHeart(userId, restaurantId),
+    mutationFn: () => addHeart( restaurantId),
     onSuccess: (data) => {
       console.log("Heart added successfully:", data);
     },
@@ -17,13 +12,8 @@ function usePostHeart(restaurantId: number) {
 }
 
 function useDeleteHeart(restaurantId: number) {
-  const queryClient = useQueryClient();
-  const cached = queryClient.getQueryData<ProfileResponse>(["profile"]);
-
-  const userId = cached?.success?.id;
-
   return useMutation({
-    mutationFn: () => deleteHeart(userId, restaurantId),
+    mutationFn: () => deleteHeart( restaurantId),
     onSuccess: (data) => {
       console.log("Heart added successfully:", data);
     },
