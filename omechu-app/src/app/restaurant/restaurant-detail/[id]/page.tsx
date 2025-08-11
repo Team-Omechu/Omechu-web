@@ -157,6 +157,7 @@ export default function RestaurantDetail() {
           <RestaurantInfoBox
             restaurant={{
               id: restaurants.id,
+              name: restaurants.name,
               googlePlaceId: restaurants.googlePlaceId,
               timetable: restaurants.currentOpeningHours,
               address: {

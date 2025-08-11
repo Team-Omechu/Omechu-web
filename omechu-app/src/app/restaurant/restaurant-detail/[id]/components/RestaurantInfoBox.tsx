@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 interface Props {
   restaurant: {
     id: number;
+    name: string;
     googlePlaceId?: string | null;
     category?: string;
     timetable: { days_of_the_week: string; time: string }[];
@@ -32,7 +33,7 @@ export default function RestaurantInfoBox({
       <div className="flex w-full items-center justify-start gap-3">
         <Image src="/menu/menu.svg" alt="맛집 메뉴" width={24} height={24} />
         <span className="mt-1 text-lg font-bold text-gray-700">
-          {restaurant.category}
+          {restaurant.name}
         </span>
       </div>
       <div className="h-[1px] w-full bg-[#3d2828] opacity-60"></div>
