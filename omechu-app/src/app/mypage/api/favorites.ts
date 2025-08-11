@@ -1,6 +1,7 @@
 // src/app/mypage/api/favorites.ts
 import axiosInstance from "@/lib/api/axios"; // 너가 만든 axios 인스턴스
 import { useAuthStore } from "@/auth/store";
+import axios from "axios";
 
 const authHeader = () => {
   const token = useAuthStore.getState().user?.accessToken;
@@ -31,12 +32,14 @@ export async function likePlace(restaurantId: number) {
       throw new Error(data.error?.reason ?? "찜 등록 실패");
     }
     return data.success;
-  } catch (err: any) {
-    const msg = err?.response?.data?.error?.reason ?? "";
-    const status = err?.response?.status;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      const msg = err.response.data?.error?.reason ?? "";
+      const status = err.response.status;
 
-    if (status === 409 || /duplicate|already|exists|이미/i.test(msg)) {
-      return { already: true };
+      if (status === 409 || /duplicate|already|exists|이미/i.test(msg)) {
+        return { already: true };
+      }
     }
     throw err;
   }
