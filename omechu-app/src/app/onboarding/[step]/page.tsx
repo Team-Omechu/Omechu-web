@@ -14,11 +14,11 @@ import { useAuthStore } from "@/lib/stores/auth.store";
 import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
 import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
 import AllergyStep from "@/onboarding/components/AllergyStep";
-import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
+import BodyTypeStep from "@/onboarding/components/BodyTypeStep";
 import GenderStep from "@/onboarding/components/GenderStep";
-import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
+import PreferStep from "@/onboarding/components/PreferStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
-import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
+import ExerciseStep from "@/onboarding/components/ExerciseStep";
 import type { LoginSuccessData } from "@/lib/api/auth";
 
 const ONBOARDING_STEPS = 6;
@@ -80,13 +80,12 @@ export default function OnboardingPage() {
       case 2:
         return !onboardingStore.gender;
       case 3:
-        return !onboardingStore.workoutStatus;
+        return !onboardingStore.exercise;
       case 4:
-        return onboardingStore.preferredFood.length === 0;
+        return onboardingStore.prefer.length === 0;
       case 5:
         return (
-          !onboardingStore.constitution ||
-          onboardingStore.constitution.length === 0
+          !onboardingStore.bodyType || onboardingStore.bodyType.length === 0
         );
       default:
         return false;
@@ -105,8 +104,8 @@ export default function OnboardingPage() {
       type Exercise = (typeof EXERCISES)[number];
 
       const pickedBodyType =
-        onboardingStore.constitution.length > 0
-          ? (onboardingStore.constitution[0] as string)
+        onboardingStore.bodyType.length > 0
+          ? (onboardingStore.bodyType[0] as string)
           : null;
       const bodyTypeForApi: BodyType | null = BODY_TYPES.includes(
         pickedBodyType as BodyType,
@@ -114,7 +113,7 @@ export default function OnboardingPage() {
         ? (pickedBodyType as BodyType)
         : null;
 
-      const pickedExercise = onboardingStore.workoutStatus as string | null;
+      const pickedExercise = onboardingStore.exercise as string | null;
       const exerciseForApi: Exercise | null = EXERCISES.includes(
         pickedExercise as Exercise,
       )
@@ -127,8 +126,8 @@ export default function OnboardingPage() {
         gender: onboardingStore.gender,
         body_type: bodyTypeForApi,
         exercise: exerciseForApi,
-        prefer: onboardingStore.preferredFood,
-        allergy: onboardingStore.allergies,
+        prefer: onboardingStore.prefer,
+        allergy: onboardingStore.allergy,
       };
 
       completeOnboarding(dataToSubmit, {
@@ -192,11 +191,11 @@ export default function OnboardingPage() {
       case 2:
         return <GenderStep />;
       case 3:
-        return <WorkoutStatusStep />;
+        return <ExerciseStep />;
       case 4:
-        return <PreferredFoodStep />;
+        return <PreferStep />;
       case 5:
-        return <ConstitutionStep />;
+        return <BodyTypeStep />;
       case 6:
         return <AllergyStep />;
       default:

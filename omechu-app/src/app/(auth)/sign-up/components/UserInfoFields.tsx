@@ -7,7 +7,7 @@ import Input from "@/components/common/Input";
 import {
   useSendVerificationCodeMutation,
   useVerifyVerificationCodeMutation,
-} from "@/auth/hooks/useAuth";
+} from "@/lib/hooks/useAuth";
 import type { SignupFormValues } from "@/auth/schemas/auth.schema";
 import Toast from "@/components/common/Toast";
 
