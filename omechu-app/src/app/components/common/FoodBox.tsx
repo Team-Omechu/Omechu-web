@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 
 type FoodBoxProp = {
@@ -21,22 +22,20 @@ export default function FoodBox({
   // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
   return (
     <div
-      className="relative flex h-[110px] w-[100px] cursor-pointer flex-col items-center justify-end rounded-xl border-[1px] border-black bg-white py-1 transition-transform duration-300 hover:scale-110"
+      className="relative flex h-[120px] w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border-[1px] border-black bg-white py-3 transition-transform duration-300 hover:scale-110"
       onClick={onClick}
     >
       {/* 추천 제외 || 복원 버튼 */}
       {/* dev 모드 일 때 이미지 렌더링 늦음 -> build 후 확인하니 렌더링 정상 (캐시 사용) */}
       {isToggled && (
-        <Image
-          priority
+        <img
           loading="eager"
-          unoptimized
           onClick={(e) => {
             // console.log("클릭됨", title); // 디버그용 콘솔 메세지 출력
             e.stopPropagation();
             onToggle();
           }}
-          className="absolute right-1 top-1 cursor-pointer"
+          className="absolute right-1 top-1 flex-1 cursor-pointer"
           src={
             isExcluded ? `/circle/circle_plus.svg` : `/circle/circle_minus.svg`
           }
@@ -48,18 +47,20 @@ export default function FoodBox({
       )}
       {/* 음식 이미지 (또는 fallback) */}
       {imageUrl ? (
-        <Image
+        <img
           src={imageUrl}
           alt={`${title} 이미지`}
           width={70}
           height={70}
-          className="rounded-lg object-cover"
+          className="flex-1 flex-shrink-0 rounded-lg object-cover"
         />
       ) : (
         <div className="h-[70px] w-[70px] rounded-lg bg-gray-200" />
       )}
       {/* 음식 이름 */}
-      <span className="text-[15px] font-normal">{title}</span>
+      <div className="flex h-7 items-center whitespace-pre-wrap px-3 text-center text-[15px] font-normal leading-none">
+        <span>{title}</span>
+      </div>
     </div>
   );
 }
