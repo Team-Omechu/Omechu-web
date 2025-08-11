@@ -1,12 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { getCurrentUser } from "@/lib/api/auth";
 
 export default function AuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-[100dvh] items-center justify-center">
+          <span className="text-gray-500">로그인 처리 중...</span>
+        </main>
+      }
+    >
+      <CallbackContent />
+    </Suspense>
+  );
+}
+
+function CallbackContent() {
   const router = useRouter();
   const params = useSearchParams();
   const { login } = useAuthStore();
@@ -22,22 +36,13 @@ export default function AuthCallbackPage() {
 
     (async () => {
       try {
-        // 토큰을 먼저 저장하지 않고, 토큰을 헤더로만 사용해 프로필 조회
-        // getCurrentUser는 axios 인터셉터에 의해 store의 토큰을 읽지만
-        // 콜백 단계에서는 직접 헤더를 붙여 1회성으로 호출하는 방식으로 대체할 수 있습니다.
-        // 여기서는 간단히 store에 최종 상태 한 번만 쓰도록 토큰과 함께 user를 설정합니다.
-
-        // 우선 user 프로필 요청
         const me = await getCurrentUserWithToken(accessToken);
-
-        // 최종 한 번의 로그인 상태 설정
         login({
           accessToken,
           refreshToken: refreshToken ?? "",
           user: me,
           password: "",
         });
-
         if (!me.nickname) router.replace("/onboarding/1");
         else router.replace("/mainpage");
       } catch (e) {
