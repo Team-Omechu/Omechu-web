@@ -2,7 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation"; // ✅ 추가
 import { distance } from "fastest-levenshtein";
 
 import FloatingActionButton from "@/components/common/FloatingActionButton";
@@ -22,6 +22,7 @@ import RestaurantAddModal from "./RestaurantAddModal/RestaurantAddModal";
 import { suggestionList } from "@/constant/suggestionList";
 import type { Restaurant } from "@/lib/types/restaurant";
 import { useRestaurantList } from "../api/restaurantList";
+import { useRestaurantSearch } from "../api/restaurantSearch"; // ✅ 검색 훅
 
 export default function Restaurant() {
   const keywordList = [
@@ -47,21 +48,19 @@ export default function Restaurant() {
     { label: "추천 순", value: "recommend" },
     { label: "최근 본 순", value: "recent" },
   ];
-
   type SortValue = SortOption["value"];
 
   const router = useRouter();
+  const sp = useSearchParams(); // ✅ 추가
   const mainRef = useRef<HTMLDivElement>(null);
 
   const [search, setSearch] = useState("");
   const SORT_KEY = "restaurantSortMode";
-  // 기존: const [sortMode, setSortMode] = useState<SortValue>("recommend");
   const [sortMode, setSortMode] = useState<SortValue>(() => {
-    if (typeof window === "undefined") return "recommend"; // SSR 안전망
+    if (typeof window === "undefined") return "recommend";
     const saved = localStorage.getItem(SORT_KEY) as SortValue | null;
     return saved ?? "recommend";
   });
-
   useEffect(() => {
     try {
       localStorage.setItem(SORT_KEY, sortMode);
@@ -75,20 +74,124 @@ export default function Restaurant() {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
 
+  // ✅ URL → 상태 복구 (최초 1회)
+  useEffect(() => {
+    const menu = sp.get("menu") ?? "";
+    const tags = (sp.get("tags") ?? "").split(",").filter(Boolean);
+    const loc = (sp.get("loc") ?? "").split(",").filter(Boolean);
+    const sort = sp.get("sort") as SortValue | null;
+
+    setSearch(menu);
+    setSelectedKeywords(tags);
+    setSelectedFilters(loc);
+    if (sort === "recommend" || sort === "recent") setSortMode(sort);
+    if (menu || tags.length || loc.length) setIsSearched(true);
+  }, []);
+
+  // ✅ 상태 → URL 동기화
+  const pushSearchUrl = useCallback(
+    ({
+      menu,
+      tags,
+      loc,
+    }: {
+      menu?: string;
+      tags?: string[];
+      loc?: string[];
+    }) => {
+      const q = new URLSearchParams(sp?.toString() ?? "");
+      const setOrDelete = (key: string, value?: string | string[]) => {
+        const arr = Array.isArray(value) ? value.filter(Boolean) : value;
+        const isEmpty =
+          value === undefined ||
+          value === null ||
+          (typeof arr === "string" && arr.trim() === "") ||
+          (Array.isArray(arr) && arr.length === 0);
+        if (isEmpty) q.delete(key);
+        else q.set(key, Array.isArray(arr) ? arr.join(",") : (arr ?? ""));
+      };
+
+      if (menu !== undefined) setOrDelete("menu", menu);
+      if (tags !== undefined) setOrDelete("tags", tags);
+      if (loc !== undefined) setOrDelete("loc", loc);
+
+      const qs = q.toString();
+      router.replace(qs ? `/restaurant?${qs}` : "/restaurant", {
+        scroll: false,
+      });
+    },
+    [router, sp],
+  );
+
+  // 🔒 최초 1회는 URL 안 건드리게 가드
+  const didHydrate = useRef(false);
+  useEffect(() => {
+    if (!didHydrate.current) {
+      didHydrate.current = true;
+      return;
+    }
+    pushSearchUrl({
+      menu: search,
+      tags: selectedKeywords,
+      loc: selectedFilters,
+    });
+  }, [
+    search,
+    selectedKeywords.join(","),
+    selectedFilters.join(","),
+    pushSearchUrl,
+  ]);
+
+  useEffect(() => {
+    // 검색/필터/정렬 변경 시 URL 반영
+    pushSearchUrl({
+      menu: search,
+      tags: selectedKeywords,
+      loc: selectedFilters,
+    });
+  }, [
+    search,
+    selectedKeywords.join(","),
+    selectedFilters.join(","),
+    sortMode,
+    pushSearchUrl,
+  ]);
+
+  // ✅ 검색 모드 판단 (하나라도 있으면 서버 검색)
+  const isSearchMode =
+    !!search.trim() ||
+    selectedKeywords.length > 0 ||
+    selectedFilters.length > 0;
+
+  // ✅ 검색 훅 (서버 스펙: tag/location 단일 값이므로 첫 번째만 사용)
+  const searchTag = selectedKeywords[0] ?? "";
+  const searchLocation = selectedFilters[0] ?? "";
+  const {
+    items: searchedItems,
+    fetchNext: fetchSearchNext,
+    isLoading: isSearchLoading,
+    hasMore: hasSearchMore,
+    reset: resetSearch,
+    isError: isSearchError,
+  } = useRestaurantSearch({
+    menu: search.trim() || "",
+    tag: searchTag,
+    location: searchLocation,
+  });
+
+  // 기존 리스트 훅
   const { restaurantList, fetchRestaurants, isLoading, hasMore, reset } =
     useRestaurantList();
 
-  // 최근 본 음식점 ID를 로컬 스토리지에 저장하는 로직
+  // 최근 본
   const RECENT_KEY = "recentViewedRestaurants";
   const [recentIds, setRecentIds] = useState<number[]>([]);
-
   useEffect(() => {
     try {
       const saved = localStorage.getItem(RECENT_KEY);
       if (saved) setRecentIds(JSON.parse(saved));
     } catch {}
   }, []);
-
   const recordRecent = useCallback((id: number) => {
     setRecentIds((prev) => {
       const next = [id, ...prev.filter((x) => x !== id)].slice(0, 100);
@@ -97,7 +200,7 @@ export default function Restaurant() {
     });
   }, []);
 
-  // 검색어를 이용한 필터링
+  // (로컬) 검색어로 필터링 — 기본 리스트에만 적용 (검색모드일 땐 서버가 필터)
   const filteredItems = search.trim()
     ? restaurantList.filter(
         (item) =>
@@ -109,65 +212,66 @@ export default function Restaurant() {
   const similarItems: Restaurant[] = restaurantList.filter((item) => {
     const name = item?.name ?? "";
     const keyword = search?.trim() ?? "";
-
     if (!name || !keyword) return false;
-
-    return distance(name, keyword) <= 2 && !name.includes(keyword);
+    return distance(name, keyword) <= 1 && !name.includes(keyword);
   });
 
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // 무한 스크롤 구현에 대한 설명:
-  // 1. 사용자가 스크롤을 내리면 IntersectionObserver가 페이지 하단의 특정 요소(loaderRef)를 감지합니다.
-  // 2. 해당 요소가 뷰포트에 들어오면 observerCallback이 호출되어,
-  //    현재 로딩 중이 아니고, 아직 모든 항목을 로드하지 않은 경우,
-  //    로딩 상태를 true로 설정하고 visibleCount를 증가시킵니다.
-  // 3. visibleCount가 증가하면, 화면에 표시되는 항목이 늘어나고, 새로운 항목들이 렌더링됩니다.
-  // 4. 로딩 상태는 일정 시간 후 자동으로 false로 설정되어, 로딩 애니메이션이 사라집니다.
-
-  // 무한 스크롤 감지를 위한 ref. 페이지 하단의 div에 연결됨
+  // 무한 스크롤
   const loaderRef = useRef<HTMLDivElement | null>(null);
-
-  // IntersectionObserver 콜백 함수
-  // loaderRef 요소가 뷰포트에 들어오면 다음 항목들을 불러옴
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-
-      if (target.isIntersecting && !isLoading && hasMore) {
-        fetchRestaurants();
+      if (!target.isIntersecting) return;
+      if (isSearchMode) {
+        if (!isSearchLoading && hasSearchMore) fetchSearchNext();
+      } else {
+        if (!isLoading && hasMore) fetchRestaurants();
       }
     },
-    [fetchRestaurants, isLoading, hasMore],
+    [
+      isSearchMode,
+      isSearchLoading,
+      hasSearchMore,
+      fetchSearchNext,
+      isLoading,
+      hasMore,
+      fetchRestaurants,
+    ],
   );
-
-  // IntersectionObserver 등록 및 해제
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
+      root: null,
+      rootMargin: "0px 0px 160px 0px",
+      threshold: 0,
     });
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
+    if (loaderRef.current) observer.observe(loaderRef.current);
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
     };
   }, [observerCallback]);
 
+  // 데이터 소스 스위치
   useEffect(() => {
-    reset();
-    fetchRestaurants();
-  }, [selectedFilters, selectedKeywords]);
+    if (isSearchMode) {
+      resetSearch();
+      fetchSearchNext();
+    } else {
+      reset();
+      fetchRestaurants();
+    }
+  }, [
+    isSearchMode,
+    search,
+    selectedKeywords.join(","),
+    selectedFilters.join(","),
+  ]);
 
-  const baseItems = filteredItems; // 검색/필터 적용된 목록을 정렬의 입력으로
+  // 정렬 입력 대상
+  const baseItems = isSearchMode ? searchedItems : filteredItems;
   const sortedItems = useMemo(() => {
     if (sortMode === "recommend") {
       return [...baseItems].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
@@ -187,10 +291,15 @@ export default function Restaurant() {
     return baseItems;
   }, [sortMode, baseItems, recentIds]);
 
-  const handleSearch = (search: string) => {
-    router.push(`/restaurant?query=${search}`);
+  // 검색 제출 시 URL도 함께 반영
+  const handleSearch = (text: string) => {
     setIsSearched(true);
-    console.log("검색어:", search);
+    setSearch(text);
+    pushSearchUrl({
+      menu: text,
+      tags: selectedKeywords,
+      loc: selectedFilters,
+    });
   };
 
   const handleClickMyLocation = async () => {
@@ -198,11 +307,9 @@ export default function Restaurant() {
       alert("이 브라우저는 위치 정보 기능을 지원하지 않습니다.");
       return;
     }
-
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-
         const res = await fetch(
           `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
           {
@@ -211,27 +318,20 @@ export default function Restaurant() {
             },
           },
         );
-
         const data = await res.json();
         const region1 = data.documents?.[0]?.region_1depth_name;
         const region2 = data.documents?.[0]?.region_2depth_name;
         const region3 = data.documents?.[0]?.region_3depth_name;
-
         if (!region1 || !region2 || !region3) {
           alert("주소를 불러올 수 없습니다.");
           return;
         }
-
         const cleanRegion1 = region1
           .replace("특별", "")
           .replace("광역", "")
           .replace("자치", "")
           .replace("시", "");
-
         const address = `${cleanRegion1} ${region2} ${region3}`;
-        console.log("정제된 주소:", address);
-
-        // ✅ 중복 방지하고 필터에 추가
         setSelectedFilters((prev) =>
           prev.includes(address) ? prev : [...prev, address],
         );
@@ -299,14 +399,12 @@ export default function Restaurant() {
         />
       </div>
 
-      {/* 추천 영역 */}
       <KeywordToggleSection
         selectedKeywords={selectedKeywords}
         showKeywords={showKeywords}
         onToggleShow={() => setShowKeywords((prev) => !prev)}
       />
 
-      {/* 키워드 펼침 영역 */}
       {showKeywords && (
         <KeywordSelector
           keywords={keywordList}
@@ -322,7 +420,8 @@ export default function Restaurant() {
         />
       )}
 
-      {isSearched && search.trim() && filteredItems.length === 0 && (
+      {/* ✅ 빈 결과 체크도 검색 모드 고려 */}
+      {isSearched && (isSearchError || sortedItems.length === 0) && (
         <SearchResultEmpty
           search={search}
           similarItems={similarItems}
@@ -330,7 +429,6 @@ export default function Restaurant() {
         />
       )}
 
-      {/* 음식 카드 리스트 */}
       <FoodCardList
         items={sortedItems}
         onItemClick={(id) => handleItemClick(id)}
@@ -338,7 +436,8 @@ export default function Restaurant() {
 
       <div ref={loaderRef} className="h-[1px]" />
 
-      {isLoading && <LoadingIndicator />}
+      {/* ✅ 검색 모드일 때는 검색 로딩을 보여주자 */}
+      {(isSearchMode ? isSearchLoading : isLoading) && <LoadingIndicator />}
 
       <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
     </main>
