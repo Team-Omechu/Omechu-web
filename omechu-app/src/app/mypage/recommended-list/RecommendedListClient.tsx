@@ -334,7 +334,7 @@ export default function RecommendedList() {
               <FoodBox
                 key={item.id ?? `${item.title}-${index}`}
                 title={item.title}
-                image_link={item.image_link}
+                imageUrl={item.image_link}
                 isExcluded={item.isExcluded}
                 onToggle={() => onToggle(item)}
                 onClick={() => {}}
