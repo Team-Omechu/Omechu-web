@@ -63,7 +63,7 @@ export interface FetchMyReviewsResponse {
 }
 
 export async function fetchMyReviews(): Promise<FetchMyReviewsResponse> {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token found. User might not be authenticated.");
   }
@@ -99,7 +99,7 @@ export async function fetchMyPlaces(
   limit = 10,
   cursor?: number | string,
 ): Promise<FetchMyPlaceResponse> {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) throw new Error("No access token. Please login first.");
 
   let query = `?limit=${limit}`;
@@ -134,7 +134,7 @@ export async function toggleReviewLike(
   reviewId: number,
   like: boolean,
 ) {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token. Please login first.");
   }

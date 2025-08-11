@@ -1,10 +1,10 @@
 // src/app/mypage/api/favorites.ts
 import axiosInstance from "@/lib/api/axios"; // 너가 만든 axios 인스턴스
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import axios from "axios";
 
 const authHeader = () => {
-  const token = useAuthStore.getState().user?.accessToken;
+  const token = useAuthStore.getState().accessToken;
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 

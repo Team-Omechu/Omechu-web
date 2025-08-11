@@ -1,9 +1,9 @@
 import FoodCard from "@/components/common/FoodCard";
-import { RestaurantType } from "@/constant/restaurant/restaurantList";
+import { Restaurant } from "../../lib/types/restaurant";
 
 interface SearchResultEmptyProps {
   search: string;
-  similarItems: RestaurantType[];
+  similarItems: Restaurant[];
   onItemClick: (id: number) => void;
 }
 

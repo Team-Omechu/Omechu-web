@@ -14,7 +14,7 @@ import { MenuItem } from "@/constant/mainpage/resultData";
 import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 import usePostMukburim from "../hooks/usePostMukburim";
 

@@ -15,7 +15,7 @@ import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 
 import AuthErrorModal from "../AuthErrorModalSection";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import {
   fetchMyPlaces,
@@ -60,7 +60,7 @@ export default function MyActivityClient() {
 
   // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
-  const accessToken = user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
 
   // 공통 UI 상태
@@ -498,21 +498,19 @@ export default function MyActivityClient() {
                           item={{
                             id: item.id,
                             name: item.name,
-                            menu: item.repre_menu || "",
+                            menus: Array.isArray(item.repre_menu)
+                              ? item.repre_menu
+                              : typeof item.repre_menu === "string"
+                                ? [item.repre_menu]
+                                : [],
                             rating: item.rating || 0,
                             images: item.images
                               ? item.images.map((img) => img.link ?? "")
                               : [],
-                            address: {
-                              road: item.address || "",
-                              jibun: "",
-                              postalCode: "",
-                            },
-                            tags: [],
-                            isLiked: item.isLiked,
+                            address: item.address ?? "",
+                            rest_tag: [],
+                            like: item.isLiked ?? false,
                             reviews: 0,
-                            category: "",
-                            timetable: [],
                           }}
                           onClick={() =>
                             router.push(

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -49,7 +49,7 @@ export default function AllergyStep() {
         allergy: allergies.length === 0 ? ["없음"] : allergies,
       };
 
-      const response = await apiClient.patch("/profile", requestBody);
+      const response = await axiosInstance.patch("/profile", requestBody);
       console.log("프로필 업데이트 성공:", response.data);
 
       setShowSaveModal(true);

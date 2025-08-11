@@ -72,8 +72,8 @@ function normalizeSuccess(
 
 // * 추천목록 관리 데이터 조회
 // * - GET /recommend/management
-export async function fetchRecommendManagement(): Promise<RecommendManagementData> {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+export async function fetchRecommendManagement(): Promise<FetchRecommendManagementResponse> {
+  const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token. Please login first.");
   }
@@ -101,7 +101,7 @@ export async function exceptMenu(params: {
   menuId?: number;
   menuName?: string;
 }) {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token. Please login first.");
   }
@@ -134,7 +134,7 @@ export async function removeExceptMenu(params: {
   menuId?: number;
   menuName?: string;
 }): Promise<RemoveExceptResult> {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token. Please login first.");
   }

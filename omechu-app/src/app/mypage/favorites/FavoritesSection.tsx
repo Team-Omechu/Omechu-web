@@ -5,7 +5,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,8 +35,8 @@ export default function Favorites() {
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
   // 인증 관련 (zustand)
-  const user = useAuthStore((state) => state.user);
-  const accessToken = user?.accessToken;
+  // const user = useAuthStore((state) => state.user);
+  const accessToken = useAuthStore.getState().accessToken;
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false; // 스토리지 복원 완료 여부
 
   // 1) 최초/재인증 로드: 하이드레이션 후, 토큰 없으면 모달/초기화, 있으면 목록 패치
@@ -283,19 +283,13 @@ export default function Favorites() {
                       ? [item.restaurant.rest_image]
                       : [], // 단일 이미지라도 배열로
                     rating: item.restaurant.rating ?? 0,
-                    menu: item.restaurant.representativeMenus?.[0] ?? "", // 대표 메뉴가 있을 때 첫 번째만
-                    tags: Array.isArray(item.restaurant.tags)
+                    menus: item.restaurant.representativeMenus ?? [], // 대표 메뉴가 있을 때 첫 번째만
+                    rest_tag: Array.isArray(item.restaurant.tags)
                       ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)
                       : [],
-                    address: {
-                      road: item.restaurant.address ?? "",
-                      jibun: "",
-                      postalCode: "",
-                    },
+                    address: item.restaurant.address ?? "",
                     reviews: item.restaurant.reviewCount ?? 0,
-                    isLiked: true,
-                    category: "",
-                    timetable: [],
+                    like: true,
                   }}
                   onClick={() =>
                     router.push(

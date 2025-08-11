@@ -29,7 +29,7 @@ export default function SignInPage() {
         </div>
 
         <a
-          href="https://omechu-api.log8.kr/auth/kakao"
+          href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}
           className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]"
         >
           <Image

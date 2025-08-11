@@ -1,21 +1,26 @@
 import Image from "next/image";
 
-import FilterTagList from "../../../components/common/FilterTagList";
+import FilterTagList from "@/components/common/FilterTagList";
 
 interface FilterSectionProps {
   selectedFilters: string[];
   onRemoveFilter: (tag: string) => void;
   onOpenFilterModal: () => void;
+  onClickMyLocation: () => void; // ✅ 추가
 }
 
 export default function FilterSection({
   selectedFilters,
   onRemoveFilter,
   onOpenFilterModal,
+  onClickMyLocation,
 }: FilterSectionProps) {
   return (
     <div className="mt-3 flex items-center gap-2">
-      <button className="flex flex-shrink-0 items-center justify-between gap-1">
+      <button
+        className="flex flex-shrink-0 items-center justify-between gap-1"
+        onClick={onClickMyLocation}
+      >
         <Image
           src={"/location/location_zoom.svg"}
           alt="내 위치"

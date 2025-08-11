@@ -10,7 +10,7 @@ import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
 import Toast from "@/components/common/Toast";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
 import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
 import AllergyStep from "@/onboarding/components/AllergyStep";
@@ -34,7 +34,13 @@ export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams();
   const onboardingStore = useOnboardingStore();
-  const { user: authUser, login, password, accessToken } = useAuthStore();
+  const {
+    user: authUser,
+    login,
+    password,
+    accessToken,
+    refreshToken,
+  } = useAuthStore();
   const {
     setCurrentStep,
     reset: resetOnboarding,
@@ -142,11 +148,11 @@ export default function OnboardingPage() {
               nickname: completedProfile.nickname,
               created_at: completedProfile.created_at,
               updated_at: completedProfile.updated_at,
-              accessToken: accessToken ?? "",
             };
 
             login({
               accessToken: accessToken ?? "",
+              refreshToken: refreshToken ?? "",
               user: userForLogin,
               password: password,
             });
