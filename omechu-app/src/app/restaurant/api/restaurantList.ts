@@ -1,4 +1,4 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 import { Restaurant, RestaurantDetail } from "@/lib/types/restaurant";
 import { useCallback, useState } from "react";
 
@@ -42,7 +42,7 @@ export function useRestaurantList() {
     try {
       setIsLoading(true);
 
-      const res = await apiClient.get("/place", {
+      const res = await axiosInstance.get("/place", {
         params: {
           cursor: cursor.toString(),
           limit: "8",
@@ -87,7 +87,7 @@ export function useRestaurantList() {
 export const registerRestaurant = async (
   payload: RegisterRestaurantPayload,
 ) => {
-  const response = await apiClient.post(`/place`, payload, {
+  const response = await axiosInstance.post(`/place`, payload, {
     withCredentials: true, // ✅ 쿠키 포함
     headers: {
       "Content-Type": "application/json",
@@ -114,7 +114,7 @@ function mapApiToRestaurantDetail(apiData: any): RestaurantDetail {
 export async function getRestaurantDetail(
   id: number,
 ): Promise<RestaurantDetail> {
-  const res = await apiClient.get(`/place/detail/${id}`);
+  const res = await axiosInstance.get(`/place/detail/${id}`);
   const json = res.data;
   console.log("맛집 상세 정보 로딩:", json);
   return mapApiToRestaurantDetail(json);

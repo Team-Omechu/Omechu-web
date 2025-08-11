@@ -1,4 +1,4 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 import { MostTag, ReviewProps } from "@/lib/types/review";
 
 export interface ReviewRequest {
@@ -41,7 +41,7 @@ export interface ReviewLikeResponse {
 
 // ✅ 토큰 기반: apiClient 사용
 export const postReview = async (id: number, data: ReviewRequest) => {
-  const res = await apiClient.post(`/place/review/${id}`, data, {
+  const res = await axiosInstance.post(`/place/review/${id}`, data, {
     headers: { "Content-Type": "application/json" },
   });
   return res.data;
@@ -72,7 +72,7 @@ export async function getReviews(
     throw new Error(`유효하지 않은 restId입니다: ${restId}`);
   }
 
-  const res = await apiClient.get(`/place/review/${restId}`, {
+  const res = await axiosInstance.get(`/place/review/${restId}`, {
     params: { limit: String(limit), cursor: String(cursor) },
     headers: { "Content-Type": "application/json" },
   });
@@ -101,7 +101,7 @@ export async function setReviewLike(
   reviewId: number,
   like: boolean,
 ): Promise<{ likeCount: number | null; isLiked: boolean | null }> {
-  const res = await apiClient.patch(
+  const res = await axiosInstance.patch(
     `/place/${restId}/like/${reviewId}`,
     { like },
     { headers: { "Content-Type": "application/json" } },

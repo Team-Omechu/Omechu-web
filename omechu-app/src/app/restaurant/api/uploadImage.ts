@@ -1,9 +1,11 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 import axios from "axios";
 
 // Presigned URL 요청 (서버 API → 토큰 인증 필요)
 export const getPresignedUrl = async (directory: string) => {
-  const response = await apiClient.post(`/image/upload?directory=${directory}`);
+  const response = await axiosInstance.post(
+    `/image/upload?directory=${directory}`,
+  );
   return response.data as { uploadUrl: string; fileUrl: string };
 };
 
