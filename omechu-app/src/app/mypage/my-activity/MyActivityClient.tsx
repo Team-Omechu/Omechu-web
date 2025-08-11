@@ -60,7 +60,7 @@ export default function MyActivityClient() {
 
   // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
-  const accessToken = user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
 
   // 공통 UI 상태

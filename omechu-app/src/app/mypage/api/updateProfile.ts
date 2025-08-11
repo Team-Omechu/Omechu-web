@@ -27,7 +27,7 @@ export const updateProfile = async (body: {
   nickname: string;
   profileImageUrl?: string;
 }) => {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
 
   return axiosInstance.patch(`/profile`, body, {
     headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},

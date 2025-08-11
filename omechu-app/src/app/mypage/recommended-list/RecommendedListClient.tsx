@@ -44,8 +44,7 @@ export default function RecommendedList() {
   const modalShownRef = useRef(false);
 
   // 인증/하이드레이션
-  const user = useAuthStore((s) => s.user);
-  const accessToken = user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
 
   // 서버 데이터/상태
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
