@@ -80,7 +80,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
         </div>
         {shouldShowServiceError && (
           <p className="pl-2 text-xs text-red-500">
-            {errors.termsService.message}
+            {errors.termsService?.message}
           </p>
         )}
 
@@ -101,7 +101,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
         </div>
         {shouldShowPrivacyError && (
           <p className="pl-2 text-xs text-red-500">
-            {errors.termsPrivacy.message}
+            {errors.termsPrivacy?.message}
           </p>
         )}
 
@@ -122,7 +122,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
         </div>
         {shouldShowLocationError && (
           <p className="pl-2 text-xs text-red-500">
-            {errors.termsLocation.message}
+            {errors.termsLocation?.message}
           </p>
         )}
       </div>
@@ -135,7 +135,9 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           variant="round"
         />
         {shouldShowAgeError && (
-          <p className="pl-2 text-xs text-red-500">{errors.termsAge.message}</p>
+          <p className="pl-2 text-xs text-red-500">
+            {errors.termsAge?.message}
+          </p>
         )}
       </div>
     </div>
