@@ -14,11 +14,11 @@ import { mealTimeOptions } from "@/constant/mainpage/Option";
 const MealTimeStep = () => {
   const router = useRouter();
   const { mealTime, setMealTime } = useQuestionAnswerStore();
-  const { addTag } = useTagStore();
+  const { setMealTimeTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
     setMealTime(value);
-    addTag(label, description);
+    setMealTimeTag(label, description);
     router.push("/mainpage/question-answer/2");
   };
 
