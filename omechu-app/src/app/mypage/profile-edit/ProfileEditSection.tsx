@@ -8,7 +8,7 @@ import {
   uploadToS3,
   updateProfile,
 } from "../api/updateProfile";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import ProfileImageUploader from "./ProfileImageUploader";
 import NicknameInput from "./NicknameInput";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -55,7 +55,7 @@ export default function ProfileEditSection() {
           profileImageFile.name,
           profileImageFile.type,
         );
-        await uploadToS3(uploadUrl, profileImageFile);
+        await uploadToS3(uploadUrl, profileImageFile, { acl: "public-read" });
         imageUrl = fileUrl;
         setProfileImageUrl(fileUrl);
       }

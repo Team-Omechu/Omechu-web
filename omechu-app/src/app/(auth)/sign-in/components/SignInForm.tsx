@@ -12,7 +12,7 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/lib/hooks/useAuth";
 import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
@@ -26,13 +26,7 @@ export default function SignInForm() {
   const setUser = useAuthStore((state) => state.setUser);
   const loginAction = useAuthStore((state) => state.login);
 
-  const {
-    mutate: login,
-    isPending,
-    isSuccess,
-    error,
-    data: loginResult,
-  } = useLoginMutation();
+  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
   const {
     control,
@@ -53,25 +47,22 @@ export default function SignInForm() {
     login(data);
   };
 
-  console.log("loginResult", loginResult);
+  // 로그인 응답은 토큰 중심으로 처리되며, 최종 유저 정보는 store로 동기화됩니다.
+  const user = useAuthStore((s) => s.user);
 
-  //* 이삭 수정 부분
+  //* 최종 유저 프로필 동기화 완료 후 라우팅
   useEffect(() => {
-    if (isSuccess && loginResult) {
-      // user 정보와 accessToken을 분리해서 저장
-      loginAction({
-        accessToken: loginResult.accessToken,
-        user: loginResult,
-        password: "",
-      });
+    // 로그인 토큰 수령 직후에는 placeholder 유저가 먼저 들어오므로
+    // 서버의 me 동기화가 끝나 user.email 이 채워졌을 때만 라우팅합니다.
+    if (!isSuccess || !user) return;
+    if (!user.email) return; // 아직 me 동기화 전 상태
 
-      if (!loginResult.nickname) {
-        router.push("/onboarding/1");
-      } else {
-        router.push("/mainpage");
-      }
+    if (user.nickname && user.nickname.trim().length > 0) {
+      router.push("/mainpage");
+    } else {
+      router.push("/onboarding/1");
     }
-  }, [isSuccess, loginResult, router, setUser, loginAction]);
+  }, [isSuccess, user, router]);
 
   useEffect(() => {
     if (error) {

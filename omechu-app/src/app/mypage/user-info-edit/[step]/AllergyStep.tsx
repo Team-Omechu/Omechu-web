@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -21,10 +21,10 @@ export default function AllergyStep() {
   // AllergyStep.tsx 상단, useOnboardingStore로 전체 상태 가져오기
   const nickname = useOnboardingStore((state) => state.nickname);
   const gender = useOnboardingStore((state) => state.gender);
-  const workoutStatus = useOnboardingStore((state) => state.workoutStatus);
-  const preferredFood = useOnboardingStore((state) => state.preferredFood);
-  const constitution = useOnboardingStore((state) => state.constitution);
-  const allergies = useOnboardingStore((state) => state.allergies);
+  const exercise = useOnboardingStore((state) => state.exercise);
+  const prefer = useOnboardingStore((state) => state.prefer);
+  const bodyType = useOnboardingStore((state) => state.bodyType);
+  const allergy = useOnboardingStore((state) => state.allergy);
   const profileImageUrl = useOnboardingStore((state) => state.profileImageUrl); // 예시
 
   const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
@@ -43,13 +43,13 @@ export default function AllergyStep() {
       const requestBody = {
         nickname,
         gender,
-        exercise: workoutStatus,
-        prefer: preferredFood.length === 0 ? ["없음"] : preferredFood,
-        constitution: constitution.length === 0 ? ["없음"] : constitution,
-        allergy: allergies.length === 0 ? ["없음"] : allergies,
+        exercise,
+        prefer: prefer.length === 0 ? ["없음"] : prefer,
+        bodyType: bodyType.length === 0 ? ["없음"] : bodyType,
+        allergy: allergy.length === 0 ? ["없음"] : allergy,
       };
 
-      const response = await apiClient.patch("/profile", requestBody);
+      const response = await axiosInstance.patch("/profile", requestBody);
       console.log("프로필 업데이트 성공:", response.data);
 
       setShowSaveModal(true);
@@ -85,7 +85,7 @@ export default function AllergyStep() {
           <div className="flex flex-col gap-5">
             {["달걀 (난류)", "유제품", "갑각류", "해산물", "견과류"].map(
               (item) => {
-                const isSelected = allergies.includes(item);
+                const isSelected = allergy.includes(item);
 
                 return (
                   <button
@@ -151,10 +151,10 @@ export default function AllergyStep() {
         <ModalWrapper>
           <AlertModal
             title={
-              allergies.length === 0 ? "알레르기가 없으신가요?" : "저장 완료!"
+              allergy.length === 0 ? "알레르기가 없으신가요?" : "저장 완료!"
             }
             description={
-              allergies.length === 0
+              allergy.length === 0
                 ? "입력 없이 제출할 경우, '없음'으로 저장됩니다."
                 : "이제 맛있는 메뉴 추천 받아 볼까요?"
             }

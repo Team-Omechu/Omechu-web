@@ -1,19 +1,18 @@
-import apiClient from "@/lib/api/client";
+import axiosInstance from "@/lib/api/axios";
 import type { ApiResponse } from "@/lib/api/auth";
 
 /**
- * 온보딩 완료(회원가입 완료) API 요청 데이터 타입
- * - 백엔드 user.dto.js 명세에 따라 최종 수정
+ * 온보딩 완료(회원 정보 완료) 요청 데이터 타입
+ * - 백엔드 컨트롤러는 한국어 값을 받아 내부에서 enum으로 변환합니다.
  */
 export interface OnboardingRequestData {
-  password?: string; // 비밀번호 필드 추가 (선택적으로)
   nickname: string;
-  profileImageUrl: string;
-  gender: "male" | "female" | null;
-  body_type: string | null;
-  state: "dieting" | "bulking" | "maintaining" | null;
-  prefer: string[];
-  allergy: string[];
+  profileImageUrl?: string;
+  gender: "남성" | "여성" | null;
+  body_type: "감기" | "소화불량" | "더위잘탐" | "추위잘탐" | null;
+  exercise: "다이어트 중" | "증량 중" | "유지 중" | null;
+  prefer: string[]; // 예: ["한식", "양식"]
+  allergy: string[]; // 예: ["달걀(난류) 알레르기", ...]
 }
 
 /**
@@ -23,10 +22,10 @@ export interface OnboardingSuccessData {
   id: string;
   email: string;
   nickname: string;
-  profileImageUrl: string;
-  gender: string;
-  body_type: string;
-  state: string;
+  profileImageUrl: string | null;
+  gender: "남성" | "여성" | null;
+  body_type: "감기" | "소화불량" | "더위잘탐" | "추위잘탐" | null;
+  exercise: "다이어트 중" | "증량 중" | "유지 중" | null;
   prefer: string[];
   allergy: string[];
   created_at: string;
@@ -40,10 +39,9 @@ export const completeOnboarding = async (
   data: OnboardingRequestData,
 ): Promise<OnboardingSuccessData> => {
   // `handleUpdateUserInfo` 컨트롤러가 /auth/complete 엔드포인트에 연결되어 있다고 가정
-  const response = await apiClient.patch<ApiResponse<OnboardingSuccessData>>(
-    "/auth/complete",
-    data,
-  );
+  const response = await axiosInstance.patch<
+    ApiResponse<OnboardingSuccessData>
+  >("/auth/complete", data);
 
   const apiResponse = response.data;
 

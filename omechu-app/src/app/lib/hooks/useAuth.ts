@@ -1,32 +1,95 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import type { LoginFormValues } from "@/auth/schemas/auth.schema";
-import { useAuthStore } from "@/auth/store";
+import type {
+  LoginFormValues,
+  SignupFormValues,
+  FindPasswordFormValues,
+  ResetPasswordFormValues,
+} from "@/auth/schemas/auth.schema";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import * as authApi from "@/lib/api/auth";
 import type { LoginSuccessData } from "@/lib/api/auth";
 
+// 로그인
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
 
-  return useMutation<LoginSuccessData, Error, LoginFormValues>({
+  return useMutation<any, Error, LoginFormValues>({
     mutationFn: authApi.login,
-    onSuccess: (data) => {
-      // TODO: 백엔드에서 accessToken을 내려주면 그걸 받아서 저장해야 합니다.
-      // 지금은 임시로 더미 토큰을 사용합니다.
-      const MOCK_ACCESS_TOKEN = "DUMMY_ACCESS_TOKEN_FROM_LOGIN";
-      setLoginState({ accessToken: MOCK_ACCESS_TOKEN, user: data });
-
-      // 성공 후 로직 (예: 메인 페이지로 이동)
-      console.log("로그인 성공:", data);
-      // router.push('/');
+    onSuccess: async (tokens, variables) => {
+      setLoginState({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user: {
+          id: tokens.userId,
+          email: "",
+          gender: "남성",
+          nickname: "",
+          created_at: "",
+          updated_at: "",
+        } as LoginSuccessData,
+        password: (variables as any).password,
+      } as any);
+      const me = await authApi.getCurrentUser();
+      useAuthStore.getState().setUser(me);
     },
     onError: (error) => {
-      // 실패 시 로직 (예: 토스트 메시지 표시)
       console.error("로그인 실패:", error.message);
     },
   });
 };
 
+// 회원가입
+export const useSignupMutation = () => {
+  return useMutation<authApi.SignupSuccessData, Error, SignupFormValues>({
+    mutationFn: authApi.signup,
+  });
+};
+
+// 로그아웃
+export const useLogoutMutation = () => {
+  return useMutation<void, Error>({
+    mutationFn: authApi.logout,
+  });
+};
+
+// 이메일 인증코드 전송
+export const useSendVerificationCodeMutation = () => {
+  return useMutation<authApi.SendVerificationCodeSuccessData, Error, string>({
+    mutationFn: (email) => authApi.sendVerificationCode(email),
+  });
+};
+
+// 이메일 인증코드 검증
+export const useVerifyVerificationCodeMutation = () => {
+  return useMutation<
+    authApi.VerifyVerificationCodeSuccessData,
+    Error,
+    { email: string; code: string }
+  >({
+    mutationFn: (data) => authApi.verifyVerificationCode(data),
+  });
+};
+
+// 비밀번호 재설정 요청
+export const useRequestPasswordResetMutation = () => {
+  return useMutation<
+    authApi.RequestPasswordResetSuccessData,
+    Error,
+    FindPasswordFormValues
+  >({
+    mutationFn: authApi.requestPasswordReset,
+  });
+};
+
+// 비밀번호 재설정
+export const useResetPasswordMutation = () => {
+  return useMutation<string, Error, ResetPasswordFormValues>({
+    mutationFn: authApi.resetPassword,
+  });
+};
+
+// 현재 사용자 조회
 export const useUserQuery = () => {
   return useQuery({
     // queryKey는 TanStack Query가 데이터를 캐싱하고 관리하는 데 사용하는 고유 키입니다.

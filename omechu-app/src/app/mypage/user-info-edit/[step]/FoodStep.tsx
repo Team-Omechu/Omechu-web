@@ -15,33 +15,29 @@ export default function FoodStep() {
   const [showModal, setShowModal] = useState(false);
 
   // Zustand에서 현재 음식 상태랑 toggle 함수 가져옴
-  const preferredFood = useOnboardingStore((state) => state.preferredFood);
-  const resetPreferredFood = useOnboardingStore(
-    (state) => state.resetPreferredFood,
-  );
+  const prefer = useOnboardingStore((state) => state.prefer);
+  const resetPrefer = useOnboardingStore((state) => state.resetPrefer);
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화 함수
 
-  const togglePreferredFood = useOnboardingStore(
-    (state) => state.togglePreferredFood,
-  );
+  const togglePrefer = useOnboardingStore((state) => state.togglePrefer);
 
   // 음식 버튼 누르면 선택하거나 해제함 (최대 2개까지만)
   const handleClick = (item: string) => {
-    const isSelected = preferredFood.includes(item);
-    if (isSelected || preferredFood.length < 2) {
-      togglePreferredFood(item);
+    const isSelected = prefer.includes(item);
+    if (isSelected || prefer.length < 2) {
+      togglePrefer(item);
     }
   };
 
   // 건너뛰기 누르면 상태 초기화하고 다음 페이지로 이동
   const handleSkip = () => {
-    resetPreferredFood();
+    resetPrefer();
     router.push(`/mypage/user-info-edit/${indexToSlug[4]}`);
   };
 
   // 저장 누르면 다음 페이지로 이동 (선택 없으면 막아둠)
   const handleSave = () => {
-    if (preferredFood.length === 0) return;
+    if (prefer.length === 0) return;
     router.push(`/mypage/user-info-edit/${indexToSlug[4]}`);
   };
 
@@ -69,12 +65,12 @@ export default function FoodStep() {
         <section>
           <div className="flex flex-col gap-5">
             {["한식", "양식", "중식", "일식", "다른나라 음식"].map((item) => {
-              const isSelected = preferredFood.includes(item);
-              const isDisabled = !isSelected && preferredFood.length >= 1;
+              const isSelected = prefer.includes(item);
+              const isDisabled = !isSelected && prefer.length >= 1;
 
               return (
                 <button
-                  key={`${item}-${preferredFood.includes(item)}`}
+                  key={`${item}-${prefer.includes(item)}`}
                   onClick={() => {
                     if (!isDisabled) handleClick(item);
                   }}
@@ -113,9 +109,9 @@ export default function FoodStep() {
 
         <button
           onClick={handleSave}
-          disabled={preferredFood.length === 0}
+          disabled={prefer.length === 0}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
-            preferredFood.length === 0
+            prefer.length === 0
               ? "cursor-not-allowed bg-[#A1A1A1] dark:bg-[#555]"
               : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
           }`}

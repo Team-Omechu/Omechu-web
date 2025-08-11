@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
 import { useUserQuery } from "@/lib/hooks/useAuth";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 export default function ClientLayout({
   children,
@@ -22,10 +22,8 @@ export default function ClientLayout({
     }
 
     if (isSuccess && sessionUser) {
-      loginAction({
-        accessToken: "DUMMY_TOKEN_FOR_KAKAO_LOGIN",
-        user: sessionUser,
-      });
+      // 토큰은 콜백에서 설정되므로 여기서는 사용자 정보만 동기화가 필요할 수 있음
+      useAuthStore.getState().setUser(sessionUser);
 
       console.log("Session restored via Kakao login:", sessionUser);
 
@@ -60,7 +58,8 @@ export default function ClientLayout({
     "/sign-up",
     "/forgot-password",
     "/forgot-password/sent",
-    "/reset-password",
+    "/auth/reset-password",
+    "/auth/callback",
 
     // 온보딩 페이지
     "/onboarding/1",

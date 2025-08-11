@@ -3,13 +3,33 @@ import { useState } from "react";
 import Image from "next/image";
 
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
+import { useDeleteHeart, usePostHeart } from "../hooks/useHeart";
 
 type FoodCardProps = {
   item: Restaurant; // 타입은 foodItems 데이터 구조에 맞게 정의
-  onClick: () => void;
+  menu: string;
+  restaurantId: number;
+  onClick?: () => void;
 };
 
-export default function FoodCard({ item, onClick }: FoodCardProps) {
+export default function FoodCard({
+  item,
+  onClick,
+  menu,
+  restaurantId,
+}: FoodCardProps) {
+  const [isLiked, setIsLiked] = useState(false);
+  const { mutate: addHeart } = usePostHeart(restaurantId);
+  const { mutate: deleteHeart } = useDeleteHeart(restaurantId);
+
+  const handleHeartClick = () => {
+    if (isLiked) {
+      deleteHeart();
+    } else {
+      addHeart();
+    }
+    setIsLiked(!isLiked);
+  };
   return (
     <div
       className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md"
@@ -24,13 +44,15 @@ export default function FoodCard({ item, onClick }: FoodCardProps) {
           </span>
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.formattedAddress}</p>
-        <p className="mb-1 text-sm font-bold text-blue-600">{""}</p>
+        <p className="mb-1 text-sm font-bold text-blue-600">{menu}</p>
         <div className="mt-1 flex flex-wrap gap-2 text-xs"></div>
       </div>
       <div className="flex flex-col place-items-end gap-2">
-        <button>
+        <button onClick={handleHeartClick}>
           <Image
-            src={"/heart/heart_empty.svg"}
+            src={
+              !isLiked ? "/heart/heart_empty.svg" : "/heart/heart_filled.svg"
+            }
             alt="하트"
             width={20}
             height={20}

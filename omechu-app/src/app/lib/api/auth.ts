@@ -5,7 +5,7 @@ import type {
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
 import axiosInstance from "@/lib/api/axios";
-import { useAuthStore } from "../stores/auth.store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
@@ -29,7 +29,12 @@ export interface LoginSuccessData {
   nickname: string;
   created_at: string;
   updated_at: string;
-  accessToken: string; // 이삭 추가
+}
+
+export interface LoginTokens {
+  userId: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 // 회원가입 성공 시 success 객체 구조
@@ -57,30 +62,12 @@ export interface RequestPasswordResetSuccessData {
   token: string;
 }
 
-// 온보딩 완료 시 서버 응답 데이터 타입
-export interface OnboardingSuccessData {
-  id: string;
-  email: string;
-  gender: "남성" | "여성";
-  nickname: string;
-  created_at: string;
-  updated_at: string;
-}
-
-// 온보딩 완료 시 서버로 보낼 데이터 타입
-export interface OnboardingData {
-  nickname: string;
-  gender: "여성" | "남성" | null;
-  workoutStatus: string | null;
-  preferredFood: string[];
-  constitution: string[];
-  allergy: string[];
-}
+// (중복 제거) 온보딩 타입 및 API는 `onboarding/api/onboarding.ts`에서 관리합니다.
 
 // 내부 유틸: store/localStorage 어디에 저장됐든 accessToken 읽기
 const readAccessToken = (): string | null => {
   // 1) 우선 zustand store에서 시도
-  const fromStore = useAuthStore.getState().user?.accessToken;
+  const fromStore = useAuthStore.getState().accessToken;
   if (fromStore) return fromStore;
 
   // 2) 과거/현재 키들을 순회하며 로컬스토리지에서 탐색
@@ -90,8 +77,7 @@ const readAccessToken = (): string | null => {
       const raw = localStorage.getItem(key);
       if (!raw) continue;
       const parsed = JSON.parse(raw);
-      const token =
-        parsed?.state?.user?.accessToken ?? parsed?.state?.accessToken ?? null;
+      const token = parsed?.state?.accessToken ?? null;
       if (token) return token;
     }
   } catch (e) {
@@ -104,13 +90,10 @@ const readAccessToken = (): string | null => {
  * 로그인 API
  * @param data email, password
  */
-export const login = async (
-  data: LoginFormValues,
-): Promise<LoginSuccessData> => {
-  const response = await axiosInstance.post<ApiResponse<LoginSuccessData>>(
+export const login = async (data: LoginFormValues): Promise<LoginTokens> => {
+  const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
     "/auth/login",
     data,
-    // * 이삭 추가 부분
     { withCredentials: true },
   );
 
@@ -122,7 +105,7 @@ export const login = async (
     throw new Error(apiResponse.error?.reason || "로그인에 실패했습니다.");
   }
 
-  return apiResponse.success;
+  return apiResponse.success as LoginTokens;
 };
 
 /**
@@ -144,27 +127,7 @@ export const signup = async (
   return apiResponse.success;
 };
 
-/**
- * 회원가입 완료 (온보딩 데이터 전송) API
- */
-export const completeOnboarding = async (
-  data: OnboardingData,
-): Promise<OnboardingSuccessData> => {
-  // TODO: 백엔드 응답 타입 정의
-  const response = await axiosInstance.patch<
-    ApiResponse<OnboardingSuccessData>
-  >("/auth/complete", data);
-
-  const apiResponse = response.data;
-
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "온보딩 정보 저장에 실패했습니다.",
-    );
-  }
-
-  return apiResponse.success;
-};
+// (삭제) completeOnboarding는 `onboarding/api/onboarding.ts` 사용
 
 /**
  * 이메일 인증번호 전송 API
@@ -229,7 +192,7 @@ export const resetPassword = async (
   data: ResetPasswordFormValues,
 ): Promise<string> => {
   const response = await axiosInstance.patch<ApiResponse<string>>(
-    "/auth/passwd",
+    "/reset-passwd",
     { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
   );
   const apiResponse = response.data;
@@ -245,30 +208,16 @@ export const resetPassword = async (
  * 로그아웃 API
  */
 export const logout = async (): Promise<void> => {
-  const accessToken = readAccessToken();
-
-  if (!accessToken) {
-    throw new Error(
-      "accessToken을 찾을 수 없습니다. (store/localStorage 확인 필요)",
-    );
-  }
-
-  console.log(
-    "[DEBUG] logout() -> call /auth/logout, token(head 12):",
-    accessToken.slice(0, 12),
-  );
-
   await axiosInstance.post(
     "/auth/logout",
     {},
     {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      // Authorization 헤더는 axiosInstance의 요청 인터셉터에서
+      // accessToken을 자동으로 주입합니다.
       withCredentials: true,
     },
   );
-
-  // 서버 호출 성공 시에만 store 정리
-  useAuthStore.getState().logout?.();
+  useAuthStore.getState().logout();
 };
 
 /**

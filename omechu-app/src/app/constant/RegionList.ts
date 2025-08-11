@@ -7,7 +7,7 @@ export type RegionData = {
 };
 
 export const regionData: RegionData = {
-  서울특별시: {
+  서울: {
     강남구: [
       "신사동",
       "논현1동",
