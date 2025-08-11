@@ -5,7 +5,8 @@ import type {
   ResetPasswordFormValues,
 } from "@/auth/schemas/auth.schema";
 import axiosInstance from "@/lib/api/axios";
-import { useAuthStore } from "@/lib/stores/auth.store";
+
+import { useAuthStore } from "../stores/auth.store";
 
 // API 응답의 기본 구조
 export interface ApiResponse<T> {

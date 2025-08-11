@@ -14,22 +14,19 @@ import { MenuItem } from "@/constant/mainpage/resultData";
 import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { useAuthStore } from "@/auth/store";
-import LoginPromptModal from "../example_testpage/components/LoginPromptModal";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
+import usePostMukburim from "../hooks/usePostMukburim";
 
 export default function ResultPage() {
   const router = useRouter();
-  const { data, isLoading, error, refetch } = useGetRecommendMenu();
+  const { data, isLoading, error, refetch, isRefetching } =
+    useGetRecommendMenu();
+  const { mutate } = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const { tagDataReset } = useTagStore();
-  const { locationReset } = useLocationAnswerStore();
-  const { questionReset } = useQuestionAnswerStore();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const menus: MenuItem[] = Array.isArray(data) ? data : [];
@@ -37,10 +34,9 @@ export default function ResultPage() {
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
   const { setKeyword } = useLocationAnswerStore();
-  const { tagData } = useTagStore();
 
   const handleExcludeCLick = (menuName: string) => {
-    if (!isLoggedIn) {
+    if (isLoggedIn === false) {
       setShowLoginModal(true);
       return;
     }
@@ -56,6 +52,7 @@ export default function ResultPage() {
     if (openMenu != null) {
       router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
       setKeyword(openMenu);
+      mutate(openMenu);
     } else {
       alert("메뉴를 선택해 주세요");
     }
@@ -81,22 +78,7 @@ export default function ResultPage() {
     setExcludeMenu(null);
   };
 
-  const handleClick = () => {
-    router.push("/mainpage");
-    tagDataReset();
-    locationReset();
-    questionReset();
-  };
-
-  const handleNextClick = () => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-    handleNext();
-  };
-
-  if (isLoading) {
+  if (isLoading || isRefetching) {
     return <MainLoading />;
   }
 
@@ -104,7 +86,10 @@ export default function ResultPage() {
     <div className="flex h-screen flex-col">
       <Header
         leftChild={
-          <button onClick={handleClick} className="flex items-center font-bold">
+          <button
+            onClick={() => router.push("/mainpage")}
+            className="flex items-center font-bold"
+          >
             <Image
               src="/arrow/left-header-arrow.svg"
               alt="back"
@@ -149,7 +134,7 @@ export default function ResultPage() {
         </button>
         <button
           className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
-          onClick={handleNextClick}
+          onClick={handleNext}
         >
           선택하기
         </button>
@@ -157,9 +142,7 @@ export default function ResultPage() {
 
       <div className="px-4 py-2">
         <div className="rounded-md border bg-white p-3 text-sm">
-          {tagData.map(({ tag, description }) => (
-            <TagCard key={tag} tag={tag} description={description} />
-          ))}
+          <TagCard />
         </div>
       </div>
 

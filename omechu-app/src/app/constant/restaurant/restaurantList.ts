@@ -9,7 +9,7 @@ export type RestaurantType = {
   category?: string;
   rating: number;
   reviews: number;
-  isLiked: boolean;
+  isLiked?: boolean;
   menu: string;
   tags: string[];
   images: string[];

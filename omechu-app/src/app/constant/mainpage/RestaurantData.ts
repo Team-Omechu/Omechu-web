@@ -12,23 +12,9 @@ export interface Restaurant {
     text: string;
   };
   formattedAddress: string;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
   rating: number;
   userRatingCount: number;
-  priceLevel:
-    | "PRICE_LEVEL_INEXPENSIVE"
-    | "PRICE_LEVEL_MODERATE"
-    | "PRICE_LEVEL_EXPENSIVE"
-    | "PRICE_LEVEL_VERY_EXPENSIVE"
-    | string;
-  businessStatus:
-    | "OPERATIONAL"
-    | "CLOSED_TEMPORARILY"
-    | "CLOSED_PERMANENTLY"
-    | string;
+  id2: number;
 }
 
 export type restaurantList = Restaurant[];

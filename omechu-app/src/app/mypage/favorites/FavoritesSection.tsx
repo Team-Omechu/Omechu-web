@@ -1,123 +1,111 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fetchHeartList } from "../api/favorites";
+import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
+import { useAuthStore } from "@/auth/store";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import FoodCard from "@/components/common/FoodCard";
 import Header from "@/components/common/Header";
-import { likePlace, unlikePlace } from "../api/favorites";
-import { useAuthStore } from "@/auth/store";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import AuthErrorModal from "../AuthErrorModalSection";
 
 export default function Favorites() {
+  // 라우터/DOM 참조
   const router = useRouter();
   const mainRef = useRef<HTMLDivElement>(null);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  // 화면 상태
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // 인피니트 스크롤 로딩 플래그
+  const [isInitialLoading, setIsInitialLoading] = useState(true); // 최초 진입 로딩(스켈레톤)
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [visibleCount, setVisibleCount] = useState(8);
+  // 데이터/뷰 범위
   const [hearts, setHearts] = useState<any[]>([]);
+  const [visibleCount, setVisibleCount] = useState(8); // 현재 화면에 노출할 개수
+  const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
+  // 인증 관련 (zustand)
   const user = useAuthStore((state) => state.user);
+  const accessToken = user?.accessToken;
+  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false; // 스토리지 복원 완료 여부
 
-  const userId = user?.id ? Number(user.id) : undefined;
-
+  // 1) 최초/재인증 로드: 하이드레이션 후, 토큰 없으면 모달/초기화, 있으면 목록 패치
   useEffect(() => {
-    if (!userId) {
+    if (!hasHydrated) return;
+
+    // 모달 초기화
+    setModalOpen(false);
+
+    // 토큰 없으면 인증 모달 노출 + 초기 로딩 종료
+    if (!accessToken) {
       setModalOpen(true);
       setHearts([]);
       setIsInitialLoading(false);
       return;
     }
+
+    // 토큰 있으면 찜 목록 패치
     const fetchData = async () => {
       setIsInitialLoading(true);
       try {
-        const data = await fetchHeartList(userId);
+        const data = await fetchHeartList();
         setHearts(Array.isArray(data) ? data : []);
       } catch (e: any) {
-        // 401 에러일 때
-        if (e?.response?.status === 401) {
-          setModalOpen(true);
-        }
+        // 인증 만료 등
+        if (e?.response?.status === 401) setModalOpen(true);
         setHearts([]);
       } finally {
         setIsInitialLoading(false);
       }
     };
+
     fetchData();
-  }, [userId]);
+  }, [hasHydrated, accessToken]);
 
-  const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
+  // 2) 검색/정렬 필터링
+  //  - search: 입력값 기준 이름/대표메뉴 히트
+  //  - sortOrder: 최신/오래된 순 정렬
+  const filteredItems = (() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return hearts;
 
-  //* 실제 api 데이터 연동
-  const filteredItems = search.trim()
-    ? hearts.filter((item) =>
-        item.signatureMenu?.join(",").includes(search.trim()),
-      )
-    : hearts;
+    return hearts.filter((item) => {
+      const name = (item.restaurant?.name ?? "").toLowerCase();
+      const menus: string[] = item.restaurant?.representativeMenus ?? [];
+      const menuHit = menus.some((m: string) =>
+        (m ?? "").toLowerCase().includes(q),
+      );
+      return name.includes(q) || menuHit;
+    });
+  })();
 
   const sortedItems = [...filteredItems].sort((a, b) => {
-    return sortOrder === "latest"
-      ? b.restaurant.id - a.restaurant.id
-      : a.restaurant.id - b.restaurant.id;
+    const aid = Number(a.restaurant.id);
+    const bid = Number(b.restaurant.id);
+    return sortOrder === "latest" ? bid - aid : aid - bid;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
 
+  // hearts 길이가 줄었을 때 visibleCount가 남지 않도록 보정
   useEffect(() => {
     if (visibleCount > hearts.length) {
       setVisibleCount(hearts.length);
     }
-  }, [hearts.length]);
+  }, [hearts.length, visibleCount]);
 
-  const handleLike = async (restaurantId: number) => {
-    try {
-      await likePlace(userId, restaurantId);
-      // setHearts 갱신: 바로 UI에서 isLiked 상태 바꿔주거나 refetch
-      setHearts((prev) =>
-        prev.map((item) =>
-          item.restaurant.id === restaurantId
-            ? { ...item, isLiked: true }
-            : item,
-        ),
-      );
-    } catch (e) {
-      alert("찜 등록 실패");
-    }
-  };
-
-  const handleUnlike = async (restaurantId: number) => {
-    try {
-      await unlikePlace(userId, restaurantId);
-      setHearts((prevHearts) => {
-        const newHearts = prevHearts.filter(
-          (item) => item.restaurant.id !== restaurantId,
-        );
-        setVisibleCount((prevVisible) =>
-          Math.min(prevVisible, newHearts.length),
-        );
-        return newHearts;
-      });
-    } catch (e) {
-      alert("찜 해제 실패");
-    }
-  };
-
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-
+  // 3) 인피니트 스크롤: 관찰 콜백
   const ITEMS_PER_FETCH = 6;
-
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
@@ -130,23 +118,36 @@ export default function Favorites() {
         setVisibleCount((prev) =>
           Math.min(prev + ITEMS_PER_FETCH, filteredItems.length),
         );
-        // setIsLoading(false);
       }
     },
     [isLoading, visibleCount, filteredItems.length],
   );
 
-  // 데이터 증가 후 isLoading을 해제
+  // 인피니트 스크롤: observer 등록/해제
   useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1800); // 1.8초 후 로딩 해제
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null, // viewport 기준
+      rootMargin: "0px 0px 160px 0px", // 하단 여백(하단 UI 고려)
+      threshold: 0,
+    });
 
-      return () => clearTimeout(timer);
-    }
+    if (loaderRef.current) observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [observerCallback]);
+
+  // 인피니트 스크롤: 로딩 플래그 해제 타이머
+  useEffect(() => {
+    if (!isLoading) return;
+    const timer = setTimeout(() => setIsLoading(false), 1800); // 1.8초 후 해제
+    return () => clearTimeout(timer);
   }, [isLoading]);
 
+  // 검색어가 바뀌면 리스트 상단부터 다시 보이도록 초기 개수 리셋
+  useEffect(() => {
+    setVisibleCount((prev) => Math.min(8, filteredItems.length));
+  }, [search, filteredItems.length]);
+
+  // 상단 이동
   const scrollToTop = () => {
     if (mainRef.current) {
       mainRef.current.scrollTo({ top: 0, behavior: "smooth" });
@@ -155,24 +156,73 @@ export default function Favorites() {
     }
   };
 
-  // IntersectionObserver 등록 및 해제
-  useEffect(() => {
-    const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
-    });
+  // 4) 서버 동기화: 하트 목록 최신화
+  const isRefreshingRef = useRef(false);
+  const refreshHearts = useCallback(async () => {
+    if (isRefreshingRef.current) return; // 중복 호출 방지
+    isRefreshingRef.current = true;
+    try {
+      const data = await fetchHeartList();
+      setHearts(Array.isArray(data) ? data : []);
+      // 현재 보이는 개수보다 총 개수가 줄었다면 visibleCount 보정
+      setVisibleCount((prev) => Math.min(prev, data?.length ?? 0));
+    } finally {
+      isRefreshingRef.current = false;
+    }
+  }, []);
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+  // 5) 좋아요/해제 이벤트 (낙관적 업데이트 → 실패시 롤백 → 서버 동기화)
+  const handleLike = async (restaurantId: number) => {
+    // 낙관적 반영: 이미 존재한다는 전제 하에 isLiked 토글
+    setHearts((prev) =>
+      prev.some((h) => Number(h.restaurant.id) === restaurantId)
+        ? prev.map((h) =>
+            Number(h.restaurant.id) === restaurantId
+              ? { ...h, isLiked: true }
+              : h,
+          )
+        : prev,
+    );
+
+    try {
+      await likePlace(restaurantId);
+    } catch {
+      // 실패 시 롤백
+      setHearts((prev) =>
+        prev.map((h) =>
+          Number(h.restaurant.id) === restaurantId
+            ? { ...h, isLiked: false }
+            : h,
+        ),
+      );
+      alert("찜 등록 실패");
+      return;
     }
 
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    };
-  }, [observerCallback]);
+    // 서버 최신 상태로 동기화
+    refreshHearts();
+  };
+
+  const handleUnlike = async (restaurantId: number) => {
+    // 낙관적 반영: 바로 제거
+    setHearts((prev) => {
+      const next = prev.filter((h) => Number(h.restaurant.id) !== restaurantId);
+      setVisibleCount((v) => Math.min(v, next.length)); // 보이는 개수 보정
+      return next;
+    });
+
+    try {
+      await unlikePlace(restaurantId);
+    } catch {
+      // 실패 시 서버 상태로 복구
+      alert("찜 해제 실패");
+      refreshHearts();
+      return;
+    }
+
+    // 서버 최신 상태 반영
+    refreshHearts();
+  };
 
   return (
     <>
@@ -217,7 +267,7 @@ export default function Favorites() {
         <section className="flex flex-col gap-4">
           {isInitialLoading ? (
             <div className="flex flex-col gap-3">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: 6 }).map((_, i) => (
                 <SkeletonFoodCard key={i} />
               ))}
             </div>
