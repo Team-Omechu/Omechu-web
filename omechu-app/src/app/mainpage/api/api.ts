@@ -38,11 +38,10 @@ export const getProfile = async (): Promise<ProfileResponse> => {
 };
 
 export const postMukburim = async (
-  menuName: string, userId?: number
+  menuName: string
 ): Promise<mukburimResponse> => {
   const { data } = await axiosInstance.post<mukburimResponse>("/mukburim", {
     menu_name: menuName,
-    userId: userId,
   });
   return data;
 };

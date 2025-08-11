@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addHeart, deleteHeart } from "../api/api";
-import { ProfileResponse } from "@/constant/mainpage/profile";
 
 function usePostHeart(restaurantId: number) {
   return useMutation({
