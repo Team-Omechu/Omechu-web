@@ -13,8 +13,6 @@ import type {
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
-import { useTagStore } from "@/lib/stores/tagData.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 
@@ -22,16 +20,15 @@ export default function MenuDetailPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const { radius } = useLocationAnswerStore();
-  const { tagDataReset } = useTagStore();
-  const { locationReset } = useLocationAnswerStore();
-  const { questionReset, mealTime, purpose, mood, who, budget, exceptions } =
+  const { mealTime, purpose, mood, who, budget, exceptions } =
     useQuestionAnswerStore();
   const payload = { mealTime, purpose, mood, with: who, budget, exceptions };
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
+
+  console.log("Restaurants Data:", restaurants);
 
   // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
   const queryClient = useQueryClient();
@@ -40,13 +37,6 @@ export default function MenuDetailPage() {
     payload,
   ]);
   const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
-
-  const handleClick = () => {
-    router.push("/mainpage");
-    tagDataReset();
-    locationReset();
-    questionReset();
-  };
 
   if (!cached) {
     // 데이터가 없으면 처음으로 돌아가거나 안내
@@ -63,7 +53,10 @@ export default function MenuDetailPage() {
     <div className="flex w-full flex-col">
       <Header
         leftChild={
-          <button onClick={handleClick} className="flex items-center font-bold">
+          <button
+            onClick={() => router.push("/mainpage")}
+            className="flex items-center font-bold"
+          >
             <Image
               src="/arrow/left-header-arrow.svg"
               alt="back"
@@ -111,9 +104,8 @@ export default function MenuDetailPage() {
           <FoodCardEx
             key={item.id}
             item={item}
-            onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id}`)
-            }
+            menu={menu.menu}
+            restaurantId={item.id2}
           />
         ))}
       </div>

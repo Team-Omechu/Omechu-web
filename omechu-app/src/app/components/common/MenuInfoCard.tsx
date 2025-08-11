@@ -19,19 +19,19 @@ export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
           <div className="space-y-1">
             <div className="flex justify-between">
               <span>칼로리</span>
-              <span className="text-[#828282]">{MenuItem.calories}</span>
+              <span className="text-[#828282]">{MenuItem.calories}kcal</span>
             </div>
             <div className="flex justify-between">
               <span>탄수화물</span>
-              <span className="text-[#828282]">{MenuItem.carbohydrates}</span>
+              <span className="text-[#828282]">{MenuItem.carbohydrates}g</span>
             </div>
             <div className="flex justify-between">
               <span>단백질</span>
-              <span className="text-[#828282]">{MenuItem.protein}</span>
+              <span className="text-[#828282]">{MenuItem.protein}g</span>
             </div>
             <div className="flex justify-between">
               <span>지방</span>
-              <span className="text-[#828282]">{MenuItem.fat}</span>
+              <span className="text-[#828282]">{MenuItem.fat}g</span>
             </div>
             <div className="flex justify-between">
               <span>비타민</span>

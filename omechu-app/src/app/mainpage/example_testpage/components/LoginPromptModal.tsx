@@ -6,10 +6,15 @@ import RoundButton from "@/components/common/button/RoundButton";
 
 type LoginPromptModalProps = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
-  onClose: () => void; // "X" 버튼 또는 "그냥 추천받기" 버튼 클릭 시
+  onClose: () => void; // "X" 버튼 클릭 시
+  onSkip?: () => void; // "그냥 추천받기" 버튼 클릭 시
 };
 
-const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
+const LoginPromptModal = ({
+  onConfirm,
+  onClose,
+  onSkip,
+}: LoginPromptModalProps) => {
   // 이 컴포넌트는 ModalWrapper 내에서 사용되어야 합니다.
   return (
     <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-black bg-white px-6 pb-6 pt-6 text-center shadow-lg">
@@ -38,7 +43,7 @@ const LoginPromptModal = ({ onConfirm, onClose }: LoginPromptModalProps) => {
 
       <div className="flex w-full items-center justify-center gap-3">
         <RoundButton
-          onClick={onClose}
+          onClick={onSkip}
           variant="gray"
           size="sm"
           className="flex-1"

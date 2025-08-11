@@ -14,11 +14,11 @@ import { whoOptions } from "@/constant/mainpage/Option";
 const WhoStep = () => {
   const router = useRouter();
   const { who, setWho } = useQuestionAnswerStore();
-  const { addTag } = useTagStore();
+  const { setWhoTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
     setWho(value);
-    addTag(label, description);
+    setWhoTag(label, description);
     router.push("/mainpage/question-answer/5");
   };
 
