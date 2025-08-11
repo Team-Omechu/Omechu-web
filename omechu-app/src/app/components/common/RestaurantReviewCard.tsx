@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import AlertModal from "./AlertModal";
@@ -63,7 +62,7 @@ export default function RestaurantReviewCard({
     const [imgSrc, setImgSrc] = useState(src || "/image/image_empty.svg");
 
     return (
-      <Image
+      <img
         src={imgSrc}
         alt={alt}
         width={70}
@@ -86,7 +85,7 @@ export default function RestaurantReviewCard({
 
     return (
       <div className="relative h-[100px] min-w-[100px] flex-shrink-0">
-        <Image
+        <img
           className="object-cover"
           width={100}
           height={100}
@@ -118,7 +117,7 @@ export default function RestaurantReviewCard({
                 <span className="text-lg font-normal leading-tight text-grey-darker">
                   {restaurantName}
                   <button onClick={onNavigate}>
-                    <Image
+                    <img
                       src="/arrow/right_arrow_navigate_next.svg"
                       alt={"이동 버튼"}
                       width={25}
