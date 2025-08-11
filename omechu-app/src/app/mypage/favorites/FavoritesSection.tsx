@@ -5,7 +5,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,8 +35,8 @@ export default function Favorites() {
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
 
   // 인증 관련 (zustand)
-  const user = useAuthStore((state) => state.user);
-  const accessToken = user?.accessToken;
+  // const user = useAuthStore((state) => state.user);
+  const accessToken = useAuthStore.getState().accessToken;
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false; // 스토리지 복원 완료 여부
 
   // 1) 최초/재인증 로드: 하이드레이션 후, 토큰 없으면 모달/초기화, 있으면 목록 패치

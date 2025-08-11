@@ -12,7 +12,7 @@ import Checkbox from "@/auth/components/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/lib/hooks/useAuth";
 import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
@@ -26,13 +26,7 @@ export default function SignInForm() {
   const setUser = useAuthStore((state) => state.setUser);
   const loginAction = useAuthStore((state) => state.login);
 
-  const {
-    mutate: login,
-    isPending,
-    isSuccess,
-    error,
-    data: loginResult,
-  } = useLoginMutation();
+  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
   const {
     control,
@@ -53,25 +47,16 @@ export default function SignInForm() {
     login(data);
   };
 
-  console.log("loginResult", loginResult);
+  // 로그인 응답은 토큰 중심으로 처리되며, 최종 유저 정보는 store로 동기화됩니다.
+  const user = useAuthStore((s) => s.user);
 
-  //* 이삭 수정 부분
+  //* 최종 유저 프로필 동기화 완료 후 라우팅
   useEffect(() => {
-    if (isSuccess && loginResult) {
-      // user 정보와 accessToken을 분리해서 저장
-      loginAction({
-        accessToken: loginResult.accessToken,
-        user: loginResult,
-        password: "",
-      });
-
-      if (!loginResult.nickname) {
-        router.push("/onboarding/1");
-      } else {
-        router.push("/mainpage");
-      }
+    if (isSuccess && user) {
+      if (!user.nickname) router.push("/onboarding/1");
+      else router.push("/mainpage");
     }
-  }, [isSuccess, loginResult, router, setUser, loginAction]);
+  }, [isSuccess, user, router]);
 
   useEffect(() => {
     if (error) {

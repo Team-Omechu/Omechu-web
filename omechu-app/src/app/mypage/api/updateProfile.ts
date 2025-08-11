@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/auth/store";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import axiosInstance from "@/lib/api/axios";
 
 // presigned URL 받기
@@ -27,7 +27,7 @@ export const updateProfile = async (body: {
   nickname: string;
   profileImageUrl?: string;
 }) => {
-  const accessToken = useAuthStore.getState().user?.accessToken;
+  const accessToken = useAuthStore.getState().accessToken;
 
   return axiosInstance.patch(`/profile`, body, {
     headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
