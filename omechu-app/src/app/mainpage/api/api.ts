@@ -44,7 +44,7 @@ export const postMukburim = async (
     menu_name: menuName,
   });
   return data;
-};
+}; 
 
 export const addHeart = async (restaurantId?: number) => {
   const response = await axiosInstance.post("/heart", {

@@ -6,8 +6,7 @@ export interface RecommendMenuRequest {
   with: number | null;
   budget: number | null;
   exceptions: string[] | null;
-  weather?: string;
-  session?: string;
+  weather: "맑음";
 }
 
 export type MenuItem = {
