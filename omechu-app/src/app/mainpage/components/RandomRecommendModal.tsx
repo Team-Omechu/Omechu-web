@@ -25,11 +25,13 @@ export default function RandomRecommendModal({
   const { setKeyword } = useLocationAnswerStore();
 
   const handleConfirm = () => {
-    if (randomMenu) {
-      router.push(`/mainpage/result/${randomMenu.menu}`);
+    if (!randomMenu) {
+      refetch();
+      return;
     }
     setKeyword(randomMenu.menu);
     mutate(randomMenu.menu);
+    router.push(`/mainpage/result/${randomMenu.menu}`);
   };
 
   const handleRetry = () => {
