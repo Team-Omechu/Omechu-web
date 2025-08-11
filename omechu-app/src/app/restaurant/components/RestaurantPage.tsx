@@ -213,7 +213,7 @@ export default function Restaurant() {
     const name = item?.name ?? "";
     const keyword = search?.trim() ?? "";
     if (!name || !keyword) return false;
-    return distance(name, keyword) <= 1 && !name.includes(keyword);
+    return distance(name, keyword) <= 3 && !name.includes(keyword);
   });
 
   const scrollToTop = () => {
@@ -420,14 +420,26 @@ export default function Restaurant() {
         />
       )}
 
-      {/* ✅ 빈 결과 체크도 검색 모드 고려 */}
-      {isSearched && (isSearchError || sortedItems.length === 0) && (
-        <SearchResultEmpty
-          search={search}
-          similarItems={similarItems}
-          onItemClick={(id) => handleItemClick(id)}
-        />
-      )}
+      {isSearchMode
+        ? isSearched &&
+          !isSearchLoading &&
+          (isSearchError || searchedItems.length === 0) && (
+            <SearchResultEmpty
+              search={search}
+              similarItems={similarItems}
+              onItemClick={(id) => handleItemClick(id)}
+            />
+          )
+        : // ✅ 일반 모드: 기존 로컬 필터 기준
+          isSearched &&
+          !isLoading &&
+          filteredItems.length === 0 && (
+            <SearchResultEmpty
+              search={search}
+              similarItems={similarItems}
+              onItemClick={(id) => handleItemClick(id)}
+            />
+          )}
 
       <FoodCardList
         items={sortedItems}
