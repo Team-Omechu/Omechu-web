@@ -1,19 +1,52 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 
 import Image from "next/image";
 
 import Input from "@/components/common/Input";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { getPresignedUrl, uploadToS3 } from "@/lib/api/image";
 
 const ProfileStep = () => {
-  const { nickname, setNickname } = useOnboardingStore();
+  const { nickname, setNickname, profileImageUrl, setProfileImageUrl } =
+    useOnboardingStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const isInvalid =
     nickname.length > 0 && (nickname.length < 2 || nickname.length > 12);
 
   const handleNicknameChange = (value: string) => {
     setNickname(value);
+  };
+
+  const handleImageClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
+    try {
+      setIsUploading(true);
+      const { uploadUrl, fileUrl } = await getPresignedUrl(
+        file.name,
+        file.type,
+        "profile",
+      );
+      await uploadToS3(uploadUrl, file);
+      setProfileImageUrl(fileUrl);
+    } catch (err) {
+      console.error("이미지 업로드 실패", err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleImageDelete = () => {
+    setImagePreview(null);
+    setProfileImageUrl("");
   };
 
   return (
@@ -28,9 +61,13 @@ const ProfileStep = () => {
           </h1>
         </div>
         <div className="mb-6 flex flex-col items-center gap-2">
-          <button type="button" className="relative">
+          <button type="button" className="relative" onClick={handleImageClick}>
             <Image
-              src="/profile/profile_default_img_rotated.svg"
+              src={
+                imagePreview ||
+                profileImageUrl ||
+                "/profile/profile_default_img_rotated.svg"
+              }
               alt="프로필 사진 선택"
               width={100}
               height={100}
@@ -44,11 +81,20 @@ const ProfileStep = () => {
               />
             </div>
           </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
           <button
             type="button"
             className="text-center text-sm font-normal text-[#48528E] underline dark:text-[#48528E]"
+            onClick={handleImageDelete}
+            disabled={isUploading}
           >
-            사진지우기
+            {isUploading ? "업로드 중..." : "사진지우기"}
           </button>
         </div>
         <div className="w-full max-w-xs">

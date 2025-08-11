@@ -96,8 +96,8 @@ export const useLogoutMutation = () => {
   return useMutation<void, Error>({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      clearAuthState();
-      // redirect to login page or home page
+      // logout() 내부에서 이미 상태 초기화를 수행하므로 중복 호출 방지
+      // clearAuthState();
     },
   });
 };
