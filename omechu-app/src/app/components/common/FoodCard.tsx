@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import Image from "next/image";
 import { Restaurant } from "@/lib/types/restaurant";
@@ -67,18 +68,15 @@ export default function FoodCard({
 
       <div className="flex flex-col place-items-end gap-2">
         <button onClick={handleLikeClick}>
-          <Image
+          <img
             src={isLiked ? "/heart/heart_filled.svg" : "/heart/heart_empty.svg"}
             alt="하트"
-            width={20}
-            height={20}
+            className="h-5 w-5"
           />
         </button>
-        <Image
+        <img
           src={item.images?.[0] || "/logo/logo.png"}
           alt={item.menus[0] ?? "음식"}
-          width={70}
-          height={70}
           className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
         />
       </div>
