@@ -3,6 +3,12 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+type AddressObject = {
+  road: string;
+  jibun: string;
+  postalCode: string;
+};
+
 interface Props {
   restaurant: {
     id: number;
@@ -10,11 +16,7 @@ interface Props {
     googlePlaceId?: string | null;
     category?: string;
     timetable: { days_of_the_week: string; time: string }[];
-    address: {
-      road: string;
-      jibun: string;
-      postalCode: string;
-    };
+    address: string | AddressObject;
   };
   showAddress: boolean;
   onToggleAddress: () => void;
@@ -26,6 +28,11 @@ export default function RestaurantInfoBox({
   onToggleAddress,
 }: Props) {
   const router = useRouter();
+
+  const addr: AddressObject =
+    typeof restaurant.address === "string"
+      ? { road: restaurant.address ?? "", jibun: "", postalCode: "" }
+      : (restaurant.address ?? { road: "", jibun: "", postalCode: "" });
 
   return (
     <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-[#393939] bg-white p-4">
@@ -74,9 +81,7 @@ export default function RestaurantInfoBox({
             <span className="w-14 text-sm font-bold text-[#393939]">
               도로명
             </span>
-            <span className="text-sm text-[#828282]">
-              {restaurant.address.road}
-            </span>
+            <span className="text-sm text-[#828282]">{addr.road}</span>
           </div>
           {showAddress && (
             <>
@@ -85,11 +90,9 @@ export default function RestaurantInfoBox({
                   지번
                 </span>
                 <div className="flex flex-col gap-1">
+                  <span className="text-sm text-[#828282]">{addr.jibun}</span>
                   <span className="text-sm text-[#828282]">
-                    {restaurant.address.jibun}
-                  </span>
-                  <span className="text-sm text-[#828282]">
-                    우편번호 {restaurant.address.postalCode}
+                    우편번호 {addr.postalCode}
                   </span>
                 </div>
               </div>
