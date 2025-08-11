@@ -70,16 +70,19 @@ const ProfileStep = () => {
         </div>
         <div className="mb-6 flex flex-col items-center gap-2">
           <button type="button" className="relative" onClick={handleImageClick}>
-            <Image
-              src={
-                imagePreview ||
-                profileImageUrl ||
-                "/profile/profile_default_img_rotated.svg"
-              }
-              alt="프로필 사진 선택"
-              width={100}
-              height={100}
-            />
+            <div className="relative h-[100px] w-[100px] overflow-hidden rounded-full">
+              <Image
+                src={
+                  imagePreview ||
+                  profileImageUrl ||
+                  "/profile/profile_default_img_rotated.svg"
+                }
+                alt="프로필 사진 선택"
+                fill
+                sizes="100px"
+                className="object-cover"
+              />
+            </div>
             <div className="absolute right-0 top-0">
               <Image
                 src="/profile/camera.svg"
