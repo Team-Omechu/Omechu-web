@@ -26,21 +26,21 @@ const initialTagData: TagState = {
   whoTag: null,
   budgetTag: null,
 };
- // 초기엔 빈 배열, 필요하면 기본값
+// 초기엔 빈 배열, 필요하면 기본값
 
 export const useTagStore = create<TagState & TagActions>()(
   persist(
     (set) => ({
       ...initialTagData,
-      setMealTimeTag: (tag:string, description:string) =>
+      setMealTimeTag: (tag: string, description: string) =>
         set({ mealTimeTag: { tag, description } }),
-      setPurposeTag: (tag:string, description:string) =>
+      setPurposeTag: (tag: string, description: string) =>
         set({ purposeTag: { tag, description } }),
-      setMoodTag: (tag:string, description:string) =>
+      setMoodTag: (tag: string, description: string) =>
         set({ moodTag: { tag, description } }),
-      setWhoTag: (tag:string, description:string) =>
+      setWhoTag: (tag: string, description: string) =>
         set({ whoTag: { tag, description } }),
-      setBudgetTag: (tag:string, description:string) =>
+      setBudgetTag: (tag: string, description: string) =>
         set({ budgetTag: { tag, description } }),
       tagDataReset: () => set(initialTagData),
     }),

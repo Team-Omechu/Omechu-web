@@ -38,7 +38,7 @@ export const getProfile = async (): Promise<ProfileResponse> => {
 };
 
 export const postMukburim = async (
-  menuName: string
+  menuName: string,
 ): Promise<mukburimResponse> => {
   const { data } = await axiosInstance.post<mukburimResponse>("/mukburim", {
     menu_name: menuName,
@@ -56,7 +56,7 @@ export const addHeart = async (restaurantId?: number) => {
   return response;
 };
 
-export const deleteHeart = async ( restaurantId?: number) => {
+export const deleteHeart = async (restaurantId?: number) => {
   const response = await axiosInstance.delete("/heart", {
     data: {
       restaurantId: restaurantId,

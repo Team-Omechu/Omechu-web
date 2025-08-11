@@ -106,7 +106,6 @@ export default function MenuDetailPage() {
             item={item}
             menu={menu.menu}
             restaurantId={item.id2}
-
           />
         ))}
       </div>

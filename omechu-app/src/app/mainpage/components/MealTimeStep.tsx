@@ -14,7 +14,7 @@ import { mealTimeOptions } from "@/constant/mainpage/Option";
 const MealTimeStep = () => {
   const router = useRouter();
   const { mealTime, setMealTime } = useQuestionAnswerStore();
-  const { setMealTimeTag} = useTagStore();
+  const { setMealTimeTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
     setMealTime(value);

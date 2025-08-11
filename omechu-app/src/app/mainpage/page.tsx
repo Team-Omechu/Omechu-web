@@ -18,7 +18,7 @@ export default function MainPage() {
   const { tagDataReset } = useTagStore();
   const { locationReset } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
-  const {data} = useProfileQuery();
+  const { data } = useProfileQuery();
 
   console.log("Profile Data:", data);
 

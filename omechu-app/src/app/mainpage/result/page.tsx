@@ -142,7 +142,7 @@ export default function ResultPage() {
 
       <div className="px-4 py-2">
         <div className="rounded-md border bg-white p-3 text-sm">
-            <TagCard/>
+          <TagCard />
         </div>
       </div>
 

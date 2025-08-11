@@ -3,7 +3,7 @@ import { addHeart, deleteHeart } from "../api/api";
 
 function usePostHeart(restaurantId: number) {
   return useMutation({
-    mutationFn: () => addHeart( restaurantId),
+    mutationFn: () => addHeart(restaurantId),
     onSuccess: (data) => {
       console.log("Heart added successfully:", data);
     },
@@ -12,7 +12,7 @@ function usePostHeart(restaurantId: number) {
 
 function useDeleteHeart(restaurantId: number) {
   return useMutation({
-    mutationFn: () => deleteHeart( restaurantId),
+    mutationFn: () => deleteHeart(restaurantId),
     onSuccess: (data) => {
       console.log("Heart added successfully:", data);
     },
