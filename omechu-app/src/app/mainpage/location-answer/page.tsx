@@ -8,15 +8,12 @@ import { useRouter } from "next/navigation";
 import StepFooter from "@/components/common/StepFooter";
 import LocationModal from "@/mainpage/components/LocationModal";
 import Header from "@/components/common/Header";
-import { handleLocation } from "../utils/handleLocation";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 
 export default function LocationAnswerPage() {
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
-  const { setX, setY } = useLocationAnswerStore();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -37,7 +34,6 @@ export default function LocationAnswerPage() {
 
   const handleClick = () => {
     router.push("/mainpage/result");
-    handleLocation(setX, setY);
   };
 
   return (
