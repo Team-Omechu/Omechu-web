@@ -22,7 +22,7 @@ export default function FoodBox({
   // console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
   return (
     <div
-      className="relative flex h-[120px] w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border-[1px] border-black bg-white py-3 transition-transform duration-300 hover:scale-110"
+      className="relative flex h-[130px] w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border-[1px] border-black bg-white py-3 transition-transform duration-300 hover:scale-110"
       onClick={onClick}
     >
       {/* 추천 제외 || 복원 버튼 */}
@@ -58,8 +58,11 @@ export default function FoodBox({
         <div className="h-[70px] w-[70px] rounded-lg bg-gray-200" />
       )}
       {/* 음식 이름 */}
-      <div className="flex h-7 items-center whitespace-pre-wrap px-3 text-center text-[15px] font-normal leading-none">
-        <span>{title}</span>
+      <div
+        className="line-clamp-2 flex max-h-[40px] min-h-[28px] items-center px-3 text-center text-[15px] font-normal leading-tight"
+        title={title}
+      >
+        {title}
       </div>
     </div>
   );
