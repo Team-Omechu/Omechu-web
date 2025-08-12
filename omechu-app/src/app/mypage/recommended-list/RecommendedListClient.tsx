@@ -371,6 +371,9 @@ export default function RecommendedList() {
                 key={item.id ?? `${item.title}-${index}`}
                 title={item.title}
                 imageUrl={`https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/${item.title}.png`}
+                // imageUrl={
+                //   "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/%EA%B3%A0%EB%A1%9C%EC%BC%80.PNG"
+                // }
                 isExcluded={item.isExcluded}
                 onToggle={() => onToggle(item)}
                 onClick={() => {}}
