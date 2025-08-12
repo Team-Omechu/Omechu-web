@@ -16,14 +16,14 @@ export interface RandomMenuRequest {
 export type RandomMenu = {
   name: string;
   image_link: string;
-}
+};
 
 export type MenuItem = {
-  id:number
+  id: number;
   menu: string;
   calory: number;
   protein: number;
-  carbo:number;
+  carbo: number;
   fat: number;
   sodium: number;
   vitamin: string[];
@@ -37,18 +37,17 @@ export type MenuDetail = {
   description: string;
   calory: number;
   protein: number;
-  carbo:number;
+  carbo: number;
   fat: number;
   sodium: number;
   vitamin: string[];
   allergic: string[];
   image_link: string;
-}
+};
 
 export type MenuListResponse = {
   menus: MenuItem[];
 };
-
 
 export type TagData = {
   tag: string;
@@ -65,6 +64,4 @@ export type menuType = {
   recipeUrl: string;
 };
 
-export const menus1: MenuItem[] = [
-
-];
+export const menus1: MenuItem[] = [];

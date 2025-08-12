@@ -1,13 +1,13 @@
 "use client";
 
-import { MenuDetail} from "@/constant/mainpage/resultData";
+import { MenuDetail } from "@/constant/mainpage/resultData";
 import React from "react";
 
 interface MenuInfoProps {
   MenuItem?: MenuDetail;
 }
 
-export default function MenuInfo({MenuItem}:MenuInfoProps) {
+export default function MenuInfo({ MenuItem }: MenuInfoProps) {
   return (
     <div>
       <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
@@ -50,9 +50,7 @@ export default function MenuInfo({MenuItem}:MenuInfoProps) {
 
           {/* 레시피 */}
           <p className="mb-1 font-medium text-grey-normal">레시피</p>
-          <button
-            className="mb-3 text-sm text-grey-darker"
-          >
+          <button className="mb-3 text-sm text-grey-darker">
             <span className="border-b border-grey-normalActive">보러가기</span>
             <span>▶</span>
           </button>

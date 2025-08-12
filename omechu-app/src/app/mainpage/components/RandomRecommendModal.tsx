@@ -18,11 +18,11 @@ export default function RandomRecommendModal({
   onClose,
 }: ModalProps) {
   const router = useRouter();
-  const {data,isLoading,isRefetching,refetch }= useGetRandomMenu(); // 로딩이랑 리패칭 추가하기
+  const { data, isLoading, isRefetching, refetch } = useGetRandomMenu(); // 로딩이랑 리패칭 추가하기
   const { mutate } = usePostMukburim();
   // 나중에 랜덤 메뉴로 받아온 데이터로 변경
 
-  const menu = data
+  const menu = data;
   console.log("Random Menu Data:", menu);
   const { setKeyword } = useLocationAnswerStore();
 

@@ -17,7 +17,7 @@ import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 export default function RandomRecommendPage() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const {addition, addAddition, removeAddition} = useQuestionAnswerStore();
+  const { addition, addAddition, removeAddition } = useQuestionAnswerStore();
 
   const handleModal = () => {
     setShowModal(true);
@@ -55,10 +55,7 @@ export default function RandomRecommendPage() {
         <MealTypeGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 2: ingredient */}
-        <MealIngredientGroup
-          selectedItems={addition}
-          onToggle={toggleSelect}
-        />
+        <MealIngredientGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 3: style */}
         <MealStyleGroup selectedItems={addition} onToggle={toggleSelect} />

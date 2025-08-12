@@ -17,7 +17,7 @@ export default function MainPage() {
   const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
   const { tagDataReset } = useTagStore();
-  const { locationReset,setX,setY } = useLocationAnswerStore();
+  const { locationReset, setX, setY } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
   const { data } = useProfileQuery();
 
@@ -50,7 +50,7 @@ export default function MainPage() {
     questionReset();
     handleLocation(setX, setY);
     router.push("mainpage/question-answer/1");
-  }
+  };
 
   return (
     <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden scrollbar-hide">

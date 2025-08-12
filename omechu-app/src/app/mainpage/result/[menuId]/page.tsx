@@ -5,9 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
-import type {
-  MenuDetail,
-} from "@/constant/mainpage/resultData";
+import type { MenuDetail } from "@/constant/mainpage/resultData";
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
@@ -25,12 +23,11 @@ export default function MenuDetailPage() {
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
-
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
 
-    const {data: menuDetailData} = useGetMenuDetail(decodeMenuId);
+  const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
 
-    const detailMenu:MenuDetail | undefined = menuDetailData
+  const detailMenu: MenuDetail | undefined = menuDetailData;
 
   return (
     <div className="flex w-full flex-col">
@@ -74,7 +71,9 @@ export default function MenuDetailPage() {
         <button
           className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
-            router.push(`/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`)
+            router.push(
+              `/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`,
+            )
           }
         >
           더보기 &gt;

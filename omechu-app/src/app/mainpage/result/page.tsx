@@ -29,7 +29,10 @@ export default function ResultPage() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  const menus: MenuItem[] = useMemo(()=>(Array.isArray(data) ? data : []), [data]);
+  const menus: MenuItem[] = useMemo(
+    () => (Array.isArray(data) ? data : []),
+    [data],
+  );
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 

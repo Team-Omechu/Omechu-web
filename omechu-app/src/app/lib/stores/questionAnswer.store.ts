@@ -8,7 +8,7 @@ type QuestionAnswerState = {
   who: number | null;
   budget: number | null;
   exceptions: string[]; // 빈 배열로 초기화
-  addition: string[]
+  addition: string[];
   currentStep: number;
 };
 
@@ -62,7 +62,7 @@ export const useQuestionAnswerStore = create<
       addAddition: (addition) => {
         const { addition: currentAddition } = get();
         if (!currentAddition.includes(addition)) {
-          set({ addition: [...(currentAddition), addition] });
+          set({ addition: [...currentAddition, addition] });
         }
       },
       removeAddition: (addition) => {

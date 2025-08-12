@@ -15,13 +15,13 @@ const MainLoading = () => {
         `}
       </style>
       <div
-        className="absolute top-0 left-0 h-full w-full bg-cover bg-center bg-no-repeat"
+        className="absolute left-0 top-0 h-full w-full bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('/image/loading-bg.svg')",
         }}
       >
         <div
-          className="absolute left-1/2 top-1/2 h-[170px] w-[175px] -translate-x-1/2 -translate-y-1/2 animate-food-cycle bg-[url('/image/food-sprite.svg')]"
+          className="animate-food-cycle absolute left-1/2 top-1/2 h-[170px] w-[175px] -translate-x-1/2 -translate-y-1/2 bg-[url('/image/food-sprite.svg')]"
           style={{
             backgroundSize: "525px 170px",
           }}
