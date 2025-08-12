@@ -1,14 +1,13 @@
 "use client";
 
-import { MenuItem } from "@/constant/mainpage/resultData";
+import { MenuDetail} from "@/constant/mainpage/resultData";
 import React from "react";
 
-interface MenuDetail {
-  MenuItem: MenuItem;
-  onRecipeClick?: () => void;
+interface MenuInfoProps {
+  MenuItem?: MenuDetail;
 }
 
-export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
+export default function MenuInfo({MenuItem}:MenuInfoProps) {
   return (
     <div>
       <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
@@ -19,24 +18,24 @@ export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
           <div className="space-y-1">
             <div className="flex justify-between">
               <span>칼로리</span>
-              <span className="text-[#828282]">{MenuItem.calories}kcal</span>
+              <span className="text-[#828282]">{MenuItem?.calory}kcal</span>
             </div>
             <div className="flex justify-between">
               <span>탄수화물</span>
-              <span className="text-[#828282]">{MenuItem.carbohydrates}g</span>
+              <span className="text-[#828282]">{MenuItem?.carbo}g</span>
             </div>
             <div className="flex justify-between">
               <span>단백질</span>
-              <span className="text-[#828282]">{MenuItem.protein}g</span>
+              <span className="text-[#828282]">{MenuItem?.protein}g</span>
             </div>
             <div className="flex justify-between">
               <span>지방</span>
-              <span className="text-[#828282]">{MenuItem.fat}g</span>
+              <span className="text-[#828282]">{MenuItem?.fat}g</span>
             </div>
             <div className="flex justify-between">
               <span>비타민</span>
               <span className="text-[#828282]">
-                {MenuItem.vitamins.join(",")}
+                {MenuItem?.vitamin.join(",")}
               </span>
             </div>
           </div>
@@ -45,7 +44,7 @@ export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
-          <p className="mb-4 text-sm">{MenuItem.allergies.join(",")}</p>
+          <p className="mb-4 text-sm">{MenuItem?.allergic.join(",")}</p>
 
           <hr className="my-4 border-gray-200" />
 
@@ -53,7 +52,6 @@ export default function MenuInfo({ MenuItem, onRecipeClick }: MenuDetail) {
           <p className="mb-1 font-medium text-grey-normal">레시피</p>
           <button
             className="mb-3 text-sm text-grey-darker"
-            onClick={onRecipeClick}
           >
             <span className="border-b border-grey-normalActive">보러가기</span>
             <span>▶</span>
