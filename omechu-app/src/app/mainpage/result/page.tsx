@@ -115,7 +115,7 @@ export default function ResultPage() {
               <MenuCard
                 title={menu.menu}
                 description={menu.description}
-                image={`https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/${menu.menu}.png`}
+                image={menu.image_link}
                 onClick={() =>
                   setOpenMenu(openMenu === menu.menu ? null : menu.menu)
                 }

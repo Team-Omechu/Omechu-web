@@ -2,19 +2,18 @@
 
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
 import type {
-  MenuItem,
-  MenuListResponse,
+  MenuDetail,
 } from "@/constant/mainpage/resultData";
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
+import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -26,28 +25,12 @@ export default function MenuDetailPage() {
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
+
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
 
-  console.log("Restaurants Data:", restaurants);
+    const {data: menuDetailData} = useGetMenuDetail(decodeMenuId);
 
-  // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
-  const queryClient = useQueryClient();
-  const cached = queryClient.getQueryData<MenuListResponse>([
-    "recommendMenu",
-    payload,
-  ]);
-  const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
-
-  if (!cached) {
-    // 데이터가 없으면 처음으로 돌아가거나 안내
-    return <p className="p-4">메뉴 추천을 먼저 받아주세요.</p>;
-  }
-
-  // 전달된 메뉴 이름으로 상세 정보 찾기
-  const menu = menus.find((menu) => menu.menu === decodeMenuId);
-  if (!menu) {
-    return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
-  }
+    const detailMenu:MenuDetail | undefined = menuDetailData
 
   return (
     <div className="flex w-full flex-col">
@@ -71,11 +54,11 @@ export default function MenuDetailPage() {
 
       <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
         <p className="text-center font-semibold text-secondary-normal">
-          {menu.menu}
+          {detailMenu?.name}
         </p>
         <Image
-          src={"/logo/logo.png"}
-          alt={menu.menu}
+          src={detailMenu?.image_link || ""}
+          alt={detailMenu?.name || "메뉴 이미지"}
           className="mx-auto h-24 w-24 rounded"
           width={96}
           height={96}
@@ -83,7 +66,7 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-10 w-full p-4">
-        <MenuInfo MenuItem={menu} />
+        <MenuInfo MenuItem={detailMenu} />
       </div>
 
       <div className="mx-4 mt-5 flex items-center justify-between">
@@ -91,7 +74,7 @@ export default function MenuDetailPage() {
         <button
           className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
-            router.push(`/restaurant?query=${encodeURIComponent(menu.menu)}`)
+            router.push(`/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`)
           }
         >
           더보기 &gt;
@@ -104,7 +87,7 @@ export default function MenuDetailPage() {
           <FoodCardEx
             key={item.id}
             item={item}
-            menu={menu.menu}
+            menu={detailMenu?.name || ""}
             restaurantId={item.id2}
           />
         ))}
