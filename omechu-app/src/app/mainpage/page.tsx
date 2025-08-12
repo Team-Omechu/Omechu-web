@@ -58,8 +58,8 @@ export default function MainPage() {
       <Image
         src="/mainpage/mainpage.svg"
         alt="메인 페이지"
-        width={375}
-        height={800}
+        fill
+        style={{ objectFit: "cover" }}
         className="object-cover"
       />
       {/* 버튼들 */}
