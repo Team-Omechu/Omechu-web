@@ -13,29 +13,21 @@ import MealTypeGroup from "@/components/mainpage/MealTypeButton";
 
 import RandomRecommendModal from "../components/RandomRecommendModal";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import { handleLocation } from "../utils/handleLocation";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 
 export default function RandomRecommendPage() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const exceptions = useQuestionAnswerStore((state) => state.exceptions);
-  const addException = useQuestionAnswerStore((state) => state.addException);
-  const removeException = useQuestionAnswerStore(
-    (state) => state.removeException,
-  );
-  const { setX, setY } = useLocationAnswerStore();
+  const {addition, addAddition, removeAddition} = useQuestionAnswerStore();
 
   const handleModal = () => {
     setShowModal(true);
-    handleLocation(setX, setY);
   };
 
   const toggleSelect = (item: string) => {
-    if (exceptions.includes(item)) {
-      removeException(item);
-    } else if (exceptions.length < 3) {
-      addException(item);
+    if (addition.includes(item)) {
+      removeAddition(item);
+    } else if (addition.length < 3) {
+      addAddition(item);
     }
   };
   return (
@@ -60,16 +52,16 @@ export default function RandomRecommendPage() {
 
       <div className="mt-5 flex flex-col gap-2">
         {/* 1: type */}
-        <MealTypeGroup selectedItems={exceptions} onToggle={toggleSelect} />
+        <MealTypeGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 2: ingredient */}
         <MealIngredientGroup
-          selectedItems={exceptions}
+          selectedItems={addition}
           onToggle={toggleSelect}
         />
 
         {/* 3: style */}
-        <MealStyleGroup selectedItems={exceptions} onToggle={toggleSelect} />
+        <MealStyleGroup selectedItems={addition} onToggle={toggleSelect} />
       </div>
       <button className="relative mt-10" onClick={handleModal}>
         <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">
