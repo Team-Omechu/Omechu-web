@@ -21,6 +21,13 @@ export const getRecommendMenu = async (
   return data;
 };
 
+export const getMenuDetail = async (menu_name:string):Promise<MenuListResponse> => {
+  const { data } = await axiosInstance.post<MenuListResponse>(
+    "/menu-info",
+     menu_name);
+  return data;
+}
+
 export const getRestaurants = async (
   request: RestaurantRequest,
 ): Promise<restaurantList> => {
