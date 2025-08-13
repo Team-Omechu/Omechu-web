@@ -3,8 +3,9 @@
 -- WHERE id = 25;
 
 
--- DELETE FROM `user`
--- WHERE `id` IN (19, 20, 61);
+  SET FOREIGN_KEY_CHECKS = 0;
+  DELETE FROM `user` WHERE id IN (17,19,54,61);
+  SET FOREIGN_KEY_CHECKS = 1;
 
 
 -- -- 약관 동의 내역 추가
@@ -181,11 +182,11 @@
 -- 사용자 ID 25번이 여러 음식점을 '찜'한 기록을 추가합니다.
 -- 주의: 아래의 rest_id (1, 3, 7, 12, 117)가 restaurant 테이블에 존재해야 합니다.
 
-INSERT INTO `zzim` (user_id, rest_id, created_at) VALUES
-(25, 1, NOW() - INTERVAL 15 DAY),
-(25, 3, NOW() - INTERVAL 10 DAY),
-(25, 7, NOW() - INTERVAL 5 DAY),
-(25, 12, NOW() - INTERVAL 2 DAY),
-(25, 117, NOW() - INTERVAL 1 DAY);
+-- INSERT INTO `zzim` (user_id, rest_id, created_at) VALUES
+-- (25, 1, NOW() - INTERVAL 15 DAY),
+-- (25, 3, NOW() - INTERVAL 10 DAY),
+-- (25, 7, NOW() - INTERVAL 5 DAY),
+-- (25, 12, NOW() - INTERVAL 2 DAY),
+-- (25, 117, NOW() - INTERVAL 1 DAY);
 
-SELECT '25번 사용자에 대한 찜(zzim) 데이터 5건이 추가되었습니다.' AS '결과';
+-- SELECT '25번 사용자에 대한 찜(zzim) 데이터 5건이 추가되었습니다.' AS '결과';
