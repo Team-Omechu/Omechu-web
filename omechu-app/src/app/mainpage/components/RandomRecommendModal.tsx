@@ -1,6 +1,6 @@
 import Image from "next/image";
 import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
-import { MenuItem, menus } from "@/constant/mainpage/resultData";
+import { MenuItem } from "@/constant/mainpage/resultData";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useRouter } from "next/navigation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
@@ -33,7 +33,6 @@ export default function RandomRecommendModal({
     }
     setKeyword(menu.name);
     mutate(menu.name);
-    router.push(`/mainpage/result/${menu.name}`);
   };
 
   const handleRetry = () => {

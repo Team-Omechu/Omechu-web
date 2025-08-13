@@ -17,14 +17,17 @@ import MainLoading from "@/components/mainpage/MainLoading";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 import usePostMukburim from "../hooks/usePostMukburim";
+import Toast from "@/components/common/Toast";
 
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } =
     useGetRecommendMenu();
-  const { mutate } = usePostMukburim();
+  const { mutate} = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -33,6 +36,12 @@ export default function ResultPage() {
     () => (Array.isArray(data) ? data : []),
     [data],
   );
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
@@ -53,11 +62,10 @@ export default function ResultPage() {
 
   const handleNext = () => {
     if (openMenu != null) {
-      router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
       setKeyword(openMenu);
       mutate(openMenu);
     } else {
-      alert("메뉴를 선택해 주세요");
+      triggerToast("메뉴를 선택해주세요.");
     }
   };
 
@@ -173,6 +181,7 @@ export default function ResultPage() {
           />
         </ModalWrapper>
       )}
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }

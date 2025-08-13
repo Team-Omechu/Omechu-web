@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
@@ -11,11 +11,17 @@ import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
 import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
+import { use, useEffect, useState } from "react";
+import Toast from "@/components/common/Toast";
+
 
 export default function MenuDetailPage() {
   const router = useRouter();
+  const [showToast, setShowToast] = useState(true);
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
+  const searchParams = useSearchParams();
+  const isSuccess = searchParams.get("mukburim") === "success";
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
@@ -24,6 +30,13 @@ export default function MenuDetailPage() {
   const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
 
   const detailMenu: MenuDetail | undefined = menuDetailData;
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    }
+  }, []);
 
   return (
     <div className="flex w-full flex-col">
@@ -93,6 +106,7 @@ export default function MenuDetailPage() {
           />
         ))}
       </div>
+        <Toast message="먹부림 기록에 등록되었습니다." show={showToast} className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
     </div>
   );
 }
