@@ -17,6 +17,7 @@ import MainLoading from "@/components/mainpage/MainLoading";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 import Toast from "@/components/common/Toast";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -29,17 +30,18 @@ export default function ResultPage() {
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const {addException} = useQuestionAnswerStore();
 
   const menus: MenuItem[] = useMemo(
     () => (Array.isArray(data) ? data : []),
     [data],
   );
+
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
   };
-
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
@@ -69,6 +71,10 @@ export default function ResultPage() {
 
   // ← 여기서 refetch()를 호출
   const handleReshuffle = () => {
+    //기존 메뉴를 제외하기위해 exceptions에 추가.
+  const exceptionMenus = menus.slice(0, 3).map(m => m.menu);
+  const unique = Array.from(new Set(exceptionMenus));
+  unique.forEach(addException);
     refetch();
     setOpenMenu(null);
     if (isLoading) {
