@@ -11,7 +11,7 @@ import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
 import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Toast from "@/components/common/Toast";
 
 
@@ -103,6 +103,7 @@ export default function MenuDetailPage() {
             item={item}
             menu={detailMenu?.name || ""}
             restaurantId={item.id2}
+            onClick={()=>router.push(`/restaurant/restaurant-detail/${item.id2}`)}
           />
         ))}
       </div>

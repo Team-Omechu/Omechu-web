@@ -32,10 +32,8 @@ export default function FoodCard({
   };
   return (
     <div
-      className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md"
-      onClick={onClick}
-    >
-      <div className="flex-1">
+      className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md">
+      <div className="flex-1" onClick={onClick}>
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span>{item.displayName.text}</span>
           <span className="flex items-center gap-1 text-xs font-normal text-yellow-500">
