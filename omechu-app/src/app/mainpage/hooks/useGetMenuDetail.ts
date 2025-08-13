@@ -9,8 +9,7 @@ export default function useGetMenuDetail(menuName?: string) {
     queryFn: ({ queryKey, signal }) =>
       getMenuDetail(queryKey[1] as string, { signal }),
     enabled: !!menuName,
-    staleTime: 0,
-    refetchOnMount: "always",
+    staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
     refetchOnWindowFocus: false,
     retry: 0,
     gcTime: 5 * 60 * 1000,

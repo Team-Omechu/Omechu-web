@@ -16,14 +16,12 @@ import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
-import usePostMukburim from "../hooks/usePostMukburim";
 import Toast from "@/components/common/Toast";
 
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } =
     useGetRecommendMenu();
-  const { mutate} = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -63,7 +61,7 @@ export default function ResultPage() {
   const handleNext = () => {
     if (openMenu != null) {
       setKeyword(openMenu);
-      mutate(openMenu);
+      router.push(`/mainpage/result/${openMenu}`);
     } else {
       triggerToast("메뉴를 선택해주세요.");
     }

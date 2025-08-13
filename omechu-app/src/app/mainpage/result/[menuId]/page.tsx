@@ -13,15 +13,17 @@ import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import { useEffect, useState } from "react";
 import Toast from "@/components/common/Toast";
+import usePostMukburim from "@/mainpage/hooks/usePostMukburim";
+import { is } from "date-fns/locale";
+import { decode } from "punycode";
 
 
 export default function MenuDetailPage() {
   const router = useRouter();
-  const [showToast, setShowToast] = useState(true);
+  const [showToast, setShowToast] = useState(false);
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const searchParams = useSearchParams();
-  const isSuccess = searchParams.get("mukburim") === "success";
+  const {mutate, isSuccess} = usePostMukburim();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
@@ -31,12 +33,19 @@ export default function MenuDetailPage() {
 
   const detailMenu: MenuDetail | undefined = menuDetailData;
 
+  console.log(isSuccess);
+
+  useEffect(()=>{
+    if(!decodeMenuId) return;
+    mutate(decodeMenuId);
+  }, [decodeMenuId, mutate]);
+
   useEffect(() => {
     if (isSuccess) {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2000);
     }
-  }, []);
+  }, [isSuccess]);
 
   return (
     <div className="flex w-full flex-col">
