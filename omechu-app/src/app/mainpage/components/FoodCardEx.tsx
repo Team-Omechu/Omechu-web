@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
-import useLikedList, { HEARTS_KEY, useDeleteHeart, usePostHeart } from "../hooks/useHeart";
+import useLikedList, {
+  HEARTS_KEY,
+  useDeleteHeart,
+  usePostHeart,
+} from "../hooks/useHeart";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
@@ -28,15 +32,17 @@ export default function FoodCard({
   const { data: likeIds = [], isLoading: likesLoading } = useLikedList(); // ✅ 오타 수정
   const isLiked = useMemo(
     () => likeIds.includes(restaurantId),
-    [likeIds, restaurantId]
+    [likeIds, restaurantId],
   );
 
-  const { mutate: addHeart,    isPending: likePending   } = usePostHeart(restaurantId);
-  const { mutate: deleteHeart, isPending: deletePending } = useDeleteHeart(restaurantId);
+  const { mutate: addHeart, isPending: likePending } =
+    usePostHeart(restaurantId);
+  const { mutate: deleteHeart, isPending: deletePending } =
+    useDeleteHeart(restaurantId);
   const { isLoggedIn } = useAuthStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  console.log("isLiked", restaurantId)
+  console.log("isLiked", restaurantId);
 
   const handleHeartClick = () => {
     if (!isLoggedIn) {
@@ -51,7 +57,7 @@ export default function FoodCard({
       // 좋아요 해제 낙관적 반영
       qc.setQueryData<number[]>(
         HEARTS_KEY,
-        prev.filter((id) => id !== restaurantId)
+        prev.filter((id) => id !== restaurantId),
       );
       deleteHeart(undefined, {
         onError: () => qc.setQueryData<number[]>(HEARTS_KEY, prev), // 실패 시 롤백
@@ -61,7 +67,7 @@ export default function FoodCard({
       // 좋아요 추가 낙관적 반영
       qc.setQueryData<number[]>(
         HEARTS_KEY,
-        prev.includes(restaurantId) ? prev : [...prev, restaurantId]
+        prev.includes(restaurantId) ? prev : [...prev, restaurantId],
       );
       addHeart(undefined, {
         onError: () => qc.setQueryData<number[]>(HEARTS_KEY, prev),

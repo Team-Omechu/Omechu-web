@@ -17,13 +17,12 @@ import usePostMukburim from "@/mainpage/hooks/usePostMukburim";
 import { is } from "date-fns/locale";
 import { decode } from "punycode";
 
-
 export default function MenuDetailPage() {
   const router = useRouter();
   const [showToast, setShowToast] = useState(false);
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const {mutate, isSuccess} = usePostMukburim();
+  const { mutate, isSuccess } = usePostMukburim();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
@@ -35,8 +34,8 @@ export default function MenuDetailPage() {
 
   console.log(isSuccess);
 
-  useEffect(()=>{
-    if(!decodeMenuId) return;
+  useEffect(() => {
+    if (!decodeMenuId) return;
     mutate(decodeMenuId);
   }, [decodeMenuId, mutate]);
 
@@ -112,11 +111,17 @@ export default function MenuDetailPage() {
             item={item}
             menu={detailMenu?.name || ""}
             restaurantId={item.id2}
-            onClick={()=>router.push(`/restaurant/restaurant-detail/${item.id2}`)}
+            onClick={() =>
+              router.push(`/restaurant/restaurant-detail/${item.id2}`)
+            }
           />
         ))}
       </div>
-        <Toast message="먹부림 기록에 등록되었습니다." show={showToast} className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+      <Toast
+        message="먹부림 기록에 등록되었습니다."
+        show={showToast}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+      />
     </div>
   );
 }

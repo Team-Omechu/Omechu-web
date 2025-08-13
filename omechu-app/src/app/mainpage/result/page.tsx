@@ -30,7 +30,7 @@ export default function ResultPage() {
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const {addException} = useQuestionAnswerStore();
+  const { addException } = useQuestionAnswerStore();
 
   const menus: MenuItem[] = useMemo(
     () => (Array.isArray(data) ? data : []),
@@ -72,9 +72,9 @@ export default function ResultPage() {
   // ← 여기서 refetch()를 호출
   const handleReshuffle = () => {
     //기존 메뉴를 제외하기위해 exceptions에 추가.
-  const exceptionMenus = menus.slice(0, 3).map(m => m.menu);
-  const unique = Array.from(new Set(exceptionMenus));
-  unique.forEach(addException);
+    const exceptionMenus = menus.slice(0, 3).map((m) => m.menu);
+    const unique = Array.from(new Set(exceptionMenus));
+    unique.forEach(addException);
     refetch();
     setOpenMenu(null);
     if (isLoading) {

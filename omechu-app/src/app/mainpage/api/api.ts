@@ -44,13 +44,13 @@ export const getMenuDetail = async (
 
   const res = await axiosInstance.post<MenuDetail>(
     "/menu-info",
-    { name: name.trim() }, 
+    { name: name.trim() },
     {
       headers: { "Content-Type": "application/json" },
       signal: opts?.signal,
     },
   );
-  return res.data; 
+  return res.data;
 };
 
 export const getRestaurants = async (
@@ -108,8 +108,8 @@ export const getMyHeartsIds = async (): Promise<number[]> => {
     new Set(
       list
         .map((it) => Number(it.restaurantId))
-        .filter((n) => Number.isFinite(n))
-    )
+        .filter((n) => Number.isFinite(n)),
+    ),
   );
   return ids;
 };

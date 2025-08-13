@@ -10,7 +10,7 @@ export default function useLikedList() {
   return useQuery({
     queryKey: HEARTS_KEY,
     queryFn: getMyHeartsIds,
-    enabled: isLoggedIn,          // 비로그인 상태면 호출 안 함
+    enabled: isLoggedIn, // 비로그인 상태면 호출 안 함
     staleTime: 60 * 1000,
     refetchOnWindowFocus: false,
   });
@@ -21,7 +21,7 @@ export function usePostHeart(restaurantId: number) {
   return useMutation({
     mutationFn: () => addHeart(restaurantId),
     onSettled: () => {
-     queryClient.invalidateQueries({ queryKey: HEARTS_KEY }); // 최종 동기화
+      queryClient.invalidateQueries({ queryKey: HEARTS_KEY }); // 최종 동기화
     },
   });
 }
@@ -31,7 +31,7 @@ export function useDeleteHeart(restaurantId: number) {
   return useMutation({
     mutationFn: () => deleteHeart(restaurantId),
     onSettled: () => {
-     queryClient.invalidateQueries({ queryKey: HEARTS_KEY });
+      queryClient.invalidateQueries({ queryKey: HEARTS_KEY });
     },
   });
 }
