@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -18,9 +17,7 @@ import FloatingActionButton from "@/components/common/FloatingActionButton";
 import Header from "@/components/common/Header";
 import SkeletonUIFoodBox from "@/components/common/SkeletonUIFoodBox";
 
-/* ──────────────────────────────────────────────────────────────
- * Constants
- * ────────────────────────────────────────────────────────────── */
+/* ---------- constants ---------- */
 const PERIOD_OPTIONS = [
   "전체",
   "1주",
@@ -31,15 +28,13 @@ const PERIOD_OPTIONS = [
   "직접입력",
 ] as const;
 
-const INITIAL_VISIBLE = 9; // 3 x 3 그리드 기준
-const ITEMS_PER_CHUNK = 9; // 한 번에 추가 로드할 개수
-const LOADING_TIMEOUT = 1800; // 리스트 로딩 스피너 노출 시간(ms)
+type Period = (typeof PERIOD_OPTIONS)[number];
 
-/* ──────────────────────────────────────────────────────────────
- * Helpers (normalize 제거: trim + toLowerCase만 유지)
- *  - 메뉴 명 화면 표시는 trim만
- *  - 이미지 파일명은 trim 후 소문자 + URL 인코딩
- * ────────────────────────────────────────────────────────────── */
+const INITIAL_VISIBLE = 9; // 3x3
+const ITEMS_PER_CHUNK = 9;
+const LOADING_TIMEOUT = 1800;
+
+/* ---------- helpers ---------- */
 const displayLabel = (s?: unknown) => (typeof s === "string" ? s.trim() : "");
 
 const buildMenuImageUrl = (menuName?: string | null): string | null => {
@@ -48,20 +43,14 @@ const buildMenuImageUrl = (menuName?: string | null): string | null => {
   if (!trimmed) return null;
   const base =
     "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/";
-  const file = encodeURIComponent(trimmed.toLowerCase()); // 파일명 규칙: 소문자
-  return `${base}${file}.png`; // 확장자 규칙: 소문자 png
+  return `${base}${encodeURIComponent(trimmed.toLowerCase())}.png`;
 };
 
-/* ──────────────────────────────────────────────────────────────
- * Period / Date Range
- * ────────────────────────────────────────────────────────────── */
 type DateRange = { startDate: string | null; endDate: string | null };
 
-/** 기간/날짜를 API 파라미터로 변환 (메모) */
-const useQueryParams = (selectedPeriod: string, range: DateRange) =>
+const useQueryParams = (selectedPeriod: Period, range: DateRange) =>
   useMemo(() => {
-    const isCustom = selectedPeriod === "직접입력";
-    if (isCustom) {
+    if (selectedPeriod === "직접입력") {
       if (!range.startDate || !range.endDate) return undefined;
       return {
         period: "직접입력" as PeriodOption,
@@ -72,47 +61,38 @@ const useQueryParams = (selectedPeriod: string, range: DateRange) =>
     return { period: selectedPeriod as PeriodOption };
   }, [selectedPeriod, range.startDate, range.endDate]);
 
-/* ──────────────────────────────────────────────────────────────
- * Component
- * ────────────────────────────────────────────────────────────── */
+/* ---------- component ---------- */
 export default function FoodieLog() {
   const mainRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  // 인증/하이드레이션
   const accessToken = useAuthStore((s) => s.accessToken);
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
 
-  // 조회 조건
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("전체");
+  const [selectedPeriod, setSelectedPeriod] = useState<Period>("전체");
   const [range, setRange] = useState<DateRange>({
     startDate: null,
     endDate: null,
   });
 
-  // 정렬/페이지네이션
   const [sortOrder, setSortOrder] = useState<"MostLogged" | "LatestLogged">(
     "MostLogged",
   );
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const [listLoading, setListLoading] = useState(false);
 
-  // 서버 데이터
   const [stats, setStats] = useState<MukburimStats | null>(null);
   const [fetching, setFetching] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  // 파라미터 메모
   const queryParams = useQueryParams(selectedPeriod, range);
 
-  // 전체 아이템 수
   const totalCount = useMemo(
     () =>
       Array.isArray(stats?.menuStatistics) ? stats!.menuStatistics.length : 0,
     [stats?.menuStatistics],
   );
 
-  // 정렬 + 슬라이스
   const visibleMenus = useMemo(() => {
     const base = Array.isArray(stats?.menuStatistics)
       ? stats!.menuStatistics
@@ -120,16 +100,15 @@ export default function FoodieLog() {
     const sorted =
       sortOrder === "MostLogged"
         ? [...base].sort((a, b) => (b.count ?? 0) - (a.count ?? 0))
-        : base; // (최신 순은 서버에서 정렬되어 온다고 가정)
+        : base;
     return sorted.slice(0, visibleCount);
   }, [stats?.menuStatistics, sortOrder, visibleCount]);
 
-  /* 스크롤 최상단 */
   const scrollToTop = useCallback(() => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  /* 기간 변경 시 초기화 */
+  /* reset on period change */
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE);
     if (selectedPeriod !== "직접입력") {
@@ -141,8 +120,8 @@ export default function FoodieLog() {
     }
   }, [selectedPeriod]);
 
-  /* 무한 스크롤 옵저버 */
-  const observerCallback = useCallback(
+  /* infinite scroll */
+  const onIntersect = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
       if (!target.isIntersecting) return;
@@ -157,17 +136,15 @@ export default function FoodieLog() {
 
   useEffect(() => {
     if (visibleCount >= totalCount) return;
-
-    const observer = new IntersectionObserver(observerCallback, {
+    const observer = new IntersectionObserver(onIntersect, {
       root: null,
       rootMargin: "0px 0px 160px 0px",
       threshold: 0,
     });
-
     const node = loaderRef.current;
     if (node) observer.observe(node);
     return () => observer.disconnect();
-  }, [observerCallback, visibleCount, totalCount]);
+  }, [onIntersect, visibleCount, totalCount]);
 
   useEffect(() => {
     if (!listLoading) return;
@@ -175,7 +152,7 @@ export default function FoodieLog() {
     return () => clearTimeout(t);
   }, [listLoading]);
 
-  /* 데이터 패칭 */
+  /* fetch */
   useEffect(() => {
     if (!hasHydrated) return;
     if (!accessToken) {
@@ -187,31 +164,45 @@ export default function FoodieLog() {
       return;
     }
 
-    let aborted = false;
+    let canceled = false;
     (async () => {
       try {
         setFetching(true);
         setFetchError(null);
         const data = await fetchMukburimStats(queryParams!);
-        if (!aborted) setStats(data);
+        if (!canceled) setStats(data);
       } catch (e: any) {
-        if (!aborted) {
+        if (!canceled) {
           setStats(null);
           setFetchError(e?.message ?? "먹부림 통계 조회 실패");
         }
       } finally {
-        if (!aborted) setFetching(false);
+        if (!canceled) setFetching(false);
       }
     })();
 
     return () => {
-      aborted = true;
+      canceled = true;
     };
   }, [hasHydrated, accessToken, selectedPeriod, queryParams]);
 
-  /* ──────────────────────────────────────────────────────────
-   * Render
-   * ────────────────────────────────────────────────────────── */
+  const handleDateRangeChange = useCallback(
+    (s: Date | null, e: Date | null) => {
+      setRange((prev) => {
+        const next = {
+          startDate: s ? dayjs(s).format("YYYY-MM-DD") : null,
+          endDate: e ? dayjs(e).format("YYYY-MM-DD") : null,
+        };
+        return prev.startDate === next.startDate &&
+          prev.endDate === next.endDate
+          ? prev
+          : next;
+      });
+    },
+    [],
+  );
+
+  /* ---------- render ---------- */
   return (
     <>
       <Header
@@ -252,22 +243,7 @@ export default function FoodieLog() {
         {/* 직접입력일 때: 날짜 범위 */}
         {selectedPeriod === "직접입력" && (
           <section className="-mt-1 flex h-fit w-full items-center justify-center gap-3 border-t-[1px] border-grey-normalActive px-1 py-3">
-            <CustomDatePicker
-              onChange={useCallback((s: Date | null, e: Date | null) => {
-                setRange((prev) => {
-                  const next = {
-                    startDate: s ? dayjs(s).format("YYYY-MM-DD") : null,
-                    endDate: e ? dayjs(e).format("YYYY-MM-DD") : null,
-                  };
-                  if (
-                    prev.startDate === next.startDate &&
-                    prev.endDate === next.endDate
-                  )
-                    return prev;
-                  return next;
-                });
-              }, [])}
-            />
+            <CustomDatePicker onChange={handleDateRangeChange} />
           </section>
         )}
 
@@ -331,8 +307,8 @@ export default function FoodieLog() {
             ) : (
               visibleMenus.map((m, idx) => {
                 const rawName = m?.menu_name ?? "";
-                const name = displayLabel(rawName); // 화면 표시는 trim만
-                const url = buildMenuImageUrl(rawName); // 파일명은 trim+lowerCase+encode
+                const name = displayLabel(rawName);
+                const url = buildMenuImageUrl(rawName);
 
                 return (
                   <div
