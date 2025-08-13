@@ -388,7 +388,7 @@ export default function FoodieLog() {
                 return (
                   <div
                     key={`${name || "no-name"}-${idx}`}
-                    className="flex h-[130px] w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border border-black bg-white py-3"
+                    className="flex h-fit w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border border-black bg-white py-3"
                     title={name || "(이름 없음)"}
                   >
                     {url ? (
