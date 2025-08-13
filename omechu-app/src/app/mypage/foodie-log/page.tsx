@@ -36,59 +36,21 @@ const ITEMS_PER_CHUNK = 9; // 한 번에 추가 로드할 개수
 const LOADING_TIMEOUT = 1800; // 리스트 로딩 스피너 노출 시간(ms)
 
 /* ──────────────────────────────────────────────────────────────
- * Helpers
- *  - 한글 정규화(NFC/NFD), 제어문자/특수공백 제거
- *  - 이미지 경로 후보 생성(대소문자 확장자, NFC/NFD)
- *  - 디버깅 유틸
+ * Helpers (normalize 제거: trim + toLowerCase만 유지)
+ *  - 메뉴 명 화면 표시는 trim만
+ *  - 이미지 파일명은 trim 후 소문자 + URL 인코딩
  * ────────────────────────────────────────────────────────────── */
-const cleanCommon = (str: string) =>
-  str
-    .replace(/["'“”‘’]/g, "")
-    .replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g, "") // 제어문자 제거
-    .replace(/[\u115F\u1160\u3164\uFE0F]/g, "") // 한글 채움/가변 선택자 제거
-    .replace(/[\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]/g, " ") // 다양한 공백 → 일반 공백
-    .replace(/\s+/g, " ")
-    .trim();
+const displayLabel = (s?: unknown) => (typeof s === "string" ? s.trim() : "");
 
-/** UI 표시용 이름 정규화 (길이가 더 온전한 쪽을 사용) */
-const normalizeName = (s?: unknown) => {
-  if (typeof s !== "string") return "";
-  const nfc = cleanCommon(s.normalize("NFC"));
-  const nfd = cleanCommon(s.normalize("NFD"));
-  return nfd.length > nfc.length ? nfd : nfc || nfd || s.trim();
-};
-
-/** S3 이미지 경로 후보들 (OS별 정규화 + 확장자 케이스) */
-const buildMenuImageCandidates = (menuName?: string | null): string[] => {
-  if (typeof menuName !== "string") return [];
+const buildMenuImageUrl = (menuName?: string | null): string | null => {
+  if (typeof menuName !== "string") return null;
+  const trimmed = menuName.trim();
+  if (!trimmed) return null;
   const base =
     "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/";
-  const raw = cleanCommon(menuName.normalize("NFC"));
-  if (!raw) return [];
-
-  const nfc = raw.normalize("NFC");
-  const nfd = raw.normalize("NFD");
-  const enc = (s: string) => encodeURIComponent(s);
-
-  return [
-    `${base}${enc(nfc)}.png`,
-    `${base}${enc(nfc)}.PNG`,
-    `${base}${enc(nfd)}.png`,
-    `${base}${enc(nfd)}.PNG`,
-  ];
+  const file = encodeURIComponent(trimmed.toLowerCase()); // 파일명 규칙: 소문자
+  return `${base}${file}.png`; // 확장자 규칙: 소문자 png
 };
-
-/** 단일 URL (첫 번째 후보) */
-const buildMenuImageUrl = (menuName?: string | null) => {
-  const c = buildMenuImageCandidates(menuName);
-  return c.length ? c[0] : null;
-};
-
-/** 코드포인트 덤프 (개발 디버깅용) */
-const dumpCodes = (s: string) =>
-  Array.from(s)
-    .map((ch) => ch.charCodeAt(0).toString(16).padStart(4, "0"))
-    .join(" ");
 
 /* ──────────────────────────────────────────────────────────────
  * Period / Date Range
@@ -368,22 +330,9 @@ export default function FoodieLog() {
               </div>
             ) : (
               visibleMenus.map((m, idx) => {
-                const rawName = m?.menu_name;
-                // 화면 표시는 NFC 기준으로 고정
-                const nameNFC = cleanCommon(
-                  String(rawName ?? "").normalize("NFC"),
-                );
-                const name = nameNFC;
-                const candidates = buildMenuImageCandidates(rawName);
-                const url = candidates[0] ?? null;
-
-                if (process.env.NODE_ENV === "development") {
-                  const safeRaw = rawName ?? "";
-                  const disp = name;
-                  console.log("[FoodieLog] raw:", safeRaw, dumpCodes(safeRaw));
-                  console.log("[FoodieLog] disp(NFC):", disp, dumpCodes(disp));
-                  console.log("[FoodieLog] url:", url);
-                }
+                const rawName = m?.menu_name ?? "";
+                const name = displayLabel(rawName); // 화면 표시는 trim만
+                const url = buildMenuImageUrl(rawName); // 파일명은 trim+lowerCase+encode
 
                 return (
                   <div
@@ -398,44 +347,10 @@ export default function FoodieLog() {
                         width={70}
                         height={70}
                         className="h-[70px] w-[70px] rounded-lg object-cover"
-                        data-src-idx="0"
-                        data-src-candidates={candidates.join("|")}
                         onError={(e) => {
                           const img = e.currentTarget as HTMLImageElement;
-                          const list = (
-                            img.getAttribute("data-src-candidates") || ""
-                          )
-                            .split("|")
-                            .filter(Boolean);
-                          let idx = parseInt(
-                            img.getAttribute("data-src-idx") || "0",
-                            10,
-                          );
-
-                          // 다음 후보로 교체
-                          if (idx < list.length - 1) {
-                            idx += 1;
-                            img.setAttribute("data-src-idx", String(idx));
-                            img.src = list[idx];
-                            if (process.env.NODE_ENV === "development") {
-                              console.warn(
-                                "[FoodieLog] retry image with candidate:",
-                                list[idx],
-                                "for name:",
-                                name,
-                              );
-                            }
-                            return;
-                          }
-
-                          // 모든 후보 실패 → 로컬 기본 이미지로 폴백
                           if ((img as any).dataset.fallbackApplied) return;
                           (img as any).dataset.fallbackApplied = "1";
-
-                          console.warn(
-                            "[FoodieLog] image 404 fallback -> /logo/logo.png for name:",
-                            name,
-                          );
                           img.src = "/logo/logo.png";
                         }}
                       />
@@ -445,11 +360,6 @@ export default function FoodieLog() {
 
                     <div className="line-clamp-2 px-2 text-center text-[15px] leading-tight text-grey-darker">
                       {name || "(이름 없음)"}
-                      {process.env.NODE_ENV === "development" && (
-                        <span className="ml-1 text-[10px] text-gray-400">
-                          (NFC)
-                        </span>
-                      )}
                     </div>
                     <div className="text-xs text-gray-500">
                       총 {m.count ?? 0}회
