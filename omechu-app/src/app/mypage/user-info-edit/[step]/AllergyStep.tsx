@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/api/axios";
-import { useAuthStore } from "@/lib/stores/auth.store";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -26,9 +25,6 @@ export default function AllergyStep() {
   const prefer = useOnboardingStore((state) => state.prefer);
   const bodyType = useOnboardingStore((state) => state.bodyType);
   const allergy = useOnboardingStore((state) => state.allergy);
-  const profileImageUrl = useOnboardingStore((state) => state.profileImageUrl); // 예시
-
-  const accessToken = useAuthStore.getState().accessToken;
 
   const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
 
@@ -45,30 +41,20 @@ export default function AllergyStep() {
     try {
       const requestBody = {
         nickname,
-        profileImageUrl, // 그대로 전달
         gender,
-        body_type: bodyType[0] ?? "", // API 스키마는 string, 우리 스토어는 배열이므로 첫 값만
         exercise,
-        prefer, // 배열 그대로
-        allergy, // 배열 그대로
+        prefer: prefer.length === 0 ? ["없음"] : prefer,
+        bodyType: bodyType.length === 0 ? ["없음"] : bodyType,
+        allergy: allergy.length === 0 ? ["없음"] : allergy,
       };
 
-      const response = await axiosInstance.patch(
-        "/auth/complete",
-        requestBody,
-        accessToken
-          ? { headers: { Authorization: `Bearer ${accessToken}` } }
-          : undefined,
-      );
+      const response = await axiosInstance.patch("/profile", requestBody);
       console.log("프로필 업데이트 성공:", response.data);
 
       setShowSaveModal(true);
     } catch (err) {
       console.error("프로필 업데이트 실패:", err);
-      const reason =
-        (err as any)?.response?.data?.error?.reason ||
-        "프로필 저장에 실패했습니다.";
-      setError(reason);
+      setError("프로필 저장에 실패했습니다.");
     } finally {
       setLoading(false);
     }
