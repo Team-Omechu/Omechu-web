@@ -14,26 +14,22 @@ export default function ConditionStep() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   // Zustand에서 상태 가져오기
-  const constitution = useOnboardingStore((state) => state.constitution);
-  const resetConstitution = useOnboardingStore(
-    (state) => state.resetConstitution,
-  );
+  const bodyType = useOnboardingStore((state) => state.bodyType);
+  const resetBodyType = useOnboardingStore((state) => state.resetBodyType);
 
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화 함수
 
-  const toggleConstitution = useOnboardingStore(
-    (state) => state.toggleConstitution,
-  );
+  const toggleBodyType = useOnboardingStore((state) => state.toggleBodyType);
 
   // 건너뛰기 누르면 상태 초기화하고 다음 페이지로 이동
   const handleSkip = () => {
-    resetConstitution();
+    resetBodyType();
     router.push(`/mypage/user-info-edit/${indexToSlug[5]}`);
   };
 
   // 버튼 클릭 시 토글 방식으로 값 추가 또는 제거
   const handleClick = (item: string) => {
-    toggleConstitution(item);
+    toggleBodyType(item);
   };
 
   return (
@@ -64,10 +60,10 @@ export default function ConditionStep() {
               "열이 많아서 더위를 잘 타요",
               "추위를 잘 타고 몸이 쉽게 차가워져요",
             ].map((item) => {
-              const isSelected = constitution.includes(item);
+              const isSelected = bodyType.includes(item);
               return (
                 <button
-                  key={`${item}-${constitution.includes(item)}`}
+                  key={`${item}-${bodyType.includes(item)}`}
                   onClick={() => handleClick(item)}
                   className={`h-14 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
                     isSelected
@@ -107,9 +103,9 @@ export default function ConditionStep() {
           onClick={() =>
             router.push(`/mypage/user-info-edit/${indexToSlug[5]}`)
           }
-          disabled={constitution.length === 0}
+          disabled={bodyType.length === 0}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
-            constitution.length === 0
+            bodyType.length === 0
               ? "cursor-not-allowed bg-[#A1A1A1]"
               : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
           }`}

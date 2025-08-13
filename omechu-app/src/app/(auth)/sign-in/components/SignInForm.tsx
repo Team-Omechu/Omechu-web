@@ -52,9 +52,15 @@ export default function SignInForm() {
 
   //* 최종 유저 프로필 동기화 완료 후 라우팅
   useEffect(() => {
-    if (isSuccess && user) {
-      if (!user.nickname) router.push("/onboarding/1");
-      else router.push("/mainpage");
+    // 로그인 토큰 수령 직후에는 placeholder 유저가 먼저 들어오므로
+    // 서버의 me 동기화가 끝나 user.email 이 채워졌을 때만 라우팅합니다.
+    if (!isSuccess || !user) return;
+    if (!user.email) return; // 아직 me 동기화 전 상태
+
+    if (user.nickname && user.nickname.trim().length > 0) {
+      router.push("/mainpage");
+    } else {
+      router.push("/onboarding/1");
     }
   }, [isSuccess, user, router]);
 

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import Toast from "@/components/common/Toast";
 import type { FindPasswordFormValues } from "@/auth/schemas/auth.schema";
-import { useRequestPasswordResetMutation } from "@/auth/hooks/useAuth";
+import { useRequestPasswordResetMutation } from "@/lib/hooks/useAuth";
 
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 

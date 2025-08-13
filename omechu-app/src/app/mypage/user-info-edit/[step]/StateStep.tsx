@@ -15,11 +15,9 @@ export default function StateStep() {
   const [showModal, setShowModal] = useState(false);
 
   // Zustand에서 상태와 초기화 함수들 가져옴
-  const state = useOnboardingStore((state) => state.workoutStatus);
-  const setStatus = useOnboardingStore((state) => state.setWorkoutStatus);
-  const resetWorkoutStatus = useOnboardingStore(
-    (state) => state.resetWorkoutStatus,
-  );
+  const state = useOnboardingStore((state) => state.exercise);
+  const setStatus = useOnboardingStore((state) => state.setExercise);
+  const resetExercise = useOnboardingStore((state) => state.resetExercise);
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화
 
   // 선택 버튼 누르면 같은 값이면 해제, 아니면 선택
@@ -33,7 +31,7 @@ export default function StateStep() {
 
   // handleSkip 수정
   const handleSkip = () => {
-    resetWorkoutStatus(); // ← 상태 초기화
+    resetExercise(); // ← 상태 초기화
     router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
   };
 

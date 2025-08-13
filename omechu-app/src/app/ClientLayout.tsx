@@ -58,7 +58,8 @@ export default function ClientLayout({
     "/sign-up",
     "/forgot-password",
     "/forgot-password/sent",
-    "/reset-password",
+    "/auth/reset-password",
+    "/auth/callback",
 
     // 온보딩 페이지
     "/onboarding/1",

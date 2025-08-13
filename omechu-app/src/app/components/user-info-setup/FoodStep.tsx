@@ -8,7 +8,7 @@ import UserInfoSetupButton from "./UserInfoSetupButton";
 import UserInfoSetupLayout from "./UserInfoSetupLayout";
 
 const FoodStep = () => {
-  const { preferredFood, togglePreferredFood } = useUserInfoSetupStore();
+  const { prefer, togglePrefer } = useUserInfoSetupStore();
   const options = ["한식", "양식", "중식", "일식", "다른나라 음식"];
 
   return (
@@ -16,8 +16,8 @@ const FoodStep = () => {
       {options.map((option) => (
         <UserInfoSetupButton
           key={option}
-          onClick={() => togglePreferredFood(option)}
-          isSelected={preferredFood.includes(option)}
+          onClick={() => togglePrefer(option)}
+          isSelected={prefer.includes(option)}
         >
           {option}
         </UserInfoSetupButton>

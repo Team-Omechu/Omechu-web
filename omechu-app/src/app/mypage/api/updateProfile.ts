@@ -11,13 +11,18 @@ export const getPresignedUrl = async (fileName: string, fileType: string) => {
 };
 
 // S3로 업로드
-export const uploadToS3 = async (uploadUrl: string, file: File) => {
+export const uploadToS3 = async (
+  uploadUrl: string,
+  file: File,
+  options?: { acl?: "public-read" },
+) => {
+  const headers: Record<string, string> = {
+    "Content-Type": file.type,
+  };
+  if (options?.acl) headers["x-amz-acl"] = options.acl;
   await fetch(uploadUrl, {
     method: "PUT",
-    headers: {
-      "Content-Type": file.type,
-      "x-amz-acl": "public-read",
-    },
+    headers,
     body: file,
   });
 };

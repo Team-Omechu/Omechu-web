@@ -24,7 +24,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
         <h2 className="text-lg font-bold text-black">{title}</h2>
         <button onClick={onClose}>
           <Image
-            src="/common/black_x_icon.svg"
+            src="/common/x/black_x_icon.svg"
             alt="close"
             width={17}
             height={17}
