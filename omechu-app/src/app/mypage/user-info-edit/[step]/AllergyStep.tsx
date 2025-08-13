@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axiosInstance from "@/lib/api/axios";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { updateProfile } from "@/mypage/api/updateProfile";
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
+
+import { useProfileQuery } from "@/mypage/hooks/useProfileQuery";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { ALLERGY_OPTIONS } from "@/constant/mypage/profileOptions";
 
 export default function AllergyStep() {
   const router = useRouter();
@@ -28,9 +31,9 @@ export default function AllergyStep() {
   const allergy = useOnboardingStore((state) => state.allergy);
   const profileImageUrl = useOnboardingStore((state) => state.profileImageUrl); // 예시
 
-  const accessToken = useAuthStore.getState().accessToken;
-
   const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
+
+  const { data: currentProfile, isLoading: profileLoading } = useProfileQuery();
 
   // 버튼 클릭하면 선택/해제
   const handleClick = (item: string) => {
@@ -38,35 +41,37 @@ export default function AllergyStep() {
   };
 
   // 프로필 업데이트 API 호출 함수
-  const updateProfile = async () => {
+  const handleSubmit = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const requestBody = {
+      const snap = {
         nickname,
-        profileImageUrl, // 그대로 전달
+        profileImageUrl,
         gender,
-        body_type: bodyType[0] ?? "", // API 스키마는 string, 우리 스토어는 배열이므로 첫 값만
+        bodyType,
         exercise,
-        prefer, // 배열 그대로
-        allergy, // 배열 그대로
+        prefer,
+        allergy,
       };
+      const payload = buildCompletePayloadFromStore(snap, currentProfile);
 
-      const response = await axiosInstance.patch(
-        "/auth/complete",
-        requestBody,
-        accessToken
-          ? { headers: { Authorization: `Bearer ${accessToken}` } }
-          : undefined,
-      );
-      console.log("프로필 업데이트 성공:", response.data);
+      console.log("[Onboarding] update payload =>", payload);
+      const saved = await updateProfile(payload);
+      console.log("프로필 업데이트 성공:", saved);
 
       setShowSaveModal(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error("프로필 업데이트 실패:", err);
+      if (err?.response?.status === 401) {
+        setError("로그인이 필요합니다.");
+        router.push("/sign-in");
+        return;
+      }
       const reason =
-        (err as any)?.response?.data?.error?.reason ||
+        err?.response?.data?.error?.reason ||
+        err?.message ||
         "프로필 저장에 실패했습니다.";
       setError(reason);
     } finally {
@@ -96,25 +101,22 @@ export default function AllergyStep() {
         {/* 선택 버튼들 */}
         <section className="my-10">
           <div className="flex flex-col gap-5">
-            {["달걀 (난류)", "유제품", "갑각류", "해산물", "견과류"].map(
-              (item) => {
-                const isSelected = allergy.includes(item);
-
-                return (
-                  <button
-                    key={`${item}-${isSelected}`}
-                    onClick={() => handleClick(item)}
-                    className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
-                      isSelected
-                        ? "border-primary-normal bg-primary-normal text-white"
-                        : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
-                    } `}
-                  >
-                    {item}
-                  </button>
-                );
-              },
-            )}
+            {ALLERGY_OPTIONS.map(({ key }) => {
+              const isSelected = allergy.includes(key);
+              return (
+                <button
+                  key={key}
+                  onClick={() => handleClick(key)}
+                  className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
+                    isSelected
+                      ? "border-primary-normal bg-primary-normal text-white"
+                      : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
+                  } `}
+                >
+                  {key}
+                </button>
+              );
+            })}
           </div>
         </section>
       </main>
@@ -134,11 +136,11 @@ export default function AllergyStep() {
 
         {/* 제출 버튼 */}
         <button
-          onClick={updateProfile}
-          disabled={loading}
+          onClick={handleSubmit}
+          disabled={loading || profileLoading}
           className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive disabled:opacity-50"
         >
-          {loading ? "저장 중..." : "제출하기"}
+          {loading || profileLoading ? "저장 중..." : "제출하기"}
         </button>
       </footer>
 
