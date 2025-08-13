@@ -16,7 +16,12 @@ interface KakaoMapProps {
   radiusKm?: number;
 }
 
-export default function KakaoMap({ latitude, longitude, name, radiusKm }: KakaoMapProps) {
+export default function KakaoMap({
+  latitude,
+  longitude,
+  name,
+  radiusKm,
+}: KakaoMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

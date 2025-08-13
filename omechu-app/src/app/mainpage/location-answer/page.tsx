@@ -16,7 +16,7 @@ export default function LocationAnswerPage() {
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
-  const {x,y,radius,setRadius} = useLocationAnswerStore();
+  const { x, y, radius, setRadius } = useLocationAnswerStore();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -30,9 +30,9 @@ export default function LocationAnswerPage() {
     }
   };
 
-  const radiusKm:number = isChecked ? (radius/1000) : 0;
+  const radiusKm: number = isChecked ? radius / 1000 : 0;
 
-  console.log(radiusKm)
+  console.log(radiusKm);
 
   const handleCancel = () => {
     setShowModal(false);
@@ -71,13 +71,14 @@ export default function LocationAnswerPage() {
             {selectedDistance}
           </div>
         </div>
-        <div className=" flex-shrink-0 overflow-hidden rounded-sm">
+        <div className="flex-shrink-0 overflow-hidden rounded-sm">
           <RestaurantMapPreview
-          latitude={x}
-          longitude={y}
-          name=""
-          className="object-cover h-[15rem] w-[22rem]"
-          radiusKm={radiusKm}/>
+            latitude={x}
+            longitude={y}
+            name=""
+            className="h-[15rem] w-[22rem] object-cover"
+            radiusKm={radiusKm}
+          />
         </div>
 
         {/* 결과 보기 버튼 */}

@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 type LocationAnswerState = {
-  x: number
-  y: number 
-  radius: number
+  x: number;
+  y: number;
+  radius: number;
   keyword: string | null;
 };
 
