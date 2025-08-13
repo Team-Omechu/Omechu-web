@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -94,7 +95,7 @@ export default function UserInfoEdit() {
         title={"기본 상태 입력"}
         leftChild={
           <button onClick={() => router.push("/mypage")}>
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"back"}
               width={22}

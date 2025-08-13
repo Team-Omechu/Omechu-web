@@ -24,22 +24,22 @@ export default function ProfileSection() {
       <main className="h-fit">
         <LoadingSpinner
           label="프로필 정보 불러오는 중..."
-          className="mb-9.5 mt-6"
+          className="mb-12 mt-7 overflow-y-scroll scrollbar-hide"
         />
       </main>
     );
   }
 
   return (
-    <section className="flex flex-col items-center">
+    <section className="flex flex-col items-center gap-1 overflow-y-scroll scrollbar-hide">
       {/* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */}
       <img
         src={profile?.profileImageUrl || "/profile/profile_default_img.svg"}
-        width={75}
-        height={75}
+        width={100}
+        height={100}
       />
-      <div className="font-md text-lg">{profile?.nickname || "-"}</div>
-      <div className="text-xs font-normal text-grey-normalActive">
+      <div className="font-md text-xl">{profile?.nickname || "-"}</div>
+      <div className="text-base font-normal text-grey-normalActive">
         {profile?.email || ""}
       </div>
       {modalOpen && (
