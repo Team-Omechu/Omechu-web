@@ -6,9 +6,24 @@ import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function CustomDatePicker() {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+interface CustomDatePickerProps {
+  /** start, end 값이 변경될 때 실행되는 콜백 */
+  onChange?: (start: Date | null, end: Date | null) => void;
+  /** 초기 값(optional) */
+  value?: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+}
+
+export default function CustomDatePicker({
+  onChange,
+  value,
+}: CustomDatePickerProps) {
+  const [startDate, setStartDate] = useState<Date | null>(
+    value?.startDate ?? null,
+  );
+  const [endDate, setEndDate] = useState<Date | null>(value?.endDate ?? null);
 
   // <input /> 커스터마이징
   const CustomInput = forwardRef<
@@ -57,7 +72,9 @@ export default function CustomDatePicker() {
             height={26}
           />
         </button>
-        <span className="text-xl font-normal text-grey-darker">{`${year}년 ${month.toString().padStart(2, "0")}월`}</span>
+        <span className="text-xl font-normal text-grey-darker">
+          {`${year}년 ${month.toString().padStart(2, "0")}월`}
+        </span>
         <button
           onClick={increaseMonth}
           className="rounded px-2 py-1 text-sm hover:bg-gray-200"
@@ -78,6 +95,11 @@ export default function CustomDatePicker() {
       setEndDate(null);
     }
   }, [endDate, startDate]);
+
+  // 부모에 값 전달
+  useEffect(() => {
+    onChange?.(startDate, endDate);
+  }, [startDate, endDate, onChange]);
 
   return (
     <section className="flex w-full flex-col items-end">
@@ -100,10 +122,8 @@ export default function CustomDatePicker() {
           dateFormat="yyyy.MM.dd"
           customInput={<CustomInput />}
           onChange={(date) => {
-            if (startDate && date && date.getTime() < startDate.getTime()) {
+            if (startDate && date && date.getTime() < startDate.getTime())
               return;
-            }
-
             setEndDate(date);
           }}
           selectsEnd
