@@ -237,12 +237,12 @@ src/app
     │   └── onboarding.ts
     ├── components/
     │   ├── AllergyStep.tsx
-    │   ├── ConstitutionStep.tsx
+    │   ├── BodyTypeStep.tsx
     │   ├── GenderStep.tsx
     │   ├── OnboardingStepLayout.tsx
-    │   ├── PreferredFoodStep.tsx
+    │   ├── PreferStep.tsx
     │   ├── ProfileStep.tsx
-    │   └── WorkoutStatusStep.tsx
+    │   └── ExerciseStep.tsx
     ├── hooks/
     │   └── useOnboarding.ts
     └── utils/

@@ -14,19 +14,12 @@ import { useAuthStore } from "@/lib/stores/auth.store";
 import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
 import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
 import AllergyStep from "@/onboarding/components/AllergyStep";
-import ConstitutionStep from "@/onboarding/components/ConstitutionStep";
+import BodyTypeStep from "@/onboarding/components/BodyTypeStep";
 import GenderStep from "@/onboarding/components/GenderStep";
-import PreferredFoodStep from "@/onboarding/components/PreferredFoodStep";
+import PreferStep from "@/onboarding/components/PreferStep";
 import ProfileStep from "@/onboarding/components/ProfileStep";
-import WorkoutStatusStep from "@/onboarding/components/WorkoutStatusStep";
-import { LoginSuccessData } from "@/lib/api/auth";
-import {
-  GENDER_MAP,
-  EXERCISE_MAP,
-  PREFER_MAP,
-  ALLERGY_MAP,
-  CONSTITUTION_MAP,
-} from "@/onboarding/utils/enum-mapper";
+import ExerciseStep from "@/onboarding/components/ExerciseStep";
+import type { LoginSuccessData } from "@/lib/api/auth";
 
 const ONBOARDING_STEPS = 6;
 
@@ -87,13 +80,12 @@ export default function OnboardingPage() {
       case 2:
         return !onboardingStore.gender;
       case 3:
-        return !onboardingStore.workoutStatus;
+        return !onboardingStore.exercise;
       case 4:
-        return onboardingStore.preferredFood.length === 0;
+        return onboardingStore.prefer.length === 0;
       case 5:
         return (
-          !onboardingStore.constitution ||
-          onboardingStore.constitution.length === 0
+          !onboardingStore.bodyType || onboardingStore.bodyType.length === 0
         );
       default:
         return false;
@@ -104,47 +96,48 @@ export default function OnboardingPage() {
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     } else {
-      const genderForApi = onboardingStore.gender
-        ? GENDER_MAP[onboardingStore.gender]
-        : null;
-      const stateForApi = onboardingStore.workoutStatus
-        ? EXERCISE_MAP[onboardingStore.workoutStatus]
-        : null;
-      const preferForApi = onboardingStore.preferredFood.map(
-        (p) => PREFER_MAP[p],
-      );
-      const allergyForApi = onboardingStore.allergies.map(
-        (a) => ALLERGY_MAP[a],
-      );
-      const constitutionForApi =
-        onboardingStore.constitution.length > 0
-          ? CONSTITUTION_MAP[onboardingStore.constitution[0]]
+      // 매퍼 제거: 백엔드가 한국어 값을 받아 내부에서 enum으로 변환
+      const BODY_TYPES = ["감기", "소화불량", "더위잘탐", "추위잘탐"] as const;
+      const EXERCISES = ["다이어트 중", "증량 중", "유지 중"] as const;
+
+      type BodyType = (typeof BODY_TYPES)[number];
+      type Exercise = (typeof EXERCISES)[number];
+
+      const pickedBodyType =
+        onboardingStore.bodyType.length > 0
+          ? (onboardingStore.bodyType[0] as string)
           : null;
+      const bodyTypeForApi: BodyType | null = BODY_TYPES.includes(
+        pickedBodyType as BodyType,
+      )
+        ? (pickedBodyType as BodyType)
+        : null;
+
+      const pickedExercise = onboardingStore.exercise as string | null;
+      const exerciseForApi: Exercise | null = EXERCISES.includes(
+        pickedExercise as Exercise,
+      )
+        ? (pickedExercise as Exercise)
+        : null;
 
       const dataToSubmit: OnboardingRequestData = {
-        password: password,
         nickname: onboardingStore.nickname,
         profileImageUrl: onboardingStore.profileImageUrl || "",
-        gender: genderForApi as "male" | "female" | null,
-        body_type: constitutionForApi,
-        state: stateForApi as "dieting" | "bulking" | "maintaining" | null,
-        prefer: preferForApi,
-        allergy: allergyForApi,
+        gender: onboardingStore.gender,
+        body_type: bodyTypeForApi,
+        exercise: exerciseForApi,
+        prefer: onboardingStore.prefer,
+        allergy: onboardingStore.allergy,
       };
 
       completeOnboarding(dataToSubmit, {
         onSuccess: (completedProfile) => {
           if (authUser) {
-            const normalizeGender = (g: string): "남성" | "여성" => {
-              if (g === "male" || g === "남자" || g === "남성") return "남성";
-              if (g === "female" || g === "여자" || g === "여성") return "여성";
-              return "남성";
-            };
-
+            const genderForStore = completedProfile.gender ?? "남성";
             const userForLogin: LoginSuccessData = {
               id: completedProfile.id,
               email: completedProfile.email,
-              gender: normalizeGender(completedProfile.gender),
+              gender: genderForStore,
               nickname: completedProfile.nickname,
               created_at: completedProfile.created_at,
               updated_at: completedProfile.updated_at,
@@ -198,11 +191,11 @@ export default function OnboardingPage() {
       case 2:
         return <GenderStep />;
       case 3:
-        return <WorkoutStatusStep />;
+        return <ExerciseStep />;
       case 4:
-        return <PreferredFoodStep />;
+        return <PreferStep />;
       case 5:
-        return <ConstitutionStep />;
+        return <BodyTypeStep />;
       case 6:
         return <AllergyStep />;
       default:

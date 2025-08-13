@@ -8,7 +8,7 @@ import UserInfoSetupButton from "./UserInfoSetupButton";
 import UserInfoSetupLayout from "./UserInfoSetupLayout";
 
 const StateStep = () => {
-  const { workoutStatus, setWorkoutStatus } = useUserInfoSetupStore();
+  const { exercise, setExercise } = useUserInfoSetupStore();
   const options = ["다이어트 중", "증량 중", "유지 중"];
 
   return (
@@ -16,8 +16,8 @@ const StateStep = () => {
       {options.map((option) => (
         <UserInfoSetupButton
           key={option}
-          onClick={() => setWorkoutStatus(option)}
-          isSelected={workoutStatus === option}
+          onClick={() => setExercise(option)}
+          isSelected={exercise === option}
         >
           {option}
         </UserInfoSetupButton>

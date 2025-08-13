@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { useLogoutMutation } from "@/auth/hooks/useAuth";
+import { useLogoutMutation } from "@/lib/hooks/useAuth";
 import SquareButton from "@/components/common/button/SquareButton";
 import Toast from "@/components/common/Toast";
 

@@ -62,25 +62,7 @@ export interface RequestPasswordResetSuccessData {
   token: string;
 }
 
-// 온보딩 완료 시 서버 응답 데이터 타입
-export interface OnboardingSuccessData {
-  id: string;
-  email: string;
-  gender: "남성" | "여성";
-  nickname: string;
-  created_at: string;
-  updated_at: string;
-}
-
-// 온보딩 완료 시 서버로 보낼 데이터 타입
-export interface OnboardingData {
-  nickname: string;
-  gender: "여성" | "남성" | null;
-  workoutStatus: string | null;
-  preferredFood: string[];
-  constitution: string[];
-  allergy: string[];
-}
+// (중복 제거) 온보딩 타입 및 API는 `onboarding/api/onboarding.ts`에서 관리합니다.
 
 // 내부 유틸: store/localStorage 어디에 저장됐든 accessToken 읽기
 const readAccessToken = (): string | null => {
@@ -145,27 +127,7 @@ export const signup = async (
   return apiResponse.success;
 };
 
-/**
- * 회원가입 완료 (온보딩 데이터 전송) API
- */
-export const completeOnboarding = async (
-  data: OnboardingData,
-): Promise<OnboardingSuccessData> => {
-  // TODO: 백엔드 응답 타입 정의
-  const response = await axiosInstance.patch<
-    ApiResponse<OnboardingSuccessData>
-  >("/auth/complete", data);
-
-  const apiResponse = response.data;
-
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "온보딩 정보 저장에 실패했습니다.",
-    );
-  }
-
-  return apiResponse.success;
-};
+// (삭제) completeOnboarding는 `onboarding/api/onboarding.ts` 사용
 
 /**
  * 이메일 인증번호 전송 API
@@ -246,13 +208,12 @@ export const resetPassword = async (
  * 로그아웃 API
  */
 export const logout = async (): Promise<void> => {
-  const { refreshToken } = useAuthStore.getState();
-  if (!refreshToken) throw new Error("refreshToken이 없습니다.");
   await axiosInstance.post(
     "/auth/logout",
     {},
     {
-      headers: { Authorization: `Bearer ${refreshToken}` },
+      // Authorization 헤더는 axiosInstance의 요청 인터셉터에서
+      // accessToken을 자동으로 주입합니다.
       withCredentials: true,
     },
   );

@@ -8,7 +8,7 @@ import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
 const AllergyStep = () => {
-  const { allergies, toggleAllergy } = useOnboardingStore();
+  const { allergy, toggleAllergy } = useOnboardingStore();
   // Figma UI와 백엔드 DTO에 맞춰 옵션 텍스트만 수정합니다.
   const options = [
     "달걀(난류) 알레르기",
@@ -25,7 +25,7 @@ const AllergyStep = () => {
         <ListButton
           key={option}
           onClick={() => toggleAllergy(option)}
-          isSelected={allergies.includes(option)}
+          isSelected={allergy.includes(option)}
         >
           {option}
         </ListButton>
