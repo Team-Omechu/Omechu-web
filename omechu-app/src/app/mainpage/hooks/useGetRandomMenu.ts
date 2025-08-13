@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 function useGetRandomMenu() {
-  const { exceptions } = useQuestionAnswerStore();
+  const { addition } = useQuestionAnswerStore();
   const payload = {
-    addition: exceptions, // If no exceptions, send null
+    addition, // If no addition, send null
   };
   return useQuery<RandomMenu>({
     queryKey: ["randomMenu"],

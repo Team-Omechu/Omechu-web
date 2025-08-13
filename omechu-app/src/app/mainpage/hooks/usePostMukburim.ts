@@ -13,7 +13,6 @@ function usePostMukburim() {
     onSuccess: (data, menu_name) => {
       // 관련된 쿼리만 새로고침! (예시로 "mukburim" 지정)
       queryClient.invalidateQueries({ queryKey: ["mukburim"] });
-      router.push(`/mainpage/result/${menu_name}?mukburim=success`);
     },
   });
 }

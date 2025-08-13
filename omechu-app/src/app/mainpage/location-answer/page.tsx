@@ -32,8 +32,6 @@ export default function LocationAnswerPage() {
 
   const radiusKm: number = isChecked ? radius / 1000 : 0;
 
-  console.log(radiusKm);
-
   const handleCancel = () => {
     setShowModal(false);
     setIsChecked(false);

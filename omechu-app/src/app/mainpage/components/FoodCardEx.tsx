@@ -46,8 +46,6 @@ export default function FoodCard({
   const { isLoggedIn } = useAuthStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  console.log("isLiked", numericRestaurantId);
-
   const handleHeartClick = () => {
     if (!isLoggedIn) {
       setShowLoginModal(true);

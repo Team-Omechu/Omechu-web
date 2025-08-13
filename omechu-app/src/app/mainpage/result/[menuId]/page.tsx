@@ -14,8 +14,6 @@ import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import { useEffect, useState } from "react";
 import Toast from "@/components/common/Toast";
 import usePostMukburim from "@/mainpage/hooks/usePostMukburim";
-import { is } from "date-fns/locale";
-import { decode } from "punycode";
 
 export default function MenuDetailPage() {
   const router = useRouter();

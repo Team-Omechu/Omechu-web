@@ -23,7 +23,6 @@ export default function RandomRecommendModal({
   // 나중에 랜덤 메뉴로 받아온 데이터로 변경
 
   const menu = data;
-  console.log("Random Menu Data:", menu);
   const { setKeyword } = useLocationAnswerStore();
 
   const handleConfirm = () => {
