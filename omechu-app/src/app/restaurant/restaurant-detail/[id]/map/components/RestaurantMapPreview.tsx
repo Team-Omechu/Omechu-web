@@ -8,16 +8,20 @@ interface Props {
   latitude: number;
   longitude: number;
   name: string;
+  className?: string
+  radiusKm?:number
 }
 
 export default function RestaurantMapPreview({
   latitude,
   longitude,
   name,
+  className,
+  radiusKm
 }: Props) {
   return (
-    <div className="mt-4 h-[20rem] w-[21rem] rounded-xl shadow-md">
-      <KakaoMap latitude={latitude} longitude={longitude} name={name} />
+    <div className={`mt-4 rounded-xl shadow-md overflow-hidden ${className ?? ""}`}>
+      <KakaoMap latitude={latitude} longitude={longitude} name={name} radiusKm={radiusKm} />
     </div>
   );
 }

@@ -8,12 +8,15 @@ import { useRouter } from "next/navigation";
 import StepFooter from "@/components/common/StepFooter";
 import LocationModal from "@/mainpage/components/LocationModal";
 import Header from "@/components/common/Header";
+import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import RestaurantMapPreview from "@/restaurant/restaurant-detail/[id]/map/components/RestaurantMapPreview";
 
 export default function LocationAnswerPage() {
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDistance, setSelectedDistance] = useState("");
+  const {x,y,radius,setRadius} = useLocationAnswerStore();
 
   const handleCheckboxChange = () => {
     const newValue = !isChecked;
@@ -23,8 +26,13 @@ export default function LocationAnswerPage() {
       setSelectedDistance("가까이");
     } else {
       setSelectedDistance("");
+      setRadius(500);
     }
   };
+
+  const radiusKm:number = isChecked ? (radius/1000) : 0;
+
+  console.log(radiusKm)
 
   const handleCancel = () => {
     setShowModal(false);
@@ -63,14 +71,13 @@ export default function LocationAnswerPage() {
             {selectedDistance}
           </div>
         </div>
-        <div className="mt-4 h-[10.625rem] w-[17.5rem] flex-shrink-0 overflow-hidden">
-          <Image
-            src="/map/map.svg"
-            alt="지도"
-            width={280}
-            height={170}
-            className="h-full w-full object-cover"
-          />
+        <div className=" flex-shrink-0 overflow-hidden rounded-sm">
+          <RestaurantMapPreview
+          latitude={x}
+          longitude={y}
+          name=""
+          className="object-cover h-[15rem] w-[22rem]"
+          radiusKm={radiusKm}/>
         </div>
 
         {/* 결과 보기 버튼 */}
