@@ -34,7 +34,7 @@ export type MenuItem = {
 };
 
 export type MenuDetail = {
-  id?: number;
+  id: number;
   menu?: string;
   name: string;
   description: string;
