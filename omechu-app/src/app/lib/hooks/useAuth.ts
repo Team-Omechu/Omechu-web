@@ -84,7 +84,7 @@ export const useRequestPasswordResetMutation = () => {
 
 // 비밀번호 재설정
 export const useResetPasswordMutation = () => {
-  return useMutation<string, Error, ResetPasswordFormValues>({
+  return useMutation<string, Error, ResetPasswordFormValues & { token: string } }({
     mutationFn: authApi.resetPassword,
   });
 };

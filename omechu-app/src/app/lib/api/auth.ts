@@ -189,11 +189,11 @@ export const requestPasswordReset = async (
  * 비밀번호 재설정 API
  */
 export const resetPassword = async (
-  data: ResetPasswordFormValues,
+  data: ResetPasswordFormValues & { token: string },
 ): Promise<string> => {
   const response = await axiosInstance.patch<ApiResponse<string>>(
-    "/reset-passwd",
-    { newPassword: data.password }, // API 명세에 맞게 newPassword 필드로 전송
+    `/reset-passwd?token=${encodeURIComponent(data.token)}`,
+    { newPassword: data.password },
   );
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
