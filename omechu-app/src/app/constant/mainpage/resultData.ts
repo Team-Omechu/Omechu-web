@@ -20,6 +20,7 @@ export type RandomMenu = {
 
 export type MenuItem = {
   id: number;
+  name?: string;
   menu: string;
   calory: number;
   protein: number;
@@ -33,6 +34,8 @@ export type MenuItem = {
 };
 
 export type MenuDetail = {
+  id?: number;
+  menu?: string;
   name: string;
   description: string;
   calory: number;
@@ -64,4 +67,4 @@ export type menuType = {
   recipeUrl: string;
 };
 
-export const menus1: MenuItem[] = [];
+export const menus1: MenuDetail[] = [];
