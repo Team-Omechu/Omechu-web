@@ -9,17 +9,13 @@ import type { MenuDetail } from "@/constant/mainpage/resultData";
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import LoadingIndicator from "@/components/common/LoadingIndicator";
 import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
+import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 
 export default function MenuDetailPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const { mealTime, purpose, mood, who, budget, exceptions } =
-    useQuestionAnswerStore();
-  const payload = { mealTime, purpose, mood, with: who, budget, exceptions };
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
@@ -54,7 +50,7 @@ export default function MenuDetailPage() {
           {detailMenu?.name}
         </p>
         <Image
-          src={detailMenu?.image_link || ""}
+          src={detailMenu?.image_link || "/image/image_empty.svg"}
           alt={detailMenu?.name || "메뉴 이미지"}
           className="mx-auto h-24 w-24 rounded"
           width={96}
@@ -81,7 +77,13 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-3 space-y-2 px-4">
-        {isLoading && <LoadingIndicator />}
+        {isLoading && (
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonFoodCard key={i} />
+            ))}
+          </div>
+        )}
         {restaurants.map((item) => (
           <FoodCardEx
             key={item.id}
