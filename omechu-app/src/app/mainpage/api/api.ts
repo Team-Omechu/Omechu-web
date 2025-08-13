@@ -1,3 +1,4 @@
+import { HeartResponse } from "@/constant/mainpage/likeList";
 import { mukburimResponse } from "@/constant/mainpage/mukburim";
 import { ProfileResponse } from "@/constant/mainpage/profile";
 import {
@@ -43,14 +44,13 @@ export const getMenuDetail = async (
 
   const res = await axiosInstance.post<MenuDetail>(
     "/menu-info",
-    { name: name.trim() }, // Swagger 스펙 그대로
+    { name: name.trim() }, 
     {
-      headers: { "Content-Type": "application/json" }, // 인스턴스 기본값 무시하고 강제
-      withCredentials: true, // 필요 없으면 제거
+      headers: { "Content-Type": "application/json" },
       signal: opts?.signal,
     },
   );
-  return res.data; // 서버가 {data: …}로 감싸면 언래핑 필요
+  return res.data; 
 };
 
 export const getRestaurants = async (
@@ -98,4 +98,18 @@ export const deleteHeart = async (restaurantId?: number) => {
     throw new Error("Failed to delete heart");
   }
   return response;
+};
+
+export const getMyHeartsIds = async (): Promise<number[]> => {
+  const { data } = await axiosInstance.get<HeartResponse>("/hearts");
+  const list = data?.success?.data ?? [];
+  // restaurantId가 문자열이므로 number로 변환 + 유효성 필터 + 중복 제거
+  const ids = Array.from(
+    new Set(
+      list
+        .map((it) => Number(it.restaurantId))
+        .filter((n) => Number.isFinite(n))
+    )
+  );
+  return ids;
 };
