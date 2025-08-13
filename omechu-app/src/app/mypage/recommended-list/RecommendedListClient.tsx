@@ -91,28 +91,65 @@ export default function RecommendedList() {
 
     fetchRecommendManagement()
       .then((res: any) => {
-        // 응답 구조:
-        // { success: { summary, recommendMenus: [...], exceptedMenus: [...] } }
-        const recommend = res?.success?.recommendMenus ?? [];
-        const excepted = res?.success?.exceptedMenus ?? [];
+        // 응답 구조(정규화된 형태):
+        // { summary, recommendMenus: [...], exceptedMenus: [...] }
+        const recommend = res?.recommendMenus ?? [];
+        const excepted = res?.exceptedMenus ?? [];
 
         // recommendMenus / exceptedMenus 를 하나의 리스트로 합치며 isExcluded 플래그를 세팅
         const merged: FoodItem[] = [
-          ...recommend.map((m: any) => ({
-            id: Number(m.id), // ← 추가
-            title: m.name ?? "",
-            imageUrl: m.image_link ?? "",
-            isExcluded: false,
-          })),
-          ...excepted.map((m: any) => ({
-            id: Number(m.id), // ← 추가
-            title: m.name ?? "",
-            imageUrl: m.image_link ?? "",
-            isExcluded: true,
-          })),
+          ...recommend.map((m: any) => {
+            // m.image_link가 null이면 FoodBox에서 placeholder가 보이도록 빈 문자열 유지
+            const url = m.image_link ?? "";
+            if (!url) {
+              console.log(
+                "[RecommendedList] recommend image missing:",
+                m.id,
+                m.name,
+              );
+            }
+            return {
+              id: Number(m.id),
+              title: m.name ?? "",
+              imageUrl: url,
+              isExcluded: false,
+            };
+          }),
+          ...excepted.map((m: any) => {
+            // m.image_link가 null이면 FoodBox에서 placeholder가 보이도록 빈 문자열 유지
+            const url = m.image_link ?? "";
+            if (!url) {
+              console.log(
+                "[RecommendedList] excepted image missing:",
+                m.id,
+                m.name,
+              );
+            }
+            return {
+              id: Number(m.id),
+              title: m.name ?? "",
+              imageUrl: url,
+              isExcluded: true,
+            };
+          }),
         ].sort((a, b) => a.title.localeCompare(b.title, "ko"));
 
         setFoodList(merged);
+        const nullImages = merged
+          .filter((x) => !x.imageUrl)
+          .map((x) => x.title);
+        console.log(
+          "[RecommendedList] merged count:",
+          merged.length,
+          "null-image count:",
+          nullImages.length,
+        );
+        if (nullImages.length) {
+          console.log(
+            "[RecommendedList] null-image titles (sample):",
+            nullImages.slice(0, 20),
+          );
+        }
         console.log("[RecommendedList] Fetch success → close login modal");
         setModalOpen(false);
         modalShownRef.current = false;
@@ -333,7 +370,10 @@ export default function RecommendedList() {
               <FoodBox
                 key={item.id ?? `${item.title}-${index}`}
                 title={item.title}
-                imageUrl={item.imageUrl}
+                imageUrl={`https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/${item.title}.png`}
+                // imageUrl={
+                //   "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/%EA%B3%A0%EB%A1%9C%EC%BC%80.PNG"
+                // }
                 isExcluded={item.isExcluded}
                 onToggle={() => onToggle(item)}
                 onClick={() => {}}
