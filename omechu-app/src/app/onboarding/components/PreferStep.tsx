@@ -7,8 +7,8 @@ import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
-const PreferredFoodStep = () => {
-  const { preferredFood, togglePreferredFood } = useOnboardingStore();
+const PreferStep = () => {
+  const { prefer, togglePrefer } = useOnboardingStore();
   const options = ["한식", "양식", "중식", "일식", "다른나라 음식"];
 
   return (
@@ -16,8 +16,8 @@ const PreferredFoodStep = () => {
       {options.map((option) => (
         <ListButton
           key={option}
-          onClick={() => togglePreferredFood(option)}
-          isSelected={preferredFood.includes(option)}
+          onClick={() => togglePrefer(option)}
+          isSelected={prefer.includes(option)}
         >
           {option}
         </ListButton>
@@ -26,4 +26,4 @@ const PreferredFoodStep = () => {
   );
 };
 
-export default PreferredFoodStep;
+export default PreferStep;

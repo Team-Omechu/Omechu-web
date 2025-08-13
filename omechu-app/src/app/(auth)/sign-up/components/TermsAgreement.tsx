@@ -18,7 +18,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
     register,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, touchedFields, submitCount },
   } = useFormContext<SignupFormValues>();
 
   const termNames = [
@@ -31,6 +31,16 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
   // '전체 동의' 상태를 useEffect나 useState 없이 직접 계산합니다.
   // 이것이 바로 "완벽하고 확실한" 로직입니다.
   const isAllAgreed = watch(termNames).every(Boolean);
+
+  // 에러 메시지는 해당 체크박스를 만졌거나(form touched) 또는 한 번이라도 제출을 시도했을 때만 노출
+  const shouldShowServiceError =
+    !!errors.termsService && (touchedFields.termsService || submitCount > 0);
+  const shouldShowPrivacyError =
+    !!errors.termsPrivacy && (touchedFields.termsPrivacy || submitCount > 0);
+  const shouldShowLocationError =
+    !!errors.termsLocation && (touchedFields.termsLocation || submitCount > 0);
+  const shouldShowAgeError =
+    !!errors.termsAge && (touchedFields.termsAge || submitCount > 0);
 
   const handleAllAgreement = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
@@ -68,9 +78,9 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
             보기
           </button>
         </div>
-        {errors.termsService && (
+        {shouldShowServiceError && (
           <p className="pl-2 text-xs text-red-500">
-            {errors.termsService.message}
+            {errors.termsService?.message}
           </p>
         )}
 
@@ -89,9 +99,9 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
             보기
           </button>
         </div>
-        {errors.termsPrivacy && (
+        {shouldShowPrivacyError && (
           <p className="pl-2 text-xs text-red-500">
-            {errors.termsPrivacy.message}
+            {errors.termsPrivacy?.message}
           </p>
         )}
 
@@ -110,9 +120,9 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
             보기
           </button>
         </div>
-        {errors.termsLocation && (
+        {shouldShowLocationError && (
           <p className="pl-2 text-xs text-red-500">
-            {errors.termsLocation.message}
+            {errors.termsLocation?.message}
           </p>
         )}
       </div>
@@ -124,8 +134,10 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           {...register("termsAge")}
           variant="round"
         />
-        {errors.termsAge && (
-          <p className="pl-2 text-xs text-red-500">{errors.termsAge.message}</p>
+        {shouldShowAgeError && (
+          <p className="pl-2 text-xs text-red-500">
+            {errors.termsAge?.message}
+          </p>
         )}
       </div>
     </div>

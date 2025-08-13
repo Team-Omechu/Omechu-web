@@ -2,18 +2,18 @@ import { create } from "zustand";
 
 type UserInfoSetupState = {
   gender: "여성" | "남성" | null;
-  workoutStatus: string | null;
-  preferredFood: string[];
-  constitution: string[];
-  allergies: string[];
+  exercise: string | null;
+  prefer: string[];
+  bodyType: string[];
+  allergy: string[];
   currentStep: number;
 };
 
 type UserInfoSetupActions = {
   setGender: (gender: "여성" | "남성") => void;
-  setWorkoutStatus: (status: string) => void;
-  togglePreferredFood: (food: string) => void;
-  toggleConstitution: (item: string) => void;
+  setExercise: (exercise: string) => void;
+  togglePrefer: (prefer: string) => void;
+  toggleBodyType: (item: string) => void;
   toggleAllergy: (allergy: string) => void;
   setCurrentStep: (step: number) => void;
   reset: () => void;
@@ -21,10 +21,10 @@ type UserInfoSetupActions = {
 
 const initialState: UserInfoSetupState = {
   gender: null,
-  workoutStatus: null,
-  preferredFood: [],
-  constitution: [],
-  allergies: [],
+  exercise: null,
+  prefer: [],
+  bodyType: [],
+  allergy: [],
   currentStep: 1,
 };
 
@@ -33,24 +33,24 @@ export const useUserInfoSetupStore = create<
 >((set) => ({
   ...initialState,
   setGender: (gender) => set({ gender }),
-  setWorkoutStatus: (workoutStatus) => set({ workoutStatus }),
-  togglePreferredFood: (food) =>
+  setExercise: (exercise) => set({ exercise }),
+  togglePrefer: (prefer) =>
     set((state) => ({
-      preferredFood: state.preferredFood.includes(food)
-        ? state.preferredFood.filter((f) => f !== food)
-        : [...state.preferredFood, food],
+      prefer: state.prefer.includes(prefer)
+        ? state.prefer.filter((f) => f !== prefer)
+        : [...state.prefer, prefer],
     })),
-  toggleConstitution: (item) =>
+  toggleBodyType: (item) =>
     set((state) => ({
-      constitution: state.constitution.includes(item)
-        ? state.constitution.filter((c) => c !== item)
-        : [...state.constitution, item],
+      bodyType: state.bodyType.includes(item)
+        ? state.bodyType.filter((c) => c !== item)
+        : [...state.bodyType, item],
     })),
   toggleAllergy: (allergy) =>
     set((state) => ({
-      allergies: state.allergies.includes(allergy)
-        ? state.allergies.filter((a) => a !== allergy)
-        : [...state.allergies, allergy],
+      allergy: state.allergy.includes(allergy)
+        ? state.allergy.filter((a) => a !== allergy)
+        : [...state.allergy, allergy],
     })),
   setCurrentStep: (step) => set({ currentStep: step }),
   reset: () => set(initialState),

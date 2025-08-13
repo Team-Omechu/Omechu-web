@@ -55,7 +55,7 @@ export default function ProfileEditSection() {
           profileImageFile.name,
           profileImageFile.type,
         );
-        await uploadToS3(uploadUrl, profileImageFile);
+        await uploadToS3(uploadUrl, profileImageFile, { acl: "public-read" });
         imageUrl = fileUrl;
         setProfileImageUrl(fileUrl);
       }

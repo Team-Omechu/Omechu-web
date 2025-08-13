@@ -8,7 +8,7 @@ import UserInfoSetupButton from "./UserInfoSetupButton";
 import UserInfoSetupLayout from "./UserInfoSetupLayout";
 
 const AllergyStep = () => {
-  const { allergies, toggleAllergy } = useUserInfoSetupStore();
+  const { allergy, toggleAllergy } = useUserInfoSetupStore();
   const options = ["달걀 (난류)", "유제품", "갑각류", "해산물", "견과류"];
 
   return (
@@ -17,7 +17,7 @@ const AllergyStep = () => {
         <UserInfoSetupButton
           key={option}
           onClick={() => toggleAllergy(option)}
-          isSelected={allergies.includes(option)}
+          isSelected={allergy.includes(option)}
         >
           {option}
         </UserInfoSetupButton>

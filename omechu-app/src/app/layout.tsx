@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Omechu - 오늘 뭐 먹지?",
   description: "오늘 뭐 먹지? Omechu가 추천해드려요!",
   icons: {
-    icon: "/logo.png",
+    icon: "logo.png",
   },
 };
 

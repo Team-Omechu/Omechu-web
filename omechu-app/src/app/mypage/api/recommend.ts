@@ -1,5 +1,3 @@
-// src/app/mypage/api/recommend.ts
-
 import axiosInstance from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import type { ApiResponse } from "@/lib/api/auth";
@@ -42,9 +40,10 @@ export type RecommendManagementData = {
   exceptedMenus: RecommendMenu[];
 };
 
-/** 응답 전체 타입 */
-export type FetchRecommendManagementResponse =
-  ApiResponse<RecommendManagementData>;
+/**
+ * Callers should consume normalized data directly.
+ * Removed alias FetchRecommendManagementResponse.
+ */
 
 /** 내부 정규화 유틸 */
 function normalizeMenu(raw: RecommendMenuRaw): RecommendMenu {
@@ -71,7 +70,7 @@ function normalizeSuccess(
 
 // * 추천목록 관리 데이터 조회
 // * - GET /recommend/management
-export async function fetchRecommendManagement(): Promise<FetchRecommendManagementResponse> {
+export async function fetchRecommendManagement(): Promise<RecommendManagementData> {
   const accessToken = useAuthStore.getState().accessToken;
   if (!accessToken) {
     throw new Error("No access token. Please login first.");
@@ -83,23 +82,19 @@ export async function fetchRecommendManagement(): Promise<FetchRecommendManageme
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 
-  // FAIL 처리
   if (res.data.resultType === "FAIL" || !res.data.success) {
     throw new Error(
       res.data.error?.reason || "추천목록을 불러오지 못했습니다.",
     );
   }
 
-  // 성공 데이터 정규화해서 success에 재포장
-  const normalized = normalizeSuccess(res.data.success);
-  return {
-    ...res.data,
-    success: normalized,
-  };
+  // 정규화된 데이터만 반환 (클라이언트 사용성을 위해)
+  return normalizeSuccess(res.data.success);
 }
 
 // * 추천목록에서 제외 목록으로 추가
 // * - POST /recommend/except
+// This function returns the inner success payload directly
 export async function exceptMenu(params: {
   menuId?: number;
   menuName?: string;
@@ -127,6 +122,7 @@ export async function exceptMenu(params: {
 
 // * 제외 목록에서 제거 (다시 추천 받도록 설정)
 // * - POST /recommend/except/remove
+// This function returns the inner success payload directly
 export type RemoveExceptResult = {
   success: boolean;
   message: string;

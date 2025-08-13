@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import type { ResetPasswordFormValues } from "@/auth/schemas/auth.schema";
-import { useResetPasswordMutation } from "@/auth/hooks/useAuth";
+import { useResetPasswordMutation } from "@/lib/hooks/useAuth";
 import Toast from "@/components/common/Toast";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";

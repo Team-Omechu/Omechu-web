@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -13,10 +14,10 @@ import { fetchProfile as fetchProfileApi } from "../api/profile";
 type ProfileType = {
   nickname: string;
   gender?: string | null;
-  workoutStatus?: string | null; // exercise 필드 매핑
-  preferredFood: string[]; // prefer 필드 매핑
-  constitution: string[]; // body_type 필드 매핑, 배열로 변환
-  allergies: string[]; // allergy 필드 매핑
+  exercise?: string | null; // exercise 필드 매핑
+  prefer: string[]; // prefer 필드 매핑
+  bodyType: string[]; // body_type 필드 매핑, 배열로 변환
+  allergy: string[]; // allergy 필드 매핑
   profileImageUrl?: string | null; // 이미지 URL
 };
 
@@ -33,10 +34,10 @@ export default function UserInfoEdit() {
         const profileData: ProfileType = {
           nickname: data.nickname,
           gender: data.gender,
-          workoutStatus: data.exercise || null,
-          preferredFood: Array.isArray(data.prefer) ? data.prefer : [],
-          constitution: data.bodyType ? [data.bodyType] : [],
-          allergies: Array.isArray(data.allergy) ? data.allergy : [],
+          exercise: data.exercise || null,
+          prefer: Array.isArray(data.prefer) ? data.prefer : [],
+          bodyType: data.bodyType ? [data.bodyType] : [],
+          allergy: Array.isArray(data.allergy) ? data.allergy : [],
           profileImageUrl: data.profileImageUrl || null,
         };
         console.log("[DEBUG] 프로필 데이터:", data);
@@ -94,7 +95,7 @@ export default function UserInfoEdit() {
         title={"기본 상태 입력"}
         leftChild={
           <button onClick={() => router.push("/mypage")}>
-            <Image
+            <img
               src={"/arrow/left-header-arrow.svg"}
               alt={"back"}
               width={22}
@@ -112,31 +113,20 @@ export default function UserInfoEdit() {
           </section>
           <section className="mb-14 mt-10 flex w-full flex-col items-start justify-start gap-4 px-12">
             <InfoRow label="성별" content={profile.gender || "None"} />
-            <InfoRow
-              label="운동 상태"
-              content={profile.workoutStatus || "None"}
-            />
+            <InfoRow label="운동 상태" content={profile.exercise || "None"} />
             <InfoRow
               label="선호 음식"
-              content={
-                profile.preferredFood.length > 0
-                  ? profile.preferredFood
-                  : ["None"]
-              }
+              content={profile.prefer.length > 0 ? profile.prefer : ["None"]}
             />
             <InfoRow
               label="체질"
               content={
-                profile.constitution.length > 0
-                  ? profile.constitution
-                  : ["None"]
+                profile.bodyType.length > 0 ? profile.bodyType : ["None"]
               }
             />
             <InfoRow
               label="알레르기"
-              content={
-                profile.allergies.length > 0 ? profile.allergies : ["None"]
-              }
+              content={profile.allergy.length > 0 ? profile.allergy : ["None"]}
             />
           </section>
         </div>

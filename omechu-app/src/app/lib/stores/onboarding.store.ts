@@ -6,10 +6,10 @@ type OnboardingState = {
   nickname: string;
   profileImageUrl: string | null;
   gender: "남성" | "여성" | null;
-  workoutStatus: string | null;
-  preferredFood: string[];
-  constitution: string[];
-  allergies: string[];
+  exercise: string | null;
+  prefer: string[];
+  bodyType: string[];
+  allergy: string[];
   currentStep: number;
 };
 
@@ -17,28 +17,28 @@ type OnboardingActions = {
   setNickname: (nickname: string) => void;
   setProfileImageUrl: (url: string) => void;
   setGender: (gender: "남성" | "여성" | null) => void;
-  setWorkoutStatus: (status: string | null) => void;
-  setPreferredFood: (foods: string[]) => void; // 타입 정의 추가
-  togglePreferredFood: (food: string) => void;
-  toggleConstitution: (item: string) => void;
+  setExercise: (exercise: string | null) => void;
+  setPrefer: (prefer: string[]) => void; // 타입 정의 추가
+  togglePrefer: (prefer: string) => void;
+  toggleBodyType: (item: string) => void;
   toggleAllergy: (allergy: string) => void;
   setCurrentStep: (step: number) => void;
   reset: () => void;
   resetGender: () => void;
-  resetWorkoutStatus: () => void;
-  resetPreferredFood: () => void;
-  resetConstitution: () => void;
-  resetAllergies: () => void;
+  resetExercise: () => void;
+  resetPrefer: () => void;
+  resetBodyType: () => void;
+  resetAllergy: () => void;
 };
 
 const initialState: OnboardingState = {
   nickname: "",
   profileImageUrl: null,
   gender: null,
-  workoutStatus: null,
-  preferredFood: [],
-  constitution: [],
-  allergies: [],
+  exercise: null,
+  prefer: [],
+  bodyType: [],
+  allergy: [],
   currentStep: 1,
 };
 
@@ -49,32 +49,33 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
       setNickname: (nickname) => set({ nickname }),
       setProfileImageUrl: (url) => set({ profileImageUrl: url }),
       setGender: (gender) => set({ gender }),
-      setWorkoutStatus: (status) => set({ workoutStatus: status }),
-      setPreferredFood: (foods: string[]) => set({ preferredFood: foods }), // 파라미터 타입 추가
+      setExercise: (exercise) => set({ exercise }),
+      setPrefer: (prefer) => set({ prefer }),
+      setBodyType: (bodyType: string[]) => set({ bodyType }),
+      setAllergy: (allergy: string[]) => set({ allergy }),
 
-      togglePreferredFood: (food) => {
-        const exists = get().preferredFood.includes(food);
-        const current = get().preferredFood;
+      togglePrefer: (prefer) => {
+        const exists = get().prefer.includes(prefer);
+        const current = get().prefer;
 
-        if (exists)
-          return set({ preferredFood: current.filter((f) => f !== food) });
+        if (exists) return set({ prefer: current.filter((f) => f !== prefer) });
         if (current.length >= 2) return;
-        return set({ preferredFood: [...current, food] });
+        return set({ prefer: [...current, prefer] });
       },
 
-      toggleConstitution: (item) => {
-        const exists = get().constitution.includes(item);
-        return set({ constitution: exists ? [] : [item] });
+      toggleBodyType: (item) => {
+        const exists = get().bodyType.includes(item);
+        return set({ bodyType: exists ? [] : [item] });
       },
 
       toggleAllergy: (allergy) => {
-        const exists = get().allergies.includes(allergy);
-        const current = get().allergies;
+        const exists = get().allergy.includes(allergy);
+        const current = get().allergy;
 
         if (exists)
-          return set({ allergies: current.filter((a) => a !== allergy) });
+          return set({ allergy: current.filter((a) => a !== allergy) });
         if (current.length >= 2) return;
-        return set({ allergies: [...current, allergy] });
+        return set({ allergy: [...current, allergy] });
       },
 
       setCurrentStep: (step) => set({ currentStep: step }),
@@ -87,10 +88,10 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
 
       // 상태별 초기화
       resetGender: () => set({ gender: null }),
-      resetWorkoutStatus: () => set({ workoutStatus: null }),
-      resetPreferredFood: () => set({ preferredFood: [] }),
-      resetConstitution: () => set({ constitution: [] }),
-      resetAllergies: () => set({ allergies: [] }),
+      resetExercise: () => set({ exercise: null }),
+      resetPrefer: () => set({ prefer: [] }),
+      resetBodyType: () => set({ bodyType: [] }),
+      resetAllergy: () => set({ allergy: [] }),
     }),
     {
       name: "onboarding-storage",
