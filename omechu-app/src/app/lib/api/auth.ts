@@ -1,3 +1,4 @@
+import axios from "axios";
 import type {
   LoginFormValues,
   SignupFormValues,
@@ -116,15 +117,33 @@ export const signup = async (
   data: SignupFormValues,
 ): Promise<SignupSuccessData> => {
   const { email, password } = data;
-  const response = await axiosInstance.post<ApiResponse<SignupSuccessData>>(
-    "/auth/signup",
-    { email, password },
-  );
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(apiResponse.error?.reason || "회원가입에 실패했습니다.");
+  try {
+    const response = await axiosInstance.post<ApiResponse<SignupSuccessData>>(
+      "/auth/signup",
+      { email, password },
+    );
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new Error(
+        apiResponse.error?.reason ||
+          "회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      );
+    }
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason = api?.error?.reason;
+      // 409/400 등 의미 있는 사유가 있으면 그대로 노출, 없으면 한국어 기본 문구로 대체
+      throw new Error(
+        reason ||
+          "서버 오류로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      );
+    }
+    throw new Error(
+      "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해 주세요.",
+    );
   }
-  return apiResponse.success;
 };
 
 // (삭제) completeOnboarding는 `onboarding/api/onboarding.ts` 사용

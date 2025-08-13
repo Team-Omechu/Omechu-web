@@ -78,7 +78,7 @@ export default function SignUpPage() {
         }
       },
       onError: (error) => {
-        triggerToast(`회원가입에 실패했습니다:\n${error.message}`);
+        triggerToast(error.message);
       },
     });
   };
