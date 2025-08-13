@@ -16,7 +16,7 @@ import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2"
 type FoodCardProps = {
   item: Restaurant;
   menu: string;
-  restaurantId: number;
+  restaurantId: number | string;
   onClick?: () => void;
 };
 
@@ -29,20 +29,24 @@ export default function FoodCard({
   const router = useRouter();
   const qc = useQueryClient();
 
-  const { data: likeIds = [], isLoading: likesLoading } = useLikedList(); // ✅ 오타 수정
+  const { data: likeIds = [], isLoading: likesLoading } = useLikedList();
+  const numericRestaurantId = useMemo(
+    () => Number(restaurantId),
+    [restaurantId],
+  );
   const isLiked = useMemo(
-    () => likeIds.includes(restaurantId),
-    [likeIds, restaurantId],
+    () => likeIds.includes(numericRestaurantId),
+    [likeIds, numericRestaurantId],
   );
 
   const { mutate: addHeart, isPending: likePending } =
-    usePostHeart(restaurantId);
+    usePostHeart(numericRestaurantId);
   const { mutate: deleteHeart, isPending: deletePending } =
-    useDeleteHeart(restaurantId);
+    useDeleteHeart(numericRestaurantId);
   const { isLoggedIn } = useAuthStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  console.log("isLiked", restaurantId);
+  console.log("isLiked", numericRestaurantId);
 
   const handleHeartClick = () => {
     if (!isLoggedIn) {
@@ -57,7 +61,7 @@ export default function FoodCard({
       // 좋아요 해제 낙관적 반영
       qc.setQueryData<number[]>(
         HEARTS_KEY,
-        prev.filter((id) => id !== restaurantId),
+        prev.filter((id) => id !== numericRestaurantId),
       );
       deleteHeart(undefined, {
         onError: () => qc.setQueryData<number[]>(HEARTS_KEY, prev), // 실패 시 롤백
@@ -67,7 +71,9 @@ export default function FoodCard({
       // 좋아요 추가 낙관적 반영
       qc.setQueryData<number[]>(
         HEARTS_KEY,
-        prev.includes(restaurantId) ? prev : [...prev, restaurantId],
+        prev.includes(numericRestaurantId)
+          ? prev
+          : [...prev, numericRestaurantId],
       );
       addHeart(undefined, {
         onError: () => qc.setQueryData<number[]>(HEARTS_KEY, prev),
