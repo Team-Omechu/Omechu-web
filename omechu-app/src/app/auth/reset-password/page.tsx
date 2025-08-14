@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -12,6 +12,16 @@ import Toast from "@/components/common/Toast";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResetPasswordClient />
+    </Suspense>
+  );
+}
+
+function ResetPasswordClient() {
+  "use client";
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
