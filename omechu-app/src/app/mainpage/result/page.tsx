@@ -1,7 +1,7 @@
 // src/app/mainpage/result/page.tsx (ResultPage)
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/common/Header";
 import Image from "next/image";
@@ -16,20 +16,32 @@ import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
-import usePostMukburim from "../hooks/usePostMukburim";
+import Toast from "@/components/common/Toast";
+import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } =
     useGetRecommendMenu();
-  const { mutate } = usePostMukburim();
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { addException } = useQuestionAnswerStore();
 
-  const menus: MenuItem[] = Array.isArray(data) ? data : [];
+  const menus: MenuItem[] = useMemo(
+    () => (Array.isArray(data) ? data : []),
+    [data],
+  );
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
 
   const [filteredMenus, setFilteredMenus] = useState(menus);
 
@@ -46,20 +58,23 @@ export default function ResultPage() {
 
   useEffect(() => {
     setFilteredMenus(menus);
-  }, [data]);
+  }, [menus]);
 
   const handleNext = () => {
     if (openMenu != null) {
-      router.push(`/mainpage/result/${encodeURIComponent(openMenu)}`);
       setKeyword(openMenu);
-      mutate(openMenu);
+      router.push(`/mainpage/result/${openMenu}`);
     } else {
-      alert("메뉴를 선택해 주세요");
+      triggerToast("메뉴를 선택해주세요.");
     }
   };
 
   // ← 여기서 refetch()를 호출
   const handleReshuffle = () => {
+    //기존 메뉴를 제외하기위해 exceptions에 추가.
+    const exceptionMenus = menus.slice(0, 3).map((m) => m.menu);
+    const unique = Array.from(new Set(exceptionMenus));
+    unique.forEach(addException);
     refetch();
     setOpenMenu(null);
     if (isLoading) {
@@ -115,7 +130,7 @@ export default function ResultPage() {
               <MenuCard
                 title={menu.menu}
                 description={menu.description}
-                image={menu.image_link || "/image/image_empty.svg"}
+                image={menu.image_link}
                 onClick={() =>
                   setOpenMenu(openMenu === menu.menu ? null : menu.menu)
                 }
@@ -170,6 +185,7 @@ export default function ResultPage() {
           />
         </ModalWrapper>
       )}
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }

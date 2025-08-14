@@ -8,6 +8,7 @@ type QuestionAnswerState = {
   who: number | null;
   budget: number | null;
   exceptions: string[]; // 빈 배열로 초기화
+  addition: string[];
   currentStep: number;
 };
 
@@ -20,6 +21,8 @@ type QuestionAnswerActions = {
   setCurrentStep: (step: number) => void;
   addException: (exception: string) => void;
   removeException: (exception: string) => void;
+  addAddition: (addition: string) => void; // 추가된 메서드
+  removeAddition: (addition: string) => void; // 추가된 메서드
   questionReset: () => void;
 };
 
@@ -30,6 +33,7 @@ const initialState: QuestionAnswerState = {
   who: null,
   budget: null,
   exceptions: [],
+  addition: [], // 초기값을 null로 설정
   currentStep: 1,
 };
 
@@ -54,6 +58,16 @@ export const useQuestionAnswerStore = create<
       removeException: (exception) => {
         const { exceptions } = get();
         set({ exceptions: exceptions.filter((e) => e !== exception) });
+      },
+      addAddition: (addition) => {
+        const { addition: currentAddition } = get();
+        if (!currentAddition.includes(addition)) {
+          set({ addition: [...currentAddition, addition] });
+        }
+      },
+      removeAddition: (addition) => {
+        const { addition: currentAddition } = get();
+        set({ addition: currentAddition.filter((a) => a !== addition) });
       },
       questionReset: () => set(initialState),
     }),

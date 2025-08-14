@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
-import { menus } from "@/constant/mainpage/resultData";
+import { menus1 } from "@/constant/mainpage/resultData";
 
 export default function RecipeDetail() {
   return (
@@ -21,7 +21,7 @@ function RecipeDetailClient() {
   const menuId = searchParams.get("menuId");
   console.log("menuId →", menuId);
 
-  const menu = menus.find((item) => item.id === Number(menuId));
+  const menu = menus1.find((item) => item.id === Number(menuId));
 
   if (!menu) {
     return <div className="p-4">존재하지 않는 메뉴입니다.</div>;
@@ -49,13 +49,13 @@ function RecipeDetailClient() {
 
       <main className="min-h-screen bg-main-normal p-5 pt-8 text-sm text-black">
         <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
-          {menu.title} 레시피
+          {menu.menu} 레시피
         </h1>
 
         <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
           <Image
             src="/logo/logo.png"
-            alt={`${menu.title}`}
+            alt={`${menu.menu}`}
             className="rounded object-contain"
             width={144}
             height={144}

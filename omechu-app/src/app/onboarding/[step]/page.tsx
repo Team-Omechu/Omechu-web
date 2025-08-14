@@ -161,6 +161,26 @@ export default function OnboardingPage() {
 
   const handlePrev = () => router.back();
   const handleSkip = () => {
+    // 현재 스텝의 선택 상태를 초기화하고 다음으로 이동
+    switch (step) {
+      case 2: // 성별
+        onboardingStore.resetGender();
+        break;
+      case 3: // 운동 상태
+        onboardingStore.resetExercise();
+        break;
+      case 4: // 선호 음식 (최대 2개)
+        onboardingStore.resetPrefer();
+        break;
+      case 5: // 체질 (단일 선택)
+        onboardingStore.resetBodyType();
+        break;
+      case 6: // 알레르기 (최대 2개)
+        onboardingStore.resetAllergy();
+        break;
+      default:
+        break;
+    }
     if (step < ONBOARDING_STEPS) {
       router.push(`/onboarding/${step + 1}`);
     }
@@ -173,6 +193,7 @@ export default function OnboardingPage() {
 
   const handleRecheck = () => {
     setIsModalOpen(false);
+    router.push("/mypage");
   };
 
   const handleConfirmSkip = () => {
@@ -258,12 +279,14 @@ export default function OnboardingPage() {
       {isSkipModalOpen && (
         <ModalWrapper>
           <AlertModal
-            title="지금까지 작성한 내용은 저장되지 않아요"
-            description="그래도 추천받기를 원하시나요?"
-            confirmText="그만하기"
-            cancelText="돌아가기"
-            onConfirm={handleConfirmSkip}
-            onClose={handleCancelSkip}
+            title="기본 상태 입력을 중단하시겠어요?"
+            description="지금까지 작성한 내용은 저장되지 않아요."
+            // 디자인: 왼쪽(테두리) '그만하기', 오른쪽(컬러) '돌아가기'
+            confirmText="돌아가기"
+            cancelText="그만하기"
+            swapButtonOrder
+            onConfirm={handleCancelSkip}
+            onClose={handleConfirmSkip}
           />
         </ModalWrapper>
       )}
