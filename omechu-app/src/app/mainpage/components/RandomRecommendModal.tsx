@@ -32,7 +32,7 @@ export default function RandomRecommendModal({
       return;
     }
     setKeyword(menu.name);
-    mutate(menu.name);
+    router.push(`/mainpage/result/${menu.name}`);
   };
 
   const handleRetry = () => {
