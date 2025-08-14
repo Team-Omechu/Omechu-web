@@ -109,15 +109,29 @@ const ProfileStep = () => {
           </button>
         </div>
         <div className="w-full max-w-xs">
-          <Input
-            label="닉네임"
-            placeholder="닉네임을 입력해주세요"
-            value={nickname}
-            onChange={handleNicknameChange}
-            showError={isInvalid}
-            errorMessage="한영문자 2-12글자로 입력해주세요"
-            description="한영문자 2-12글자로 입력해주세요"
-          />
+          {/* 공용 Input은 수정하지 않고, 동일 레이아웃을 직접 구현해서
+              설명 문구가 에러 시 빨간색으로만 보이도록 처리 */}
+          <div className="relative mb-5 flex w-full flex-col">
+            <label className="text-normal mb-0.5 ml-0.5 text-sm text-grey-darker">
+              닉네임
+            </label>
+            <div className="flex h-10 items-center gap-1">
+              <input
+                type="text"
+                value={nickname}
+                placeholder="닉네임을 입력해주세요"
+                onChange={(e) => handleNicknameChange(e.target.value)}
+                className="h-full w-full rounded-md border-[1px] border-grey-darkHover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normalActive"
+              />
+            </div>
+            <span
+              className={`ml-1 mt-1 text-sm font-normal ${
+                isInvalid ? "text-red-500" : "text-grey-normalActive"
+              }`}
+            >
+              한영문자 2-12글자로 입력해주세요
+            </span>
+          </div>
         </div>
       </section>
     </div>
