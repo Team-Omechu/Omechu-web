@@ -2,16 +2,15 @@
 
 type Props = {
   selectedItems: string[];
+  isDisabled?: (item: string) => boolean
   onToggle: (item: string) => void;
 };
 
-const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
+const MealTypeGroup = ({ selectedItems, onToggle, isDisabled }: Props) => {
   const items = ["한식", "중식", "일식", "양식", "기타-종류"];
 
   const renderLabel = (item: string) =>
     item.startsWith("기타") ? "그 외" : item;
-  const isDisabled = (item: string) =>
-    !selectedItems.includes(item) && selectedItems.length >= 3;
 
   return (
     <div className="flex flex-col gap-2">
@@ -25,7 +24,7 @@ const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
                 : "border-[#FB4746] bg-white text-black"
             }`}
             onClick={() => onToggle(item)}
-            disabled={isDisabled(item)}
+            disabled={isDisabled?.(item)??false}
           >
             {renderLabel(item)}
           </button>
