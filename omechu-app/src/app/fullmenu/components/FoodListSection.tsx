@@ -1,8 +1,8 @@
 import FoodBox from "@/components/common/FoodBox";
-import { menuType } from "@/constant/mainpage/resultData";
+import { MenuDetail } from "@/constant/mainpage/resultData";
 
 interface FoodListSectionProps {
-  items: menuType[];
+  items: MenuDetail[];
   search: string;
   isSearched: boolean;
   onClickItem: (item: number) => void;
@@ -28,7 +28,7 @@ export default function FoodListSection({
         {items.map((food, idx) => (
           <FoodBox
             key={food.id}
-            title={food.title}
+            title={food.name}
             imageUrl="/logo/logo.png"
             isExcluded={false}
             isToggled={false}

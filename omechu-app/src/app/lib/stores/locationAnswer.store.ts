@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 type LocationAnswerState = {
-  x: number | null;
-  y: number | null;
-  radius: number | null;
+  x: number;
+  y: number;
+  radius: number;
   keyword: string | null;
 };
 
@@ -17,8 +17,8 @@ type LocationAnswerActions = {
 };
 
 const initialState: LocationAnswerState = {
-  x: null,
-  y: null,
+  x: 0,
+  y: 0,
   radius: 500,
   keyword: null,
 };

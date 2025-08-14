@@ -1,53 +1,48 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
-import type {
-  MenuItem,
-  MenuListResponse,
-} from "@/constant/mainpage/resultData";
+import type { MenuDetail } from "@/constant/mainpage/resultData";
 import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
 import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import LoadingIndicator from "@/components/common/LoadingIndicator";
+import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
+import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
+import { useEffect, useState } from "react";
+import Toast from "@/components/common/Toast";
+import usePostMukburim from "@/mainpage/hooks/usePostMukburim";
 
 export default function MenuDetailPage() {
   const router = useRouter();
+  const [showToast, setShowToast] = useState(false);
   const { data, isLoading, error, refetch } = useGetRestaurants();
   const { menuId } = useParams();
-  const { mealTime, purpose, mood, who, budget, exceptions } =
-    useQuestionAnswerStore();
-  const payload = { mealTime, purpose, mood, with: who, budget, exceptions };
+  const { mutate, isSuccess } = usePostMukburim();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
 
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
 
-  console.log("Restaurants Data:", restaurants);
+  const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
 
-  // React Query 캐시에서 추천 메뉴 데이터만 바로 가져오기
-  const queryClient = useQueryClient();
-  const cached = queryClient.getQueryData<MenuListResponse>([
-    "recommendMenu",
-    payload,
-  ]);
-  const menus: MenuItem[] = Array.isArray(cached) ? cached : [];
+  const detailMenu: MenuDetail | undefined = menuDetailData;
 
-  if (!cached) {
-    // 데이터가 없으면 처음으로 돌아가거나 안내
-    return <p className="p-4">메뉴 추천을 먼저 받아주세요.</p>;
-  }
+  console.log(isSuccess);
 
-  // 전달된 메뉴 이름으로 상세 정보 찾기
-  const menu = menus.find((menu) => menu.menu === decodeMenuId);
-  if (!menu) {
-    return <p className="p-4">해당 메뉴를 찾을 수 없습니다.</p>;
-  }
+  useEffect(() => {
+    if (!decodeMenuId) return;
+    mutate(decodeMenuId);
+  }, [decodeMenuId, mutate]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    }
+  }, [isSuccess]);
 
   return (
     <div className="flex w-full flex-col">
@@ -71,11 +66,11 @@ export default function MenuDetailPage() {
 
       <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
         <p className="text-center font-semibold text-secondary-normal">
-          {menu.menu}
+          {detailMenu?.name}
         </p>
         <Image
-          src={"/logo/logo.png"}
-          alt={menu.menu}
+          src={detailMenu?.image_link || "/image/image_empty.svg"}
+          alt={detailMenu?.name || "메뉴 이미지"}
           className="mx-auto h-24 w-24 rounded"
           width={96}
           height={96}
@@ -83,7 +78,7 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-10 w-full p-4">
-        <MenuInfo MenuItem={menu} />
+        <MenuInfo MenuItem={detailMenu} />
       </div>
 
       <div className="mx-4 mt-5 flex items-center justify-between">
@@ -91,7 +86,9 @@ export default function MenuDetailPage() {
         <button
           className="px-4 text-sm text-grey-normalActive"
           onClick={() =>
-            router.push(`/restaurant?query=${encodeURIComponent(menu.menu)}`)
+            router.push(
+              `/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`,
+            )
           }
         >
           더보기 &gt;
@@ -99,16 +96,30 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-3 space-y-2 px-4">
-        {isLoading && <LoadingIndicator />}
+        {isLoading && (
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonFoodCard key={i} />
+            ))}
+          </div>
+        )}
         {restaurants.map((item) => (
           <FoodCardEx
             key={item.id}
             item={item}
-            menu={menu.menu}
+            menu={detailMenu?.name || ""}
             restaurantId={item.id2}
+            onClick={() =>
+              router.push(`/restaurant/restaurant-detail/${item.id2}`)
+            }
           />
         ))}
       </div>
+      <Toast
+        message="먹부림 기록에 등록되었습니다."
+        show={showToast}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+      />
     </div>
   );
 }

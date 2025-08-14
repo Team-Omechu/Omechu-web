@@ -10,7 +10,7 @@ import LoadingIndicator from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import SearchBar from "@/components/common/SearchBar";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
-import { menus } from "@/constant/mainpage/resultData";
+import { menus1 } from "@/constant/mainpage/resultData";
 import { suggestionList } from "@/constant/suggestionList";
 import FilterModal from "@/fullmenu/components/FilterModal";
 import FilterSection from "@/fullmenu/components/FilterSection";
@@ -35,8 +35,8 @@ export default function FullMenu() {
   const [isSearched, setIsSearched] = useState(false);
 
   const filteredItems = search.trim()
-    ? menus.filter((item) => item.title.includes(search.trim()))
-    : menus;
+    ? menus1.filter((item) => item.name.includes(search.trim()))
+    : menus1;
 
   const visibleItems = filteredItems.slice(0, visibleCount);
 
