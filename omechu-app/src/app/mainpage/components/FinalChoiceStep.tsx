@@ -3,15 +3,11 @@
 import { useRouter } from "next/navigation";
 
 import ListButton from "@/components/common/button/ListButton";
-import { handleLocation } from "../utils/handleLocation";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 const FinalChoiceStep = () => {
   const router = useRouter();
-  const { setX, setY } = useLocationAnswerStore();
 
   const handleClick = () => {
     router.push("/mainpage/result");
-    handleLocation(setX, setY);
   };
 
   return (

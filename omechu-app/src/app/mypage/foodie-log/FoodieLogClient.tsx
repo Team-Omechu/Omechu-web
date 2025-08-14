@@ -46,6 +46,13 @@ const buildMenuImageUrl = (menuName?: string | null): string | null => {
   return `${base}${encodeURIComponent(trimmed.toLowerCase())}.png`;
 };
 
+// try multiple possible field names the API might provide
+const lastDateOf = (m: any): string | null => {
+  return (
+    m?.last_eaten_at ?? m?.lastLoggedAt ?? m?.lastLogAt ?? m?.lastDate ?? null
+  );
+};
+
 type DateRange = { startDate: string | null; endDate: string | null };
 
 const useQueryParams = (selectedPeriod: Period, range: DateRange) =>
@@ -60,6 +67,8 @@ const useQueryParams = (selectedPeriod: Period, range: DateRange) =>
     }
     return { period: selectedPeriod as PeriodOption };
   }, [selectedPeriod, range.startDate, range.endDate]);
+
+// Note: Latest sort support is conditional based on API data availability. No code here.
 
 /* ---------- component ---------- */
 export default function FoodieLog() {
@@ -93,16 +102,39 @@ export default function FoodieLog() {
     [stats?.menuStatistics],
   );
 
+  const supportsLatestSort = useMemo(() => {
+    const arr = Array.isArray(stats?.menuStatistics)
+      ? stats!.menuStatistics
+      : [];
+    return arr.some((m: any) => !!lastDateOf(m));
+  }, [stats?.menuStatistics]);
+
   const visibleMenus = useMemo(() => {
     const base = Array.isArray(stats?.menuStatistics)
       ? stats!.menuStatistics
       : [];
-    const sorted =
-      sortOrder === "MostLogged"
-        ? [...base].sort((a, b) => (b.count ?? 0) - (a.count ?? 0))
-        : base;
-    return sorted.slice(0, visibleCount);
-  }, [stats?.menuStatistics, sortOrder, visibleCount]);
+
+    if (sortOrder === "MostLogged") {
+      const byCount = [...base].sort((a, b) => (b.count ?? 0) - (a.count ?? 0));
+      return byCount.slice(0, visibleCount);
+    }
+
+    // LatestLogged
+    if (supportsLatestSort) {
+      const withDate = base.filter((m: any) => !!lastDateOf(m));
+      const withoutDate = base.filter((m: any) => !lastDateOf(m));
+      withDate.sort((a: any, b: any) => {
+        const bd = dayjs(lastDateOf(b)).valueOf();
+        const ad = dayjs(lastDateOf(a)).valueOf();
+        return bd - ad;
+      });
+      const merged = [...withDate, ...withoutDate];
+      return merged.slice(0, visibleCount);
+    }
+
+    // no timestamp fields from API → keep base order
+    return base.slice(0, visibleCount);
+  }, [stats?.menuStatistics, sortOrder, visibleCount, supportsLatestSort]);
 
   const scrollToTop = useCallback(() => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -259,12 +291,19 @@ export default function FoodieLog() {
           </button>
           <span>|</span>
           <button
-            className={
+            disabled={!supportsLatestSort}
+            title={
+              !supportsLatestSort
+                ? "API에서 최근 시각 정보가 없어 정렬할 수 없습니다."
+                : undefined
+            }
+            className={[
               sortOrder === "LatestLogged"
                 ? "font-semibold text-grey-darker"
-                : ""
-            }
-            onClick={() => setSortOrder("LatestLogged")}
+                : "",
+              !supportsLatestSort ? "cursor-not-allowed opacity-50" : "",
+            ].join(" ")}
+            onClick={() => supportsLatestSort && setSortOrder("LatestLogged")}
           >
             최근 먹은 순
           </button>

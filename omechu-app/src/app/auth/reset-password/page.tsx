@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -12,10 +12,22 @@ import Toast from "@/components/common/Toast";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResetPasswordClient />
+    </Suspense>
+  );
+}
+
+function ResetPasswordClient() {
+  "use client";
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") || "";
   const { mutateAsync: resetPassword } = useResetPasswordMutation();
 
   const triggerToast = (msg: string) => {
@@ -26,7 +38,13 @@ export default function ResetPasswordPage() {
 
   const handleFormSubmit = async (data: ResetPasswordFormValues) => {
     try {
-      await resetPassword(data);
+      if (!token) {
+        triggerToast(
+          "유효하지 않은 링크입니다. 이메일의 링크를 다시 확인해 주세요.",
+        );
+        return;
+      }
+      await resetPassword({ ...data, token });
       setIsModalOpen(true);
     } catch (error: any) {
       triggerToast(`비밀번호 재설정에 실패했습니다: ${error.message}`);

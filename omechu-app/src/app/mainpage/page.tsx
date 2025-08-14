@@ -10,13 +10,14 @@ import { useTagStore } from "@/lib/stores/tagData.store";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 import { useProfileQuery } from "./hooks/useGetProfile";
+import { handleLocation } from "./utils/handleLocation";
 
 export default function MainPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
   const { tagDataReset } = useTagStore();
-  const { locationReset } = useLocationAnswerStore();
+  const { locationReset, setX, setY } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
   const { data } = useProfileQuery();
 
@@ -27,6 +28,7 @@ export default function MainPage() {
       tagDataReset();
       locationReset();
       questionReset();
+      handleLocation(setX, setY);
       router.push("mainpage/question-answer/1");
     } else {
       setShowModal(true);
@@ -37,7 +39,17 @@ export default function MainPage() {
     tagDataReset();
     locationReset();
     questionReset();
+    handleLocation(setX, setY);
     router.push("mainpage/random-recommend");
+  };
+
+  const handleSkipClick = () => {
+    setShowModal(false);
+    tagDataReset();
+    locationReset();
+    questionReset();
+    handleLocation(setX, setY);
+    router.push("mainpage/question-answer/1");
   };
 
   return (
@@ -46,8 +58,8 @@ export default function MainPage() {
       <Image
         src="/mainpage/mainpage.svg"
         alt="메인 페이지"
-        width={375}
-        height={800}
+        fill
+        style={{ objectFit: "cover" }}
         className="object-cover"
       />
       {/* 버튼들 */}
@@ -68,10 +80,7 @@ export default function MainPage() {
       {showModal && (
         <ModalWrapper>
           <LoginPromptModal
-            onSkip={() => {
-              setShowModal(false);
-              router.push("mainpage/question-answer/1");
-            }}
+            onSkip={handleSkipClick}
             onConfirm={() => router.push("/sign-in")}
             onClose={() => setShowModal(false)}
           />

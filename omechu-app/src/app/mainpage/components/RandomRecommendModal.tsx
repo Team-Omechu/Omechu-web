@@ -5,6 +5,7 @@ import MainLoading from "@/components/mainpage/MainLoading";
 import { useRouter } from "next/navigation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
 import usePostMukburim from "../hooks/usePostMukburim";
+import useGetRandomMenu from "../hooks/useGetRandomMenu";
 
 type ModalProps = {
   confirmText: string;
@@ -17,21 +18,20 @@ export default function RandomRecommendModal({
   onClose,
 }: ModalProps) {
   const router = useRouter();
-  const { data, isLoading, error, refetch, isRefetching } =
-    useGetRecommendMenu();
+  const { data, isLoading, isRefetching, refetch } = useGetRandomMenu(); // 로딩이랑 리패칭 추가하기
   const { mutate } = usePostMukburim();
-  const menus: MenuItem[] = Array.isArray(data) ? data : [];
-  const randomMenu = menus[Math.floor(Math.random() * menus.length)];
+  // 나중에 랜덤 메뉴로 받아온 데이터로 변경
+
+  const menu = data;
   const { setKeyword } = useLocationAnswerStore();
 
   const handleConfirm = () => {
-    if (!randomMenu) {
+    if (!menu) {
       refetch();
       return;
     }
-    setKeyword(randomMenu.menu);
-    mutate(randomMenu.menu);
-    router.push(`/mainpage/result/${randomMenu.menu}`);
+    setKeyword(menu.name);
+    mutate(menu.name);
   };
 
   const handleRetry = () => {
@@ -48,12 +48,12 @@ export default function RandomRecommendModal({
       </button>
       <div className="flex flex-col items-center text-center text-[#00A3FF]">
         <span className="whitespace-pre-line text-[19px] font-semibold">
-          {randomMenu.menu}
+          {menu?.name}
         </span>
       </div>
       <div className="flex flex-col items-center">
         <Image
-          src={randomMenu.image_link || "/image/image_empty.svg"}
+          src={menu?.image_link || "/image/image_empty.svg"}
           alt="랜덤추천메뉴"
           width={120}
           height={120}
