@@ -1,4 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import axiosInstance from "@/lib/api/axios";
 
 import type {
   LoginFormValues,
@@ -13,25 +15,49 @@ import type { LoginSuccessData } from "@/lib/api/auth";
 // 로그인
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
+  const queryClient = useQueryClient();
 
   return useMutation<any, Error, LoginFormValues>({
     mutationFn: authApi.login,
     onSuccess: async (tokens, variables) => {
+      // 1) 토큰 보관
       setLoginState({
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
         user: {
           id: tokens.userId,
           email: "",
-          gender: "남성",
           nickname: "",
+          profileImageUrl: null,
+          gender: null as any,
+          body_type: null as any,
+          exercise: null as any,
+          prefer: [],
+          allergy: [],
           created_at: "",
           updated_at: "",
         } as LoginSuccessData,
         password: (variables as any).password,
       } as any);
-      const me = await authApi.getCurrentUser();
-      useAuthStore.getState().setUser(me);
+
+      // 2) axios 인스턴스에 Authorization 주입 (중복 401 방지)
+      if (tokens?.accessToken) {
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokens.accessToken}`;
+      }
+
+      // 3) 프로필은 react-query 캐시에 미리 채워서, 화면 훅(useUserQuery)이 중복 호출하지 않도록 함
+      try {
+        const me = await queryClient.fetchQuery({
+          queryKey: ["user", "me"],
+          queryFn: authApi.getCurrentUser,
+          staleTime: 1000 * 60 * 10, // 10분 신선
+        });
+        // 스토어와 동기화
+        useAuthStore.getState().setUser(me as any);
+      } catch (e) {
+        // 프로필 동기화 실패는 치명적이지 않으니 무시(필요시 로깅)
+        // console.error(e);
+      }
     },
     onError: (error) => {
       console.error("로그인 실패:", error.message);
@@ -95,18 +121,19 @@ export const useResetPasswordMutation = () => {
 
 // 현재 사용자 조회
 export const useUserQuery = () => {
+  const token = useAuthStore.getState().accessToken;
+
   return useQuery({
-    // queryKey는 TanStack Query가 데이터를 캐싱하고 관리하는 데 사용하는 고유 키입니다.
     queryKey: ["user", "me"],
-    // queryFn은 실제로 데이터를 가져오는 비동기 함수입니다.
-    // auth.ts 파일에 이미 만들어져 있는 getCurrentUser를 사용합니다.
     queryFn: authApi.getCurrentUser,
-    // 이 쿼리는 사용자가 앱에 처음 들어왔을 때 세션이 있는지 확인하는 용도이므로,
-    // 실패 시 자동으로 재시도할 필요는 없습니다.
+    // 토큰이 있어야만 조회 실행
+    enabled: !!token,
+    // 실패 시 재시도 불필요
     retry: false,
-    // 창에 포커스가 돌아올 때마다 데이터를 다시 가져오지 않도록 설정합니다.
+    // 포커스/마운트 시 과도한 재요청 방지
     refetchOnWindowFocus: false,
-    // 컴포넌트가 마운트될 때마다 데이터를 다시 가져오지 않도록 설정합니다.
     refetchOnMount: false,
+    // 로그인 직후 prefetch된 경우, 10분 동안 신선하게 유지
+    staleTime: 1000 * 60 * 10,
   });
 };
