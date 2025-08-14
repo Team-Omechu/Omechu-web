@@ -45,9 +45,7 @@ export default function MealAnswerPage() {
 
         <button
           className={`mx-auto mt-8 flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${
-            exceptions.length > 0
-              ? "bg-primary-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
-              : "border border-black bg-white text-black hover:bg-primary-normalHover hover:text-white active:bg-primary-normalActive"
+               "bg-primary-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           }`}
           onClick={() => router.push("/mainpage/location-answer")}
         >

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import StepFooter from "@/components/common/StepFooter";
