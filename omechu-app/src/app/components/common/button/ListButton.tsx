@@ -15,7 +15,7 @@ const ListButton = ({
   const selectedStyle =
     "bg-primary-normal text-white border-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive";
   const unselectedStyle =
-    "bg-white text-primary-normal border-primary-normal hover:bg-primary-normalHover hover:text-white active:bg-primary-normalActive";
+    "bg-white text-primary-normal border-primary-normal hover:bg-primary-normalHover hover:text-white active:bg-white active:text-primary-normal active:border-primary-normal focus:bg-white focus:bg-primary-normal focus:border-primary-normal";
 
   return (
     <button
