@@ -1,23 +1,27 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import SearchBar from "@/components/common/SearchBar";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
-import { menus1 } from "@/constant/mainpage/resultData";
 import { suggestionList } from "@/constant/suggestionList";
 import FilterModal from "@/fullmenu/components/FilterModal";
 import FilterSection from "@/fullmenu/components/FilterSection";
 import FoodListSection from "@/fullmenu/components/FoodListSection";
+import {
+  useGetMenusQuery,
+  useGetFilteredMenusQuery,
+} from "@/fullmenu/hooks/useMenuQueries";
+import { Menu } from "@/lib/types/menu";
 
 export default function FullMenu() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const mainRef = useRef<HTMLDivElement>(null);
   const sortOptions: SortOption[] = [
     { label: "추천 순", value: "recommend" },
@@ -28,85 +32,112 @@ export default function FullMenu() {
 
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState<SortValue>("recommend");
-  const [visibleCount, setVisibleCount] = useState(21);
-  const [isLoading, setIsLoading] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isSearched, setIsSearched] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const filteredItems = search.trim()
-    ? menus1.filter((item) => item.name.includes(search.trim()))
-    : menus1;
+  // Initialize search from URL params on mount
+  useEffect(() => {
+    const queryFromUrl = searchParams.get("query");
+    if (queryFromUrl) {
+      setSearch(queryFromUrl);
+      setIsSearched(true);
+    }
+  }, [searchParams]);
 
-  const visibleItems = filteredItems.slice(0, visibleCount);
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Determine which query to use based on search and filters
+  const hasFilters =
+    Boolean(debouncedSearch.trim()) || selectedFilters.length > 0;
+
+  const filterParams = {
+    ...(debouncedSearch.trim() && { name: debouncedSearch.trim() }),
+    ...(selectedFilters.length > 0 && { allergies: selectedFilters }),
+  };
+
+  // Use filtered API when tags are selected, otherwise use all menus
+  const hasFilterTags = selectedFilters.length > 0;
+  
+  // Debug logs
+  console.log("Filter state:", { 
+    search, 
+    debouncedSearch, 
+    selectedFilters,
+    hasFilterTags,
+    tagsParam: selectedFilters.join(','),
+    activeQueryType: hasFilterTags ? 'filtered' : 'all'
+  });
+  
+  const menusQuery = useGetMenusQuery(!hasFilterTags ? {} : undefined);
+  const filteredMenusQuery = useGetFilteredMenusQuery(
+    { tags: selectedFilters.join(',') },
+    hasFilterTags
+  );
+
+  const activeQuery = hasFilterTags ? filteredMenusQuery : menusQuery;
+
+  // Get menu data from API response with memoization
+  const rawMenus = useMemo(() => {
+    const responseData = activeQuery.data;
+    console.log("Raw API response:", responseData);
+
+    // For filtered API, response is direct array
+    if (Array.isArray(responseData)) {
+      return responseData;
+    } 
+    // For regular menu API, response has success property
+    else if (Array.isArray(responseData?.success)) {
+      return responseData.success;
+    }
+    return [];
+  }, [activeQuery.data]);
+
+  // Client-side search and sorting logic
+  const allMenus = useMemo(() => {
+    if (!rawMenus.length) return [];
+
+    // First filter by search term if exists
+    let filtered = rawMenus;
+    if (debouncedSearch.trim()) {
+      filtered = rawMenus.filter(menu => 
+        menu.name.toLowerCase().includes(debouncedSearch.trim().toLowerCase())
+      );
+    }
+
+    // Then sort
+    const sorted = [...filtered].sort((a, b) => {
+      if (sortMode === "recommend") {
+        // 추천순: 이름순 정렬 (가나다 순)
+        return a.name.localeCompare(b.name, "ko");
+      } else if (sortMode === "recent") {
+        // 최근 본 순: 랜덤 정렬로 구현 (매번 다른 순서)
+        return Math.random() - 0.5;
+      }
+      return 0;
+    });
+
+    console.log("Filtered menus:", filtered.length, "of", rawMenus.length);
+    return sorted;
+  }, [rawMenus, sortMode, debouncedSearch]);
 
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // 무한 스크롤 구현에 대한 설명:
-  // 1. 사용자가 스크롤을 내리면 IntersectionObserver가 페이지 하단의 특정 요소(loaderRef)를 감지합니다.
-  // 2. 해당 요소가 뷰포트에 들어오면 observerCallback이 호출되어,
-  //    현재 로딩 중이 아니고, 아직 모든 항목을 로드하지 않은 경우,
-  //    로딩 상태를 true로 설정하고 visibleCount를 증가시킵니다.
-  // 3. visibleCount가 증가하면, 화면에 표시되는 항목이 늘어나고, 새로운 항목들이 렌더링됩니다.
-  // 4. 로딩 상태는 일정 시간 후 자동으로 false로 설정되어, 로딩 애니메이션이 사라집니다.
-
-  // 무한 스크롤 감지를 위한 ref. 페이지 하단의 div에 연결됨
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-
-  // IntersectionObserver 콜백 함수
-  // loaderRef 요소가 뷰포트에 들어오면 다음 항목들을 불러옴
-  const observerCallback = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-
-      // 요소가 보이고, 로딩 중이 아니며, 아직 모든 항목을 로드하지 않은 경우
-      if (
-        target.isIntersecting &&
-        !isLoading &&
-        visibleCount < filteredItems.length
-      ) {
-        setIsLoading(true); // 로딩 상태 시작
-        setVisibleCount((prev) => Math.min(prev + 18, filteredItems.length)); // 다음 항목 18개 추가
-      }
-    },
-    [isLoading, visibleCount, filteredItems.length],
-  );
-
-  // IntersectionObserver 등록 및 해제
-  useEffect(() => {
-    const observer = new IntersectionObserver(observerCallback, {
-      root: null, // 뷰포트를 기준으로 관찰
-      rootMargin: "0px 0px 160px 0px", // 하단 여백 확보 (BottomNav 높이 고려)
-      threshold: 0, // 요소가 조금이라도 보이면 콜백 실행
-    });
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    };
-  }, [observerCallback]);
-
-  // 로딩 상태를 일정 시간 후 자동 해제 (로딩 애니메이션 표시 목적)
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1800); // 1.8초 후 로딩 해제
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
+  // 무한 스크롤은 백엔드에서 페이지네이션을 지원하지 않으므로 제거
 
   const handleSearchIconClick = () => {
-    router.push(`/fullmenu?query=${search}`);
     setIsSearched(true);
+    // Don't change URL, just trigger search with current search state
+    console.log("Search triggered with:", search);
   };
 
   return (
@@ -147,17 +178,16 @@ export default function FullMenu() {
         />
 
         <FoodListSection
-          items={visibleItems}
-          search={search}
+          items={allMenus}
+          search={debouncedSearch}
           isSearched={isSearched}
-          onClickItem={(food) =>
-            router.push(`/fullmenu/menu-detail?menuId=${food}`)
+          isLoading={activeQuery.isLoading}
+          onClickItem={(menuName) =>
+            router.push(`/fullmenu/menu-detail?menuName=${menuName}`)
           }
         />
 
-        <div ref={loaderRef} className="h-[1px]" />
-
-        {isLoading && <LoadingIndicator />}
+        {/* 무한 스크롤 제거 */}
 
         <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
       </main>

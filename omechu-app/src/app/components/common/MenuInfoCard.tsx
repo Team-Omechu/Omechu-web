@@ -1,13 +1,30 @@
 "use client";
 
-import { MenuDetail } from "@/constant/mainpage/resultData";
-import React from "react";
+import { MenuDetail } from "@/lib/types/menu";
+import React, { useState } from "react";
+import Toast from "@/components/common/Toast";
 
 interface MenuInfoProps {
   MenuItem?: MenuDetail;
 }
 
 export default function MenuInfo({ MenuItem }: MenuInfoProps) {
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const handleRecipeClick = () => {
+    setToastMessage("기능이 준비되지 않았습니다.");
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
+
+  // 비타민 배열을 띄어쓰기로 구분하여 표시
+  const formatVitamins = (vitamins: any) => {
+    if (Array.isArray(vitamins)) {
+      return vitamins.join(" ");
+    }
+    return vitamins;
+  };
   return (
     <div>
       <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
@@ -34,9 +51,7 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
             </div>
             <div className="flex justify-between">
               <span>비타민</span>
-              <span className="text-[#828282]">
-                {MenuItem?.vitamin.join(",")}
-              </span>
+              <span className="text-[#828282]">{formatVitamins(MenuItem?.vitamin)}</span>
             </div>
           </div>
 
@@ -44,18 +59,24 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
-          <p className="mb-4 text-sm">{MenuItem?.allergic.join(",")}</p>
+          <p className="mb-4 text-sm">{MenuItem?.allergic}</p>
 
           <hr className="my-4 border-gray-200" />
 
           {/* 레시피 */}
           <p className="mb-1 font-medium text-grey-normal">레시피</p>
-          <button className="mb-3 text-sm text-grey-darker">
+          <button 
+            onClick={handleRecipeClick}
+            className="mb-3 text-sm text-grey-darker"
+          >
             <span className="border-b border-grey-normalActive">보러가기</span>
             <span>▶</span>
           </button>
         </div>
       </div>
+      
+      {/* Toast */}
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }
