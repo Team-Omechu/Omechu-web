@@ -72,7 +72,7 @@ export default function LocationAnswerPage() {
           <RestaurantMapPreview
             latitude={x}
             longitude={y}
-            name=""
+            name="현재 위치"
             className="h-[15rem] w-[22rem] object-cover"
             radiusKm={radiusKm}
           />
