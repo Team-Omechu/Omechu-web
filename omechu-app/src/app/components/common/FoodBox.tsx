@@ -59,7 +59,7 @@ export default function FoodBox({
       )}
       {/* 음식 이름 */}
       <div
-        className="line-clamp-2 flex max-h-[40px] min-h-[28px] items-center px-3 text-center text-[15px] font-normal leading-tight"
+        className="line-clamp-2 flex max-h-[40px] min-h-[28px] items-center px-3 text-center text-sm font-normal leading-tight"
         title={title}
       >
         {title}

@@ -1,7 +1,7 @@
 // /mainpage/hooks/useGetMenuDetail.ts
 import { useQuery } from "@tanstack/react-query";
 import { getMenuDetail } from "../api/api";
-import type { MenuDetail } from "@/constant/mainpage/resultData";
+import { MenuDetail } from "@/lib/types/menu";
 
 export default function useGetMenuDetail(menuName?: string) {
   return useQuery<MenuDetail>({
