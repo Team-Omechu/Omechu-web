@@ -62,7 +62,6 @@ export default function MenuDetailPage() {
     }
 
     // 새로고침 중복 방지: 먼저 “처리 중” 마킹 + URL 즉시 정리
-    sessionStorage.setItem(key, "pending");
     cleanQuery();
 
     mutate(decodeMenuId, {
@@ -72,8 +71,6 @@ export default function MenuDetailPage() {
         sessionStorage.setItem(key, "done");
       },
       onError: () => {
-        // 실패하면 다시 시도할 수 있게 마킹 해제
-        sessionStorage.removeItem(key);
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
