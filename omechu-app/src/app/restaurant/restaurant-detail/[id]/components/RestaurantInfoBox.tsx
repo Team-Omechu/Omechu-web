@@ -91,8 +91,15 @@ export default function RestaurantInfoBox({
                 </span>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm text-[#828282]">{addr.jibun}</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-1">
+                <span className="w-14 text-sm font-bold text-[#393939]">
+                  우편번호
+                </span>
+                <div className="flex flex-col gap-1">
                   <span className="text-sm text-[#828282]">
-                    우편번호 {addr.postalCode}
+                    {addr.postalCode}
                   </span>
                 </div>
               </div>
