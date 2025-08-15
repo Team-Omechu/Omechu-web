@@ -15,7 +15,7 @@ export default function RestaurantNameInput({
         placeholder="식당명을 입력하세요"
         value={restaurantName}
         onChange={(e) => setRestaurantName(e.target.value)}
-        className="mb-3 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        className="mb-3 w-full rounded-md border border-grey-darkHover px-3 py-2 text-sm"
       />
     </>
   );

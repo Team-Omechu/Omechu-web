@@ -119,7 +119,7 @@ function RecipeDetailClient() {
         }
       />
 
-      <main className="min-h-screen p-5 pt-8 text-sm text-black">
+      <main className="min-h-screen p-5 pt-8 text-sm text-[#393939]">
         <h1 className="mb-12 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
           {menu.name} 레시피
         </h1>
@@ -133,7 +133,7 @@ function RecipeDetailClient() {
         {/* 레시피 영상 */}
         {menu.recipe_link && (
           <section className="mb-6">
-            <div className="mx-auto aspect-video w-full max-w-md overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+            <div className="mx-auto aspect-video w-full max-w-md overflow-hidden rounded-lg border border-grey-darkHover shadow-sm">
               <iframe
                 src={getEmbedUrl(menu.recipe_link) || ""}
                 title={menu.recipe_video_name || "레시피 영상"}

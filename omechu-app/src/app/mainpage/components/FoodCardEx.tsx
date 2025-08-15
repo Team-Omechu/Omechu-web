@@ -83,7 +83,7 @@ export default function FoodCard({
   };
 
   return (
-    <div className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md">
+    <div className="flex items-start justify-between rounded-xl border border-grey-darkHover bg-white p-3 shadow-md">
       <div className="flex-1" onClick={onClick}>
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span>{item.displayName.text}</span>
@@ -110,7 +110,7 @@ export default function FoodCard({
           alt={item.id}
           width={70}
           height={70}
-          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
+          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-contain"
         />
       </div>
 

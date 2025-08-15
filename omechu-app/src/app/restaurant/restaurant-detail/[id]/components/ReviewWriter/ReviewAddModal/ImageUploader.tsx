@@ -39,7 +39,7 @@ export default function ImageUploader({
         음식, 인테리어, 메뉴판 등의 <span className="font-bold">사진</span>을
         첨부해 주세요. (최대 {maxImages}장)
       </p>
-      <div className="flex gap-2 overflow-x-auto rounded-md border border-gray-700 bg-white p-2">
+      <div className="flex gap-2 overflow-x-auto rounded-md border border-grey-darkHover bg-white p-2">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="images" direction="horizontal">
             {(provided) => (
@@ -72,7 +72,7 @@ export default function ImageUploader({
                           onClick={() =>
                             setImages(images.filter((_, i) => i !== idx))
                           }
-                          className="absolute -right-1 -top-1 rounded-full bg-black px-1 text-xs text-white"
+                          className="absolute -right-1 -top-1 rounded-full bg-[#393939] px-1 text-xs text-white"
                         >
                           ×
                         </button>

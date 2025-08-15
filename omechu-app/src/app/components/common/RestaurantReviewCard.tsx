@@ -105,7 +105,7 @@ export default function RestaurantReviewCard({
           <span>{createdAt}</span>
           <button onClick={() => setShowDeleteModal(true)}>삭제</button>
         </section>
-        <section className="h-fit w-80 rounded-xl border-[1px] border-black bg-white p-4">
+        <section className="h-fit w-80 rounded-xl border-[1px] border-grey-darkHover bg-white p-4">
           {/* 식당 사진 | 식당 이름 & 평점 | 버튼 | 찜버튼 */}
           <div className="flex h-20 w-full justify-between gap-3">
             {/* 식당 사진 */}
@@ -182,7 +182,7 @@ export default function RestaurantReviewCard({
               {tags.map((item, index) => (
                 <div
                   key={`${item}-${index}`}
-                  className="flex h-6 w-fit items-center justify-center rounded-3xl border-[1px] border-grey-normal px-2 pt-0.5"
+                  className="flex h-6 w-fit items-center justify-center rounded-3xl border-[1px] border-grey-darkHover px-2 pt-0.5"
                 >
                   <span className="text-sm font-normal text-grey-normal">
                     {item}

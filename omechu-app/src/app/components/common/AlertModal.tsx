@@ -49,7 +49,7 @@ export default function AlertModal({
   const showCancelButton = !!cancelText;
 
   return (
-    <div className="flex h-fit w-[22rem] flex-col justify-between rounded-[20px] border-2 border-grey-darker bg-white px-6 pb-5 pt-14 shadow-xl">
+    <div className="flex h-fit w-[22rem] flex-col justify-between rounded-[20px] bg-white px-6 pb-5 pt-14 shadow-xl">
       {/* 상단 여백용 (닫기 버튼 등 들어갈 자리, 현재 비어있음) */}
       <div className="flex justify-end"></div>
 
@@ -71,14 +71,14 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-[1px] border-grey-darkHover bg-white pt-1 text-[15px] font-normal text-grey-darkHover hover:bg-grey-lightHover active:bg-grey-lightActive"
+                className="h-10 flex-1 rounded-[30px] border-[1px] border-grey-darkHover bg-white text-[15px] font-normal text-grey-darkHover hover:bg-grey-lightHover active:bg-grey-lightActive"
               >
                 {cancelText}
               </button>
             )}
             <button
               onClick={onConfirm}
-              className={`h-10 rounded-[30px] bg-primary-normal pt-1 text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive ${showCancelButton ? "flex-1" : "w-40"}`}
+              className={`h-10 rounded-[30px] bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive ${showCancelButton ? "flex-1" : "w-40"}`}
             >
               {confirmText}
             </button>
@@ -95,7 +95,7 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive"
+                className="h-10 flex-1 rounded-[30px] border-2 border-grey-darkHover bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive"
               >
                 {cancelText}
               </button>

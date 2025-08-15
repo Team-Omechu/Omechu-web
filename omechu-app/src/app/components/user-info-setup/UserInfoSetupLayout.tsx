@@ -16,7 +16,7 @@ const UserInfoSetupLayout = ({
   return (
     <div className="flex w-full flex-col items-center px-4 py-6">
       <section className="my-20 text-center">
-        <h1 className="whitespace-pre-line text-2xl font-bold text-black">
+        <h1 className="whitespace-pre-line text-2xl font-bold text-[#393939]">
           {title}
         </h1>
       </section>

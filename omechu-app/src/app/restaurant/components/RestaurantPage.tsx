@@ -378,7 +378,7 @@ export default function Restaurant() {
         </ModalWrapper>
       )}
 
-      <hr className="my-1 border-black" />
+      <hr className="my-1 border-grey-darkHover" />
 
       <div className="mb-2 mt-2 flex items-center justify-between text-xs">
         <button

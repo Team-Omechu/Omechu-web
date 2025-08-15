@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -15,16 +14,14 @@ import Toast from "@/components/common/Toast";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/lib/hooks/useAuth";
-import type { ApiResponse, LoginSuccessData } from "@/lib/api/auth";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const router = useRouter();
+  const toastTimerRef = useRef<number | null>(null);
+  const navigatedRef = useRef(false);
 
-  //* 이삭 추가한 부분
-  const setUser = useAuthStore((state) => state.setUser);
-  const loginAction = useAuthStore((state) => state.login);
+  const router = useRouter();
 
   const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
@@ -40,34 +37,49 @@ export default function SignInForm() {
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => {
+      setShowToast(false);
+      toastTimerRef.current = null;
+    }, 2500);
   };
 
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        window.clearTimeout(toastTimerRef.current);
+        toastTimerRef.current = null;
+      }
+    };
+  }, []);
+
   const onSubmit = (data: LoginFormValues) => {
+    // API가 rememberMe를 안 받는다면 필요한 필드만 전달
+    // const { email, password } = data;
+    // login({ email, password });
+
     login(data);
   };
 
-  // 로그인 응답은 토큰 중심으로 처리되며, 최종 유저 정보는 store로 동기화됩니다.
+  // 로그인 응답은 토큰 중심으로 처리되고, 최종 유저 정보는 전역에서 /profile 동기화된다고 가정
   const user = useAuthStore((s) => s.user);
 
-  //* 최종 유저 프로필 동기화 완료 후 라우팅
+  // 최종 유저 프로필 동기화 완료 후 라우팅 (중복 이동 방지)
   useEffect(() => {
-    // 로그인 토큰 수령 직후에는 placeholder 유저가 먼저 들어오므로
-    // 서버의 me 동기화가 끝나 user.email 이 채워졌을 때만 라우팅합니다.
-    if (!isSuccess || !user) return;
-    if (!user.email) return; // 아직 me 동기화 전 상태
+    if (navigatedRef.current) return;
+    if (!isSuccess || !user?.email) return;
 
     if (user.nickname && user.nickname.trim().length > 0) {
+      navigatedRef.current = true;
       router.push("/mainpage");
     } else {
+      navigatedRef.current = true;
       router.push("/onboarding/1");
     }
   }, [isSuccess, user, router]);
 
   useEffect(() => {
-    if (error) {
-      triggerToast(error.message);
-    }
+    if (error) triggerToast(error.message);
   }, [error]);
 
   return (
@@ -92,6 +104,7 @@ export default function SignInForm() {
             />
           )}
         />
+
         <Controller
           name="password"
           control={control}
@@ -139,7 +152,7 @@ export default function SignInForm() {
         </div>
       </form>
 
-      <Toast message={toastMessage} show={showToast} className={"bottom-36"} />
+      <Toast message={toastMessage} show={showToast} className="bottom-36" />
     </>
   );
 }

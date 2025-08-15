@@ -154,7 +154,7 @@ export default function RestaurantDetail() {
           />
         </section>
         {/* 맛집 정보 */}
-        <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-[#393939] bg-white p-4">
+        <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-grey-darkHover bg-white p-4">
           {/* 정보 - 메뉴 종류 */}
           <RestaurantInfoBox
             restaurant={{
@@ -206,7 +206,7 @@ export default function RestaurantDetail() {
             {mostTags.map((item, index) => (
               <div
                 key={index}
-                className="mt-1 w-fit rounded-3xl border-[1px] border-[#393939] bg-white px-4 py-1 text-sm font-normal duration-300 hover:scale-105"
+                className="mt-1 w-fit rounded-3xl border-[1px] border-grey-darkHover bg-white px-4 py-1 text-sm font-normal duration-300 hover:scale-105"
               >
                 {item.tag}
               </div>

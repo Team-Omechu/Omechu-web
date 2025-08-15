@@ -16,7 +16,7 @@ export default function KeywordToggleSection({
       {selectedKeywords.length === 0 ? (
         <button
           onClick={onToggleShow}
-          className="flex items-center gap-1 rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-500"
+          className="flex items-center gap-1 rounded-full border border-grey-darkHover bg-white px-3 py-1 text-xs text-gray-500"
         >
           추천 키워드
           <Image
@@ -34,7 +34,7 @@ export default function KeywordToggleSection({
           {selectedKeywords.map((tag, idx) => (
             <span
               key={tag}
-              className="rounded-full border border-gray-400 bg-white px-3 py-1 text-xs text-gray-700"
+              className="rounded-full border border-grey-darkHover bg-white px-3 py-1 text-xs text-gray-700"
             >
               {tag}
             </span>

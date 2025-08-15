@@ -110,7 +110,7 @@ export default function AllergyStep() {
                   className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
+                      : "border-primary-normal bg-white text-primary-normal"
                   } `}
                 >
                   {key}

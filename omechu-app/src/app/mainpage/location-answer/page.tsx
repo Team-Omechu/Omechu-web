@@ -64,7 +64,7 @@ export default function LocationAnswerPage() {
           <label className="font-['Inter'] text-[1.25rem] font-normal leading-normal text-grey-darker">
             내 주변
           </label>
-          <div className="flex h-[1.125rem] w-[5.875rem] flex-shrink-0 items-center justify-center rounded-[0.3125rem] border border-[#333] bg-white text-sm text-black">
+          <div className="flex h-[1.125rem] w-[5.875rem] flex-shrink-0 items-center justify-center rounded-[0.3125rem] border border-[#333] bg-white text-sm text-[#393939]">
             {selectedDistance}
           </div>
         </div>

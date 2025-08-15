@@ -24,7 +24,7 @@ export default function SignUpForm({
     >
       <UserInfoFields />
 
-      <hr className="my-6 border-t border-grey-normal" />
+      <hr className="my-6 border-t border-grey-darkHover" />
 
       <TermsAgreement setActiveModal={setActiveModal} />
     </form>

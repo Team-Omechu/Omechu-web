@@ -25,7 +25,7 @@ export default function BusinessHoursSelector({
         {days.map((day) => (
           <button
             key={day}
-            className={`rounded-lg border border-gray-700 px-2 py-1 text-sm ${
+            className={`rounded-lg border border-grey-darkHover px-2 py-1 text-sm ${
               selectedDays.includes(day)
                 ? "bg-[#3FA2FF] text-white"
                 : "bg-gray-200 text-gray-600"

@@ -59,6 +59,21 @@ export const useAuthStore = create<AuthStore>()(
     {
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
+      version: 1,
+      partialize: (state) => ({
+        isLoggedIn: state.isLoggedIn,
+        user: state.user,
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+      }),
+      migrate: (persistedState: any, version: number) => {
+        // persistedState here is the previously saved store state (not wrapped)
+        if (version === 0 && persistedState) {
+          const { password: _pw, ...rest } = persistedState;
+          return rest;
+        }
+        return persistedState;
+      },
     },
   ),
 );
