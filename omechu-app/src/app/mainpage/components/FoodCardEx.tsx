@@ -46,12 +46,14 @@ export default function FoodCard({
   const { isLoggedIn } = useAuthStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const handleHeartClick = () => {
+  const handleHeartClick = async () => {
     if (!isLoggedIn) {
       setShowLoginModal(true);
       return;
     }
     if (likesLoading || likePending || deletePending) return; // 중복 클릭 방지
+
+    await qc.cancelQueries({queryKey:HEARTS_KEY})
 
     const prev = qc.getQueryData<number[]>(HEARTS_KEY) ?? [];
 
