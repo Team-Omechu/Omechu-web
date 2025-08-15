@@ -56,14 +56,28 @@ export default function ProfileEditSection() {
 
       // 새 파일 업로드가 있는 경우: 업로드 후 URL 사용, 삭제 플래그 해제
       if (profileImageFile) {
-        const { uploadUrl, publicUrl } = await getPresignedUrl(
-          profileImageFile.name,
-          profileImageFile.type,
-        );
-        await uploadToS3(uploadUrl, profileImageFile);
-        imageUrl = publicUrl;
-        setProfileImageUrl(publicUrl);
-        setImageDeleted(false);
+        try {
+          const { uploadUrl, fileUrl } = await getPresignedUrl(
+            profileImageFile.name,
+            profileImageFile.type,
+          );
+          console.log("[ProfileEdit] presign OK", {
+            uploadUrl: uploadUrl?.slice(0, 120) + "…",
+            fileUrl,
+          });
+
+          await uploadToS3(uploadUrl, profileImageFile, { acl: "public-read" });
+
+          imageUrl = fileUrl;
+          setProfileImageUrl(fileUrl);
+          setImageDeleted(false);
+        } catch (e: any) {
+          console.error(
+            "[ProfileEdit] 이미지 업로드 실패:",
+            e?.response?.data || e,
+          );
+          throw e; // 상위 catch 로 에러 메시지 처리
+        }
       }
 
       // 삭제 의도 vs 설정 의도 분기
