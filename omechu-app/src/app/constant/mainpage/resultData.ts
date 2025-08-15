@@ -33,21 +33,6 @@ export type MenuItem = {
   image_link: string;
 };
 
-export type MenuDetail = {
-  id: number;
-  menu?: string;
-  name: string;
-  description: string;
-  calory: number;
-  protein: number;
-  carbo: number;
-  fat: number;
-  sodium: number;
-  vitamin: string[];
-  allergic: string[];
-  image_link: string;
-};
-
 export type MenuListResponse = {
   menus: MenuItem[];
 };
@@ -66,5 +51,3 @@ export type menuType = {
   allergens: string[];
   recipeUrl: string;
 };
-
-export const menus1: MenuDetail[] = [];
