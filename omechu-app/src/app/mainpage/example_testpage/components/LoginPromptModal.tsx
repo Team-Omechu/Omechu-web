@@ -17,7 +17,7 @@ const LoginPromptModal = ({
 }: LoginPromptModalProps) => {
   // 이 컴포넌트는 ModalWrapper 내에서 사용되어야 합니다.
   return (
-    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-black bg-white px-6 pb-6 pt-6 text-center shadow-lg">
+    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] bg-white px-6 pb-6 pt-6 text-center shadow-lg">
       <button onClick={onClose} className="absolute right-5 top-5 z-10 p-1">
         <Image src="/x/black_x_icon.svg" alt="close" width={18} height={18} />
       </button>
