@@ -3,7 +3,7 @@
 사용자 기본 상태와 취향을 바탕으로 **상황 맞춤 메뉴와 맛집을 추천**하는 웹 서비스입니다.
 Next.js + TypeScript + Tailwind CSS를 기반으로, 서버 상태는 TanStack Query, 클라이언트 상태는 Zustand로 관리합니다.
 
-> 배포 URL: `https://your-deploy-url`
+> 배포 URL: `https://omechu.log8.kr/`
 > 데모 계정: `user@example.com / user1234!`
 
 ---
