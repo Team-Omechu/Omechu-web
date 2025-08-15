@@ -26,6 +26,9 @@ export default function MealAnswerPage() {
     }
   };
 
+  const isDisabled = (item: string) =>
+    !exceptions.includes(item) && exceptions.length >= 3;
+
   return (
     <div className="flex h-screen w-full flex-col">
       <Header className="border-b-0" />
@@ -35,12 +38,21 @@ export default function MealAnswerPage() {
           <p>음식은 무엇인가요?</p>
         </div>
         <div className="flex w-[310px] flex-col gap-2">
-          <MealTypeGroup selectedItems={exceptions} onToggle={toggleSelect} />
+          <MealTypeGroup
+            selectedItems={exceptions}
+            onToggle={toggleSelect}
+            isDisabled={isDisabled}
+          />
           <MealIngredientGroup
             selectedItems={exceptions}
             onToggle={toggleSelect}
+            isDisabled={isDisabled}
           />
-          <MealStyleGroup selectedItems={exceptions} onToggle={toggleSelect} />
+          <MealStyleGroup
+            selectedItems={exceptions}
+            onToggle={toggleSelect}
+            isDisabled={isDisabled}
+          />
         </div>
 
         <button
