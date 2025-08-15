@@ -52,12 +52,12 @@ export default function BottomNav() {
   const queryClient = useQueryClient();
 
   const handleNavClick = (item: (typeof navItems)[number]) => {
-    // 마이페이지 이동 시: 하드 리프레시로 강제 데이터 재요청
     if (item.routingUrl === "/mypage") {
-      window.location.href = item.routingUrl; // 전체 새로고침
+      // React Query의 캐시 무효화 → 다음 페이지 진입 시 API 강제 호출
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      router.push(item.routingUrl);
       return;
     }
-    // 그 외는 기존 SPA 네비게이션 유지
     router.push(item.routingUrl);
   };
 

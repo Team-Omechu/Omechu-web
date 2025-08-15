@@ -62,7 +62,7 @@ export default function GenderStep() {
                 className={`h-14 w-28 rounded-md border-[1px] px-2.5 pt-1 text-xl ${
                   gender === label
                     ? "border-primary-normal bg-primary-normal text-white"
-                    : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
+                    : "border-primary-normal bg-white text-primary-normal"
                 } `}
               >
                 {label}

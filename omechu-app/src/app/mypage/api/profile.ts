@@ -14,17 +14,44 @@ export class ProfileApiError extends Error {
 
 export async function fetchProfile(): Promise<ProfileType> {
   try {
-    const accessToken =
-      useAuthStore.getState().accessToken ||
-      localStorage.getItem("accessToken");
+    // axiosInstance가 인터셉터에서 토큰을 붙인다는 가정
     const res = await axiosInstance.get("/profile", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`, // 불필요!
-      },
+      // 304일 때도 여기서 처리할 수 있게 허용
+      validateStatus: (s) => s === 200 || s === 304,
     });
-    const data = res.data.success;
+
+    // 304 Not Modified: 캐시(스토어)에 있는 사용자 정보를 그대로 사용
+    if (res.status === 304) {
+      const cached = useAuthStore.getState().user;
+      if (cached) {
+        return {
+          id: Number((cached as any).id ?? 0),
+          email: (cached as any).email ?? "",
+          nickname: (cached as any).nickname ?? "",
+          bodyType: (cached as any).body_type ?? "",
+          gender: (cached as any).gender ?? "",
+          exercise: (cached as any).exercise ?? "",
+          prefer: Array.isArray((cached as any).prefer)
+            ? (cached as any).prefer
+            : [],
+          allergy: Array.isArray((cached as any).allergy)
+            ? (cached as any).allergy
+            : [],
+          profileImageUrl: (cached as any).profileImageUrl ?? null,
+          createdAt: (cached as any).created_at ?? "",
+          updatedAt: (cached as any).updated_at ?? "",
+        };
+      }
+      // 캐시가 없으면 강제로 200을 다시 받아오도록 에러 처리
+      throw new ProfileApiError(304, {
+        message: "No cached profile to use for 304.",
+      });
+    }
+
+    // 200 OK
+    const data = res.data?.success ?? {};
     return {
-      id: Number(data.id),
+      id: Number(data.id ?? 0),
       email: data.email ?? "",
       nickname: data.nickname ?? "",
       bodyType: data.body_type ?? "",
@@ -37,10 +64,9 @@ export async function fetchProfile(): Promise<ProfileType> {
       updatedAt: data.updated_at ?? "",
     };
   } catch (error: any) {
-    const code = error?.response?.status ?? 500;
-    // 디버깅 콘솔.로그
-    console.error("[getProfile] 에러:", error?.response ?? error);
-    console.error("[getProfile] 에러:", error?.response ?? error);
-    throw new ProfileApiError(code, error.response?.data);
+    const code = error?.response?.status ?? error?.code ?? 500;
+    // 디버깅 콘솔.로그 (중복 제거)
+    console.error("[fetchProfile] 에러:", error?.response ?? error);
+    throw new ProfileApiError(code, error?.response?.data ?? error?.message);
   }
 }
