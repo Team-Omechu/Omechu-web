@@ -15,7 +15,8 @@ type PresignSuccess = {
 
 export type UpdateProfilePayload = {
   nickname?: string;
-  profileImageUrl?: string;
+  profileImageUrl?: string | null;
+  profileImageDelete?: boolean;
   gender?: string;
   body_type?: string;
   exercise?: string;
