@@ -26,10 +26,9 @@ export default function RandomRecommendPage() {
   const toggleSelect = (item: string) => {
     if (addition.includes(item)) {
       removeAddition(item);
-    } else if (addition.length < 3) {
-      addAddition(item);
-    }
+    } else addAddition(item);
   };
+
   return (
     <div className="flex h-screen w-full flex-col items-center">
       <Header

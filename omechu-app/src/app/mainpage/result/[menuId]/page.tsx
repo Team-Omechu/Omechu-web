@@ -1,7 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import {
+  useRouter,
+  useParams,
+  useSearchParams,
+  usePathname,
+} from "next/navigation";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
@@ -17,32 +22,58 @@ import { MenuDetail } from "@/lib/types/menu";
 
 export default function MenuDetailPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [showToast, setShowToast] = useState(false);
-  const { data, isLoading, error, refetch } = useGetRestaurants();
+
+  const { data, isLoading } = useGetRestaurants();
   const { menuId } = useParams();
-  const { mutate, isSuccess } = usePostMukburim();
+  const { mutate } = usePostMukburim();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
-
   const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
-
   const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
-
   const detailMenu: MenuDetail | undefined = menuDetailData;
 
-  console.log(isSuccess);
+  const shouldRecord = searchParams.get("record") === "1";
 
-  useEffect(() => {
-    if (!decodeMenuId) return;
-    mutate(decodeMenuId);
-  }, [decodeMenuId, mutate]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 2000);
+  // URL에서 record 파라미터 제거
+  const cleanQuery = () => {
+    const next = new URLSearchParams(searchParams.toString());
+    if (next.has("record")) {
+      next.delete("record");
+      router.replace(next.size ? `${pathname}?${next}` : pathname, {
+        scroll: false,
+      });
     }
-  }, [isSuccess]);
+  };
+
+  useEffect(() => {
+    if (!decodeMenuId || !shouldRecord) return;
+
+    const key = `mukburim-recorded:${decodeMenuId}`;
+    const already = sessionStorage.getItem(key);
+
+    if (already) {
+      // 이미 처리한 메뉴면 토스트/뮤테이트 둘 다 스킵하고 URL만 정리
+      cleanQuery();
+      return;
+    }
+
+    // 새로고침 중복 방지: 먼저 “처리 중” 마킹 + URL 즉시 정리
+    cleanQuery();
+
+    mutate(decodeMenuId, {
+      onSuccess: () => {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 2000);
+        sessionStorage.setItem(key, "done");
+      },
+      onError: () => {},
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [decodeMenuId, shouldRecord]); // searchParams 객체 자체는 deps에서 제외
 
   return (
     <div className="flex w-full flex-col">
@@ -115,6 +146,7 @@ export default function MenuDetailPage() {
           />
         ))}
       </div>
+
       <Toast
         message="먹부림 기록에 등록되었습니다."
         show={showToast}
