@@ -25,7 +25,9 @@ export interface MenuInfoResponse {
   success?: MenuDetail;
 }
 
-export const getMenus = async (params?: FilterParams): Promise<MenusResponse> => {
+export const getMenus = async (
+  params?: FilterParams,
+): Promise<MenusResponse> => {
   const response = await axiosInstance.get("/menu", { params });
   return response.data;
 };
@@ -35,12 +37,18 @@ export const getRandomMenu = async (): Promise<MenuInfoResponse> => {
   return response.data;
 };
 
-export const getFilteredMenus = async (filters: FilterParams): Promise<MenusResponse> => {
-  const response = await axiosInstance.get("/menu/filtered", { params: filters });
+export const getFilteredMenus = async (
+  filters: FilterParams,
+): Promise<MenusResponse> => {
+  const response = await axiosInstance.get("/menu/filtered", {
+    params: filters,
+  });
   return response.data;
 };
 
-export const getMenuInfo = async (menuName: string): Promise<MenuInfoResponse> => {
+export const getMenuInfo = async (
+  menuName: string,
+): Promise<MenuInfoResponse> => {
   const response = await axiosInstance.post("/menu-info", { name: menuName });
   return response.data;
 };
