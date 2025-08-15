@@ -1,6 +1,10 @@
 "use client";
+import { useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { fetchProfile } from "@/mypage/api/profile";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 const navItems: {
   title: string;
@@ -42,6 +46,27 @@ const navItems: {
 export default function BottomNav() {
   const router = useRouter();
   const pathname = usePathname();
+  const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
+  const accessToken = useAuthStore((s) => s.accessToken);
+
+  const queryClient = useQueryClient();
+
+  const handleNavClick = (item: (typeof navItems)[number]) => {
+    if (item.routingUrl === "/mypage") {
+      // React Query의 캐시 무효화 → 다음 페이지 진입 시 API 강제 호출
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      router.push(item.routingUrl);
+      return;
+    }
+    router.push(item.routingUrl);
+  };
+
+  useEffect(() => {
+    if (hasHydrated && !accessToken) {
+      // 로그아웃 등 토큰이 없을 때 프로필 캐시 제거
+      queryClient.removeQueries({ queryKey: ["profile"], exact: false });
+    }
+  }, [accessToken, hasHydrated, queryClient]);
 
   return (
     <div className="fixed bottom-0 left-1/2 z-50 h-20 w-full min-w-[375px] -translate-x-1/2 rounded-t-[10px] bg-grey-light pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
@@ -53,12 +78,12 @@ export default function BottomNav() {
           return (
             <div
               key={index}
-              onClick={() => router.push(item.routingUrl)}
+              onClick={() => handleNavClick(item)}
               className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-grey-lightActive"
             >
               <Image src={iconSrc} alt={item.imgAlt} width={26} height={26} />
               <span
-                className={`text-xs font-medium ${isActive ? "text-black dark:text-white" : "text-gray-500"}`}
+                className={`text-xs font-medium ${isActive ? "text-[#393939] dark:text-white" : "text-gray-500"}`}
               >
                 {item.title}
               </span>

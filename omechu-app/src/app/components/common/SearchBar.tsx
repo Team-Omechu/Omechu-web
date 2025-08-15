@@ -159,7 +159,7 @@ export default function SearchBar({
           }, 150);
         }}
         placeholder={placeholder}
-        className={`flex h-10 w-full items-center rounded-t-3xl border-2 border-black bg-white px-6 pr-10 ${showSuggestions ? "" : "rounded-b-3xl"}`}
+        className={`flex h-10 w-full items-center rounded-t-3xl border-2 border-grey-darkHover bg-white px-6 pr-10 ${showSuggestions ? "" : "rounded-b-3xl"}`}
       />
 
       <button
@@ -178,7 +178,7 @@ export default function SearchBar({
       </button>
 
       {showSuggestions && (
-        <ul className="absolute left-0 top-full z-10 w-full rounded-b-3xl border-[2px] border-t-0 border-black bg-white shadow-md">
+        <ul className="absolute left-0 top-full z-10 w-full rounded-b-3xl border-[2px] border-t-0 border-grey-darkHover bg-white shadow-md">
           {inputValue.trim() === "" ? (
             <>
               <li className="px-4 py-2 text-sm font-bold text-gray-600">
@@ -194,7 +194,7 @@ export default function SearchBar({
                   </span>
                   <button
                     onClick={() => removeRecent(term)}
-                    className="text-gray-500 hover:text-black"
+                    className="text-gray-500 hover:text-[#393939]"
                   >
                     ✕
                   </button>
@@ -203,7 +203,7 @@ export default function SearchBar({
               {recentSearches.length > 0 && (
                 <li className="flex justify-end px-4 py-2">
                   <button
-                    className="text-xs text-gray-500 hover:text-black"
+                    className="text-xs text-gray-500 hover:text-[#393939]"
                     onClick={() => {
                       setRecentSearches([]);
                       localStorage.removeItem(RECENT_KEY);

@@ -53,7 +53,7 @@ export default function LocationFilterModal({
       <div className="mx-4 my-6">
         <SectionHeader titles={["시·도", "시·군·구", "동·읍·면"]} />
 
-        <div className="grid h-[28rem] grid-cols-3 border-b border-gray-400 text-center">
+        <div className="grid h-[28rem] grid-cols-3 border-b border-grey-darkHover text-center">
           <SelectableList
             items={cities}
             selected={selectedCity}

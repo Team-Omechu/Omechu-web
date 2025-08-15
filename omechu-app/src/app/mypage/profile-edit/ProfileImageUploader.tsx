@@ -30,8 +30,8 @@ export default function ProfileImageUploader({
   };
 
   return (
-    <div className="relative px-3">
-      <div className="mb-3">
+    <div className="relative flex flex-col px-3">
+      <div className="mb-3 h-[100px] w-[100px] overflow-hidden rounded-full">
         <img
           src={
             imagePreview
@@ -40,9 +40,10 @@ export default function ProfileImageUploader({
                 ? profileImageUrl
                 : "/profile/profile_default_img_rotated.svg"
           }
-          width={73}
-          height={73}
+          width={100}
+          height={100}
           alt="프로필 이미지"
+          className="h-full w-full object-cover"
         />
       </div>
       <button className="absolute right-1 top-1" onClick={handleImageClick}>

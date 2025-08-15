@@ -23,7 +23,7 @@ export default function MenuCard({
       onClick={onClick}
     >
       <div
-        className={`flex h-[110px] items-center gap-3 rounded-md border border-black p-3 ${
+        className={`flex h-[110px] items-center gap-3 rounded-md border border-grey-darkHover p-3 ${
           selected ? "bg-gray-200" : "bg-white"
         }`}
       >

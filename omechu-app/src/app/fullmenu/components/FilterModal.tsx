@@ -64,10 +64,10 @@ export default function FilterModal({
                 <button
                   key={item}
                   onClick={() => toggleFilter(item)}
-                  className={`rounded-lg border border-gray-700 px-3 py-[6px] text-[14px] ${
+                  className={`rounded-lg border border-grey-darkHover px-3 py-[6px] text-[14px] ${
                     tempSelected.includes(item)
                       ? "bg-primary-normal text-white"
-                      : "border-gray-300 bg-white text-black"
+                      : "border-grey-darkHover bg-white text-[#393939]"
                   }`}
                 >
                   {item}

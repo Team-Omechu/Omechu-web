@@ -279,25 +279,23 @@ export const changePassword = async (data: {
 
 // 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
-  // zustand store와 localStorage를 모두 고려하여 accessToken 읽기
-  const accessToken = readAccessToken();
-  if (!accessToken) {
-    throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
+  try {
+    const response =
+      await axiosInstance.get<ApiResponse<LoginSuccessData>>("/profile");
+
+    // 200인 경우 정상 매핑
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new Error(apiResponse.error?.reason || "유저 조회 실패");
+    }
+    return apiResponse.success;
+  } catch (err: any) {
+    // (선택) 304 Not Modified 대응: 스토어 값으로 폴백
+    const status = err?.response?.status;
+    if (status === 304) {
+      const cached = useAuthStore.getState().user;
+      if (cached) return cached;
+    }
+    throw err;
   }
-
-  const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
-    "/profile",
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  );
-
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(apiResponse.error?.reason || "유저 조회 실패");
-  }
-
-  return apiResponse.success;
 };

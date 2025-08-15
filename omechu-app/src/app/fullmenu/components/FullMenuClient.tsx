@@ -202,7 +202,7 @@ export default function FullMenuClient() {
         </ModalWrapper>
       )}
 
-      <hr className="my-1 border-black" />
+      <hr className="my-1 border-grey-darkHover" />
 
       <SortSelector
         options={sortOptions}

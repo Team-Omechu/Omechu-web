@@ -22,7 +22,7 @@ export default function SignInPage() {
         <SignInForm />
 
         <div className="relative flex w-full items-center">
-          <hr className="w-full border-t border-gray-300" />
+          <hr className="w-full border-t border-grey-darkHover" />
           <span className="absolute left-1/2 -translate-x-1/2 bg-main-normal px-2 text-xs text-gray-400">
             or
           </span>
@@ -30,7 +30,7 @@ export default function SignInPage() {
 
         <a
           href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}
-          className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-black transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]"
+          className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-[#393939] transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]"
         >
           <Image
             src="/kakao/kakao.svg"

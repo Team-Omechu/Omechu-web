@@ -56,7 +56,7 @@ export default function AddressSearchModal({
       <input
         type="text"
         placeholder="동(읍/면/리) 또는 도로명 주소를 입력해 주세요"
-        className="mb-3 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        className="mb-3 w-full rounded-md border border-grey-darkHover px-3 py-2 text-sm"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -73,7 +73,7 @@ export default function AddressSearchModal({
         {results.map((addr, idx) => (
           <button
             key={idx}
-            className="w-full rounded-md border border-gray-300 bg-[#f8f8f8] px-4 py-2 text-left hover:bg-[#e0f3ff]"
+            className="w-full rounded-md border border-grey-darkHover bg-[#f8f8f8] px-4 py-2 text-left hover:bg-[#e0f3ff]"
             onClick={() => handleSelect(addr)}
           >
             {addr}

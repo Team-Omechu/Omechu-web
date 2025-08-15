@@ -64,7 +64,7 @@ const ProfileStep = () => {
           <div className="text-center text-2xl font-semibold text-secondary-normal">
             반가워요!
           </div>
-          <h1 className="text-2xl font-normal text-black">
+          <h1 className="text-2xl font-normal text-[#393939]">
             프로필을 입력해 주세요
           </h1>
         </div>

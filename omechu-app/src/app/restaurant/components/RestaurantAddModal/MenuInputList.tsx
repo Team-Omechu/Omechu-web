@@ -23,7 +23,7 @@ export default function MenuInputList({
             placeholder="메뉴명을 입력하세요"
             value={menu}
             onChange={(e) => onMenuChange(idx, e.target.value)}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="flex-1 rounded-md border border-grey-darkHover px-3 py-2 text-sm"
           />
           <button onClick={() => onRemoveMenu(idx)}>✖</button>
         </div>
@@ -31,7 +31,7 @@ export default function MenuInputList({
       {menus.length < 3 && (
         <button
           onClick={onAddMenu}
-          className="mb-4 text-lg text-gray-700 hover:text-black"
+          className="mb-4 text-lg text-gray-700 hover:text-[#393939]"
         >
           ＋
         </button>

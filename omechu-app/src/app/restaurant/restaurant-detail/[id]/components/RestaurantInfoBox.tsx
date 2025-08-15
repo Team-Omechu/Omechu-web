@@ -35,7 +35,7 @@ export default function RestaurantInfoBox({
       : (restaurant.address ?? { road: "", jibun: "", postalCode: "" });
 
   return (
-    <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-[#393939] bg-white p-4">
+    <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-grey-darkHover bg-white p-4">
       {/* 카테고리 */}
       <div className="flex w-full items-center justify-start gap-3">
         <Image src="/menu/menu.svg" alt="맛집 메뉴" width={24} height={24} />
