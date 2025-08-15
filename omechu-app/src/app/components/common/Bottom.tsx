@@ -51,29 +51,13 @@ export default function BottomNav() {
 
   const queryClient = useQueryClient();
 
-  const handleNavClick = async (item: (typeof navItems)[number]) => {
-    // 마이페이지 이동 시: 토큰이 있으면 /profile 강제 최신화 후 이동
+  const handleNavClick = (item: (typeof navItems)[number]) => {
+    // 마이페이지 이동 시: 하드 리프레시로 강제 데이터 재요청
     if (item.routingUrl === "/mypage") {
-      // 스토어 하이드레이션 전이면 굳이 선요청하지 않고 바로 이동
-      if (!hasHydrated) {
-        router.push(item.routingUrl);
-        return;
-      }
-
-      if (accessToken) {
-        try {
-          const key = ["profile"]; // useProfileQuery와 동일 키 (토큰 포함하지 않음)
-          await queryClient.invalidateQueries({ queryKey: key, exact: true });
-          await queryClient.fetchQuery({
-            queryKey: key,
-            queryFn: fetchProfile,
-            staleTime: 10 * 60 * 1000,
-          });
-        } catch {
-          // 선요청 실패해도 이동은 계속
-        }
-      }
+      window.location.href = item.routingUrl; // 전체 새로고침
+      return;
     }
+    // 그 외는 기존 SPA 네비게이션 유지
     router.push(item.routingUrl);
   };
 

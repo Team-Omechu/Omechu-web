@@ -64,7 +64,7 @@ export default function StateStep() {
               <button
                 key={`${label}-${state === label}`}
                 onClick={() => handleStatusClick(label)}
-                className={`h-12 w-60 rounded-md border-[1px] px-2 pt-1 text-xl ${
+                className={`h-12 w-60 rounded-md border-[1px] px-2 text-xl ${
                   state === label
                     ? "border-primary-normal bg-primary-normal text-white"
                     : "border-primary-normal bg-white text-primary-normal hover:bg-primary-normalHover hover:text-white"
