@@ -75,7 +75,7 @@ export default function UserInfoFields() {
 
   return (
     <div className="relative space-y-4">
-      <div className="[&_button]:w-[152px]">
+      <div className="[&_button]:w-[122px]">
         <Controller
           name="email"
           control={control}
@@ -98,7 +98,7 @@ export default function UserInfoFields() {
         />
       </div>
       {isCodeSent && (
-        <div className="[&_button]:w-[152px]">
+        <div className="[&_button]:w-[122px]">
           <Controller
             name="verificationCode"
             control={control}

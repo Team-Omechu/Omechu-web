@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 
 export type ReviewProps = {
@@ -38,7 +39,7 @@ export default function Review({
       {/* 프로필사진, 닉네임, 작성일 | 추천 버튼, 설정버튼 */}
       <div className="relative flex justify-between">
         <div className="flex items-center gap-3">
-          <Image
+          <img
             src={profileImgUrl}
             alt={profileImgUrl}
             width={30}
@@ -55,7 +56,7 @@ export default function Review({
         <div className="absolute -right-1 -top-1 mb-2 flex items-center gap-1">
           <span className="text-sm">{votes}</span>
           <button onClick={onVote}>
-            <Image
+            <img
               src={
                 isVoted ? "/thumb/thumbs-up-fill.svg" : "/thumb/thumbs-up.svg"
               }
@@ -66,12 +67,7 @@ export default function Review({
             />
           </button>
           <button onClick={onClick}>
-            <Image
-              src="/menu/menu_dots.svg"
-              alt="메뉴"
-              width={18}
-              height={18}
-            />
+            <img src="/menu/menu_dots.svg" alt="메뉴" width={18} height={18} />
           </button>
         </div>
         {isOptionOpen && (
