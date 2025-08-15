@@ -2,7 +2,7 @@
 
 type Props = {
   selectedItems: string[];
-  isDisabled?: (item: string) => boolean
+  isDisabled?: (item: string) => boolean;
   onToggle: (item: string) => void;
 };
 
@@ -24,7 +24,7 @@ const MealTypeGroup = ({ selectedItems, onToggle, isDisabled }: Props) => {
                 : "border-[#FB4746] bg-white text-black"
             }`}
             onClick={() => onToggle(item)}
-            disabled={isDisabled?.(item)??false}
+            disabled={isDisabled?.(item) ?? false}
           >
             {renderLabel(item)}
           </button>

@@ -27,7 +27,7 @@ export default function MealAnswerPage() {
   };
 
   const isDisabled = (item: string) =>
-  !exceptions.includes(item) && exceptions.length >= 3;
+    !exceptions.includes(item) && exceptions.length >= 3;
 
   return (
     <div className="flex h-screen w-full flex-col">
@@ -38,19 +38,25 @@ export default function MealAnswerPage() {
           <p>음식은 무엇인가요?</p>
         </div>
         <div className="flex w-[310px] flex-col gap-2">
-          <MealTypeGroup selectedItems={exceptions} onToggle={toggleSelect} isDisabled={isDisabled} />
+          <MealTypeGroup
+            selectedItems={exceptions}
+            onToggle={toggleSelect}
+            isDisabled={isDisabled}
+          />
           <MealIngredientGroup
             selectedItems={exceptions}
             onToggle={toggleSelect}
             isDisabled={isDisabled}
           />
-          <MealStyleGroup selectedItems={exceptions} onToggle={toggleSelect} isDisabled={isDisabled} />
+          <MealStyleGroup
+            selectedItems={exceptions}
+            onToggle={toggleSelect}
+            isDisabled={isDisabled}
+          />
         </div>
 
         <button
-          className={`mx-auto mt-8 flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${
-               "bg-primary-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
-          }`}
+          className={`mx-auto mt-8 flex h-[3.125rem] w-[8.75rem] items-center justify-center gap-[0.625rem] rounded-[0.3125rem] p-[0.625rem] text-[1.125rem] font-normal ${"bg-primary-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"}`}
           onClick={() => router.push("/mainpage/location-answer")}
         >
           {exceptions.length > 0

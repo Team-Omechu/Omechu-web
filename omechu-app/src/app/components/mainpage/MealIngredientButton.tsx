@@ -2,11 +2,15 @@
 
 type Props = {
   selectedItems: string[];
-  isDisabled?: (item:string) => boolean;
+  isDisabled?: (item: string) => boolean;
   onToggle: (item: string) => void;
 };
 
-const MealIngredientGroup = ({ selectedItems, onToggle,isDisabled }: Props) => {
+const MealIngredientGroup = ({
+  selectedItems,
+  onToggle,
+  isDisabled,
+}: Props) => {
   const items = ["밥", "면", "고기", "해산물", "기타-재료"];
 
   const renderLabel = (item: string) =>

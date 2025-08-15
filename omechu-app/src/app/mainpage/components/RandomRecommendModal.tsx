@@ -19,7 +19,7 @@ export default function RandomRecommendModal({
   const router = useRouter();
   const { data, isLoading, isRefetching, refetch } = useGetRandomMenu(); // 로딩이랑 리패칭 추가하기
   const { mutate } = usePostMukburim();
-  const {addException} = useQuestionAnswerStore();
+  const { addException } = useQuestionAnswerStore();
 
   const menu = data;
   const { setKeyword } = useLocationAnswerStore();

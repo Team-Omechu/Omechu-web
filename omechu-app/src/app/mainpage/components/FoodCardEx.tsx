@@ -53,7 +53,7 @@ export default function FoodCard({
     }
     if (likesLoading || likePending || deletePending) return; // 중복 클릭 방지
 
-    await qc.cancelQueries({queryKey:HEARTS_KEY})
+    await qc.cancelQueries({ queryKey: HEARTS_KEY });
 
     const prev = qc.getQueryData<number[]>(HEARTS_KEY) ?? [];
 

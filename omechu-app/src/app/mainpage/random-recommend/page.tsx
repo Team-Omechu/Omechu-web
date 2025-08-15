@@ -26,9 +26,7 @@ export default function RandomRecommendPage() {
   const toggleSelect = (item: string) => {
     if (addition.includes(item)) {
       removeAddition(item);
-    }
-    else 
-    addAddition(item);
+    } else addAddition(item);
   };
 
   return (
@@ -53,13 +51,13 @@ export default function RandomRecommendPage() {
 
       <div className="mt-5 flex flex-col gap-2">
         {/* 1: type */}
-        <MealTypeGroup selectedItems={addition} onToggle={toggleSelect}  />
+        <MealTypeGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 2: ingredient */}
-        <MealIngredientGroup selectedItems={addition} onToggle={toggleSelect}  />
+        <MealIngredientGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 3: style */}
-        <MealStyleGroup selectedItems={addition} onToggle={toggleSelect}/>
+        <MealStyleGroup selectedItems={addition} onToggle={toggleSelect} />
       </div>
       <button className="relative mt-10" onClick={handleModal}>
         <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">

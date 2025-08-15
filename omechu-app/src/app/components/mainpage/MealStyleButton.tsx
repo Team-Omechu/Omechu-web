@@ -2,11 +2,11 @@
 
 type Props = {
   selectedItems: string[];
-  isDisabled?:(item: string) => boolean;
+  isDisabled?: (item: string) => boolean;
   onToggle: (item: string) => void;
 };
 
-const MealStyleGroup = ({ selectedItems, onToggle,isDisabled }: Props) => {
+const MealStyleGroup = ({ selectedItems, onToggle, isDisabled }: Props) => {
   const stylePairs = [
     ["국물 있는 음식", "국물 없는 음식"],
     ["따뜻한 음식", "차가운 음식"],
