@@ -24,8 +24,11 @@ export interface RestaurantDetail {
   id: number;
   name: string;
   address: string;
+  addressJibeon: string;
+  postalCode: string;
   rating: number;
   currentOpeningHours: OpeningHour[];
   googlePlaceId: string | null;
   reviewImages: ReviewImage[];
+  zzim: boolean;
 }

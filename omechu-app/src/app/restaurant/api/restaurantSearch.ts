@@ -39,21 +39,31 @@ function mapApiToRestaurant(apiData: any): Restaurant {
 export async function searchRestaurants(p: SearchParams) {
   // 1) 빈 값 제거 + 문자열 정리
   const params: Record<string, string> = {
-    cursor: String(p.cursor ?? 0),
+    cursor: String(p.cursor ?? 1),
     limit: String(p.limit ?? 8),
   };
   // 파라미터 정리
   const menu = p.menu?.trim();
   const tag = p.tag?.trim();
   const location = p.location?.trim();
-  const cursor = String(p.cursor ?? 0);
+  const cursor = String(p.cursor ?? 1);
   const limit = String(p.limit ?? 8);
 
   // 순서대로 URL 직접 생성
   const query = new URLSearchParams();
   if (menu) query.append("menu", menu);
-  if (tag) query.append("tag", tag);
-  if (location) query.append("location", location);
+  if (Array.isArray(p.tag)) {
+    p.tag.forEach((t) => {
+      const trimmed = t.trim();
+      if (trimmed) query.append("tag", trimmed);
+    });
+  }
+  if (Array.isArray(p.location)) {
+    p.location.forEach((loc) => {
+      const trimmed = loc.trim();
+      if (trimmed) query.append("location", trimmed);
+    });
+  }
   query.append("cursor", cursor);
   query.append("limit", limit);
 
@@ -101,29 +111,39 @@ export async function searchRestaurants(p: SearchParams) {
 }
 
 // 무한스크롤 훅
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export function useRestaurantSearch(
   initial: Omit<SearchParams, "cursor" | "limit">,
 ) {
   const [items, setItems] = useState<Restaurant[]>([]);
-  const [cursor, setCursor] = useState<number>(0);
+  const [cursor, setCursor] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [isError, setIsError] = useState(false); // 추가
+  const [isError, setIsError] = useState(false);
+
+  const isFetchingRef = useRef(false);
+  const lastCursorRef = useRef<number | null>(null);
 
   const reset = useCallback(() => {
     setItems([]);
-    setCursor(0);
+    setCursor(1);
     setHasMore(true);
     setIsError(false);
+    isFetchingRef.current = false;
+    lastCursorRef.current = null;
   }, []);
 
   const fetchNext = useCallback(async () => {
-    if (isLoading || !hasMore) return;
+    if (isLoading || !hasMore || isFetchingRef.current) return;
+    if (lastCursorRef.current === cursor) return; // 같은 커서 재요청 방지
+    lastCursorRef.current = cursor;
+
     try {
+      isFetchingRef.current = true;
       setIsLoading(true);
       setIsError(false);
+
       const {
         items: fetched,
         hasNextPage,
@@ -133,15 +153,25 @@ export function useRestaurantSearch(
         cursor,
         limit: 8,
       });
-      setItems((prev) => [...prev, ...fetched]);
-      setHasMore(hasNextPage);
+
+      // ✅ dedupe 병합
+      setItems((prev) => {
+        const map = new Map<number, Restaurant>();
+        for (const it of prev) map.set(it.id, it);
+        for (const it of fetched) map.set(it.id, it);
+        return Array.from(map.values());
+      });
+
+      setHasMore(Boolean(hasNextPage));
       if (typeof nextCursor === "number") setCursor(nextCursor);
+      else setHasMore(false);
     } catch (err) {
       console.error("검색 실패:", err);
-      setIsError(true); // 에러 발생시 true
+      setIsError(true);
       setHasMore(false);
     } finally {
       setIsLoading(false);
+      isFetchingRef.current = false;
     }
   }, [initial, cursor, isLoading, hasMore]);
 

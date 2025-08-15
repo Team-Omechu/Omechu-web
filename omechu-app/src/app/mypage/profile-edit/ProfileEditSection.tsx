@@ -51,13 +51,13 @@ export default function ProfileEditSection() {
     try {
       let imageUrl = profileImageUrl;
       if (profileImageFile) {
-        const { uploadUrl, fileUrl } = await getPresignedUrl(
+        const { uploadUrl, publicUrl } = await getPresignedUrl(
           profileImageFile.name,
           profileImageFile.type,
         );
         await uploadToS3(uploadUrl, profileImageFile, { acl: "public-read" });
-        imageUrl = fileUrl;
-        setProfileImageUrl(fileUrl);
+        imageUrl = publicUrl;
+        setProfileImageUrl(publicUrl);
       }
       await updateProfile({
         nickname,

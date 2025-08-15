@@ -66,7 +66,7 @@ export default function FoodStep() {
           <div className="flex flex-col gap-5">
             {["한식", "양식", "중식", "일식", "다른나라 음식"].map((item) => {
               const isSelected = prefer.includes(item);
-              const isDisabled = !isSelected && prefer.length >= 1;
+              const isDisabled = !isSelected && prefer.length >= 2;
 
               return (
                 <button

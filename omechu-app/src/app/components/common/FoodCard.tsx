@@ -118,7 +118,10 @@ export default function FoodCard({
           />
         </button>
         <img
-          src={item.images?.[0] || "/logo/logo.png"}
+          src={
+            item.images?.[0] ||
+            `https://places.googleapis.com/v1/${item.name}/media?maxWidthPx=800&key=${process.env.GOOGLE_MAPS_API_KEY}`
+          }
           alt={item.menus[0] ?? "음식"}
           className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
         />
