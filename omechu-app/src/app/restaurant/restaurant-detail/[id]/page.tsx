@@ -57,6 +57,8 @@ export default function RestaurantDetail() {
         const restaurantData = await getRestaurantDetail(id);
         setRestaurants(restaurantData);
 
+        setIsLiked(restaurantData.zzim ?? false);
+
         // 2. 리뷰 정보는 실패 가능성이 있으므로 별도 처리
         try {
           const reviewResult = await getReviews(id);
@@ -162,8 +164,8 @@ export default function RestaurantDetail() {
               timetable: restaurants.currentOpeningHours,
               address: {
                 road: restaurants.address, // 주소 전체를 도로명처럼 처리
-                jibun: restaurants.address, // 현재 API에는 따로 없음
-                postalCode: "", // 우편번호도 없음
+                jibun: restaurants.addressJibeon, // 현재 API에는 따로 없음
+                postalCode: restaurants.postalCode, // 우편번호도 없음
               },
             }}
             showAddress={showAddress}
