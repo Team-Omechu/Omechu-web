@@ -22,7 +22,7 @@ import RestaurantAddModal from "./RestaurantAddModal/RestaurantAddModal";
 import { suggestionList } from "@/constant/suggestionList";
 import type { Restaurant } from "@/lib/types/restaurant";
 import { useRestaurantList } from "../api/restaurantList";
-import { useRestaurantSearch } from "../api/restaurantSearch"; // ✅ 검색 훅
+import { useRestaurantSearch } from "../api/restaurantSearch";
 
 export default function Restaurant() {
   const keywordList = [
