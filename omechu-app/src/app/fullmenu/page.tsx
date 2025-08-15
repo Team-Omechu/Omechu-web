@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-
 import { useRouter, useSearchParams } from "next/navigation";
 
 import FloatingActionButton from "@/components/common/FloatingActionButton";
@@ -17,17 +17,16 @@ import {
   useGetMenusQuery,
   useGetFilteredMenusQuery,
 } from "@/fullmenu/hooks/useMenuQueries";
-import { Menu } from "@/lib/types/menu";
 
 export default function FullMenu() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mainRef = useRef<HTMLDivElement>(null);
+
   const sortOptions: SortOption[] = [
     { label: "추천 순", value: "recommend" },
     { label: "최근 본 순", value: "recent" },
   ];
-
   type SortValue = SortOption["value"];
 
   const [search, setSearch] = useState("");
@@ -37,7 +36,34 @@ export default function FullMenu() {
   const [isSearched, setIsSearched] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  // Initialize search from URL params on mount
+  // 최근 본 메뉴 관리
+  const RECENT_KEY = "recentViewedMenus";
+  const [recentIds, setRecentIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(RECENT_KEY);
+      if (saved) setRecentIds(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  const recordRecent = useCallback((menuName: string) => {
+    setRecentIds((prev) => {
+      const next = [menuName, ...prev.filter((x) => x !== menuName)].slice(
+        0,
+        100,
+      );
+      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  // 무한스크롤 상태
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 20;
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  // URL → state 복구
   useEffect(() => {
     const queryFromUrl = searchParams.get("query");
     if (queryFromUrl) {
@@ -46,7 +72,7 @@ export default function FullMenu() {
     }
   }, [searchParams]);
 
-  // Debounce search input
+  // 검색 디바운스
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -54,143 +80,152 @@ export default function FullMenu() {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Determine which query to use based on search and filters
-  const hasFilters =
-    Boolean(debouncedSearch.trim()) || selectedFilters.length > 0;
-
-  const filterParams = {
-    ...(debouncedSearch.trim() && { name: debouncedSearch.trim() }),
-    ...(selectedFilters.length > 0 && { allergies: selectedFilters }),
-  };
-
-  // Use filtered API when tags are selected, otherwise use all menus
+  // API 호출
   const hasFilterTags = selectedFilters.length > 0;
-  
-  // Debug logs
-  console.log("Filter state:", { 
-    search, 
-    debouncedSearch, 
-    selectedFilters,
-    hasFilterTags,
-    tagsParam: selectedFilters.join(','),
-    activeQueryType: hasFilterTags ? 'filtered' : 'all'
-  });
-  
   const menusQuery = useGetMenusQuery(!hasFilterTags ? {} : undefined);
   const filteredMenusQuery = useGetFilteredMenusQuery(
-    { tags: selectedFilters.join(',') },
-    hasFilterTags
+    { tags: selectedFilters.join(",") },
+    hasFilterTags,
   );
 
   const activeQuery = hasFilterTags ? filteredMenusQuery : menusQuery;
 
-  // Get menu data from API response with memoization
+  // API 응답 데이터
   const rawMenus = useMemo(() => {
     const responseData = activeQuery.data;
-    console.log("Raw API response:", responseData);
-
-    // For filtered API, response is direct array
     if (Array.isArray(responseData)) {
       return responseData;
-    } 
-    // For regular menu API, response has success property
-    else if (Array.isArray(responseData?.success)) {
+    } else if (Array.isArray(responseData?.success)) {
       return responseData.success;
     }
     return [];
   }, [activeQuery.data]);
 
-  // Client-side search and sorting logic
+  // 검색 + 정렬
   const allMenus = useMemo(() => {
     if (!rawMenus.length) return [];
-
-    // First filter by search term if exists
     let filtered = rawMenus;
+
     if (debouncedSearch.trim()) {
-      filtered = rawMenus.filter(menu => 
-        menu.name.toLowerCase().includes(debouncedSearch.trim().toLowerCase())
+      filtered = rawMenus.filter((menu) =>
+        menu.name.toLowerCase().includes(debouncedSearch.trim().toLowerCase()),
       );
     }
 
-    // Then sort
-    const sorted = [...filtered].sort((a, b) => {
-      if (sortMode === "recommend") {
-        // 추천순: 이름순 정렬 (가나다 순)
-        return a.name.localeCompare(b.name, "ko");
-      } else if (sortMode === "recent") {
-        // 최근 본 순: 랜덤 정렬로 구현 (매번 다른 순서)
-        return Math.random() - 0.5;
-      }
-      return 0;
-    });
+    if (sortMode === "recommend") {
+      // 랜덤 정렬
+      return [...filtered].sort(() => Math.random() - 0.5);
+    }
+    if (sortMode === "recent") {
+      // 최근 본 순서 정렬
+      const rank = new Map<string, number>();
+      recentIds.forEach((name, idx) => rank.set(name, idx));
+      const originalIndex = new Map<string, number>();
+      filtered.forEach((m, idx) => originalIndex.set(m.name, idx));
 
-    console.log("Filtered menus:", filtered.length, "of", rawMenus.length);
-    return sorted;
-  }, [rawMenus, sortMode, debouncedSearch]);
+      return [...filtered].sort((a, b) => {
+        const ra = rank.has(a.name) ? rank.get(a.name)! : Infinity;
+        const rb = rank.has(b.name) ? rank.get(b.name)! : Infinity;
+        if (ra !== rb) return ra - rb;
+        return (
+          (originalIndex.get(a.name) ?? 0) - (originalIndex.get(b.name) ?? 0)
+        );
+      });
+    }
+
+    return filtered;
+  }, [rawMenus, sortMode, debouncedSearch, recentIds]);
+
+  // 현재 페이지까지 보여줄 데이터
+  const visibleMenus = useMemo(() => {
+    return allMenus.slice(0, page * itemsPerPage);
+  }, [allMenus, page]);
+
+  // 무한스크롤
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (!target.isIntersecting) return;
+      if (page * itemsPerPage < allMenus.length) {
+        setPage((prev) => prev + 1);
+      }
+    },
+    [page, allMenus.length],
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      rootMargin: "0px 0px 160px 0px",
+      threshold: 0,
+    });
+    if (loaderRef.current) observer.observe(loaderRef.current);
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [observerCallback]);
 
   const scrollToTop = () => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // 무한 스크롤은 백엔드에서 페이지네이션을 지원하지 않으므로 제거
-
   const handleSearchIconClick = () => {
     setIsSearched(true);
-    // Don't change URL, just trigger search with current search state
     console.log("Search triggered with:", search);
   };
 
   return (
-    <>
-      <main ref={mainRef} className="min-h-screen p-4">
-        <SearchBar
-          placeholder="음식명을 검색하세요"
-          inputValue={search}
-          setInputValue={setSearch}
-          onSearch={handleSearchIconClick}
-          suggestionList={suggestionList}
-        />
+    <main ref={mainRef} className="min-h-screen p-4">
+      <SearchBar
+        placeholder="음식명을 검색하세요"
+        inputValue={search}
+        setInputValue={setSearch}
+        onSearch={handleSearchIconClick}
+        suggestionList={suggestionList}
+      />
 
-        <FilterSection
-          tags={selectedFilters}
-          onRemove={(tag) =>
-            setSelectedFilters((prev) => prev.filter((t) => t !== tag))
-          }
-          onOpen={() => setIsFilterOpen(true)}
-        />
+      <FilterSection
+        tags={selectedFilters}
+        onRemove={(tag) =>
+          setSelectedFilters((prev) => prev.filter((t) => t !== tag))
+        }
+        onOpen={() => setIsFilterOpen(true)}
+      />
 
-        {isFilterOpen && (
-          <ModalWrapper>
-            <FilterModal
-              selected={selectedFilters}
-              onClose={() => setIsFilterOpen(false)}
-              onApply={(newFilters) => setSelectedFilters(newFilters)}
-            />
-          </ModalWrapper>
-        )}
+      {isFilterOpen && (
+        <ModalWrapper>
+          <FilterModal
+            selected={selectedFilters}
+            onClose={() => setIsFilterOpen(false)}
+            onApply={(newFilters) => setSelectedFilters(newFilters)}
+          />
+        </ModalWrapper>
+      )}
 
-        <hr className="my-1 border-black" />
+      <hr className="my-1 border-black" />
 
-        <SortSelector
-          options={sortOptions}
-          selected={sortMode}
-          onSelect={setSortMode}
-        />
+      <SortSelector
+        options={sortOptions}
+        selected={sortMode}
+        onSelect={setSortMode}
+      />
 
-        <FoodListSection
-          items={allMenus}
-          search={debouncedSearch}
-          isSearched={isSearched}
-          isLoading={activeQuery.isLoading}
-          onClickItem={(menuName) =>
-            router.push(`/fullmenu/menu-detail?menuName=${menuName}`)
-          }
-        />
+      <FoodListSection
+        items={visibleMenus}
+        search={debouncedSearch}
+        isSearched={isSearched}
+        isLoading={activeQuery.isLoading}
+        onClickItem={(menuName) => {
+          recordRecent(menuName);
+          router.push(`/fullmenu/menu-detail?menuName=${menuName}`);
+        }}
+      />
 
-        {/* 무한 스크롤 제거 */}
+      <div ref={loaderRef} className="h-[1px]" />
 
-        <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
-      </main>
-    </>
+      {activeQuery.isLoading && <LoadingIndicator />}
+
+      <FloatingActionButton onClick={scrollToTop} className="bottom-24" />
+    </main>
   );
 }
