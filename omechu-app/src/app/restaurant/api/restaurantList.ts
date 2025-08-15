@@ -101,6 +101,8 @@ function mapApiToRestaurantDetail(apiData: any): RestaurantDetail {
     id: Number(apiData.id),
     name: apiData.name,
     address: apiData.address,
+    addressJibeon: apiData.address_jibeon,
+    postalCode: apiData.postal_code,
     rating: apiData.rating,
     currentOpeningHours: apiData.currentOpeningHours ?? [],
     googlePlaceId: apiData.googlePlaceId,
@@ -108,6 +110,7 @@ function mapApiToRestaurantDetail(apiData: any): RestaurantDetail {
       id: Number(img.id),
       link: img.link,
     })),
+    zzim: apiData.zzim ?? false,
   };
 }
 
