@@ -30,8 +30,6 @@ export default function MenuDetailPage() {
 
   const detailMenu: MenuDetail | undefined = menuDetailData;
 
-  console.log(isSuccess);
-
   useEffect(() => {
     if (!decodeMenuId) return;
     mutate(decodeMenuId);
