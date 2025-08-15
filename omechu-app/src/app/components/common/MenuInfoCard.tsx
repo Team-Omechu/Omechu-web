@@ -3,7 +3,7 @@
 import { MenuDetail } from "@/lib/types/menu";
 import React, { useState } from "react";
 import Toast from "@/components/common/Toast";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 interface MenuInfoProps {
   MenuItem?: MenuDetail;
@@ -12,9 +12,12 @@ interface MenuInfoProps {
 export default function MenuInfo({ MenuItem }: MenuInfoProps) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const router = useRouter();
 
   const handleRecipeClick = () => {
-    router.push(`/fullmenu/menu-detail${MenuItem?.name}/recipe`);
+    router.push(
+      `/fullmenu/menu-detail/recipe-detail?menuName=${MenuItem?.name}`,
+    );
   };
 
   // 비타민 배열을 띄어쓰기로 구분하여 표시
