@@ -70,8 +70,7 @@ export default function MenuDetailPage() {
         setTimeout(() => setShowToast(false), 2000);
         sessionStorage.setItem(key, "done");
       },
-      onError: () => {
-      },
+      onError: () => {},
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decodeMenuId, shouldRecord]); // searchParams 객체 자체는 deps에서 제외
