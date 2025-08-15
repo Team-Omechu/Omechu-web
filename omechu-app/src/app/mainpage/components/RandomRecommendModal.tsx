@@ -59,13 +59,13 @@ export default function RandomRecommendModal({
       </div>
       <div className="flex justify-center gap-4">
         <button
-          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive dark:border-none dark:bg-grey-dark dark:hover:bg-grey-darkHover dark:active:bg-grey-darkActive"
+          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-grey-darkHover bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive dark:border-none dark:bg-grey-dark dark:hover:bg-grey-darkHover dark:active:bg-grey-darkActive"
           onClick={handleRetry}
         >
           {retryText}
         </button>
         <button
-          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-grey-darkHover bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
           onClick={handleConfirm}
         >
           {confirmText}

@@ -4,7 +4,7 @@ type SectionHeaderProps = {
 
 export default function SectionHeader({ titles }: SectionHeaderProps) {
   return (
-    <div className="grid grid-cols-3 border-b border-gray-300">
+    <div className="grid grid-cols-3 border-b border-grey-darkHover">
       {titles.map((title, i) => (
         <div
           key={i}

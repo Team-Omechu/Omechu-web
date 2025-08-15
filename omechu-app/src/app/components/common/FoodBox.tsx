@@ -22,7 +22,7 @@ export default function FoodBox({
   console.log(`[FoodBox] title: ${title}, imageUrl: ${imageUrl}`);
   return (
     <div
-      className="relative flex h-[130px] w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border-[1px] border-black bg-white py-3 transition-transform duration-300 hover:scale-110"
+      className="relative flex h-[130px] w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border-[1px] border-grey-darkHover bg-white py-3 transition-transform duration-300 hover:scale-110"
       onClick={onClick}
     >
       {/* 추천 제외 || 복원 버튼 */}

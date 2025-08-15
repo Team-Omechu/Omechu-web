@@ -19,7 +19,7 @@ export default function ReportModal({ onClick, onReport }: ReportModalProps) {
   ];
 
   return (
-    <section className="relative flex h-fit w-80 flex-col items-center gap-5 rounded-2xl border border-[#393939] bg-white px-7 py-10">
+    <section className="relative flex h-fit w-80 flex-col items-center gap-5 rounded-2xl border border-grey-darkHover bg-white px-7 py-10">
       {/* 나가기 버튼 */}
       <div className="absolute right-4 top-4">
         <button onClick={onClick}>

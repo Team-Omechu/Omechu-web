@@ -13,7 +13,7 @@ export default function RatingSelector({
         <span className="font-bold">총점</span>을 매겨주세요! 얼마나
         만족하셨나요?*
       </p>
-      <div className="flex justify-center gap-1 rounded-md border border-gray-700 bg-white text-2xl text-[#1F9BDA]">
+      <div className="flex justify-center gap-1 rounded-md border border-grey-darkHover bg-white text-2xl text-[#1F9BDA]">
         {[...Array(5)].map((_, i) => (
           <button key={i} onClick={() => setRating(i + 1)}>
             {i < rating ? "★" : "☆"}

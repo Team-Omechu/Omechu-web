@@ -34,7 +34,7 @@ export default function ImageUploader({
               e.stopPropagation();
               onImageRemove();
             }}
-            className="absolute right-2 top-2 rounded-full bg-gray-200 px-1 text-base font-extrabold text-black"
+            className="absolute right-2 top-2 rounded-full bg-gray-200 px-1 text-base font-extrabold text-[#393939]"
           >
             ×
           </button>

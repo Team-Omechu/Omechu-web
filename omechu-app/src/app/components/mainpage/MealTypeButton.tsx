@@ -19,10 +19,10 @@ const MealTypeGroup = ({ selectedItems, onToggle }: Props) => {
         {items.map((item) => (
           <button
             key={item}
-            className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-black text-center text-[0.875rem] font-normal leading-normal ${
+            className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-grey-darkHover text-center text-[0.875rem] font-normal leading-normal ${
               selectedItems.includes(item)
                 ? "border-[#FB4746] bg-[#FB4746] text-white"
-                : "border-[#FB4746] bg-white text-black"
+                : "border-[#FB4746] bg-white text-[#393939]"
             }`}
             onClick={() => onToggle(item)}
             disabled={isDisabled(item)}

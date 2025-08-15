@@ -99,7 +99,7 @@ export default function BottomNav() {
             >
               <Image src={iconSrc} alt={item.imgAlt} width={26} height={26} />
               <span
-                className={`text-xs font-medium ${isActive ? "text-black dark:text-white" : "text-gray-500"}`}
+                className={`text-xs font-medium ${isActive ? "text-[#393939] dark:text-white" : "text-gray-500"}`}
               >
                 {item.title}
               </span>

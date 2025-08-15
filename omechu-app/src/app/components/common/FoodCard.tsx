@@ -77,7 +77,7 @@ export default function FoodCard({
 
   return (
     <div
-      className="flex items-start justify-between rounded-xl border border-black bg-white p-3 shadow-md"
+      className="flex items-start justify-between rounded-xl border border-grey-darkHover bg-white p-3 shadow-md"
       onClick={onClick}
     >
       <div className="flex-1">
@@ -123,7 +123,7 @@ export default function FoodCard({
             `https://places.googleapis.com/v1/${item.name}/media?maxWidthPx=800&key=${process.env.GOOGLE_MAPS_API_KEY}`
           }
           alt={item.menus[0] ?? "음식"}
-          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-gray-200 object-contain"
+          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-contain"
         />
       </div>
     </div>

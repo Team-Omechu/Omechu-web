@@ -35,7 +35,7 @@ export default function Review({
   isOptionOpen = false,
 }: ReviewProps) {
   return (
-    <section className="flex h-fit w-full flex-col gap-2 rounded-xl border-[1px] border-[#393939] bg-white p-4">
+    <section className="flex h-fit w-full flex-col gap-2 rounded-xl border-[1px] border-grey-darkHover bg-white p-4">
       {/* 프로필사진, 닉네임, 작성일 | 추천 버튼, 설정버튼 */}
       <div className="relative flex justify-between">
         <div className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export default function Review({
         {tags?.map((item, tagIdx) => (
           <div
             key={`tag-${id}-${tagIdx}`}
-            className="font-nomal w-fit rounded-3xl border-[1px] border-[#393939] bg-white px-3 pb-0.5 pt-1 text-sm duration-300 hover:scale-105"
+            className="font-nomal w-fit rounded-3xl border-[1px] border-grey-darkHover bg-white px-3 pb-0.5 pt-1 text-sm duration-300 hover:scale-105"
           >
             {item}
           </div>

@@ -27,10 +27,10 @@ export default function AddressSection({
           placeholder="주소지를 입력해 주세요"
           value={address}
           readOnly
-          className={`flex-1 whitespace-normal break-keep rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-800 ${
+          className={`flex-1 whitespace-normal break-keep rounded-md border border-grey-darkHover bg-gray-200 px-3 py-2 text-sm text-gray-800 ${
             address
-              ? "border-gray-300 bg-white text-gray-800"
-              : "cursor-not-allowed border-gray-300 bg-gray-200 text-gray-400"
+              ? "border-grey-darkHover bg-white text-gray-800"
+              : "cursor-not-allowed border-grey-darkHover bg-gray-200 text-gray-400"
           }`}
         />
         <button
@@ -49,8 +49,8 @@ export default function AddressSection({
         disabled={!address}
         className={`mb-6 w-full rounded-md border px-3 py-2 text-sm ${
           address
-            ? "border-gray-300 bg-white text-gray-800"
-            : "cursor-not-allowed border-gray-300 bg-gray-200 text-gray-400"
+            ? "border-grey-darkHover bg-white text-gray-800"
+            : "cursor-not-allowed border-grey-darkHover bg-gray-200 text-gray-400"
         }`}
       />
       {isSearchModalOpen && (

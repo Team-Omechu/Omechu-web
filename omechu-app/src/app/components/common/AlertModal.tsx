@@ -95,7 +95,7 @@ export default function AlertModal({
             {showCancelButton && (
               <button
                 onClick={onClose}
-                className="h-10 flex-1 rounded-[30px] border-2 border-black bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive"
+                className="h-10 flex-1 rounded-[30px] border-2 border-grey-darkHover bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive"
               >
                 {cancelText}
               </button>
