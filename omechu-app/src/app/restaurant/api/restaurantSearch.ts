@@ -52,8 +52,18 @@ export async function searchRestaurants(p: SearchParams) {
   // 순서대로 URL 직접 생성
   const query = new URLSearchParams();
   if (menu) query.append("menu", menu);
-  if (tag) query.append("tag", tag);
-  if (location) query.append("location", location);
+  if (Array.isArray(p.tag)) {
+    p.tag.forEach((t) => {
+      const trimmed = t.trim();
+      if (trimmed) query.append("tag", trimmed);
+    });
+  }
+  if (Array.isArray(p.location)) {
+    p.location.forEach((loc) => {
+      const trimmed = loc.trim();
+      if (trimmed) query.append("location", trimmed);
+    });
+  }
   query.append("cursor", cursor);
   query.append("limit", limit);
 
