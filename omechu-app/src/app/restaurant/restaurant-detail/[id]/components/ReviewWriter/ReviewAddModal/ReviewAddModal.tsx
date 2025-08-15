@@ -14,6 +14,7 @@ import TagSelector from "./TagSelector";
 import TextReview from "./TextReview";
 import { useMutation } from "@tanstack/react-query";
 import { postReview, ReviewRequest } from "../../../api/review";
+import { uploadImageToS3 } from "@/restaurant/api/uploadImage";
 
 interface ReviewModalProps {
   restaurantId: number;
@@ -41,27 +42,43 @@ export default function ReviewAddModal({
 
   const { mutate: submitReview, isPending, isSuccess } = usePostReview();
 
-  const handleSubmit = () => {
-    submitReview(
-      {
-        id: restaurantId,
-        data: {
-          rating,
-          tag: selectedTags,
-          reviewText: comment,
-          imageUrl: [],
+  const handleSubmit = async () => {
+    if (!isFormValid || isPending) return;
+
+    try {
+      // 이미지 업로드
+      let uploadedUrls: string[] = [];
+      if (images.length > 0) {
+        uploadedUrls = await Promise.all(
+          images.map(async (file) => await uploadImageToS3(file)),
+        );
+      }
+
+      // 리뷰 등록
+      submitReview(
+        {
+          id: restaurantId,
+          data: {
+            rating,
+            tag: selectedTags,
+            reviewText: comment,
+            imageUrl: uploadedUrls, // ✅ 업로드된 S3 URL 배열 전달
+          },
         },
-      },
-      {
-        onSuccess: () => {
-          setShowConfirmModal(true);
+        {
+          onSuccess: () => {
+            setShowConfirmModal(true);
+          },
+          onError: (err) => {
+            console.error("리뷰 등록 실패", err);
+            alert("리뷰 등록에 실패했습니다.");
+          },
         },
-        onError: (err) => {
-          console.error("리뷰 등록 실패", err);
-          alert("리뷰 등록에 실패했습니다.");
-        },
-      },
-    );
+      );
+    } catch (error) {
+      console.error("이미지 업로드 실패", error);
+      alert("이미지 업로드에 실패했습니다.");
+    }
   };
 
   const isFormValid = rating > 0 && selectedTags.length > 0;
