@@ -32,14 +32,18 @@ export default function ProfileSection() {
 
   return (
     <section className="flex flex-col items-center gap-1 overflow-y-scroll scrollbar-hide">
-      {/* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */}
-      <img
-        src={profile?.profileImageUrl || "/profile/profile_default_img.svg"}
-        width={100}
-        height={100}
-      />
-      <div className="font-md text-xl">{profile?.nickname || "-"}</div>
-      <div className="text-base font-normal text-grey-normalActive">
+      <div className="relative h-[130px] w-[130px] overflow-hidden rounded-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={profile?.profileImageUrl || "/profile/profile_default_img.svg"}
+          alt="프로필 이미지"
+          className="h-full w-full object-cover"
+        />
+      </div>
+      <div className="mt-3 text-2xl font-semibold">
+        {profile?.nickname || "-"}
+      </div>
+      <div className="text-lg font-normal text-grey-normalActive">
         {profile?.email || ""}
       </div>
       {modalOpen && (
