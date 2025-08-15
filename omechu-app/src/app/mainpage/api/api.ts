@@ -6,13 +6,13 @@ import {
   RestaurantRequest,
 } from "@/constant/mainpage/RestaurantData";
 import {
-  MenuDetail,
   MenuListResponse,
   RandomMenu,
   RandomMenuRequest,
   RecommendMenuRequest,
 } from "@/constant/mainpage/resultData";
 import axiosInstance from "@/lib/api/axios";
+import { MenuDetail } from "@/lib/types/menu";
 
 export const getRecommendMenu = async (
   request: RecommendMenuRequest,

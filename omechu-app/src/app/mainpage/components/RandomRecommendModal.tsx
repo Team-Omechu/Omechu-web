@@ -1,6 +1,4 @@
 import Image from "next/image";
-import useGetRecommendMenu from "../hooks/useGetRecommendMenu";
-import { MenuItem } from "@/constant/mainpage/resultData";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useRouter } from "next/navigation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";

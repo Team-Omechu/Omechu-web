@@ -1,12 +1,13 @@
 "use client";
 
 import { Suspense } from "react";
-
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
-import { menus1 } from "@/constant/mainpage/resultData";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import { useGetMenuInfoQuery } from "@/fullmenu/hooks/useMenuQueries";
+import type { MenuDetail } from "@/lib/types/menu";
 
 export default function RecipeDetail() {
   return (
@@ -15,31 +16,102 @@ export default function RecipeDetail() {
     </Suspense>
   );
 }
+
 function RecipeDetailClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const menuId = searchParams.get("menuId");
-  console.log("menuId →", menuId);
+  const menuName = searchParams.get("menuName");
+  console.log("menuName →", menuName);
 
-  const menu = menus1.find((item) => item.id === Number(menuId));
+  const {
+    data: menuResponse,
+    isLoading,
+    error,
+  } = useGetMenuInfoQuery(menuName || "", !!menuName);
 
-  if (!menu) {
-    return <div className="p-4">존재하지 않는 메뉴입니다.</div>;
+  // API 응답 구조에서 메뉴 데이터 추출
+  let menu: MenuDetail | undefined;
+  if (menuResponse?.success) {
+    menu = menuResponse.success;
+  } else if (
+    menuResponse &&
+    typeof menuResponse === "object" &&
+    "name" in menuResponse
+  ) {
+    menu = menuResponse as unknown as MenuDetail;
   }
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <>
+        <Header
+          title=""
+          leftChild={
+            <button onClick={() => router.back()}>
+              <Image
+                src={"/arrow/left-header-arrow.svg"}
+                alt="뒤로가기"
+                width={22}
+                height={22}
+              />
+            </button>
+          }
+        />
+        <main className="min-h-screen bg-main-normal p-4 pt-8">
+          <div className="mt-20">
+            <LoadingIndicator />
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  // 에러 또는 데이터 없음
+  if (error || !menu) {
+    return (
+      <>
+        <Header
+          title=""
+          leftChild={
+            <button onClick={() => router.back()}>
+              <Image
+                src={"/arrow/left-header-arrow.svg"}
+                alt="뒤로가기"
+                width={22}
+                height={22}
+              />
+            </button>
+          }
+        />
+        <main className="min-h-screen bg-main-normal p-4 pt-8">
+          <p className="mt-20 text-center text-gray-500">
+            해당 메뉴를 찾을 수 없습니다.
+          </p>
+        </main>
+      </>
+    );
+  }
+
+  // 유튜브 watch 링크를 embed로 변환
+  const getEmbedUrl = (url?: string) => {
+    if (!url) return null;
+    if (url.includes("youtube.com/watch?v=")) {
+      const videoId = url.split("v=")[1]?.split("&")[0];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return url; // 이미 embed 형식이거나 다른 플랫폼
+  };
 
   return (
     <>
       <Header
-        title={""}
+        title=""
         leftChild={
-          <button
-            onClick={() => {
-              router.back();
-            }}
-          >
+          <button onClick={() => router.back()}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"뒤로가기"}
+              alt="뒤로가기"
               width={22}
               height={22}
             />
@@ -47,72 +119,38 @@ function RecipeDetailClient() {
         }
       />
 
-      <main className="min-h-screen bg-main-normal p-5 pt-8 text-sm text-black">
-        <h1 className="mb-2 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
-          {menu.menu} 레시피
+      <main className="min-h-screen p-5 pt-8 text-sm text-black">
+        <h1 className="mb-12 mt-4 text-center text-2xl font-extrabold text-[#2D9CDB]">
+          {menu.name} 레시피
         </h1>
 
-        <div className="mx-auto mb-6 flex h-36 w-36 justify-center">
-          <Image
-            src="/logo/logo.png"
-            alt={`${menu.menu}`}
-            className="rounded object-contain"
-            width={144}
-            height={144}
-          />
-        </div>
-
-        <section className="px-4 pb-4">
-          <h2 className="mb-2 text-base font-semibold">재료</h2>
-          <p className="text-[13px] leading-5">
-            된장국 두부 20g, 애느타리버섯 20g, 감자 10g, 양파 10g, 대파 10g,
-            된장 5g(1작은술), 물 300ml(1½컵)
+        {menu.recipe_link_source && (
+          <p className="mb-2 pr-1 text-end text-sm text-gray-400">
+            출처 : {menu.recipe_link_source}
           </p>
-        </section>
+        )}
 
-        <hr className="mb-4 border-gray-400" />
-
-        <section className="px-4 text-[13px]">
-          <h2 className="mb-3 text-base font-semibold">요리법</h2>
-
-          {[
-            { text: "감자, 양파를 잘 익도록 얇게 썬다." },
-            { text: "애느타리버섯은 썰어 달궈진 팬에 굽는다." },
-            { text: "대파를 송송 썬다." },
-            {
-              text: "냄비에 물을 붓고 된장을 푼 뒤 감자, 양파, 두부를 넣어 재료가 투명해지게 끓인다.",
-              image: "/step1.jpg",
-            },
-            {
-              text: "된장국의 재료를 건져서 국물 한 국자와 믹서에 넣어 간 다음 된장국에 다시 넣어 한 번 더 끓인다.",
-              image: "/step2.jpg",
-            },
-            {
-              text: "구운 애느타리버섯과 대파를 국에 넣어 끓인 후 그릇에 담는다.",
-              image: "/step3.jpg",
-            },
-          ].map((step, index) => (
-            <div key={index} className="mb-6">
-              <p className="flex items-start gap-2">
-                <span className="mt-0.5 h-fit rounded bg-[#2D9CDB] px-1.5 text-xs text-white">
-                  {index + 1}
-                </span>
-                <span>{step.text}</span>
-              </p>
-              {step.image && (
-                <div className="mt-2 flex justify-center">
-                  <Image
-                    src={"/logo/logo.png"}
-                    alt={`step-${index + 1}`}
-                    width={200}
-                    height={150}
-                    className="rounded-md"
-                  />
-                </div>
-              )}
+        {/* 레시피 영상 */}
+        {menu.recipe_link && (
+          <section className="mb-6">
+            <div className="mx-auto aspect-video w-full max-w-md overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+              <iframe
+                src={getEmbedUrl(menu.recipe_link) || ""}
+                title={menu.recipe_video_name || "레시피 영상"}
+                width="100%"
+                height="100%"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
-          ))}
-        </section>
+
+            {menu.recipe_video_name && (
+              <p className="mt-4 text-center text-base text-gray-500">
+                &lt;{menu.recipe_video_name}&gt;
+              </p>
+            )}
+          </section>
+        )}
       </main>
     </>
   );
