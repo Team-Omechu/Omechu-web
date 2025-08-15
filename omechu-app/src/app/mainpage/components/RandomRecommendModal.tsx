@@ -2,9 +2,7 @@ import Image from "next/image";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useRouter } from "next/navigation";
 import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
-import usePostMukburim from "../hooks/usePostMukburim";
 import useGetRandomMenu from "../hooks/useGetRandomMenu";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 type ModalProps = {
   confirmText: string;
@@ -18,8 +16,6 @@ export default function RandomRecommendModal({
 }: ModalProps) {
   const router = useRouter();
   const { data, isLoading, isRefetching, refetch } = useGetRandomMenu(); // 로딩이랑 리패칭 추가하기
-  const { mutate } = usePostMukburim();
-  const { addException } = useQuestionAnswerStore();
 
   const menu = data;
   const { setKeyword } = useLocationAnswerStore();
