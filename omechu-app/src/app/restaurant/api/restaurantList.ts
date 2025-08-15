@@ -1,6 +1,5 @@
 import axiosInstance from "@/lib/api/axios";
 import { Restaurant, RestaurantDetail } from "@/lib/types/restaurant";
-import { is } from "date-fns/locale";
 import { useCallback, useRef, useState } from "react";
 
 interface OpeningHour {
