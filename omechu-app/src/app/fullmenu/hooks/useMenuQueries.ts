@@ -1,9 +1,7 @@
 import {
   useQuery,
-  useInfiniteQuery,
   useMutation,
   type UseQueryResult,
-  type UseInfiniteQueryResult,
   type UseMutationResult,
 } from "@tanstack/react-query";
 import {
@@ -15,7 +13,6 @@ import {
   type MenusResponse,
   type MenuInfoResponse,
 } from "../api/menu";
-import { Menu, MenuDetail } from "@/lib/types/menu";
 
 export const useGetMenusQuery = (
   params?: FilterParams,

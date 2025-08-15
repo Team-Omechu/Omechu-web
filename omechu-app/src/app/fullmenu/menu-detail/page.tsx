@@ -3,12 +3,7 @@
 import { Suspense } from "react";
 
 import Image from "next/image";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
@@ -25,7 +20,6 @@ export default function MenuDetail() {
 }
 function MenuDetailClient() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const menuName = searchParams.get("menuName");
   console.log("menuName →", menuName);
