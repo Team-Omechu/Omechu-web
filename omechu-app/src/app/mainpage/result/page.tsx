@@ -63,7 +63,7 @@ export default function ResultPage() {
   const handleNext = () => {
     if (openMenu != null) {
       setKeyword(openMenu);
-      router.push(`/mainpage/result/${openMenu}`);
+      router.push(`/mainpage/result/${encodeURIComponent(openMenu)}?record=1`);
     } else {
       triggerToast("메뉴를 선택해주세요.");
     }

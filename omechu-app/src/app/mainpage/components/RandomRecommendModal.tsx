@@ -26,7 +26,7 @@ export default function RandomRecommendModal({
       return;
     }
     setKeyword(menu.name);
-    router.push(`/mainpage/result/${menu.name}`);
+    router.push(`/mainpage/result/${encodeURIComponent(menu.name)}?record=1`);
   };
 
   const handleRetry = () => {
@@ -37,7 +37,7 @@ export default function RandomRecommendModal({
     return <MainLoading />;
   }
   return (
-    <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl dark:bg-grey-normal">
+    <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl">
       <button className="absolute right-4 top-4" onClick={onClose}>
         <Image src={"/x/close_big.svg"} alt="취소버튼" width={18} height={18} />
       </button>
@@ -56,7 +56,7 @@ export default function RandomRecommendModal({
       </div>
       <div className="flex justify-center gap-4">
         <button
-          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive dark:border-none dark:bg-grey-dark dark:hover:bg-grey-darkHover dark:active:bg-grey-darkActive"
+          className="flex-shrik-0 h-[45px] w-[100px] rounded-md border border-black bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive"
           onClick={handleRetry}
         >
           {retryText}
