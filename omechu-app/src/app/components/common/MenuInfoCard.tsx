@@ -3,6 +3,7 @@
 import { MenuDetail } from "@/lib/types/menu";
 import React, { useState } from "react";
 import Toast from "@/components/common/Toast";
+import router from "next/router";
 
 interface MenuInfoProps {
   MenuItem?: MenuDetail;
@@ -13,9 +14,7 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
   const [toastMessage, setToastMessage] = useState("");
 
   const handleRecipeClick = () => {
-    setToastMessage("기능이 준비되지 않았습니다.");
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
+    router.push(`/fullmenu/menu-detail${MenuItem?.name}/recipe`);
   };
 
   // 비타민 배열을 띄어쓰기로 구분하여 표시
@@ -25,6 +24,14 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
     }
     return vitamins;
   };
+
+  const formatAllergics = (allergics: any) => {
+    if (Array.isArray(allergics)) {
+      return allergics.join(" ");
+    }
+    return allergics;
+  };
+
   return (
     <div>
       <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
@@ -51,7 +58,9 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
             </div>
             <div className="flex justify-between">
               <span>비타민</span>
-              <span className="text-[#828282]">{formatVitamins(MenuItem?.vitamin)}</span>
+              <span className="text-[#828282]">
+                {formatVitamins(MenuItem?.vitamin)}
+              </span>
             </div>
           </div>
 
@@ -59,13 +68,13 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
-          <p className="mb-4 text-sm">{MenuItem?.allergic}</p>
+          <p className="mb-4 text-sm">{formatAllergics(MenuItem?.allergic)}</p>
 
           <hr className="my-4 border-gray-200" />
 
           {/* 레시피 */}
           <p className="mb-1 font-medium text-grey-normal">레시피</p>
-          <button 
+          <button
             onClick={handleRecipeClick}
             className="mb-3 text-sm text-grey-darker"
           >
@@ -74,7 +83,7 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
           </button>
         </div>
       </div>
-      
+
       {/* Toast */}
       <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
