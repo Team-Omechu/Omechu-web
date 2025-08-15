@@ -14,4 +14,7 @@ export interface MenuDetail {
   vitamin: number;
   allergic: string;
   image_link: string | null;
+  recipe_link: string | null;
+  recipe_link_source: string | null;
+  recipe_video_name: string | null;
 }
