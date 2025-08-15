@@ -1,7 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter, useParams, useSearchParams, usePathname } from "next/navigation";
+import {
+  useRouter,
+  useParams,
+  useSearchParams,
+  usePathname,
+} from "next/navigation";
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
@@ -38,7 +43,9 @@ export default function MenuDetailPage() {
     const next = new URLSearchParams(searchParams.toString());
     if (next.has("record")) {
       next.delete("record");
-      router.replace(next.size ? `${pathname}?${next}` : pathname, { scroll: false });
+      router.replace(next.size ? `${pathname}?${next}` : pathname, {
+        scroll: false,
+      });
     }
   };
 

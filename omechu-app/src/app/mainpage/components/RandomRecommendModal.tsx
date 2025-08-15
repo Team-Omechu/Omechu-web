@@ -26,9 +26,7 @@ export default function RandomRecommendModal({
       return;
     }
     setKeyword(menu.name);
-    router.push(
-  `/mainpage/result/${encodeURIComponent(menu.name)}?record=1`
-);
+    router.push(`/mainpage/result/${encodeURIComponent(menu.name)}?record=1`);
   };
 
   const handleRetry = () => {
@@ -39,7 +37,7 @@ export default function RandomRecommendModal({
     return <MainLoading />;
   }
   return (
-    <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl ">
+    <div className="relative flex h-[300px] w-[300px] flex-col justify-between rounded-[20px] bg-white p-5 shadow-xl">
       <button className="absolute right-4 top-4" onClick={onClose}>
         <Image src={"/x/close_big.svg"} alt="취소버튼" width={18} height={18} />
       </button>
