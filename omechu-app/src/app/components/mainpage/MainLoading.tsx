@@ -17,7 +17,7 @@ const MainLoading = () => {
       <div
         className="absolute left-0 top-0 h-full w-full bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/image/loading-bg.svg')",
+          backgroundImage: "url('/image/loading-bg.png')",
         }}
       >
         <div
