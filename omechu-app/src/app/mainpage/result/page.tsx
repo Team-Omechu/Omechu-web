@@ -89,7 +89,9 @@ export default function ResultPage() {
         prev.filter((menu) => menu.menu !== excludeMenu),
       );
       if (openMenu === excludeMenu) setOpenMenu(null);
-      exceptMenu({ menuName: excludeMenu });
+      exceptMenu({ menuName: excludeMenu }).catch(() => {
+        triggerToast("메뉴 제외에 실패했습니다.");
+      });
     }
     setShowModal(false);
     setExcludeMenu(null);
