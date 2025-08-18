@@ -101,7 +101,7 @@ const ProfileStep = () => {
           />
           <button
             type="button"
-            className="text-center text-sm font-normal text-[#48528E] underline dark:text-[#48528E]"
+            className="text-center text-sm font-normal text-secondary-normal underline"
             onClick={handleImageDelete}
             disabled={isUploading}
           >
