@@ -89,7 +89,7 @@ export default function ResultPage() {
         prev.filter((menu) => menu.menu !== excludeMenu),
       );
       if (openMenu === excludeMenu) setOpenMenu(null);
-      exceptMenu({menuName:excludeMenu})
+      exceptMenu({ menuName: excludeMenu });
     }
     setShowModal(false);
     setExcludeMenu(null);
