@@ -18,6 +18,7 @@ import { useAuthStore } from "@/lib/stores/auth.store";
 import LoginPromptModal2 from "../example_testpage/components/LoginPromptModal2";
 import Toast from "@/components/common/Toast";
 import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { exceptMenu } from "@/mypage/api/recommend";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -88,6 +89,7 @@ export default function ResultPage() {
         prev.filter((menu) => menu.menu !== excludeMenu),
       );
       if (openMenu === excludeMenu) setOpenMenu(null);
+      exceptMenu({menuName:excludeMenu})
     }
     setShowModal(false);
     setExcludeMenu(null);
