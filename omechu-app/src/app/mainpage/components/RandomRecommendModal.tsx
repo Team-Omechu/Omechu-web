@@ -18,7 +18,7 @@ export default function RandomRecommendModal({
 }: ModalProps) {
   // 최초 1개 랜덤
   const [idx, setIdx] = useState(() =>
-    Math.floor(Math.random() * BingoList.length)
+    Math.floor(Math.random() * BingoList.length),
   );
   // 이미 추천된 인덱스들(중복 방지)
   const [used, setUsed] = useState<number[]>(() => [0].slice(0)); // placeholder, 아래 useEffect에서 초기화
@@ -27,11 +27,11 @@ export default function RandomRecommendModal({
 
   // 최초 mount시에 used를 현재 idx로 맞춰준다
   useEffect(() => {
-    setTimeout(()=>{
+    setTimeout(() => {
       setIsLoading(false);
       setUsed([idx]);
-      timerRef.current=null;
-    },2500)
+      timerRef.current = null;
+    }, 2500);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,15 +46,13 @@ export default function RandomRecommendModal({
     timerRef.current = setTimeout(() => {
       setUsed((prevUsed) => {
         // 이미 다 소진했다면 새 사이클 시작
-        const baseUsed =
-          prevUsed.length >= BingoList.length ? [] : prevUsed;
+        const baseUsed = prevUsed.length >= BingoList.length ? [] : prevUsed;
 
         // 남아있는 후보들
         const remaining = allIndices.filter((i) => !baseUsed.includes(i));
 
         // 남은 것 중 하나 랜덤
-        const next =
-          remaining[Math.floor(Math.random() * remaining.length)];
+        const next = remaining[Math.floor(Math.random() * remaining.length)];
 
         setIdx(next);
         return [...baseUsed, next];
@@ -106,14 +104,14 @@ export default function RandomRecommendModal({
 
       <div className="flex justify-center gap-4">
         <button
-          className="flex-shrink-0 h-[45px] w-[100px] rounded-md border border-grey-darkHover bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive disabled:opacity-50"
+          className="h-[45px] w-[100px] flex-shrink-0 rounded-md border border-grey-darkHover bg-white text-[15px] font-normal hover:bg-grey-lightHover active:bg-grey-lightActive disabled:opacity-50"
           onClick={handleRetry}
           disabled={isLoading}
         >
           {retryText}
         </button>
         <button
-          className="flex-shrink-0 h-[45px] w-[100px] rounded-md border border-grey-darkHover bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive disabled:opacity-50"
+          className="h-[45px] w-[100px] flex-shrink-0 rounded-md border border-grey-darkHover bg-primary-normal text-[15px] font-normal text-white hover:bg-primary-normalHover active:bg-primary-normalActive disabled:opacity-50"
           disabled={isLoading}
         >
           {confirmText}
