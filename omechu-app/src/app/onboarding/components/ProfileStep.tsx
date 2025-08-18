@@ -64,7 +64,7 @@ const ProfileStep = () => {
           <div className="text-center text-2xl font-semibold text-secondary-normal">
             반가워요!
           </div>
-          <h1 className="text-2xl font-normal text-[#393939]">
+          <h1 className="text-2xl font-normal text-grey-darker">
             프로필을 입력해 주세요
           </h1>
         </div>
@@ -126,7 +126,7 @@ const ProfileStep = () => {
             </div>
             <span
               className={`ml-1 mt-1 text-sm font-normal ${
-                isInvalid ? "text-red-500" : "text-grey-normalActive"
+                isInvalid ? "text-primary-normal" : "text-grey-normalActive"
               }`}
             >
               한영문자 2-12글자로 입력해주세요
