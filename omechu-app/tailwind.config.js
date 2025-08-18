@@ -65,7 +65,7 @@ module.exports = {
           light: "#fefbff",
           lightHover: "#fef9ff",
           lightActive: "#fdf2ff",
-          normal: "#f8d5ff",
+          normal: "#FFDEFB",
           normalHover: "#dfc0e6",
           normalActive: "#c6aacc",
           dark: "#baa0bf",
