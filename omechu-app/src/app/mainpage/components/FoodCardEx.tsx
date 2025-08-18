@@ -64,7 +64,6 @@ export default function FoodCard({
         prev.filter((id) => id !== numericRestaurantId),
       );
       deleteHeart(undefined, {
-        onError: () => qc.setQueryData<number[]>(HEARTS_KEY, prev), // 실패 시 롤백
         onSettled: () => qc.invalidateQueries({ queryKey: HEARTS_KEY }), // 최종 동기화
       });
     } else {
@@ -76,7 +75,6 @@ export default function FoodCard({
           : [...prev, numericRestaurantId],
       );
       addHeart(undefined, {
-        onError: () => qc.setQueryData<number[]>(HEARTS_KEY, prev),
         onSettled: () => qc.invalidateQueries({ queryKey: HEARTS_KEY }),
       });
     }
