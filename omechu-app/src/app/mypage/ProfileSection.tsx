@@ -2,7 +2,7 @@
 
 import { useProfileQuery } from "./hooks/useProfileQuery";
 import AuthErrorModalSection from "./AuthErrorModalSection";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -13,6 +13,12 @@ type ProfileApiErrorLike = Error & { code?: number };
 
 export default function ProfileSection() {
   const { data: profile, isLoading, error, refetch } = useProfileQuery();
+
+  const nickname = useMemo(() => profile?.nickname ?? "-", [profile?.nickname]);
+  const profileImageUrl = useMemo(
+    () => profile?.profileImageUrl ?? "/profile/profile_default_img.svg",
+    [profile?.profileImageUrl],
+  );
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const router = useRouter();
@@ -61,7 +67,7 @@ export default function ProfileSection() {
           onConfirm={() => {
             setAuthModalOpen(false);
             const to = encodeURIComponent(pathname || "/mypage");
-            router.push("/sign-in");
+            router.push(`/auth/sign-in?redirect=${to}`);
           }}
           onClose={() => setAuthModalOpen(false)}
         />
@@ -73,7 +79,9 @@ export default function ProfileSection() {
   if (error && !authModalOpen) {
     return (
       <section className="flex flex-col items-center gap-2 py-8 text-center">
-        <p className="text-base">프로필 정보를 불러오지 못했어요.</p>
+        <p className="text-base text-red-500">
+          프로필 정보를 불러오지 못했어요.
+        </p>
         <button
           type="button"
           onClick={() => refetch()}
@@ -91,19 +99,21 @@ export default function ProfileSection() {
       <div className="relative h-[130px] w-[130px] overflow-hidden rounded-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={profile?.profileImageUrl ?? "/profile/profile_default_img.svg"}
+          src={profileImageUrl}
           alt="프로필 이미지"
           className="object-cover w-full h-full"
           onError={(e) => {
             // 이미지 깨질 때 기본 이미지로 대체
-            (e.currentTarget as HTMLImageElement).src =
-              "/profile/profile_default_img.svg";
+            const img = e.currentTarget as HTMLImageElement;
+            if (/\.PNG$/i.test(img.src)) {
+              img.src = img.src.replace(/\.PNG$/i, ".png");
+              return;
+            }
+            img.src = "/profile/profile_default_img.svg";
           }}
         />
       </div>
-      <div className="mt-3 text-2xl font-semibold">
-        {profile?.nickname || "-"}
-      </div>
+      <div className="mt-3 text-2xl font-semibold">{nickname}</div>
       <div className="text-lg font-normal text-grey-normalActive">
         {profile?.email || ""}
       </div>
