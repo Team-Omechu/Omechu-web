@@ -16,8 +16,6 @@ export async function fetchProfile(): Promise<ProfileType> {
   try {
     // axiosInstance가 인터셉터에서 토큰을 붙인다는 가정
     const res = await axiosInstance.get("/profile", {
-      params: { _ts: Date.now() },
-      headers: { "Cache-Control": "no-cache, no-store", Pragma: "no-cache" },
       // 304일 때도 여기서 처리할 수 있게 허용
       validateStatus: (s) => s === 200 || s === 304,
     });
