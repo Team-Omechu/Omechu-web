@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "@/mypage/api/profile";
+// import { fetchProfile } from "@/mypage/api/profile";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 const navItems: {
@@ -48,16 +48,10 @@ export default function BottomNav() {
   const pathname = usePathname();
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
   const accessToken = useAuthStore((s) => s.accessToken);
-
   const queryClient = useQueryClient();
 
   const handleNavClick = (item: (typeof navItems)[number]) => {
-    if (item.routingUrl === "/mypage") {
-      // React Query의 캐시 무효화 → 다음 페이지 진입 시 API 강제 호출
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
-      router.push(item.routingUrl);
-      return;
-    }
+    if (pathname === item.routingUrl) return; // 이미 그 페이지면 무시
     router.push(item.routingUrl);
   };
 
