@@ -16,6 +16,8 @@ export async function fetchProfile(): Promise<ProfileType> {
   try {
     // axiosInstance가 인터셉터에서 토큰을 붙인다는 가정
     const res = await axiosInstance.get("/profile", {
+      params: { _ts: Date.now() },
+      headers: { "Cache-Control": "no-cache, no-store", Pragma: "no-cache" },
       // 304일 때도 여기서 처리할 수 있게 허용
       validateStatus: (s) => s === 200 || s === 304,
     });
@@ -25,7 +27,7 @@ export async function fetchProfile(): Promise<ProfileType> {
       const cached = useAuthStore.getState().user;
       if (cached) {
         return {
-          id: Number((cached as any).id ?? 0),
+          id: Number(String((cached as any).id ?? 0)),
           email: (cached as any).email ?? "",
           nickname: (cached as any).nickname ?? "",
           bodyType: (cached as any).body_type ?? "",
@@ -37,7 +39,11 @@ export async function fetchProfile(): Promise<ProfileType> {
           allergy: Array.isArray((cached as any).allergy)
             ? (cached as any).allergy
             : [],
-          profileImageUrl: (cached as any).profileImageUrl ?? null,
+          profileImageUrl:
+            (cached as any).profileImageUrl ??
+            (cached as any).profile_image_url ??
+            (cached as any).avatar_url ??
+            null,
           createdAt: (cached as any).created_at ?? "",
           updatedAt: (cached as any).updated_at ?? "",
         };
@@ -59,14 +65,18 @@ export async function fetchProfile(): Promise<ProfileType> {
       exercise: data.exercise ?? "",
       prefer: Array.isArray(data.prefer) ? data.prefer : [],
       allergy: Array.isArray(data.allergy) ? data.allergy : [],
-      profileImageUrl: data.profileImageUrl ?? null,
+      profileImageUrl:
+        data.profileImageUrl ??
+        data.profile_image_url ??
+        data.avatar_url ??
+        null,
       createdAt: data.created_at ?? "",
       updatedAt: data.updated_at ?? "",
     };
   } catch (error: any) {
     const code = error?.response?.status ?? error?.code ?? 500;
-    // 디버깅 콘솔.로그 (중복 제거)
-    console.error("[fetchProfile] 에러:", error?.response ?? error);
+    // 디버깅 콘솔.로그 (간결하게)
+    console.error("[fetchProfile] error:", error?.response ?? error);
     throw new ProfileApiError(code, error?.response?.data ?? error?.message);
   }
 }
