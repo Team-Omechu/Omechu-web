@@ -15,8 +15,8 @@ interface SearchResponse {
 
 export interface SearchParams {
   menu?: string; // 예: "스파게티"
-  tag?: string; // 예: "아침식사"
-  location?: string; // 예: "서울 강남구 신사동"
+  tag?: string | string[]; // ✅ 배열 가능
+  location?: string | string[]; // ✅ 배열 가능
   cursor: number; // required by API
   limit: number; // required by API
 }
@@ -37,49 +37,45 @@ function mapApiToRestaurant(apiData: any): Restaurant {
 }
 
 export async function searchRestaurants(p: SearchParams) {
-  // 1) 빈 값 제거 + 문자열 정리
-  const params: Record<string, string> = {
-    cursor: String(p.cursor ?? 1),
-    limit: String(p.limit ?? 8),
-  };
-  // 파라미터 정리
   const menu = p.menu?.trim();
-  const tag = p.tag?.trim();
-  const location = p.location?.trim();
   const cursor = String(p.cursor ?? 1);
   const limit = String(p.limit ?? 8);
 
-  // 순서대로 URL 직접 생성
   const query = new URLSearchParams();
+
   if (menu) query.append("menu", menu);
-  if (Array.isArray(p.tag)) {
-    p.tag.forEach((t) => {
+
+  // ✅ tag 여러 개 처리
+  if (p.tag) {
+    const tags = Array.isArray(p.tag) ? p.tag : [p.tag];
+    tags.forEach((t) => {
       const trimmed = t.trim();
       if (trimmed) query.append("tag", trimmed);
     });
   }
-  if (Array.isArray(p.location)) {
-    p.location.forEach((loc) => {
+
+  // ✅ location 여러 개 처리
+  if (p.location) {
+    const locations = Array.isArray(p.location) ? p.location : [p.location];
+    locations.forEach((loc) => {
       const trimmed = loc.trim();
       if (trimmed) query.append("location", trimmed);
     });
   }
+
   query.append("cursor", cursor);
   query.append("limit", limit);
 
   const url = `/place/search?${query.toString()}`;
   console.log("GET", axiosInstance.defaults.baseURL + url);
 
-  // 2) 요청 (타임아웃은 선택)
   const res = await axiosInstance.get<SearchResponse>(url, {
     timeout: 10000,
     headers: { "Content-Type": "application/json" },
   });
 
-  // 3) 성공/실패 분기
   const body = res.data;
   if (body?.resultType !== "SUCCESS") {
-    // 서버가 에러 메시지를 내려주면 같이 throw
     const msg =
       (body?.error && (body.error.message || body.error)) ||
       "검색 요청에 실패했습니다.";
@@ -92,10 +88,8 @@ export async function searchRestaurants(p: SearchParams) {
     nextCursor: null,
   };
 
-  // 4) 데이터 매핑
   const items = (s.restData ?? []).map(mapApiToRestaurant);
 
-  // 5) nextCursor 정규화 (string -> number, null 허용)
   const parsedNext =
     s.nextCursor === null || s.nextCursor === undefined
       ? null
