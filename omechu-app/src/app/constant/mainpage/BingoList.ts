@@ -15,6 +15,11 @@ export const BingoList: menu[] = [
       "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/떡볶이.png",
   },
   {
+    name: "닭가슴살 샐러드",
+    image_link:
+      "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/닭가슴살 샐러드.png",
+  },
+  {
     name: "감바스",
     image_link:
       "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/감바스.png",
@@ -98,11 +103,6 @@ export const BingoList: menu[] = [
     name: "치킨",
     image_link:
       "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/치킨.png",
-  },
-  {
-    name: "닭가슴살 샐러드",
-    image_link:
-      "https://omechu-s3-bucket.s3.ap-northeast-2.amazonaws.com/menu_image/닭가슴살 샐러드.png",
   },
   {
     name: "팔보채",
