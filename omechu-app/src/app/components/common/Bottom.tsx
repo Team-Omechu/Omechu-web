@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -49,6 +49,7 @@ export default function BottomNav() {
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
   const accessToken = useAuthStore((s) => s.accessToken);
   const queryClient = useQueryClient();
+  const prevTokenRef = useRef<string | null | undefined>(accessToken);
 
   const handleNavClick = (item: (typeof navItems)[number]) => {
     if (pathname === item.routingUrl) return; // 이미 그 페이지면 무시
@@ -60,6 +61,16 @@ export default function BottomNav() {
       // 로그아웃 등 토큰이 없을 때 프로필 캐시 제거
       queryClient.removeQueries({ queryKey: ["profile"], exact: false });
     }
+  }, [accessToken, hasHydrated, queryClient]);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+    const prev = prevTokenRef.current;
+    if (!prev && accessToken) {
+      // 로그인 직후: 이전 비인증 상태에서 남아있을 수 있는 profile 쿼리 캐시/에러 제거
+      queryClient.removeQueries({ queryKey: ["profile"], exact: false });
+    }
+    prevTokenRef.current = accessToken;
   }, [accessToken, hasHydrated, queryClient]);
 
   return (

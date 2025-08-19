@@ -48,9 +48,9 @@ export function useProfileQuery() {
     // 리페치 루프/깜빡임 방지 및 안정화 옵션
     staleTime: 60 * 1000, // 1분 간 fresh
     retry: 0, // 무한 재시도 방지
+    refetchOnMount: "always", // 로그인 후 최초 진입 시 다시 가져오도록 수정
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    refetchOnMount: false,
     placeholderData: (prev) => prev, // 이전 데이터 유지하며 refetch 시 레이아웃 안정화
   });
 }

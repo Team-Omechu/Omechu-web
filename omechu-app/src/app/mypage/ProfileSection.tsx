@@ -50,7 +50,7 @@ export default function ProfileSection() {
       if (!stuckTimerRef.current) {
         stuckTimerRef.current = setTimeout(() => {
           setStuck(true);
-        }, 3000);
+        }, 2000);
       }
     } else {
       if (stuckTimerRef.current) {
