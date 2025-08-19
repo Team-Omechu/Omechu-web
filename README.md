@@ -16,7 +16,7 @@
 
 <p align="center">
   <a href="https://omechu.log8.kr/">🐥 배포 URL</a> ·
-  데모 계정: <code>user@example.com / user1234!</code>
+  데모 계정: <code>user@example.com / User1234!</code>
 </p>
 
 ---
