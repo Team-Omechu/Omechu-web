@@ -1,10 +1,10 @@
 "use client";
 
 import { useProfileQuery } from "./hooks/useProfileQuery";
-import AuthErrorModal from "./AuthErrorModalSection";
 import { useEffect, useMemo, useState } from "react";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 import { useRouter } from "next/navigation";
+import AuthErrorModalSection from "./AuthErrorModalSection";
 
 // NOTE: fetchProfile()에서 ProfileApiError(code) 를 던지므로 여기서 분기 처리
 // code: 401/403 이면 로그인 만료로 간주하고 모달을 띄운다.
@@ -55,12 +55,13 @@ export default function ProfileSection() {
   if (authModalOpen) {
     return (
       <section className="flex flex-col items-center gap-3 py-6">
-        <AuthErrorModal
+        <AuthErrorModalSection
           onConfirm={() => {
             setAuthModalOpen(false);
             router.push("/sign-in");
           }}
           onClose={() => setAuthModalOpen(false)}
+          isOpen={false}
         />
       </section>
     );
@@ -74,7 +75,7 @@ export default function ProfileSection() {
         <button
           type="button"
           onClick={() => refetch()}
-          className="rounded-md border px-3 py-2 text-sm"
+          className="px-3 py-2 text-sm border rounded-md"
         >
           다시 시도
         </button>
@@ -90,7 +91,7 @@ export default function ProfileSection() {
         <img
           src={profile?.profileImageUrl ?? "/profile/profile_default_img.svg"}
           alt="프로필 이미지"
-          className="h-full w-full object-cover"
+          className="object-cover w-full h-full"
           onError={(e) => {
             // 이미지 깨질 때 기본 이미지로 대체
             (e.currentTarget as HTMLImageElement).src =
