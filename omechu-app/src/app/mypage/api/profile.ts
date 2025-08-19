@@ -19,6 +19,7 @@ export async function fetchProfile(): Promise<ProfileType> {
       // 304일 때도 여기서 처리할 수 있게 허용
       validateStatus: (s) => s === 200 || s === 304,
       params: { _ts: Date.now() },
+      timeout: 3000,
     });
 
     // 304 Not Modified: 캐시(스토어)에 있는 사용자 정보를 그대로 사용
@@ -73,9 +74,34 @@ export async function fetchProfile(): Promise<ProfileType> {
       updatedAt: data.updated_at ?? "",
     };
   } catch (error: any) {
-    const code = error?.response?.status ?? error?.code ?? 500;
-    // 디버깅 콘솔.로그 (간결하게)
-    console.error("[fetchProfile] error:", error?.response ?? error);
-    throw new ProfileApiError(code, error?.response?.data ?? error?.message);
+    // axios timeout or network error normalization
+    const axiosCode = error?.code; // e.g., 'ECONNABORTED' for timeout
+    const respStatus = error?.response?.status; // numeric HTTP status if present
+
+    // Map known codes
+    let mappedCode: number;
+    if (typeof respStatus === "number") {
+      mappedCode = respStatus; // 4xx/5xx/304
+    } else if (axiosCode === "ECONNABORTED") {
+      mappedCode = 408; // Request Timeout
+    } else if (axiosCode === "TIMEOUT") {
+      mappedCode = 408;
+    } else if (axiosCode === 304) {
+      mappedCode = 304;
+    } else {
+      mappedCode = 500;
+    }
+
+    // Compact log (avoid noisy/circular objects)
+    console.error("[fetchProfile] error", {
+      status: respStatus,
+      code: axiosCode,
+      msg: error?.message,
+    });
+
+    throw new ProfileApiError(
+      mappedCode,
+      error?.response?.data ?? error?.message ?? axiosCode ?? mappedCode,
+    );
   }
 }

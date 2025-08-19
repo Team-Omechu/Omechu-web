@@ -2,7 +2,7 @@
 
 import { useProfileQuery } from "./hooks/useProfileQuery";
 import AuthErrorModalSection from "./AuthErrorModalSection";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -20,6 +20,16 @@ export default function ProfileSection() {
     refetch,
   } = useProfileQuery();
 
+  if (typeof window !== "undefined") {
+    // 진단 로그: 현재 상태 트레이스
+    console.log("[ProfileSection] state", {
+      isLoading,
+      isFetching,
+      hasProfile: Boolean(profile),
+      error,
+    });
+  }
+
   const nickname = useMemo(() => profile?.nickname ?? "-", [profile?.nickname]);
   const profileImageUrl = useMemo(
     () => profile?.profileImageUrl ?? "/profile/profile_default_img.svg",
@@ -29,6 +39,33 @@ export default function ProfileSection() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  // 로딩 스턱 감지용(3초 넘게 isLoading이면 강제 분기)
+  const [stuck, setStuck] = useState(false);
+  const stuckTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // 스피너가 장시간 지속되면 stuck 처리
+    if (isLoading && !profile && !stuck) {
+      if (!stuckTimerRef.current) {
+        stuckTimerRef.current = setTimeout(() => {
+          setStuck(true);
+        }, 3000);
+      }
+    } else {
+      if (stuckTimerRef.current) {
+        clearTimeout(stuckTimerRef.current);
+        stuckTimerRef.current = null;
+      }
+      if (!isLoading) setStuck(false);
+    }
+    return () => {
+      if (stuckTimerRef.current) {
+        clearTimeout(stuckTimerRef.current);
+        stuckTimerRef.current = null;
+      }
+    };
+  }, [isLoading, profile, stuck]);
 
   const isAuthError = useMemo(() => {
     const e = error as ProfileApiErrorLike | undefined;
@@ -61,12 +98,41 @@ export default function ProfileSection() {
 
   // 2) 로딩: 캐시/데이터가 전혀 없을 때만 스피너 노출
   if (isLoading && !profile) {
+    if (stuck) {
+      return (
+        <section className="flex flex-col items-center gap-3 py-10 text-center">
+          <p className="text-base">
+            로딩이 오래 걸리고 있어요. 다시 시도해볼까요?
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setStuck(false);
+                refetch();
+              }}
+              className="px-3 py-2 text-sm border rounded-md"
+            >
+              다시 시도
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setStuck(false);
+                // 캐시 무시 새로고침
+                router.refresh();
+              }}
+              className="px-3 py-2 text-sm border rounded-md"
+            >
+              새로고침
+            </button>
+          </div>
+        </section>
+      );
+    }
     return (
       <main className="h-fit">
-        <LoadingSpinner
-          label="프로필 정보 불러오는 중..."
-          className="mb-12 mt-7"
-        />
+        <LoadingSpinner label="프로필 정보 불러오는 중..." />
       </main>
     );
   }
