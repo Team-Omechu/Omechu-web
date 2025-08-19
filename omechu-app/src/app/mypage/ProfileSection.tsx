@@ -35,6 +35,10 @@ export default function ProfileSection() {
     () => profile?.profileImageUrl ?? "/profile/profile_default_img.svg",
     [profile?.profileImageUrl],
   );
+  const isDefaultImg = useMemo(
+    () => /\/profile\/profile_default_img/i.test(profileImageUrl),
+    [profileImageUrl],
+  );
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const router = useRouter();
@@ -156,12 +160,22 @@ export default function ProfileSection() {
   // 4) 정상 렌더 — 데이터가 비어도 플레이스홀더 안전 표시, 백그라운드 동기화는 isFetching으로 안내
   return (
     <section className="flex flex-col items-center gap-1">
-      <div className="relative h-[130px] w-[130px] overflow-hidden rounded-full">
+      <div
+        className={
+          isDefaultImg
+            ? "relative h-[90px] w-[90px] overflow-hidden rounded-full"
+            : "relative h-[130px] w-[130px] overflow-hidden rounded-full"
+        }
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={profileImageUrl}
           alt="프로필 이미지"
-          className="object-cover w-full h-full"
+          className={
+            isDefaultImg
+              ? "h-full w-full object-contain p-2"
+              : "h-full w-full object-cover"
+          }
           onError={(e) => {
             const img = e.currentTarget as HTMLImageElement;
             if (/\.PNG$/i.test(img.src)) {
