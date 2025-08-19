@@ -18,6 +18,7 @@ export async function fetchProfile(): Promise<ProfileType> {
     const res = await axiosInstance.get("/profile", {
       // 304일 때도 여기서 처리할 수 있게 허용
       validateStatus: (s) => s === 200 || s === 304,
+      params: { _ts: Date.now() },
     });
 
     // 304 Not Modified: 캐시(스토어)에 있는 사용자 정보를 그대로 사용
@@ -53,7 +54,7 @@ export async function fetchProfile(): Promise<ProfileType> {
     }
 
     // 200 OK
-    const data = res.data?.success ?? {};
+    const data = res.data?.data ?? res.data?.success ?? res.data ?? {};
     return {
       id: Number(data.id ?? 0),
       email: data.email ?? "",
