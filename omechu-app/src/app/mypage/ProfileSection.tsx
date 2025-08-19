@@ -1,10 +1,10 @@
 "use client";
 
 import { useProfileQuery } from "./hooks/useProfileQuery";
+import AuthErrorModalSection from "./AuthErrorModalSection";
 import { useEffect, useMemo, useState } from "react";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
-import { useRouter } from "next/navigation";
-import AuthErrorModalSection from "./AuthErrorModalSection";
+import { useRouter, usePathname } from "next/navigation";
 
 // NOTE: fetchProfile()에서 ProfileApiError(code) 를 던지므로 여기서 분기 처리
 // code: 401/403 이면 로그인 만료로 간주하고 모달을 띄운다.
@@ -16,6 +16,7 @@ export default function ProfileSection() {
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   // 1) 인증 오류면 모달, 그 외 오류면 에러 블록
   const isAuthError = useMemo(() => {
@@ -56,12 +57,13 @@ export default function ProfileSection() {
     return (
       <section className="flex flex-col items-center gap-3 py-6">
         <AuthErrorModalSection
+          isOpen={authModalOpen}
           onConfirm={() => {
             setAuthModalOpen(false);
+            const to = encodeURIComponent(pathname || "/mypage");
             router.push("/sign-in");
           }}
           onClose={() => setAuthModalOpen(false)}
-          isOpen={false}
         />
       </section>
     );
