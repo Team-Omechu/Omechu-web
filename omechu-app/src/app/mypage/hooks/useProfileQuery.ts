@@ -2,6 +2,24 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProfile } from "../api/profile";
 import { ProfileType } from "../types/profileType";
 
+// 보장된 종료를 위한 타임아웃 가드
+function withTimeout<T>(p: Promise<T>, ms = 7000): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const id = setTimeout(() => {
+      const err: any = new Error("PROFILE_TIMEOUT");
+      err.code = "TIMEOUT";
+      reject(err);
+    }, ms);
+    p.then((v) => {
+      clearTimeout(id);
+      resolve(v);
+    }).catch((e) => {
+      clearTimeout(id);
+      reject(e);
+    });
+  });
+}
+
 export function useProfileQuery() {
   const qc = useQueryClient();
 
@@ -9,7 +27,14 @@ export function useProfileQuery() {
     queryKey: ["profile"],
     queryFn: async () => {
       try {
-        return await fetchProfile();
+        const res = await withTimeout(fetchProfile());
+        // 응답 유효성 최소 보장
+        if (!res || typeof res !== "object") {
+          const err: any = new Error("EMPTY_PROFILE");
+          err.code = "EMPTY";
+          throw err;
+        }
+        return res as ProfileType;
       } catch (e: any) {
         // Axios/fetch 래퍼가 304를 에러로 throw 하는 경우 대비
         const status = e?.code ?? e?.response?.status;
@@ -20,9 +45,9 @@ export function useProfileQuery() {
         throw e;
       }
     },
-    // 기존 옵션 유지 + 리페치 루프/깜빡임 방지
-    staleTime: 1000 * 60 * 10,
-    retry: 1,
+    // 리페치 루프/깜빡임 방지 및 안정화 옵션
+    staleTime: 60 * 1000, // 1분 간 fresh
+    retry: 0, // 무한 재시도 방지
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
