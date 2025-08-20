@@ -220,7 +220,6 @@ export default function AllergyStep() {
         <button
           type="button"
           onClick={handleSubmit}
-
           disabled={loading}
           className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-[#0182CA] active:bg-[#0182CA] disabled:opacity-50"
         >

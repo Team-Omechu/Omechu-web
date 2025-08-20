@@ -18,7 +18,7 @@ const RoundButton = ({
     red: "bg-primary-normal text-white border-transparent hover:bg-primary-normalHover active:bg-primary-normalActive",
     white:
       "bg-white text-[#393939] border-grey-darkHover hover:bg-gray-100 active:bg-gray-200",
-    gray: "bg-white text-grey-normalActive border-grey-darkHoverHover hover:bg-grey-lightActive active:gray-200",
+    gray: "bg-white text-grey-normalActive border-grey-darkHover hover:bg-grey-lightActive active:gray-200",
   };
 
   const sizeStyles = {
