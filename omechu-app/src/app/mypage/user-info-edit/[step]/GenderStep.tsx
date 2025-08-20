@@ -27,20 +27,14 @@ export default function GenderStep() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Zustand 상태/액션
-  const nickname = useOnboardingStore((s) => s.nickname);
-  const profileImageUrl = useOnboardingStore((s) => s.profileImageUrl);
-  const gender = useOnboardingStore((s) => s.gender); // ✅ 라벨("여성"|"남성")로 저장
+  // Zustand — 성별만 사용
+  const gender = useOnboardingStore((s) => s.gender); // "여성" | "남성" | null
   const setGender = useOnboardingStore((s) => s.setGender);
-  const exercise = useOnboardingStore((s) => s.exercise);
-  const prefer = useOnboardingStore((s) => s.prefer);
-  const bodyType = useOnboardingStore((s) => s.bodyType);
-  const allergy = useOnboardingStore((s) => s.allergy);
   const resetAll = useOnboardingStore((s) => s.reset);
 
   const { data: profile } = useProfileQuery();
 
-  // ▶︎ 초기 하이드레이트: 최초 1회만, 사용자 상호작용 이후에는 동작 금지
+  // 1회 하이드레이트 (사용자 상호작용 이후엔 차단)
   useEffect(() => {
     if (hydratedRef.current || userInteractedRef.current) return;
     if (!gender && profile?.gender) {
@@ -61,13 +55,12 @@ export default function GenderStep() {
   const activeLabel = useMemo(() => gender ?? "", [gender]);
 
   const handleGenderClick = (label: "남성" | "여성") => {
-    // 같은 버튼 다시 누르면 해제(선택 토글)
     const next = activeLabel === label ? null : label;
-    userInteractedRef.current = true; // prevent re-hydrate after user choice
+    userInteractedRef.current = true;
     setGender(next as any);
   };
 
-  // 저장: 현재 스토어 스냅샷을 부분 업데이트로 서버에 전송
+  // 저장: 성별만 전송
   const queryClient = useQueryClient();
   const authUser = useAuthStore((s) => s.user);
   const accessToken = useAuthStore((s) => s.accessToken);
@@ -77,33 +70,23 @@ export default function GenderStep() {
     (accessToken ? "me" : "guest");
 
   const handleSave = async () => {
-    if (!gender) return; // 선택 없으면 저장 안 함
+    if (!gender) return;
     setSaving(true);
     setError(null);
     try {
-      const snap = {
-        nickname,
-        profileImageUrl,
-        gender,
-        exercise,
-        prefer,
-        bodyType,
-        allergy,
-      };
-      // 서버는 부분 업데이트 대신 전체 바디를 기대할 수 있으므로,
-      // 현재 프로필(profile)과 스토어 스냅샷을 병합한 payload를 전송합니다.
+      const snap = { gender }; //  성별만
       const payload = buildCompletePayloadFromStore(
         snap as any,
         profile as any,
       );
       const fullPayload = { email: (profile as any)?.email, ...payload } as any;
-      if (process.env.NODE_ENV !== "production") {
-        // 저장 전 최종 페이로드 확인
 
+      if (process.env.NODE_ENV !== "production") {
         console.log("[GenderStep] update payload =>", fullPayload);
       }
+
       await updateProfile(fullPayload);
-      // 먼저 다음 스텝으로 이동시키고, 캐시 갱신은 백그라운드에서 처리합니다.
+
       router.replace(`/mypage/user-info-edit/${indexToSlug[2]}`);
       queryClient
         .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
@@ -124,12 +107,22 @@ export default function GenderStep() {
     }
   };
 
-  const handleSkip = () => {
-    userInteractedRef.current = true; // prevent re-hydrate after skip
+  // 건너뛰기: gender만 null로 서버에 반영
+  const handleSkip = async () => {
+    userInteractedRef.current = true;
     setGender(null);
     if (process.env.NODE_ENV !== "production") {
       console.log("[GenderStep] skip → gender = null (block rehydrate)");
     }
+    try {
+      const snap = { gender: null } as any; //  성별만
+      const payload = buildCompletePayloadFromStore(snap, profile as any);
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      await updateProfile(fullPayload);
+      queryClient
+        .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+        .catch(() => {});
+    } catch {}
     router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
   };
 
@@ -148,7 +141,6 @@ export default function GenderStep() {
           <h1 className="text-3xl font-medium">성별은 무엇인가요?</h1>
         </section>
 
-        {/* 성별 선택 버튼 2개 */}
         <section className="my-10">
           <div className="flex gap-5">
             {LABELS.map((label) => (
@@ -170,7 +162,6 @@ export default function GenderStep() {
         </section>
       </main>
 
-      {/* 하단: 건너뛰기 / 저장 */}
       <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
@@ -191,7 +182,6 @@ export default function GenderStep() {
         </button>
       </section>
 
-      {/* 중단 확인 모달 */}
       {showModal && (
         <ModalWrapper>
           <AlertModal
