@@ -20,12 +20,17 @@ export interface ReviewImage {
   link: string;
 }
 
+export interface RepreMenu {
+  menu: string;
+}
+
 export interface RestaurantDetail {
   id: number;
   name: string;
   address: string;
   addressJibeon: string;
   postalCode: string;
+  repreMenu: RepreMenu[];
   rating: number;
   currentOpeningHours: OpeningHour[];
   googlePlaceId: string | null;

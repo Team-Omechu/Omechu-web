@@ -129,6 +129,9 @@ function mapApiToRestaurantDetail(apiData: any): RestaurantDetail {
     address: apiData.address,
     addressJibeon: apiData.address_jibeon,
     postalCode: apiData.postal_code,
+    repreMenu: Array.isArray(apiData.repreMenu)
+      ? apiData.repreMenu.map((m: any) => ({ menu: m?.menu ?? "" }))
+      : [],
     rating: apiData.rating,
     currentOpeningHours: apiData.currentOpeningHours ?? [],
     googlePlaceId: apiData.googlePlaceId,
