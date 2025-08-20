@@ -66,7 +66,7 @@ export default function SignInForm() {
 
           // (1) 캐시에 최소 프로필 시드 → /mypage 최초 진입 즉시 렌더 방지
           queryClient.setQueryData(["profile", userKey], {
-            id: Number(String(userKey)),
+            id: isNaN(Number(userKey)) ? 0 : Number(userKey),
             email: "",
             nickname: "-",
             gender: "",
