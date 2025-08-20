@@ -210,6 +210,7 @@ export default function RestaurantAddModal({
             onConfirm={() => {
               setIsConfirmOpen(false);
               onClose();
+              window.location.reload();
             }}
           />
         </ModalWrapper>
