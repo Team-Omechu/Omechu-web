@@ -42,7 +42,7 @@ export default function RandomRecommendPage() {
 
       <div className="mt-5 grid grid-cols-3 gap-2">
         {BingoList.map((item) => (
-          <label className="h-[1.8rem] w-[7.05rem] rounded-md border border-grey-normal bg-white text-center">
+          <label key={item.name} className="h-[1.8rem] w-[7.05rem] rounded-md border border-grey-normal bg-white text-center">
             {item.name}
           </label>
         ))}
