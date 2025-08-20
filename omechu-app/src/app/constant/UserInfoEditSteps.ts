@@ -9,18 +9,18 @@ import StateStep from "@/mypage/user-info-edit/[step]/StateStep";
 export type StepKey =
   | "start"
   | "gender"
-  | "state"
-  | "food"
-  | "condition"
+  | "exercise"
+  | "prefer"
+  | "body_type"
   | "allergy";
 
 // 각 스텝별 컴포넌트를 타입으로 명시
 export const stepComponents: Record<StepKey, () => React.ReactNode> = {
   start: EditStart,
   gender: GenderStep,
-  state: StateStep,
-  food: FoodStep,
-  condition: ConditionStep,
+  exercise: StateStep,
+  prefer: FoodStep,
+  body_type: ConditionStep,
   allergy: AllergyStep,
 };
 
@@ -28,9 +28,9 @@ export const stepComponents: Record<StepKey, () => React.ReactNode> = {
 export const stepOrder: StepKey[] = [
   "start",
   "gender",
-  "state",
-  "food",
-  "condition",
+  "exercise",
+  "prefer",
+  "body_type",
   "allergy",
 ];
 
@@ -38,9 +38,9 @@ export const stepOrder: StepKey[] = [
 export const slugToIndex: Record<StepKey, number> = {
   start: 0,
   gender: 1,
-  state: 2,
-  food: 3,
-  condition: 4,
+  exercise: 2,
+  prefer: 3,
+  body_type: 4,
   allergy: 5,
 };
 
@@ -48,8 +48,8 @@ export const slugToIndex: Record<StepKey, number> = {
 export const indexToSlug: Record<number, StepKey> = {
   0: "start",
   1: "gender",
-  2: "state",
-  3: "food",
-  4: "condition",
+  2: "exercise",
+  3: "prefer",
+  4: "body_type",
   5: "allergy",
 };

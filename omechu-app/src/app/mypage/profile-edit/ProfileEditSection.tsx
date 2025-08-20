@@ -154,7 +154,7 @@ export default function ProfileEditSection() {
         <button
           onClick={handleSave}
           disabled={!isValid || isLoading}
-          className={`h-12 w-[335px] rounded-md text-lg font-medium text-white ${isValid ? "bg-primary-normal" : "cursor-not-allowed bg-grey-normal"}`}
+          className={`h-12 w-[335px] rounded-md text-lg font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalHover ${isValid ? "bg-primary-normal" : "cursor-not-allowed bg-grey-normal"}`}
         >
           {isLoading ? "저장 중..." : "저장"}
         </button>

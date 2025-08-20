@@ -83,9 +83,9 @@ export default function ClientLayout({
     "/mypage/user-info-edit",
     "/mypage/user-info-edit/start",
     "/mypage/user-info-edit/gender",
-    "/mypage/user-info-edit/state",
-    "/mypage/user-info-edit/food",
-    "/mypage/user-info-edit/condition",
+    "/mypage/user-info-edit/exercise",
+    "/mypage/user-info-edit/prefer",
+    "/mypage/user-info-edit/body_type",
     "/mypage/user-info-edit/allergy",
     // 추천맛집목록
     "/mypage/recommended-list",
