@@ -106,13 +106,6 @@ export default function RestaurantDetail() {
   const avgRating = firstPage?.avgRating ?? 0;
   const mostTag: MostTag[] = firstPage?.mostTag ?? [];
 
-  useEffect(() => {
-    if (firstPage) {
-      console.log("firstPage:", firstPage);
-      console.log("mostTag:", firstPage.mostTag);
-    }
-  }, [firstPage]);
-
   const rawReviews: ReviewProps[] =
     data?.pages.flatMap((page) => page.reviews) ?? [];
 
