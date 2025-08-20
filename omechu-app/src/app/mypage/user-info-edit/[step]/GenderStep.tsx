@@ -10,7 +10,7 @@ import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
-import { buildUpdatePayloadFromStore } from "@/mypage/mappers/profilePayload";
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
@@ -52,7 +52,7 @@ export default function GenderStep() {
 
   const handleGenderClick = (label: "남성" | "여성") => {
     // 같은 버튼 다시 누르면 해제(선택 토글)
-    const next = activeLabel === label ? "" : label;
+    const next = activeLabel === label ? null : label;
     setGender(next as any);
   };
 
@@ -79,14 +79,24 @@ export default function GenderStep() {
         bodyType,
         allergy,
       };
-      const payload = buildUpdatePayloadFromStore(snap as any);
-      await updateProfile(payload);
-      // 프로필 캐시 최신화 → 다음 단계/마이페이지에서 최신 표시
-      queryClient.invalidateQueries({
-        queryKey: ["profile", userKey],
-        exact: true,
-      });
-      router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
+      // 서버는 부분 업데이트 대신 전체 바디를 기대할 수 있으므로,
+      // 현재 프로필(profile)과 스토어 스냅샷을 병합한 payload를 전송합니다.
+      const payload = buildCompletePayloadFromStore(
+        snap as any,
+        profile as any,
+      );
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      if (process.env.NODE_ENV !== "production") {
+        // 저장 전 최종 페이로드 확인
+
+        console.log("[GenderStep] update payload =>", fullPayload);
+      }
+      await updateProfile(fullPayload);
+      // 먼저 다음 스텝으로 이동시키고, 캐시 갱신은 백그라운드에서 처리합니다.
+      router.replace(`/mypage/user-info-edit/${indexToSlug[2]}`);
+      queryClient
+        .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+        .catch(() => {});
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) {
