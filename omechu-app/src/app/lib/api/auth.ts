@@ -280,22 +280,34 @@ export const changePassword = async (data: {
 // 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   try {
-    const response =
-      await axiosInstance.get<ApiResponse<LoginSuccessData>>("/profile");
+    const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
+      "/profile",
+      {
+        // 304도 정상으로 간주해 직접 분기 처리
+        validateStatus: (s) => s === 200 || s === 304,
+        // 캐시된 304를 줄이기 위한 타임스탬프 파라미터
+        params: { _ts: Date.now() },
+      },
+    );
 
-    // 200인 경우 정상 매핑
+    // 304: 스토어 캐시로 폴백 후 반환, 없으면 304 에러 throw
+    if (response.status === 304) {
+      const cached = useAuthStore.getState().user as LoginSuccessData | null;
+      if (cached) return cached;
+      const err: any = new Error("Not Modified");
+      err.code = 304;
+      throw err;
+    }
+
+    // 200 OK 처리
     const apiResponse = response.data;
     if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
       throw new Error(apiResponse.error?.reason || "유저 조회 실패");
     }
     return apiResponse.success;
   } catch (err: any) {
-    // (선택) 304 Not Modified 대응: 스토어 값으로 폴백
-    const status = err?.response?.status;
-    if (status === 304) {
-      const cached = useAuthStore.getState().user;
-      if (cached) return cached;
-    }
+    // 네트워크/기타 에러 시 그대로 상위로 전달
+    if (err?.code === 304) throw err; // 상위 훅에서 캐시 fallback 가능
     throw err;
   }
 };

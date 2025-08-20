@@ -11,6 +11,41 @@ import { indexToSlug } from "@/constant/UserInfoEditSteps";
 
 import { fetchProfile as fetchProfileApi } from "../api/profile";
 
+// 서버 응답을 페이지에서 쓰는 ProfileType으로 정규화
+function normalizeProfile(raw: any): ProfileType {
+  const nickname = raw?.nickname ?? raw?.name ?? "";
+  const gender = raw?.gender ?? raw?.sex ?? null;
+  const exercise = raw?.exercise ?? null;
+  const prefer = Array.isArray(raw?.prefer)
+    ? raw.prefer
+    : raw?.prefer
+      ? [raw.prefer]
+      : [];
+  const bodyTypeVal = raw?.bodyType ?? raw?.body_type ?? null;
+  const bodyType = Array.isArray(bodyTypeVal)
+    ? bodyTypeVal
+    : bodyTypeVal
+      ? [bodyTypeVal]
+      : [];
+  const allergy = Array.isArray(raw?.allergy)
+    ? raw.allergy
+    : raw?.allergy
+      ? [raw.allergy]
+      : [];
+  const profileImageUrl =
+    raw?.profileImageUrl ?? raw?.profile_image_url ?? null;
+
+  return {
+    nickname,
+    gender,
+    exercise,
+    prefer,
+    bodyType,
+    allergy,
+    profileImageUrl,
+  };
+}
+
 type ProfileType = {
   nickname: string;
   gender?: string | null;
@@ -30,25 +65,19 @@ export default function UserInfoEdit() {
     async function loadProfile() {
       try {
         const data = await fetchProfileApi();
-
-        const profileData: ProfileType = {
-          nickname: data.nickname,
-          gender: data.gender,
-          exercise: data.exercise || null,
-          prefer: Array.isArray(data.prefer) ? data.prefer : [],
-          bodyType: data.bodyType ? [data.bodyType] : [],
-          allergy: Array.isArray(data.allergy) ? data.allergy : [],
-          profileImageUrl: data.profileImageUrl || null,
-        };
-        console.log("[DEBUG] 프로필 데이터:", data);
+        const profileData: ProfileType = normalizeProfile(data);
+        console.log("[DEBUG] 프로필 데이터(raw):", data);
+        console.log("[DEBUG] 프로필 데이터(normalized):", profileData);
         setProfile(profileData);
       } catch (err) {
         const error = err as any;
-        if (error.response?.status === 401) {
-          setError("로그인이 필요합니다.");
-        } else {
-          setError("프로필을 불러오지 못했습니다.");
+        if (error?.response?.status === 401) {
+          router.push(
+            `/auth/sign-in?redirect=${encodeURIComponent("/mypage/user-info-edit")}`,
+          );
+          return;
         }
+        setError("프로필을 불러오지 못했습니다.");
       }
     }
     loadProfile();

@@ -25,6 +25,7 @@ import {
 } from "../api/myActivity";
 import { likePlace, unlikePlace } from "../api/favorites";
 import Toast from "@/components/common/Toast";
+import AuthErrorModalSection from "../AuthErrorModalSection";
 
 /* ---------- 타입/상수 ---------- */
 type MyRestaurant = {
@@ -539,15 +540,13 @@ export default function MyActivityClient() {
 
       {/* 인증 모달: 하이드레이션 이후에만 판단 */}
       {hasHydrated && modalOpen && (
-        <AuthErrorModal
+        <AuthErrorModalSection
+          isOpen={modalOpen}
           onConfirm={() => {
             setModalOpen(false);
-            router.push("/sign-in");
+            router.push(`/sign-in`);
           }}
-          onClose={() => {
-            setModalOpen(false);
-            router.push("/sign-in");
-          }}
+          onClose={() => setModalOpen(false)}
         />
       )}
     </>

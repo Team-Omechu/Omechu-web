@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { fetchProfile } from "@/mypage/api/profile";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
@@ -22,6 +25,7 @@ export default function SignInForm() {
   const navigatedRef = useRef(false);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
@@ -54,11 +58,44 @@ export default function SignInForm() {
   }, []);
 
   const onSubmit = (data: LoginFormValues) => {
-    // API가 rememberMe를 안 받는다면 필요한 필드만 전달
-    // const { email, password } = data;
-    // login({ email, password });
+    login(data, {
+      onSuccess: async (res) => {
+        try {
+          // 로그인 응답: { resultType, success: { userId, accessToken, refreshToken } }
+          const userKey = res?.success?.userId ?? "me";
 
-    login(data);
+          // (1) 캐시에 최소 프로필 시드 → /mypage 최초 진입 즉시 렌더 방지
+          queryClient.setQueryData(["profile", userKey], {
+            id: isNaN(Number(userKey)) ? 0 : Number(userKey),
+            email: "",
+            nickname: "-",
+            gender: "",
+            bodyType: "",
+            exercise: "",
+            prefer: [],
+            allergy: [],
+            profileImageUrl: null,
+            createdAt: "",
+            updatedAt: "",
+          });
+
+          // (2) 백그라운드에서 실제 프로필 동기화 (200/304)
+          await queryClient.prefetchQuery({
+            queryKey: ["profile", userKey],
+            queryFn: fetchProfile,
+          });
+
+          // (3) 최신화 트리거(시드 유지) → /mypage 진입 시 최신값으로 교체
+          queryClient.invalidateQueries({
+            queryKey: ["profile"],
+            exact: false,
+          });
+        } catch (e) {
+          // prefetch 실패해도 로그인 플로우는 계속 진행
+          console.warn("[SignIn] prefetch profile failed", e);
+        }
+      },
+    });
   };
 
   // 로그인 응답은 토큰 중심으로 처리되고, 최종 유저 정보는 전역에서 /profile 동기화된다고 가정
