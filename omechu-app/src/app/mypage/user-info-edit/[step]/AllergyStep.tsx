@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -35,6 +35,9 @@ const normalizeAllergy = (v: string): (typeof OPTIONS)[number] | null => {
 };
 
 export default function AllergyStep() {
+  const hydratedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+
   const router = useRouter();
   const [showModal, setShowModal] = useState(false); // 중단 모달
   const [showSaveModal, setShowSaveModal] = useState(false); // 제출 완료 모달
@@ -55,6 +58,7 @@ export default function AllergyStep() {
   // 프로필 연동 (초기 하이드레이트)
   const { data: profile } = useProfileQuery();
   useEffect(() => {
+    if (hydratedRef.current || userInteractedRef.current) return;
     if (
       allergies.length === 0 &&
       Array.isArray(profile?.allergy) &&
@@ -63,9 +67,12 @@ export default function AllergyStep() {
       const mapped = (profile!.allergy as string[])
         .map((x) => normalizeAllergy(String(x)))
         .filter(Boolean) as string[];
-      if (mapped.length > 0) setAllergy(Array.from(new Set(mapped)));
-      if (process.env.NODE_ENV !== "production") {
-        console.log("[AllergyStep] hydrated from profile:", mapped);
+      if (mapped.length > 0) {
+        setAllergy(Array.from(new Set(mapped)));
+        hydratedRef.current = true;
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[AllergyStep] hydrated from profile:", mapped);
+        }
       }
     }
   }, [allergies.length, profile?.allergy, setAllergy]);
@@ -77,7 +84,19 @@ export default function AllergyStep() {
     authUser?.id ?? authUser?.email ?? (accessToken ? "me" : "guest");
 
   const handleClick = (item: string) => {
-    // 다중 선택: 존재하면 제거, 없으면 추가
+    userInteractedRef.current = true; // prevent re-hydrate after any user change
+    const selected = allergies.includes(item);
+    // 마지막 1개를 다시 누르면 빈 배열로 초기화 허용
+    if (selected && allergies.length === 1) {
+      setAllergy([]);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(
+          "[AllergyStep] cleared all → allergy = [] (null semantics)",
+        );
+      }
+      return;
+    }
+    // 일반 토글
     toggleAllergy(item);
   };
 
@@ -166,7 +185,7 @@ export default function AllergyStep() {
               const isSelected = allergies.includes(item);
               return (
                 <button
-                  key={item}
+                  key={`${item}-${allergies.includes(item) ? "1" : "0"}`}
                   type="button"
                   onClick={() => handleClick(item)}
                   aria-pressed={isSelected}

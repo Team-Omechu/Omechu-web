@@ -112,7 +112,7 @@ export default function FoodStep() {
 
   const activeSet = useMemo(() => new Set(prefer), [prefer]);
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     // null semantics for array-type field: use empty array
     userInteractedRef.current = true;
     blockPreferHydrate();
@@ -122,6 +122,31 @@ export default function FoodStep() {
         "[FoodStep] skip → prefer = [] (null semantics); block rehydrate (persisted)",
       );
     }
+
+    try {
+      const snap = {
+        nickname,
+        profileImageUrl,
+        gender,
+        exercise,
+        prefer: [], // <- 서버 동기화는 빈 배열로 보냄
+        bodyType,
+        allergy,
+      };
+      const payload = buildCompletePayloadFromStore(
+        snap as any,
+        profile as any,
+      );
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      updateProfile(fullPayload)
+        .then(() =>
+          qc
+            .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+            .catch(() => {}),
+        )
+        .catch(() => {});
+    } catch {}
+
     router.push(`/mypage/user-info-edit/${indexToSlug[4]}`); // 다음: body_type
   };
 
