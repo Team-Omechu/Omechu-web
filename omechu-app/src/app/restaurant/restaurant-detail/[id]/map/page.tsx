@@ -85,7 +85,7 @@ export default function MapPage() {
       const next = !isLiked;
       setIsLiked(next); // 낙관적 업데이트
       // (선택) 레스토랑 객체에도 동기화
-      setRestaurant((prev) => (prev ? ({ ...prev, zzim: next } as any) : prev));
+      setRestaurant((prev) => (prev ? { ...prev, zzim: next } : prev));
 
       try {
         if (next) {
