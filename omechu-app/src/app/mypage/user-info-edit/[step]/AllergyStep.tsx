@@ -85,6 +85,8 @@ export default function AllergyStep() {
     setLoading(true);
     setError(null);
     try {
+      const desiredAllergy =
+        allergies.length > 0 ? allergies : ([] as string[]);
       const snap = {
         nickname,
         profileImageUrl,
@@ -92,13 +94,23 @@ export default function AllergyStep() {
         bodyType,
         exercise,
         prefer,
-        allergy: allergies,
+        allergy: desiredAllergy,
       };
       const payload = buildCompletePayloadFromStore(snap, profile);
-      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      // ✅ 항상 allergy 필드를 명시적으로 포함 (빈 배열도 포함)
+      const fullPayload = {
+        email: (profile as any)?.email,
+        ...payload,
+        allergy: desiredAllergy,
+      } as any;
 
       if (process.env.NODE_ENV !== "production") {
         console.log("[AllergyStep] submit payload =>", fullPayload);
+        if (desiredAllergy.length === 0) {
+          console.log(
+            "[AllergyStep] no selection → sending allergy = [] (null semantics)",
+          );
+        }
       }
 
       const res = await updateProfile(fullPayload);

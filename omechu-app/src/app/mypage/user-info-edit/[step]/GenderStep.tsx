@@ -93,7 +93,7 @@ export default function GenderStep() {
       }
       await updateProfile(fullPayload);
       // 먼저 다음 스텝으로 이동시키고, 캐시 갱신은 백그라운드에서 처리합니다.
-      router.replace(`/mypage/user-info-edit/${indexToSlug[1]}`);
+      router.replace(`/mypage/user-info-edit/${indexToSlug[2]}`);
       queryClient
         .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
         .catch(() => {});
@@ -118,7 +118,7 @@ export default function GenderStep() {
     if (process.env.NODE_ENV !== "production") {
       console.log("[GenderStep] skip → gender = null");
     }
-    router.push(`/mypage/user-info-edit/${indexToSlug[1]}`);
+    router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
   };
 
   return (
