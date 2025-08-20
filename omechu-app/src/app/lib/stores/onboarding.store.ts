@@ -67,7 +67,7 @@ type OnboardingState = {
 
 type OnboardingActions = {
   setNickname: (nickname: string) => void;
-  setProfileImageUrl: (url: string) => void;
+  setProfileImageUrl: (url: string | null) => void;
   setGender: (gender: "남성" | "여성" | null) => void;
   setExercise: (exercise: string | null) => void;
   setPrefer: (prefer: string[]) => void; // 타입 정의 추가
@@ -101,6 +101,7 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
   persist(
     (set, get) => ({
       ...initialState,
+      // Note: null semantics — gender/exercise allow null; array fields use [] for "no selection" and persist as-is.
       setNickname: (nickname) => set({ nickname }),
       setProfileImageUrl: (url) => set({ profileImageUrl: url }),
       setGender: (gender) => set({ gender }),

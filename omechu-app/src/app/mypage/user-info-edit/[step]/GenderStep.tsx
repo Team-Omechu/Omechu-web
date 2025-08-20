@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -19,6 +19,9 @@ const toLabelFromCode = (code?: string | null) =>
   code === "F" ? "여성" : code === "M" ? "남성" : "";
 
 export default function GenderStep() {
+  const hydratedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -37,14 +40,21 @@ export default function GenderStep() {
 
   const { data: profile } = useProfileQuery();
 
-  // ▶︎ 초기 하이드레이트: 스토어에 값이 없고 프로필에 있으면 라벨로 세팅
+  // ▶︎ 초기 하이드레이트: 최초 1회만, 사용자 상호작용 이후에는 동작 금지
   useEffect(() => {
+    if (hydratedRef.current || userInteractedRef.current) return;
     if (!gender && profile?.gender) {
       const label =
         profile.gender === "여성" || profile.gender === "남성"
           ? (profile.gender as "여성" | "남성")
           : (toLabelFromCode(profile.gender) as "여성" | "남성" | "");
-      if (label) setGender(label as any);
+      if (label) {
+        setGender(label as any);
+        hydratedRef.current = true;
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[GenderStep] hydrated from profile →", label);
+        }
+      }
     }
   }, [gender, profile?.gender, setGender]);
 
@@ -53,6 +63,7 @@ export default function GenderStep() {
   const handleGenderClick = (label: "남성" | "여성") => {
     // 같은 버튼 다시 누르면 해제(선택 토글)
     const next = activeLabel === label ? null : label;
+    userInteractedRef.current = true; // prevent re-hydrate after user choice
     setGender(next as any);
   };
 
@@ -114,9 +125,10 @@ export default function GenderStep() {
   };
 
   const handleSkip = () => {
+    userInteractedRef.current = true; // prevent re-hydrate after skip
     setGender(null);
     if (process.env.NODE_ENV !== "production") {
-      console.log("[GenderStep] skip → gender = null");
+      console.log("[GenderStep] skip → gender = null (block rehydrate)");
     }
     router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
   };
