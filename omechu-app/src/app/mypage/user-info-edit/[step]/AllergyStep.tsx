@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
@@ -13,6 +13,10 @@ import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { ALLERGY_OPTIONS } from "@/constant/mypage/profileOptions";
+// robust mapping for allergy options
+
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 export default function AllergyStep() {
   const router = useRouter();
@@ -32,8 +36,23 @@ export default function AllergyStep() {
   const profileImageUrl = useOnboardingStore((state) => state.profileImageUrl); // 예시
 
   const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
+  const setAllergy = useOnboardingStore((state) => state.setAllergy);
 
   const { data: currentProfile, isLoading: profileLoading } = useProfileQuery();
+
+  useEffect(() => {
+    if (Array.isArray(allergy) && allergy.length === 0) {
+      const raw = (currentProfile as any)?.allergy;
+      const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
+      if (arr.length > 0) setAllergy(arr as string[]);
+    }
+  }, [allergy, currentProfile, setAllergy]);
+
+  const queryClient = useQueryClient();
+  const authUser = useAuthStore((s: any) => s.user);
+  const accessToken = useAuthStore((s: any) => s.accessToken);
+  const userKey =
+    authUser?.id ?? authUser?.email ?? (accessToken ? "me" : "guest");
 
   // 버튼 클릭하면 선택/해제
   const handleClick = (item: string) => {
@@ -59,6 +78,11 @@ export default function AllergyStep() {
 
       console.log("[Onboarding] update payload =>", payload);
       const saved = await updateProfile(payload);
+      // 저장 성공: 프로필 쿼리 최신화
+      queryClient.invalidateQueries({
+        queryKey: ["profile", userKey],
+        exact: true,
+      });
       console.log("프로필 업데이트 성공:", saved);
 
       setShowSaveModal(true);
@@ -66,7 +90,9 @@ export default function AllergyStep() {
       console.error("프로필 업데이트 실패:", err);
       if (err?.response?.status === 401) {
         setError("로그인이 필요합니다.");
-        router.push("/sign-in");
+        router.push(
+          `/sign-in?redirect=${encodeURIComponent("/mypage/user-info-edit/allergy")}`,
+        );
         return;
       }
       const reason =
@@ -91,7 +117,7 @@ export default function AllergyStep() {
       />
 
       {/* 본문 영역 */}
-      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 pb-28 pt-6">
         <section className="mb-8 mt-20">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
             알레르기가 있나요?
@@ -101,19 +127,22 @@ export default function AllergyStep() {
         {/* 선택 버튼들 */}
         <section className="my-10">
           <div className="flex flex-col gap-5">
-            {ALLERGY_OPTIONS.map(({ key }) => {
-              const isSelected = allergy.includes(key);
+            {ALLERGY_OPTIONS.map((opt: any) => {
+              const value = opt?.value ?? opt?.key ?? String(opt);
+              const label = opt?.label ?? opt?.key ?? String(opt);
+              const isSelected = allergy.includes(value);
               return (
                 <button
-                  key={key}
-                  onClick={() => handleClick(key)}
+                  type="button"
+                  key={value}
+                  onClick={() => handleClick(value)}
                   className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
                       : "border-primary-normal bg-white text-primary-normal"
-                  } `}
+                  }`}
                 >
-                  {key}
+                  {label}
                 </button>
               );
             })}
