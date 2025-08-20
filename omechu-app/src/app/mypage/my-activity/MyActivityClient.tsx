@@ -285,33 +285,43 @@ export default function MyActivityClient() {
     }
   };
 
-  const handleDeleteReview = async (id: number) => {
-    if (deletePending.has(id)) return;
-    setDeletePending((prev) => new Set(prev).add(id));
+  const handleDeleteReview = async (reviewId: number) => {
+    if (deletePending.has(reviewId)) {
+      console.log("[delete] 이미 진행 중인 리뷰:", reviewId);
+      return;
+    }
 
-    // 옵티미스틱 제거
-    const prev = reviewList;
-    setReviewList((list) => list.filter((r) => Number(r.id) !== id));
+    console.log("[delete] 삭제 요청 시작:", reviewId);
+    setDeletePending((prev) => new Set(prev).add(reviewId));
+
+    // 현재 리스트 스냅샷 저장 후 낙관적 제거
+    const prevReviews = reviewList;
+    setReviewList((prev) => prev.filter((r) => Number(r.id) !== reviewId));
+    console.log(
+      "[delete] 낙관적 업데이트 완료. 남은 리뷰 개수:",
+      Math.max(0, prevReviews.length - 1),
+    );
 
     try {
-      await deleteMyReview(id);
+      const res = await deleteMyReview(reviewId);
+      console.log("[delete] 서버 응답 성공:", res);
       setToastMessage("후기가 삭제되었습니다.");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2000);
-    } catch (e: any) {
+    } catch (error) {
+      console.error("[delete] 서버 응답 실패:", error);
       // 롤백
-      setReviewList(prev);
-      const msg = e?.message || "후기 삭제에 실패했습니다.";
-      setToastMessage(msg);
+      setReviewList(prevReviews);
+      setToastMessage("리뷰 삭제에 실패했습니다.");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2500);
-      console.error("[delete review]", e);
     } finally {
       setDeletePending((prev) => {
         const next = new Set(prev);
-        next.delete(id);
+        next.delete(reviewId);
         return next;
       });
+      console.log("[delete] 삭제 요청 종료:", reviewId);
     }
   };
 
