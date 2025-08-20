@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import FoodCard from "@/components/common/FoodCard";
 import { Restaurant } from "@/lib/types/restaurant";
 import { likePlace, unlikePlace } from "@/mypage/api/favorites";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 interface FoodCardListProps {
   items: Restaurant[];
@@ -16,7 +17,10 @@ export default function FoodCardList({
 }: FoodCardListProps) {
   const [localItems, setLocalItems] = useState<Restaurant[]>(items);
 
-  // 부모가 새로운 items를 주면 동기화 (무한 스크롤에서 중요)
+  const isAuthenticated = useAuthStore((s) =>
+    Boolean(s.accessToken && s.refreshToken),
+  );
+
   useEffect(() => {
     setLocalItems(
       (items ?? []).map((it) => ({
@@ -27,51 +31,81 @@ export default function FoodCardList({
     );
   }, [items]);
 
-  const handleLike = useCallback(async (restaurantId: number) => {
-    setLocalItems((prev) =>
-      prev.map((it) => (it.id === restaurantId ? { ...it, like: true } : it)),
-    );
-    try {
-      await likePlace(restaurantId);
-      console.log("like 호출 ID:", restaurantId, typeof restaurantId);
-    } catch {
-      setLocalItems((prev) =>
-        prev.map((it) =>
-          it.id === restaurantId ? { ...it, like: false } : it,
-        ),
-      );
-      alert("찜 등록 실패");
-    }
-  }, []);
+  const handleLike = useCallback(
+    async (restaurantId: number) => {
+      if (isAuthenticated) {
+        setLocalItems((prev) =>
+          prev.map((it) =>
+            it.id === restaurantId ? { ...it, like: true } : it,
+          ),
+        );
 
-  const handleUnlike = useCallback(async (restaurantId: number) => {
-    setLocalItems((prev) =>
-      prev.map((it) => (it.id === restaurantId ? { ...it, like: false } : it)),
-    );
-    try {
-      await unlikePlace(restaurantId);
-      console.log("unlike 호출 ID:", restaurantId, typeof restaurantId);
-    } catch {
-      setLocalItems((prev) =>
-        prev.map((it) => (it.id === restaurantId ? { ...it, like: true } : it)),
-      );
-      alert("찜 해제 실패");
-    }
-  }, []);
+        try {
+          await likePlace(restaurantId);
+          console.log("like 호출 ID:", restaurantId, typeof restaurantId);
+        } catch {
+          // 실패 시 롤백
+          setLocalItems((prev) =>
+            prev.map((it) =>
+              it.id === restaurantId ? { ...it, like: false } : it,
+            ),
+          );
+          alert("찜 등록 실패");
+        }
+      } else {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+    },
+    [isAuthenticated],
+  );
+
+  const handleUnlike = useCallback(
+    async (restaurantId: number) => {
+      // ✅ 로그인 가드
+      if (isAuthenticated) {
+        // 낙관적 업데이트
+        setLocalItems((prev) =>
+          prev.map((it) =>
+            it.id === restaurantId ? { ...it, like: false } : it,
+          ),
+        );
+
+        try {
+          await unlikePlace(restaurantId);
+          console.log("unlike 호출 ID:", restaurantId, typeof restaurantId);
+        } catch {
+          // 실패 시 롤백
+          setLocalItems((prev) =>
+            prev.map((it) =>
+              it.id === restaurantId ? { ...it, like: true } : it,
+            ),
+          );
+          alert("찜 해제 실패");
+        }
+      } else {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+    },
+    [isAuthenticated],
+  );
 
   // 불필요한 재생성 방지
   const rendered = useMemo(
     () =>
       localItems.map((item) => (
         <FoodCard
-          key={item.id} // ✅ index 대신 안정적인 key
+          key={item.id}
           item={item}
           onClick={() => onItemClick(item.id)}
           onLike={() => handleLike(item.id)}
           onUnlike={() => handleUnlike(item.id)}
+          isAuthenticated={isAuthenticated}
+          onRequireLogin={() => alert("로그인이 필요합니다.")}
         />
       )),
-    [localItems, onItemClick, handleLike, handleUnlike],
+    [localItems, onItemClick, handleLike, handleUnlike, isAuthenticated],
   );
 
   return <div className="flex flex-col gap-4">{rendered}</div>;
