@@ -11,11 +11,11 @@ import {
 // - allergy: ["달걀(난류) 알레르기", "우유 알레르기", "갑각류 알레르기", "해산물 알레르기", "견과류 알레르기"]
 
 export type UpdateProfilePayload = {
-  nickname?: string;
-  profileImageUrl?: string;
-  gender?: string; // 여성 | 남성
-  body_type?: string; // 감기 | 소화불량 | 더위잘탐 | 추위잘탐
-  exercise?: string; // 다이어트 중 | 증량 중 | 유지 중
+  nickname?: string | null;
+  profileImageUrl?: string | null;
+  gender?: string | null; // 여성 | 남성
+  body_type?: string | null; // 감기 | 소화불량 | 더위잘탐 | 추위잘탐
+  exercise?: string | null; // 다이어트 중 | 증량 중 | 유지 중
   prefer?: string[]; // 한식 | 양식 | 중식 | 일식 | 다른나라
   allergy?: string[]; // 달걀(난류) 알레르기 | 우유 알레르기 | 갑각류 알레르기 | 해산물 알레르기 | 견과류 알레르기
 };
@@ -136,30 +136,38 @@ const normalizeAllergyItem = (v: string) => {
 export function buildUpdatePayloadFromStore(
   s: StoreShape,
 ): UpdateProfilePayload {
-  const allergyApi = mapClean(s.allergy, normalizeAllergyItem);
-  const bodyTypeFirstApi = normalizeBodyType(s.bodyType?.[0]);
-  const genderApi = normalizeGender(s.gender ?? (s as any)?.sex);
-  const exerciseApi = normalizeExercise(s.exercise ?? (s as any)?.state);
+  const allergyApi = mapClean(s.allergy, normalizeAllergyItem) ?? [];
+  const bodyTypeFirstApi = normalizeBodyType(s.bodyType?.[0]) ?? null;
+  const genderApi = normalizeGender(s.gender ?? (s as any)?.sex) ?? null;
+  const exerciseApi =
+    normalizeExercise(s.exercise ?? (s as any)?.state) ?? null;
+
+  // prefer: 최대 2개 선택 정책은 컴포넌트에서 처리됨. 여기서는 전달된 배열을 그대로 보냄.
+  const preferApi = mapClean(s.prefer, normalizePreferItem);
 
   return {
-    nickname: trimOrUndef(s.nickname),
-    profileImageUrl: trimOrUndef(s.profileImageUrl),
-    gender: trimOrUndef(genderApi),
-    body_type: trimOrUndef(bodyTypeFirstApi),
-    exercise: trimOrUndef(exerciseApi),
-    prefer: mapClean(s.prefer, normalizePreferItem),
-    allergy: allergyApi,
+    nickname: s.nickname === null ? null : (trimOrUndef(s.nickname) ?? null),
+    profileImageUrl:
+      s.profileImageUrl === null
+        ? null
+        : (trimOrUndef(s.profileImageUrl) ?? null),
+    gender: genderApi, // null 허용 (서버에서 없음 처리)
+    body_type: bodyTypeFirstApi, // null 허용
+    exercise: exerciseApi, // null 허용
+    // 배열 필드는 빈 배열이어도 포함 (서버에서 "없음" 처리)
+    prefer: Array.isArray(s.prefer) ? (preferApi ?? []) : [],
+    allergy: Array.isArray(s.allergy) ? allergyApi : [],
   };
 }
 
 // ----- Below: helpers to build a "complete" payload by merging with current profile -----
 
 export type CompleteProfilePayload = {
-  nickname: string;
-  profileImageUrl?: string;
-  gender: string;
-  body_type: string;
-  exercise: string;
+  nickname: string | null;
+  profileImageUrl?: string | null;
+  gender: string | null;
+  body_type: string | null;
+  exercise: string | null;
   prefer: string[];
   allergy: string[];
 };
@@ -179,34 +187,39 @@ export function buildCompletePayloadFromStore(
   current?: ProfileLike,
 ): CompleteProfilePayload {
   const partial = buildUpdatePayloadFromStore(s);
+  const has = (k: keyof UpdateProfilePayload) =>
+    Object.prototype.hasOwnProperty.call(partial, k);
 
-  const nickname = partial.nickname ?? trimOrUndef(current?.nickname) ?? "";
-  const profileImageUrl =
-    partial.profileImageUrl ??
-    trimOrUndef(current?.profileImageUrl) ??
-    undefined;
-  const gender =
-    partial.gender ??
-    trimOrUndef(normalizeGender(current?.gender ?? (current as any)?.sex)) ??
-    "";
-  const body_type =
-    partial.body_type ??
-    trimOrUndef(normalizeBodyType(current?.body_type || undefined)) ??
-    "";
-  const exercise =
-    partial.exercise ??
-    trimOrUndef(
-      normalizeExercise(current?.exercise ?? (current as any)?.state),
-    ) ??
-    "";
-  const prefer =
-    partial.prefer ??
-    mapClean(current?.prefer || [], normalizePreferItem) ??
-    [];
-  const allergy =
-    partial.allergy ??
-    mapClean(current?.allergy || [], normalizeAllergyItem) ??
-    [];
+  const nickname = has("nickname")
+    ? (partial.nickname ?? null)
+    : (trimOrUndef(current?.nickname) ?? null);
+
+  const profileImageUrl = has("profileImageUrl")
+    ? (partial.profileImageUrl ?? null)
+    : (trimOrUndef(current?.profileImageUrl) ?? null);
+
+  const gender = has("gender")
+    ? (partial.gender ?? null)
+    : (trimOrUndef(normalizeGender(current?.gender ?? (current as any)?.sex)) ??
+      null);
+
+  const body_type = has("body_type")
+    ? (partial.body_type ?? null)
+    : (trimOrUndef(normalizeBodyType(current?.body_type || undefined)) ?? null);
+
+  const exercise = has("exercise")
+    ? (partial.exercise ?? null)
+    : (trimOrUndef(
+        normalizeExercise(current?.exercise ?? (current as any)?.state),
+      ) ?? null);
+
+  const prefer = has("prefer")
+    ? (partial.prefer as string[])
+    : (mapClean(current?.prefer || [], normalizePreferItem) ?? []);
+
+  const allergy = has("allergy")
+    ? (partial.allergy as string[])
+    : (mapClean(current?.allergy || [], normalizeAllergyItem) ?? []);
 
   return {
     nickname,
