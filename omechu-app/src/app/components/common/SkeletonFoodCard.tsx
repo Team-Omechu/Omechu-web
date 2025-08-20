@@ -1,6 +1,6 @@
 export default function SkeletonFoodCard() {
   return (
-    <div className="flex w-[330px] animate-pulse flex-row items-start gap-4 rounded-lg bg-gray-100 p-4">
+    <div className="flex w-96 animate-pulse flex-row items-start gap-4 rounded-lg bg-gray-100 p-4">
       {/* 좌측: 텍스트 영역 */}
       <div className="flex flex-1 flex-col gap-2">
         {/* 식당명, 별점, 하트 */}
