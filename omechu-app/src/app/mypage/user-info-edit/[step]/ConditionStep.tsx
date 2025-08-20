@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -46,6 +46,9 @@ const toLabel = (codeOrLabel?: string | null): BodyLabel | "" => {
 };
 
 export default function ConditionStep() {
+  const hydratedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+
   const router = useRouter();
   const qc = useQueryClient();
 
@@ -87,8 +90,9 @@ export default function ConditionStep() {
   // profile의 body_type/camelCase를 한 번에 참조 (deps에서 타입 오류 방지)
   const rawBodyType = (profile as any)?.body_type ?? (profile as any)?.bodyType;
 
-  // ▶︎ 초기 하이드레이트: 프로필에 body_type 있으면 스토어 비었을 때 세팅 (스펙 라벨로 저장)
+  // ▶︎ 초기 하이드레이트: 스토어가 비었고, 사용자 상호작용 전 1회만
   useEffect(() => {
+    if (hydratedRef.current || userInteractedRef.current) return;
     if ((bodyType?.length ?? 0) === 0) {
       const raw = rawBodyType;
       if (process.env.NODE_ENV !== "production") {
@@ -98,6 +102,7 @@ export default function ConditionStep() {
       const first = arr.map((v: any) => toLabel(String(v))).find(Boolean);
       if (first) {
         setBodyType([first as BodyLabel]);
+        hydratedRef.current = true;
         if (process.env.NODE_ENV !== "production") {
           console.log("[ConditionStep] hydrated from profile:", first);
         }
@@ -111,6 +116,7 @@ export default function ConditionStep() {
   );
 
   const handleClick = (label: BodyLabel) => {
+    userInteractedRef.current = true;
     const next = active === label ? [] : [label];
     setBodyType(next);
     if (process.env.NODE_ENV !== "production") {
@@ -118,12 +124,42 @@ export default function ConditionStep() {
     }
   };
 
-  const handleSkip = () => {
-    // null semantics for array-type field: use empty array
+  const handleSkip = async () => {
+    userInteractedRef.current = true;
     setBodyType([]);
     if (process.env.NODE_ENV !== "production") {
-      console.log("[ConditionStep] skip → bodyType = [] (null semantics)");
+      console.log(
+        "[ConditionStep] skip → bodyType = [] (null semantics); block rehydrate",
+      );
     }
+
+    try {
+      const snap = {
+        nickname,
+        profileImageUrl,
+        gender,
+        exercise,
+        prefer,
+        bodyType: [], // 빈 배열 → 매퍼에서 body_type:null 로 변환
+        allergy,
+      };
+      const payload = buildCompletePayloadFromStore(
+        snap as any,
+        profile as any,
+      );
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[ConditionStep] skip payload =>", fullPayload);
+      }
+      await updateProfile(fullPayload);
+      qc.invalidateQueries({
+        queryKey: ["profile", userKey],
+        exact: true,
+      }).catch(() => {});
+    } catch (e) {
+      // 실패해도 다음 단계로 진행
+    }
+
     router.push(`/mypage/user-info-edit/${indexToSlug[5]}`); // 다음: allergy
   };
 

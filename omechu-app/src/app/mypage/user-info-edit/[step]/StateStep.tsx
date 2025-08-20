@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -20,6 +20,9 @@ const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;
 type Label = (typeof LABELS)[number];
 
 export default function StateStep() {
+  const hydratedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -42,6 +45,7 @@ export default function StateStep() {
 
   // 프로필에 운동 상태가 있고 스토어가 비어 있으면 초기 하이드레이트 (라벨 그대로)
   useEffect(() => {
+    if (hydratedRef.current || userInteractedRef.current) return;
     if (!exercise && profile?.exercise) {
       if (
         profile.exercise === "다이어트 중" ||
@@ -49,6 +53,10 @@ export default function StateStep() {
         profile.exercise === "유지 중"
       ) {
         setExercise(profile.exercise as Label);
+        hydratedRef.current = true;
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[StateStep] hydrated from profile →", profile.exercise);
+        }
       }
     }
   }, [exercise, profile?.exercise, setExercise]);
@@ -57,6 +65,7 @@ export default function StateStep() {
 
   const handleStatusClick = (label: Label) => {
     const next = activeLabel === label ? null : label;
+    userInteractedRef.current = true;
     setExercise(next as any);
   };
 
@@ -108,8 +117,34 @@ export default function StateStep() {
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
+    userInteractedRef.current = true;
     setExercise(null);
+    try {
+      const snap = {
+        nickname,
+        profileImageUrl,
+        gender,
+        exercise: null, // ← 명시적으로 null 전송
+        prefer,
+        bodyType,
+        allergy,
+      };
+      const payload = buildCompletePayloadFromStore(
+        snap as any,
+        profile as any,
+      );
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[StateStep] skip payload =>", fullPayload);
+      }
+      await updateProfile(fullPayload);
+      queryClient
+        .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+        .catch(() => {});
+    } catch (e) {
+      // 무시하고 다음 단계로 이동
+    }
     router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
   };
 

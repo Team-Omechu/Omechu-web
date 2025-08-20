@@ -124,7 +124,8 @@ const normalizeAllergyItem = (v: string) => {
   return undefined;
 };
 
-// ────────────────────────────────────────────────────────────────────────────────
+// NOTE: nickname/profileImageUrl are non-destructive — only sent when provided (avoid accidental clearing).
+
 // 1) 부분 업데이트용 페이로드: 명시적으로 전달된 null/빈배열을 그대로 포함
 export function buildUpdatePayloadFromStore(
   s: StoreShape,
@@ -136,22 +137,27 @@ export function buildUpdatePayloadFromStore(
     normalizeExercise(s.exercise ?? (s as any)?.state) ?? null;
   const preferApi = mapClean(s.prefer, normalizePreferItem);
 
-  return {
-    // ✅ nickname은 항상 포함 (빈 문자열은 null로)
-    nickname: s.nickname === null ? null : (trimOrUndef(s.nickname) ?? null),
-    // ✅ 프로필 이미지는 null 허용(삭제)
-    profileImageUrl:
-      s.profileImageUrl === null
-        ? null
-        : (trimOrUndef(s.profileImageUrl) ?? null),
-    // ✅ 단일값 필드: null도 전송 (서버가 없음 처리)
+  // 기본(파괴적 허용) 필드: 단일값은 null 허용, 배열은 빈 배열 포함
+  const out: UpdateProfilePayload = {
     gender: genderApi,
     body_type: bodyTypeFirstApi,
     exercise: exerciseApi,
-    // ✅ 배열 필드: 빈 배열이어도 포함 (서버 없음 처리)
     prefer: Array.isArray(s.prefer) ? (preferApi ?? []) : [],
     allergy: Array.isArray(s.allergy) ? allergyApi : [],
-  };
+  } as UpdateProfilePayload;
+
+  // 비파괴 필드: 값이 주어졌을 때만 포함 (의도치 않은 초기화 방지)
+  const nick = trimOrUndef(s.nickname);
+  if (nick !== undefined) {
+    out.nickname = nick;
+  }
+
+  const img = trimOrUndef(s.profileImageUrl ?? undefined);
+  if (img !== undefined) {
+    out.profileImageUrl = img;
+  }
+
+  return out;
 }
 
 // ----- Below: helpers to build a "complete" payload by merging with current profile -----
