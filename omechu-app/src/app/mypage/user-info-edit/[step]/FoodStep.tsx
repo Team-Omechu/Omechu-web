@@ -1,6 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useProfileQuery } from "../../hooks/useProfileQuery";
+const FOOD_LABELS = ["한식", "양식", "중식", "일식", "다른나라 음식"] as const;
+const codeFromLabel = (label: (typeof FOOD_LABELS)[number]) =>
+  label === "한식"
+    ? "KOR"
+    : label === "양식"
+      ? "WES"
+      : label === "중식"
+        ? "CHI"
+        : label === "일식"
+          ? "JPN"
+          : "ETC";
+const labelFromAny = (v?: string | null) => {
+  if (!v) return "";
+  const s = String(v);
+  if ((FOOD_LABELS as readonly string[]).includes(s)) return s;
+  const u = s.toUpperCase();
+  if (u === "KOR") return "한식";
+  if (u === "WES" || u === "WESTERN") return "양식";
+  if (u === "CHI" || u === "CHINESE") return "중식";
+  if (u === "JPN" || u === "JAPANESE") return "일식";
+  return "다른나라 음식";
+};
 
 import { useRouter } from "next/navigation";
 
@@ -18,8 +41,23 @@ export default function FoodStep() {
   const prefer = useOnboardingStore((state) => state.prefer);
   const resetPrefer = useOnboardingStore((state) => state.resetPrefer);
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화 함수
-
   const togglePrefer = useOnboardingStore((state) => state.togglePrefer);
+  const setPrefer = useOnboardingStore((state) => state.setPrefer);
+  const { data: profile } = useProfileQuery();
+
+  useEffect(() => {
+    if (
+      prefer.length === 0 &&
+      Array.isArray(profile?.prefer) &&
+      profile!.prefer.length > 0
+    ) {
+      const mapped = (profile!.prefer as any[])
+        .map((x) => labelFromAny(String(x)))
+        .filter(Boolean);
+      const unique = Array.from(new Set(mapped)).slice(0, 2) as string[];
+      if (unique.length > 0) setPrefer(unique);
+    }
+  }, [prefer.length, profile?.prefer, setPrefer]);
 
   // 음식 버튼 누르면 선택하거나 해제함 (최대 2개까지만)
   const handleClick = (item: string) => {
@@ -64,7 +102,7 @@ export default function FoodStep() {
         {/* 음식 선택 버튼 */}
         <section>
           <div className="flex flex-col gap-5">
-            {["한식", "양식", "중식", "일식", "다른나라 음식"].map((item) => {
+            {FOOD_LABELS.map((item) => {
               const isSelected = prefer.includes(item);
               const isDisabled = !isSelected && prefer.length >= 2;
 
