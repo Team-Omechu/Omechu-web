@@ -107,18 +107,13 @@ export default function Favorites() {
   };
 
   const sortedItems = useMemo(() => {
-    return [...hearts].sort((a, b) => {
-      if (sortOrder === "latest") {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      } else {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      }
+    const base = filteredItems; // 검색 필터 결과 기준으로 정렬
+    return [...base].sort((a, b) => {
+      const at = getSortTs(a);
+      const bt = getSortTs(b);
+      return sortOrder === "latest" ? bt - at : at - bt;
     });
-  }, [hearts, sortOrder]);
+  }, [filteredItems, sortOrder]);
 
   // 중복 제거 추가
   const dedupedItems = useMemo(() => {
