@@ -113,7 +113,7 @@ export default function ProfileSection() {
                 setStuck(false);
                 refetch();
               }}
-              className="px-3 py-2 text-sm border rounded-md"
+              className="rounded-md border px-3 py-2 text-sm"
             >
               다시 시도
             </button>
@@ -124,7 +124,7 @@ export default function ProfileSection() {
                 // 캐시 무시 새로고침
                 router.refresh();
               }}
-              className="px-3 py-2 text-sm border rounded-md"
+              className="rounded-md border px-3 py-2 text-sm"
             >
               새로고침
             </button>
@@ -149,7 +149,7 @@ export default function ProfileSection() {
         <button
           type="button"
           onClick={() => refetch()}
-          className="px-3 py-2 text-sm border rounded-md"
+          className="rounded-md border px-3 py-2 text-sm"
         >
           다시 시도
         </button>

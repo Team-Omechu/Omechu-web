@@ -123,7 +123,7 @@ export default function SignInForm() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-full gap-4"
+        className="flex w-full flex-col gap-4"
       >
         <Controller
           name="email"
@@ -171,7 +171,7 @@ export default function SignInForm() {
           </SquareButton>
         </div>
 
-        <div className="flex items-center justify-between mt-2 text-sm text-gray-600">
+        <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
           <Checkbox
             id="remember-me"
             label="로그인 상태 유지"

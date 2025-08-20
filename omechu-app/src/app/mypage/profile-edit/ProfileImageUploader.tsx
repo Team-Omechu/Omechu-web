@@ -43,7 +43,7 @@ export default function ProfileImageUploader({
           width={100}
           height={100}
           alt="프로필 이미지"
-          className="object-cover w-full h-full"
+          className="h-full w-full object-cover"
         />
       </div>
       <button className="absolute right-1 top-1" onClick={handleImageClick}>
