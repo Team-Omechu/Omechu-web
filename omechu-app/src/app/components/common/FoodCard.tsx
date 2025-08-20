@@ -1,13 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
-
 import { Restaurant } from "@/lib/types/restaurant";
 
 type FoodCardProps = {
   item: Restaurant;
   onClick: () => void;
-  onLike?: () => void;
-  onUnlike?: () => void;
+  onLike?: () => Promise<boolean | void> | boolean | void; // 성공 시 true/void, 실패·차단 시 false를 반환할 수 있게
+  onUnlike?: () => Promise<boolean | void> | boolean | void;
+  // ✅ 로그인 가드용
+  isAuthenticated?: boolean; // 기본값 false로 보고 가드
+  onRequireLogin?: () => void; // 비로그인 시 호출(모달/리다이렉트 등)
 };
 
 type ServerRestaurant = {
@@ -15,9 +17,9 @@ type ServerRestaurant = {
   name?: string | null;
   address?: string | null;
   rating?: number | null;
-  representativeMenus?: string[]; // 혹은 서버 필드에 맞춰 수정
+  representativeMenus?: string[];
   rest_image?: string | null;
-  isLiked?: boolean; // 서버가 주면 사용, 없으면 false로
+  isLiked?: boolean;
 };
 
 // 서버 응답 → Restaurant 로 변환
@@ -25,7 +27,7 @@ export function normalizeRestaurant(s: ServerRestaurant): Restaurant {
   return {
     id: Number(s.id),
     name: s.name ?? "-",
-    address: s.address ?? "", // ← 문자열
+    address: s.address ?? "",
     rating: s.rating ?? 0,
     images: s.rest_image ? [s.rest_image] : [],
     rest_tag: [],
@@ -35,42 +37,61 @@ export function normalizeRestaurant(s: ServerRestaurant): Restaurant {
   };
 }
 
-const normalizeIsLiked = (value: boolean | undefined | null): boolean => {
-  return Boolean(value);
-};
+const normalizeIsLiked = (value: boolean | undefined | null): boolean =>
+  Boolean(value);
 
 export default function FoodCard({
   item,
   onClick,
   onLike,
   onUnlike,
+  isAuthenticated = false,
+  onRequireLogin,
 }: FoodCardProps) {
   const [isLiked, setIsLiked] = useState(normalizeIsLiked(item.like));
   const [heartBusy, setHeartBusy] = useState(false);
+
+  // ✅ 사진은 최초 1회만 결정하여 고정 (좋아요 토글/가드와 무관)
+  const [imageSrc] = useState(
+    item.images?.[0] ||
+      `https://places.googleapis.com/v1/${item.name}/media?maxWidthPx=800&key=${process.env.GOOGLE_MAPS_API_KEY}`,
+  );
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (heartBusy) return;
 
+    // ✅ 비로그인 시: 낙관적 업데이트도 호출도 하지 않음 → 사진/하트 모두 불변
+    if (!isAuthenticated) {
+      onRequireLogin?.();
+      return;
+    }
+
     setHeartBusy(true);
     const next = !isLiked;
-    setIsLiked(next); // 낙관적 UI
+
+    // 낙관적 UI
+    setIsLiked(next);
 
     try {
-      if (next) {
-        await onLike?.(); // 부모에서 API 호출
-      } else {
-        await onUnlike?.();
+      // 부모로 위임: 성공(true/void)면 유지, 실패(false) 또는 throw면 롤백
+      let ok: boolean | void | undefined;
+      if (next) ok = await onLike?.();
+      else ok = await onUnlike?.();
+
+      if (ok === false) {
+        // 부모가 "차단/실패"를 명시(false)한 경우 즉시 롤백
+        setIsLiked(!next);
       }
     } catch (err) {
-      // 실패시 롤백
+      // 에러 시 롤백
       setIsLiked(!next);
-      // 필요하면 토스트는 부모에서 띄우는 걸 추천
     } finally {
       setHeartBusy(false);
     }
   };
 
+  // 부모에서 like 값이 갱신되어 내려오면 동기화
   useEffect(() => {
     setIsLiked(Boolean(item.like));
   }, [item.like]);
@@ -96,7 +117,6 @@ export default function FoodCard({
             {item.menus[0]}
           </p>
         )}
-
         <div className="mt-1 flex flex-wrap gap-2 text-xs">
           {item.rest_tag?.map((tag: { tag: string }, i: number) => (
             <span
@@ -117,12 +137,11 @@ export default function FoodCard({
             className="h-5 w-5"
           />
         </button>
+
+        {/* ✅ 좋아요/가드 여부와 무관하게 사진은 고정 */}
         <img
-          src={
-            item.images?.[0] ||
-            `https://places.googleapis.com/v1/${item.name}/media?maxWidthPx=800&key=${process.env.GOOGLE_MAPS_API_KEY}`
-          }
-          alt={item.menus[0] ?? "음식"}
+          src={imageSrc}
+          alt={item.menus?.[0] ?? "음식"}
           className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-contain"
         />
       </div>
