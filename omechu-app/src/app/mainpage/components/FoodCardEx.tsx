@@ -91,7 +91,7 @@ export default function FoodCard({
           </span>
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.formattedAddress}</p>
-        <p className="mb-1 text-sm font-bold text-blue-600">{menu}</p>
+        <p className="mb-1 text-sm font-bold text-grey-normalActive">{menu}</p>
       </div>
 
       <div className="flex flex-col place-items-end gap-2">
