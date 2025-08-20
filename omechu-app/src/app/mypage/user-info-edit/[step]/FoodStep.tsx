@@ -88,7 +88,11 @@ export default function FoodStep() {
   const activeSet = useMemo(() => new Set(prefer), [prefer]);
 
   const handleSkip = () => {
-    resetPrefer();
+    // null semantics for array-type field: use empty array
+    setPrefer([]);
+    if (process.env.NODE_ENV !== "production") {
+      console.log("[FoodStep] skip → prefer = [] (null semantics)");
+    }
     router.push(`/mypage/user-info-edit/${indexToSlug[4]}`); // 다음: body_type
   };
 
