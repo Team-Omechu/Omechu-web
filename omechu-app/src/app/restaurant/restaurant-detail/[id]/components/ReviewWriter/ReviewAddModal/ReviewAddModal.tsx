@@ -12,7 +12,7 @@ import ImageUploader from "./ImageUploader";
 import RatingSelector from "./RatingSelector";
 import TagSelector from "./TagSelector";
 import TextReview from "./TextReview";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postReview, ReviewRequest } from "../../../api/review";
 import { uploadImageToS3 } from "@/restaurant/api/uploadImage";
 
@@ -32,6 +32,8 @@ export default function ReviewAddModal({
   const [comment, setComment] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const usePostReview = () => {
     return useMutation({
@@ -148,7 +150,9 @@ export default function ReviewAddModal({
             confirmText="제출하기"
             onConfirm={() => {
               // 컴포넌트 상단에 const queryClient = useQueryClient(); 추가 필요
-              queryClient.invalidateQueries({ queryKey: ["reviews", restaurantId] });
+              queryClient.invalidateQueries({
+                queryKey: ["reviews", restaurantId],
+              });
               setShowConfirmModal(false);
               onClose();
             }}
