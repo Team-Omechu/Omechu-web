@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -9,6 +9,31 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+
+import { useProfileQuery } from "../../hooks/useProfileQuery";
+
+const LABELS = [
+  "감기에 잘 걸리는 편이에요",
+  "소화가 잘 안되는 날이 많아요",
+  "열이 많아서 더위를 잘 타요",
+  "추위를 잘 타고 몸이 쉽게 차가워져요",
+] as const;
+type Label = (typeof LABELS)[number];
+
+const toLabel = (codeOrLabel?: string | null): Label | "" => {
+  if (!codeOrLabel) return "";
+  const s = String(codeOrLabel).trim();
+  if ((LABELS as readonly string[]).includes(s)) return s as Label;
+  const u = s.toUpperCase();
+  if (u.includes("COLD") || u.includes("WEAK") || u.includes("CATCH"))
+    return "감기에 잘 걸리는 편이에요";
+  if (u.includes("DIGEST")) return "소화가 잘 안되는 날이 많아요";
+  if (u.includes("HEAT") || u.includes("HOT"))
+    return "열이 많아서 더위를 잘 타요";
+  if (u.includes("CHILL") || u.includes("COLDNESS"))
+    return "추위를 잘 타고 몸이 쉽게 차가워져요";
+  return "";
+};
 
 export default function ConditionStep() {
   const router = useRouter();
@@ -21,15 +46,30 @@ export default function ConditionStep() {
 
   const toggleBodyType = useOnboardingStore((state) => state.toggleBodyType);
 
+  const setBodyType = useOnboardingStore((state) => state.setBodyType);
+  const { data: profile } = useProfileQuery();
+
+  useEffect(() => {
+    if (Array.isArray(bodyType) && bodyType.length === 0) {
+      const raw = (profile as any)?.bodyType ?? (profile as any)?.body_type;
+      const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
+      const first = arr.map((v: any) => toLabel(String(v))).find(Boolean);
+      if (first) setBodyType([first]);
+    }
+  }, [bodyType, profile, setBodyType]);
+
   // 건너뛰기 누르면 상태 초기화하고 다음 페이지로 이동
   const handleSkip = () => {
     resetBodyType();
     router.push(`/mypage/user-info-edit/${indexToSlug[5]}`);
   };
 
-  // 버튼 클릭 시 토글 방식으로 값 추가 또는 제거
+  // 버튼 클릭 시 단일 선택 토글 방식으로 값 추가 또는 제거
   const handleClick = (item: string) => {
-    toggleBodyType(item);
+    const isSelected = bodyType.includes(item);
+    if (isSelected)
+      setBodyType([]); // 해제
+    else setBodyType([item as Label]); // 단일 선택
   };
 
   return (
@@ -54,16 +94,11 @@ export default function ConditionStep() {
         {/* 선택 버튼 리스트 */}
         <section className="mt-10 w-full px-5">
           <div className="flex flex-col gap-5">
-            {[
-              "감기에 잘 걸리는 편이에요",
-              "소화가 잘 안되는 날이 많아요",
-              "열이 많아서 더위를 잘 타요",
-              "추위를 잘 타고 몸이 쉽게 차가워져요",
-            ].map((item) => {
+            {LABELS.map((item) => {
               const isSelected = bodyType.includes(item);
               return (
                 <button
-                  key={`${item}-${bodyType.includes(item)}`}
+                  key={item}
                   onClick={() => handleClick(item)}
                   className={`h-14 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
                     isSelected
