@@ -74,10 +74,26 @@ export default function ConditionStep() {
     (authUser as any)?.email ??
     (accessToken ? "me" : "guest");
 
+  // 마운트/상태 디버그
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "production") {
+      console.log("[ConditionStep] mount", {
+        store: { nickname, gender, exercise, prefer, bodyType, allergy },
+        profile,
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // profile의 body_type/camelCase를 한 번에 참조 (deps에서 타입 오류 방지)
+  const rawBodyType = (profile as any)?.body_type ?? (profile as any)?.bodyType;
+
   // ▶︎ 초기 하이드레이트: 프로필에 body_type 있으면 스토어 비었을 때 세팅 (스펙 라벨로 저장)
   useEffect(() => {
     if ((bodyType?.length ?? 0) === 0) {
-      const raw = (profile as any)?.body_type ?? (profile as any)?.bodyType;
+      const raw = rawBodyType;
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[ConditionStep] hydrate check", { raw });
+      }
       const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
       const first = arr.map((v: any) => toLabel(String(v))).find(Boolean);
       if (first) {
@@ -87,7 +103,7 @@ export default function ConditionStep() {
         }
       }
     }
-  }, [bodyType?.length, profile?.bodyType, profile?.bodyType, setBodyType]);
+  }, [bodyType?.length, rawBodyType, setBodyType]);
 
   const active = useMemo(
     () => (bodyType?.[0] as BodyLabel | undefined) ?? undefined,
@@ -103,8 +119,11 @@ export default function ConditionStep() {
   };
 
   const handleSkip = () => {
+    if (process.env.NODE_ENV !== "production") {
+      console.log("[ConditionStep] skip body_type");
+    }
     resetBodyType();
-    router.push(`/mypage/user-info-edit/${indexToSlug[4]}`); // 다음: allergy
+    router.push(`/mypage/user-info-edit/${indexToSlug[5]}`); // 다음: allergy
   };
 
   const handleSave = async () => {
@@ -137,7 +156,7 @@ export default function ConditionStep() {
       }
 
       // 저장 성공 → 다음 스텝으로 즉시 이동, 캐시 무효화는 비동기 처리
-      router.replace(`/mypage/user-info-edit/${indexToSlug[4]}`);
+      router.replace(`/mypage/user-info-edit/${indexToSlug[5]}`);
       qc.invalidateQueries({
         queryKey: ["profile", userKey],
         exact: true,
@@ -200,7 +219,7 @@ export default function ConditionStep() {
         <div className="flex justify-between">
           <button
             onClick={() =>
-              router.push(`/mypage/user-info-edit/${indexToSlug[2]}`)
+              router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
             className="ml-5 text-base text-grey-normalActive"
           >

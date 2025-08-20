@@ -100,9 +100,7 @@ export default function GenderStep() {
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) {
-        router.push(
-          `/auth/sign-in?redirect=${encodeURIComponent(`/mypage/user-info-edit/${indexToSlug[1]}`)}`,
-        );
+        router.push(`sign-in`);
         return;
       }
       const reason =

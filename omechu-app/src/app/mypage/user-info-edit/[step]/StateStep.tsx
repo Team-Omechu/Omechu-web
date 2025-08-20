@@ -110,7 +110,7 @@ export default function StateStep() {
 
   const handleSkip = () => {
     setExercise(null);
-    router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
+    router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
   };
 
   return (

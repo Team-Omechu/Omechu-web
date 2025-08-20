@@ -16,12 +16,23 @@ import { useAuthStore } from "@/lib/stores/auth.store";
 
 // 화면에서 사용할 라벨 상수 (스토어에는 라벨 문자열을 그대로 저장/토글)
 const OPTIONS = [
-  "달걀 (난류)",
-  "유제품",
-  "갑각류",
-  "해산물",
-  "견과류",
+  "달걀(난류) 알레르기",
+  "우유 알레르기",
+  "갑각류 알레르기",
+  "해산물 알레르기",
+  "견과류 알레르기",
 ] as const;
+
+const normalizeAllergy = (v: string): (typeof OPTIONS)[number] | null => {
+  const s = v.trim();
+  if ((OPTIONS as readonly string[]).includes(s)) return s as any;
+  if (/달\s*걀|난류/i.test(s)) return "달걀(난류) 알레르기";
+  if (/우유|유제품|유당/i.test(s)) return "우유 알레르기";
+  if (/갑각|새우|게|랍스터/i.test(s)) return "갑각류 알레르기";
+  if (/해산물|어패류|생선/i.test(s)) return "해산물 알레르기";
+  if (/견과|땅콩|아몬드|호두|캐슈/i.test(s)) return "견과류 알레르기";
+  return null;
+};
 
 export default function AllergyStep() {
   const router = useRouter();
@@ -49,8 +60,13 @@ export default function AllergyStep() {
       Array.isArray(profile?.allergy) &&
       profile!.allergy.length > 0
     ) {
-      // 서버에서 온 값을 그대로 스토어 초기값으로 사용 (다중 선택 허용)
-      setAllergy(profile!.allergy as string[]);
+      const mapped = (profile!.allergy as string[])
+        .map((x) => normalizeAllergy(String(x)))
+        .filter(Boolean) as string[];
+      if (mapped.length > 0) setAllergy(Array.from(new Set(mapped)));
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[AllergyStep] hydrated from profile:", mapped);
+      }
     }
   }, [allergies.length, profile?.allergy, setAllergy]);
 
@@ -79,19 +95,24 @@ export default function AllergyStep() {
         allergy: allergies,
       };
       const payload = buildCompletePayloadFromStore(snap, profile);
-      await updateProfile(payload);
-      // 최신 프로필 쿼리 갱신
-      queryClient.invalidateQueries({
-        queryKey: ["profile", userKey],
-        exact: true,
-      });
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[AllergyStep] submit payload =>", fullPayload);
+      }
+
+      const res = await updateProfile(fullPayload);
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[AllergyStep] submit success =>", res);
+      }
+      queryClient
+        .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+        .catch(() => {});
       setShowSaveModal(true);
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) {
-        router.push(
-          `/auth/sign-in?redirect=${encodeURIComponent("/mypage/user-info-edit/allergy")}`,
-        );
+        router.push(`sign-in`);
         return;
       }
       const reason =
@@ -99,6 +120,9 @@ export default function AllergyStep() {
         e?.message ||
         "저장에 실패했습니다.";
       setError(reason);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("[AllergyStep] submit error =>", e);
+      }
     } finally {
       setLoading(false);
     }
