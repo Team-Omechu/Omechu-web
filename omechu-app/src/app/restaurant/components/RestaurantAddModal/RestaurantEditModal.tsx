@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useMemo, useState } from "react";
@@ -13,7 +14,6 @@ import MenuInputList from "../RestaurantAddModal/MenuInputList";
 import RestaurantNameInput from "../RestaurantAddModal/RestaurantNameInput";
 import { uploadImageToS3 } from "@/restaurant/api/uploadImage";
 
-// 필요에 맞게 교체하세요 (스웨거 명세에 따라)
 export type UpdateRestaurantPayload = {
   id: number;
   name: string;
@@ -140,7 +140,7 @@ export default function RestaurantEditModal({
         title="맛집 수정"
         rightChild={
           <button onClick={() => setIsAlertOpen(true)}>
-            <Image src={"x/close_big.svg"} alt="닫기" width={18} height={18} />
+            <img src={"/x/close_big.svg"} alt="닫기" width={18} height={18} />
           </button>
         }
       />
