@@ -25,6 +25,7 @@ import {
   removeExceptMenu,
 } from "../api/recommend";
 import Toast from "@/components/common/Toast";
+import AuthErrorModalSection from "../AuthErrorModalSection";
 
 type FoodItem = {
   id?: number;
@@ -391,15 +392,13 @@ export default function RecommendedList() {
 
       {/* 인증 모달: 하이드레이션 이후에만 판단 */}
       {ready && modalOpen && (
-        <AuthErrorModal
+        <AuthErrorModalSection
+          isOpen={modalOpen}
           onConfirm={() => {
             setModalOpen(false);
-            router.push("/sign-in");
+            router.push(`/sign-in`);
           }}
-          onClose={() => {
-            setModalOpen(false);
-            router.push("/sign-in");
-          }}
+          onClose={() => setModalOpen(false)}
         />
       )}
 
