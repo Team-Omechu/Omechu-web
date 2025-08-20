@@ -84,7 +84,7 @@ export default function ReviewAddModal({
   const isFormValid = rating > 0 && selectedTags.length > 0;
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#F8D5FF] px-4 py-5 scrollbar-hide">
+    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#FFDEFB] px-4 py-5 scrollbar-hide">
       {/* 헤더 */}
       <Header
         title={""}
