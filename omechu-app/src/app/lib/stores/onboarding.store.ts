@@ -63,6 +63,8 @@ type OnboardingState = {
   bodyType: string[];
   allergy: string[];
   currentStep: number;
+  // 하이드레이트 차단(뒤로가기 시 prefer 재세팅 방지)
+  preferHydrateBlocked: boolean;
 };
 
 type OnboardingActions = {
@@ -84,6 +86,7 @@ type OnboardingActions = {
   resetBodyType: () => void;
   resetAllergy: () => void;
   hydrateFromProfile: (raw: any) => void;
+  blockPreferHydrate: () => void;
 };
 
 const initialState: OnboardingState = {
@@ -95,6 +98,7 @@ const initialState: OnboardingState = {
   bodyType: [],
   allergy: [],
   currentStep: 1,
+  preferHydrateBlocked: false,
 };
 
 export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
@@ -178,9 +182,14 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
 
       setCurrentStep: (step) => set({ currentStep: step }),
 
+      blockPreferHydrate: () => set({ preferHydrateBlocked: true }),
+
       // 전체 초기화
       reset: () => {
-        set({ ...initialState });
+        set({
+          ...initialState,
+          preferHydrateBlocked: false,
+        });
         try {
           localStorage.removeItem("onboarding-storage");
         } catch {}

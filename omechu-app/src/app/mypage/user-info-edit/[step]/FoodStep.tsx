@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -34,6 +34,9 @@ const labelFromAny = (v?: string | null) => {
 };
 
 export default function FoodStep() {
+  const hydratedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+
   const router = useRouter();
   const qc = useQueryClient();
   const [showModal, setShowModal] = useState(false);
@@ -46,6 +49,11 @@ export default function FoodStep() {
   const togglePrefer = useOnboardingStore((s) => s.togglePrefer);
   const resetPrefer = useOnboardingStore((s) => s.resetPrefer);
   const resetAll = useOnboardingStore((s) => s.reset);
+
+  const preferHydrateBlocked = useOnboardingStore(
+    (s) => s.preferHydrateBlocked,
+  );
+  const blockPreferHydrate = useOnboardingStore((s) => s.blockPreferHydrate);
 
   const nickname = useOnboardingStore((s) => s.nickname);
   const profileImageUrl = useOnboardingStore((s) => s.profileImageUrl);
@@ -65,6 +73,15 @@ export default function FoodStep() {
   // ▶︎ 프로필로부터 초기 하이드레이트 (스토어 비어 있을 때만)
   useEffect(() => {
     if (
+      preferHydrateBlocked ||
+      hydratedRef.current ||
+      userInteractedRef.current
+    )
+      return;
+    if (preferHydrateBlocked && process.env.NODE_ENV !== "production") {
+      console.log("[FoodStep] hydrate blocked by store flag");
+    }
+    if (
       prefer.length === 0 &&
       Array.isArray(profile?.prefer) &&
       profile!.prefer.length > 0
@@ -73,12 +90,20 @@ export default function FoodStep() {
         .map((x) => labelFromAny(String(x)))
         .filter(Boolean) as FoodLabel[];
       const unique = Array.from(new Set(mapped)).slice(0, 2) as FoodLabel[]; // 최대 2개 정책 유지
-      if (unique.length > 0) setPrefer(unique);
+      if (unique.length > 0) {
+        setPrefer(unique);
+        hydratedRef.current = true;
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[FoodStep] hydrated from profile:", unique);
+        }
+      }
     }
-  }, [prefer.length, profile?.prefer, setPrefer]);
+  }, [prefer.length, profile?.prefer, setPrefer, preferHydrateBlocked]);
 
   // 버튼 토글 (최대 2개 선택)
   const handleClick = (item: FoodLabel) => {
+    userInteractedRef.current = true;
+    blockPreferHydrate();
     const isSelected = prefer.includes(item);
     if (isSelected || prefer.length < 2) {
       togglePrefer(item);
@@ -89,9 +114,13 @@ export default function FoodStep() {
 
   const handleSkip = () => {
     // null semantics for array-type field: use empty array
+    userInteractedRef.current = true;
+    blockPreferHydrate();
     setPrefer([]);
     if (process.env.NODE_ENV !== "production") {
-      console.log("[FoodStep] skip → prefer = [] (null semantics)");
+      console.log(
+        "[FoodStep] skip → prefer = [] (null semantics); block rehydrate (persisted)",
+      );
     }
     router.push(`/mypage/user-info-edit/${indexToSlug[4]}`); // 다음: body_type
   };
@@ -155,11 +184,12 @@ export default function FoodStep() {
         <section>
           <div className="flex flex-col gap-5">
             {FOOD_LABELS.map((item) => {
-              const isSelected = activeSet.has(item);
+              // 빈 배열일 때는 어떤 버튼도 선택되지 않도록 강제
+              const isSelected = prefer.length > 0 && activeSet.has(item);
               const isDisabled = !isSelected && prefer.length >= 2;
               return (
                 <button
-                  key={item}
+                  key={`${item}-${isSelected ? "1" : "0"}`}
                   type="button"
                   onClick={() => {
                     if (!isDisabled) handleClick(item);
