@@ -85,7 +85,7 @@ export default function GenderStep() {
           disabled={!gender} // 성별 선택 안 하면 저장 비활성화
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             gender
-              ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
+              ? "bg-secondary-normal hover:bg-[#0182CA] active:bg-[#0182CA]"
               : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
         >

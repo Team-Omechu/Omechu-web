@@ -128,7 +128,7 @@ export default function AllergyStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
-            className="ml-5 text-base text-grey-normalActive dark:font-semibold dark:text-white"
+            className="ml-5 text-base text-grey-normalActive"
           >
             {"<"} 이전으로
           </button>
@@ -138,7 +138,7 @@ export default function AllergyStep() {
         <button
           onClick={handleSubmit}
           disabled={loading || profileLoading}
-          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive disabled:opacity-50"
+          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-[#0182CA] active:bg-[#0182CA] disabled:opacity-50"
         >
           {loading || profileLoading ? "저장 중..." : "제출하기"}
         </button>

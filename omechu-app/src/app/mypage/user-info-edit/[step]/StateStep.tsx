@@ -101,7 +101,7 @@ export default function StateStep() {
           disabled={!state}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             state
-              ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
+              ? "bg-secondary-normal hover:bg-[#0182CA] active:bg-[#0182CA]"
               : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
         >
