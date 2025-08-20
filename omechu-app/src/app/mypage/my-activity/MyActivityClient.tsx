@@ -556,7 +556,7 @@ export default function MyActivityClient() {
                       <div key={item.id} className="flex w-full flex-col">
                         <button
                           type="button"
-                          className="w-full pr-2 text-end text-xs text-grey-normalActive underline"
+                          className="w-fll mb-1 pr-2 text-end text-xs text-grey-normalActive underline"
                           onClick={() => {
                             setEditing(item);
                             setEditOpen(true);
