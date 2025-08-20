@@ -81,7 +81,7 @@ export default function LocationAnswerPage() {
         {/* 결과 보기 버튼 */}
         <button
           onClick={handleClick}
-          className="mt-10 flex h-[2.8125rem] w-[17.375rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[0.625rem] text-[16px] font-medium text-white hover:bg-secondary-normalHover active:bg-primary-normalActive"
+          className="mt-10 flex h-[2.8125rem] w-[17.375rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[0.625rem] text-[16px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
         >
           결과 보기
         </button>
