@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -9,35 +8,143 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { useProfileQuery } from "../../hooks/useProfileQuery";
+import { useQueryClient } from "@tanstack/react-query";
+import { updateProfile } from "@/mypage/api/updateProfile";
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
+import { useAuthStore } from "@/lib/stores/auth.store";
+
+// 스펙 라벨 그대로 사용
+const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;
+
+type Label = (typeof LABELS)[number];
 
 export default function StateStep() {
+  const hydratedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Zustand에서 상태와 초기화 함수들 가져옴
-  const state = useOnboardingStore((state) => state.exercise);
-  const setStatus = useOnboardingStore((state) => state.setExercise);
-  const resetExercise = useOnboardingStore((state) => state.resetExercise);
+  // Zustand에서 상태와 초기화 함수들 가져옴 (라벨 그대로 저장)
+  const exercise = useOnboardingStore((s) => s.exercise); // "다이어트 중" | "증량 중" | "유지 중" | null
+  const setExercise = useOnboardingStore((s) => s.setExercise);
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화
 
-  // 선택 버튼 누르면 같은 값이면 해제, 아니면 선택
-  const handleStatusClick = (value: string) => {
-    if (state === value) {
-      setStatus(null);
-    } else {
-      setStatus(value);
+  // 다른 스텝에서 필요한 스토어 스냅샷도 함께 읽음 (서버 저장용)
+  const nickname = useOnboardingStore((s) => s.nickname);
+  const profileImageUrl = useOnboardingStore((s) => s.profileImageUrl);
+  const gender = useOnboardingStore((s) => s.gender);
+  const prefer = useOnboardingStore((s) => s.prefer);
+  const bodyType = useOnboardingStore((s) => s.bodyType);
+  const allergy = useOnboardingStore((s) => s.allergy);
+
+  const { data: profile } = useProfileQuery();
+
+  // 프로필에 운동 상태가 있고 스토어가 비어 있으면 초기 하이드레이트 (라벨 그대로)
+  useEffect(() => {
+    if (hydratedRef.current || userInteractedRef.current) return;
+    if (!exercise && profile?.exercise) {
+      if (
+        profile.exercise === "다이어트 중" ||
+        profile.exercise === "증량 중" ||
+        profile.exercise === "유지 중"
+      ) {
+        setExercise(profile.exercise as Label);
+        hydratedRef.current = true;
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[StateStep] hydrated from profile →", profile.exercise);
+        }
+      }
+    }
+  }, [exercise, profile?.exercise, setExercise]);
+
+  const activeLabel = useMemo(() => exercise ?? "", [exercise]);
+
+  const handleStatusClick = (label: Label) => {
+    const next = activeLabel === label ? null : label;
+    userInteractedRef.current = true;
+    setExercise(next as any);
+  };
+
+  // 저장 로직: 서버에 저장 후 다음 스텝으로 이동(선호 음식)
+  const queryClient = useQueryClient();
+  const authUser = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const userKey =
+    (authUser as any)?.id ??
+    (authUser as any)?.email ??
+    (accessToken ? "me" : "guest");
+
+  const handleSave = async () => {
+    if (!exercise) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const snap = {
+        nickname,
+        profileImageUrl,
+        gender,
+        exercise,
+        prefer,
+        bodyType,
+        allergy,
+      };
+      const payload = buildCompletePayloadFromStore(
+        snap as any,
+        profile as any,
+      );
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[StateStep] update payload =>", fullPayload);
+      }
+      await updateProfile(fullPayload);
+      // 다음 스텝(선호 음식)으로 이동, 캐시 무효화는 백그라운드 처리
+      router.replace(`/mypage/user-info-edit/${indexToSlug[3]}`);
+      queryClient
+        .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+        .catch(() => {});
+    } catch (e: any) {
+      const reason =
+        e?.response?.data?.error?.reason ||
+        e?.message ||
+        "운동 상태 저장에 실패했습니다.";
+      setError(reason);
+    } finally {
+      setSaving(false);
     }
   };
 
-  // handleSkip 수정
-  const handleSkip = () => {
-    resetExercise(); // ← 상태 초기화
-    router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
-  };
-
-  // 다음 버튼은 선택된 값이 있을 때만 작동
-  const handleNext = () => {
-    if (!state) return;
+  const handleSkip = async () => {
+    userInteractedRef.current = true;
+    setExercise(null);
+    try {
+      const snap = {
+        nickname,
+        profileImageUrl,
+        gender,
+        exercise: null, // ← 명시적으로 null 전송
+        prefer,
+        bodyType,
+        allergy,
+      };
+      const payload = buildCompletePayloadFromStore(
+        snap as any,
+        profile as any,
+      );
+      const fullPayload = { email: (profile as any)?.email, ...payload } as any;
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[StateStep] skip payload =>", fullPayload);
+      }
+      await updateProfile(fullPayload);
+      queryClient
+        .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
+        .catch(() => {});
+    } catch (e) {
+      // 무시하고 다음 단계로 이동
+    }
     router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
   };
 
@@ -54,21 +161,23 @@ export default function StateStep() {
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
         <section className="mb-16 mt-28">
           <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
-            지금 어떤 운동 상태에{"\n"}가까운가요?
+            {`지금 어떤 운동 상태에
+가까운가요?`}
           </div>
         </section>
 
         <section className="flex flex-col items-center justify-center">
           <div className="z-10 flex flex-col gap-5">
-            {["다이어트 중", "증량 중", "유지 중"].map((label) => (
+            {LABELS.map((label) => (
               <button
-                key={`${label}-${state === label}`}
+                key={`${label}-${activeLabel === label}`}
                 onClick={() => handleStatusClick(label)}
                 className={`h-12 w-60 rounded-md border-[1px] px-2 text-xl ${
-                  state === label
+                  activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
                     : "border-primary-normal bg-white text-primary-normal"
                 } `}
+                aria-pressed={activeLabel === label}
               >
                 {label}
               </button>
@@ -95,17 +204,17 @@ export default function StateStep() {
           </button>
         </div>
 
-        {/* 다음 버튼: 선택 없으면 비활성화 */}
+        {/* 저장 버튼: 선택 없으면 비활성화 */}
         <button
-          onClick={handleNext}
-          disabled={!state}
+          onClick={handleSave}
+          disabled={!exercise || saving}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
-            state
+            exercise && !saving
               ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
               : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
         >
-          저장
+          {saving ? "저장 중..." : "저장"}
         </button>
       </footer>
 
@@ -125,6 +234,12 @@ export default function StateStep() {
             onClose={() => setShowModal(false)}
           />
         </ModalWrapper>
+      )}
+
+      {error && (
+        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+          {error}
+        </div>
       )}
     </div>
   );

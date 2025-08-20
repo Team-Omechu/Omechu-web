@@ -93,4 +93,5 @@ axiosInstance.interceptors.response.use(
   },
 );
 
+export const api = axiosInstance;
 export default axiosInstance;

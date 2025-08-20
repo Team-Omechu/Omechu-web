@@ -1,4 +1,4 @@
-import axiosInstance from "@/lib/api/axios";
+import { api as axiosInstance } from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 /** 공통 응답 껍질 */
@@ -77,13 +77,11 @@ export const uploadToS3 = async (
   if (mustAcl) {
     headers["x-amz-acl"] = "public-read";
   } else if (options?.acl) {
-    // 옵션으로 명시된 경우에도 붙여줌(단, presign과 불일치하면 S3가 거부함)
     headers["x-amz-acl"] = options.acl;
   }
 
   if (process.env.NODE_ENV !== "production") {
     try {
-      // 과도한 로그 방지: 핵심만
       console.log("[uploadToS3] url has acl?", mustAcl, "headers:", headers);
     } catch {}
   }

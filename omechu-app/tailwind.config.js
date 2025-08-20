@@ -54,7 +54,7 @@ module.exports = {
           lightHover: "#ddf0f9",
           lightActive: "#bae0f4",
           normal: "#1f9bda",
-          normalHover: "#DD6362",
+          normalHover: "#1C8CC4",
           normalActive: "#197cae",
           dark: "#1774a4",
           darkHover: "#135d83",
