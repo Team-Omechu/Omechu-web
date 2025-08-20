@@ -184,21 +184,21 @@ export default function RestaurantAddModal({
           isSearchModalOpen={isSearchModalOpen}
           setIsSearchModalOpen={setIsSearchModalOpen}
         />
-      </div>
 
-      {/* 등록 버튼 */}
-      <div>
-        <button
-          disabled={!isFormValid() || loading}
-          className={`w-full rounded-md py-3 text-base font-bold text-white transition ${
-            isFormValid()
-              ? "bg-[#FF5B5B] hover:bg-[#e64545]"
-              : "cursor-not-allowed bg-gray-300"
-          }`}
-          onClick={handleRegisterClick}
-        >
-          {loading ? "등록 중..." : "등록하기"}
-        </button>
+        {/* 등록 버튼 */}
+        <div className="sticky border-t border-black/5 bg-main-normal px-4 pb-12 pt-3">
+          <button
+            disabled={!isFormValid() || loading}
+            className={`w-full rounded-md py-3 text-base font-bold text-white transition ${
+              isFormValid()
+                ? "bg-[#FF5B5B] hover:bg-[#e64545]"
+                : "cursor-not-allowed bg-gray-300"
+            }`}
+            onClick={handleRegisterClick}
+          >
+            {loading ? "등록 중..." : "등록하기"}
+          </button>
+        </div>
       </div>
 
       {/* 등록 완료 모달 */}
