@@ -184,6 +184,39 @@ export default function MyActivityClient() {
       .finally(() => setLoading(false));
   }, [hasHydrated, accessToken, selectedIndex]);
 
+  // 등록한 맛집 재조회 (편집/찜 변경 등 후 싱크용)
+  const reloadMyPlaces = useCallback(async () => {
+    try {
+      const data: any = await fetchMyPlaces(10, 10);
+      const places = data.success?.data ?? [];
+      const mapped: MyRestaurant[] = places.map((item: any) => ({
+        id: Number(item.id),
+        name: item.name || "-",
+        repre_menu:
+          Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+            ? (item.repre_menu[0]?.menu ?? "")
+            : "",
+        rating: item.rating ?? 0,
+        images: item.rest_image ? [{ link: item.rest_image }] : [],
+        address: item.address ?? "",
+        reviews: item._count?.review ?? 0,
+        isLiked: Boolean(
+          item.isLiked ??
+            item.is_liked ??
+            item.isHearted ??
+            item.hearted ??
+            item.my_heart ??
+            item.myHeart ??
+            item.favorited ??
+            item.is_favorite,
+        ),
+      }));
+      setMyRestaurants(mapped);
+    } catch (err) {
+      console.error("[reloadMyPlaces] 실패:", err);
+    }
+  }, []);
+
   /* 무한 스크롤 */
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -643,6 +676,9 @@ export default function MyActivityClient() {
                     : r,
                 ),
               );
+
+              // 서버 소스 기준으로 최종 동기화
+              await reloadMyPlaces();
 
               setToastMessage("맛집 정보가 수정되었습니다.");
               setShowToast(true);
