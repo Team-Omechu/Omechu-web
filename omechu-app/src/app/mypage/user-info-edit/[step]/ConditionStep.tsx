@@ -276,7 +276,7 @@ export default function ConditionStep() {
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             !active || saving
               ? "cursor-not-allowed bg-[#A1A1A1]"
-              : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
+              : "bg-secondary-normal hover:bg-[#0182CA] active:bg-[#0182CA]"
           }`}
           aria-busy={saving}
         >

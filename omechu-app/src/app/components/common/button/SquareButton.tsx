@@ -16,7 +16,7 @@ const SquareButton = ({
 
   const variantStyles = {
     red: "bg-primary-normal text-white border-transparent hover:bg-primary-normalHover active:bg-primary-normalActive",
-    sky: "bg-white text-secondary-normal border-secondary-normal hover:bg-secondary-normal hover:text-white active:bg-secondary-normalHover active:border-secondary-normalHover",
+    sky: "bg-white text-secondary-normal border-secondary-normal hover:bg-[#0182CA] hover:text-white active:bg-[#0182CA] active:border-[#0182CA]",
   };
 
   const sizeStyles = {

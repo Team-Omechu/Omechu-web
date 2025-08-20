@@ -92,7 +92,7 @@ export default function FoodCard({
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.address}</p>
         {item.menus && (
-          <p className="mb-1 text-sm font-bold text-blue-600">
+          <p className="mb-1 text-sm font-bold text-grey-normalActive">
             {item.menus[0]}
           </p>
         )}
@@ -101,7 +101,7 @@ export default function FoodCard({
           {item.rest_tag?.map((tag: { tag: string }, i: number) => (
             <span
               key={i}
-              className="rounded-full border border-blue-400 px-2 py-0.5 text-blue-400"
+              className="rounded-full border border-grey-normal px-2 py-0.5 text-grey-normal"
             >
               {tag.tag}
             </span>

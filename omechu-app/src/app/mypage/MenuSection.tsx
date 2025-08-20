@@ -23,7 +23,7 @@ export default function MenuSection({ menuList }: MenuSectionProps) {
           <div key={index}>
             <button
               onClick={() => router.push(item.href)}
-              className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-secondary-normal hover:bg-grey-lightHover hover:text-secondary-normalHover active:bg-grey-lightActive active:text-secondary-normalActive"
+              className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-secondary-normal hover:bg-grey-lightHover hover:text-[#0182CA] active:bg-grey-lightActive active:text-[#0182CA]"
             >
               <span className="pl-3 text-lg">{item.title}</span>
               <img

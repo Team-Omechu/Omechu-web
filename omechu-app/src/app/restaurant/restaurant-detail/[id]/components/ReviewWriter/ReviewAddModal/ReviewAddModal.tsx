@@ -101,40 +101,44 @@ export default function ReviewAddModal({
         className="mb-4 border-none"
       />
 
-      {/* 식당 이름 */}
-      <div className="mb-9 flex items-center justify-between">
-        <h1 className="w-full text-center text-2xl font-bold text-gray-600">
-          {restaurantName}
-        </h1>
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        {/* 식당 이름 */}
+        <div className="mb-9 flex items-center justify-between">
+          <h1 className="w-full text-center text-2xl font-bold text-gray-600">
+            {restaurantName}
+          </h1>
+        </div>
+
+        {/* 별점 */}
+        <RatingSelector rating={rating} setRating={setRating} />
+
+        {/* 태그 선택 */}
+        <TagSelector
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
+
+        {/* 이미지 업로드 */}
+        <ImageUploader images={images} setImages={setImages} />
+
+        {/* 텍스트 후기 */}
+        <TextReview comment={comment} setComment={setComment} />
       </div>
 
-      {/* 별점 */}
-      <RatingSelector rating={rating} setRating={setRating} />
-
-      {/* 태그 선택 */}
-      <TagSelector
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-
-      {/* 이미지 업로드 */}
-      <ImageUploader images={images} setImages={setImages} />
-
-      {/* 텍스트 후기 */}
-      <TextReview comment={comment} setComment={setComment} />
-
       {/* 제출 버튼 */}
-      <button
-        onClick={handleSubmit}
-        disabled={!isFormValid || isPending}
-        className={`mb-4 w-full rounded-md py-2 font-bold text-white ${
-          !isFormValid || isPending
-            ? "cursor-not-allowed bg-gray-400"
-            : "bg-[#FF5B5B]"
-        }`}
-      >
-        전달하기
-      </button>
+      <div className="pb-5 pt-2">
+        <button
+          onClick={handleSubmit}
+          disabled={!isFormValid || isPending}
+          className={`mb-4 w-full rounded-md py-2 font-bold text-white ${
+            !isFormValid || isPending
+              ? "cursor-not-allowed bg-gray-400"
+              : "bg-[#FF5B5B] hover:bg-secondary-normalHover active:bg-secondary-normalHover"
+          }`}
+        >
+          전달하기
+        </button>
+      </div>
 
       {/* 확인 모달 */}
       {showConfirmModal && (
