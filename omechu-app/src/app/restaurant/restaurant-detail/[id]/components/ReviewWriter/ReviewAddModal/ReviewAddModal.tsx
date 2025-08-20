@@ -146,7 +146,11 @@ export default function ReviewAddModal({
           <AlertModal
             title="소중한 후기가 전달되었어요."
             confirmText="제출하기"
-            onConfirm={() => setShowConfirmModal(false)}
+            onConfirm={() => {
+              setShowConfirmModal(false);
+              onClose();
+              window.location.reload();
+            }}
             onClose={() => setShowConfirmModal(false)}
           />
         </ModalWrapper>
