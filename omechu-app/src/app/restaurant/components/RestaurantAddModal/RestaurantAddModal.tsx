@@ -92,7 +92,7 @@ export default function RestaurantAddModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-main-normal px-4 py-5">
+    <div className="fixed inset-0 z-[9999] flex flex-col h-screen w-screen overflow-y-auto scrollbar-hide bg-main-normal px-4 py-5">
       {/* 헤더 */}
       <Header
         title="맛집 등록"
@@ -122,6 +122,7 @@ export default function RestaurantAddModal({
       )}
 
       {/* 이미지 업로더 */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
       <ImageUploader
         imagePreviewUrl={imagePreviewUrl}
         onImageChange={(e) => {
@@ -181,8 +182,10 @@ export default function RestaurantAddModal({
         isSearchModalOpen={isSearchModalOpen}
         setIsSearchModalOpen={setIsSearchModalOpen}
       />
+      </div>
 
       {/* 등록 버튼 */}
+      <div>
       <button
         disabled={!isFormValid() || loading}
         className={`w-full rounded-md py-3 text-base font-bold text-white transition ${
@@ -194,6 +197,7 @@ export default function RestaurantAddModal({
       >
         {loading ? "등록 중..." : "등록하기"}
       </button>
+      </div>
 
       {/* 등록 완료 모달 */}
       {isConfirmOpen && (

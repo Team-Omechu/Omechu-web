@@ -101,6 +101,7 @@ export default function ReviewAddModal({
         className="mb-4 border-none"
       />
 
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
       {/* 식당 이름 */}
       <div className="mb-9 flex items-center justify-between">
         <h1 className="w-full text-center text-2xl font-bold text-gray-600">
@@ -122,9 +123,11 @@ export default function ReviewAddModal({
 
       {/* 텍스트 후기 */}
       <TextReview comment={comment} setComment={setComment} />
+      </div>
 
       {/* 제출 버튼 */}
-      <button
+      <div className="pb-5 pt-2">
+        <button
         onClick={handleSubmit}
         disabled={!isFormValid || isPending}
         className={`mb-4 w-full rounded-md py-2 font-bold text-white ${
@@ -135,6 +138,7 @@ export default function ReviewAddModal({
       >
         전달하기
       </button>
+      </div>
 
       {/* 확인 모달 */}
       {showConfirmModal && (
