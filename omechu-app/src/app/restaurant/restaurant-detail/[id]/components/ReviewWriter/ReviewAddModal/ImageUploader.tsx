@@ -44,45 +44,12 @@ export default function ImageUploader({
           <Droppable droppableId="images" direction="horizontal">
             {(provided) => (
               <div
-                className="flex gap-2 overflow-x-auto scrollbar-hide"
+                className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {images.map((file, idx) => (
-                  <Draggable
-                    key={file.name + idx}
-                    draggableId={file.name + idx}
-                    index={idx}
-                  >
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="relative"
-                      >
-                        <Image
-                          src={URL.createObjectURL(file)}
-                          alt={`preview-${idx}`}
-                          width={80}
-                          height={80}
-                          className="rounded-md"
-                        />
-                        <button
-                          onClick={() =>
-                            setImages(images.filter((_, i) => i !== idx))
-                          }
-                          className="absolute -right-1 -top-1 rounded-full bg-[#393939] px-1 text-xs text-white"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-                {images.length < maxImages && (
-                  <label className="flex h-[80px] w-[80px] cursor-pointer items-center justify-center rounded-md border border-dashed bg-white text-xl text-gray-400">
+              {images.length < maxImages && (
+                  <label className="flex h-[80px] w-[80px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white text-xl text-gray-400">
                     <input
                       type="file"
                       className="hidden"
@@ -98,6 +65,44 @@ export default function ImageUploader({
                     />
                   </label>
                 )}
+                {images.map((file, idx) => (
+                  <Draggable
+                    key={file.name + idx}
+                    draggableId={file.name + idx}
+                    index={idx}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="relative h-[80px] w-[80px] flex-shrink-0"
+                      >
+                        <Image
+                          src={URL.createObjectURL(file)}
+                          alt={`preview-${idx}`}
+                          width={80}
+                          height={80}
+                          className="rounded-md object-cover"
+                        />
+                        <button
+                          onClick={() =>
+                            setImages(images.filter((_, i) => i !== idx))
+                          }
+                          className="absolute -right-0 top-0"
+                        >
+                          <Image
+                          src={"/x/gray_x_icon.svg"}
+                          alt="취소 버튼"
+                          width={20}
+                          height={20}
+                          className="object-cover"/>
+                        </button>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
               </div>
             )}
           </Droppable>
