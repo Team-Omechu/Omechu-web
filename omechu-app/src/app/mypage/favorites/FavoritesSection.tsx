@@ -16,6 +16,7 @@ import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import AuthErrorModal from "../AuthErrorModalSection";
+import AuthErrorModalSection from "../AuthErrorModalSection";
 
 export default function Favorites() {
   // 라우터/DOM 참조
@@ -308,10 +309,11 @@ export default function Favorites() {
         {isLoading && <LoadingIndicator />}
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
         {modalOpen && (
-          <AuthErrorModal
+          <AuthErrorModalSection
+            isOpen={modalOpen}
             onConfirm={() => {
               setModalOpen(false);
-              router.push("/sign-in");
+              router.push(`/sign-in`);
             }}
             onClose={() => setModalOpen(false)}
           />
