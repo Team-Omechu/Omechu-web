@@ -23,12 +23,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold text-[#393939]">{title}</h2>
         <button onClick={onClose}>
-          <Image
-            src="x/black_x_icon.svg"
-            alt="close"
-            width={17}
-            height={17}
-          />
+          <Image src="x/black_x_icon.svg" alt="close" width={17} height={17} />
         </button>
       </div>
       <div className="flex-grow overflow-y-auto rounded-md border bg-gray-50 p-3 text-[#393939] [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-[#3B82F6] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">

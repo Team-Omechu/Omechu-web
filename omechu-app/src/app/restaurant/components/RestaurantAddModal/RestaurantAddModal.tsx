@@ -92,7 +92,7 @@ export default function RestaurantAddModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col h-screen w-screen overflow-y-auto scrollbar-hide bg-main-normal px-4 py-5">
+    <div className="fixed inset-0 z-[9999] flex h-screen w-screen flex-col overflow-y-auto bg-main-normal px-4 py-5 scrollbar-hide">
       {/* 헤더 */}
       <Header
         title="맛집 등록"
@@ -123,80 +123,82 @@ export default function RestaurantAddModal({
 
       {/* 이미지 업로더 */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-      <ImageUploader
-        imagePreviewUrl={imagePreviewUrl}
-        onImageChange={(e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-            alert("jpg, jpeg, png 파일만 업로드할 수 있습니다.");
-            return;
+        <ImageUploader
+          imagePreviewUrl={imagePreviewUrl}
+          onImageChange={(e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+              alert("jpg, jpeg, png 파일만 업로드할 수 있습니다.");
+              return;
+            }
+            setImageFile(file);
+            setImagePreviewUrl(URL.createObjectURL(file));
+          }}
+          onImageRemove={() => {
+            setImageFile(null);
+            setImagePreviewUrl(null);
+          }}
+        />
+
+        {/* 식당명 */}
+        <RestaurantNameInput
+          restaurantName={restaurantName}
+          setRestaurantName={setRestaurantName}
+        />
+
+        {/* 메뉴 입력 */}
+        <MenuInputList
+          menus={menus}
+          onAddMenu={() => menus.length < 3 && setMenus([...menus, ""])}
+          onRemoveMenu={(i) => setMenus(menus.filter((_, idx) => idx !== i))}
+          onMenuChange={(i, value) => {
+            const newMenus = [...menus];
+            newMenus[i] = value;
+            setMenus(newMenus);
+          }}
+        />
+
+        {/* 영업시간 */}
+        <BusinessHoursSelector
+          selectedDays={selectedDays}
+          toggleDay={(day) =>
+            setSelectedDays((prev) =>
+              prev.includes(day)
+                ? prev.filter((d) => d !== day)
+                : [...prev, day],
+            )
           }
-          setImageFile(file);
-          setImagePreviewUrl(URL.createObjectURL(file));
-        }}
-        onImageRemove={() => {
-          setImageFile(null);
-          setImagePreviewUrl(null);
-        }}
-      />
+          startTime={startTime}
+          endTime={endTime}
+          setStartTime={setStartTime}
+          setEndTime={setEndTime}
+        />
 
-      {/* 식당명 */}
-      <RestaurantNameInput
-        restaurantName={restaurantName}
-        setRestaurantName={setRestaurantName}
-      />
-
-      {/* 메뉴 입력 */}
-      <MenuInputList
-        menus={menus}
-        onAddMenu={() => menus.length < 3 && setMenus([...menus, ""])}
-        onRemoveMenu={(i) => setMenus(menus.filter((_, idx) => idx !== i))}
-        onMenuChange={(i, value) => {
-          const newMenus = [...menus];
-          newMenus[i] = value;
-          setMenus(newMenus);
-        }}
-      />
-
-      {/* 영업시간 */}
-      <BusinessHoursSelector
-        selectedDays={selectedDays}
-        toggleDay={(day) =>
-          setSelectedDays((prev) =>
-            prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
-          )
-        }
-        startTime={startTime}
-        endTime={endTime}
-        setStartTime={setStartTime}
-        setEndTime={setEndTime}
-      />
-
-      {/* 주소 */}
-      <AddressSection
-        address={address}
-        detailAddress={detailAddress}
-        setAddress={setAddress}
-        setDetailAddress={setDetailAddress}
-        isSearchModalOpen={isSearchModalOpen}
-        setIsSearchModalOpen={setIsSearchModalOpen}
-      />
+        {/* 주소 */}
+        <AddressSection
+          address={address}
+          detailAddress={detailAddress}
+          setAddress={setAddress}
+          setDetailAddress={setDetailAddress}
+          isSearchModalOpen={isSearchModalOpen}
+          setIsSearchModalOpen={setIsSearchModalOpen}
+        />
       </div>
 
       {/* 등록 버튼 */}
       <div>
-      <button
-        disabled={!isFormValid() || loading}
-        className={`w-full rounded-md py-3 text-base font-bold text-white transition ${
-          isFormValid()
-            ? "bg-[#FF5B5B] hover:bg-[#e64545]"
-            : "cursor-not-allowed bg-gray-300"
-        }`}
-        onClick={handleRegisterClick}
-      >
-        {loading ? "등록 중..." : "등록하기"}
-      </button>
+        <button
+          disabled={!isFormValid() || loading}
+          className={`w-full rounded-md py-3 text-base font-bold text-white transition ${
+            isFormValid()
+              ? "bg-[#FF5B5B] hover:bg-[#e64545]"
+              : "cursor-not-allowed bg-gray-300"
+          }`}
+          onClick={handleRegisterClick}
+        >
+          {loading ? "등록 중..." : "등록하기"}
+        </button>
       </div>
 
       {/* 등록 완료 모달 */}

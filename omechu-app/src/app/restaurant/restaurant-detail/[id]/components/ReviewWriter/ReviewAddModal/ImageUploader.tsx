@@ -48,7 +48,7 @@ export default function ImageUploader({
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-              {images.length < maxImages && (
+                {images.length < maxImages && (
                   <label className="flex h-[80px] w-[80px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white text-xl text-gray-400">
                     <input
                       type="file"
@@ -92,11 +92,12 @@ export default function ImageUploader({
                           className="absolute -right-0 top-0"
                         >
                           <Image
-                          src={"/x/gray_x_icon.svg"}
-                          alt="취소 버튼"
-                          width={20}
-                          height={20}
-                          className="object-cover"/>
+                            src={"/x/gray_x_icon.svg"}
+                            alt="취소 버튼"
+                            width={20}
+                            height={20}
+                            className="object-cover"
+                          />
                         </button>
                       </div>
                     )}
