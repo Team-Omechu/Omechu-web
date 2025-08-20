@@ -1,7 +1,7 @@
 export default function SkeletonRestaurantReviewCard() {
   return (
     <div className="animate-pulse">
-      <section className="h-fit w-80 rounded-xl bg-white p-4">
+      <section className="h-fit w-96 rounded-xl bg-white p-4">
         <div className="flex h-20 w-full justify-between gap-3">
           {/* 식당 사진 (정사각형) */}
           <div className="h-[70px] w-[70px] rounded-md bg-gray-200" />
