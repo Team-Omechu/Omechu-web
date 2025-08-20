@@ -3,7 +3,7 @@
 
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
@@ -106,13 +106,34 @@ export default function Favorites() {
     return Number.isFinite(id) ? id : 0;
   };
 
-  const sortedItems = [...filteredItems].sort((a, b) => {
-    const at = getSortTs(a);
-    const bt = getSortTs(b);
-    return sortOrder === "latest" ? bt - at : at - bt;
-  });
+  const sortedItems = useMemo(() => {
+    return [...hearts].sort((a, b) => {
+      if (sortOrder === "latest") {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      } else {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      }
+    });
+  }, [hearts, sortOrder]);
 
-  const visibleItems = sortedItems.slice(0, visibleCount);
+  // 중복 제거 추가
+  const dedupedItems = useMemo(() => {
+    const seen = new Set<string>();
+    return sortedItems.filter((h) => {
+      const key = String(h?.restaurant?.id ?? h?.id);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [sortedItems]);
+
+  const visibleItems = useMemo(() => {
+    return dedupedItems.slice(0, visibleCount);
+  }, [dedupedItems, visibleCount]);
 
   // hearts 길이가 줄었을 때 visibleCount가 남지 않도록 보정
   useEffect(() => {
@@ -290,7 +311,7 @@ export default function Favorites() {
         <section className="flex flex-col gap-4">
           {isInitialLoading ? (
             <div className="flex flex-col gap-3">
-              {Array.from({ length: 6 }).map((_, i) => (
+              {Array.from({ length: 8 }).map((_, i) => (
                 <SkeletonFoodCard key={i} />
               ))}
             </div>
