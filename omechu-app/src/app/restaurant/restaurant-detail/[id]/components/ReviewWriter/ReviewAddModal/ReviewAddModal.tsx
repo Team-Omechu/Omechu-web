@@ -147,9 +147,10 @@ export default function ReviewAddModal({
             title="소중한 후기가 전달되었어요."
             confirmText="제출하기"
             onConfirm={() => {
+              // 컴포넌트 상단에 const queryClient = useQueryClient(); 추가 필요
+              queryClient.invalidateQueries({ queryKey: ["reviews", restaurantId] });
               setShowConfirmModal(false);
               onClose();
-              window.location.reload();
             }}
             onClose={() => setShowConfirmModal(false)}
           />
