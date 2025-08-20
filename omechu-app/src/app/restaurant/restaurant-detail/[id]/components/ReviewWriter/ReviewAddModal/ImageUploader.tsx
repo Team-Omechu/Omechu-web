@@ -81,8 +81,7 @@ export default function ImageUploader({
                         <Image
                           src={URL.createObjectURL(file)}
                           alt={`preview-${idx}`}
-                          width={80}
-                          height={80}
+                          fill
                           className="rounded-md object-cover"
                         />
                         <button
