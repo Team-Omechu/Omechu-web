@@ -24,7 +24,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
         <h2 className="text-lg font-bold text-[#393939]">{title}</h2>
         <button onClick={onClose}>
           <Image
-            src="/common/x/black_x_icon.svg"
+            src="x/black_x_icon.svg"
             alt="close"
             width={17}
             height={17}
@@ -58,7 +58,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
       <div className="flex justify-center">
         <RoundButton
           variant="red"
-          size="lg"
+          size="md"
           onClick={onConfirm}
           className="px-12"
         >

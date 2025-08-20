@@ -107,7 +107,7 @@ export default function RestaurantAddModal({
       {isAlertOpen && (
         <ModalWrapper>
           <AlertModal
-            title="지금까지 작성한 내용은 저장되지 않아요."
+            title={"지금까지 작성한 내용은\n저장되지 않아요."}
             description="정말 맛집 등록을 중단하시겠어요?"
             confirmText="계속 작성하기"
             cancelText="나가기"

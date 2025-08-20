@@ -110,7 +110,7 @@ export default function Input({
             className={`h-full w-fit flex-shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
               disabled
                 ? "bg-grey-normal" // 비활성화 상태
-                : "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive" // 활성 상태
+                : "bg-secondary-normal hover:bg-[#0182CA] active:bg-[#0182CA]" // 활성 상태
             }`}
           >
             {buttonText}

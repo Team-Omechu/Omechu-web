@@ -130,7 +130,7 @@ export default function ReviewAddModal({
         className={`mb-4 w-full rounded-md py-2 font-bold text-white ${
           !isFormValid || isPending
             ? "cursor-not-allowed bg-gray-400"
-            : "bg-[#FF5B5B]"
+            : "bg-[#FF5B5B] hover:bg-secondary-normalHover active:bg-secondary-normalHover"
         }`}
       >
         전달하기
