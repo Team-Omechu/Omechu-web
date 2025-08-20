@@ -119,10 +119,11 @@ export default function ConditionStep() {
   };
 
   const handleSkip = () => {
+    // null semantics for array-type field: use empty array
+    setBodyType([]);
     if (process.env.NODE_ENV !== "production") {
-      console.log("[ConditionStep] skip body_type");
+      console.log("[ConditionStep] skip → bodyType = [] (null semantics)");
     }
-    resetBodyType();
     router.push(`/mypage/user-info-edit/${indexToSlug[5]}`); // 다음: allergy
   };
 
