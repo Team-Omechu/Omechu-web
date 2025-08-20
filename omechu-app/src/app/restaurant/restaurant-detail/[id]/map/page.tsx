@@ -97,9 +97,7 @@ export default function MapPage() {
         console.error("찜 토글 실패:", err);
         // 실패 롤백
         setIsLiked(!next);
-        setRestaurant((prev) =>
-          prev ? { ...prev, zzim: !next } : prev,
-        );
+        setRestaurant((prev) => (prev ? { ...prev, zzim: !next } : prev));
         alert(next ? "찜 등록 실패" : "찜 해제 실패");
       } finally {
         setHeartBusy(false);
