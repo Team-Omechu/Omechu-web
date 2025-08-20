@@ -69,8 +69,8 @@ export default function ReviewList({
             votes={currentVotes}
             rating={item.rating}
             content={item.content}
-            tags={item.tags}
-            images={item.images} // ✅ 이름 맞춤
+            tag={item.tag}
+            reviewImg={item.reviewImg} // ✅ 이름 맞춤
             isVoted={isVoted} // ✅ props에서 받음
             onVote={async () => {
               if (isPending) return;

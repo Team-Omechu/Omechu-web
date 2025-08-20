@@ -1,13 +1,13 @@
 export interface ReviewProps {
   id: number;
   rating: number;
-  tags: string[];
+  tag: string[];
   content: string;
   createdDate: string;
   votes: number;
   userId: string;
   profileImgUrl: string;
-  reviewImages: string[]; // link만 추출
+  reviewImg: string[]; // link만 추출
   isVoted: boolean;
 }
 

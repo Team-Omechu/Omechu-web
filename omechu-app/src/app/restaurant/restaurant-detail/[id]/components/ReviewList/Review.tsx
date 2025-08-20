@@ -9,8 +9,8 @@ export type ReviewProps = {
   votes: number;
   rating: number;
   content: string;
-  tags?: string[];
-  images?: string[];
+  tag?: string[];
+  reviewImg?: string[];
   onClick?: () => void;
   onReport?: () => void;
   onVote?: () => void;
@@ -26,8 +26,8 @@ export default function Review({
   votes = 0,
   rating,
   content,
-  tags,
-  images,
+  tag,
+  reviewImg,
   onClick,
   onReport,
   onVote,
@@ -94,21 +94,21 @@ export default function Review({
         </span>
         <span className="text-base font-normal text-[#828282]">{content}</span>
         <div className="mt-1 flex max-h-52 flex-shrink-0 gap-2 overflow-x-scroll scroll-smooth scrollbar-hide">
-          {images?.map((item, index) => (
+          {reviewImg?.map((item, index) => (
             <Image
               key={`review-img-${index}`}
               src={item}
               alt={`후기 이미지 ${index + 1}`}
-              width={200}
-              height={200}
-              className="shrink-0 rounded-md"
+              width={180}
+              height={180}
+              className="rounded-md border-[1px] border-gray-100 object-contain"
             />
           ))}
         </div>
       </div>
       {/* 후기 관련 태그 */}
       <div className="flex flex-wrap justify-start gap-1 px-1">
-        {tags?.map((item, tagIdx) => (
+        {tag?.map((item, tagIdx) => (
           <div
             key={`tag-${id}-${tagIdx}`}
             className="font-nomal w-fit rounded-3xl border-[1px] border-grey-darkHover bg-white px-3 pb-0.5 pt-1 text-sm duration-300 hover:scale-105"

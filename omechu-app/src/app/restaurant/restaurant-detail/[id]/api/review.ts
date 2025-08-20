@@ -63,13 +63,17 @@ export function mapReviewResponseToProps(data: any): ReviewProps {
   return {
     id: data.id,
     rating: Number(data.rating),
-    tags: data.tags ?? [],
+    tag: data.tag ?? [],
     content: data.text,
     createdDate, // 👉 "2025.05.05"
     votes: data.like,
     userId: data.user.nickname,
     profileImgUrl: data.user.profileImageUrl,
-    reviewImages: data.reviewImg?.map((img: any) => img.link) ?? [],
+    reviewImg: Array.isArray(data.reviewImg)
+      ? data.reviewImg.map((img: any) =>
+          typeof img === "string" ? img : img.link,
+        )
+      : [],
     isVoted: false,
   };
 }
