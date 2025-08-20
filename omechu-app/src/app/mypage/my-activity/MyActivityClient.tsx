@@ -16,6 +16,12 @@ import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurant
 
 import { useAuthStore } from "@/lib/stores/auth.store";
 
+import RestaurantEditModal from "@/restaurant/components/RestaurantAddModal/RestaurantEditModal";
+import {
+  updateRestaurant,
+  type UpdateRestaurantPayload,
+} from "@/mypage/api/updateRestaurant";
+
 import {
   fetchMyPlaces,
   fetchMyReviews,
@@ -89,6 +95,8 @@ export default function MyActivityClient() {
 
   const [likePending, setLikePending] = useState<Set<number>>(new Set());
   const [deletePending, setDeletePending] = useState<Set<number>>(new Set());
+  const [editOpen, setEditOpen] = useState(false);
+  const [editing, setEditing] = useState<MyRestaurant | null>(null);
 
   /* 후기 패칭 */
   useEffect(() => {
@@ -513,9 +521,16 @@ export default function MyActivityClient() {
                   <>
                     {visiblePlaces.map((item) => (
                       <div key={item.id} className="flex w-full flex-col">
-                        <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
+                        <button
+                          type="button"
+                          className="w-full pr-2 text-end text-xs text-grey-normalActive underline"
+                          onClick={() => {
+                            setEditing(item);
+                            setEditOpen(true);
+                          }}
+                        >
                           편집
-                        </span>
+                        </button>
                         <FoodCard
                           onLike={() => {
                             if (item.isLiked) return; // 이미 찜 상태면 중복 호출 방지
@@ -584,6 +599,68 @@ export default function MyActivityClient() {
             router.push(`/sign-in`);
           }}
           onClose={() => setModalOpen(false)}
+        />
+      )}
+
+      {editOpen && editing && (
+        <RestaurantEditModal
+          initial={{
+            id: editing.id,
+            name: editing.name,
+            repre_menu: Array.isArray(editing.repre_menu)
+              ? (editing.repre_menu as unknown as string[])
+              : editing.repre_menu
+                ? [String(editing.repre_menu)]
+                : [],
+            opening_hour: undefined as unknown as Record<string, string>, // 서버에서 제공되지 않으면 비워둠
+            address: editing.address ?? "",
+            imageUrl:
+              editing.images && editing.images.length > 0
+                ? editing.images[0].link
+                : null,
+          }}
+          onSubmit={async (p: UpdateRestaurantPayload & { id: number }) => {
+            try {
+              const res = await updateRestaurant(p.id, {
+                name: p.name,
+                repre_menu: p.repre_menu,
+                opening_hour: p.opening_hour,
+                address: p.address,
+                ...(p.imageUrl ? { imageUrl: p.imageUrl } : {}),
+              });
+
+              // 로컬 목록도 수정 반영
+              setMyRestaurants((prev) =>
+                prev.map((r) =>
+                  r.id === p.id
+                    ? {
+                        ...r,
+                        name: p.name,
+                        repre_menu: p.repre_menu as any,
+                        address: p.address,
+                        images: p.imageUrl ? [{ link: p.imageUrl }] : r.images,
+                      }
+                    : r,
+                ),
+              );
+
+              setToastMessage("맛집 정보가 수정되었습니다.");
+              setShowToast(true);
+              setTimeout(() => setShowToast(false), 2000);
+            } catch (e) {
+              console.error(e);
+              setToastMessage("수정에 실패했습니다.");
+              setShowToast(true);
+              setTimeout(() => setShowToast(false), 2500);
+            } finally {
+              setEditOpen(false);
+              setEditing(null);
+            }
+          }}
+          onClose={() => {
+            setEditOpen(false);
+            setEditing(null);
+          }}
         />
       )}
     </>
