@@ -20,7 +20,7 @@ import RestaurantEditModal from "@/restaurant/components/RestaurantAddModal/Rest
 import {
   updateRestaurant,
   type UpdateRestaurantPayload,
-} from "@/mypage/api/updateRestaurant";
+} from "../api/updateRestaurant";
 
 import {
   fetchMyPlaces,
