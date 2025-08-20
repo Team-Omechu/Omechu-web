@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
@@ -10,51 +9,104 @@ import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { useProfileQuery } from "../../hooks/useProfileQuery";
+import { updateProfile } from "@/mypage/api/updateProfile";
+import { buildUpdatePayloadFromStore } from "@/mypage/mappers/profilePayload";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/lib/stores/auth.store";
 
 const LABELS = ["여성", "남성"] as const;
-const toCode = (label: (typeof LABELS)[number]) =>
-  label === "여성" ? "F" : "M";
-const toLabel = (code?: string | null) =>
+const toLabelFromCode = (code?: string | null) =>
   code === "F" ? "여성" : code === "M" ? "남성" : "";
 
 export default function GenderStep() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Zustand에서 상태와 초기화 함수들 가져옴
-  const gender = useOnboardingStore((state) => state.gender);
-  const setGender = useOnboardingStore((state) => state.setGender);
-  const resetAll = useOnboardingStore((state) => state.reset); //전체 초기화 함수
+  // Zustand 상태/액션
+  const nickname = useOnboardingStore((s) => s.nickname);
+  const profileImageUrl = useOnboardingStore((s) => s.profileImageUrl);
+  const gender = useOnboardingStore((s) => s.gender); // ✅ 라벨("여성"|"남성")로 저장
+  const setGender = useOnboardingStore((s) => s.setGender);
+  const exercise = useOnboardingStore((s) => s.exercise);
+  const prefer = useOnboardingStore((s) => s.prefer);
+  const bodyType = useOnboardingStore((s) => s.bodyType);
+  const allergy = useOnboardingStore((s) => s.allergy);
+  const resetAll = useOnboardingStore((s) => s.reset);
 
   const { data: profile } = useProfileQuery();
 
-  // 프로필에 성별이 있고 스토어에 값이 없다면 초기 하이드레이트
+  // ▶︎ 초기 하이드레이트: 스토어에 값이 없고 프로필에 있으면 라벨로 세팅
   useEffect(() => {
     if (!gender && profile?.gender) {
-      // 프로필은 'F'/'M' 또는 '여성'/'남성' 어떤 형식이든 올 수 있음
-      const code =
+      const label =
         profile.gender === "여성" || profile.gender === "남성"
-          ? toCode(profile.gender as any)
-          : (profile.gender as string);
-      setGender(code as any);
+          ? (profile.gender as "여성" | "남성")
+          : (toLabelFromCode(profile.gender) as "여성" | "남성" | "");
+      if (label) setGender(label as any);
     }
   }, [gender, profile?.gender, setGender]);
 
-  const activeLabel = useMemo(() => toLabel(gender as any), [gender]);
+  const activeLabel = useMemo(() => gender ?? "", [gender]);
+
   const handleGenderClick = (label: "남성" | "여성") => {
-    const next = activeLabel === label ? "" : toCode(label);
+    // 같은 버튼 다시 누르면 해제(선택 토글)
+    const next = activeLabel === label ? "" : label;
     setGender(next as any);
   };
 
-  // 건너뛰기 누르면 값 초기화하고 다음 페이지로
-  const handleSkip = () => {
-    setGender(null);
-    router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
+  // 저장: 현재 스토어 스냅샷을 부분 업데이트로 서버에 전송
+  const queryClient = useQueryClient();
+  const authUser = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const userKey =
+    (authUser as any)?.id ??
+    (authUser as any)?.email ??
+    (accessToken ? "me" : "guest");
+
+  const handleSave = async () => {
+    if (!gender) return; // 선택 없으면 저장 안 함
+    setSaving(true);
+    setError(null);
+    try {
+      const snap = {
+        nickname,
+        profileImageUrl,
+        gender,
+        exercise,
+        prefer,
+        bodyType,
+        allergy,
+      };
+      const payload = buildUpdatePayloadFromStore(snap as any);
+      await updateProfile(payload);
+      // 프로필 캐시 최신화 → 다음 단계/마이페이지에서 최신 표시
+      queryClient.invalidateQueries({
+        queryKey: ["profile", userKey],
+        exact: true,
+      });
+      router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
+    } catch (e: any) {
+      const status = e?.response?.status;
+      if (status === 401) {
+        router.push(
+          `/auth/sign-in?redirect=${encodeURIComponent(`/mypage/user-info-edit/${indexToSlug[1]}`)}`,
+        );
+        return;
+      }
+      const reason =
+        e?.response?.data?.error?.reason ||
+        e?.message ||
+        "성별 저장에 실패했습니다.";
+      setError(reason);
+    } finally {
+      setSaving(false);
+    }
   };
 
-  // 저장 누르면 그대로 다음 단계로 넘어감
-  const handleSave = () => {
-    if (!gender) return; // 선택 없으면 저장 안 함
+  const handleSkip = () => {
+    setGender(null);
     router.push(`/mypage/user-info-edit/${indexToSlug[2]}`);
   };
 
@@ -76,15 +128,17 @@ export default function GenderStep() {
         {/* 성별 선택 버튼 2개 */}
         <section className="my-10">
           <div className="flex gap-5">
-            {["여성", "남성"].map((label) => (
+            {LABELS.map((label) => (
               <button
-                key={`${label}-${activeLabel === label}`}
-                onClick={() => handleGenderClick(label as "남성" | "여성")}
+                key={label}
+                type="button"
+                onClick={() => handleGenderClick(label)}
                 className={`h-14 w-28 rounded-md border-[1px] px-2.5 pt-1 text-xl ${
                   activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
                     : "border-primary-normal bg-white text-primary-normal"
                 } `}
+                aria-pressed={activeLabel === label}
               >
                 {label}
               </button>
@@ -93,7 +147,7 @@ export default function GenderStep() {
         </section>
       </main>
 
-      {/* 건너뛰기 / 저장 버튼 */}
+      {/* 하단: 건너뛰기 / 저장 */}
       <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
@@ -103,14 +157,14 @@ export default function GenderStep() {
         </button>
         <button
           onClick={handleSave}
-          disabled={!gender} // 성별 선택 안 하면 저장 비활성화
+          disabled={!gender || saving}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
-            gender
+            gender && !saving
               ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
               : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
         >
-          저장
+          {saving ? "저장 중..." : "저장"}
         </button>
       </section>
 
@@ -125,11 +179,17 @@ export default function GenderStep() {
             onConfirm={() => {
               resetAll();
               setShowModal(false);
-              router.push("/mypage/user-info-edit"); // 처음 화면으로 이동
+              router.push("/mypage/user-info-edit");
             }}
             onClose={() => setShowModal(false)}
           />
         </ModalWrapper>
+      )}
+
+      {error && (
+        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+          {error}
+        </div>
       )}
     </div>
   );
