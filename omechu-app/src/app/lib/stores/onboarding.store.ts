@@ -19,6 +19,8 @@ type OnboardingActions = {
   setGender: (gender: "남성" | "여성" | null) => void;
   setExercise: (exercise: string | null) => void;
   setPrefer: (prefer: string[]) => void; // 타입 정의 추가
+  setBodyType: (bodyType: string[]) => void;
+  setAllergy: (allergy: string[]) => void;
   togglePrefer: (prefer: string) => void;
   toggleBodyType: (item: string) => void;
   toggleAllergy: (allergy: string) => void;
@@ -29,6 +31,7 @@ type OnboardingActions = {
   resetPrefer: () => void;
   resetBodyType: () => void;
   resetAllergy: () => void;
+  hydrateFromProfile: (raw: any) => void;
 };
 
 const initialState: OnboardingState = {
@@ -53,6 +56,28 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
       setPrefer: (prefer) => set({ prefer }),
       setBodyType: (bodyType: string[]) => set({ bodyType }),
       setAllergy: (allergy: string[]) => set({ allergy }),
+
+      hydrateFromProfile: (raw: any) => {
+        const toArray = (v: any) => (Array.isArray(v) ? v : v ? [v] : []);
+        const nickname = raw?.nickname ?? raw?.name ?? "";
+        const profileImageUrl =
+          raw?.profileImageUrl ?? raw?.profile_image_url ?? null;
+        const gender = raw?.gender ?? raw?.sex ?? null;
+        const exercise = raw?.exercise ?? null;
+        const prefer = toArray(raw?.prefer).slice(0, 2);
+        const bodyType = toArray(raw?.bodyType ?? raw?.body_type).slice(0, 1);
+        const allergy = toArray(raw?.allergy).slice(0, 2);
+
+        set({
+          nickname,
+          profileImageUrl,
+          gender,
+          exercise,
+          prefer,
+          bodyType,
+          allergy,
+        });
+      },
 
       togglePrefer: (prefer) => {
         const exists = get().prefer.includes(prefer);
@@ -82,8 +107,10 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
 
       // 전체 초기화
       reset: () => {
-        set(initialState);
-        localStorage.removeItem("onboarding-storage");
+        set({ ...initialState });
+        try {
+          localStorage.removeItem("onboarding-storage");
+        } catch {}
       },
 
       // 상태별 초기화
