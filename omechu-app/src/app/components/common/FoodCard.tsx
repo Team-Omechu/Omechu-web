@@ -123,7 +123,7 @@ export default function FoodCard({
             `https://places.googleapis.com/v1/${item.name}/media?maxWidthPx=800&key=${process.env.GOOGLE_MAPS_API_KEY}`
           }
           alt={item.menus[0] ?? "음식"}
-          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-contain"
+          className="object-full h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover"
         />
       </div>
     </div>
