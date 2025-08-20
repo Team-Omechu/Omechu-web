@@ -14,13 +14,13 @@ import FoodReviewCard from "@/components/common/RestaurantReviewCard";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 
-import AuthErrorModal from "../AuthErrorModalSection";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import {
   fetchMyPlaces,
   fetchMyReviews,
   toggleReviewLike,
+  deleteMyReview,
   type MyReviewItem,
 } from "../api/myActivity";
 import { likePlace, unlikePlace } from "../api/favorites";
@@ -88,6 +88,7 @@ export default function MyActivityClient() {
   const [toastMessage, setToastMessage] = useState("");
 
   const [likePending, setLikePending] = useState<Set<number>>(new Set());
+  const [deletePending, setDeletePending] = useState<Set<number>>(new Set());
 
   /* 후기 패칭 */
   useEffect(() => {
@@ -284,8 +285,34 @@ export default function MyActivityClient() {
     }
   };
 
-  const handleDeleteReview = (id: number) => {
-    // TODO: 리뷰 삭제
+  const handleDeleteReview = async (id: number) => {
+    if (deletePending.has(id)) return;
+    setDeletePending((prev) => new Set(prev).add(id));
+
+    // 옵티미스틱 제거
+    const prev = reviewList;
+    setReviewList((list) => list.filter((r) => Number(r.id) !== id));
+
+    try {
+      await deleteMyReview(id);
+      setToastMessage("후기가 삭제되었습니다.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    } catch (e: any) {
+      // 롤백
+      setReviewList(prev);
+      const msg = e?.message || "후기 삭제에 실패했습니다.";
+      setToastMessage(msg);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2500);
+      console.error("[delete review]", e);
+    } finally {
+      setDeletePending((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
   };
 
   const handleNavigateToRestaurant = (restaurantId?: string | number) => {
