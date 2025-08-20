@@ -2,21 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { updateProfile } from "@/mypage/api/updateProfile";
-import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
-
-import { useProfileQuery } from "@/mypage/hooks/useProfileQuery";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { ALLERGY_OPTIONS } from "@/constant/mypage/profileOptions";
-// robust mapping for allergy options
-
+import { useProfileQuery } from "../../hooks/useProfileQuery";
+import { updateProfile } from "@/mypage/api/updateProfile";
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
+
+// 화면에서 사용할 라벨 상수 (스토어에는 라벨 문자열을 그대로 저장/토글)
+const OPTIONS = [
+  "달걀 (난류)",
+  "유제품",
+  "갑각류",
+  "해산물",
+  "견과류",
+] as const;
 
 export default function AllergyStep() {
   const router = useRouter();
@@ -25,45 +30,44 @@ export default function AllergyStep() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Zustand에서 알레르기 관련 상태랑 토글 함수 가져옴
-  // AllergyStep.tsx 상단, useOnboardingStore로 전체 상태 가져오기
-  const nickname = useOnboardingStore((state) => state.nickname);
-  const gender = useOnboardingStore((state) => state.gender);
-  const exercise = useOnboardingStore((state) => state.exercise);
-  const prefer = useOnboardingStore((state) => state.prefer);
-  const bodyType = useOnboardingStore((state) => state.bodyType);
-  const allergy = useOnboardingStore((state) => state.allergy);
-  const profileImageUrl = useOnboardingStore((state) => state.profileImageUrl); // 예시
+  // Zustand
+  const allergies = useOnboardingStore((s) => s.allergy);
+  const toggleAllergy = useOnboardingStore((s) => s.toggleAllergy);
+  const setAllergy = useOnboardingStore((s) => s.setAllergy);
+  const nickname = useOnboardingStore((s) => s.nickname);
+  const gender = useOnboardingStore((s) => s.gender);
+  const exercise = useOnboardingStore((s) => s.exercise);
+  const prefer = useOnboardingStore((s) => s.prefer);
+  const bodyType = useOnboardingStore((s) => s.bodyType);
+  const profileImageUrl = useOnboardingStore((s) => s.profileImageUrl);
 
-  const toggleAllergy = useOnboardingStore((state) => state.toggleAllergy);
-  const setAllergy = useOnboardingStore((state) => state.setAllergy);
-
-  const { data: currentProfile, isLoading: profileLoading } = useProfileQuery();
-
+  // 프로필 연동 (초기 하이드레이트)
+  const { data: profile } = useProfileQuery();
   useEffect(() => {
-    if (Array.isArray(allergy) && allergy.length === 0) {
-      const raw = (currentProfile as any)?.allergy;
-      const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
-      if (arr.length > 0) setAllergy(arr as string[]);
+    if (
+      allergies.length === 0 &&
+      Array.isArray(profile?.allergy) &&
+      profile!.allergy.length > 0
+    ) {
+      // 서버에서 온 값을 그대로 스토어 초기값으로 사용 (다중 선택 허용)
+      setAllergy(profile!.allergy as string[]);
     }
-  }, [allergy, currentProfile, setAllergy]);
+  }, [allergies.length, profile?.allergy, setAllergy]);
 
   const queryClient = useQueryClient();
-  const authUser = useAuthStore((s: any) => s.user);
-  const accessToken = useAuthStore((s: any) => s.accessToken);
+  const authUser = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
   const userKey =
     authUser?.id ?? authUser?.email ?? (accessToken ? "me" : "guest");
 
-  // 버튼 클릭하면 선택/해제
   const handleClick = (item: string) => {
+    // 다중 선택: 존재하면 제거, 없으면 추가
     toggleAllergy(item);
   };
 
-  // 프로필 업데이트 API 호출 함수
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-
     try {
       const snap = {
         nickname,
@@ -72,33 +76,28 @@ export default function AllergyStep() {
         bodyType,
         exercise,
         prefer,
-        allergy,
+        allergy: allergies,
       };
-      const payload = buildCompletePayloadFromStore(snap, currentProfile);
-
-      console.log("[Onboarding] update payload =>", payload);
-      const saved = await updateProfile(payload);
-      // 저장 성공: 프로필 쿼리 최신화
+      const payload = buildCompletePayloadFromStore(snap, profile);
+      await updateProfile(payload);
+      // 최신 프로필 쿼리 갱신
       queryClient.invalidateQueries({
         queryKey: ["profile", userKey],
         exact: true,
       });
-      console.log("프로필 업데이트 성공:", saved);
-
       setShowSaveModal(true);
-    } catch (err: any) {
-      console.error("프로필 업데이트 실패:", err);
-      if (err?.response?.status === 401) {
-        setError("로그인이 필요합니다.");
+    } catch (e: any) {
+      const status = e?.response?.status;
+      if (status === 401) {
         router.push(
-          `/sign-in?redirect=${encodeURIComponent("/mypage/user-info-edit/allergy")}`,
+          `/auth/sign-in?redirect=${encodeURIComponent("/mypage/user-info-edit/allergy")}`,
         );
         return;
       }
       const reason =
-        err?.response?.data?.error?.reason ||
-        err?.message ||
-        "프로필 저장에 실패했습니다.";
+        e?.response?.data?.error?.reason ||
+        e?.message ||
+        "저장에 실패했습니다.";
       setError(reason);
     } finally {
       setLoading(false);
@@ -118,8 +117,8 @@ export default function AllergyStep() {
 
       {/* 본문 영역 */}
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 pb-28 pt-6">
-        <section className="mb-8 mt-20">
-          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
+        <section className="mb-8 mt-20 text-center">
+          <div className="whitespace-pre px-10 text-3xl font-medium leading-relaxed">
             알레르기가 있나요?
           </div>
         </section>
@@ -127,22 +126,21 @@ export default function AllergyStep() {
         {/* 선택 버튼들 */}
         <section className="my-10">
           <div className="flex flex-col gap-5">
-            {ALLERGY_OPTIONS.map((opt: any) => {
-              const value = opt?.value ?? opt?.key ?? String(opt);
-              const label = opt?.label ?? opt?.key ?? String(opt);
-              const isSelected = allergy.includes(value);
+            {OPTIONS.map((item) => {
+              const isSelected = allergies.includes(item);
               return (
                 <button
+                  key={item}
                   type="button"
-                  key={value}
-                  onClick={() => handleClick(value)}
-                  className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl ${
+                  onClick={() => handleClick(item)}
+                  aria-pressed={isSelected}
+                  className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition-colors ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
                       : "border-primary-normal bg-white text-primary-normal"
-                  }`}
+                  } `}
                 >
-                  {label}
+                  {item}
                 </button>
               );
             })}
@@ -165,11 +163,12 @@ export default function AllergyStep() {
 
         {/* 제출 버튼 */}
         <button
+          type="button"
           onClick={handleSubmit}
-          disabled={loading || profileLoading}
+          disabled={loading}
           className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive disabled:opacity-50"
         >
-          {loading || profileLoading ? "저장 중..." : "제출하기"}
+          {loading ? "저장 중..." : "제출하기"}
         </button>
       </footer>
 
@@ -195,10 +194,10 @@ export default function AllergyStep() {
         <ModalWrapper>
           <AlertModal
             title={
-              allergy.length === 0 ? "알레르기가 없으신가요?" : "저장 완료!"
+              allergies.length === 0 ? "알레르기가 없으신가요?" : "저장 완료!"
             }
             description={
-              allergy.length === 0
+              allergies.length === 0
                 ? "입력 없이 제출할 경우, '없음'으로 저장됩니다."
                 : "이제 맛있는 메뉴 추천 받아 볼까요?"
             }
@@ -210,7 +209,6 @@ export default function AllergyStep() {
           />
         </ModalWrapper>
       )}
-
       {error && (
         <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
           {error}
