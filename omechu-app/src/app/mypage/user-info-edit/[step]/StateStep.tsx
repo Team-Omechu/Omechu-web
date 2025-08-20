@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -9,35 +9,58 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
+import { useProfileQuery } from "../../hooks/useProfileQuery";
+
+const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;
+const toCode = (label: (typeof LABELS)[number]) =>
+  label === "다이어트 중" ? "DIET" : label === "증량 중" ? "BULK" : "MAINTAIN";
+const toLabel = (code?: string | null) =>
+  code === "DIET"
+    ? "다이어트 중"
+    : code === "BULK"
+      ? "증량 중"
+      : code === "MAINTAIN"
+        ? "유지 중"
+        : "";
 
 export default function StateStep() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
   // Zustand에서 상태와 초기화 함수들 가져옴
-  const state = useOnboardingStore((state) => state.exercise);
-  const setStatus = useOnboardingStore((state) => state.setExercise);
-  const resetExercise = useOnboardingStore((state) => state.resetExercise);
+  const exercise = useOnboardingStore((s) => s.exercise);
+  const setExercise = useOnboardingStore((s) => s.setExercise);
   const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화
 
-  // 선택 버튼 누르면 같은 값이면 해제, 아니면 선택
-  const handleStatusClick = (value: string) => {
-    if (state === value) {
-      setStatus(null);
-    } else {
-      setStatus(value);
+  const { data: profile } = useProfileQuery();
+
+  // 프로필에 운동 상태가 있고 스토어가 비어 있으면 초기 하이드레이트
+  useEffect(() => {
+    if (!exercise && profile?.exercise) {
+      const code =
+        profile.exercise === "다이어트 중" ||
+        profile.exercise === "증량 중" ||
+        profile.exercise === "유지 중"
+          ? toCode(profile.exercise as any)
+          : (profile.exercise as string);
+      setExercise(code);
     }
+  }, [exercise, profile?.exercise, setExercise]);
+
+  const activeLabel = useMemo(() => toLabel(exercise), [exercise]);
+  const handleStatusClick = (label: (typeof LABELS)[number]) => {
+    const next = activeLabel === label ? "" : toCode(label);
+    setExercise(next);
   };
 
-  // handleSkip 수정
   const handleSkip = () => {
-    resetExercise(); // ← 상태 초기화
+    setExercise("");
     router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
   };
 
   // 다음 버튼은 선택된 값이 있을 때만 작동
   const handleNext = () => {
-    if (!state) return;
+    if (!exercise) return;
     router.push(`/mypage/user-info-edit/${indexToSlug[3]}`);
   };
 
@@ -60,12 +83,12 @@ export default function StateStep() {
 
         <section className="flex flex-col items-center justify-center">
           <div className="z-10 flex flex-col gap-5">
-            {["다이어트 중", "증량 중", "유지 중"].map((label) => (
+            {LABELS.map((label) => (
               <button
-                key={`${label}-${state === label}`}
+                key={`${label}-${activeLabel === label}`}
                 onClick={() => handleStatusClick(label)}
                 className={`h-12 w-60 rounded-md border-[1px] px-2 text-xl ${
-                  state === label
+                  activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
                     : "border-primary-normal bg-white text-primary-normal"
                 } `}
@@ -98,9 +121,9 @@ export default function StateStep() {
         {/* 다음 버튼: 선택 없으면 비활성화 */}
         <button
           onClick={handleNext}
-          disabled={!state}
+          disabled={!exercise}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
-            state
+            exercise
               ? "bg-secondary-normal hover:bg-secondary-normalHover active:bg-secondary-normalActive"
               : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
