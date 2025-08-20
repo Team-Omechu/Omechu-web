@@ -23,7 +23,7 @@ export interface ReviewListResult {
   reviews: ReviewProps[];
   allReviewCount: number;
   avgRating: number;
-  mostTags?: MostTag[];
+  mostTag?: MostTag[];
 }
 
 export interface ReviewLikeRequest {
@@ -47,7 +47,7 @@ export const postReview = async (id: number, data: ReviewRequest) => {
   return res.data;
 };
 
-function mapReviewResponseToProps(data: any): ReviewProps {
+export function mapReviewResponseToProps(data: any): ReviewProps {
   const rawDate = data.createdAt ?? data.created_at; // 응답 키 대응
   const createdDate = rawDate
     ? new Intl.DateTimeFormat("ko-KR", {
@@ -74,12 +74,17 @@ function mapReviewResponseToProps(data: any): ReviewProps {
   };
 }
 
-// ✅ 토큰 기반 + params
-export async function getReviews(
+// ✅ 무한스크롤 페이지네이션 전용
+export async function getReviewsPage(
   restId: number,
-  limit = 10,
   cursor = 0,
-): Promise<ReviewListResult> {
+  limit = 8,
+): Promise<
+  ReviewListResult & {
+    nextCursor: number | null;
+    hasNextPage: boolean;
+  }
+> {
   if (!Number.isInteger(restId) || restId <= 0) {
     throw new Error(`유효하지 않은 restId입니다: ${restId}`);
   }
@@ -97,15 +102,20 @@ export async function getReviews(
   return {
     reviews,
     allReviewCount: json?.success?.allReviewCount ?? 0,
-    avgRating: json?.success?.avgRating?.rating ?? 0,
-    mostTags: json?.success?.mostTags ?? [],
+    avgRating:
+      typeof json?.success?.avgRating === "number"
+        ? json.success.avgRating
+        : (json?.success?.avgRating?.rating ?? 0),
+    mostTag: json?.success?.mostTag ?? [],
+    nextCursor: json?.success?.nextCursor ?? null, // 서버 응답 맞춤
+    hasNextPage: json?.success?.hasNextPage ?? false,
   };
 }
 
 export async function getMostTags(
   result: ReviewListResult,
 ): Promise<MostTag[]> {
-  return Promise.resolve(result.mostTags ?? []);
+  return Promise.resolve(result.mostTag ?? []);
 }
 
 export async function setReviewLike(
@@ -120,10 +130,10 @@ export async function setReviewLike(
   );
 
   const raw = res.data;
-  const srv = raw?.success ?? raw; // 서버 래핑 유무 대비
+  const srv = raw?.success ?? raw;
 
-  const likeCount = typeof srv?.like === "number" ? srv.like : null; // ⚠️ null 허용
-  const isLiked = typeof srv?.isLiked === "boolean" ? srv.isLiked : null; // ⚠️ null 허용
+  const likeCount = typeof srv?.like === "number" ? srv.like : null;
+  const isLiked = typeof srv?.isLiked === "boolean" ? srv.isLiked : null;
 
   return { likeCount, isLiked };
 }
@@ -140,7 +150,6 @@ export async function toggleReviewLike(
     !currentIsLiked,
   );
 
-  // 서버가 값을 안 준 경우 낙관적으로 계산
   const safeCount =
     likeCount !== null ? likeCount : currentVotes + (currentIsLiked ? -1 : 1);
   const safeLiked = isLiked !== null ? isLiked : !currentIsLiked;
