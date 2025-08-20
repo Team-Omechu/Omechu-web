@@ -90,10 +90,26 @@ export default function Favorites() {
     });
   })();
 
+  // 정렬 기준: 찜한 시점 우선(createdAt/likedAt/updatedAt) → 없으면 id
+  const getSortTs = (h: any) => {
+    const ts =
+      h?.createdAt ||
+      h?.likedAt ||
+      h?.updatedAt ||
+      h?.restaurant?.createdAt ||
+      h?.restaurant?.updatedAt ||
+      null;
+    const n = ts ? new Date(ts).getTime() : NaN;
+    if (!Number.isNaN(n)) return n;
+    // fallback: 숫자 id
+    const id = Number(h?.id ?? h?.restaurant?.id ?? 0);
+    return Number.isFinite(id) ? id : 0;
+  };
+
   const sortedItems = [...filteredItems].sort((a, b) => {
-    const aid = Number(a.restaurant.id);
-    const bid = Number(b.restaurant.id);
-    return sortOrder === "latest" ? bid - aid : aid - bid;
+    const at = getSortTs(a);
+    const bt = getSortTs(b);
+    return sortOrder === "latest" ? bt - at : at - bt;
   });
 
   const visibleItems = sortedItems.slice(0, visibleCount);
@@ -250,7 +266,10 @@ export default function Favorites() {
             className={
               sortOrder === "latest" ? "font-semibold text-grey-darker" : ""
             }
-            onClick={() => setSortOrder("latest")}
+            onClick={() => {
+              setSortOrder("latest");
+              setVisibleCount((prev) => Math.min(8, filteredItems.length));
+            }}
           >
             최신 순
           </button>
@@ -259,7 +278,10 @@ export default function Favorites() {
             className={
               sortOrder === "oldest" ? "font-semibold text-grey-darker" : ""
             }
-            onClick={() => setSortOrder("oldest")}
+            onClick={() => {
+              setSortOrder("oldest");
+              setVisibleCount((prev) => Math.min(8, filteredItems.length));
+            }}
           >
             오래된 순
           </button>
