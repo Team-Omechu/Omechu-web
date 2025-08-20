@@ -7,10 +7,7 @@ import { useEffect, useState } from "react";
 
 interface ReviewListProps {
   restId: number;
-  reviews: Omit<
-    ReviewProps,
-    "onVote" | "onReport" | "onClick" | "isOptionOpen" | "isVoted"
-  >[]; // 핵심 데이터
+  reviews: ReviewProps[]; // ✅ 단순화: 이제 ReviewProps 그대로 받음
   votedReviewIds: number[];
   setVotedReviewIds: React.Dispatch<React.SetStateAction<number[]>>;
   localVotes: Record<number, number>;
@@ -46,7 +43,6 @@ export default function ReviewList({
     });
   }, [reviews, votedReviewIds]);
 
-  // 좋아요 상태를 관리하는 상태 추가
   const setLikedState = (reviewId: number, isLiked: boolean) => {
     setLikedById((m) => ({ ...m, [reviewId]: isLiked }));
     setVotedReviewIds((ids) =>
@@ -74,7 +70,8 @@ export default function ReviewList({
             rating={item.rating}
             content={item.content}
             tags={item.tags}
-            images={item.images}
+            images={item.images} // ✅ 이름 맞춤
+            isVoted={isVoted} // ✅ props에서 받음
             onVote={async () => {
               if (isPending) return;
 
@@ -84,7 +81,7 @@ export default function ReviewList({
 
               setPending((p) => ({ ...p, [item.id]: true }));
 
-              // 1) 옵티미스틱: 좋아요 여부 + 카운트 동시 반영
+              // 1) 옵티미스틱 반영
               setLikedState(item.id, nextVoted);
               setLocalVotes((v) => ({
                 ...v,
@@ -99,14 +96,14 @@ export default function ReviewList({
                   nextVoted,
                 );
 
-                // 3) 서버 확정 (없으면 낙관값 유지)
+                // 3) 서버 확정
                 const safeCount = likeCount ?? prevVotes + (nextVoted ? 1 : -1);
                 const safeVoted = isLiked ?? nextVoted;
 
                 setLocalVotes((v) => ({ ...v, [item.id]: safeCount }));
                 setLikedState(item.id, safeVoted);
               } catch (e) {
-                // 4) 롤백: 좋아요 여부 + 카운트 동시 복구
+                // 4) 롤백
                 setLocalVotes((v) => ({ ...v, [item.id]: prevVotes }));
                 setLikedState(item.id, prevVoted);
                 console.error("리뷰 좋아요 실패:", e);
@@ -114,7 +111,6 @@ export default function ReviewList({
                 setPending((p) => ({ ...p, [item.id]: false }));
               }
             }}
-            isVoted={isVoted}
             onReport={onReport}
             onClick={() =>
               setActiveOptionId((prev) => (prev === item.id ? null : item.id))
