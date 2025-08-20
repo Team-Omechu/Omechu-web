@@ -47,17 +47,29 @@ export const postReview = async (id: number, data: ReviewRequest) => {
   return res.data;
 };
 
-function mapReviewResponseToProps(data: ReviewResponse): ReviewProps {
+function mapReviewResponseToProps(data: any): ReviewProps {
+  const rawDate = data.createdAt ?? data.created_at; // 응답 키 대응
+  const createdDate = rawDate
+    ? new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+        .format(new Date(rawDate))
+        .replace(/\s/g, "") // 혹시 모를 공백 제거
+        .replace(/\./g, ".") // '.' 유지
+    : "";
+
   return {
     id: data.id,
     rating: Number(data.rating),
-    tags: data.tags,
+    tags: data.tags ?? [],
     content: data.text,
-    createdDate: new Date(data.createdAt).toLocaleDateString("ko-KR"),
+    createdDate, // 👉 "2025.05.05"
     votes: data.like,
     userId: data.user.nickname,
     profileImgUrl: data.user.profileImageUrl,
-    reviewImages: data.reviewImg?.map((img) => img.link) ?? [],
+    reviewImages: data.reviewImg?.map((img: any) => img.link) ?? [],
     isVoted: false,
   };
 }
