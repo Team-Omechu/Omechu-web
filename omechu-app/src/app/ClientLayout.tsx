@@ -124,10 +124,11 @@ export default function ClientLayout({
     dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix))
   );
 
+  // ... existing code ...
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-main-normal scrollbar-hide`}
+        className={`${showBottomNav ? "pb-20" : ""} flex flex-1 flex-col overflow-y-scroll bg-main-normal scrollbar-hide`}
       >
         {children}
       </main>
