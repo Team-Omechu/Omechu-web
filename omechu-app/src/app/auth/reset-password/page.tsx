@@ -10,6 +10,7 @@ import { useResetPasswordMutation } from "@/lib/hooks/useAuth";
 import Toast from "@/components/common/Toast";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
+import Header from "@/components/common/Header";
 
 export default function ResetPasswordPage() {
   return (
@@ -58,9 +59,14 @@ function ResetPasswordClient() {
 
   return (
     <>
-      <main className="flex flex-1 flex-col items-center justify-center px-4">
-        <div className="flex w-full max-w-sm flex-col items-center gap-8">
-          <div className="flex flex-col gap-3 text-center">
+      <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
+        <Toast
+          message={toastMessage}
+          show={showToast}
+          className="fixed bottom-24 left-1/2 z-[9999] -translate-x-1/2"
+        />
+        <section className="flex w-full flex-col gap-4 px-3 pt-16">
+          <div className="mb-8 flex flex-col gap-3 text-center">
             <h1 className="text-xl font-medium text-grey-darker">
               비밀번호 재설정
             </h1>
@@ -68,9 +74,8 @@ function ResetPasswordClient() {
               사용하실 새로운 비밀번호를 설정해 주세요
             </p>
           </div>
-
           <ResetPasswordForm onFormSubmit={handleFormSubmit} />
-        </div>
+        </section>
       </main>
 
       {isModalOpen && (
@@ -83,7 +88,6 @@ function ResetPasswordClient() {
           />
         </ModalWrapper>
       )}
-      <Toast message={toastMessage} show={showToast} />
     </>
   );
 }

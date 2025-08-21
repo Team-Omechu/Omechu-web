@@ -73,13 +73,13 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("service")}
-            className="text-sm text-gray-500"
+            className="text-sm text-grey-normalActive"
           >
             보기
           </button>
         </div>
         {shouldShowServiceError && (
-          <p className="pl-2 text-xs text-red-500">
+          <p className="pl-2 text-xs text-primary-normal">
             {errors.termsService?.message}
           </p>
         )}
@@ -94,13 +94,13 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("privacy")}
-            className="text-sm text-gray-500"
+            className="text-sm text-grey-normalActive"
           >
             보기
           </button>
         </div>
         {shouldShowPrivacyError && (
-          <p className="pl-2 text-xs text-red-500">
+          <p className="pl-2 text-xs text-primary-normal">
             {errors.termsPrivacy?.message}
           </p>
         )}
@@ -115,13 +115,13 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("location")}
-            className="text-sm text-gray-500"
+            className="text-sm text-grey-normalActive"
           >
             보기
           </button>
         </div>
         {shouldShowLocationError && (
-          <p className="pl-2 text-xs text-red-500">
+          <p className="pl-2 text-xs text-primary-normal">
             {errors.termsLocation?.message}
           </p>
         )}
@@ -135,7 +135,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           variant="round"
         />
         {shouldShowAgeError && (
-          <p className="pl-2 text-xs text-red-500">
+          <p className="pl-2 text-xs text-primary-normal">
             {errors.termsAge?.message}
           </p>
         )}
