@@ -30,6 +30,7 @@ export default function ResetPasswordForm({
     mode: "onChange",
   });
 
+  const [passwordBlurred, setPasswordBlurred] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const triggerToast = (msg: string) => {
@@ -48,7 +49,7 @@ export default function ResetPasswordForm({
       switch (code) {
         case "E001":
         case "V002":
-          msg = "링크가 만료되었어요. 이메일에서 새 링크로 다시 시도해 주세요.";
+          msg = "링크가 만료되었어요.";
           break;
         case "E002":
           msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
@@ -66,53 +67,48 @@ export default function ResetPasswordForm({
   return (
     <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
       {/* 토스트: fixed로 포지셔닝(SSR/스크롤 영향 최소화) */}
-      <Toast
-        message={toastMessage}
-        show={showToast}
-        className="fixed bottom-24 left-1/2 z-[9999] -translate-x-1/2"
+      <Toast message={toastMessage} show={showToast} className="bottom-40" />
+
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <Input
+            label="새 비밀번호"
+            type="password"
+            placeholder="새 비밀번호를 입력해주세요"
+            value={field.value || ""}
+            onChange={field.onChange}
+            onBlur={() => {
+              setPasswordBlurred(true);
+              field.onBlur();
+            }}
+            showError={passwordBlurred && !!errors.password}
+            // 에러일 때 동일 문구를 빨간색으로 표기, 아닐 때 회색 설명 문구
+            description="* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
+          />
+        )}
       />
 
-      <section className="flex w-full flex-col gap-4 px-3 pt-16">
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <Input
-              label="새 비밀번호"
-              type="password"
-              placeholder="새 비밀번호를 입력해주세요"
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              errorMessage={
-                errors.password?.message ||
-                "* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
-              }
-              showError={!!errors.password}
-            />
-          )}
-        />
-
-        <Controller
-          name="passwordConfirm"
-          control={control}
-          render={({ field }) => (
-            <Input
-              label="새 비밀번호 재확인"
-              type="password"
-              placeholder="새 비밀번호를 다시 입력해주세요"
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              errorMessage={
-                errors.passwordConfirm?.message ||
-                "* 새 비밀번호가 일치하지 않습니다!"
-              }
-              showError={!!errors.passwordConfirm}
-            />
-          )}
-        />
-      </section>
+      <Controller
+        name="passwordConfirm"
+        control={control}
+        render={({ field }) => (
+          <Input
+            label="새 비밀번호 재확인"
+            type="password"
+            placeholder="새 비밀번호를 다시 입력해주세요"
+            value={field.value || ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            errorMessage={
+              errors.passwordConfirm?.message ||
+              "* 새 비밀번호가 일치하지 않습니다!"
+            }
+            showError={!!errors.passwordConfirm}
+          />
+        )}
+      />
 
       <section className="relative mt-5 flex w-full flex-col items-center">
         <SquareButton

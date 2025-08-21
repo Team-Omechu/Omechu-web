@@ -92,7 +92,12 @@ export default function ReviewAddModal({
         title={""}
         rightChild={
           <button onClick={onClose}>
-            <Image src={"/x/close_big.svg"} alt="닫기" width={18} height={18} />
+            <Image
+              src={"/x/close_big.svg"}
+              alt={"닫기"}
+              width={18}
+              height={18}
+            />
           </button>
         }
         className="mb-4 border-none"
