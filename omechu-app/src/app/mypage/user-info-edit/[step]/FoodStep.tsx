@@ -13,8 +13,9 @@ import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { resetBasicStateAndSync } from "../utils/resetBasicState";
 
-// ✅ 스펙 라벨 통일: "다른나라"(기존 "다른나라 음식" 제거)
+// 스펙 라벨 통일: "다른나라"(기존 "다른나라 음식" 제거)
 const FOOD_LABELS = ["한식", "양식", "중식", "일식", "다른나라"] as const;
 
 type FoodLabel = (typeof FOOD_LABELS)[number];
@@ -48,7 +49,10 @@ export default function FoodStep() {
   const setPrefer = useOnboardingStore((s) => s.setPrefer);
   const togglePrefer = useOnboardingStore((s) => s.togglePrefer);
   const resetPrefer = useOnboardingStore((s) => s.resetPrefer);
-  const resetAll = useOnboardingStore((s) => s.reset);
+  const setGender = useOnboardingStore((s) => s.setGender);
+  const setExercise = useOnboardingStore((s) => s.setExercise);
+  const setBodyType = useOnboardingStore((s) => s.setBodyType);
+  const setAllergy = useOnboardingStore((s) => s.setAllergy);
 
   const preferHydrateBlocked = useOnboardingStore(
     (s) => s.preferHydrateBlocked,
@@ -70,7 +74,7 @@ export default function FoodStep() {
     (authUser as any)?.email ??
     (accessToken ? "me" : "guest");
 
-  // ▶︎ 프로필로부터 초기 하이드레이트 (스토어 비어 있을 때만)
+  // 프로필로부터 초기 하이드레이트 (스토어 비어 있을 때만)
   useEffect(() => {
     if (
       preferHydrateBlocked ||
@@ -279,8 +283,50 @@ export default function FoodStep() {
             description="지금까지 작성한 내용은 저장되지 않아요."
             confirmText="그만하기"
             cancelText="돌아가기"
-            onConfirm={() => {
-              resetAll();
+            onConfirm={async () => {
+              // 1) 로컬(Zustand)에서 닉네임 제외 초기화 + 즉시 UI 반영(버튼 선택 해제)
+              userInteractedRef.current = true;
+              blockPreferHydrate();
+              setGender(null);
+              setExercise(null);
+              setPrefer([]);
+              setBodyType([]);
+              setAllergy([]);
+
+              // 2) React Query 캐시 낙관적 초기화 (scoped & plain key 모두)
+              qc.setQueryData(["profile", userKey], (prev: any) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  body_type: [],
+                  allergy: [],
+                };
+              });
+              qc.setQueryData(["profile"], (prev: any) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  body_type: null,
+                  allergy: [],
+                };
+              });
+
+              // 3) 서버에 동기화 (닉네임/이미지는 mapper가 보존)
+              try {
+                await resetBasicStateAndSync(profile as any, qc, userKey);
+              } catch (e) {
+                if (process.env.NODE_ENV !== "production") {
+                  console.error("[FoodStep] reset(confirm) failed:", e);
+                }
+              }
+
+              // 4) 모달 닫고 시작 화면으로 이동
               setShowModal(false);
               router.push(`/mypage/user-info-edit`);
             }}
