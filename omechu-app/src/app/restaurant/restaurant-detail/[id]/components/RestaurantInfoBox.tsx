@@ -122,9 +122,9 @@ export default function RestaurantInfoBox({
           onClick={() =>
             router.push(`/restaurant/restaurant-detail/${restaurant.id}/map`)
           }
-          className="flex h-6 w-16 items-center justify-center rounded-3xl bg-[#1F9BDA]"
+          className="flex h-6 w-16 items-center justify-center rounded-3xl bg-[#1F9BDA] hover:bg-[#0182CA] active:bg-[#0182CA]"
         >
-          <span className="mt-1 text-sm text-white">지도보기</span>
+          <span className="text-[0.75rem] text-white">지도보기</span>
         </button>
       </div>
     </section>
