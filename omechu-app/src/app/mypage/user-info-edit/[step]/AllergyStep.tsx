@@ -221,7 +221,7 @@ export default function AllergyStep() {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-secondary-normalHover active:bg-secondary-normalActive disabled:opacity-50"
+          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white active:bg-[#0182CA] disabled:opacity-50"
         >
           {loading ? "저장 중..." : "제출하기"}
         </button>
