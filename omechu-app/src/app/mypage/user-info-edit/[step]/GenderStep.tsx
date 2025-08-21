@@ -194,11 +194,12 @@ export default function GenderStep() {
             confirmText="그만하기"
             cancelText="돌아가기"
             onConfirm={async () => {
+              userInteractedRef.current = true;
               // 1) 로컬(Zustand)에서 닉네임 제외 초기화
               setGender(null);
               setExercise(null);
               setPrefer([]);
-              setBodyType([]);
+              setBodyType(null);
               setAllergy([]);
 
               // 2) 서버에 즉시 반영 (닉네임/이미지는 buildCompletePayloadFromStore가 보존)
@@ -207,7 +208,7 @@ export default function GenderStep() {
                   gender: null,
                   exercise: null,
                   prefer: [],
-                  bodyType: [],
+                  bodyType: null,
                   allergy: [],
                 } as any;
                 const payload = buildCompletePayloadFromStore(
