@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
 import { useUserQuery } from "@/lib/hooks/useAuth";
@@ -13,15 +13,17 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const params = useSearchParams();
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
   const { isLoggedIn } = useAuthStore();
 
   const inAuthSection =
     pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
-  const from401 = params.get("from") === "401";
 
   useEffect(() => {
+    const from401 =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("from") === "401";
+
     // 이미 로그인 상태거나 세션 조회 에러면 아무것도 하지 않음
     if (isLoggedIn || isError) return;
 
@@ -47,7 +49,6 @@ export default function ClientLayout({
     isLoggedIn,
     router,
     pathname,
-    from401,
     inAuthSection,
   ]);
 
