@@ -1,17 +1,18 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { getCurrentUser } from "@/lib/api/auth";
+import Toast from "@/components/common/Toast";
 
 export default function AuthCallbackPage() {
   return (
     <Suspense
       fallback={
         <main className="flex min-h-[100dvh] items-center justify-center">
-          <span className="text-gray-500">로그인 처리 중...</span>
+          <span className="text-grey-normalActive">로그인 처리 중...</span>
         </main>
       }
     >
@@ -24,12 +25,20 @@ function CallbackContent() {
   const router = useRouter();
   const params = useSearchParams();
   const { login } = useAuthStore();
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2500);
+  };
 
   useEffect(() => {
     const accessToken = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
 
     if (!accessToken) {
+      triggerToast("로그인에 실패했습니다. 다시 시도해 주세요.");
       router.replace("/sign-in");
       return;
     }
@@ -46,6 +55,7 @@ function CallbackContent() {
         if (!me.nickname) router.replace("/onboarding/1");
         else router.replace("/mainpage");
       } catch (e) {
+        triggerToast("로그인에 실패했습니다. 다시 시도해 주세요.");
         router.replace("/sign-in");
       }
     })();
@@ -53,7 +63,10 @@ function CallbackContent() {
 
   return (
     <main className="flex min-h-[100dvh] items-center justify-center">
-      <span className="text-gray-500">로그인 처리 중...</span>
+      <>
+        <span className="text-grey-normalActive">로그인 처리 중...</span>
+        <Toast message={toastMessage} show={showToast} />
+      </>
     </main>
   );
 }
