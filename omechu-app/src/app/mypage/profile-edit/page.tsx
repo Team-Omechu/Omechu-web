@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+
+import { Suspense } from "react";
 import Header from "@/components/common/Header";
 import ProfileEditSection from "./ProfileEditSection";
 
@@ -18,7 +20,9 @@ export default function ProfileEditPage() {
           </a>
         }
       />
-      <ProfileEditSection />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProfileEditSection />
+      </Suspense>
     </>
   );
 }
