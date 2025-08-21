@@ -174,7 +174,7 @@ export default function GenderStep() {
           disabled={!gender || saving}
           className={`h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white ${
             gender && !saving
-              ? "bg-secondary-normal hover:bg-[#0182CA] active:bg-[#0182CA]"
+              ? "bg-secondary-normal active:bg-[#0182CA]"
               : "cursor-not-allowed bg-[#A1A1A1]"
           }`}
         >

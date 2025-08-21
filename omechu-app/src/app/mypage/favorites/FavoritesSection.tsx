@@ -3,7 +3,7 @@
 
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
@@ -90,13 +90,45 @@ export default function Favorites() {
     });
   })();
 
-  const sortedItems = [...filteredItems].sort((a, b) => {
-    const aid = Number(a.restaurant.id);
-    const bid = Number(b.restaurant.id);
-    return sortOrder === "latest" ? bid - aid : aid - bid;
-  });
+  // 정렬 기준: 찜한 시점 우선(createdAt/likedAt/updatedAt) → 없으면 id
+  const getSortTs = (h: any) => {
+    const ts =
+      h?.createdAt ||
+      h?.likedAt ||
+      h?.updatedAt ||
+      h?.restaurant?.createdAt ||
+      h?.restaurant?.updatedAt ||
+      null;
+    const n = ts ? new Date(ts).getTime() : NaN;
+    if (!Number.isNaN(n)) return n;
+    // fallback: 숫자 id
+    const id = Number(h?.id ?? h?.restaurant?.id ?? 0);
+    return Number.isFinite(id) ? id : 0;
+  };
 
-  const visibleItems = sortedItems.slice(0, visibleCount);
+  const sortedItems = useMemo(() => {
+    const base = filteredItems; // 검색 필터 결과 기준으로 정렬
+    return [...base].sort((a, b) => {
+      const at = getSortTs(a);
+      const bt = getSortTs(b);
+      return sortOrder === "latest" ? bt - at : at - bt;
+    });
+  }, [filteredItems, sortOrder]);
+
+  // 중복 제거 추가
+  const dedupedItems = useMemo(() => {
+    const seen = new Set<string>();
+    return sortedItems.filter((h) => {
+      const key = String(h?.restaurant?.id ?? h?.id);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [sortedItems]);
+
+  const visibleItems = useMemo(() => {
+    return dedupedItems.slice(0, visibleCount);
+  }, [dedupedItems, visibleCount]);
 
   // hearts 길이가 줄었을 때 visibleCount가 남지 않도록 보정
   useEffect(() => {
@@ -250,7 +282,10 @@ export default function Favorites() {
             className={
               sortOrder === "latest" ? "font-semibold text-grey-darker" : ""
             }
-            onClick={() => setSortOrder("latest")}
+            onClick={() => {
+              setSortOrder("latest");
+              setVisibleCount((prev) => Math.min(8, filteredItems.length));
+            }}
           >
             최신 순
           </button>
@@ -259,7 +294,10 @@ export default function Favorites() {
             className={
               sortOrder === "oldest" ? "font-semibold text-grey-darker" : ""
             }
-            onClick={() => setSortOrder("oldest")}
+            onClick={() => {
+              setSortOrder("oldest");
+              setVisibleCount((prev) => Math.min(8, filteredItems.length));
+            }}
           >
             오래된 순
           </button>
@@ -268,7 +306,7 @@ export default function Favorites() {
         <section className="flex flex-col gap-4">
           {isInitialLoading ? (
             <div className="flex flex-col gap-3">
-              {Array.from({ length: 6 }).map((_, i) => (
+              {Array.from({ length: 8 }).map((_, i) => (
                 <SkeletonFoodCard key={i} />
               ))}
             </div>

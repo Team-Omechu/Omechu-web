@@ -32,6 +32,7 @@ export default function ProfileEditSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [isPressed, setIsPressed] = useState(false);
 
   // 최초 프로필 불러오면 상태 초기화
   useEffect(() => {
@@ -154,7 +155,19 @@ export default function ProfileEditSection() {
         <button
           onClick={handleSave}
           disabled={!isValid || isLoading}
-          className={`h-12 w-[335px] rounded-md text-lg font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalHover ${isValid ? "bg-primary-normal" : "cursor-not-allowed bg-grey-normal"}`}
+          onMouseDown={() => !(!isValid || isLoading) && setIsPressed(true)}
+          onMouseUp={() => setIsPressed(false)}
+          onMouseLeave={() => setIsPressed(false)}
+          onTouchStart={() => !(!isValid || isLoading) && setIsPressed(true)}
+          onTouchEnd={() => setIsPressed(false)}
+          aria-pressed={isPressed}
+          className={`h-12 w-[335px] rounded-md text-lg font-medium text-white transition-colors duration-150 ${
+            !isValid || isLoading
+              ? "cursor-not-allowed bg-grey-normal"
+              : isPressed
+                ? "bg-[#DD6362]"
+                : "bg-primary-normal hover:bg-primary-normalHover"
+          } `}
         >
           {isLoading ? "저장 중..." : "저장"}
         </button>

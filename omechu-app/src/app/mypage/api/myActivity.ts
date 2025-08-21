@@ -150,3 +150,26 @@ export async function toggleReviewLike(
   }
   return res.data.success;
 }
+
+// 리뷰 삭제
+export async function deleteMyReview(reviewId: number) {
+  const accessToken = useAuthStore.getState().accessToken;
+  if (!accessToken) {
+    throw new Error("No access token. Please login first.");
+  }
+
+  const res = await axiosInstance.delete<
+    ApiResponse<{ message: string; deletedReviewId: string }>
+  >(`/reviews/${reviewId}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (res.data.resultType === "FAIL") {
+    // 서버 스펙 예시: 403, 404
+    const reason = res.data.error?.reason || "리뷰 삭제에 실패했습니다.";
+    throw new Error(reason);
+  }
+
+  // 정상: { message, deletedReviewId }
+  return res.data.success;
+}
