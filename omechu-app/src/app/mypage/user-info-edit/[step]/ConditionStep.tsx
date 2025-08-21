@@ -13,8 +13,9 @@ import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { resetBasicStateAndSync } from "../utils/resetBasicState";
 
-// ✅ 서버 스펙 라벨(스토어에는 이 값으로 저장)
+// 서버 스펙 라벨(스토어에는 이 값으로 저장)
 const BODY_LABELS = ["감기", "소화불량", "더위잘탐", "추위잘탐"] as const;
 type BodyLabel = (typeof BODY_LABELS)[number];
 
@@ -66,8 +67,10 @@ export default function ConditionStep() {
   const allergy = useOnboardingStore((s) => s.allergy);
 
   const setBodyType = useOnboardingStore((s) => s.setBodyType);
-  const resetBodyType = useOnboardingStore((s) => s.resetBodyType);
-  const resetAll = useOnboardingStore((s) => s.reset);
+  const setGender = useOnboardingStore((s) => s.setGender);
+  const setExercise = useOnboardingStore((s) => s.setExercise);
+  const setPrefer = useOnboardingStore((s) => s.setPrefer);
+  const setAllergy = useOnboardingStore((s) => s.setAllergy);
 
   const { data: profile } = useProfileQuery();
   const authUser = useAuthStore((s) => s.user);
@@ -156,6 +159,9 @@ export default function ConditionStep() {
         queryKey: ["profile", userKey],
         exact: true,
       }).catch(() => {});
+      qc.invalidateQueries({ queryKey: ["profile"], exact: true }).catch(
+        () => {},
+      );
     } catch (e) {
       // 실패해도 다음 단계로 진행
     }
@@ -291,8 +297,49 @@ export default function ConditionStep() {
             description="지금까지 작성한 내용은 저장되지 않아요."
             confirmText="그만하기"
             cancelText="돌아가기"
-            onConfirm={() => {
-              resetAll();
+            onConfirm={async () => {
+              // 1) 로컬(Zustand)에서 닉네임 제외 초기화 + 즉시 UI 반영(버튼 선택 해제)
+              userInteractedRef.current = true;
+              setGender(null);
+              setExercise(null);
+              setPrefer([]);
+              setBodyType([]); // 스토어는 배열 유지, 서버에서는 null로 보냄
+              setAllergy([]);
+
+              // 2) React Query 캐시 낙관적 초기화 (scoped & plain key 모두)
+              qc.setQueryData(["profile", userKey], (prev: any) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  body_type: null,
+                  allergy: [],
+                };
+              });
+              qc.setQueryData(["profile"], (prev: any) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  body_type: null,
+                  allergy: [],
+                };
+              });
+
+              // 3) 서버에 동기화 (닉네임/이미지는 mapper가 기존값 보존)
+              try {
+                await resetBasicStateAndSync(profile as any, qc, userKey);
+              } catch (e) {
+                if (process.env.NODE_ENV !== "production") {
+                  console.error("[ConditionStep] reset(confirm) failed:", e);
+                }
+              }
+
+              // 4) 모달 닫고 시작 화면으로 이동
               setShowModal(false);
               router.push(`/mypage/user-info-edit`);
             }}
