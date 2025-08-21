@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
 import { useUserQuery } from "@/lib/hooks/useAuth";
@@ -13,37 +13,42 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const params = useSearchParams();
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
-  const { isLoggedIn, login: loginAction } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
+
+  const inAuthSection =
+    pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
+  const from401 = params.get("from") === "401";
 
   useEffect(() => {
-    if (isLoggedIn || isError) {
-      return;
-    }
+    // 이미 로그인 상태거나 세션 조회 에러면 아무것도 하지 않음
+    if (isLoggedIn || isError) return;
 
+    // 세션 복구 성공 시에만 상태 동기화
     if (isSuccess && sessionUser) {
       // 토큰은 콜백에서 설정되므로 여기서는 사용자 정보만 동기화가 필요할 수 있음
       useAuthStore.getState().setUser(sessionUser);
-
       console.log("Session restored via Kakao login:", sessionUser);
 
+      // 401로 들어온 경우 또는 인증 섹션에서는 절대 자동 리다이렉트하지 않음
+      if (from401 || inAuthSection) return;
+
+      // 온보딩 미완료 사용자는 온보딩으로만 유도 (그 외 페이지는 유지)
       if (!sessionUser.nickname) {
         router.push("/onboarding/1");
-      } else if (
-        pathname.startsWith("/sign-in") ||
-        pathname.startsWith("/sign-up")
-      ) {
-        router.push("/mainpage");
       }
+      // 닉네임이 있는 정상 사용자라면 현재 페이지 유지 (불필요한 /mainpage 강제 이동 금지)
     }
   }, [
     isSuccess,
     isError,
     sessionUser,
     isLoggedIn,
-    loginAction,
     router,
     pathname,
+    from401,
+    inAuthSection,
   ]);
 
   const noBottomNavRoutes = [
