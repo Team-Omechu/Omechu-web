@@ -22,9 +22,10 @@ export default function ForgotPasswordForm({
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FindPasswordFormValues>({
     resolver: zodResolver(findPasswordSchema),
+    mode: "onChange", // 입력값이 변경될 때마다 유효성 검사 실행
   });
 
   return (
@@ -54,7 +55,7 @@ export default function ForgotPasswordForm({
             type="submit"
             variant="red"
             size="lg"
-            disabled={isSubmitting}
+            disabled={!isValid || isSubmitting}
             className="w-full"
           >
             {isSubmitting ? "메일 발송 중..." : "메일 발송하기"}

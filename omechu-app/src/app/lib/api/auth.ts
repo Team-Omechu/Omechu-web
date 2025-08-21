@@ -206,20 +206,38 @@ export const signup = async (
 export const sendVerificationCode = async (
   email: string,
 ): Promise<SendVerificationCodeSuccessData> => {
-  const response = await axiosInstance.post<
-    ApiResponse<SendVerificationCodeSuccessData>
-  >("/auth/send", { email });
+  try {
+    const response = await axiosInstance.post<
+      ApiResponse<SendVerificationCodeSuccessData>
+    >("/auth/send", { email });
 
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new ApiClientError(
+        apiResponse.error?.reason || "인증번호 전송에 실패했습니다.",
+        apiResponse.error?.errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "인증번호 전송에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
     throw new ApiClientError(
-      apiResponse.error?.reason || "인증번호 전송에 실패했습니다.",
-      apiResponse.error?.errorCode,
-      undefined,
-      apiResponse.error?.data,
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
     );
   }
-  return apiResponse.success;
 };
 
 /**
@@ -230,19 +248,37 @@ export const verifyVerificationCode = async (data: {
   email: string;
   code: string;
 }): Promise<VerifyVerificationCodeSuccessData> => {
-  const response = await axiosInstance.post<
-    ApiResponse<VerifyVerificationCodeSuccessData>
-  >("/auth/verify", data);
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+  try {
+    const response = await axiosInstance.post<
+      ApiResponse<VerifyVerificationCodeSuccessData>
+    >("/auth/verify", data);
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new ApiClientError(
+        apiResponse.error?.reason || "이메일 인증에 실패했습니다.",
+        apiResponse.error?.errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "이메일 인증에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
     throw new ApiClientError(
-      apiResponse.error?.reason || "이메일 인증에 실패했습니다.",
-      apiResponse.error?.errorCode,
-      undefined,
-      apiResponse.error?.data,
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
     );
   }
-  return apiResponse.success;
 };
 
 /**
@@ -251,19 +287,39 @@ export const verifyVerificationCode = async (data: {
 export const requestPasswordReset = async (
   data: FindPasswordFormValues,
 ): Promise<RequestPasswordResetSuccessData> => {
-  const response = await axiosInstance.post<
-    ApiResponse<RequestPasswordResetSuccessData>
-  >("/auth/reset-request", data);
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+  try {
+    const response = await axiosInstance.post<
+      ApiResponse<RequestPasswordResetSuccessData>
+    >("/auth/reset-request", data);
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new ApiClientError(
+        apiResponse.error?.reason || "비밀번호 재설정 요청에 실패했습니다.",
+        apiResponse.error?.errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason ||
+        err.message ||
+        "비밀번호 재설정 요청에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
     throw new ApiClientError(
-      apiResponse.error?.reason || "비밀번호 재설정 요청에 실패했습니다.",
-      apiResponse.error?.errorCode,
-      undefined,
-      apiResponse.error?.data,
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
     );
   }
-  return apiResponse.success;
 };
 
 /**
@@ -334,30 +390,48 @@ export const changePassword = async (data: {
     throw new Error("accessToken이 없습니다. 먼저 로그인 해주세요.");
   }
 
-  console.log("[DEBUG] changePassword 호출");
-  console.log("[DEBUG] Token(head 12):", accessToken.slice(0, 12));
-  console.log("[DEBUG] Request Body:", data);
+  try {
+    console.log("[DEBUG] changePassword 호출");
+    console.log("[DEBUG] Token(head 12):", accessToken.slice(0, 12));
+    console.log("[DEBUG] Request Body:", data);
 
-  const response = await axiosInstance.patch<ApiResponse<string>>(
-    "/auth/change-passwd",
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const response = await axiosInstance.patch<ApiResponse<string>>(
+      "/auth/change-passwd",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    },
-  );
+    );
 
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new ApiClientError(
+        apiResponse.error?.reason || "비밀번호 변경에 실패했습니다.",
+        apiResponse.error?.errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "비밀번호 변경에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
     throw new ApiClientError(
-      apiResponse.error?.reason || "비밀번호 변경에 실패했습니다.",
-      apiResponse.error?.errorCode,
-      undefined,
-      apiResponse.error?.data,
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
     );
   }
-  return apiResponse.success;
 };
 
 // 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)

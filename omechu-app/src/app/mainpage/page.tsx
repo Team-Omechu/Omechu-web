@@ -53,15 +53,18 @@ export default function MainPage() {
   };
 
   return (
-    <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden bg-gradient-to-b from-pink-200 to-purple-300 scrollbar-hide">
+    <div className="relative flex w-full flex-1 flex-col justify-center overflow-hidden bg-gradient-to-b from-pink-200 to-purple-300 scrollbar-hide">
       {/* 데스크톱용 컨테이너 */}
-      <div className="relative mx-auto w-full max-w-md lg:max-w-lg xl:max-w-xl">
-        {/* 메인 배경 이미지 */}
+      <div
+        className="relative mx-auto w-full max-w-md lg:max-w-lg xl:max-w-xl"
+        style={{ height: "calc(100svh - 5rem)" }}
+      >
         <Image
-          src="/mainpage/mainpage.svg"
+          src="/mainpage/mainpage.png"
           alt="메인 페이지"
           fill
-          style={{ objectFit: "cover" }}
+          priority
+          sizes="100vw"
           className="object-cover lg:object-contain"
         />
         {/* 버튼들 */}
