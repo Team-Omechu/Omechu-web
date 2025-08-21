@@ -29,18 +29,9 @@ export default function FindPasswordPage() {
       router.push("/forgot-password/sent");
     } catch (error: unknown) {
       const e = error as ApiClientError & { code?: string; status?: number };
-      const code = e?.code;
-      let msg: string =
+      // 서버에서 내려준 reason을 ApiClientError.message로 전달하고 있으므로 그대로 노출
+      const msg: string =
         e?.message || "요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.";
-      switch (code) {
-        case "E002": // UserNotFoundError
-          msg = "해당 이메일의 사용자를 찾을 수 없습니다.";
-          break;
-      }
-      if (!code && e?.status === 404) {
-        // 라우팅/엔드포인트 404 등도 사용자 친화적으로 처리
-        msg = "요청 경로를 찾을 수 없어요. 잠시 후 다시 시도해 주세요.";
-      }
       triggerToast(msg);
     }
   };
@@ -61,7 +52,7 @@ export default function FindPasswordPage() {
 
         <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
       </div>
-      <Toast message={toastMessage} show={showToast} className={"bottom-56"} />
+      <Toast message={toastMessage} show={showToast} className={"bottom-20"} />
     </main>
   );
 }
