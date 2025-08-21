@@ -148,7 +148,7 @@ export default function MyActivityClient() {
     setLoading(true);
     setError(null);
 
-    fetchMyPlaces(10, 10)
+    fetchMyPlaces(10)
       .then((data: any) => {
         const places = data.success?.data ?? [];
         const mapped: MyRestaurant[] = places.map((item: any) => ({
@@ -174,7 +174,7 @@ export default function MyActivityClient() {
               item.is_favorite,
           ),
         }));
-        setMyRestaurants(mapped);
+        setMyRestaurants(mapped.slice().reverse()); // 최신 등록이 상단에 오도록 역순 정렬
         setModalOpen(false);
       })
       .catch((err: any) => {
@@ -211,7 +211,7 @@ export default function MyActivityClient() {
             item.is_favorite,
         ),
       }));
-      setMyRestaurants(mapped);
+      setMyRestaurants(mapped.slice().reverse()); // 최신 등록이 상단에 오도록 역순 정렬
     } catch (err) {
       console.error("[reloadMyPlaces] 실패:", err);
     }
