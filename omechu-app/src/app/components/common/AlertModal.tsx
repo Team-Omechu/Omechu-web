@@ -57,7 +57,7 @@ export default function AlertModal({
       <div className="flex flex-col items-center text-center">
         <span className="whitespace-pre-line text-xl font-medium">{title}</span>
         {description && (
-          <span className="mt-1 whitespace-pre-line text-[15px] font-medium text-grey-normalActive">
+          <span className="mt-3 whitespace-pre-line text-[15px] font-medium text-grey-normalActive">
             {description}
           </span>
         )}

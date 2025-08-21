@@ -67,13 +67,13 @@ export default function MainPage() {
         {/* 버튼들 */}
         <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 transform gap-4 lg:bottom-8">
           <button
-            className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[1.25rem] text-center text-white transition-all duration-200 hover:bg-opacity-90 lg:h-12 lg:w-40"
+            className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[1.25rem] text-center text-white transition-all duration-200 hover:bg-primary-normalHover active:bg-primary-normalHover lg:h-12 lg:w-40"
             onClick={handleStartClick}
           >
             <span>시작하기</span>
           </button>
           <button
-            className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] border border-[#00A3FF] bg-[#FFF] p-[1.25rem] text-center text-[#00A3FF] transition-all duration-200 hover:bg-secondary-lightHover hover:text-white active:bg-secondary-lightActive active:text-white lg:h-12 lg:w-40"
+            className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] border border-[#00A3FF] bg-[#FFF] p-[1.25rem] text-center text-[#00A3FF] transition-all duration-200 hover:bg-grey-lightActive active:bg-grey-lightActive lg:h-12 lg:w-40"
             onClick={handleRandomClick}
           >
             <span>랜덤추천</span>
