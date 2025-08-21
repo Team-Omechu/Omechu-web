@@ -13,6 +13,7 @@ import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { resetBasicStateAndSync } from "../utils/resetBasicState";
 
 const LABELS = ["여성", "남성"] as const;
 const toLabelFromCode = (code?: string | null) =>
@@ -34,7 +35,6 @@ export default function GenderStep() {
   const setPrefer = useOnboardingStore((s) => s.setPrefer);
   const setBodyType = useOnboardingStore((s) => s.setBodyType);
   const setAllergy = useOnboardingStore((s) => s.setAllergy);
-  const resetAll = useOnboardingStore((s) => s.reset);
 
   const { data: profile } = useProfileQuery();
 
@@ -98,7 +98,7 @@ export default function GenderStep() {
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) {
-        router.push(`sign-in`);
+        router.push(`/sign-in`);
         return;
       }
       const reason =
@@ -195,42 +195,18 @@ export default function GenderStep() {
             cancelText="돌아가기"
             onConfirm={async () => {
               userInteractedRef.current = true;
-              // 1) 로컬(Zustand)에서 닉네임 제외 초기화
+
+              // 1) 로컬(Zustand) 초기화 — 닉네임은 건드리지 않음
               setGender(null);
               setExercise(null);
               setPrefer([]);
-              setBodyType(null);
+              setBodyType([]);
               setAllergy([]);
 
-              // 2) 서버에 즉시 반영 (닉네임/이미지는 buildCompletePayloadFromStore가 보존)
-              try {
-                const snap = {
-                  gender: null,
-                  exercise: null,
-                  prefer: [],
-                  bodyType: null,
-                  allergy: [],
-                } as any;
-                const payload = buildCompletePayloadFromStore(
-                  snap,
-                  profile as any,
-                );
-                const fullPayload = {
-                  email: (profile as any)?.email,
-                  ...payload,
-                } as any;
-                await updateProfile(fullPayload);
-                await queryClient
-                  .invalidateQueries({
-                    queryKey: ["profile", userKey],
-                    exact: true,
-                  })
-                  .catch(() => {});
-              } catch (e) {
-                console.error("[GenderStep] reset(confirm) failed:", e);
-              }
+              // 2) 서버 동기화 (공통 헬퍼)
+              await resetBasicStateAndSync(profile, queryClient, userKey);
 
-              // 3) 모달 닫고 첫 스텝 목록으로 이동
+              // 3) 이동
               setShowModal(false);
               router.push("/mypage/user-info-edit");
             }}
