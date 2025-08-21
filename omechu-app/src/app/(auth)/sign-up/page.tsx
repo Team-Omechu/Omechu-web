@@ -20,6 +20,7 @@ import {
 import { useSignupMutation } from "@/lib/hooks/useAuth";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { useLoginMutation } from "@/lib/hooks/useAuth";
+import { ApiClientError } from "@/lib/api/auth";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";
@@ -80,8 +81,11 @@ export default function SignUpPage() {
           router.push("/onboarding/1");
         }
       },
-      onError: (error) => {
-        triggerToast(error.message);
+      onError: (error: unknown) => {
+        const e = error as ApiClientError & { code?: string };
+        let msg: string = e?.message || "회원가입에 실패했습니다.";
+        // 필요한 경우 추가 코드 매핑 가능 (e.code)
+        triggerToast(msg);
       },
     });
   };

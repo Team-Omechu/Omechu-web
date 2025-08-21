@@ -17,6 +17,7 @@ import Toast from "@/components/common/Toast";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { loginSchema, LoginFormValues } from "@/auth/schemas/auth.schema";
 import { useLoginMutation } from "@/lib/hooks/useAuth";
+import { ApiClientError } from "@/lib/api/auth";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
@@ -128,7 +129,32 @@ export default function SignInForm() {
   }, [isSuccess, user, router]);
 
   useEffect(() => {
-    if (error) triggerToast(error.message);
+    if (!error) return;
+    const e = error as ApiClientError & { code?: string; status?: number };
+    const code = e?.code;
+    // 1) 서버에서 내려준 reason을 최우선으로 노출
+    let msg: string | null = e?.message || null;
+    // 2) 보조 메시지: 특정 코드만 보완
+    if (!msg) {
+      switch (code) {
+        case "C001":
+          msg = "이메일 또는 비밀번호를 입력해 주세요.";
+          break;
+        case "C003":
+          msg = "로그인이 필요합니다. 다시 시도해 주세요.";
+          break;
+        case "S001":
+          msg = "세션이 만료되었어요. 다시 로그인해 주세요.";
+          break;
+        case "T002":
+        case "T003":
+          msg = "인증에 문제가 발생했어요. 다시 로그인해 주세요.";
+          break;
+        default:
+          msg = null;
+      }
+    }
+    triggerToast(msg || "로그인에 실패했습니다.");
   }, [error]);
 
   return (
@@ -183,7 +209,7 @@ export default function SignInForm() {
           </SquareButton>
         </div>
 
-        <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+        <div className="mt-2 flex items-center justify-between text-sm text-grey-normalActive">
           <Checkbox
             id="remember-me"
             label="로그인 상태 유지"
@@ -193,7 +219,7 @@ export default function SignInForm() {
             <Link href="/forgot-password" className="hover:underline">
               비밀번호 찾기
             </Link>
-            <span className="text-gray-300">|</span>
+            <span className="text-grey-normalActive">|</span>
             <Link href="/sign-up" className="hover:underline">
               회원가입
             </Link>
