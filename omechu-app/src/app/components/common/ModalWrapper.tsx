@@ -18,7 +18,7 @@ export default function ModalWrapper({ children }: ModalWrapperProps) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#393939] bg-opacity-40">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#393939] bg-opacity-70">
       {children}
     </div>
   );
