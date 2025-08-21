@@ -52,7 +52,7 @@ export default function RandomRecommendPage() {
           Press me!
         </p>
         <Image
-          src={"/mainpage/randombutton.svg"}
+          src={"/mainpage/randomButton.png"}
           alt={"randombutton"}
           width={190}
           height={127}
