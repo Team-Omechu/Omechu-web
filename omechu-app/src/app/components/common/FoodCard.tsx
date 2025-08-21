@@ -141,7 +141,7 @@ export default function FoodCard({
         <img
           src={imageSrc}
           alt={item.menus?.[0] ?? "음식"}
-          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-contain"
+          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-cover"
         />
       </div>
     </div>

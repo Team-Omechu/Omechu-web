@@ -10,6 +10,7 @@ import {
 } from "@/lib/hooks/useAuth";
 import type { SignupFormValues } from "@/auth/schemas/auth.schema";
 import Toast from "@/components/common/Toast";
+import { ApiClientError } from "@/lib/api/auth";
 
 export default function UserInfoFields() {
   const {
@@ -51,8 +52,13 @@ export default function UserInfoFields() {
         setIsCodeSent(true);
         triggerToast(data.message);
       },
-      onError: (error: any) => {
-        triggerToast(`인증번호 전송 실패: ${error.message}`);
+      onError: (error: unknown) => {
+        const e = error as ApiClientError & { code?: string };
+        let msg: string =
+          e?.message ||
+          "인증번호 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.";
+        // 필요 시 코드 별 보완
+        triggerToast(msg);
       },
     });
   };
@@ -66,8 +72,18 @@ export default function UserInfoFields() {
           setIsVerified(true);
           triggerToast(data.message);
         },
-        onError: (error: any) => {
-          triggerToast(`인증 실패: ${error.message}`);
+        onError: (error: unknown) => {
+          const e = error as ApiClientError & { code?: string };
+          let msg: string = e?.message || "인증에 실패했습니다.";
+          switch (e?.code) {
+            case "V001":
+              msg = "인증번호가 올바르지 않습니다.";
+              break;
+            case "V002":
+              msg = "인증번호가 만료되었어요. 다시 전송해 주세요.";
+              break;
+          }
+          triggerToast(msg);
         },
       },
     );
