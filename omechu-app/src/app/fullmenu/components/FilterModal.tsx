@@ -78,7 +78,7 @@ export default function FilterModal({
         ))}
 
         <button
-          className="mx-24 mt-4 w-36 rounded-lg bg-primary-normal py-5 font-semibold text-white"
+          className="mx-24 mt-4 w-36 rounded-lg bg-primary-normal py-5 font-semibold text-white hover:bg-primary-normalHover active:bg-primary-normalHover"
           onClick={() => {
             onApply(tempSelected);
             onClose();

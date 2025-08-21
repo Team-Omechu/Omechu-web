@@ -1,3 +1,4 @@
+const AUTH_STORAGE_KEY = "auth-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -43,21 +44,26 @@ export const useAuthStore = create<AuthStore>()(
           user,
           password,
         }),
-      logout: () =>
+      logout: () => {
         set({
           isLoggedIn: false,
           user: null,
           accessToken: null,
           refreshToken: null,
           password: "",
-        }),
+        });
+        try {
+          // persist 스토리지까지 완전 초기화 (401 루프/다중 탭 문제 방지)
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+        } catch {}
+      },
       setUser: (user) => set({ user }),
       setAccessToken: (token) => set({ accessToken: token }),
       setRefreshToken: (token) => set({ refreshToken: token }),
       setPassword: (password) => set({ password }),
     }),
     {
-      name: "auth-storage",
+      name: AUTH_STORAGE_KEY,
       storage: createJSONStorage(() => localStorage),
       version: 1,
       partialize: (state) => ({

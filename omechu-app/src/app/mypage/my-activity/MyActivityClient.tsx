@@ -14,13 +14,19 @@ import FoodReviewCard from "@/components/common/RestaurantReviewCard";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 
-import AuthErrorModal from "../AuthErrorModalSection";
 import { useAuthStore } from "@/lib/stores/auth.store";
+
+import RestaurantEditModal from "@/restaurant/components/RestaurantAddModal/RestaurantEditModal";
+import {
+  updateRestaurant,
+  type UpdateRestaurantPayload,
+} from "../api/updateRestaurant";
 
 import {
   fetchMyPlaces,
   fetchMyReviews,
   toggleReviewLike,
+  deleteMyReview,
   type MyReviewItem,
 } from "../api/myActivity";
 import { likePlace, unlikePlace } from "../api/favorites";
@@ -88,6 +94,9 @@ export default function MyActivityClient() {
   const [toastMessage, setToastMessage] = useState("");
 
   const [likePending, setLikePending] = useState<Set<number>>(new Set());
+  const [deletePending, setDeletePending] = useState<Set<number>>(new Set());
+  const [editOpen, setEditOpen] = useState(false);
+  const [editing, setEditing] = useState<MyRestaurant | null>(null);
 
   /* 후기 패칭 */
   useEffect(() => {
@@ -174,6 +183,39 @@ export default function MyActivityClient() {
       })
       .finally(() => setLoading(false));
   }, [hasHydrated, accessToken, selectedIndex]);
+
+  // 등록한 맛집 재조회 (편집/찜 변경 등 후 싱크용)
+  const reloadMyPlaces = useCallback(async () => {
+    try {
+      const data: any = await fetchMyPlaces(10, 10);
+      const places = data.success?.data ?? [];
+      const mapped: MyRestaurant[] = places.map((item: any) => ({
+        id: Number(item.id),
+        name: item.name || "-",
+        repre_menu:
+          Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+            ? (item.repre_menu[0]?.menu ?? "")
+            : "",
+        rating: item.rating ?? 0,
+        images: item.rest_image ? [{ link: item.rest_image }] : [],
+        address: item.address ?? "",
+        reviews: item._count?.review ?? 0,
+        isLiked: Boolean(
+          item.isLiked ??
+            item.is_liked ??
+            item.isHearted ??
+            item.hearted ??
+            item.my_heart ??
+            item.myHeart ??
+            item.favorited ??
+            item.is_favorite,
+        ),
+      }));
+      setMyRestaurants(mapped);
+    } catch (err) {
+      console.error("[reloadMyPlaces] 실패:", err);
+    }
+  }, []);
 
   /* 무한 스크롤 */
   const observerCallback = useCallback(
@@ -284,8 +326,44 @@ export default function MyActivityClient() {
     }
   };
 
-  const handleDeleteReview = (id: number) => {
-    // TODO: 리뷰 삭제
+  const handleDeleteReview = async (reviewId: number) => {
+    if (deletePending.has(reviewId)) {
+      console.log("[delete] 이미 진행 중인 리뷰:", reviewId);
+      return;
+    }
+
+    console.log("[delete] 삭제 요청 시작:", reviewId);
+    setDeletePending((prev) => new Set(prev).add(reviewId));
+
+    // 현재 리스트 스냅샷 저장 후 낙관적 제거
+    const prevReviews = reviewList;
+    setReviewList((prev) => prev.filter((r) => Number(r.id) !== reviewId));
+    console.log(
+      "[delete] 낙관적 업데이트 완료. 남은 리뷰 개수:",
+      Math.max(0, prevReviews.length - 1),
+    );
+
+    try {
+      const res = await deleteMyReview(reviewId);
+      console.log("[delete] 서버 응답 성공:", res);
+      setToastMessage("후기가 삭제되었습니다.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    } catch (error) {
+      console.error("[delete] 서버 응답 실패:", error);
+      // 롤백
+      setReviewList(prevReviews);
+      setToastMessage("리뷰 삭제에 실패했습니다.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2500);
+    } finally {
+      setDeletePending((prev) => {
+        const next = new Set(prev);
+        next.delete(reviewId);
+        return next;
+      });
+      console.log("[delete] 삭제 요청 종료:", reviewId);
+    }
   };
 
   const handleNavigateToRestaurant = (restaurantId?: string | number) => {
@@ -476,9 +554,16 @@ export default function MyActivityClient() {
                   <>
                     {visiblePlaces.map((item) => (
                       <div key={item.id} className="flex w-full flex-col">
-                        <span className="w-full pr-2 text-end text-xs text-grey-normalActive">
+                        <button
+                          type="button"
+                          className="mb-1 w-full pr-2 text-end text-xs text-grey-normalActive underline"
+                          onClick={() => {
+                            setEditing(item);
+                            setEditOpen(true);
+                          }}
+                        >
                           편집
-                        </span>
+                        </button>
                         <FoodCard
                           onLike={() => {
                             if (item.isLiked) return; // 이미 찜 상태면 중복 호출 방지
@@ -547,6 +632,71 @@ export default function MyActivityClient() {
             router.push(`/sign-in`);
           }}
           onClose={() => setModalOpen(false)}
+        />
+      )}
+
+      {editOpen && editing && (
+        <RestaurantEditModal
+          initial={{
+            id: editing.id,
+            name: editing.name,
+            repre_menu: Array.isArray(editing.repre_menu)
+              ? (editing.repre_menu as unknown as string[])
+              : editing.repre_menu
+                ? [String(editing.repre_menu)]
+                : [],
+            opening_hour: undefined as unknown as Record<string, string>, // 서버에서 제공되지 않으면 비워둠
+            address: editing.address ?? "",
+            imageUrl:
+              editing.images && editing.images.length > 0
+                ? editing.images[0].link
+                : null,
+          }}
+          onSubmit={async (p: UpdateRestaurantPayload & { id: number }) => {
+            try {
+              const res = await updateRestaurant(p.id, {
+                name: p.name,
+                repre_menu: p.repre_menu,
+                opening_hour: p.opening_hour,
+                address: p.address,
+                ...(p.imageUrl ? { imageUrl: p.imageUrl } : {}),
+              });
+
+              // 로컬 목록도 수정 반영
+              setMyRestaurants((prev) =>
+                prev.map((r) =>
+                  r.id === p.id
+                    ? {
+                        ...r,
+                        name: p.name,
+                        repre_menu: p.repre_menu as any,
+                        address: p.address,
+                        images: p.imageUrl ? [{ link: p.imageUrl }] : r.images,
+                      }
+                    : r,
+                ),
+              );
+
+              // 서버 소스 기준으로 최종 동기화
+              await reloadMyPlaces();
+
+              setToastMessage("맛집 정보가 수정되었습니다.");
+              setShowToast(true);
+              setTimeout(() => setShowToast(false), 2000);
+            } catch (e) {
+              console.error(e);
+              setToastMessage("수정에 실패했습니다.");
+              setShowToast(true);
+              setTimeout(() => setShowToast(false), 2500);
+            } finally {
+              setEditOpen(false);
+              setEditing(null);
+            }
+          }}
+          onClose={() => {
+            setEditOpen(false);
+            setEditing(null);
+          }}
         />
       )}
     </>

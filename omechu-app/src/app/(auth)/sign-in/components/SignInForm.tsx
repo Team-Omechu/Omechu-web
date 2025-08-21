@@ -23,6 +23,7 @@ export default function SignInForm() {
   const [toastMessage, setToastMessage] = useState("");
   const toastTimerRef = useRef<number | null>(null);
   const navigatedRef = useRef(false);
+  const justLoggedInRef = useRef(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -54,6 +55,8 @@ export default function SignInForm() {
         window.clearTimeout(toastTimerRef.current);
         toastTimerRef.current = null;
       }
+      justLoggedInRef.current = false;
+      navigatedRef.current = false;
     };
   }, []);
 
@@ -90,6 +93,7 @@ export default function SignInForm() {
             queryKey: ["profile"],
             exact: false,
           });
+          justLoggedInRef.current = true;
         } catch (e) {
           // prefetch 실패해도 로그인 플로우는 계속 진행
           console.warn("[SignIn] prefetch profile failed", e);
@@ -103,14 +107,22 @@ export default function SignInForm() {
 
   // 최종 유저 프로필 동기화 완료 후 라우팅 (중복 이동 방지)
   useEffect(() => {
+    // 이 폼 인스턴스에서 막 로그인한 경우에만 라우팅 수행
     if (navigatedRef.current) return;
+    if (!justLoggedInRef.current) return;
     if (!isSuccess || !user?.email) return;
 
+    if (process.env.NODE_ENV !== "production") {
+      console.log("[SignIn] navigate after login:", {
+        email: user.email,
+        nickname: user.nickname,
+      });
+    }
+
+    navigatedRef.current = true;
     if (user.nickname && user.nickname.trim().length > 0) {
-      navigatedRef.current = true;
       router.push("/mainpage");
     } else {
-      navigatedRef.current = true;
       router.push("/onboarding/1");
     }
   }, [isSuccess, user, router]);
