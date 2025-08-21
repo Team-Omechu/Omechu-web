@@ -13,6 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { resetBasicStateAndSync } from "../utils/resetBasicState";
 
 // 스펙 라벨 그대로 사용
 const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;
@@ -31,7 +32,10 @@ export default function StateStep() {
   // Zustand에서 상태와 초기화 함수들 가져옴 (라벨 그대로 저장)
   const exercise = useOnboardingStore((s) => s.exercise); // "다이어트 중" | "증량 중" | "유지 중" | null
   const setExercise = useOnboardingStore((s) => s.setExercise);
-  const resetAll = useOnboardingStore((state) => state.reset); // 전체 초기화
+  const setGender = useOnboardingStore((s) => s.setGender);
+  const setPrefer = useOnboardingStore((s) => s.setPrefer);
+  const setBodyType = useOnboardingStore((s) => s.setBodyType);
+  const setAllergy = useOnboardingStore((s) => s.setAllergy);
 
   // 다른 스텝에서 필요한 스토어 스냅샷도 함께 읽음 (서버 저장용)
   const nickname = useOnboardingStore((s) => s.nickname);
@@ -142,6 +146,9 @@ export default function StateStep() {
       queryClient
         .invalidateQueries({ queryKey: ["profile", userKey], exact: true })
         .catch(() => {});
+      queryClient
+        .invalidateQueries({ queryKey: ["profile"], exact: true })
+        .catch(() => {});
     } catch (e) {
       // 무시하고 다음 단계로 이동
     }
@@ -226,10 +233,58 @@ export default function StateStep() {
             description="지금까지 작성한 내용은 저장되지 않아요."
             confirmText="그만하기"
             cancelText="돌아가기"
-            onConfirm={() => {
-              resetAll();
+            onConfirm={async () => {
+              // 1) 로컬(Zustand)에서 닉네임 제외 초기화 + 즉시 UI 반영(버튼 선택 해제)
+              userInteractedRef.current = true;
+              setGender(null);
+              setExercise(null);
+              setPrefer([]);
+              setBodyType([]);
+              setAllergy([]);
+
+              // Optimistic cache update to avoid re-hydrating old profile on previous steps
+              queryClient.setQueryData(["profile", userKey], (prev: any) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  body_type: [],
+                  allergy: [],
+                };
+              });
+              queryClient.setQueryData(["profile"], (prev: any) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  body_type: null,
+                  allergy: [],
+                };
+              });
+
+              // 2) 서버에도 동기화 (닉네임/이미지는 mapper가 기존값 보존)
+              try {
+                await resetBasicStateAndSync(
+                  profile as any,
+                  queryClient,
+                  userKey,
+                );
+                await queryClient
+                  .invalidateQueries({ queryKey: ["profile"], exact: true })
+                  .catch(() => {});
+              } catch (e) {
+                if (process.env.NODE_ENV !== "production") {
+                  console.error("[StateStep] reset(confirm) failed:", e);
+                }
+              }
+
+              // 3) 모달 닫고 최초 화면으로 이동
               setShowModal(false);
-              router.push(`/mypage/user-info-edit`); // 처음 화면으로 이동
+              router.push(`/mypage/user-info-edit`);
             }}
             onClose={() => setShowModal(false)}
           />

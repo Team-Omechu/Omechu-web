@@ -13,6 +13,7 @@ import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { resetBasicStateAndSync } from "../utils/resetBasicState";
 
 const LABELS = ["여성", "남성"] as const;
 const toLabelFromCode = (code?: string | null) =>
@@ -30,7 +31,10 @@ export default function GenderStep() {
   // Zustand — 성별만 사용
   const gender = useOnboardingStore((s) => s.gender); // "여성" | "남성" | null
   const setGender = useOnboardingStore((s) => s.setGender);
-  const resetAll = useOnboardingStore((s) => s.reset);
+  const setExercise = useOnboardingStore((s) => s.setExercise);
+  const setPrefer = useOnboardingStore((s) => s.setPrefer);
+  const setBodyType = useOnboardingStore((s) => s.setBodyType);
+  const setAllergy = useOnboardingStore((s) => s.setAllergy);
 
   const { data: profile } = useProfileQuery();
 
@@ -94,7 +98,7 @@ export default function GenderStep() {
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) {
-        router.push(`sign-in`);
+        router.push(`/sign-in`);
         return;
       }
       const reason =
@@ -189,8 +193,20 @@ export default function GenderStep() {
             description="지금까지 작성한 내용은 저장되지 않아요."
             confirmText="그만하기"
             cancelText="돌아가기"
-            onConfirm={() => {
-              resetAll();
+            onConfirm={async () => {
+              userInteractedRef.current = true;
+
+              // 1) 로컬(Zustand) 초기화 — 닉네임은 건드리지 않음
+              setGender(null);
+              setExercise(null);
+              setPrefer([]);
+              setBodyType([]);
+              setAllergy([]);
+
+              // 2) 서버 동기화 (공통 헬퍼)
+              await resetBasicStateAndSync(profile, queryClient, userKey);
+
+              // 3) 이동
               setShowModal(false);
               router.push("/mypage/user-info-edit");
             }}
