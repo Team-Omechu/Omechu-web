@@ -11,6 +11,7 @@ import Toast from "@/components/common/Toast";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import Header from "@/components/common/Header";
+import { ApiClientError } from "@/lib/api/auth";
 
 export default function ResetPasswordPage() {
   return (
@@ -48,7 +49,22 @@ function ResetPasswordClient() {
       await resetPassword({ ...data, token });
       setIsModalOpen(true);
     } catch (error: any) {
-      triggerToast(`비밀번호 재설정에 실패했습니다: ${error.message}`);
+      const e = error as ApiClientError & { code?: string };
+      const code = e?.code;
+      let msg: string = e?.message || "비밀번호 재설정에 실패했습니다.";
+      switch (code) {
+        case "E001": // InvalidOrExpiredTokenError
+        case "V002": // VerificationCodeExpiredError
+          msg = "링크가 만료되었어요. 이메일에서 새 링크로 다시 시도해 주세요.";
+          break;
+        case "E002": // UserNotFoundError
+          msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
+          break;
+        case "V003": // InvalidPasswordError
+          msg = "비밀번호 형식이 올바르지 않습니다.";
+          break;
+      }
+      triggerToast(msg);
     }
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import Input from "@/components/common/Input";
 import {
@@ -11,6 +11,7 @@ import {
 import Toast from "@/components/common/Toast";
 import { useState } from "react";
 import SquareButton from "@/components/common/button/SquareButton";
+import { ApiClientError } from "@/lib/api/auth";
 
 type ResetPasswordFormProps = {
   onFormSubmit: (data: ResetPasswordFormValues) => Promise<void>;
@@ -20,10 +21,9 @@ export default function ResetPasswordForm({
   onFormSubmit,
 }: ResetPasswordFormProps) {
   const {
-    control,
     handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
+    setValue,
+    formState: { isSubmitting },
   } = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
   });
@@ -45,16 +45,46 @@ export default function ResetPasswordForm({
     setTimeout(() => setShowToast(false), 1000);
   };
 
-  const isFormValid =
-    !errors.password &&
-    !errors.passwordConfirm &&
-    !!watch("password") &&
-    !!watch("passwordConfirm");
+  const handleSubmitInternal = async () => {
+    try {
+      // react-hook-form's state is updated before submission
+      setValue("password", inputNewPassword);
+      setValue("passwordConfirm", inputConfirmPassword);
+      await handleSubmit(async (values) => {
+        await onFormSubmit(values);
+      })();
+    } catch (err: unknown) {
+      const e = err as ApiClientError & { code?: string };
+      const code = e?.code;
+      let msg: string | null = null;
+      switch (code) {
+        case "E001": // InvalidOrExpiredTokenError
+        case "V002": // VerificationCodeExpiredError (혹시 토큰 검증 흐름 포함 시)
+          msg = "링크가 만료되었어요. 이메일에서 새 링크로 다시 시도해 주세요.";
+          break;
+        case "E002": // UserNotFoundError
+          msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
+          break;
+        case "V003": // InvalidPasswordError
+          msg = "비밀번호 형식이 올바르지 않습니다.";
+          break;
+        default:
+          msg = e?.message || "비밀번호 재설정에 실패했습니다.";
+      }
+      triggerToast(msg);
+    }
+  };
 
   const hasPasswordError = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
     return !regex.test(password);
   };
+
+  const isFormValid =
+    !hasPasswordError(inputNewPassword) &&
+    inputNewPassword.length > 0 &&
+    inputConfirmPassword.length > 0 &&
+    inputNewPassword === inputConfirmPassword;
 
   return (
     <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
@@ -74,6 +104,7 @@ export default function ResetPasswordForm({
           onChange={(v) => {
             setInputNewPassword(v);
             if (newPasswordError) setNewPasswordError(null);
+            setValue("password", v);
           }}
           onBlur={() => setNewPasswordError(hasPasswordError(inputNewPassword))}
           onKeyDown={(e) => {
@@ -92,6 +123,7 @@ export default function ResetPasswordForm({
           onChange={(v) => {
             setInputConfirmPassword(v);
             if (confirmPasswordError) setConfirmPasswordError(null);
+            setValue("passwordConfirm", v);
           }}
           onBlur={() =>
             setConfirmPasswordError(inputConfirmPassword !== inputNewPassword)
@@ -110,10 +142,11 @@ export default function ResetPasswordForm({
 
       <section className="relative mt-5 flex w-full flex-col items-center">
         <SquareButton
-          type="submit"
+          type="button"
+          onClick={handleSubmitInternal}
           variant="red"
           size="md"
-          disabled={isSubmitting}
+          disabled={!isFormValid || isSubmitting}
           className="w-full"
         >
           {isSubmitting ? "설정 중..." : "비밀번호 설정하기"}
