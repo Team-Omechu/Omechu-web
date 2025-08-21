@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState, useEffect } from "react";
-
-import Image from "next/image";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
@@ -11,19 +12,21 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
 import ReportModal from "@/restaurant/restaurant-detail/[id]/components/ReportModal";
 import { getRestaurantDetail } from "@/restaurant/api/restaurantList";
-import { getReviews } from "@/restaurant/restaurant-detail/[id]/api/review";
-import { MostTag } from "@/lib/types/review";
-import { ReviewProps } from "@/lib/types/review";
+import { getReviewsPage } from "@/restaurant/restaurant-detail/[id]/api/review";
+import type { ReviewProps, MostTag } from "@/lib/types/review";
+import type { RestaurantDetail } from "@/lib/types/restaurant";
 
 import RestaurantDetailHeader from "./components/RestaurantDetailHeader";
 import RestaurantImageCarousel from "./components/RestaurantImageCarousel";
 import RestaurantInfoBox from "./components/RestaurantInfoBox";
 import ReviewList from "./components/ReviewList/ReviewList";
 import ReviewWriter from "./components/ReviewWriter/ReviewWriter";
-import type { RestaurantDetail } from "@/lib/types/restaurant";
+
+// ✅ FoodCardList와 동일한 API 사용
+import { likePlace, unlikePlace } from "@/mypage/api/favorites";
 
 export default function RestaurantDetail() {
-  const router = useRouter(); // 페이지 이동을 위한 라우터 훅
+  const router = useRouter();
   const params = useParams();
   const id = Number(params?.id);
 
@@ -32,14 +35,14 @@ export default function RestaurantDetail() {
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
+
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
-  const [reviews, setReviews] = useState<ReviewProps[]>([]);
-  const [reviewCount, setReviewCount] = useState(0);
-  const [avgRating, setAvgRating] = useState(0);
+
   const [isLiked, setIsLiked] = useState(false);
+  const [heartBusy, setHeartBusy] = useState(false);
+
   const [loading, setLoading] = useState(true);
-  const [mostTags, setMostTags] = useState<MostTag[]>([]);
 
   const sortOptions: SortOption[] = [
     { label: "추천 순", value: "recommend" },
@@ -48,33 +51,16 @@ export default function RestaurantDetail() {
   type SortValue = SortOption["value"];
   const [sortMode, setSortMode] = useState<SortValue>("recommend");
 
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (!id || Number.isNaN(id)) return;
 
     async function fetchData() {
       try {
-        // 1. 맛집 상세 정보는 무조건 먼저 가져옴
         const restaurantData = await getRestaurantDetail(id);
         setRestaurants(restaurantData);
-
-        setIsLiked(restaurantData.zzim ?? false);
-
-        // 2. 리뷰 정보는 실패 가능성이 있으므로 별도 처리
-        try {
-          const reviewResult = await getReviews(id);
-          setReviews(reviewResult.reviews);
-          setReviewCount(reviewResult.allReviewCount);
-          setAvgRating(reviewResult.avgRating);
-          setMostTags(reviewResult.mostTags ?? []);
-        } catch (reviewErr) {
-          console.warn("리뷰 로딩 실패:", reviewErr);
-
-          // FAIL(C004: 리뷰 없음)일 수 있으므로 기본값 설정
-          setReviews([]);
-          setReviewCount(0);
-          setAvgRating(0);
-          setMostTags([]);
-        }
+        setIsLiked(Boolean(restaurantData.zzim));
       } catch (e) {
         console.error("맛집 정보 로딩 실패:", e);
       } finally {
@@ -85,10 +71,89 @@ export default function RestaurantDetail() {
     fetchData();
   }, [id]);
 
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLiked((prev) => !prev);
-  };
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["reviews", id],
+      queryFn: ({ pageParam = 0 }) => getReviewsPage(id, pageParam, 8),
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      initialPageParam: 0,
+      enabled: !!id,
+    });
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.5 }, // 절반 보이면 트리거
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const firstPage = data?.pages[0];
+  const reviewCount = firstPage?.allReviewCount ?? 0;
+  const avgRating = firstPage?.avgRating ?? 0;
+  const mostTag: MostTag[] = firstPage?.mostTag ?? [];
+
+  const rawReviews: ReviewProps[] =
+    data?.pages.flatMap((page) => page.reviews) ?? [];
+
+  const reviews: ReviewProps[] = [...rawReviews].sort((a, b) => {
+    if (sortMode === "latest") {
+      // createdDate 기준 최신순
+      return (
+        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );
+    }
+    if (sortMode === "recommend") {
+      // 좋아요(votes) 기준 내림차순
+      return (b.votes ?? 0) - (a.votes ?? 0);
+    }
+    return 0;
+  });
+
+  const handleLike = useCallback(async () => {
+    if (heartBusy || !restaurants) return;
+    setHeartBusy(true);
+    setIsLiked(true);
+    setRestaurants((prev) => (prev ? { ...prev, zzim: true } : prev));
+    try {
+      await likePlace(restaurants.id);
+    } catch (e) {
+      setIsLiked(false);
+      setRestaurants((prev) => (prev ? { ...prev, zzim: false } : prev));
+      alert("찜 등록 실패");
+    } finally {
+      setHeartBusy(false);
+    }
+  }, [heartBusy, restaurants]);
+
+  const handleUnlike = useCallback(async () => {
+    if (heartBusy || !restaurants) return;
+    setHeartBusy(true);
+    setIsLiked(false);
+    setRestaurants((prev) => (prev ? { ...prev, zzim: false } : prev));
+    try {
+      await unlikePlace(restaurants.id);
+    } catch (e) {
+      setIsLiked(true);
+      setRestaurants((prev) => (prev ? { ...prev, zzim: true } : prev));
+      alert("찜 해제 실패");
+    } finally {
+      setHeartBusy(false);
+    }
+  }, [heartBusy, restaurants]);
 
   if (loading) {
     return (
@@ -98,7 +163,6 @@ export default function RestaurantDetail() {
     );
   }
 
-  console.log("맛집 상세 정보:", restaurants);
   if (!restaurants) {
     return (
       <main className="flex h-screen items-center justify-center">
@@ -107,65 +171,48 @@ export default function RestaurantDetail() {
     );
   }
 
-  // 정렬된 후기 리스트 계산 (정렬 기준에 따라 다르게 정렬됨)
-  const sortedReviews = [...reviews].sort((a, b) => {
-    if (sortMode === "recommend") {
-      const aVotes = localVotes[a.id] ?? a.votes;
-      const bVotes = localVotes[b.id] ?? b.votes;
-      return bVotes - aVotes;
-    } else {
-      return (
-        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-      );
-    }
-  });
-
   return (
     <>
       <Header
-        title={""}
+        title=""
         className="border-none"
         leftChild={
-          <button
-            onClick={() => {
-              router.push("/restaurant");
-            }}
-          >
+          <button onClick={() => router.push("/restaurant")}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              alt="back"
               width={22}
               height={30}
             />
           </button>
         }
       />
-      {/* 메인 Container*/}
+
       <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4 pb-10">
-        {/* 맛집 제목, 사진 */}
+        {/* 제목/하트/이미지 */}
         <section className="flex w-full flex-col items-center justify-between gap-2">
           <RestaurantDetailHeader
             name={restaurants.name}
             isLiked={isLiked}
-            onLikeClick={handleLikeClick}
+            onLikeClick={isLiked ? handleUnlike : handleLike}
           />
           <RestaurantImageCarousel
             images={restaurants.reviewImages.map((img) => img.link)}
           />
         </section>
-        {/* 맛집 정보 */}
-        <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-grey-darkHover bg-white p-4">
-          {/* 정보 - 메뉴 종류 */}
+
+        {/* 정보 */}
+        <section className="relative flex w-full flex-col items-center gap-3 rounded-md border bg-white p-4">
           <RestaurantInfoBox
             restaurant={{
               id: restaurants.id,
-              name: restaurants.name,
+              name: restaurants.repreMenu?.[0]?.menu ?? "",
               googlePlaceId: restaurants.googlePlaceId,
               timetable: restaurants.currentOpeningHours,
               address: {
-                road: restaurants.address, // 주소 전체를 도로명처럼 처리
-                jibun: restaurants.addressJibeon, // 현재 API에는 따로 없음
-                postalCode: restaurants.postalCode, // 우편번호도 없음
+                road: restaurants.address,
+                jibun: restaurants.addressJibeon,
+                postalCode: restaurants.postalCode,
               },
             }}
             showAddress={showAddress}
@@ -173,60 +220,54 @@ export default function RestaurantDetail() {
           />
         </section>
 
-        {/* 후기 작성 칸 */}
+        {/* 후기 작성 */}
         <ReviewWriter
           restaurantId={restaurants.id}
           restaurantName={restaurants.name}
         />
 
-        {/* 후기 */}
+        {/* 후기/정렬/태그 */}
         <section className="flex w-full flex-col gap-2">
           <div className="flex justify-between px-2 py-2">
-            {/* 후기 평점 - 후기 개수 */}
-            {restaurants && (
-              <div className="flex w-full justify-between px-2 py-2">
-                <div className="flex gap-2 text-xl font-medium text-[#1F9BDA]">
-                  <span>{avgRating.toFixed(1)}</span>
-                  <span>
-                    {"★".repeat(Math.round(restaurants.rating)) +
-                      "☆".repeat(5 - Math.round(restaurants.rating))}
-                  </span>
-                </div>
-                <div className="flex gap-1 text-base font-medium text-[#828282]">
-                  <span>후기</span>
-                  <span className="font-bold">{reviewCount}</span>
-                  <span>건</span>
-                </div>
+            <div className="flex w-full justify-between px-2 py-2">
+              <div className="flex gap-2 text-xl font-medium text-[#1F9BDA]">
+                <span>{avgRating.toFixed(1)}</span>
+                <span>
+                  {"★".repeat(Math.round(avgRating)) +
+                    "☆".repeat(5 - Math.round(avgRating))}
+                </span>
               </div>
-            )}
+              <div className="flex gap-1 text-base font-medium text-[#828282]">
+                <span>후기</span>
+                <span className="font-bold">{reviewCount}</span>
+                <span>건</span>
+              </div>
+            </div>
           </div>
 
-          {/* 후기 관련 태그 */}
-          <div className="flex flex-wrap justify-center gap-1 px-4">
-            {mostTags.map((item, index) => (
+          <div className="flex flex-wrap justify-center gap-2 px-4">
+            {mostTag.map((item, index) => (
               <div
                 key={index}
-                className="mt-1 w-fit rounded-3xl border-[1px] border-grey-darkHover bg-white px-4 py-1 text-sm font-normal duration-300 hover:scale-105"
+                className="flex items-center rounded-3xl border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700"
               >
-                {item.tag}
+                <span>{item.tag}</span>
+                <span className="ml-1 text-gray-500">({item.count})</span>
               </div>
             ))}
           </div>
 
-          {/* 후기 카드 목록 */}
           <div className="mt-5 flex w-full flex-col gap-3">
-            {/* 후기 필터 버튼 */}
             <SortSelector
               options={sortOptions}
               selected={sortMode}
-              onSelect={(value) => setSortMode(value as "recommend" | "latest")}
+              onSelect={(value) => setSortMode(value as SortValue)}
               className="-mb-2 mr-2"
             />
 
-            {/* 후기 목록 */}
             <ReviewList
               restId={restaurants.id}
-              reviews={sortedReviews}
+              reviews={reviews}
               localVotes={localVotes}
               votedReviewIds={votedReviewIds}
               setVotedReviewIds={setVotedReviewIds}
@@ -235,32 +276,41 @@ export default function RestaurantDetail() {
               setActiveOptionId={setActiveOptionId}
               onReport={() => setShowReportModal(true)}
             />
+
+            {/* 무한스크롤 로딩 */}
+            {hasNextPage && (
+              <div
+                ref={loadMoreRef}
+                className="mx-auto mt-4 h-10 w-full text-center text-gray-400"
+              >
+                {isFetchingNextPage ? "불러오는 중..." : "스크롤하여 더 보기"}
+              </div>
+            )}
           </div>
         </section>
+
+        {/* 신고 모달 */}
         {showReportModal && (
-          <>
-            <ModalWrapper>
-              <ReportModal
-                onClick={() => setShowReportModal(false)}
-                onReport={() => {
-                  setShowReportCompleteModal(true);
-                  setShowReportModal(false);
-                }}
-              />
-            </ModalWrapper>
-          </>
+          <ModalWrapper>
+            <ReportModal
+              onClick={() => setShowReportModal(false)}
+              onReport={() => {
+                setShowReportCompleteModal(true);
+                setShowReportModal(false);
+              }}
+            />
+          </ModalWrapper>
         )}
+
         {showReportCompleteModal && (
-          <>
-            <ModalWrapper>
-              <AlertModal
-                title="신고가 완료되었습니다"
-                description="운영팀이 빠르게 확인해 조치하겠습니다"
-                confirmText="확인"
-                onConfirm={() => setShowReportCompleteModal(false)}
-              />
-            </ModalWrapper>
-          </>
+          <ModalWrapper>
+            <AlertModal
+              title="신고가 완료되었습니다"
+              description="운영팀이 빠르게 확인해 조치하겠습니다"
+              confirmText="확인"
+              onConfirm={() => setShowReportCompleteModal(false)}
+            />
+          </ModalWrapper>
         )}
       </main>
     </>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -16,6 +16,10 @@ import {
   fetchLatLngFromAddress,
 } from "../api/googlePlaceInfo";
 
+// ✅ 찜 API & 로그인 상태
+import { likePlace, unlikePlace } from "@/mypage/api/favorites";
+import { useAuthStore } from "@/lib/stores/auth.store";
+
 export default function MapPage() {
   const router = useRouter();
 
@@ -28,8 +32,13 @@ export default function MapPage() {
   // id에 해당하는 맛집 데이터 찾기
   const [restaurant, setRestaurant] = useState<RestaurantDetail | null>(null);
 
-  // 좋아요 상태 관리 (임시로 하트 클릭 시 토글)
+  // 좋아요 상태 관리: 상세 정보의 zzim으로 초기화
   const [isLiked, setIsLiked] = useState(false);
+  const [heartBusy, setHeartBusy] = useState(false);
+
+  const isAuthenticated = useAuthStore((s) =>
+    Boolean(s.accessToken && s.refreshToken),
+  );
 
   const [location, setLocation] = useState<{
     latitude: number;
@@ -42,8 +51,8 @@ export default function MapPage() {
     getRestaurantDetail(id)
       .then((res) => {
         setRestaurant(res);
-        console.log("맛집 정보:", res);
-
+        setIsLiked(Boolean(res.zzim)); // ✅ 서버 상태로 초기화
+        // 위치 정보
         if (res.googlePlaceId) {
           fetchGooglePlaceInfo(res.googlePlaceId).then((info) =>
             setLocation(info?.location ?? null),
@@ -59,11 +68,43 @@ export default function MapPage() {
       });
   }, [id]);
 
-  // 하트 클릭 시 좋아요 상태 토글
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLiked((prev) => !prev);
-  };
+  // ✅ 좋아요 토글 (로그인 가드 + 낙관적 업데이트 + 롤백)
+  const handleLikeClick = useCallback(
+    async (e: React.MouseEvent) => {
+      e.stopPropagation();
+
+      if (!restaurant || heartBusy) return;
+
+      // 로그인 가드: 비로그인 시 UI 변경 없이 리턴
+      if (!isAuthenticated) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      setHeartBusy(true);
+      const next = !isLiked;
+      setIsLiked(next); // 낙관적 업데이트
+      // (선택) 레스토랑 객체에도 동기화
+      setRestaurant((prev) => (prev ? { ...prev, zzim: next } : prev));
+
+      try {
+        if (next) {
+          await likePlace(restaurant.id);
+        } else {
+          await unlikePlace(restaurant.id);
+        }
+      } catch (err) {
+        console.error("찜 토글 실패:", err);
+        // 실패 롤백
+        setIsLiked(!next);
+        setRestaurant((prev) => (prev ? { ...prev, zzim: !next } : prev));
+        alert(next ? "찜 등록 실패" : "찜 해제 실패");
+      } finally {
+        setHeartBusy(false);
+      }
+    },
+    [restaurant, isLiked, isAuthenticated, heartBusy],
+  );
 
   // 해당 id의 맛집이 없을 경우 예외 처리 (간단한 메시지)
   if (!restaurant) {
@@ -95,7 +136,8 @@ export default function MapPage() {
         <RestaurantDetailHeader
           name={restaurant.name}
           isLiked={isLiked}
-          onLikeClick={handleLikeClick}
+          onLikeClick={handleLikeClick} // ✅ 연동
+          // 필요하다면 heartBusy를 내려서 버튼 디스에이블/로딩표시 가능
         />
 
         {/* 지도 이미지 영역 */}
