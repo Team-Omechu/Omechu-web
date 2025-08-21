@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import Input from "@/components/common/Input";
 import {
@@ -21,21 +21,14 @@ export default function ResetPasswordForm({
   onFormSubmit,
 }: ResetPasswordFormProps) {
   const {
+    control,
     handleSubmit,
-    setValue,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors, isValid },
+    watch,
   } = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
+    mode: "onChange",
   });
-
-  const [inputNewPassword, setInputNewPassword] = useState("");
-  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
-  const [newPasswordError, setNewPasswordError] = useState<boolean | null>(
-    null,
-  );
-  const [confirmPasswordError, setConfirmPasswordError] = useState<
-    boolean | null
-  >(null);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -45,27 +38,22 @@ export default function ResetPasswordForm({
     setTimeout(() => setShowToast(false), 1000);
   };
 
-  const handleSubmitInternal = async () => {
+  const onSubmit = handleSubmit(async (values) => {
     try {
-      // react-hook-form's state is updated before submission
-      setValue("password", inputNewPassword);
-      setValue("passwordConfirm", inputConfirmPassword);
-      await handleSubmit(async (values) => {
-        await onFormSubmit(values);
-      })();
+      await onFormSubmit(values);
     } catch (err: unknown) {
       const e = err as ApiClientError & { code?: string };
       const code = e?.code;
       let msg: string | null = null;
       switch (code) {
-        case "E001": // InvalidOrExpiredTokenError
-        case "V002": // VerificationCodeExpiredError (혹시 토큰 검증 흐름 포함 시)
+        case "E001":
+        case "V002":
           msg = "링크가 만료되었어요. 이메일에서 새 링크로 다시 시도해 주세요.";
           break;
-        case "E002": // UserNotFoundError
+        case "E002":
           msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
           break;
-        case "V003": // InvalidPasswordError
+        case "V003":
           msg = "비밀번호 형식이 올바르지 않습니다.";
           break;
         default:
@@ -73,18 +61,7 @@ export default function ResetPasswordForm({
       }
       triggerToast(msg);
     }
-  };
-
-  const hasPasswordError = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
-    return !regex.test(password);
-  };
-
-  const isFormValid =
-    !hasPasswordError(inputNewPassword) &&
-    inputNewPassword.length > 0 &&
-    inputConfirmPassword.length > 0 &&
-    inputNewPassword === inputConfirmPassword;
+  });
 
   return (
     <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
@@ -96,57 +73,54 @@ export default function ResetPasswordForm({
       />
 
       <section className="flex w-full flex-col gap-4 px-3 pt-16">
-        <Input
-          label="새 비밀번호"
-          type="password"
-          value={inputNewPassword}
-          placeholder="새 비밀번호를 입력해주세요"
-          onChange={(v) => {
-            setInputNewPassword(v);
-            if (newPasswordError) setNewPasswordError(null);
-            setValue("password", v);
-          }}
-          onBlur={() => setNewPasswordError(hasPasswordError(inputNewPassword))}
-          onKeyDown={(e) => {
-            if (e.key === "Enter")
-              setNewPasswordError(hasPasswordError(inputNewPassword));
-          }}
-          errorMessage="* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
-          showError={newPasswordError === true}
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="새 비밀번호"
+              type="password"
+              placeholder="새 비밀번호를 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              errorMessage={
+                errors.password?.message ||
+                "* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
+              }
+              showError={!!errors.password}
+            />
+          )}
         />
 
-        <Input
-          label="새 비밀번호 재확인"
-          type="password"
-          value={inputConfirmPassword}
-          placeholder="새 비밀번호를 다시 입력해주세요"
-          onChange={(v) => {
-            setInputConfirmPassword(v);
-            if (confirmPasswordError) setConfirmPasswordError(null);
-            setValue("passwordConfirm", v);
-          }}
-          onBlur={() =>
-            setConfirmPasswordError(inputConfirmPassword !== inputNewPassword)
-          }
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              setConfirmPasswordError(
-                inputConfirmPassword !== inputNewPassword,
-              );
-            }
-          }}
-          errorMessage="* 새 비밀번호가 일치하지 않습니다!"
-          showError={confirmPasswordError === true}
+        <Controller
+          name="passwordConfirm"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="새 비밀번호 재확인"
+              type="password"
+              placeholder="새 비밀번호를 다시 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              errorMessage={
+                errors.passwordConfirm?.message ||
+                "* 새 비밀번호가 일치하지 않습니다!"
+              }
+              showError={!!errors.passwordConfirm}
+            />
+          )}
         />
       </section>
 
       <section className="relative mt-5 flex w-full flex-col items-center">
         <SquareButton
-          type="button"
-          onClick={handleSubmitInternal}
+          type="submit"
+          onClick={onSubmit}
           variant="red"
           size="md"
-          disabled={!isFormValid || isSubmitting}
+          disabled={!isValid || isSubmitting}
           className="w-full"
         >
           {isSubmitting ? "설정 중..." : "비밀번호 설정하기"}

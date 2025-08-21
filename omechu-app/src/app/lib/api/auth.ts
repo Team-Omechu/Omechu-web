@@ -147,7 +147,9 @@ export const login = async (data: LoginFormValues): Promise<LoginTokens> => {
         api?.error?.data,
       );
     }
-    throw err as Error;
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
   }
 };
 
@@ -295,7 +297,9 @@ export const resetPassword = async (
         api?.error?.data,
       );
     }
-    throw err as Error;
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
   }
 };
 

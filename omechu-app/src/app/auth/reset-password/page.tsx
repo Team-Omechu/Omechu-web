@@ -39,33 +39,15 @@ function ResetPasswordClient() {
   };
 
   const handleFormSubmit = async (data: ResetPasswordFormValues) => {
-    try {
-      if (!token) {
-        triggerToast(
-          "유효하지 않은 링크입니다. 이메일의 링크를 다시 확인해 주세요.",
-        );
-        return;
-      }
-      await resetPassword({ ...data, token });
-      setIsModalOpen(true);
-    } catch (error: any) {
-      const e = error as ApiClientError & { code?: string };
-      const code = e?.code;
-      let msg: string = e?.message || "비밀번호 재설정에 실패했습니다.";
-      switch (code) {
-        case "E001": // InvalidOrExpiredTokenError
-        case "V002": // VerificationCodeExpiredError
-          msg = "링크가 만료되었어요. 이메일에서 새 링크로 다시 시도해 주세요.";
-          break;
-        case "E002": // UserNotFoundError
-          msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
-          break;
-        case "V003": // InvalidPasswordError
-          msg = "비밀번호 형식이 올바르지 않습니다.";
-          break;
-      }
-      triggerToast(msg);
+    if (!token) {
+      // 폼에서 일관되게 처리하도록 에러를 던진다
+      throw new ApiClientError(
+        "유효하지 않은 링크입니다. 이메일의 링크를 다시 확인해 주세요.",
+        "E001",
+      );
     }
+    await resetPassword({ ...data, token });
+    setIsModalOpen(true);
   };
 
   const handleModalConfirm = () => {
