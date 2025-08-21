@@ -11,6 +11,7 @@ import {
 import Toast from "@/components/common/Toast";
 import { useState } from "react";
 import SquareButton from "@/components/common/button/SquareButton";
+import { ApiClientError } from "@/lib/api/auth";
 
 type ResetPasswordFormProps = {
   onFormSubmit: (data: ResetPasswordFormValues) => Promise<void>;
@@ -22,20 +23,12 @@ export default function ResetPasswordForm({
   const {
     control,
     handleSubmit,
+    formState: { isSubmitting, errors, isValid },
     watch,
-    formState: { errors, isSubmitting },
   } = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
+    mode: "onChange",
   });
-
-  const [inputNewPassword, setInputNewPassword] = useState("");
-  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
-  const [newPasswordError, setNewPasswordError] = useState<boolean | null>(
-    null,
-  );
-  const [confirmPasswordError, setConfirmPasswordError] = useState<
-    boolean | null
-  >(null);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -45,16 +38,30 @@ export default function ResetPasswordForm({
     setTimeout(() => setShowToast(false), 1000);
   };
 
-  const isFormValid =
-    !errors.password &&
-    !errors.passwordConfirm &&
-    !!watch("password") &&
-    !!watch("passwordConfirm");
-
-  const hasPasswordError = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
-    return !regex.test(password);
-  };
+  const onSubmit = handleSubmit(async (values) => {
+    try {
+      await onFormSubmit(values);
+    } catch (err: unknown) {
+      const e = err as ApiClientError & { code?: string };
+      const code = e?.code;
+      let msg: string | null = null;
+      switch (code) {
+        case "E001":
+        case "V002":
+          msg = "링크가 만료되었어요. 이메일에서 새 링크로 다시 시도해 주세요.";
+          break;
+        case "E002":
+          msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
+          break;
+        case "V003":
+          msg = "비밀번호 형식이 올바르지 않습니다.";
+          break;
+        default:
+          msg = e?.message || "비밀번호 재설정에 실패했습니다.";
+      }
+      triggerToast(msg);
+    }
+  });
 
   return (
     <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
@@ -66,54 +73,54 @@ export default function ResetPasswordForm({
       />
 
       <section className="flex w-full flex-col gap-4 px-3 pt-16">
-        <Input
-          label="새 비밀번호"
-          type="password"
-          value={inputNewPassword}
-          placeholder="새 비밀번호를 입력해주세요"
-          onChange={(v) => {
-            setInputNewPassword(v);
-            if (newPasswordError) setNewPasswordError(null);
-          }}
-          onBlur={() => setNewPasswordError(hasPasswordError(inputNewPassword))}
-          onKeyDown={(e) => {
-            if (e.key === "Enter")
-              setNewPasswordError(hasPasswordError(inputNewPassword));
-          }}
-          errorMessage="* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
-          showError={newPasswordError === true}
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="새 비밀번호"
+              type="password"
+              placeholder="새 비밀번호를 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              errorMessage={
+                errors.password?.message ||
+                "* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
+              }
+              showError={!!errors.password}
+            />
+          )}
         />
 
-        <Input
-          label="새 비밀번호 재확인"
-          type="password"
-          value={inputConfirmPassword}
-          placeholder="새 비밀번호를 다시 입력해주세요"
-          onChange={(v) => {
-            setInputConfirmPassword(v);
-            if (confirmPasswordError) setConfirmPasswordError(null);
-          }}
-          onBlur={() =>
-            setConfirmPasswordError(inputConfirmPassword !== inputNewPassword)
-          }
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              setConfirmPasswordError(
-                inputConfirmPassword !== inputNewPassword,
-              );
-            }
-          }}
-          errorMessage="* 새 비밀번호가 일치하지 않습니다!"
-          showError={confirmPasswordError === true}
+        <Controller
+          name="passwordConfirm"
+          control={control}
+          render={({ field }) => (
+            <Input
+              label="새 비밀번호 재확인"
+              type="password"
+              placeholder="새 비밀번호를 다시 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              errorMessage={
+                errors.passwordConfirm?.message ||
+                "* 새 비밀번호가 일치하지 않습니다!"
+              }
+              showError={!!errors.passwordConfirm}
+            />
+          )}
         />
       </section>
 
       <section className="relative mt-5 flex w-full flex-col items-center">
         <SquareButton
           type="submit"
+          onClick={onSubmit}
           variant="red"
           size="md"
-          disabled={isSubmitting}
+          disabled={!isValid || isSubmitting}
           className="w-full"
         >
           {isSubmitting ? "설정 중..." : "비밀번호 설정하기"}

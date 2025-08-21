@@ -11,6 +11,7 @@ import Toast from "@/components/common/Toast";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import Header from "@/components/common/Header";
+import { ApiClientError } from "@/lib/api/auth";
 
 export default function ResetPasswordPage() {
   return (
@@ -38,18 +39,15 @@ function ResetPasswordClient() {
   };
 
   const handleFormSubmit = async (data: ResetPasswordFormValues) => {
-    try {
-      if (!token) {
-        triggerToast(
-          "유효하지 않은 링크입니다. 이메일의 링크를 다시 확인해 주세요.",
-        );
-        return;
-      }
-      await resetPassword({ ...data, token });
-      setIsModalOpen(true);
-    } catch (error: any) {
-      triggerToast(`비밀번호 재설정에 실패했습니다: ${error.message}`);
+    if (!token) {
+      // 폼에서 일관되게 처리하도록 에러를 던진다
+      throw new ApiClientError(
+        "유효하지 않은 링크입니다. 이메일의 링크를 다시 확인해 주세요.",
+        "E001",
+      );
     }
+    await resetPassword({ ...data, token });
+    setIsModalOpen(true);
   };
 
   const handleModalConfirm = () => {

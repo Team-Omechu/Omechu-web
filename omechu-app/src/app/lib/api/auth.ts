@@ -8,6 +8,26 @@ import type {
 import axiosInstance from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
+// 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
+export class ApiClientError extends Error {
+  code?: string;
+  status?: number;
+  details?: unknown;
+
+  constructor(
+    message: string,
+    code?: string,
+    status?: number,
+    details?: unknown,
+  ) {
+    super(message);
+    this.name = "ApiClientError";
+    this.code = code;
+    this.status = status;
+    this.details = details;
+  }
+}
+
 // API 응답의 기본 구조
 export interface ApiResponse<T> {
   resultType: "SUCCESS" | "FAIL";
@@ -92,21 +112,45 @@ const readAccessToken = (): string | null => {
  * @param data email, password
  */
 export const login = async (data: LoginFormValues): Promise<LoginTokens> => {
-  const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
-    "/auth/login",
-    data,
-    { withCredentials: true },
-  );
+  try {
+    const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
+      "/auth/login",
+      data,
+      { withCredentials: true },
+    );
 
-  const apiResponse = response.data;
+    const apiResponse = response.data;
 
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    // resultType이 FAIL이거나 success 필드가 없을 경우, 에러를 발생시켜
-    // TanStack Query의 onError 콜백을 트리거합니다.
-    throw new Error(apiResponse.error?.reason || "로그인에 실패했습니다.");
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      // resultType이 FAIL이거나 success 필드가 없을 경우, 에러코드 포함 throw
+      const reason = apiResponse.error?.reason || "로그인에 실패했습니다.";
+      const code = apiResponse.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+
+    return apiResponse.success as LoginTokens;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "로그인에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
   }
-
-  return apiResponse.success as LoginTokens;
 };
 
 /**
@@ -124,9 +168,12 @@ export const signup = async (
     );
     const apiResponse = response.data;
     if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-      throw new Error(
+      throw new ApiClientError(
         apiResponse.error?.reason ||
           "회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+        apiResponse.error?.errorCode,
+        undefined,
+        apiResponse.error?.data,
       );
     }
     return apiResponse.success;
@@ -134,13 +181,17 @@ export const signup = async (
     if (axios.isAxiosError(err)) {
       const api = err.response?.data as ApiResponse<unknown> | undefined;
       const reason = api?.error?.reason;
+      const code = api?.error?.errorCode;
       // 409/400 등 의미 있는 사유가 있으면 그대로 노출, 없으면 한국어 기본 문구로 대체
-      throw new Error(
+      throw new ApiClientError(
         reason ||
           "서버 오류로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+        code,
+        err.response?.status,
+        api?.error?.data,
       );
     }
-    throw new Error(
+    throw new ApiClientError(
       "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해 주세요.",
     );
   }
@@ -161,8 +212,11 @@ export const sendVerificationCode = async (
 
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
+    throw new ApiClientError(
       apiResponse.error?.reason || "인증번호 전송에 실패했습니다.",
+      apiResponse.error?.errorCode,
+      undefined,
+      apiResponse.error?.data,
     );
   }
   return apiResponse.success;
@@ -181,7 +235,12 @@ export const verifyVerificationCode = async (data: {
   >("/auth/verify", data);
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(apiResponse.error?.reason || "이메일 인증에 실패했습니다.");
+    throw new ApiClientError(
+      apiResponse.error?.reason || "이메일 인증에 실패했습니다.",
+      apiResponse.error?.errorCode,
+      undefined,
+      apiResponse.error?.data,
+    );
   }
   return apiResponse.success;
 };
@@ -197,8 +256,11 @@ export const requestPasswordReset = async (
   >("/auth/reset-request", data);
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
+    throw new ApiClientError(
       apiResponse.error?.reason || "비밀번호 재설정 요청에 실패했습니다.",
+      apiResponse.error?.errorCode,
+      undefined,
+      apiResponse.error?.data,
     );
   }
   return apiResponse.success;
@@ -210,17 +272,35 @@ export const requestPasswordReset = async (
 export const resetPassword = async (
   data: ResetPasswordFormValues & { token: string },
 ): Promise<string> => {
-  const response = await axiosInstance.patch<ApiResponse<string>>(
-    `/reset-passwd?token=${encodeURIComponent(data.token)}`,
-    { newPassword: data.password },
-  );
-  const apiResponse = response.data;
-  if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
-      apiResponse.error?.reason || "비밀번호 재설정에 실패했습니다.",
+  try {
+    const response = await axiosInstance.patch<ApiResponse<string>>(
+      `/reset-passwd?token=${encodeURIComponent(data.token)}`,
+      { newPassword: data.password },
+    );
+    const apiResponse = response.data;
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      throw new ApiClientError(
+        apiResponse.error?.reason || "비밀번호 재설정에 실패했습니다.",
+        apiResponse.error?.errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      throw new ApiClientError(
+        api?.error?.reason || err.message || "비밀번호 재설정에 실패했습니다.",
+        api?.error?.errorCode,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
     );
   }
-  return apiResponse.success;
 };
 
 /**
@@ -270,8 +350,11 @@ export const changePassword = async (data: {
 
   const apiResponse = response.data;
   if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-    throw new Error(
+    throw new ApiClientError(
       apiResponse.error?.reason || "비밀번호 변경에 실패했습니다.",
+      apiResponse.error?.errorCode,
+      undefined,
+      apiResponse.error?.data,
     );
   }
   return apiResponse.success;
@@ -302,7 +385,12 @@ export const getCurrentUser = async (): Promise<LoginSuccessData> => {
     // 200 OK 처리
     const apiResponse = response.data;
     if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-      throw new Error(apiResponse.error?.reason || "유저 조회 실패");
+      throw new ApiClientError(
+        apiResponse.error?.reason || "유저 조회 실패",
+        apiResponse.error?.errorCode,
+        undefined,
+        apiResponse.error?.data,
+      );
     }
     return apiResponse.success;
   } catch (err: any) {
