@@ -111,7 +111,7 @@ export function useRestaurantSearch(
   initial: Omit<SearchParams, "cursor" | "limit">,
 ) {
   const [items, setItems] = useState<Restaurant[]>([]);
-  const [cursor, setCursor] = useState<number>(1);
+  const [cursor, setCursor] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [isError, setIsError] = useState(false);

@@ -85,7 +85,7 @@ export default function MapPage() {
       const next = !isLiked;
       setIsLiked(next); // 낙관적 업데이트
       // (선택) 레스토랑 객체에도 동기화
-      setRestaurant((prev) => (prev ? ({ ...prev, zzim: next } as any) : prev));
+      setRestaurant((prev) => (prev ? { ...prev, zzim: next } : prev));
 
       try {
         if (next) {
@@ -97,9 +97,7 @@ export default function MapPage() {
         console.error("찜 토글 실패:", err);
         // 실패 롤백
         setIsLiked(!next);
-        setRestaurant((prev) =>
-          prev ? ({ ...prev, zzim: !next } as any) : prev,
-        );
+        setRestaurant((prev) => (prev ? { ...prev, zzim: !next } : prev));
         alert(next ? "찜 등록 실패" : "찜 해제 실패");
       } finally {
         setHeartBusy(false);

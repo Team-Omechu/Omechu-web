@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-
-import Image from "next/image";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
@@ -11,9 +12,8 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import SortSelector, { SortOption } from "@/components/common/SortSelector";
 import ReportModal from "@/restaurant/restaurant-detail/[id]/components/ReportModal";
 import { getRestaurantDetail } from "@/restaurant/api/restaurantList";
-import { getReviews } from "@/restaurant/restaurant-detail/[id]/api/review";
-import { MostTag } from "@/lib/types/review";
-import { ReviewProps } from "@/lib/types/review";
+import { getReviewsPage } from "@/restaurant/restaurant-detail/[id]/api/review";
+import type { ReviewProps, MostTag } from "@/lib/types/review";
 import type { RestaurantDetail } from "@/lib/types/restaurant";
 
 import RestaurantDetailHeader from "./components/RestaurantDetailHeader";
@@ -38,15 +38,11 @@ export default function RestaurantDetail() {
 
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
-  const [reviews, setReviews] = useState<ReviewProps[]>([]);
-  const [reviewCount, setReviewCount] = useState(0);
-  const [avgRating, setAvgRating] = useState(0);
 
   const [isLiked, setIsLiked] = useState(false);
   const [heartBusy, setHeartBusy] = useState(false);
 
   const [loading, setLoading] = useState(true);
-  const [mostTags, setMostTags] = useState<MostTag[]>([]);
 
   const sortOptions: SortOption[] = [
     { label: "추천 순", value: "recommend" },
@@ -55,30 +51,16 @@ export default function RestaurantDetail() {
   type SortValue = SortOption["value"];
   const [sortMode, setSortMode] = useState<SortValue>("recommend");
 
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (!id || Number.isNaN(id)) return;
 
     async function fetchData() {
       try {
-        // 1) 상세
         const restaurantData = await getRestaurantDetail(id);
         setRestaurants(restaurantData);
         setIsLiked(Boolean(restaurantData.zzim));
-
-        // 2) 리뷰
-        try {
-          const reviewResult = await getReviews(id);
-          setReviews(reviewResult.reviews);
-          setReviewCount(reviewResult.allReviewCount);
-          setAvgRating(reviewResult.avgRating);
-          setMostTags(reviewResult.mostTags ?? []);
-        } catch (reviewErr) {
-          console.warn("리뷰 로딩 실패:", reviewErr);
-          setReviews([]);
-          setReviewCount(0);
-          setAvgRating(0);
-          setMostTags([]);
-        }
       } catch (e) {
         console.error("맛집 정보 로딩 실패:", e);
       } finally {
@@ -89,24 +71,68 @@ export default function RestaurantDetail() {
     fetchData();
   }, [id]);
 
-  // ✅ FoodCardList 스타일: like / unlike를 분리하고, 낙관적 업데이트 후 실패 시 롤백
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["reviews", id],
+      queryFn: ({ pageParam = 0 }) => getReviewsPage(id, pageParam, 8),
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      initialPageParam: 0,
+      enabled: !!id,
+    });
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.5 }, // 절반 보이면 트리거
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const firstPage = data?.pages[0];
+  const reviewCount = firstPage?.allReviewCount ?? 0;
+  const avgRating = firstPage?.avgRating ?? 0;
+  const mostTag: MostTag[] = firstPage?.mostTag ?? [];
+
+  const rawReviews: ReviewProps[] =
+    data?.pages.flatMap((page) => page.reviews) ?? [];
+
+  const reviews: ReviewProps[] = [...rawReviews].sort((a, b) => {
+    if (sortMode === "latest") {
+      // createdDate 기준 최신순
+      return (
+        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );
+    }
+    if (sortMode === "recommend") {
+      // 좋아요(votes) 기준 내림차순
+      return (b.votes ?? 0) - (a.votes ?? 0);
+    }
+    return 0;
+  });
+
   const handleLike = useCallback(async () => {
     if (heartBusy || !restaurants) return;
-
     setHeartBusy(true);
-    // 낙관적 업데이트
     setIsLiked(true);
-    setRestaurants((prev) => (prev ? ({ ...prev, zzim: true } as any) : prev));
-
+    setRestaurants((prev) => (prev ? { ...prev, zzim: true } : prev));
     try {
       await likePlace(restaurants.id);
     } catch (e) {
-      console.error("찜 등록 실패:", e);
-      // 롤백
       setIsLiked(false);
-      setRestaurants((prev) =>
-        prev ? ({ ...prev, zzim: false } as any) : prev,
-      );
+      setRestaurants((prev) => (prev ? { ...prev, zzim: false } : prev));
       alert("찜 등록 실패");
     } finally {
       setHeartBusy(false);
@@ -115,33 +141,19 @@ export default function RestaurantDetail() {
 
   const handleUnlike = useCallback(async () => {
     if (heartBusy || !restaurants) return;
-
     setHeartBusy(true);
-    // 낙관적 업데이트
     setIsLiked(false);
-    setRestaurants((prev) => (prev ? ({ ...prev, zzim: false } as any) : prev));
-
+    setRestaurants((prev) => (prev ? { ...prev, zzim: false } : prev));
     try {
       await unlikePlace(restaurants.id);
     } catch (e) {
-      console.error("찜 해제 실패:", e);
-      // 롤백
       setIsLiked(true);
-      setRestaurants((prev) =>
-        prev ? ({ ...prev, zzim: true } as any) : prev,
-      );
+      setRestaurants((prev) => (prev ? { ...prev, zzim: true } : prev));
       alert("찜 해제 실패");
     } finally {
       setHeartBusy(false);
     }
   }, [heartBusy, restaurants]);
-
-  // 서버에서 zzim 값이 바뀌어 다시 들어오면 동기화
-  useEffect(() => {
-    if (restaurants?.zzim !== undefined) {
-      setIsLiked(Boolean(restaurants.zzim));
-    }
-  }, [restaurants?.zzim]);
 
   if (loading) {
     return (
@@ -159,28 +171,16 @@ export default function RestaurantDetail() {
     );
   }
 
-  const sortedReviews = [...reviews].sort((a, b) => {
-    if (sortMode === "recommend") {
-      const aVotes = localVotes[a.id] ?? a.votes;
-      const bVotes = localVotes[b.id] ?? b.votes;
-      return bVotes - aVotes;
-    } else {
-      return (
-        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-      );
-    }
-  });
-
   return (
     <>
       <Header
-        title={""}
+        title=""
         className="border-none"
         leftChild={
           <button onClick={() => router.push("/restaurant")}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"back"}
+              alt="back"
               width={22}
               height={30}
             />
@@ -194,9 +194,7 @@ export default function RestaurantDetail() {
           <RestaurantDetailHeader
             name={restaurants.name}
             isLiked={isLiked}
-            // ✅ FoodCardList 처럼 현재 상태에 따라 분기
             onLikeClick={isLiked ? handleUnlike : handleLike}
-            // 필요 시 heartBusy 내려서 로딩 표시 가능
           />
           <RestaurantImageCarousel
             images={restaurants.reviewImages.map((img) => img.link)}
@@ -204,7 +202,7 @@ export default function RestaurantDetail() {
         </section>
 
         {/* 정보 */}
-        <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-grey-darkHover bg-white p-4">
+        <section className="relative flex w-full flex-col items-center gap-3 rounded-md border bg-white p-4">
           <RestaurantInfoBox
             restaurant={{
               id: restaurants.id,
@@ -235,8 +233,8 @@ export default function RestaurantDetail() {
               <div className="flex gap-2 text-xl font-medium text-[#1F9BDA]">
                 <span>{avgRating.toFixed(1)}</span>
                 <span>
-                  {"★".repeat(Math.round(restaurants.rating)) +
-                    "☆".repeat(5 - Math.round(restaurants.rating))}
+                  {"★".repeat(Math.round(avgRating)) +
+                    "☆".repeat(5 - Math.round(avgRating))}
                 </span>
               </div>
               <div className="flex gap-1 text-base font-medium text-[#828282]">
@@ -247,13 +245,14 @@ export default function RestaurantDetail() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-1 px-4">
-            {mostTags.map((item, index) => (
+          <div className="flex flex-wrap justify-center gap-2 px-4">
+            {mostTag.map((item, index) => (
               <div
                 key={index}
-                className="mt-1 w-fit rounded-3xl border-[1px] border-grey-darkHover bg-white px-4 py-1 text-sm font-normal duration-300 hover:scale-105"
+                className="flex items-center rounded-3xl border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700"
               >
-                {item.tag}
+                <span>{item.tag}</span>
+                <span className="ml-1 text-gray-500">({item.count})</span>
               </div>
             ))}
           </div>
@@ -262,13 +261,13 @@ export default function RestaurantDetail() {
             <SortSelector
               options={sortOptions}
               selected={sortMode}
-              onSelect={(value) => setSortMode(value as "recommend" | "latest")}
+              onSelect={(value) => setSortMode(value as SortValue)}
               className="-mb-2 mr-2"
             />
 
             <ReviewList
               restId={restaurants.id}
-              reviews={sortedReviews}
+              reviews={reviews}
               localVotes={localVotes}
               votedReviewIds={votedReviewIds}
               setVotedReviewIds={setVotedReviewIds}
@@ -277,9 +276,20 @@ export default function RestaurantDetail() {
               setActiveOptionId={setActiveOptionId}
               onReport={() => setShowReportModal(true)}
             />
+
+            {/* 무한스크롤 로딩 */}
+            {hasNextPage && (
+              <div
+                ref={loadMoreRef}
+                className="mx-auto mt-4 h-10 w-full text-center text-gray-400"
+              >
+                {isFetchingNextPage ? "불러오는 중..." : "스크롤하여 더 보기"}
+              </div>
+            )}
           </div>
         </section>
 
+        {/* 신고 모달 */}
         {showReportModal && (
           <ModalWrapper>
             <ReportModal

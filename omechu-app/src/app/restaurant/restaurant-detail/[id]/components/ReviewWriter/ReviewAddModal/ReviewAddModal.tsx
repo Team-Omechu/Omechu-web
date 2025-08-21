@@ -12,7 +12,7 @@ import ImageUploader from "./ImageUploader";
 import RatingSelector from "./RatingSelector";
 import TagSelector from "./TagSelector";
 import TextReview from "./TextReview";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postReview, ReviewRequest } from "../../../api/review";
 import { uploadImageToS3 } from "@/restaurant/api/uploadImage";
 
@@ -32,6 +32,8 @@ export default function ReviewAddModal({
   const [comment, setComment] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const usePostReview = () => {
     return useMutation({
@@ -84,7 +86,7 @@ export default function ReviewAddModal({
   const isFormValid = rating > 0 && selectedTags.length > 0;
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#F8D5FF] px-4 py-5 scrollbar-hide">
+    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#FFDEFB] px-4 py-5 scrollbar-hide">
       {/* 헤더 */}
       <Header
         title={""}
@@ -146,7 +148,14 @@ export default function ReviewAddModal({
           <AlertModal
             title="소중한 후기가 전달되었어요."
             confirmText="제출하기"
-            onConfirm={() => setShowConfirmModal(false)}
+            onConfirm={() => {
+              // 컴포넌트 상단에 const queryClient = useQueryClient(); 추가 필요
+              queryClient.invalidateQueries({
+                queryKey: ["reviews", restaurantId],
+              });
+              setShowConfirmModal(false);
+              onClose();
+            }}
             onClose={() => setShowConfirmModal(false)}
           />
         </ModalWrapper>
