@@ -17,6 +17,7 @@ type ServerRestaurant = {
   name?: string | null;
   address?: string | null;
   rating?: number | null;
+  google_place_id?: string;
   representativeMenus?: string[];
   rest_image?: string | null;
   isLiked?: boolean;
@@ -31,6 +32,7 @@ export function normalizeRestaurant(s: ServerRestaurant): Restaurant {
     rating: s.rating ?? 0,
     images: s.rest_image ? [s.rest_image] : [],
     rest_tag: [],
+    google_place_id: s.google_place_id ?? "",
     menus: s.representativeMenus ?? [],
     like: Boolean(s.isLiked),
     reviews: 0,
@@ -52,10 +54,7 @@ export default function FoodCard({
   const [heartBusy, setHeartBusy] = useState(false);
 
   // ✅ 사진은 최초 1회만 결정하여 고정 (좋아요 토글/가드와 무관)
-  const [imageSrc] = useState(
-    item.images?.[0] ||
-      `https://places.googleapis.com/v1/${item.name}/media?maxWidthPx=800&key=${process.env.GOOGLE_MAPS_API_KEY}`,
-  );
+  const [imageSrc] = useState(item.images?.[0] || `/logo/logo.png`);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
