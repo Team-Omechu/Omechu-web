@@ -30,6 +30,10 @@ export default function GenderStep() {
   // Zustand — 성별만 사용
   const gender = useOnboardingStore((s) => s.gender); // "여성" | "남성" | null
   const setGender = useOnboardingStore((s) => s.setGender);
+  const setExercise = useOnboardingStore((s) => s.setExercise);
+  const setPrefer = useOnboardingStore((s) => s.setPrefer);
+  const setBodyType = useOnboardingStore((s) => s.setBodyType);
+  const setAllergy = useOnboardingStore((s) => s.setAllergy);
   const resetAll = useOnboardingStore((s) => s.reset);
 
   const { data: profile } = useProfileQuery();
@@ -189,8 +193,43 @@ export default function GenderStep() {
             description="지금까지 작성한 내용은 저장되지 않아요."
             confirmText="그만하기"
             cancelText="돌아가기"
-            onConfirm={() => {
-              resetAll();
+            onConfirm={async () => {
+              // 1) 로컬(Zustand)에서 닉네임 제외 초기화
+              setGender(null);
+              setExercise(null);
+              setPrefer([]);
+              setBodyType([]);
+              setAllergy([]);
+
+              // 2) 서버에 즉시 반영 (닉네임/이미지는 buildCompletePayloadFromStore가 보존)
+              try {
+                const snap = {
+                  gender: null,
+                  exercise: null,
+                  prefer: [],
+                  bodyType: [],
+                  allergy: [],
+                } as any;
+                const payload = buildCompletePayloadFromStore(
+                  snap,
+                  profile as any,
+                );
+                const fullPayload = {
+                  email: (profile as any)?.email,
+                  ...payload,
+                } as any;
+                await updateProfile(fullPayload);
+                await queryClient
+                  .invalidateQueries({
+                    queryKey: ["profile", userKey],
+                    exact: true,
+                  })
+                  .catch(() => {});
+              } catch (e) {
+                console.error("[GenderStep] reset(confirm) failed:", e);
+              }
+
+              // 3) 모달 닫고 첫 스텝 목록으로 이동
               setShowModal(false);
               router.push("/mypage/user-info-edit");
             }}
