@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -14,16 +14,19 @@ import { getRestaurantDetail } from "@/restaurant/api/restaurantList";
 import { getReviews } from "@/restaurant/restaurant-detail/[id]/api/review";
 import { MostTag } from "@/lib/types/review";
 import { ReviewProps } from "@/lib/types/review";
+import type { RestaurantDetail } from "@/lib/types/restaurant";
 
 import RestaurantDetailHeader from "./components/RestaurantDetailHeader";
 import RestaurantImageCarousel from "./components/RestaurantImageCarousel";
 import RestaurantInfoBox from "./components/RestaurantInfoBox";
 import ReviewList from "./components/ReviewList/ReviewList";
 import ReviewWriter from "./components/ReviewWriter/ReviewWriter";
-import type { RestaurantDetail } from "@/lib/types/restaurant";
+
+// ✅ FoodCardList와 동일한 API 사용
+import { likePlace, unlikePlace } from "@/mypage/api/favorites";
 
 export default function RestaurantDetail() {
-  const router = useRouter(); // 페이지 이동을 위한 라우터 훅
+  const router = useRouter();
   const params = useParams();
   const id = Number(params?.id);
 
@@ -32,12 +35,16 @@ export default function RestaurantDetail() {
   const [activeOptionId, setActiveOptionId] = useState<number | null>(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showReportCompleteModal, setShowReportCompleteModal] = useState(false);
+
   const [votedReviewIds, setVotedReviewIds] = useState<number[]>([]);
   const [localVotes, setLocalVotes] = useState<Record<number, number>>({});
   const [reviews, setReviews] = useState<ReviewProps[]>([]);
   const [reviewCount, setReviewCount] = useState(0);
   const [avgRating, setAvgRating] = useState(0);
+
   const [isLiked, setIsLiked] = useState(false);
+  const [heartBusy, setHeartBusy] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [mostTags, setMostTags] = useState<MostTag[]>([]);
 
@@ -53,13 +60,12 @@ export default function RestaurantDetail() {
 
     async function fetchData() {
       try {
-        // 1. 맛집 상세 정보는 무조건 먼저 가져옴
+        // 1) 상세
         const restaurantData = await getRestaurantDetail(id);
         setRestaurants(restaurantData);
+        setIsLiked(Boolean(restaurantData.zzim));
 
-        setIsLiked(restaurantData.zzim ?? false);
-
-        // 2. 리뷰 정보는 실패 가능성이 있으므로 별도 처리
+        // 2) 리뷰
         try {
           const reviewResult = await getReviews(id);
           setReviews(reviewResult.reviews);
@@ -68,8 +74,6 @@ export default function RestaurantDetail() {
           setMostTags(reviewResult.mostTags ?? []);
         } catch (reviewErr) {
           console.warn("리뷰 로딩 실패:", reviewErr);
-
-          // FAIL(C004: 리뷰 없음)일 수 있으므로 기본값 설정
           setReviews([]);
           setReviewCount(0);
           setAvgRating(0);
@@ -85,10 +89,59 @@ export default function RestaurantDetail() {
     fetchData();
   }, [id]);
 
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLiked((prev) => !prev);
-  };
+  // ✅ FoodCardList 스타일: like / unlike를 분리하고, 낙관적 업데이트 후 실패 시 롤백
+  const handleLike = useCallback(async () => {
+    if (heartBusy || !restaurants) return;
+
+    setHeartBusy(true);
+    // 낙관적 업데이트
+    setIsLiked(true);
+    setRestaurants((prev) => (prev ? ({ ...prev, zzim: true } as any) : prev));
+
+    try {
+      await likePlace(restaurants.id);
+    } catch (e) {
+      console.error("찜 등록 실패:", e);
+      // 롤백
+      setIsLiked(false);
+      setRestaurants((prev) =>
+        prev ? ({ ...prev, zzim: false } as any) : prev,
+      );
+      alert("찜 등록 실패");
+    } finally {
+      setHeartBusy(false);
+    }
+  }, [heartBusy, restaurants]);
+
+  const handleUnlike = useCallback(async () => {
+    if (heartBusy || !restaurants) return;
+
+    setHeartBusy(true);
+    // 낙관적 업데이트
+    setIsLiked(false);
+    setRestaurants((prev) => (prev ? ({ ...prev, zzim: false } as any) : prev));
+
+    try {
+      await unlikePlace(restaurants.id);
+    } catch (e) {
+      console.error("찜 해제 실패:", e);
+      // 롤백
+      setIsLiked(true);
+      setRestaurants((prev) =>
+        prev ? ({ ...prev, zzim: true } as any) : prev,
+      );
+      alert("찜 해제 실패");
+    } finally {
+      setHeartBusy(false);
+    }
+  }, [heartBusy, restaurants]);
+
+  // 서버에서 zzim 값이 바뀌어 다시 들어오면 동기화
+  useEffect(() => {
+    if (restaurants?.zzim !== undefined) {
+      setIsLiked(Boolean(restaurants.zzim));
+    }
+  }, [restaurants?.zzim]);
 
   if (loading) {
     return (
@@ -98,7 +151,6 @@ export default function RestaurantDetail() {
     );
   }
 
-  console.log("맛집 상세 정보:", restaurants);
   if (!restaurants) {
     return (
       <main className="flex h-screen items-center justify-center">
@@ -107,7 +159,6 @@ export default function RestaurantDetail() {
     );
   }
 
-  // 정렬된 후기 리스트 계산 (정렬 기준에 따라 다르게 정렬됨)
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortMode === "recommend") {
       const aVotes = localVotes[a.id] ?? a.votes;
@@ -126,46 +177,44 @@ export default function RestaurantDetail() {
         title={""}
         className="border-none"
         leftChild={
-          <button
-            onClick={() => {
-              router.push("/restaurant");
-            }}
-          >
+          <button onClick={() => router.push("/restaurant")}>
             <Image
               src={"/arrow/left-header-arrow.svg"}
-              alt={"changeProfileImage"}
+              alt={"back"}
               width={22}
               height={30}
             />
           </button>
         }
       />
-      {/* 메인 Container*/}
+
       <main className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col items-center gap-3 overflow-y-auto px-4 pb-10">
-        {/* 맛집 제목, 사진 */}
+        {/* 제목/하트/이미지 */}
         <section className="flex w-full flex-col items-center justify-between gap-2">
           <RestaurantDetailHeader
             name={restaurants.name}
             isLiked={isLiked}
-            onLikeClick={handleLikeClick}
+            // ✅ FoodCardList 처럼 현재 상태에 따라 분기
+            onLikeClick={isLiked ? handleUnlike : handleLike}
+            // 필요 시 heartBusy 내려서 로딩 표시 가능
           />
           <RestaurantImageCarousel
             images={restaurants.reviewImages.map((img) => img.link)}
           />
         </section>
-        {/* 맛집 정보 */}
+
+        {/* 정보 */}
         <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-grey-darkHover bg-white p-4">
-          {/* 정보 - 메뉴 종류 */}
           <RestaurantInfoBox
             restaurant={{
               id: restaurants.id,
-              name: restaurants.name,
+              name: restaurants.repreMenu?.[0]?.menu ?? "",
               googlePlaceId: restaurants.googlePlaceId,
               timetable: restaurants.currentOpeningHours,
               address: {
-                road: restaurants.address, // 주소 전체를 도로명처럼 처리
-                jibun: restaurants.addressJibeon, // 현재 API에는 따로 없음
-                postalCode: restaurants.postalCode, // 우편번호도 없음
+                road: restaurants.address,
+                jibun: restaurants.addressJibeon,
+                postalCode: restaurants.postalCode,
               },
             }}
             showAddress={showAddress}
@@ -173,35 +222,31 @@ export default function RestaurantDetail() {
           />
         </section>
 
-        {/* 후기 작성 칸 */}
+        {/* 후기 작성 */}
         <ReviewWriter
           restaurantId={restaurants.id}
           restaurantName={restaurants.name}
         />
 
-        {/* 후기 */}
+        {/* 후기/정렬/태그 */}
         <section className="flex w-full flex-col gap-2">
           <div className="flex justify-between px-2 py-2">
-            {/* 후기 평점 - 후기 개수 */}
-            {restaurants && (
-              <div className="flex w-full justify-between px-2 py-2">
-                <div className="flex gap-2 text-xl font-medium text-[#1F9BDA]">
-                  <span>{avgRating.toFixed(1)}</span>
-                  <span>
-                    {"★".repeat(Math.round(restaurants.rating)) +
-                      "☆".repeat(5 - Math.round(restaurants.rating))}
-                  </span>
-                </div>
-                <div className="flex gap-1 text-base font-medium text-[#828282]">
-                  <span>후기</span>
-                  <span className="font-bold">{reviewCount}</span>
-                  <span>건</span>
-                </div>
+            <div className="flex w-full justify-between px-2 py-2">
+              <div className="flex gap-2 text-xl font-medium text-[#1F9BDA]">
+                <span>{avgRating.toFixed(1)}</span>
+                <span>
+                  {"★".repeat(Math.round(restaurants.rating)) +
+                    "☆".repeat(5 - Math.round(restaurants.rating))}
+                </span>
               </div>
-            )}
+              <div className="flex gap-1 text-base font-medium text-[#828282]">
+                <span>후기</span>
+                <span className="font-bold">{reviewCount}</span>
+                <span>건</span>
+              </div>
+            </div>
           </div>
 
-          {/* 후기 관련 태그 */}
           <div className="flex flex-wrap justify-center gap-1 px-4">
             {mostTags.map((item, index) => (
               <div
@@ -213,9 +258,7 @@ export default function RestaurantDetail() {
             ))}
           </div>
 
-          {/* 후기 카드 목록 */}
           <div className="mt-5 flex w-full flex-col gap-3">
-            {/* 후기 필터 버튼 */}
             <SortSelector
               options={sortOptions}
               selected={sortMode}
@@ -223,7 +266,6 @@ export default function RestaurantDetail() {
               className="-mb-2 mr-2"
             />
 
-            {/* 후기 목록 */}
             <ReviewList
               restId={restaurants.id}
               reviews={sortedReviews}
@@ -237,30 +279,28 @@ export default function RestaurantDetail() {
             />
           </div>
         </section>
+
         {showReportModal && (
-          <>
-            <ModalWrapper>
-              <ReportModal
-                onClick={() => setShowReportModal(false)}
-                onReport={() => {
-                  setShowReportCompleteModal(true);
-                  setShowReportModal(false);
-                }}
-              />
-            </ModalWrapper>
-          </>
+          <ModalWrapper>
+            <ReportModal
+              onClick={() => setShowReportModal(false)}
+              onReport={() => {
+                setShowReportCompleteModal(true);
+                setShowReportModal(false);
+              }}
+            />
+          </ModalWrapper>
         )}
+
         {showReportCompleteModal && (
-          <>
-            <ModalWrapper>
-              <AlertModal
-                title="신고가 완료되었습니다"
-                description="운영팀이 빠르게 확인해 조치하겠습니다"
-                confirmText="확인"
-                onConfirm={() => setShowReportCompleteModal(false)}
-              />
-            </ModalWrapper>
-          </>
+          <ModalWrapper>
+            <AlertModal
+              title="신고가 완료되었습니다"
+              description="운영팀이 빠르게 확인해 조치하겠습니다"
+              confirmText="확인"
+              onConfirm={() => setShowReportCompleteModal(false)}
+            />
+          </ModalWrapper>
         )}
       </main>
     </>
