@@ -227,7 +227,7 @@ export default function SignInForm() {
         </div>
       </form>
 
-      <Toast message={toastMessage} show={showToast} className="bottom-36" />
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </>
   );
 }

@@ -105,6 +105,7 @@ export default function Input({
         {/* 버튼: showButton이 true일 때만 렌더링 */}
         {showButton && (
           <button
+            type="button"
             disabled={disabled}
             onClick={onClick}
             className={`h-full w-fit flex-shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
@@ -134,7 +135,11 @@ export default function Input({
       )}
       {/* 설명 텍스트 */}
       {description && (
-        <span className="ml-1 mt-1 text-sm font-normal text-grey-normalActive">
+        <span
+          className={`ml-1 mt-1 text-sm font-normal ${
+            showError ? "text-red-500" : "text-grey-normalActive"
+          }`}
+        >
           {description}
         </span>
       )}
