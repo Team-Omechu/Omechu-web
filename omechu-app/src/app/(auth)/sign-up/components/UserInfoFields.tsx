@@ -73,14 +73,19 @@ export default function UserInfoFields() {
           triggerToast(data.message);
         },
         onError: (error: unknown) => {
-          const e = error as ApiClientError & { code?: string };
-          let msg: string = e?.message || "인증에 실패했습니다.";
+          const e = error as ApiClientError & {
+            reason?: string;
+            code?: string;
+          };
+          let msg: string = e?.reason || e?.message || "인증에 실패했습니다.";
+          // V001, V002 코드에 대한 분기 처리는 유지하거나 백엔드 응답을 신뢰하고 제거할 수 있습니다.
+          // 현재는 유지하겠습니다.
           switch (e?.code) {
             case "V001":
-              msg = "인증번호가 올바르지 않습니다.";
+              msg = e.reason || "인증번호가 올바르지 않습니다.";
               break;
             case "V002":
-              msg = "인증번호가 만료되었어요. 다시 전송해 주세요.";
+              msg = e.reason || "인증번호가 만료되었어요. 다시 전송해 주세요.";
               break;
           }
           triggerToast(msg);
@@ -158,12 +163,7 @@ export default function UserInfoFields() {
             }}
             showError={passwordBlurred && !!errors.password}
             // 에러일 때 동일 문구를 빨간색으로 표기, 아닐 때 회색 설명 문구
-            errorMessage="* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
-            description={
-              passwordBlurred && !!errors.password
-                ? ""
-                : "* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
-            }
+            description="* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
           />
         )}
       />

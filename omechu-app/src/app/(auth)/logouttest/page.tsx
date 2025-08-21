@@ -44,7 +44,7 @@ export default function LogoutTestPage() {
       >
         {isPending ? "로그아웃 중..." : "로그아웃 하기"}
       </SquareButton>
-      <Toast message={toastMessage} show={showToast} />
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
 }
