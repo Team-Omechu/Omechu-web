@@ -43,6 +43,7 @@ type MyRestaurant = {
   address?: string;
   reviews?: number;
   isLiked?: boolean;
+  like?: boolean; // ✅ FoodCard가 초기/동기화에 참조하는 필드
 };
 const ITEMS_PER_PAGE = 5;
 const IO_ROOT_MARGIN = "0px 0px 160px 0px";
@@ -162,18 +163,8 @@ export default function MyActivityClient() {
     fetchMyPlaces(PLACES_PAGE_SIZE, 0)
       .then((data: any) => {
         const places = data.success?.data ?? [];
-        const mapped: MyRestaurant[] = places.map((item: any) => ({
-          id: Number(item.id),
-          name: item.name || "-",
-          repre_menu:
-            Array.isArray(item.repre_menu) && item.repre_menu.length > 0
-              ? (item.repre_menu[0]?.menu ?? "")
-              : "",
-          rating: item.rating ?? 0,
-          images: item.rest_image ? [{ link: item.rest_image }] : [],
-          address: item.address ?? "",
-          reviews: item._count?.review ?? 0,
-          isLiked: Boolean(
+        const mapped: MyRestaurant[] = places.map((item: any) => {
+          const serverLiked = Boolean(
             item.isLiked ??
               item.is_liked ??
               item.isHearted ??
@@ -182,8 +173,22 @@ export default function MyActivityClient() {
               item.myHeart ??
               item.favorited ??
               item.is_favorite,
-          ),
-        }));
+          );
+          return {
+            id: Number(item.id),
+            name: item.name || "-",
+            repre_menu:
+              Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+                ? (item.repre_menu[0]?.menu ?? "")
+                : "",
+            rating: item.rating ?? 0,
+            images: item.rest_image ? [{ link: item.rest_image }] : [],
+            address: item.address ?? "",
+            reviews: item._count?.review ?? 0,
+            isLiked: serverLiked,
+            like: serverLiked,
+          };
+        });
         // 최신이 위로 오도록 페이지 단위 역순 정렬(서버 정렬 불명 시 안전)
         const firstBatch = mapped.slice().reverse();
         setMyRestaurants(firstBatch);
@@ -207,18 +212,8 @@ export default function MyActivityClient() {
     try {
       const data: any = await fetchMyPlaces(PLACES_PAGE_SIZE, 0);
       const places = data.success?.data ?? [];
-      const mapped: MyRestaurant[] = places.map((item: any) => ({
-        id: Number(item.id),
-        name: item.name || "-",
-        repre_menu:
-          Array.isArray(item.repre_menu) && item.repre_menu.length > 0
-            ? (item.repre_menu[0]?.menu ?? "")
-            : "",
-        rating: item.rating ?? 0,
-        images: item.rest_image ? [{ link: item.rest_image }] : [],
-        address: item.address ?? "",
-        reviews: item._count?.review ?? 0,
-        isLiked: Boolean(
+      const mapped: MyRestaurant[] = places.map((item: any) => {
+        const serverLiked = Boolean(
           item.isLiked ??
             item.is_liked ??
             item.isHearted ??
@@ -227,8 +222,22 @@ export default function MyActivityClient() {
             item.myHeart ??
             item.favorited ??
             item.is_favorite,
-        ),
-      }));
+        );
+        return {
+          id: Number(item.id),
+          name: item.name || "-",
+          repre_menu:
+            Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+              ? (item.repre_menu[0]?.menu ?? "")
+              : "",
+          rating: item.rating ?? 0,
+          images: item.rest_image ? [{ link: item.rest_image }] : [],
+          address: item.address ?? "",
+          reviews: item._count?.review ?? 0,
+          isLiked: serverLiked,
+          like: serverLiked,
+        };
+      });
       // 첫 페이지로 리셋
       setPlacesOffset(PLACES_PAGE_SIZE);
       const firstBatch = mapped.slice().reverse();
@@ -247,18 +256,8 @@ export default function MyActivityClient() {
     try {
       const data: any = await fetchMyPlaces(PLACES_PAGE_SIZE, placesOffset);
       const places = data.success?.data ?? [];
-      const mapped: MyRestaurant[] = places.map((item: any) => ({
-        id: Number(item.id),
-        name: item.name || "-",
-        repre_menu:
-          Array.isArray(item.repre_menu) && item.repre_menu.length > 0
-            ? (item.repre_menu[0]?.menu ?? "")
-            : "",
-        rating: item.rating ?? 0,
-        images: item.rest_image ? [{ link: item.rest_image }] : [],
-        address: item.address ?? "",
-        reviews: item._count?.review ?? 0,
-        isLiked: Boolean(
+      const mapped: MyRestaurant[] = places.map((item: any) => {
+        const serverLiked = Boolean(
           item.isLiked ??
             item.is_liked ??
             item.isHearted ??
@@ -267,8 +266,22 @@ export default function MyActivityClient() {
             item.myHeart ??
             item.favorited ??
             item.is_favorite,
-        ),
-      }));
+        );
+        return {
+          id: Number(item.id),
+          name: item.name || "-",
+          repre_menu:
+            Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+              ? (item.repre_menu[0]?.menu ?? "")
+              : "",
+          rating: item.rating ?? 0,
+          images: item.rest_image ? [{ link: item.rest_image }] : [],
+          address: item.address ?? "",
+          reviews: item._count?.review ?? 0,
+          isLiked: serverLiked,
+          like: serverLiked,
+        };
+      });
       const batch = mapped.slice().reverse();
       setMyRestaurants((prev) => [...prev, ...batch]);
       setVisibleCount((prev) => prev + batch.length);
@@ -459,22 +472,33 @@ export default function MyActivityClient() {
     if (likePending.has(restaurantId)) return;
     setLikePending((prev) => new Set(prev).add(restaurantId));
 
-    // 낙관적 업데이트
+    // 낙관적 업데이트 (UI true)
     setMyRestaurants((prev) =>
-      prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: true } : r)),
+      prev.map((r) =>
+        r.id === restaurantId ? { ...r, isLiked: true, like: true } : r,
+      ),
     );
 
     try {
       await likePlace(restaurantId);
-      await reloadMyPlaces(); // 서버 소스 기준으로 즉시 동기화
-    } catch {
-      // 실패 롤백
-      setMyRestaurants((prev) =>
-        prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: false } : r)),
-      );
-      setToastMessage("찜 등록에 실패했습니다.");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 2000);
+      // 정상 성공 → 최신 상태 재조회
+      await reloadMyPlaces();
+    } catch (err: any) {
+      const status = err?.response?.status;
+      if (status === 409) {
+        // 이미 찜한 상태(중복 요청) → 실패로 취급하지 않고 동기화만 수행
+        await reloadMyPlaces();
+      } else {
+        // 그 외 에러 → 롤백
+        setMyRestaurants((prev) =>
+          prev.map((r) =>
+            r.id === restaurantId ? { ...r, isLiked: false, like: false } : r,
+          ),
+        );
+        setToastMessage("찜 등록에 실패했습니다.");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 2000);
+      }
     } finally {
       setLikePending((prev) => {
         const next = new Set(prev);
@@ -488,22 +512,32 @@ export default function MyActivityClient() {
     if (likePending.has(restaurantId)) return;
     setLikePending((prev) => new Set(prev).add(restaurantId));
 
-    // 낙관적 업데이트
+    // 낙관적 업데이트 (UI false)
     setMyRestaurants((prev) =>
-      prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: false } : r)),
+      prev.map((r) =>
+        r.id === restaurantId ? { ...r, isLiked: false, like: false } : r,
+      ),
     );
 
     try {
       await unlikePlace(restaurantId);
-      await reloadMyPlaces(); // 서버 소스 기준으로 즉시 동기화
-    } catch {
-      // 실패 롤백
-      setMyRestaurants((prev) =>
-        prev.map((r) => (r.id === restaurantId ? { ...r, isLiked: true } : r)),
-      );
-      setToastMessage("찜 해제에 실패했습니다.");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 2000);
+      await reloadMyPlaces();
+    } catch (err: any) {
+      const status = err?.response?.status;
+      if (status === 409) {
+        // 이미 찜이 해제된 상태 → 실패로 보지 않고 동기화만
+        await reloadMyPlaces();
+      } else {
+        // 그 외 에러 → 롤백
+        setMyRestaurants((prev) =>
+          prev.map((r) =>
+            r.id === restaurantId ? { ...r, isLiked: true, like: true } : r,
+          ),
+        );
+        setToastMessage("찜 해제에 실패했습니다.");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 2000);
+      }
     } finally {
       setLikePending((prev) => {
         const next = new Set(prev);
@@ -537,12 +571,12 @@ export default function MyActivityClient() {
 
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col items-center overflow-y-auto px-2 pb-8 pt-3 scrollbar-hide"
+        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-y-auto scrollbar-hide"
       >
         {/* 후기 탭 */}
         {selectedIndex === 0 && (
           <>
-            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
+            <section className="flex justify-end w-full gap-1 pt-1 pb-3 pr-5 text-sm text-grey-normalActive">
               <SortSelector
                 options={[
                   { label: "추천 순", value: "recommended" },
@@ -564,9 +598,9 @@ export default function MyActivityClient() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex w-full flex-col items-center gap-7">
+              <section className="flex flex-col items-center w-full gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
+                  <div className="flex items-center justify-center w-full py-10 text-grey-normalActive">
                     작성한 후기가 없습니다.
                   </div>
                 ) : (
@@ -617,7 +651,7 @@ export default function MyActivityClient() {
         {selectedIndex === 1 && (
           <>
             {loading ? (
-              <div className="flex w-full flex-col items-center gap-7 pt-3">
+              <div className="flex flex-col items-center w-full pt-3 gap-7">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <SkeletonFoodCard key={i} />
                 ))}
@@ -625,18 +659,21 @@ export default function MyActivityClient() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex w-full flex-col gap-5 px-2">
+              <section className="flex flex-col w-full gap-5 px-2">
                 {myRestaurants.length === 0 ? (
-                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
+                  <div className="flex items-center justify-center w-full py-10 text-grey-normalActive">
                     등록한 맛집이 없습니다.
                   </div>
                 ) : (
                   <>
                     {visiblePlaces.map((item) => (
-                      <div key={item.id} className="flex w-full flex-col">
+                      <div
+                        key={`${item.id}-${item.like || item.isLiked ? 1 : 0}`}
+                        className="flex flex-col w-full"
+                      >
                         <button
                           type="button"
-                          className="mb-1 w-full pr-2 text-end text-xs text-grey-normalActive underline"
+                          className="w-full pr-2 mb-1 text-xs underline text-end text-grey-normalActive"
                           onClick={() => {
                             setEditing(item);
                             setEditOpen(true);
@@ -706,9 +743,10 @@ export default function MyActivityClient() {
                               : [],
                             address: item.address ?? "",
                             rest_tag: [],
-                            like: item.isLiked ?? false,
-                            // @ts-ignore
-                            isLiked: item.isLiked ?? false,
+                            // 서버/로컬 중 하나라도 true면 채운 하트로 표시되도록 OR 사용
+                            like: Boolean(item.like || item.isLiked),
+                            // @ts-ignore - FoodCard가 참조하는 대체 필드도 동일 기준으로 전달
+                            isLiked: Boolean(item.isLiked || item.like),
                             reviews: 0,
                           }}
                         />
