@@ -87,6 +87,8 @@ type OnboardingActions = {
   resetAllergy: () => void;
   hydrateFromProfile: (raw: any) => void;
   blockPreferHydrate: () => void;
+  softReset: () => void;
+  hardReset: () => void;
 };
 
 const initialState: OnboardingState = {
@@ -184,8 +186,22 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
 
       blockPreferHydrate: () => set({ preferHydrateBlocked: true }),
 
-      // 전체 초기화
-      reset: () => {
+      softReset: () => {
+        const { nickname, profileImageUrl } = get();
+        set({
+          nickname,
+          profileImageUrl,
+          gender: null,
+          exercise: null,
+          prefer: [],
+          bodyType: [],
+          allergy: [],
+          currentStep: 1,
+          preferHydrateBlocked: false,
+        });
+      },
+
+      hardReset: () => {
         set({
           ...initialState,
           preferHydrateBlocked: false,
@@ -193,6 +209,11 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
         try {
           localStorage.removeItem("onboarding-storage");
         } catch {}
+      },
+
+      reset: () => {
+        // alias for backward compatibility (hard reset)
+        get().hardReset();
       },
 
       // 상태별 초기화
