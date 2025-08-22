@@ -15,11 +15,18 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "Omechu - 오늘 뭐 먹지?",
+  title: "오메추",
   description: "오늘 뭐 먹지? Omechu가 추천해드려요!",
   icons: {
-    icon: "logo.png",
+    icon: [
+      { url: "/logo/logo.png", sizes: "32x32", type: "image/png" },
+      { url: "/logo/logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/logo/logo.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/logo/logo.png",
   },
+  manifest: "/manifest.webmanifest",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
