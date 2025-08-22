@@ -26,6 +26,7 @@ function mapApiToRestaurant(apiData: any): Restaurant {
     rating: apiData.rating,
     images: [apiData.rest_image],
     rest_tag: apiData.rest_tag ?? [],
+    google_place_id: apiData.google_place_id,
     menus: menus,
     like: apiData.zzim ?? false,
     reviews: apiData._count?.review ?? 0,
@@ -34,7 +35,7 @@ function mapApiToRestaurant(apiData: any): Restaurant {
 
 export function useRestaurantList() {
   const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
-  const [cursor, setCursor] = useState<number>(1);
+  const [cursor, setCursor] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -52,7 +53,7 @@ export function useRestaurantList() {
       const res = await axiosInstance.get("/place", {
         params: {
           cursor: cursor.toString(),
-          limit: "8",
+          limit: "30",
         },
       });
 

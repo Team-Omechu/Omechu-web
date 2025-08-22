@@ -5,6 +5,7 @@ export type Restaurant = {
   rating: number;
   images: string[];
   rest_tag: { tag: string; count: number }[];
+  google_place_id: string;
   menus: string[];
   like: boolean;
   reviews: number;

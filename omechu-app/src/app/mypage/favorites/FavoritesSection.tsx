@@ -322,6 +322,7 @@ export default function Favorites() {
                       ? [item.restaurant.rest_image]
                       : [], // 단일 이미지라도 배열로
                     rating: item.restaurant.rating ?? 0,
+                    google_place_id: item.google_place_id ?? "",
                     menus: item.restaurant.representativeMenus ?? [], // 대표 메뉴가 있을 때 첫 번째만
                     rest_tag: Array.isArray(item.restaurant.tags)
                       ? item.restaurant.tags.map((tagObj: any) => tagObj.tag)

@@ -53,6 +53,9 @@ export default function Restaurant() {
   const router = useRouter();
   const sp = useSearchParams(); // ✅ 추가
   const mainRef = useRef<HTMLDivElement>(null);
+  const scrollToTop = () => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const [search, setSearch] = useState("");
   const SORT_KEY = "restaurantSortMode";
@@ -215,10 +218,6 @@ export default function Restaurant() {
     if (!name || !keyword) return false;
     return distance(name, keyword) <= 3 && !name.includes(keyword);
   });
-
-  const scrollToTop = () => {
-    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   // 무한 스크롤
   const loaderRef = useRef<HTMLDivElement | null>(null);
