@@ -68,8 +68,10 @@ export default function MyActivityClient() {
 
   // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
-  const accessToken = useAuthStore.getState().accessToken;
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const refreshToken = useAuthStore((s) => s.refreshToken);
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
+  const isAuthenticated = Boolean(accessToken && refreshToken);
 
   // 공통 UI 상태
   const [modalOpen, setModalOpen] = useState(false);
@@ -101,6 +103,7 @@ export default function MyActivityClient() {
   const [deletePending, setDeletePending] = useState<Set<number>>(new Set());
   const [editOpen, setEditOpen] = useState(false);
   const [editing, setEditing] = useState<MyRestaurant | null>(null);
+  const [lastHeartClickAt, setLastHeartClickAt] = useState(0);
 
   /* 후기 패칭 */
   useEffect(() => {
@@ -449,8 +452,8 @@ export default function MyActivityClient() {
   // 토큰 없으면 모달, 생기면 닫기
   useEffect(() => {
     if (!hasHydrated) return;
-    setModalOpen(!accessToken);
-  }, [hasHydrated, accessToken]);
+    setModalOpen(!isAuthenticated);
+  }, [hasHydrated, isAuthenticated]);
 
   const handlePlaceLike = async (restaurantId: number) => {
     if (likePending.has(restaurantId)) return;
@@ -463,6 +466,7 @@ export default function MyActivityClient() {
 
     try {
       await likePlace(restaurantId);
+      await reloadMyPlaces(); // 서버 소스 기준으로 즉시 동기화
     } catch {
       // 실패 롤백
       setMyRestaurants((prev) =>
@@ -491,6 +495,7 @@ export default function MyActivityClient() {
 
     try {
       await unlikePlace(restaurantId);
+      await reloadMyPlaces(); // 서버 소스 기준으로 즉시 동기화
     } catch {
       // 실패 롤백
       setMyRestaurants((prev) =>
@@ -640,21 +645,52 @@ export default function MyActivityClient() {
                           편집
                         </button>
                         <FoodCard
+                          isAuthenticated={isAuthenticated}
+                          onRequireLogin={() => {
+                            console.warn(
+                              "[FoodCard] unauthenticated – opening login modal",
+                            );
+                            setModalOpen(true);
+                          }}
+                          // @ts-ignore - 단일 토글형/대체 네이밍 대응
+                          onLikeToggle={() => {
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onLikeToggle]", item.id);
+                            if (item.isLiked)
+                              handlePlaceUnlike(Number(item.id));
+                            else handlePlaceLike(Number(item.id));
+                          }}
+                          // @ts-ignore - 대체 네이밍(onHeartClick) 대응
+                          onHeartClick={() => {
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onHeartClick]", item.id);
+                            if (item.isLiked)
+                              handlePlaceUnlike(Number(item.id));
+                            else handlePlaceLike(Number(item.id));
+                          }}
+                          onClick={() => {
+                            const now = Date.now();
+                            if (now - lastHeartClickAt < 400) {
+                              // 하트 클릭 직후에는 카드 네비게이션 무시
+                              return;
+                            }
+                            router.push(
+                              `/restaurant/restaurant-detail/${item.id}`,
+                            );
+                          }}
                           onLike={() => {
-                            if (item.isLiked) return; // 이미 찜 상태면 중복 호출 방지
-                            if (likePending.has(Number(item.id))) return; // 진행 중이면 무시
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onLike]", item.id);
                             handlePlaceLike(Number(item.id));
-                            console.log("[like] id:", item.id, typeof item.id);
                           }}
                           onUnlike={() => {
-                            if (!item.isLiked) return; // 이미 해제 상태면 중복 호출 방지
-                            if (likePending.has(Number(item.id))) return; // 진행 중이면 무시
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onUnlike]", item.id);
                             handlePlaceUnlike(Number(item.id));
-                            console.log(
-                              "[unlike] id:",
-                              item.id,
-                              typeof item.id,
-                            );
                           }}
                           item={{
                             id: item.id,
@@ -671,13 +707,10 @@ export default function MyActivityClient() {
                             address: item.address ?? "",
                             rest_tag: [],
                             like: item.isLiked ?? false,
+                            // @ts-ignore
+                            isLiked: item.isLiked ?? false,
                             reviews: 0,
                           }}
-                          onClick={() =>
-                            router.push(
-                              `/restaurant/restaurant-detail/${item.id}`,
-                            )
-                          }
                         />
                       </div>
                     ))}
