@@ -96,7 +96,7 @@ export async function fetchMyReviews(): Promise<FetchMyReviewsResponse> {
 
 // limit, cursor 등 옵션 파라미터 필요시 추가
 export async function fetchMyPlaces(
-  limit = 10,
+  limit = 100,
   cursor?: number | string,
 ): Promise<FetchMyPlaceResponse> {
   const accessToken = useAuthStore.getState().accessToken;

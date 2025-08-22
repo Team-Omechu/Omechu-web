@@ -48,6 +48,7 @@ const ITEMS_PER_PAGE = 5;
 const IO_ROOT_MARGIN = "0px 0px 160px 0px";
 const IO_THRESHOLD = 0;
 const LOADING_DELAY_MS = 1800;
+const PLACES_PAGE_SIZE = 1000; // 등록한 맛집 페이지네이션 단위
 
 /* ---------- 유틸 ---------- */
 const formatDate = (iso?: string) => {
@@ -67,8 +68,10 @@ export default function MyActivityClient() {
 
   // 인증/하이드레이션
   const user = useAuthStore((s) => s.user);
-  const accessToken = useAuthStore.getState().accessToken;
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const refreshToken = useAuthStore((s) => s.refreshToken);
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;
+  const isAuthenticated = Boolean(accessToken && refreshToken);
 
   // 공통 UI 상태
   const [modalOpen, setModalOpen] = useState(false);
@@ -88,6 +91,9 @@ export default function MyActivityClient() {
   // 데이터
   const [reviewList, setReviewList] = useState<MyReviewItem[]>([]);
   const [myRestaurants, setMyRestaurants] = useState<MyRestaurant[]>([]);
+  const [placesOffset, setPlacesOffset] = useState(0);
+  const [hasMorePlaces, setHasMorePlaces] = useState(true);
+  const [fetchingPlaces, setFetchingPlaces] = useState(false);
 
   // 토스트
   const [showToast, setShowToast] = useState(false);
@@ -97,6 +103,7 @@ export default function MyActivityClient() {
   const [deletePending, setDeletePending] = useState<Set<number>>(new Set());
   const [editOpen, setEditOpen] = useState(false);
   const [editing, setEditing] = useState<MyRestaurant | null>(null);
+  const [lastHeartClickAt, setLastHeartClickAt] = useState(0);
 
   /* 후기 패칭 */
   useEffect(() => {
@@ -148,7 +155,11 @@ export default function MyActivityClient() {
     setLoading(true);
     setError(null);
 
-    fetchMyPlaces(10, 10)
+    // 첫 페이지 로드
+    setPlacesOffset(0);
+    setHasMorePlaces(true);
+    setFetchingPlaces(true);
+    fetchMyPlaces(PLACES_PAGE_SIZE, 0)
       .then((data: any) => {
         const places = data.success?.data ?? [];
         const mapped: MyRestaurant[] = places.map((item: any) => ({
@@ -162,7 +173,6 @@ export default function MyActivityClient() {
           images: item.rest_image ? [{ link: item.rest_image }] : [],
           address: item.address ?? "",
           reviews: item._count?.review ?? 0,
-          // 서버에서 내려올 수 있는 다양한 필드명을 보수적으로 처리
           isLiked: Boolean(
             item.isLiked ??
               item.is_liked ??
@@ -174,20 +184,28 @@ export default function MyActivityClient() {
               item.is_favorite,
           ),
         }));
-        setMyRestaurants(mapped);
+        // 최신이 위로 오도록 페이지 단위 역순 정렬(서버 정렬 불명 시 안전)
+        const firstBatch = mapped.slice().reverse();
+        setMyRestaurants(firstBatch);
+        setVisibleCount(firstBatch.length); // 현재까지 로드한 만큼 표시
+        setHasMorePlaces(places.length === PLACES_PAGE_SIZE);
+        setPlacesOffset(PLACES_PAGE_SIZE);
         setModalOpen(false);
       })
       .catch((err: any) => {
         if (err?.response?.status === 401) setModalOpen(true);
         setError("맛집 목록을 불러오지 못했습니다.");
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setFetchingPlaces(false);
+        setLoading(false);
+      });
   }, [hasHydrated, accessToken, selectedIndex]);
 
   // 등록한 맛집 재조회 (편집/찜 변경 등 후 싱크용)
   const reloadMyPlaces = useCallback(async () => {
     try {
-      const data: any = await fetchMyPlaces(10, 10);
+      const data: any = await fetchMyPlaces(PLACES_PAGE_SIZE, 0);
       const places = data.success?.data ?? [];
       const mapped: MyRestaurant[] = places.map((item: any) => ({
         id: Number(item.id),
@@ -211,31 +229,90 @@ export default function MyActivityClient() {
             item.is_favorite,
         ),
       }));
-      setMyRestaurants(mapped);
+      // 첫 페이지로 리셋
+      setPlacesOffset(PLACES_PAGE_SIZE);
+      const firstBatch = mapped.slice().reverse();
+      setMyRestaurants(firstBatch);
+      setVisibleCount(firstBatch.length);
+      setHasMorePlaces(mapped.length >= PLACES_PAGE_SIZE);
     } catch (err) {
       console.error("[reloadMyPlaces] 실패:", err);
     }
   }, []);
 
+  // 다음 페이지 로더
+  const loadMorePlaces = useCallback(async () => {
+    if (fetchingPlaces || !hasMorePlaces || !accessToken) return;
+    setFetchingPlaces(true);
+    try {
+      const data: any = await fetchMyPlaces(PLACES_PAGE_SIZE, placesOffset);
+      const places = data.success?.data ?? [];
+      const mapped: MyRestaurant[] = places.map((item: any) => ({
+        id: Number(item.id),
+        name: item.name || "-",
+        repre_menu:
+          Array.isArray(item.repre_menu) && item.repre_menu.length > 0
+            ? (item.repre_menu[0]?.menu ?? "")
+            : "",
+        rating: item.rating ?? 0,
+        images: item.rest_image ? [{ link: item.rest_image }] : [],
+        address: item.address ?? "",
+        reviews: item._count?.review ?? 0,
+        isLiked: Boolean(
+          item.isLiked ??
+            item.is_liked ??
+            item.isHearted ??
+            item.hearted ??
+            item.my_heart ??
+            item.myHeart ??
+            item.favorited ??
+            item.is_favorite,
+        ),
+      }));
+      const batch = mapped.slice().reverse();
+      setMyRestaurants((prev) => [...prev, ...batch]);
+      setVisibleCount((prev) => prev + batch.length);
+      setHasMorePlaces(places.length === PLACES_PAGE_SIZE);
+      setPlacesOffset((prev) => prev + PLACES_PAGE_SIZE);
+    } catch (err) {
+      console.error("[loadMorePlaces] 실패:", err);
+    } finally {
+      setFetchingPlaces(false);
+    }
+  }, [fetchingPlaces, hasMorePlaces, accessToken, placesOffset]);
+
   /* 무한 스크롤 */
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (!target.isIntersecting || listLoading) return;
-      setListLoading(true);
-      setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
+      if (!target.isIntersecting) return;
+
+      if (selectedIndex === 0) {
+        if (listLoading) return;
+        setListLoading(true);
+        setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
+        return;
+      }
+      // 등록한 맛집 탭(1): 다음 페이지 로드
+      if (selectedIndex === 1) {
+        loadMorePlaces();
+        return;
+      }
     },
-    [listLoading],
+    [listLoading, selectedIndex, loadMorePlaces],
   );
 
   useEffect(() => {
+    // 리뷰 탭: 기존 visibleCount 기반, 등록 탭: hasMorePlaces 기준
     const total =
       selectedIndex === 0
         ? reviewList.length
         : selectedIndex === 1
           ? myRestaurants.length
           : 0;
-    if (visibleCount >= total) return;
+
+    if (selectedIndex === 0 && visibleCount >= total) return;
+    if (selectedIndex === 1 && !hasMorePlaces) return;
 
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
@@ -251,6 +328,7 @@ export default function MyActivityClient() {
     visibleCount,
     reviewList.length,
     myRestaurants.length,
+    hasMorePlaces,
   ]);
 
   useEffect(() => {
@@ -374,8 +452,8 @@ export default function MyActivityClient() {
   // 토큰 없으면 모달, 생기면 닫기
   useEffect(() => {
     if (!hasHydrated) return;
-    setModalOpen(!accessToken);
-  }, [hasHydrated, accessToken]);
+    setModalOpen(!isAuthenticated);
+  }, [hasHydrated, isAuthenticated]);
 
   const handlePlaceLike = async (restaurantId: number) => {
     if (likePending.has(restaurantId)) return;
@@ -388,6 +466,7 @@ export default function MyActivityClient() {
 
     try {
       await likePlace(restaurantId);
+      await reloadMyPlaces(); // 서버 소스 기준으로 즉시 동기화
     } catch {
       // 실패 롤백
       setMyRestaurants((prev) =>
@@ -416,6 +495,7 @@ export default function MyActivityClient() {
 
     try {
       await unlikePlace(restaurantId);
+      await reloadMyPlaces(); // 서버 소스 기준으로 즉시 동기화
     } catch {
       // 실패 롤백
       setMyRestaurants((prev) =>
@@ -565,21 +645,52 @@ export default function MyActivityClient() {
                           편집
                         </button>
                         <FoodCard
+                          isAuthenticated={isAuthenticated}
+                          onRequireLogin={() => {
+                            console.warn(
+                              "[FoodCard] unauthenticated – opening login modal",
+                            );
+                            setModalOpen(true);
+                          }}
+                          // @ts-ignore - 단일 토글형/대체 네이밍 대응
+                          onLikeToggle={() => {
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onLikeToggle]", item.id);
+                            if (item.isLiked)
+                              handlePlaceUnlike(Number(item.id));
+                            else handlePlaceLike(Number(item.id));
+                          }}
+                          // @ts-ignore - 대체 네이밍(onHeartClick) 대응
+                          onHeartClick={() => {
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onHeartClick]", item.id);
+                            if (item.isLiked)
+                              handlePlaceUnlike(Number(item.id));
+                            else handlePlaceLike(Number(item.id));
+                          }}
+                          onClick={() => {
+                            const now = Date.now();
+                            if (now - lastHeartClickAt < 400) {
+                              // 하트 클릭 직후에는 카드 네비게이션 무시
+                              return;
+                            }
+                            router.push(
+                              `/restaurant/restaurant-detail/${item.id}`,
+                            );
+                          }}
                           onLike={() => {
-                            if (item.isLiked) return; // 이미 찜 상태면 중복 호출 방지
-                            if (likePending.has(Number(item.id))) return; // 진행 중이면 무시
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onLike]", item.id);
                             handlePlaceLike(Number(item.id));
-                            console.log("[like] id:", item.id, typeof item.id);
                           }}
                           onUnlike={() => {
-                            if (!item.isLiked) return; // 이미 해제 상태면 중복 호출 방지
-                            if (likePending.has(Number(item.id))) return; // 진행 중이면 무시
+                            setLastHeartClickAt(Date.now());
+                            if (likePending.has(Number(item.id))) return;
+                            console.log("[FoodCard:onUnlike]", item.id);
                             handlePlaceUnlike(Number(item.id));
-                            console.log(
-                              "[unlike] id:",
-                              item.id,
-                              typeof item.id,
-                            );
                           }}
                           item={{
                             id: item.id,
@@ -596,17 +707,14 @@ export default function MyActivityClient() {
                             address: item.address ?? "",
                             rest_tag: [],
                             like: item.isLiked ?? false,
+                            // @ts-ignore
+                            isLiked: item.isLiked ?? false,
                             reviews: 0,
                           }}
-                          onClick={() =>
-                            router.push(
-                              `/restaurant/restaurant-detail/${item.id}`,
-                            )
-                          }
                         />
                       </div>
                     ))}
-                    {myRestaurants.length > visibleCount && (
+                    {(hasMorePlaces || fetchingPlaces) && (
                       <div ref={loaderRef} className="h-[1px]" />
                     )}
                   </>
