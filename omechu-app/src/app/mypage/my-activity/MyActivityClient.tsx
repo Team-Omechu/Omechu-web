@@ -571,12 +571,12 @@ export default function MyActivityClient() {
 
       <main
         ref={mainRef}
-        className="flex flex-col items-center w-full h-screen px-2 pt-3 pb-8 overflow-y-auto scrollbar-hide"
+        className="flex h-screen w-full flex-col items-center overflow-y-auto px-2 pb-8 pt-3 scrollbar-hide"
       >
         {/* 후기 탭 */}
         {selectedIndex === 0 && (
           <>
-            <section className="flex justify-end w-full gap-1 pt-1 pb-3 pr-5 text-sm text-grey-normalActive">
+            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
               <SortSelector
                 options={[
                   { label: "추천 순", value: "recommended" },
@@ -598,9 +598,9 @@ export default function MyActivityClient() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex flex-col items-center w-full gap-7">
+              <section className="flex w-full flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="flex items-center justify-center w-full py-10 text-grey-normalActive">
+                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
                     작성한 후기가 없습니다.
                   </div>
                 ) : (
@@ -651,7 +651,7 @@ export default function MyActivityClient() {
         {selectedIndex === 1 && (
           <>
             {loading ? (
-              <div className="flex flex-col items-center w-full pt-3 gap-7">
+              <div className="flex w-full flex-col items-center gap-7 pt-3">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <SkeletonFoodCard key={i} />
                 ))}
@@ -659,9 +659,9 @@ export default function MyActivityClient() {
             ) : error ? (
               <div className="text-red-600">{error}</div>
             ) : (
-              <section className="flex flex-col w-full gap-5 px-2">
+              <section className="flex w-full flex-col gap-5 px-2">
                 {myRestaurants.length === 0 ? (
-                  <div className="flex items-center justify-center w-full py-10 text-grey-normalActive">
+                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
                     등록한 맛집이 없습니다.
                   </div>
                 ) : (
@@ -669,11 +669,11 @@ export default function MyActivityClient() {
                     {visiblePlaces.map((item) => (
                       <div
                         key={`${item.id}-${item.like || item.isLiked ? 1 : 0}`}
-                        className="flex flex-col w-full"
+                        className="flex w-full flex-col"
                       >
                         <button
                           type="button"
-                          className="w-full pr-2 mb-1 text-xs underline text-end text-grey-normalActive"
+                          className="mb-1 w-full pr-2 text-end text-xs text-grey-normalActive underline"
                           onClick={() => {
                             setEditing(item);
                             setEditOpen(true);
