@@ -25,6 +25,7 @@ function mapApiToRestaurant(apiData: any): Restaurant {
   const menus = apiData.repre_menu?.map((i: any) => i.menu) ?? [];
   return {
     id: Number(apiData.id),
+    google_place_id: apiData.google_place_id ?? "",
     name: apiData.name,
     address: apiData.address,
     rating: apiData.rating,
