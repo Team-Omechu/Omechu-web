@@ -16,36 +16,43 @@ Omechu is a food recommendation web application built with Next.js 15, React 19,
 - **Data Fetching**: TanStack React Query 5.83.0 with Axios 1.11.0
 - **Forms**: React Hook Form 7.59.0 with Zod 3.25.72 validation
 - **Authentication**: JWT-based with refresh token rotation
-- **Package Manager**: Yarn 4.9.2
+- **Package Manager**: pnpm 10.20.0
 - **Code Quality**: ESLint + Prettier with Husky pre-commit hooks
 
 ## Key Development Commands
 
 ```bash
 # Development
-yarn dev                 # Start development server
+pnpm dev                 # Start development server
 
 # Build & Production
-yarn build              # Build for production
-yarn start              # Start production server
+pnpm build              # Build for production
+pnpm start              # Start production server
 
 # Code Quality
-yarn lint               # Run ESLint
-yarn format             # Format with Prettier
-yarn format:check       # Check formatting
+pnpm lint               # Run ESLint
+pnpm format             # Format with Prettier
+pnpm format:check       # Check formatting
 
 # Git Hooks
-yarn prepare            # Setup Husky hooks
+pnpm prepare            # Setup Husky hooks
 ```
 
 ## Project Structure
 
+### Current Structure (Migrating to FSD)
 - **Main App**: `/omechu-app/` - Contains the Next.js application
-- **Source Code**: `/omechu-app/src/app/` - App Router structure
-- **Components**: Organized by feature areas (common, mainpage, mypage, etc.)
-- **API Layer**: Centralized in `/lib/api/` with axios instance
-- **State Management**: Zustand stores in `/lib/stores/`
-- **Types & Schemas**: Zod schemas for validation and TypeScript types
+- **Source Code**: `/omechu-app/src/` - Feature-Sliced Design architecture
+
+### Feature-Sliced Design (FSD) Layers
+- **app/**: Application-wide settings, providers, and routing
+- **entities/**: Business entities (User, Restaurant, Menu, Review)
+- **widgets/**: Complex UI blocks composed of entities
+- **shared/**: Reusable code (UI components, utils, hooks, API)
+
+### Migration Status
+- Currently transitioning from Next.js App Router structure to FSD
+- See `FSD_MIGRATION_PLAN.md` for detailed migration strategy
 
 ## Core Architecture Patterns
 

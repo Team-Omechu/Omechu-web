@@ -10,7 +10,9 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "fsd:migrate": "node ../scripts/migrate-to-fsd.js",
+    "fsd:check": "echo 'FSD architecture check - to be implemented'"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
@@ -55,5 +57,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@4.9.2+sha512.1fc009bc09d13cfd0e19efa44cbfc2b9cf6ca61482725eb35bbc5e257e093ebf4130db6dfe15d604ff4b79efd8e1e8e99b25fa7d0a6197c9f9826358d4d65c3c"
+  "packageManager": "pnpm@10.20.0"
 }
