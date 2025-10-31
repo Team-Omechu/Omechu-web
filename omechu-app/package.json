@@ -37,7 +37,6 @@
     "@next/eslint-plugin-next": "^16.0.1",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-datepicker": "^7.0.0",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
