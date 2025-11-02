@@ -1,3 +1,6 @@
+// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
+// 새 위치: src/app/(routes)/(auth)/sign-up/api/agreements.ts
+
 import axios from "axios";
 import axiosInstance from "@/lib/api/axios";
 import type { ApiResponse } from "@/lib/api/auth";

@@ -1,3 +1,6 @@
+// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
+// 새 위치: src/app/(routes)/(auth)/forgot-password/components/ForgotPasswordForm.tsx
+
 "use client";
 
 import Link from "next/link";
