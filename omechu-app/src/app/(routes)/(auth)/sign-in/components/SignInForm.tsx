@@ -10,7 +10,7 @@ import { fetchProfile } from "@/entities/user/api/profileApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import Checkbox from "@/auth/components/Checkbox";
+import Checkbox from "@/components/common/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";

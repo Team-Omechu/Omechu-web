@@ -1,6 +1,3 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/app/(routes)/(auth)/reset-password/page.tsx
-
 "use client";
 
 import { Suspense, useState } from "react";
@@ -8,13 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import type { ResetPasswordFormValues } from "@/auth/schemas/auth.schema";
-import { useResetPasswordMutation } from "@/lib/hooks/useAuth";
+import type { ResetPasswordFormValues } from "@/entities/user/model/auth.schema";
+import { useResetPasswordMutation } from "@/entities/user/lib/hooks/useAuth";
 import Toast from "@/components/common/Toast";
 
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import Header from "@/components/common/Header";
-import { ApiClientError } from "@/lib/api/auth";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 export default function ResetPasswordPage() {
   return (

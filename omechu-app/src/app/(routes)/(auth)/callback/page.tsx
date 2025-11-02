@@ -1,13 +1,10 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/app/(routes)/(auth)/callback/page.tsx
-
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
-import { getCurrentUser } from "@/lib/api/auth";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { getCurrentUser } from "@/entities/user/api/authApi";
 import Toast from "@/components/common/Toast";
 
 export default function AuthCallbackPage() {
