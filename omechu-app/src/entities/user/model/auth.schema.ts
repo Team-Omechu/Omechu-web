@@ -1,6 +1,3 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/model/auth.schema.ts
-
 import { z } from "zod";
 
 // 로그인 폼 검증 스키마

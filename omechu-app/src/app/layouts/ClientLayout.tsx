@@ -1,10 +1,10 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
-import { useUserQuery } from "@/lib/hooks/useAuth";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import BottomNav from "@/components/common/Bottom";
+import { useUserQuery } from "@/entities/user/lib/hooks/useAuth";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 export default function ClientLayout({
   children,

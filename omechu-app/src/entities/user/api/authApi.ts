@@ -1,15 +1,12 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/api/authApi.ts
-
 import axios from "axios";
 import type {
   LoginFormValues,
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
-} from "@/auth/schemas/auth.schema";
+} from "@/entities/user/model/auth.schema";
 import axiosInstance from "@/lib/api/axios";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 // 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
 export class ApiClientError extends Error {

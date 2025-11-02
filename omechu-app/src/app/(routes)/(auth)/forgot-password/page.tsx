@@ -5,9 +5,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Toast from "@/components/common/Toast";
-import type { FindPasswordFormValues } from "@/auth/schemas/auth.schema";
-import { useRequestPasswordResetMutation } from "@/lib/hooks/useAuth";
-import { ApiClientError } from "@/lib/api/auth";
+import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
+import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 

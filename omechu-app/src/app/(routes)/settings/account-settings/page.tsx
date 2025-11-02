@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useProfile } from "@/mypage/hooks/useProfile";
-import { logout } from "@/lib/api/auth";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useProfile } from "@/entities/user/lib/hooks/useProfile";
+import { logout } from "@/entities/user/api/authApi";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";

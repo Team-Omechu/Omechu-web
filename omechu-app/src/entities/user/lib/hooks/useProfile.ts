@@ -1,9 +1,6 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/lib/hooks/useProfile.ts
-
 import { useEffect, useState } from "react";
-import { fetchProfile } from "../api/profile";
-import { ProfileType } from "../types/profileType";
+import { fetchProfile } from "@/entities/user/api/profileApi";
+import { ProfileType } from "@/entities/user/model/profile.types";
 
 // userId는 number 타입으로 사용합니다.
 export function useProfile() {

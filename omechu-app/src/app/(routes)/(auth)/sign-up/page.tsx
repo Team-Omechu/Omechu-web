@@ -13,11 +13,10 @@ import { TERMS_CONFIG } from "@/components/settings/terms.config";
 import {
   signupSchema,
   type SignupFormValues,
-} from "@/auth/schemas/auth.schema";
-import { useSignupMutation } from "@/lib/hooks/useAuth";
-import { useAuthStore } from "@/lib/stores/auth.store";
-import { useLoginMutation } from "@/lib/hooks/useAuth";
-import { ApiClientError } from "@/lib/api/auth";
+} from "@/entities/user/model/auth.schema";
+import { useSignupMutation, useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 import SignUpForm from "./components/SignUpForm";
 import TermsModal from "./components/TermsModal";

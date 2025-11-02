@@ -1,7 +1,7 @@
 import axios from "axios";
 import axiosInstance from "@/lib/api/axios";
-import type { ApiResponse } from "@/lib/api/auth";
-import { ApiClientError } from "@/lib/api/auth";
+import type { ApiResponse } from "@/entities/user/api/authApi";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 export interface AgreementConsentBody {
   agreeAll: boolean;

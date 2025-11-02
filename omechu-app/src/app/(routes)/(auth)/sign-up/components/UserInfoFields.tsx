@@ -7,10 +7,10 @@ import Input from "@/components/common/Input";
 import {
   useSendVerificationCodeMutation,
   useVerifyVerificationCodeMutation,
-} from "@/lib/hooks/useAuth";
-import type { SignupFormValues } from "@/auth/schemas/auth.schema";
+} from "@/entities/user/lib/hooks/useAuth";
+import type { SignupFormValues } from "@/entities/user/model/auth.schema";
 import Toast from "@/components/common/Toast";
-import { ApiClientError } from "@/lib/api/auth";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 export default function UserInfoFields() {
   const {
