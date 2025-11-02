@@ -18,7 +18,7 @@ export default function FilterSection({
   return (
     <div className="mt-3 flex items-center gap-2">
       <button
-        className="flex flex-shrink-0 items-center justify-between gap-1"
+        className="flex shrink-0 items-center justify-between gap-1"
         onClick={onClickMyLocation}
       >
         <Image
@@ -34,7 +34,7 @@ export default function FilterSection({
         onRemove={onRemoveFilter}
         className="px-2"
       />
-      <button className="ml-auto flex-shrink-0" onClick={onOpenFilterModal}>
+      <button className="ml-auto shrink-0" onClick={onOpenFilterModal}>
         <Image
           src={"/menu/menu_filter.svg"}
           alt="사용자필터"

@@ -23,7 +23,7 @@ export default function MenuCard({
       onClick={onClick}
     >
       <div
-        className={`flex h-[110px] items-center gap-3 rounded-md border border-grey-darkHover p-3 ${
+        className={`flex h-[110px] items-center gap-3 rounded-md border border-grey-dark-hover p-3 ${
           selected ? "bg-gray-200" : "bg-white"
         }`}
       >
@@ -32,11 +32,11 @@ export default function MenuCard({
           alt={title}
           width={80}
           height={80}
-          className="flex-shrink-0 rounded"
+          className="shrink-0 rounded-sm"
         />
         <div className="flex flex-1 flex-col justify-center">
           <h3 className="font-semibold text-secondary-normal">{title}</h3>
-          <p className="mt-1 line-clamp-2 text-sm leading-snug text-grey-normalActive">
+          <p className="mt-1 line-clamp-2 text-sm leading-snug text-grey-normal-active">
             {description}
           </p>
         </div>

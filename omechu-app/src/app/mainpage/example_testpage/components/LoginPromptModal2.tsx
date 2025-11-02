@@ -28,7 +28,7 @@ const LoginPromptModal2 = ({ onConfirm, onClose }: LoginPromptModal2Props) => {
 
       <div className="mb-6 flex flex-col gap-2">
         <h2 className="text-xl text-grey-darker">더 많은 기능을 원하시나요?</h2>
-        <p className="text-sm text-grey-normalActive">
+        <p className="text-sm text-grey-normal-active">
           로그인 후 더 다양한 서비스를 누려보세요
         </p>
       </div>

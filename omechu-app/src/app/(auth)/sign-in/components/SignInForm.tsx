@@ -209,7 +209,7 @@ export default function SignInForm() {
           </SquareButton>
         </div>
 
-        <div className="mt-2 flex items-center justify-between text-sm text-grey-normalActive">
+        <div className="mt-2 flex items-center justify-between text-sm text-grey-normal-active">
           <Checkbox
             id="remember-me"
             label="로그인 상태 유지"
@@ -219,7 +219,7 @@ export default function SignInForm() {
             <Link href="/forgot-password" className="hover:underline">
               비밀번호 찾기
             </Link>
-            <span className="text-grey-normalActive">|</span>
+            <span className="text-grey-normal-active">|</span>
             <Link href="/sign-up" className="hover:underline">
               회원가입
             </Link>

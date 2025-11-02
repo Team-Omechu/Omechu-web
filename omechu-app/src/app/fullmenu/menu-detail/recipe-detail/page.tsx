@@ -133,7 +133,7 @@ function RecipeDetailClient() {
         {/* 레시피 영상 */}
         {menu.recipe_link && (
           <section className="mb-6">
-            <div className="mx-auto aspect-video w-full max-w-md overflow-hidden rounded-lg border border-grey-darkHover shadow-sm">
+            <div className="mx-auto aspect-video w-full max-w-md overflow-hidden rounded-lg border border-grey-dark-hover shadow-xs">
               <iframe
                 src={getEmbedUrl(menu.recipe_link) || ""}
                 title={menu.recipe_video_name || "레시피 영상"}

@@ -35,7 +35,7 @@ export default function Review({
   isOptionOpen = false,
 }: ReviewProps) {
   return (
-    <section className="flex h-fit w-full flex-col gap-2 rounded-xl border-[1px] border-grey-darkHover bg-white p-4">
+    <section className="flex h-fit w-full flex-col gap-2 rounded-xl border border-grey-dark-hover bg-white p-4">
       {/* 프로필사진, 닉네임, 작성일 | 추천 버튼, 설정버튼 */}
       <div className="relative flex justify-between">
         <div className="flex items-center gap-3">
@@ -71,7 +71,7 @@ export default function Review({
           </button>
         </div>
         {isOptionOpen && (
-          <div className="absolute -right-1 top-6 rounded border bg-white p-2 shadow">
+          <div className="absolute -right-1 top-6 rounded-sm border bg-white p-2 shadow-sm">
             <button
               onClick={onReport}
               className="flex w-full items-center justify-center gap-2 text-left"
@@ -93,7 +93,7 @@ export default function Review({
           {"★".repeat(rating) + "☆".repeat(5 - rating)}
         </span>
         <span className="text-base font-normal text-[#828282]">{content}</span>
-        <div className="mt-1 flex max-h-52 flex-shrink-0 gap-2 overflow-x-scroll scroll-smooth scrollbar-hide">
+        <div className="mt-1 flex max-h-52 shrink-0 gap-2 overflow-x-scroll scroll-smooth scrollbar-hide">
           {reviewImg?.map((item, index) => (
             <Image
               key={`review-img-${index}`}
@@ -101,7 +101,7 @@ export default function Review({
               alt={`후기 이미지 ${index + 1}`}
               width={180}
               height={180}
-              className="rounded-md border-[1px] border-gray-100 object-contain"
+              className="rounded-md border border-gray-100 object-contain"
             />
           ))}
         </div>
@@ -111,7 +111,7 @@ export default function Review({
         {tag?.map((item, tagIdx) => (
           <div
             key={`tag-${id}-${tagIdx}`}
-            className="font-nomal w-fit rounded-3xl border-[1px] border-grey-darkHover bg-white px-3 pb-0.5 pt-1 text-sm duration-300 hover:scale-105"
+            className="font-nomal w-fit rounded-3xl border border-grey-dark-hover bg-white px-3 pb-0.5 pt-1 text-sm duration-300 hover:scale-105"
           >
             {item}
           </div>

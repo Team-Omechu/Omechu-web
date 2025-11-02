@@ -40,7 +40,7 @@ export default function PasswordInput({
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
-        className="h-10 w-full rounded-md border-[1px] border-grey-darkHover text-center text-sm font-normal text-grey-normalActive"
+        className="h-10 w-full rounded-md border border-grey-dark-hover text-center text-sm font-normal text-grey-normal-active"
       />
       {/* 비밀번호 보기 아이콘 */}
       <Image

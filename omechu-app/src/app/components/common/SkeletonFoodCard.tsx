@@ -5,15 +5,15 @@ export default function SkeletonFoodCard() {
       <div className="flex flex-1 flex-col gap-2">
         {/* 식당명, 별점, 하트 */}
         <div className="flex items-center gap-2">
-          <div className="h-5 w-32 rounded bg-gray-200" /> {/* 식당명 */}
-          <div className="h-4 w-10 rounded bg-gray-200" />
+          <div className="h-5 w-32 rounded-sm bg-gray-200" /> {/* 식당명 */}
+          <div className="h-4 w-10 rounded-sm bg-gray-200" />
           <div className="ml-auto h-5 w-5 rounded-full bg-gray-200" />
           {/* 하트 */}
         </div>
         {/* 주소 */}
-        <div className="h-4 w-1/2 rounded bg-gray-200" />
+        <div className="h-4 w-1/2 rounded-sm bg-gray-200" />
         {/* 대표메뉴 */}
-        <div className="mt-2 h-4 w-16 rounded bg-gray-200" />
+        <div className="mt-2 h-4 w-16 rounded-sm bg-gray-200" />
       </div>
       {/* 우측: 미리보기 이미지 */}
       <div className="h-20 w-20 shrink-0 rounded-md bg-gray-200" />

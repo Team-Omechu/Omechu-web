@@ -97,7 +97,7 @@ export default function FoodCard({
 
   return (
     <div
-      className="flex items-start justify-between rounded-xl border border-grey-darkHover bg-white p-3 shadow-md"
+      className="flex items-start justify-between rounded-xl border border-grey-dark-hover bg-white p-3 shadow-md"
       onClick={onClick}
     >
       <div className="flex-1">
@@ -112,7 +112,7 @@ export default function FoodCard({
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.address}</p>
         {item.menus && (
-          <p className="mb-1 text-sm font-bold text-grey-normalActive">
+          <p className="mb-1 text-sm font-bold text-grey-normal-active">
             {item.menus[0]}
           </p>
         )}
@@ -141,7 +141,7 @@ export default function FoodCard({
         <img
           src={imageSrc}
           alt={item.menus?.[0] ?? "음식"}
-          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-cover"
+          className="h-18 w-18 rounded-xs border border-grey-dark-hover object-cover"
         />
       </div>
     </div>

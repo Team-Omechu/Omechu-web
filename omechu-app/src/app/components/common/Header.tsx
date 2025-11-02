@@ -8,7 +8,7 @@ type HeaderProps = {
 const Header = ({ title, leftChild, rightChild, className }: HeaderProps) => {
   return (
     <header
-      className={`border-grey-darkHoverActive relative z-10 flex min-h-[49px] w-full items-center border-none bg-main-normal px-5 py-2.5 text-[#393939] hover:bg-main-normalHover ${className}`}
+      className={`border-grey-darkHoverActive relative z-10 flex min-h-[49px] w-full items-center border-none bg-main-normal px-5 py-2.5 text-[#393939] hover:bg-main-normal-hover ${className}`}
     >
       <div className="flex w-1/5 justify-start">{leftChild}</div>
       <div className="flex w-3/5 justify-center text-xl font-medium">

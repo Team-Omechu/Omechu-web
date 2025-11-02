@@ -44,7 +44,7 @@ export default function ReviewInfiniteList({ restId }: { restId: number }) {
         <button
           onClick={() => fetchNextPage()}
           disabled={isFetchingNextPage}
-          className="mt-4 w-full rounded bg-gray-100 py-2"
+          className="mt-4 w-full rounded-sm bg-gray-100 py-2"
         >
           {isFetchingNextPage ? "불러오는 중..." : "더보기"}
         </button>

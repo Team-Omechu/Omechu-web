@@ -146,7 +146,7 @@ export default function MapPage() {
             latitude={location.latitude}
             longitude={location.longitude}
             name={restaurant.name}
-            className="h-[20rem] w-[21rem]"
+            className="h-80 w-84"
           />
         ) : (
           <p className="mt-10 text-gray-500">지도 정보를 불러오는 중...</p>

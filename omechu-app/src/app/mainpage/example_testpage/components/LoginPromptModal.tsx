@@ -17,7 +17,7 @@ const LoginPromptModal = ({
 }: LoginPromptModalProps) => {
   // 이 컴포넌트는 ModalWrapper 내에서 사용되어야 합니다.
   return (
-    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-grey-darkHover bg-white px-6 pb-6 pt-6 text-center shadow-lg">
+    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] border border-grey-dark-hover bg-white px-6 pb-6 pt-6 text-center shadow-lg">
       <button onClick={onClose} className="absolute right-5 top-5 z-10 p-1">
         <Image src="/x/black_x_icon.svg" alt="close" width={24} height={24} />
       </button>
@@ -36,7 +36,7 @@ const LoginPromptModal = ({
         <h2 className="text-xl text-grey-darker">
           더 정교한 추천을 원하시나요?
         </h2>
-        <p className="text-sm text-grey-normalActive">
+        <p className="text-sm text-grey-normal-active">
           로그인 후 더 다양한 서비스를 누려보세요
         </p>
       </div>
@@ -46,7 +46,7 @@ const LoginPromptModal = ({
           onClick={onSkip}
           variant="gray"
           size="sm"
-          className="flex-1 border border-grey-normalActive"
+          className="flex-1 border border-grey-normal-active"
         >
           그냥 추천받기
         </RoundButton>

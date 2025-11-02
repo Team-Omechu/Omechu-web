@@ -134,7 +134,7 @@ export default function RestaurantEditModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-main-normal px-4 py-5">
+    <div className="fixed inset-0 z-9999 h-screen w-screen overflow-y-auto bg-main-normal px-4 py-5">
       {/* 헤더 */}
       <Header
         title="맛집 수정"

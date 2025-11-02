@@ -50,7 +50,7 @@ export default function TermForLocationInfo() {
             {/* 조항 내용 */}
             <div
               className={`whitespace-pre-wrap text-base font-normal leading-relaxed ${
-                item.index ? "text-grey-normalActive" : "text-[#393939]"
+                item.index ? "text-grey-normal-active" : "text-[#393939]"
               }`}
             >
               {item.content}

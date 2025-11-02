@@ -23,7 +23,7 @@ export default function SearchResultEmpty({
         </p>
       </div>
 
-      <hr className="mt-8 w-full border-t border-grey-darkHover" />
+      <hr className="mt-8 w-full border-t border-grey-dark-hover" />
 
       {similarItems.length > 0 && (
         <div className="mt-4 flex flex-col gap-4">

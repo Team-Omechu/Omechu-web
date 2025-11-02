@@ -261,9 +261,9 @@ export default function FoodieLog() {
             <button
               key={item}
               onClick={() => setSelectedPeriod(item)}
-              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-main-normalHover ${
+              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-main-normal-hover ${
                 selectedPeriod === item
-                  ? "border-b-[3px] border-grey-darkHover font-bold text-grey-darker"
+                  ? "border-b-[3px] border-grey-dark-hover font-bold text-grey-darker"
                   : "font-normal text-[#716F6C]"
               }`}
             >
@@ -274,13 +274,13 @@ export default function FoodieLog() {
 
         {/* 직접입력일 때: 날짜 범위 */}
         {selectedPeriod === "직접입력" && (
-          <section className="border-grey-darkHoverActive -mt-1 flex h-fit w-full items-center justify-center gap-3 border-t-[1px] px-1 py-3">
+          <section className="border-grey-darkHoverActive -mt-1 flex h-fit w-full items-center justify-center gap-3 border-t px-1 py-3">
             <CustomDatePicker onChange={handleDateRangeChange} />
           </section>
         )}
 
         {/* 정렬 */}
-        <section className="border-grey-darkHoverActive -mt-1 flex w-full justify-end gap-3 border-t-[1px] pr-3 pt-4 text-sm text-grey-normalActive">
+        <section className="border-grey-darkHoverActive -mt-1 flex w-full justify-end gap-3 border-t pr-3 pt-4 text-sm text-grey-normal-active">
           <button
             className={
               sortOrder === "MostLogged" ? "font-semibold text-grey-darker" : ""
@@ -311,7 +311,7 @@ export default function FoodieLog() {
 
         {/* 요약/기간 */}
         {stats && (
-          <section className="my-2 w-full px-3 text-xs text-grey-normalActive">
+          <section className="my-2 w-full px-3 text-xs text-grey-normal-active">
             <div className="flex items-center justify-between">
               <span>{stats.dateRange?.displayRange}</span>
               <span>
@@ -352,7 +352,7 @@ export default function FoodieLog() {
                 return (
                   <div
                     key={`${name || "no-name"}-${idx}`}
-                    className="flex h-fit w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border border-grey-darkHover bg-white py-3"
+                    className="flex h-fit w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border border-grey-dark-hover bg-white py-3"
                     title={name || "(이름 없음)"}
                   >
                     {url ? (
@@ -389,12 +389,12 @@ export default function FoodieLog() {
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
 
         {visibleCount < totalCount && (
-          <div ref={loaderRef} className="h-[1px]" />
+          <div ref={loaderRef} className="h-px" />
         )}
 
         {listLoading && visibleCount < totalCount && (
           <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-grey-darkHover border-t-gray-800" />
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-grey-dark-hover border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}

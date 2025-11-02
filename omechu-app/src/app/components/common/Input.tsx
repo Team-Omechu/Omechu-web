@@ -99,7 +99,7 @@ export default function Input({
           onChange={handleChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
-          className={`h-full w-full rounded-md border-[1px] border-grey-darkHover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normalActive`}
+          className={`h-full w-full rounded-md border border-grey-dark-hover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normal-active`}
         />
 
         {/* 버튼: showButton이 true일 때만 렌더링 */}
@@ -108,7 +108,7 @@ export default function Input({
             type="button"
             disabled={disabled}
             onClick={onClick}
-            className={`h-full w-fit flex-shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
+            className={`h-full w-fit shrink-0 rounded-lg px-4 pt-1 text-center text-xs text-white ${
               disabled
                 ? "bg-grey-normal" // 비활성화 상태
                 : "bg-secondary-normal hover:bg-[#0182CA] active:bg-[#0182CA]" // 활성 상태
@@ -137,7 +137,7 @@ export default function Input({
       {description && (
         <span
           className={`ml-1 mt-1 text-sm font-normal ${
-            showError ? "text-red-500" : "text-grey-normalActive"
+            showError ? "text-red-500" : "text-grey-normal-active"
           }`}
         >
           {description}

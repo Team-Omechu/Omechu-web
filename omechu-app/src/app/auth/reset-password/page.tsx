@@ -61,14 +61,14 @@ function ResetPasswordClient() {
         <Toast
           message={toastMessage}
           show={showToast}
-          className="fixed bottom-24 left-1/2 z-[9999] -translate-x-1/2"
+          className="fixed bottom-24 left-1/2 z-9999 -translate-x-1/2"
         />
         <section className="flex w-full flex-col gap-4 px-3 pt-16">
           <div className="mb-8 flex flex-col gap-3 text-center">
             <h1 className="text-xl font-medium text-grey-darker">
               비밀번호 재설정
             </h1>
-            <p className="text-sm font-normal text-grey-normalActive">
+            <p className="text-sm font-normal text-grey-normal-active">
               사용하실 새로운 비밀번호를 설정해 주세요
             </p>
           </div>

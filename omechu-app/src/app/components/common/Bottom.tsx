@@ -84,7 +84,7 @@ export default function BottomNav() {
             <div
               key={index}
               onClick={() => handleNavClick(item)}
-              className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-grey-lightActive"
+              className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-grey-light-active"
             >
               <Image src={iconSrc} alt={item.imgAlt} width={26} height={26} />
               <span

@@ -31,12 +31,12 @@ export default function TimeDropdown({
       {label && <p className="mb-1 text-gray-700">{label}</p>}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full rounded-md border border-grey-darkHover bg-white px-3 py-2 text-left"
+        className="w-full rounded-md border border-grey-dark-hover bg-white px-3 py-2 text-left"
       >
         {value} <span className="float-right">▼</span>
       </button>
       {isOpen && (
-        <ul className="absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border border-grey-darkHover bg-white shadow-lg">
+        <ul className="absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border border-grey-dark-hover bg-white shadow-lg">
           {times.map((time) => (
             <li
               key={time}

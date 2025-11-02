@@ -38,7 +38,7 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
   return (
     <div>
       <h2 className="mb-2 ml-1 text-base font-semibold">메뉴 정보</h2>
-      <div className="w-full rounded-md border border-grey-darkHover bg-white p-4 text-sm">
+      <div className="w-full rounded-md border border-grey-dark-hover bg-white p-4 text-sm">
         {/* 기본 영양 정보 */}
         <div className="text-sm text-gray-800">
           <p className="mb-2 font-medium text-grey-normal">기본 영양 정보</p>
@@ -67,13 +67,13 @@ export default function MenuInfo({ MenuItem }: MenuInfoProps) {
             </div>
           </div>
 
-          <hr className="my-4 border-grey-darkHover" />
+          <hr className="my-4 border-grey-dark-hover" />
 
           {/* 알레르기 유발 성분 */}
           <p className="mb-2 font-medium text-[#A3A3A3]">알레르기 유발 성분</p>
           <p className="mb-4 text-sm">{formatAllergics(MenuItem?.allergic)}</p>
 
-          <hr className="my-4 border-grey-darkHover" />
+          <hr className="my-4 border-grey-dark-hover" />
 
           {/* 레시피 */}
           <p className="mb-1 font-medium text-grey-normal">레시피</p>

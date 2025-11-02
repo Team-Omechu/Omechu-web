@@ -86,7 +86,7 @@ export default function ReviewAddModal({
   const isFormValid = rating > 0 && selectedTags.length > 0;
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#FFDEFB] px-4 py-5 scrollbar-hide">
+    <div className="fixed inset-0 z-9999 h-screen w-screen overflow-y-auto bg-[#FFDEFB] px-4 py-5 scrollbar-hide">
       {/* 헤더 */}
       <Header
         title={""}
@@ -135,7 +135,7 @@ export default function ReviewAddModal({
           className={`mb-4 w-full rounded-md py-2 font-bold text-white ${
             !isFormValid || isPending
               ? "cursor-not-allowed bg-gray-400"
-              : "bg-[#FF5B5B] hover:bg-primary-normalHover active:bg-primary-normalHover"
+              : "bg-[#FF5B5B] hover:bg-primary-normal-hover active:bg-primary-normal-hover"
           }`}
         >
           전달하기

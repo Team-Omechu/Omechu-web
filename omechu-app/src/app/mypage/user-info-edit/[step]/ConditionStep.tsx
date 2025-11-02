@@ -243,7 +243,7 @@ export default function ConditionStep() {
                 <button
                   key={label}
                   onClick={() => handleClick(label)}
-                  className={`h-14 w-full rounded-md border-[1px] px-2 py-1 pt-1 text-lg ${
+                  className={`h-14 w-full rounded-md border px-2 py-1 pt-1 text-lg ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
                       : "border-primary-normal bg-white text-primary-normal"
@@ -264,13 +264,13 @@ export default function ConditionStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
-            className="ml-5 text-base text-grey-normalActive"
+            className="ml-5 text-base text-grey-normal-active"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normalActive"
+            className="mr-5 text-base text-grey-normal-active"
           >
             건너뛰기 {">"}
           </button>

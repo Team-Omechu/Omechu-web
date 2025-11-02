@@ -179,7 +179,7 @@ export default function StateStep() {
               <button
                 key={`${label}-${activeLabel === label}`}
                 onClick={() => handleStatusClick(label)}
-                className={`h-12 w-60 rounded-md border-[1px] px-2 text-xl ${
+                className={`h-12 w-60 rounded-md border px-2 text-xl ${
                   activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
                     : "border-primary-normal bg-white text-primary-normal"
@@ -199,13 +199,13 @@ export default function StateStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
             }
-            className="ml-5 text-base text-grey-normalActive"
+            className="ml-5 text-base text-grey-normal-active"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normalActive"
+            className="mr-5 text-base text-grey-normal-active"
           >
             건너뛰기 {">"}
           </button>

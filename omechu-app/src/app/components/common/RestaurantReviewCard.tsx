@@ -84,7 +84,7 @@ export default function RestaurantReviewCard({
     const [imgSrc, setImgSrc] = useState(src);
 
     return (
-      <div className="relative h-[100px] min-w-[100px] flex-shrink-0">
+      <div className="relative h-[100px] min-w-[100px] shrink-0">
         <img
           className="object-cover"
           width={100}
@@ -101,11 +101,11 @@ export default function RestaurantReviewCard({
     <>
       <div>
         {/* Card 위 작성일 | 삭제 버튼 */}
-        <section className="mb-1 flex justify-between px-2 text-sm font-normal text-grey-normalActive">
+        <section className="mb-1 flex justify-between px-2 text-sm font-normal text-grey-normal-active">
           <span>{createdAt}</span>
           <button onClick={() => setShowDeleteModal(true)}>삭제</button>
         </section>
-        <section className="h-fit w-96 rounded-xl border-[1px] border-grey-darkHover bg-white p-4">
+        <section className="h-fit w-96 rounded-xl border border-grey-dark-hover bg-white p-4">
           {/* 식당 사진 | 식당 이름 & 평점 | 버튼 | 찜버튼 */}
           <div className="flex h-20 w-full justify-between gap-3">
             {/* 식당 사진 */}
@@ -135,7 +135,7 @@ export default function RestaurantReviewCard({
             </div>
 
             {/* 추천 수 | 찜 버튼 */}
-            <div className="flex h-fit flex-shrink-0 items-start gap-1 pt-1">
+            <div className="flex h-fit shrink-0 items-start gap-1 pt-1">
               <span className="text-base font-normal text-grey-darker">
                 {recommendCount ?? 0}
               </span>
@@ -156,7 +156,7 @@ export default function RestaurantReviewCard({
 
           {/* 리뷰 내용 */}
           {reviewText && (
-            <div className="px-1 py-2 text-base font-normal text-grey-normalActive">
+            <div className="px-1 py-2 text-base font-normal text-grey-normal-active">
               <span>{reviewText}</span>
             </div>
           )}
@@ -182,7 +182,7 @@ export default function RestaurantReviewCard({
               {tags.map((item, index) => (
                 <div
                   key={`${item}-${index}`}
-                  className="flex h-6 w-fit items-center justify-center rounded-3xl border-[1px] border-grey-darkHover px-2 pt-0.5"
+                  className="flex h-6 w-fit items-center justify-center rounded-3xl border border-grey-dark-hover px-2 pt-0.5"
                 >
                   <span className="text-sm font-normal text-grey-normal">
                     {item}

@@ -330,7 +330,7 @@ export default function RecommendedList() {
 
         {/* 초성 필터 버튼 */}
         <section>
-          <div className="grid h-[61px] w-[340px] grid-flow-dense grid-cols-7 rounded-2xl border-2 border-grey-darkHover bg-white px-7 py-2">
+          <div className="grid h-[61px] w-[340px] grid-flow-dense grid-cols-7 rounded-2xl border-2 border-grey-dark-hover bg-white px-7 py-2">
             {filteredChoSeong.map((item, index) => (
               <button
                 key={index}
@@ -339,7 +339,7 @@ export default function RecommendedList() {
                     prev === index ? undefined : index,
                   )
                 }
-                className={`rounded-full text-[15px] text-grey-darker hover:bg-grey-lightActive active:bg-grey-normalActive ${
+                className={`rounded-full text-[15px] text-grey-darker hover:bg-grey-light-active active:bg-grey-normal-active ${
                   selectedAlphabetIndex === index
                     ? "bg-[#d4f0ff] font-[#393939]"
                     : "font-normal"

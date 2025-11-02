@@ -121,12 +121,12 @@ const ProfileStep = () => {
                 value={nickname}
                 placeholder="닉네임을 입력해주세요"
                 onChange={(e) => handleNicknameChange(e.target.value)}
-                className="h-full w-full rounded-md border-[1px] border-grey-darkHover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normalActive"
+                className="h-full w-full rounded-md border border-grey-dark-hover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normal-active"
               />
             </div>
             <span
               className={`ml-1 mt-1 text-sm font-normal ${
-                isInvalid ? "text-primary-normal" : "text-grey-normalActive"
+                isInvalid ? "text-primary-normal" : "text-grey-normal-active"
               }`}
             >
               한영문자 2-12글자로 입력해주세요

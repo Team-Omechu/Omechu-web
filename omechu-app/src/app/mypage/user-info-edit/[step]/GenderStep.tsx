@@ -152,7 +152,7 @@ export default function GenderStep() {
                 key={label}
                 type="button"
                 onClick={() => handleGenderClick(label)}
-                className={`h-14 w-28 rounded-md border-[1px] px-2.5 pt-1 text-xl ${
+                className={`h-14 w-28 rounded-md border px-2.5 pt-1 text-xl ${
                   activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
                     : "border-primary-normal bg-white text-primary-normal"
@@ -169,7 +169,7 @@ export default function GenderStep() {
       <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
-          className="mr-5 text-base text-grey-normalActive"
+          className="mr-5 text-base text-grey-normal-active"
         >
           건너뛰기 {">"}
         </button>

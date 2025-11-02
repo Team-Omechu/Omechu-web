@@ -89,7 +89,7 @@ export default function MenuDetailPage() {
               width={22}
               height={30}
             />
-            <span className="mb-0.5 ml-1 flex flex-shrink-0">처음으로</span>
+            <span className="mb-0.5 ml-1 flex shrink-0">처음으로</span>
           </button>
         }
         className="h-[60px] border-b-0"
@@ -102,7 +102,7 @@ export default function MenuDetailPage() {
         <Image
           src={detailMenu?.image_link || "/image/image_empty.svg"}
           alt={detailMenu?.name || "메뉴 이미지"}
-          className="mx-auto h-24 w-24 rounded"
+          className="mx-auto h-24 w-24 rounded-sm"
           width={96}
           height={96}
         />
@@ -115,7 +115,7 @@ export default function MenuDetailPage() {
       <div className="mx-4 mt-5 flex items-center justify-between">
         <h3 className="text-lg font-semibold">취향 저격! 추천 맛집</h3>
         <button
-          className="px-4 text-sm text-grey-normalActive"
+          className="px-4 text-sm text-grey-normal-active"
           onClick={() =>
             router.push(
               `/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`,

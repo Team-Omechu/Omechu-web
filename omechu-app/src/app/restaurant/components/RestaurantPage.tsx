@@ -377,7 +377,7 @@ export default function Restaurant() {
         </ModalWrapper>
       )}
 
-      <hr className="my-1 border-grey-darkHover" />
+      <hr className="my-1 border-grey-dark-hover" />
 
       <div className="mb-2 mt-2 flex items-center justify-between text-xs">
         <button
@@ -445,7 +445,7 @@ export default function Restaurant() {
         onItemClick={(id) => handleItemClick(id)}
       />
 
-      <div ref={loaderRef} className="h-[1px]" />
+      <div ref={loaderRef} className="h-px" />
 
       {/* ✅ 검색 모드일 때는 검색 로딩을 보여주자 */}
       {(isSearchMode ? isSearchLoading : isLoading) && <LoadingIndicator />}

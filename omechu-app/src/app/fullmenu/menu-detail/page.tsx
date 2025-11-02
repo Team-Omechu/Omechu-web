@@ -125,7 +125,7 @@ function MenuDetailClient() {
           <Image
             src={menu.image_link || "/logo/logo.png"}
             alt={`${menu.name || "메뉴 이미지"}`}
-            className="rounded object-contain"
+            className="rounded-sm object-contain"
             width={144}
             height={144}
           />

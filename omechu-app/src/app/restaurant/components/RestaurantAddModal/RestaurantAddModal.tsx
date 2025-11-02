@@ -92,7 +92,7 @@ export default function RestaurantAddModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-[#FFDEFB] px-4 py-5 scrollbar-hide">
+    <div className="fixed inset-0 z-9999 h-screen w-screen overflow-y-auto bg-[#FFDEFB] px-4 py-5 scrollbar-hide">
       {/* 헤더 */}
       <Header
         title="맛집 등록"

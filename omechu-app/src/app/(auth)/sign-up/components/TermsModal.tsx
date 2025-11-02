@@ -26,7 +26,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
           <Image src="/x/black_x_icon.svg" alt="close" width={17} height={17} />
         </button>
       </div>
-      <div className="flex-grow overflow-y-auto rounded-md border bg-gray-50 p-3 text-grey-darker [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-secondary-normal [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
+      <div className="grow overflow-y-auto rounded-md border bg-gray-50 p-3 text-grey-darker [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-secondary-normal [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
         {terms.map((item, key) => (
           <section key={key} className="mb-5 flex flex-col justify-start gap-1">
             {item.index && item.about && (
@@ -39,7 +39,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
             )}
             <div
               className={`whitespace-pre-wrap text-sm leading-relaxed ${
-                item.index ? "text-grey-normalActive" : "text-grey-darker"
+                item.index ? "text-grey-normal-active" : "text-grey-darker"
               }`}
             >
               {item.content}
@@ -47,7 +47,7 @@ const TermsModal = ({ title, terms, onConfirm, onClose }: TermsModalProps) => {
           </section>
         ))}
       </div>
-      <div className="mb-2 text-center text-sm text-grey-normalActive">
+      <div className="mb-2 text-center text-sm text-grey-normal-active">
         위의 내용을 모두 확인했으며 <br /> 이에 동의합니다.
       </div>
       <div className="flex justify-center">

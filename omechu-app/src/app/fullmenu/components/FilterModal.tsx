@@ -38,7 +38,7 @@ export default function FilterModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen overflow-y-auto bg-main-normal">
+    <div className="fixed inset-0 z-9999 h-screen w-screen overflow-y-auto bg-main-normal">
       <Header
         title={"식사 상황 선택"}
         rightChild={
@@ -64,10 +64,10 @@ export default function FilterModal({
                 <button
                   key={item}
                   onClick={() => toggleFilter(item)}
-                  className={`rounded-lg border border-grey-darkHover px-3 py-[6px] text-[14px] ${
+                  className={`rounded-lg border border-grey-dark-hover px-3 py-[6px] text-[14px] ${
                     tempSelected.includes(item)
                       ? "bg-primary-normal text-white"
-                      : "border-grey-darkHover bg-white text-[#393939]"
+                      : "border-grey-dark-hover bg-white text-[#393939]"
                   }`}
                 >
                   {item}
@@ -78,7 +78,7 @@ export default function FilterModal({
         ))}
 
         <button
-          className="mx-24 mt-4 w-36 rounded-lg bg-primary-normal py-5 font-semibold text-white hover:bg-primary-normalHover active:bg-primary-normalHover"
+          className="mx-24 mt-4 w-36 rounded-lg bg-primary-normal py-5 font-semibold text-white hover:bg-primary-normal-hover active:bg-primary-normal-hover"
           onClick={() => {
             onApply(tempSelected);
             onClose();

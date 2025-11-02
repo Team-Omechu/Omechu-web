@@ -50,7 +50,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
   };
 
   return (
-    <div className="space-y-3 text-grey-darkHover">
+    <div className="space-y-3 text-grey-dark-hover">
       <h2 className="text-center text-lg text-grey-darker">
         서비스 약관에 동의해 주세요
       </h2>
@@ -73,7 +73,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("service")}
-            className="text-sm text-grey-normalActive"
+            className="text-sm text-grey-normal-active"
           >
             보기
           </button>
@@ -94,7 +94,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("privacy")}
-            className="text-sm text-grey-normalActive"
+            className="text-sm text-grey-normal-active"
           >
             보기
           </button>
@@ -115,7 +115,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("location")}
-            className="text-sm text-grey-normalActive"
+            className="text-sm text-grey-normal-active"
           >
             보기
           </button>

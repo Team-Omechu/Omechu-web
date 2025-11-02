@@ -166,7 +166,7 @@ export default function ProfileEditSection() {
               ? "cursor-not-allowed bg-grey-normal"
               : isPressed
                 ? "bg-[#DD6362]"
-                : "bg-primary-normal hover:bg-primary-normalHover"
+                : "bg-primary-normal hover:bg-primary-normal-hover"
           } `}
         >
           {isLoading ? "저장 중..." : "저장"}

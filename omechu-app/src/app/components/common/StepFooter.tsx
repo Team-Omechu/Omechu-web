@@ -29,7 +29,7 @@ const StepFooter = ({
           {showPrev ? (
             <button
               onClick={onPrev}
-              className="text-base text-grey-normalActive"
+              className="text-base text-grey-normal-active"
             >
               {"<"} 이전으로
             </button>
@@ -39,7 +39,7 @@ const StepFooter = ({
           {showNext ? (
             <button
               onClick={onNext}
-              className="text-base text-grey-normalActive"
+              className="text-base text-grey-normal-active"
             >
               건너뛰기 {">"}
             </button>

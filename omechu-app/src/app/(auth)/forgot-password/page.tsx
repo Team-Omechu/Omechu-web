@@ -43,7 +43,7 @@ export default function FindPasswordPage() {
           <h1 className="text-xl font-medium text-grey-darker">
             비밀번호 찾기
           </h1>
-          <p className="text-sm font-normal text-grey-normalActive">
+          <p className="text-sm font-normal text-grey-normal-active">
             가입하신 이메일 주소를 입력하여
             <br />
             비밀번호를 재설정하실 수 있어요

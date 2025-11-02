@@ -22,8 +22,8 @@ export default function SignInPage() {
         <SignInForm />
 
         <div className="relative flex w-full items-center">
-          <hr className="w-full border-t border-grey-darkHover" />
-          <span className="absolute left-1/2 -translate-x-1/2 bg-main-normal px-2 text-xs text-grey-normalActive">
+          <hr className="w-full border-t border-grey-dark-hover" />
+          <span className="absolute left-1/2 -translate-x-1/2 bg-main-normal px-2 text-xs text-grey-normal-active">
             or
           </span>
         </div>

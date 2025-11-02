@@ -8,18 +8,18 @@ export default function SkeletonRestaurantReviewCard() {
           {/* 식당 이름 & 평점 */}
           <div className="flex max-h-20 flex-1 flex-col pt-1">
             <div className="flex flex-1 items-center">
-              <div className="h-6 w-24 rounded bg-gray-200" /> {/* 식당명 */}
+              <div className="h-6 w-24 rounded-sm bg-gray-200" /> {/* 식당명 */}
             </div>
           </div>
           {/* 추천 수 | 찜 버튼 */}
-          <div className="flex h-fit flex-shrink-0 items-start gap-1 pt-1">
-            <div className="h-5 w-6 rounded bg-gray-200" /> {/* 추천수 */}
+          <div className="flex h-fit shrink-0 items-start gap-1 pt-1">
+            <div className="h-5 w-6 rounded-sm bg-gray-200" /> {/* 추천수 */}
             <div className="h-5 w-5 rounded-full bg-gray-200" /> {/* 찜 버튼 */}
           </div>
         </div>
         {/* 리뷰 내용 */}
         <div className="px-1 py-2">
-          <div className="h-5 w-3/4 rounded bg-gray-200" />
+          <div className="h-5 w-3/4 rounded-sm bg-gray-200" />
         </div>
         {/* 태그 3개 */}
         <div className="flex gap-2">

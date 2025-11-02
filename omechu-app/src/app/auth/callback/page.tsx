@@ -11,8 +11,8 @@ export default function AuthCallbackPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-[100dvh] items-center justify-center">
-          <span className="text-grey-normalActive">로그인 처리 중...</span>
+        <main className="flex min-h-dvh items-center justify-center">
+          <span className="text-grey-normal-active">로그인 처리 중...</span>
         </main>
       }
     >
@@ -62,9 +62,9 @@ function CallbackContent() {
   }, [params, router, login]);
 
   return (
-    <main className="flex min-h-[100dvh] items-center justify-center">
+    <main className="flex min-h-dvh items-center justify-center">
       <>
-        <span className="text-grey-normalActive">로그인 처리 중...</span>
+        <span className="text-grey-normal-active">로그인 처리 중...</span>
         <Toast message={toastMessage} show={showToast} />
       </>
     </main>

@@ -81,7 +81,7 @@ export default function FoodCard({
   };
 
   return (
-    <div className="flex items-start justify-between rounded-xl border border-grey-darkHover bg-white p-3 shadow-md">
+    <div className="flex items-start justify-between rounded-xl border border-grey-dark-hover bg-white p-3 shadow-md">
       <div className="flex-1" onClick={onClick}>
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span>{item.displayName.text}</span>
@@ -91,7 +91,7 @@ export default function FoodCard({
           </span>
         </div>
         <p className="mb-3 text-sm text-gray-500">{item.formattedAddress}</p>
-        <p className="mb-1 text-sm font-bold text-grey-normalActive">{menu}</p>
+        <p className="mb-1 text-sm font-bold text-grey-normal-active">{menu}</p>
       </div>
 
       <div className="flex flex-col place-items-end gap-2">
@@ -108,7 +108,7 @@ export default function FoodCard({
           alt={item.id}
           width={70}
           height={70}
-          className="h-[4.5rem] w-[4.5rem] rounded-sm border border-grey-darkHover object-contain"
+          className="h-18 w-18 rounded-xs border border-grey-dark-hover object-contain"
         />
       </div>
 

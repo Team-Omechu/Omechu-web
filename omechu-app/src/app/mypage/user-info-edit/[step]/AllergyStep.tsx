@@ -197,7 +197,7 @@ export default function AllergyStep() {
                   type="button"
                   onClick={() => handleClick(item)}
                   aria-pressed={isSelected}
-                  className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition-colors ${
+                  className={`h-14 w-60 rounded-md border p-2 pt-2.5 text-xl transition-colors ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
                       : "border-primary-normal bg-white text-primary-normal"
@@ -218,7 +218,7 @@ export default function AllergyStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
-            className="ml-5 text-base text-grey-normalActive"
+            className="ml-5 text-base text-grey-normal-active"
           >
             {"<"} 이전으로
           </button>

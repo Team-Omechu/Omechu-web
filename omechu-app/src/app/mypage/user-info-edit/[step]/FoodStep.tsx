@@ -223,7 +223,7 @@ export default function FoodStep() {
                   onClick={() => {
                     if (!isDisabled) handleClick(item);
                   }}
-                  className={`h-14 w-60 rounded-md border-[1px] p-2 pt-2.5 text-xl transition ${
+                  className={`h-14 w-60 rounded-md border p-2 pt-2.5 text-xl transition ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
                       : "border-primary-normal bg-white text-primary-normal"
@@ -244,13 +244,13 @@ export default function FoodStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[2]}`)
             }
-            className="ml-5 text-base text-grey-normalActive dark:font-semibold"
+            className="ml-5 text-base text-grey-normal-active dark:font-semibold"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normalActive dark:font-semibold"
+            className="mr-5 text-base text-grey-normal-active dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>

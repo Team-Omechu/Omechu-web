@@ -36,7 +36,7 @@ export default function LocationFilterModal({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen bg-main-normal">
+    <div className="fixed inset-0 z-9999 h-screen w-screen bg-main-normal">
       <Header
         title={"희망 지역 선택"}
         rightChild={
@@ -53,7 +53,7 @@ export default function LocationFilterModal({
       <div className="mx-4 my-6">
         <SectionHeader titles={["시·도", "시·군·구", "동·읍·면"]} />
 
-        <div className="grid h-[28rem] grid-cols-3 border-b border-grey-darkHover text-center">
+        <div className="grid h-112 grid-cols-3 border-b border-grey-dark-hover text-center">
           <SelectableList
             items={cities}
             selected={selectedCity}
@@ -111,7 +111,7 @@ export default function LocationFilterModal({
 
         <div className="mt-6 text-center">
           <button
-            className="w-40 rounded-lg bg-primary-normal py-4 text-base font-semibold text-white hover:bg-primary-normalHover active:bg-primary-normalHover"
+            className="w-40 rounded-lg bg-primary-normal py-4 text-base font-semibold text-white hover:bg-primary-normal-hover active:bg-primary-normal-hover"
             onClick={() => {
               onApply(tempSelected);
               onClose();

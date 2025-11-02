@@ -51,7 +51,7 @@ export default function ProgressBar({
             key={index}
             className={`h-2.5 flex-1 rounded-3xl border-[1.5px] border-[#00A3FF] ${
               index < currentStep
-                ? `bg-[#00A3FF] hover:bg-secondary-normalHover active:bg-secondary-normalActive`
+                ? `bg-[#00A3FF] hover:bg-secondary-normal-hover active:bg-secondary-normal-active`
                 : "bg-white"
             }`}
           />
@@ -62,7 +62,7 @@ export default function ProgressBar({
         <div className={`flex ${alignClass}`}>
           <button
             onClick={onCancelClick}
-            className={`h-6.5 mt-2 w-auto rounded-md bg-[#00A3FF] px-2.5 pb-1.5 pt-2 text-xs font-light text-white hover:bg-[#0182CA] active:bg-secondary-normalActive ${cancelButtonClassName}`}
+            className={`h-6.5 mt-2 w-auto rounded-md bg-[#00A3FF] px-2.5 pb-1.5 pt-2 text-xs font-light text-white hover:bg-[#0182CA] active:bg-secondary-normal-active ${cancelButtonClassName}`}
           >
             {cancelButtonText}
           </button>

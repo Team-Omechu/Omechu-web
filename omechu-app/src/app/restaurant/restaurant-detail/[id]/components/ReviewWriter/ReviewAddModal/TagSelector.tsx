@@ -45,7 +45,7 @@ export default function TagSelector({
         이 식당을 <span className="font-bold">한마디로</span> 표현한다면?* (1~
         {maxSelected}개)
       </p>
-      <div className="flex flex-wrap justify-center gap-1 rounded-md border border-grey-darkHover bg-white p-2">
+      <div className="flex flex-wrap justify-center gap-1 rounded-md border border-grey-dark-hover bg-white p-2">
         {allTags.map((tag) => (
           <Keyword
             key={tag}

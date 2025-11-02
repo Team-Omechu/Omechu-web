@@ -115,7 +115,7 @@ export default function ResultPage() {
               width={22}
               height={30}
             />
-            <span className="mb-0.5 ml-1 flex flex-shrink-0">처음으로</span>
+            <span className="mb-0.5 ml-1 flex shrink-0">처음으로</span>
           </button>
         }
         className="h-[60px] border-b-0"
@@ -146,13 +146,13 @@ export default function ResultPage() {
 
       <div className="flex gap-2 px-4 py-2">
         <button
-          className="flex-1 rounded-md border border-grey-darkHover bg-[#FFF] px-4 py-2 text-[#393939] hover:bg-grey-normal"
+          className="flex-1 rounded-md border border-grey-dark-hover bg-[#FFF] px-4 py-2 text-[#393939] hover:bg-grey-normal"
           onClick={handleReshuffle}
         >
           다시 추천
         </button>
         <button
-          className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normalHover"
+          className="flex-1 rounded-md bg-primary-normal px-4 py-2 text-[#FFF] hover:bg-primary-normal-hover"
           onClick={handleNext}
         >
           선택하기

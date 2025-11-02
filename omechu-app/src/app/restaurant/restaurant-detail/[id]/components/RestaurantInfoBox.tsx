@@ -35,7 +35,7 @@ export default function RestaurantInfoBox({
       : (restaurant.address ?? { road: "", jibun: "", postalCode: "" });
 
   return (
-    <section className="relative flex w-full flex-col items-center gap-3 rounded-md border-[1px] border-grey-darkHover bg-white p-4">
+    <section className="relative flex w-full flex-col items-center gap-3 rounded-md border border-grey-dark-hover bg-white p-4">
       {/* 카테고리 */}
       <div className="flex w-full items-center justify-start gap-3">
         <Image src="/menu/menu.svg" alt="맛집 메뉴" width={24} height={24} />
@@ -43,7 +43,7 @@ export default function RestaurantInfoBox({
           {restaurant.name}
         </span>
       </div>
-      <div className="h-[1px] w-full bg-[#3d2828] opacity-60"></div>
+      <div className="h-px w-full bg-[#3d2828] opacity-60"></div>
 
       {/* 시간표 */}
       <div className="flex w-full flex-row justify-start gap-5">
@@ -65,7 +65,7 @@ export default function RestaurantInfoBox({
           ))}
         </div>
       </div>
-      <div className="h-[1px] w-full bg-[#828282] opacity-60"></div>
+      <div className="h-px w-full bg-[#828282] opacity-60"></div>
 
       {/* 주소 */}
       <div className="flex items-start gap-3">

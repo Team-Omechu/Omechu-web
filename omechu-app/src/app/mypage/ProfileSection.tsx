@@ -187,7 +187,7 @@ export default function ProfileSection() {
         />
       </div>
       <div className="mt-3 text-2xl font-semibold">{nickname}</div>
-      <div className="text-lg font-normal text-grey-normalActive">
+      <div className="text-lg font-normal text-grey-normal-active">
         {profile?.email || ""}
       </div>
       <div className="mt-1 text-xs text-grey-normal">

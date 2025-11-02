@@ -32,7 +32,7 @@ export default function SettingsClient() {
           {termsList.map((item) => (
             <li
               key={item.id}
-              className="flex w-full flex-col px-6 py-3 hover:bg-main-normalHover active:bg-[#c6aacc]"
+              className="flex w-full flex-col px-6 py-3 hover:bg-main-normal-hover active:bg-[#c6aacc]"
             >
               <button
                 onClick={() => router.push(item.url)}

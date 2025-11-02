@@ -53,7 +53,7 @@ export default function MainPage() {
   };
 
   return (
-    <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden bg-gradient-to-b from-pink-200 to-purple-300 scrollbar-hide">
+    <div className="relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden bg-linear-to-b from-pink-200 to-purple-300 scrollbar-hide">
       {/* 데스크톱용 컨테이너 */}
       <div className="relative mx-auto w-full max-w-md lg:max-w-lg xl:max-w-xl">
         {/* 메인 배경 이미지 */}
@@ -67,13 +67,13 @@ export default function MainPage() {
         {/* 버튼들 */}
         <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 transform gap-4 lg:bottom-8">
           <button
-            className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[1.25rem] text-center text-white transition-all duration-200 hover:bg-primary-normalHover active:bg-primary-normalHover lg:h-12 lg:w-40"
+            className="flex h-11.25 w-36.25 shrink-0 items-center justify-center gap-2.5 rounded-md bg-primary-normal p-5 text-center text-white transition-all duration-200 hover:bg-primary-normal-hover active:bg-primary-normal-hover lg:h-12 lg:w-40"
             onClick={handleStartClick}
           >
             <span>시작하기</span>
           </button>
           <button
-            className="flex h-[2.8125rem] w-[9.0625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] border border-[#00A3FF] bg-[#FFF] p-[1.25rem] text-center text-[#00A3FF] transition-all duration-200 hover:bg-grey-lightActive active:bg-grey-lightActive lg:h-12 lg:w-40"
+            className="flex h-11.25 w-36.25 shrink-0 items-center justify-center gap-2.5 rounded-md border border-[#00A3FF] bg-[#FFF] p-5 text-center text-[#00A3FF] transition-all duration-200 hover:bg-grey-light-active active:bg-grey-light-active lg:h-12 lg:w-40"
             onClick={handleRandomClick}
           >
             <span>랜덤추천</span>

@@ -34,7 +34,7 @@ export default function CustomDatePicker({
       type="button"
       onClick={onClick}
       ref={ref}
-      className="flex h-fit w-32 items-center gap-2 rounded-md bg-[#F2F2F2] px-4 pb-1 pt-1.5 text-sm text-grey-darker shadow-sm"
+      className="flex h-fit w-32 items-center gap-2 rounded-md bg-[#F2F2F2] px-4 pb-1 pt-1.5 text-sm text-grey-darker shadow-xs"
     >
       <Image
         src="/calender/uil_calender.svg"
@@ -63,7 +63,7 @@ export default function CustomDatePicker({
       <div className="flex items-center justify-between px-4">
         <button
           onClick={decreaseMonth}
-          className="rounded px-2 py-1 hover:bg-gray-200"
+          className="rounded-sm px-2 py-1 hover:bg-gray-200"
         >
           <Image
             src="/arrow/left-calender-arrow.svg"
@@ -77,7 +77,7 @@ export default function CustomDatePicker({
         </span>
         <button
           onClick={increaseMonth}
-          className="rounded px-2 py-1 text-sm hover:bg-gray-200"
+          className="rounded-sm px-2 py-1 text-sm hover:bg-gray-200"
         >
           <Image
             src="/arrow/right-calender-arrow.svg"

@@ -48,7 +48,7 @@ export default function LocationAnswerPage() {
         {/* 질문 */}
         <div className="mb-10 flex flex-col items-center justify-center text-center text-grey-darker">
           <p className="text-[25px] font-semibold">위치를 입력해주세요</p>
-          <p className="mt-2 text-grey-normalActive">
+          <p className="mt-2 text-grey-normal-active">
             주변 맛집 메뉴로 추천해드릴게요
           </p>
         </div>
@@ -59,21 +59,21 @@ export default function LocationAnswerPage() {
             type="checkbox"
             checked={isChecked}
             onChange={handleCheckboxChange}
-            className="h-[1.25rem] w-[1.25rem] flex-shrink-0"
+            className="h-5 w-5 shrink-0"
           />
           <label className="font-['Inter'] text-[1.25rem] font-normal leading-normal text-grey-darker">
             내 주변
           </label>
-          <div className="flex h-[1.125rem] w-[5.875rem] flex-shrink-0 items-center justify-center rounded-[0.3125rem] border border-[#333] bg-white text-sm text-[#393939]">
+          <div className="flex h-4.5 w-23.5 shrink-0 items-center justify-center rounded-[0.3125rem] border border-[#333] bg-white text-sm text-[#393939]">
             {selectedDistance}
           </div>
         </div>
-        <div className="flex-shrink-0 overflow-hidden rounded-sm">
+        <div className="shrink-0 overflow-hidden rounded-xs">
           <RestaurantMapPreview
             latitude={x}
             longitude={y}
             name="현재 위치"
-            className="h-[15rem] w-[22rem] object-cover"
+            className="h-60 w-88 object-cover"
             radiusKm={radiusKm}
           />
         </div>
@@ -81,7 +81,7 @@ export default function LocationAnswerPage() {
         {/* 결과 보기 버튼 */}
         <button
           onClick={handleClick}
-          className="mt-10 flex h-[2.8125rem] w-[17.375rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.375rem] bg-primary-normal p-[0.625rem] text-[16px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+          className="mt-10 flex h-11.25 w-69.5 shrink-0 items-center justify-center gap-2.5 rounded-md bg-primary-normal p-2.5 text-[16px] font-medium text-white hover:bg-primary-normal-hover active:bg-primary-normal-active"
         >
           결과 보기
         </button>

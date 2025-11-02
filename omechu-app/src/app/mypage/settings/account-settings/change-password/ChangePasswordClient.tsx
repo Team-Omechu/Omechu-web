@@ -99,7 +99,7 @@ export default function ChangePasswordClient() {
         <Toast
           message={toastMessage}
           show={showToast}
-          className="fixed bottom-24 left-1/2 z-[9999] -translate-x-1/2"
+          className="fixed bottom-24 left-1/2 z-9999 -translate-x-1/2"
         />
 
         <section className="flex w-full flex-col gap-4 px-3 pt-16">
@@ -163,7 +163,7 @@ export default function ChangePasswordClient() {
             disabled={pending}
             className={`mt-48 h-[50px] w-[335px] rounded-md text-[17px] font-medium text-white transition ${
               isFormValid
-                ? "bg-primary-normal hover:bg-primary-normalHover active:bg-primary-normalActive"
+                ? "bg-primary-normal hover:bg-primary-normal-hover active:bg-primary-normal-active"
                 : "bg-gray-300"
             } ${pending ? "cursor-not-allowed opacity-70" : ""}`}
           >

@@ -165,7 +165,7 @@ export default function UserInfoEdit() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
             }
-            className="h-12 w-[340px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normalHover active:bg-primary-normalActive"
+            className="h-12 w-[340px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normal-hover active:bg-primary-normal-active"
           >
             다시 입력하기
           </button>

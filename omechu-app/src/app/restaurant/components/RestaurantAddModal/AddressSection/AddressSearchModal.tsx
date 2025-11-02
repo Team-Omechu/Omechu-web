@@ -152,7 +152,7 @@ export default function AddressSearchModal({
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="예) 서울시 강남구 테헤란로 212"
-        className="mb-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:ring"
+        className="mb-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-hidden focus:ring-3"
       />
 
       {!!helper && <div className="mb-2 text-xs text-gray-500">{helper}</div>}

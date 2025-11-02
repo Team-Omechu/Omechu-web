@@ -40,7 +40,7 @@ export default function Terms() {
             <li key={item.id}>
               <Link
                 href={item.url}
-                className="flex w-full items-center justify-between rounded px-6 py-3 hover:bg-main-normalHover active:bg-main-normalHover"
+                className="flex w-full items-center justify-between rounded-sm px-6 py-3 hover:bg-main-normal-hover active:bg-main-normal-hover"
               >
                 <span className="text-xl font-normal">{item.title}</span>
                 <img

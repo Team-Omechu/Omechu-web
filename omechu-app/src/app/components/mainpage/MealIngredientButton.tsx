@@ -18,11 +18,11 @@ const MealIngredientGroup = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-[0.3125rem] self-stretch">
+      <div className="flex flex-wrap items-center gap-1.25 self-stretch">
         {items.map((item) => (
           <button
             key={item}
-            className={`font-['Noto Sans KR'] flex h-[2.1875rem] w-[3.625rem] flex-shrink-0 items-center justify-center gap-[0.625rem] rounded-[0.3125rem] border border-grey-darkHover text-center text-[0.875rem] font-normal leading-normal ${
+            className={`font-['Noto Sans KR'] flex h-8.75 w-14.5 shrink-0 items-center justify-center gap-2.5 rounded-[0.3125rem] border border-grey-dark-hover text-center text-[0.875rem] font-normal leading-normal ${
               selectedItems.includes(item)
                 ? "border-[#FB4746] bg-[#FB4746] text-white"
                 : "border-[#FB4746] bg-white text-[#393939]"
@@ -34,7 +34,7 @@ const MealIngredientGroup = ({
           </button>
         ))}
       </div>
-      <div className="h-px w-full bg-grey-normalActive opacity-60" />
+      <div className="h-px w-full bg-grey-normal-active opacity-60" />
     </div>
   );
 };

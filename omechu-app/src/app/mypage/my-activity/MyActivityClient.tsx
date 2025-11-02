@@ -576,7 +576,7 @@ export default function MyActivityClient() {
         {/* 후기 탭 */}
         {selectedIndex === 0 && (
           <>
-            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normalActive">
+            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normal-active">
               <SortSelector
                 options={[
                   { label: "추천 순", value: "recommended" },
@@ -600,7 +600,7 @@ export default function MyActivityClient() {
             ) : (
               <section className="flex w-full flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
+                  <div className="flex w-full items-center justify-center py-10 text-grey-normal-active">
                     작성한 후기가 없습니다.
                   </div>
                 ) : (
@@ -638,7 +638,7 @@ export default function MyActivityClient() {
                       />
                     ))}
                     {reviewList.length > visibleCount && (
-                      <div ref={loaderRef} className="h-[1px]" />
+                      <div ref={loaderRef} className="h-px" />
                     )}
                   </>
                 )}
@@ -661,7 +661,7 @@ export default function MyActivityClient() {
             ) : (
               <section className="flex w-full flex-col gap-5 px-2">
                 {myRestaurants.length === 0 ? (
-                  <div className="flex w-full items-center justify-center py-10 text-grey-normalActive">
+                  <div className="flex w-full items-center justify-center py-10 text-grey-normal-active">
                     등록한 맛집이 없습니다.
                   </div>
                 ) : (
@@ -673,7 +673,7 @@ export default function MyActivityClient() {
                       >
                         <button
                           type="button"
-                          className="mb-1 w-full pr-2 text-end text-xs text-grey-normalActive underline"
+                          className="mb-1 w-full pr-2 text-end text-xs text-grey-normal-active underline"
                           onClick={() => {
                             setEditing(item);
                             setEditOpen(true);
@@ -753,7 +753,7 @@ export default function MyActivityClient() {
                       </div>
                     ))}
                     {(hasMorePlaces || fetchingPlaces) && (
-                      <div ref={loaderRef} className="h-[1px]" />
+                      <div ref={loaderRef} className="h-px" />
                     )}
                   </>
                 )}

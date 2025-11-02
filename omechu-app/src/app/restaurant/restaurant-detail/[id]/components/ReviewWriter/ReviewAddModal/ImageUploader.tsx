@@ -39,7 +39,7 @@ export default function ImageUploader({
         음식, 인테리어, 메뉴판 등의 <span className="font-bold">사진</span>을
         첨부해 주세요. (최대 {maxImages}장)
       </p>
-      <div className="flex gap-2 overflow-x-auto rounded-md border border-grey-darkHover bg-white p-2">
+      <div className="flex gap-2 overflow-x-auto rounded-md border border-grey-dark-hover bg-white p-2">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="images" direction="horizontal">
             {(provided) => (
@@ -49,7 +49,7 @@ export default function ImageUploader({
                 {...provided.droppableProps}
               >
                 {images.length < maxImages && (
-                  <label className="flex h-[80px] w-[80px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white text-xl text-gray-400">
+                  <label className="flex h-[80px] w-[80px] shrink-0 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white text-xl text-gray-400">
                     <input
                       type="file"
                       className="hidden"
@@ -76,7 +76,7 @@ export default function ImageUploader({
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="relative h-[80px] w-[80px] flex-shrink-0"
+                        className="relative h-[80px] w-[80px] shrink-0"
                       >
                         <Image
                           src={URL.createObjectURL(file)}
@@ -88,7 +88,7 @@ export default function ImageUploader({
                           onClick={() =>
                             setImages(images.filter((_, i) => i !== idx))
                           }
-                          className="absolute -right-0 top-0"
+                          className="absolute right-0 top-0"
                         >
                           <Image
                             src={"/x/gray_x_icon.svg"}

@@ -1,6 +1,108 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* Tailwind CSS v4 Configuration */
+@theme {
+  /* Font Family */
+  --font-family-sans: var(--font-noto-sans-kr), sans-serif;
+
+  /* Custom Breakpoints */
+  --breakpoint-mobile: 375px;
+
+  /* Custom Spacing */
+  --max-width-screen-mobile: 375px;
+  --min-height-screen-mobile: 812px;
+
+  /* Custom Colors - Primary */
+  --color-primary-light: #ffeded;
+  --color-primary-light-hover: #fee3e3;
+  --color-primary-light-active: #fec6c6;
+  --color-primary-normal: #ff7676;
+  --color-primary-normal-hover: #e2403f;
+  --color-primary-normal-active: #c93938;
+  --color-primary-dark: #bc3535;
+  --color-primary-dark-hover: #972b2a;
+  --color-primary-dark-active: #71201f;
+  --color-primary-darker: #581919;
+
+  /* Custom Colors - Secondary */
+  --color-secondary-light: #e9f5fb;
+  --color-secondary-light-hover: #ddf0f9;
+  --color-secondary-light-active: #bae0f4;
+  --color-secondary-normal: #1f9bda;
+  --color-secondary-normal-hover: #1c8cc4;
+  --color-secondary-normal-active: #197cae;
+  --color-secondary-dark: #1774a4;
+  --color-secondary-dark-hover: #135d83;
+  --color-secondary-dark-active: #0e4662;
+  --color-secondary-darker: #0b364c;
+
+  /* Custom Colors - Main */
+  --color-main-light: #fefbff;
+  --color-main-light-hover: #fef9ff;
+  --color-main-light-active: #fdf2ff;
+  --color-main-normal: #ffdefb;
+  --color-main-normal-hover: #dfc0e6;
+  --color-main-normal-active: #c6aacc;
+  --color-main-dark: #baa0bf;
+  --color-main-dark-hover: #958099;
+  --color-main-dark-active: #706073;
+  --color-main-darker: #574b59;
+
+  /* Custom Colors - Grey */
+  --color-grey-light: #f6f6f6;
+  --color-grey-light-hover: #f1f1f1;
+  --color-grey-light-active: #e2e2e2;
+  --color-grey-normal: #a3a3a3;
+  --color-grey-normal-hover: #e2e2e2;
+  --color-grey-normal-active: #828282;
+  --color-grey-dark: #7a7a7a;
+  --color-grey-dark-hover: #97948f;
+  --color-grey-dark-active: #494949;
+  --color-grey-darker: #393939;
+
+  /* Custom Animations - Shake */
+  --animate-shake: shake 0.5s ease-in-out;
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-1px); }
+    40% { transform: translateX(1px); }
+    60% { transform: translateX(-1px); }
+    80% { transform: translateX(1px); }
+  }
+}
+
+/* Custom Media Query for Mobile */
+@custom-media --mobile (max-width: 375px);
+
+/* Custom Utility - Scrollbar Hide */
+@utility scrollbar-hide {
+  /* For Chrome, Safari, Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* For IE, Edge, Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 html,
 body {
@@ -10,7 +112,7 @@ body {
 /* .react-datepicker 관련 Tailwind 기반 커스터마이징은 globals.css 같은 전역 CSS 파일에만 작성 가능 */
 /* 컴포넌트 파일(JSX/TSX) 내부에 직접 넣을 수는 없음 */
 .react-datepicker {
-  @apply rounded-3xl border-2 border-grey-darkHover px-6 !important;
+  @apply rounded-3xl! border-2! border-grey-dark-hover! px-6!;
 }
 
 .react-datepicker__triangle {
@@ -18,21 +120,21 @@ body {
 }
 
 .react-datepicker__header {
-  @apply border-none bg-white pb-0 !important;
+  @apply border-none! bg-white! pb-0!;
 }
 
 .react-datepicker__day-names {
-  @apply m-0 pb-0 !important;
+  @apply m-0! pb-0!;
 }
 
 .react-datepicker__day-name {
-  @apply h-fit text-grey-normalActive !important;
+  @apply h-fit! text-grey-normal-active!;
 }
 
 .react-datepicker__month {
-  @apply m-0 mb-2 h-fit w-fit text-xs !important;
+  @apply m-0! mb-2! h-fit! w-fit! text-xs!;
 }
 
 .react-datepicker__day--outside-month {
-  @apply text-gray-400 !important;
+  @apply text-gray-400!;
 }

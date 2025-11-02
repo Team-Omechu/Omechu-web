@@ -202,7 +202,7 @@ export default function FullMenuClient() {
         </ModalWrapper>
       )}
 
-      <hr className="my-1 border-grey-darkHover" />
+      <hr className="my-1 border-grey-dark-hover" />
 
       <SortSelector
         options={sortOptions}
@@ -221,7 +221,7 @@ export default function FullMenuClient() {
         }}
       />
 
-      <div ref={loaderRef} className="h-[1px]" />
+      <div ref={loaderRef} className="h-px" />
 
       {activeQuery.isLoading && <LoadingIndicator />}
 

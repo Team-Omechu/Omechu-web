@@ -13,7 +13,7 @@ export default function SelectableList({
 }: SelectableListProps) {
   const allItems = [...topItems, ...items];
   return (
-    <div className="overflow-y-auto border-r border-grey-darkHover scrollbar-hide">
+    <div className="overflow-y-auto border-r border-grey-dark-hover scrollbar-hide">
       {allItems.map((item) => (
         <button
           key={item}
