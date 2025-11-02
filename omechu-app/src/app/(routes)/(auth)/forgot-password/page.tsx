@@ -9,7 +9,7 @@ import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
 import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
 import { ApiClientError } from "@/entities/user/api/authApi";
 
-import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import ForgotPasswordForm from "@/widgets/auth/forgot-password-form/ui/ForgotPasswordForm";
 
 export default function FindPasswordPage() {
   const [showToast, setShowToast] = useState(false);

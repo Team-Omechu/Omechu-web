@@ -9,7 +9,7 @@ import type { ResetPasswordFormValues } from "@/entities/user/model/auth.schema"
 import { useResetPasswordMutation } from "@/entities/user/lib/hooks/useAuth";
 import Toast from "@/components/common/Toast";
 
-import ResetPasswordForm from "./components/ResetPasswordForm";
+import ResetPasswordForm from "@/widgets/auth/reset-password-form/ui/ResetPasswordForm";
 import Header from "@/components/common/Header";
 import { ApiClientError } from "@/entities/user/api/authApi";
 

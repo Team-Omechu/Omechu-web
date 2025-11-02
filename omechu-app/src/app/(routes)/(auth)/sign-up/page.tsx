@@ -18,8 +18,8 @@ import { useSignupMutation, useLoginMutation } from "@/entities/user/lib/hooks/u
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { ApiClientError } from "@/entities/user/api/authApi";
 
-import SignUpForm from "./components/SignUpForm";
-import TermsModal from "./components/TermsModal";
+import SignUpForm from "@/widgets/auth/sign-up-form/ui/SignUpForm";
+import TermsModal from "@/widgets/auth/sign-up-form/ui/TermsModal";
 
 type ModalType = "service" | "privacy" | "location";
 
