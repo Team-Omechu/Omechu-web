@@ -7,7 +7,7 @@ import type {
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
-} from "@/auth/schemas/auth.schema";
+} from "@/entities/user/model/auth.schema";
 import axiosInstance from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
