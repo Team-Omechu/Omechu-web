@@ -96,14 +96,14 @@ export default function ClientLayout({
     // 추천맛집목록
     "/mypage/recommended-list",
     // 마이페이지-설정
-    "/mypage/settings",
-    "/mypage/settings/account-settings",
-    "/mypage/settings/account-settings/change-password",
+    "/settings",
+    "/settings/account-settings",
+    "/settings/account-settings/change-password",
     // 마이페이지-이용약관
-    "/mypage/settings/terms",
-    "/mypage/settings/terms/service",
-    "/mypage/settings/terms/personal-info",
-    "/mypage/settings/terms/location-info",
+    "/settings/terms",
+    "/settings/terms/service",
+    "/settings/terms/personal-info",
+    "/settings/terms/location-info",
     // 마이페이지-먹부림일지
     "/mypage/foodie-log",
     // 마이페이지-찜목록

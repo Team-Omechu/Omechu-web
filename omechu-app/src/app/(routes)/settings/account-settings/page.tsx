@@ -79,7 +79,7 @@ export default function AccountSettingsPage() {
 
   /** 비밀번호 변경 페이지로 이동 */
   const handleChangePassword = () => {
-    router.push("/mypage/settings/account-settings/change-password");
+    router.push("/settings/account-settings/change-password");
   };
 
   // 로딩 중일 때

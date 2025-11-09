@@ -15,7 +15,7 @@ export default function TermsListPage() {
       <Header
         title="이용 약관"
         leftChild={
-          <Link href="/mypage/settings" aria-label="설정으로 돌아가기">
+          <Link href="/settings" aria-label="설정으로 돌아가기">
             <Image
               src="/arrow/left-header-arrow.svg"
               alt="뒤로가기"

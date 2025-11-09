@@ -14,8 +14,8 @@ interface SettingsMenuItem {
 
 /** 설정 메뉴 목록 */
 const SETTINGS_MENU: SettingsMenuItem[] = [
-  { id: 1, title: "계정 관리", url: "/mypage/settings/account-settings" },
-  { id: 2, title: "이용 약관", url: "/mypage/settings/terms" },
+  { id: 1, title: "계정 관리", url: "/settings/account-settings" },
+  { id: 2, title: "이용 약관", url: "/settings/terms" },
 ];
 
 /**

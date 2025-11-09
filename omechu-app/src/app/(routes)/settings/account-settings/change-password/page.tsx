@@ -84,7 +84,7 @@ export default function ChangePasswordPage() {
         title="비밀번호 변경"
         leftChild={
           <button
-            onClick={() => router.push("/mypage/settings/account-settings")}
+            onClick={() => router.push("/settings/account-settings")}
             aria-label="뒤로가기"
           >
             <Image
@@ -179,7 +179,7 @@ export default function ChangePasswordPage() {
             <AlertModal
               title="비밀번호가 변경되었습니다!"
               confirmText="확인"
-              onConfirm={() => router.push("/mypage/settings/account-settings")}
+              onConfirm={() => router.push("/settings/account-settings")}
               onClose={() => setShowModal(false)}
             />
           </ModalWrapper>
