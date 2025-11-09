@@ -9,7 +9,7 @@ import Header from "@/components/common/Header";
 import InfoRow from "./InfoRow";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 
-import { fetchProfile as fetchProfileApi } from "../api/profile";
+import { fetchProfile as fetchProfileApi } from "@/mypage/api/profile";
 
 // 서버 응답을 페이지에서 쓰는 ProfileType으로 정규화
 function normalizeProfile(raw: any): ProfileType {

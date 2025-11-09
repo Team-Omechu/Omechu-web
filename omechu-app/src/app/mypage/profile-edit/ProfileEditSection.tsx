@@ -8,7 +8,7 @@ import {
   getPresignedUrl,
   uploadToS3,
   updateProfile,
-} from "../api/updateProfile";
+} from "@/mypage/api/updateProfile";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import ProfileImageUploader from "./ProfileImageUploader";
 import NicknameInput from "./NicknameInput";

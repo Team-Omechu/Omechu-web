@@ -1,11 +1,8 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/model/auth.store.ts
-
 const AUTH_STORAGE_KEY = "auth-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import type { LoginSuccessData } from "@/lib/api/auth";
+import type { LoginSuccessData } from "@/entities/user/api/authApi";
 
 interface AuthStoreState {
   isLoggedIn: boolean;

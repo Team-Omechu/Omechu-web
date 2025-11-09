@@ -22,7 +22,7 @@ export default function MyPage() {
         <Header
           className={"border-b-0"}
           rightChild={
-            <Link href="/mypage/settings">
+            <Link href="/settings">
               <img
                 src="/setting/setting.svg"
                 alt="설정"

@@ -1,13 +1,10 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/app/layouts/ClientLayout.tsx
-
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
-import { useUserQuery } from "@/lib/hooks/useAuth";
-import { useAuthStore } from "@/lib/stores/auth.store";
+import BottomNav from "@/components/common/Bottom";
+import { useUserQuery } from "@/entities/user/lib/hooks/useAuth";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 export default function ClientLayout({
   children,

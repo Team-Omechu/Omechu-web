@@ -20,7 +20,7 @@ import RestaurantEditModal from "@/restaurant/components/RestaurantAddModal/Rest
 import {
   updateRestaurant,
   type UpdateRestaurantPayload,
-} from "../api/updateRestaurant";
+} from "@/mypage/api/updateRestaurant";
 
 import {
   fetchMyPlaces,
@@ -28,8 +28,8 @@ import {
   toggleReviewLike,
   deleteMyReview,
   type MyReviewItem,
-} from "../api/myActivity";
-import { likePlace, unlikePlace } from "../api/favorites";
+} from "@/mypage/api/myActivity";
+import { likePlace, unlikePlace } from "@/mypage/api/favorites";
 import Toast from "@/components/common/Toast";
 import AuthErrorModalSection from "../AuthErrorModalSection";
 

@@ -23,7 +23,7 @@ import {
   fetchRecommendManagement,
   exceptMenu,
   removeExceptMenu,
-} from "../api/recommend";
+} from "@/mypage/api/recommend";
 import Toast from "@/components/common/Toast";
 import AuthErrorModalSection from "../AuthErrorModalSection";
 
