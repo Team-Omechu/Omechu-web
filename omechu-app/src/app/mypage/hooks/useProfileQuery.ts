@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "../api/profile";
+import { fetchProfile } from "@/mypage/api/profile";
 import { ProfileType } from "../types/profileType";
 
 // 보장된 종료를 위한 타임아웃 가드

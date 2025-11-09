@@ -1,6 +1,3 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/api/profileApi.ts
-
 import axiosInstance from "@/lib/api/axios";
 import { ProfileType } from "../types/profileType";
 import { useAuthStore } from "@/lib/stores/auth.store";
