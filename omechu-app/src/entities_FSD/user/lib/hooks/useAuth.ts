@@ -1,6 +1,3 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/lib/hooks/useAuth.ts
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import axiosInstance from "@/lib/api/axios";
@@ -10,10 +7,10 @@ import type {
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
-} from "../../../entities_FSD/user/model/auth.schema";
-import { useAuthStore } from "@/lib/stores/auth.store";
-import * as authApi from "@/lib/api/auth";
-import type { LoginSuccessData } from "@/lib/api/auth";
+} from "../../model/auth.schema";
+import { useAuthStore } from "../../model/auth.store";
+import * as authApi from "../../api/authApi";
+import type { LoginSuccessData } from "../../api/authApi";
 
 // 로그인
 export const useLoginMutation = () => {

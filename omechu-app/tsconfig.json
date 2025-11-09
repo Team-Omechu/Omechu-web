@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "noImplicitAny": true, // (리본) 다시 true로 변경경. (25-07-14)
@@ -24,21 +20,11 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/app/*"
-      ],
-      "@/app/*": [
-        "./src/app/*"
-      ],
-      "@/entities/*": [
-        "./src/entities/*"
-      ],
-      "@/widgets/*": [
-        "./src/widgets/*"
-      ],
-      "@/shared/*": [
-        "./src/shared/*"
-      ]
+      "@/*": ["./src/app/*"],
+      "@/app_FSD/*": ["./src/app_FSD/*"],
+      "@/entities_FSD/*": ["./src/entities_FSD/*"],
+      "@/widgets_FSD/*": ["./src/widgets_FSD/*"],
+      "@/shared_FSD/*": ["./src/shared_FSD/*"]
     }
   },
   "include": [
@@ -48,7 +34,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
