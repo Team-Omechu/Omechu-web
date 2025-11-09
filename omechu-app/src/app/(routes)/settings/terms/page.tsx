@@ -31,7 +31,7 @@ export default function TermsListPage() {
           {TERMS_MENU_LIST.map((item) => (
             <li key={item.id}>
               <Link
-                href={`/mypage/settings/terms/${item.type}`}
+                href={`/settings/terms/${item.type}`}
                 className="flex w-full items-center justify-between rounded-sm px-6 py-3 hover:bg-main-normal-hover active:bg-main-normal-active"
                 aria-label={`${item.title} 보기`}
               >
