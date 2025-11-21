@@ -9,11 +9,11 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useProfileQuery } from "../../hooks/useProfileQuery";
+import { useProfileQuery } from "@/entities_FSD/mypage/model/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { resetBasicStateAndSync } from "../utils/resetBasicState";
+import { resetBasicStateAndSync } from "@/entities_FSD/mypage/model/resetBasicState";
 
 // 스펙 라벨 통일: "다른나라"(기존 "다른나라 음식" 제거)
 const FOOD_LABELS = ["한식", "양식", "중식", "일식", "다른나라"] as const;

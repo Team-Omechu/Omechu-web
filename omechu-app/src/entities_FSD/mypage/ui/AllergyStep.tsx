@@ -8,12 +8,12 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useProfileQuery } from "../../hooks/useProfileQuery";
+import { useProfileQuery } from "@/entities_FSD/mypage/model/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { resetBasicStateAndSync } from "../utils/resetBasicState";
+import { resetBasicStateAndSync } from "@/entities_FSD/mypage/model/resetBasicState";
 
 // 화면에서 사용할 라벨 상수 (스토어에는 라벨 문자열을 그대로 저장/토글)
 const OPTIONS = [

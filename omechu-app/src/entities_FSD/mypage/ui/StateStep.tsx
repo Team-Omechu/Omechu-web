@@ -8,13 +8,13 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@/mypage/api/updateProfile";
 
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { resetBasicStateAndSync } from "../utils/resetBasicState";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
+import { useProfileQuery } from "@/mypage/hooks/useProfileQuery";
+import { resetBasicStateAndSync } from "../model/resetBasicState";
 
 // 스펙 라벨 그대로 사용
 const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;

@@ -9,11 +9,11 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useProfileQuery } from "../../hooks/useProfileQuery";
+import { useProfileQuery } from "@/entities_FSD/mypage/model/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { resetBasicStateAndSync } from "../utils/resetBasicState";
+import { resetBasicStateAndSync } from "@/entities_FSD/mypage/model/resetBasicState";
 
 // 서버 스펙 라벨(스토어에는 이 값으로 저장)
 const BODY_LABELS = ["감기", "소화불량", "더위잘탐", "추위잘탐"] as const;

@@ -6,10 +6,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import Header from "@/components/common/Header";
-import InfoRow from "./InfoRow";
+
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 
 import { fetchProfile as fetchProfileApi } from "@/mypage/api/profile";
+import InfoRow from "@/entities_FSD/mypage/ui/InfoRow";
 
 // 서버 응답을 페이지에서 쓰는 ProfileType으로 정규화
 function normalizeProfile(raw: any): ProfileType {
@@ -94,7 +95,7 @@ export default function UserInfoEdit() {
       <main className="flex min-h-[calc(100dvh-3rem)] w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="h-8 w-8 animate-spin text-primary-normal"
+            className="text-primary-normal h-8 w-8 animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -140,7 +141,7 @@ export default function UserInfoEdit() {
               {"<"} {profile.nickname || "로딩 중..."}의 기본 상태 {">"}
             </div>
           </section>
-          <section className="mb-14 mt-10 flex w-full flex-col items-start justify-start gap-4 px-12">
+          <section className="mt-10 mb-14 flex w-full flex-col items-start justify-start gap-4 px-12">
             <InfoRow label="성별" content={profile.gender || "None"} />
             <InfoRow label="운동 상태" content={profile.exercise || "None"} />
             <InfoRow
@@ -165,7 +166,7 @@ export default function UserInfoEdit() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[0]}`)
             }
-            className="h-12 w-[340px] rounded-md bg-primary-normal text-[17px] font-medium text-white hover:bg-primary-normal-hover active:bg-primary-normal-active"
+            className="bg-primary-normal hover:bg-primary-normal-hover active:bg-primary-normal-active h-12 w-[340px] rounded-md text-[17px] font-medium text-white"
           >
             다시 입력하기
           </button>

@@ -8,12 +8,14 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { resetBasicStateAndSync } from "../utils/resetBasicState";
+
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
+import { resetBasicStateAndSync } from "@/entities_FSD/mypage/model/resetBasicState";
+import { useProfileQuery } from "@/entities_FSD/mypage/model/useProfileQuery";
 
 const LABELS = ["여성", "남성"] as const;
 const toLabelFromCode = (code?: string | null) =>

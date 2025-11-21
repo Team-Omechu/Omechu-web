@@ -1,18 +1,31 @@
-"use client";
+import { notFound } from "next/navigation";
 
-import { notFound, useParams } from "next/navigation";
+import AllergyStep from "@/entities_FSD/mypage/ui/AllergyStep";
+import ConditionStep from "@/entities_FSD/mypage/ui/ConditionStep";
+import EditStart from "@/entities_FSD/mypage/ui/EditStart";
+import FoodStep from "@/entities_FSD/mypage/ui/FoodStep";
+import GenderStep from "@/entities_FSD/mypage/ui/GenderStep";
+import StateStep from "@/entities_FSD/mypage/ui/StateStep";
 
-import { stepComponents, StepKey } from "@/constant/UserInfoEditSteps";
+const stepComponents = {
+  gender: GenderStep,
+  state: StateStep,
+  food: FoodStep,
+  condition: ConditionStep,
+  allergy: AllergyStep,
+  start: EditStart,
+};
 
-export default function StepPage() {
-  const params = useParams();
-  const step = params.step as StepKey;
+export default function UserInfoEditStepPage({
+  params,
+}: {
+  params: { step: keyof typeof stepComponents };
+}) {
+  const { step } = params;
 
-  const Component = stepComponents[step];
+  const StepComponent = stepComponents[step];
 
-  if (!Component) {
-    return notFound();
-  }
+  if (!StepComponent) return notFound();
 
-  return <Component />;
+  return <StepComponent />;
 }

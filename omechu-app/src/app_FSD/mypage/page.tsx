@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-
-import BottomNav from "../components/common/Bottom";
-import Header from "../components/common/Header";
-import Link from "next/link";
 import { Suspense } from "react";
-import ProfileSection from "./ProfileSection";
-import MenuSection from "./MenuSection";
+import Link from "next/link";
+import Header from "@/components/common/Header";
+import BottomNav from "@/components/common/Bottom";
+
+import ProfileSection from "@/entities_FSD/mypage/ui/ProfileSection";
+import MenuSection from "@/entities_FSD/mypage/ui/MenuSection";
 
 const menuList: { title: string; href: string }[] = [
   { title: "프로필 관리", href: "/mypage/profile-edit" },

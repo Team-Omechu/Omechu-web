@@ -1,7 +1,6 @@
 import axiosInstance from "@/lib/api/axios";
-
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { ProfileType } from "../model/profileType";
+import { ProfileType } from "@/entities_FSD/mypage/model/profileType";
 
 export class ProfileApiError extends Error {
   constructor(
