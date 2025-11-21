@@ -1,11 +1,9 @@
 "use client";
 
-import React from "react";
-
 import ListButton from "@/components/common/button/ListButton";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
-import OnboardingStepLayout from "./OnboardingStepLayout";
+import OnboardingStepLayout from "@/entities_FSD/onboarding/ui/OnboardingStepLayout";
 
 // UI에 표시될 텍스트(label)와 서버로 보낼 값(value)을 매핑합니다.
 const BodyTypes = [

@@ -5,7 +5,7 @@ import React from "react";
 import ListButton from "@/components/common/button/ListButton";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 
-import OnboardingStepLayout from "./OnboardingStepLayout";
+import OnboardingStepLayout from "@/entities_FSD/onboarding/ui/OnboardingStepLayout";
 
 const AllergyStep = () => {
   const { allergy, toggleAllergy } = useOnboardingStore();

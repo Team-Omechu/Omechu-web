@@ -4,7 +4,6 @@ import React, { useRef, useState } from "react";
 
 import Image from "next/image";
 
-import Input from "@/components/common/Input";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { getPresignedUrl, uploadToS3 } from "@/lib/api/image";
 
@@ -60,11 +59,11 @@ const ProfileStep = () => {
   return (
     <div className="flex w-full flex-col items-center px-4 py-6">
       <section className="my-20">
-        <div className="whitespace-pre p-10 text-center text-3xl font-medium leading-relaxed">
-          <div className="text-center text-2xl font-semibold text-secondary-normal">
+        <div className="p-10 text-center text-3xl leading-relaxed font-medium whitespace-pre">
+          <div className="text-secondary-normal text-center text-2xl font-semibold">
             반가워요!
           </div>
-          <h1 className="text-2xl font-normal text-grey-darker">
+          <h1 className="text-grey-darker text-2xl font-normal">
             프로필을 입력해 주세요
           </h1>
         </div>
@@ -83,7 +82,7 @@ const ProfileStep = () => {
                 className="object-cover"
               />
             </div>
-            <div className="absolute right-0 top-0">
+            <div className="absolute top-0 right-0">
               <Image
                 src="/profile/camera.svg"
                 alt="이미지 업로드"
@@ -101,7 +100,7 @@ const ProfileStep = () => {
           />
           <button
             type="button"
-            className="text-center text-sm font-normal text-secondary-normal underline"
+            className="text-secondary-normal text-center text-sm font-normal underline"
             onClick={handleImageDelete}
             disabled={isUploading}
           >
@@ -112,7 +111,7 @@ const ProfileStep = () => {
           {/* 공용 Input은 수정하지 않고, 동일 레이아웃을 직접 구현해서
               설명 문구가 에러 시 빨간색으로만 보이도록 처리 */}
           <div className="relative mb-5 flex w-full flex-col">
-            <label className="text-normal mb-0.5 ml-0.5 text-sm text-grey-darker">
+            <label className="text-normal text-grey-darker mb-0.5 ml-0.5 text-sm">
               닉네임
             </label>
             <div className="flex h-10 items-center gap-1">
@@ -121,11 +120,11 @@ const ProfileStep = () => {
                 value={nickname}
                 placeholder="닉네임을 입력해주세요"
                 onChange={(e) => handleNicknameChange(e.target.value)}
-                className="h-full w-full rounded-md border border-grey-dark-hover pl-4 pt-0.5 text-sm font-normal text-grey-darker placeholder:text-sm placeholder:text-grey-normal-active"
+                className="border-grey-dark-hover text-grey-darker placeholder:text-grey-normal-active h-full w-full rounded-md border pt-0.5 pl-4 text-sm font-normal placeholder:text-sm"
               />
             </div>
             <span
-              className={`ml-1 mt-1 text-sm font-normal ${
+              className={`mt-1 ml-1 text-sm font-normal ${
                 isInvalid ? "text-primary-normal" : "text-grey-normal-active"
               }`}
             >
