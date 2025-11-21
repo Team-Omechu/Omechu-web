@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProfile } from "@/mypage/api/profile";
-import { ProfileType } from "../types/profileType";
+import { ProfileType } from "@/entities_FSD/user/model/profile.types";
 
 // 보장된 종료를 위한 타임아웃 가드
 function withTimeout<T>(p: Promise<T>, ms = 7000): Promise<T> {

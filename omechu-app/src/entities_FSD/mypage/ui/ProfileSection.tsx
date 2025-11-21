@@ -1,10 +1,10 @@
 "use client";
 
-import { useProfileQuery } from "./hooks/useProfileQuery";
-import AuthErrorModalSection from "./AuthErrorModalSection";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
 import { useRouter, usePathname } from "next/navigation";
+import { useProfileQuery } from "@/entities_FSD/mypage/model/useProfileQuery";
+import AuthErrorModalSection from "./AuthErrorModalSection";
 
 // 401/403 → 인증 만료로 판단하여 모달 표시
 // 그 외 에러는 재시도 UI로 처리
