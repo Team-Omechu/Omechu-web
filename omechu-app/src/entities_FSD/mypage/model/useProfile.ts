@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchProfile } from "@/mypage/api/profile";
-import { ProfileType } from "../types/profileType";
+import { ProfileType } from "./profileType";
 
 // userId는 number 타입으로 사용합니다.
 export function useProfile() {

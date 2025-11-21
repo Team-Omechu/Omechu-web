@@ -17,7 +17,6 @@ import {
 } from "@/constant/choSeong";
 import { suggestionList } from "@/constant/suggestionList";
 
-import AuthErrorModal from "../AuthErrorModalSection";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import {
   fetchRecommendManagement,

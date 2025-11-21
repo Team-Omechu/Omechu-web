@@ -10,11 +10,11 @@ import {
   updateProfile,
 } from "@/mypage/api/updateProfile";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import ProfileImageUploader from "./ProfileImageUploader";
-import NicknameInput from "./NicknameInput";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import AlertModal from "@/components/common/AlertModal";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
+import ProfileImageUploader from "./ProfileImageUploader";
+import NicknameInput from "./NicknameInput";
 
 export default function ProfileEditSection() {
   const router = useRouter();

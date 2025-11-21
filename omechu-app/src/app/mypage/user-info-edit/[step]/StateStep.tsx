@@ -11,9 +11,10 @@ import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@/mypage/api/updateProfile";
-import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
+
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { resetBasicStateAndSync } from "../utils/resetBasicState";
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 
 // 스펙 라벨 그대로 사용
 const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;
@@ -166,8 +167,8 @@ export default function StateStep() {
       />
 
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="mb-16 mt-28">
-          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
+        <section className="mt-28 mb-16">
+          <div className="px-10 text-center text-3xl leading-relaxed font-medium whitespace-pre">
             {`지금 어떤 운동 상태에
 가까운가요?`}
           </div>
@@ -182,7 +183,7 @@ export default function StateStep() {
                 className={`h-12 w-60 rounded-md border px-2 text-xl ${
                   activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
-                    : "border-primary-normal bg-white text-primary-normal"
+                    : "border-primary-normal text-primary-normal bg-white"
                 } `}
                 aria-pressed={activeLabel === label}
               >
@@ -199,13 +200,13 @@ export default function StateStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[1]}`)
             }
-            className="ml-5 text-base text-grey-normal-active"
+            className="text-grey-normal-active ml-5 text-base"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normal-active"
+            className="text-grey-normal-active mr-5 text-base"
           >
             건너뛰기 {">"}
           </button>
@@ -292,7 +293,7 @@ export default function StateStep() {
       )}
 
       {error && (
-        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+        <div className="absolute right-0 bottom-24 left-0 text-center text-red-600">
           {error}
         </div>
       )}

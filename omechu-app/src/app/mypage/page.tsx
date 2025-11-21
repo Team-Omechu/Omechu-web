@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import ProfileSection from "./ProfileSection";
-import MenuSection from "./MenuSection";
+
 import BottomNav from "../components/common/Bottom";
 import Header from "../components/common/Header";
 import Link from "next/link";
 import { Suspense } from "react";
+import ProfileSection from "./ProfileSection";
+import MenuSection from "./MenuSection";
 
 const menuList: { title: string; href: string }[] = [
   { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -36,10 +37,10 @@ export default function MyPage() {
 
       <Suspense
         fallback={
-          <div className="p-6 text-sm text-grey-normal">로딩 중...</div>
+          <div className="text-grey-normal p-6 text-sm">로딩 중...</div>
         }
       >
-        <main className="flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 overflow-y-auto px-10 py-16 pb-[env(safe-area-inset-bottom)] scrollbar-hide">
+        <main className="scrollbar-hide flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 overflow-y-auto px-10 py-16 pb-[env(safe-area-inset-bottom)]">
           <ProfileSection />
           <MenuSection menuList={menuList} />
         </main>

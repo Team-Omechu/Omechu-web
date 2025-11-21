@@ -31,7 +31,6 @@ import {
 } from "@/mypage/api/myActivity";
 import { likePlace, unlikePlace } from "@/mypage/api/favorites";
 import Toast from "@/components/common/Toast";
-import AuthErrorModalSection from "../AuthErrorModalSection";
 
 /* ---------- 타입/상수 ---------- */
 type MyRestaurant = {

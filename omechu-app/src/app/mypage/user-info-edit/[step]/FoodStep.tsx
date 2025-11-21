@@ -203,8 +203,8 @@ export default function FoodStep() {
       />
 
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="mb-12 mt-20">
-          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
+        <section className="mt-20 mb-12">
+          <div className="px-10 text-center text-3xl leading-relaxed font-medium whitespace-pre">
             평소 자주 먹거나 좋아하는{"\n"}
             음식이 있나요?
           </div>
@@ -226,7 +226,7 @@ export default function FoodStep() {
                   className={`h-14 w-60 rounded-md border p-2 pt-2.5 text-xl transition ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal bg-white text-primary-normal"
+                      : "border-primary-normal text-primary-normal bg-white"
                   }`}
                   aria-pressed={isSelected}
                 >
@@ -244,13 +244,13 @@ export default function FoodStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[2]}`)
             }
-            className="ml-5 text-base text-grey-normal-active dark:font-semibold"
+            className="text-grey-normal-active ml-5 text-base dark:font-semibold"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normal-active dark:font-semibold"
+            className="text-grey-normal-active mr-5 text-base dark:font-semibold"
           >
             건너뛰기 {">"}
           </button>
@@ -271,7 +271,7 @@ export default function FoodStep() {
       </footer>
 
       {error && (
-        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+        <div className="absolute right-0 bottom-24 left-0 text-center text-red-600">
           {error}
         </div>
       )}

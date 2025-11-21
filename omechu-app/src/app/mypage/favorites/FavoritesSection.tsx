@@ -4,7 +4,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
+
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Link from "next/link";
@@ -15,7 +15,7 @@ import Header from "@/components/common/Header";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
-import AuthErrorModal from "../AuthErrorModalSection";
+import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
 import AuthErrorModalSection from "../AuthErrorModalSection";
 
 export default function Favorites() {

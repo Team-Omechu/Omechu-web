@@ -1,7 +1,7 @@
 "use client";
 
-import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { updateProfile } from "@/mypage/api/updateProfile";
+import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
 import { QueryClient } from "@tanstack/react-query";
 
 type Profile = { email?: string | null } | null | undefined;

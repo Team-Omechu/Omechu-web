@@ -29,8 +29,9 @@ import {
   deleteMyReview,
   type MyReviewItem,
 } from "@/mypage/api/myActivity";
-import { likePlace, unlikePlace } from "@/mypage/api/favorites";
+
 import Toast from "@/components/common/Toast";
+import { likePlace, unlikePlace } from "../api/favorites";
 import AuthErrorModalSection from "../AuthErrorModalSection";
 
 /* ---------- 타입/상수 ---------- */
