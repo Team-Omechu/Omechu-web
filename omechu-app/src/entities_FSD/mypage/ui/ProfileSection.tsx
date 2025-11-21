@@ -187,10 +187,10 @@ export default function ProfileSection() {
         />
       </div>
       <div className="mt-3 text-2xl font-semibold">{nickname}</div>
-      <div className="text-lg font-normal text-grey-normal-active">
+      <div className="text-grey-normal-active text-lg font-normal">
         {profile?.email || ""}
       </div>
-      <div className="mt-1 text-xs text-grey-normal">
+      <div className="text-grey-normal mt-1 text-xs">
         {isFetching ? "동기화 중..." : ""}
       </div>
     </section>
