@@ -179,9 +179,9 @@ export default function AllergyStep() {
       />
 
       {/* 본문 영역 */}
-      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 pb-28 pt-6">
-        <section className="mb-8 mt-20 text-center">
-          <div className="whitespace-pre px-10 text-3xl font-medium leading-relaxed">
+      <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 pt-6 pb-28">
+        <section className="mt-20 mb-8 text-center">
+          <div className="px-10 text-3xl leading-relaxed font-medium whitespace-pre">
             알레르기가 있나요?
           </div>
         </section>
@@ -200,7 +200,7 @@ export default function AllergyStep() {
                   className={`h-14 w-60 rounded-md border p-2 pt-2.5 text-xl transition-colors ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal bg-white text-primary-normal"
+                      : "border-primary-normal text-primary-normal bg-white"
                   } `}
                 >
                   {item}
@@ -218,7 +218,7 @@ export default function AllergyStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[4]}`)
             }
-            className="ml-5 text-base text-grey-normal-active"
+            className="text-grey-normal-active ml-5 text-base"
           >
             {"<"} 이전으로
           </button>
@@ -229,7 +229,7 @@ export default function AllergyStep() {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="h-14 min-w-full rounded-t-md bg-secondary-normal p-2.5 text-xl font-normal text-white hover:bg-[#0182CA] active:bg-[#0182CA] disabled:opacity-50"
+          className="bg-secondary-normal h-14 min-w-full rounded-t-md p-2.5 text-xl font-normal text-white hover:bg-[#0182CA] active:bg-[#0182CA] disabled:opacity-50"
         >
           {loading ? "저장 중..." : "제출하기"}
         </button>
@@ -319,7 +319,7 @@ export default function AllergyStep() {
         </ModalWrapper>
       )}
       {error && (
-        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+        <div className="absolute right-0 bottom-24 left-0 text-center text-red-600">
           {error}
         </div>
       )}

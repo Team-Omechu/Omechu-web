@@ -29,8 +29,9 @@ import {
   deleteMyReview,
   type MyReviewItem,
 } from "@/mypage/api/myActivity";
-import { likePlace, unlikePlace } from "@/mypage/api/favorites";
+
 import Toast from "@/components/common/Toast";
+import { likePlace, unlikePlace } from "../api/favorites";
 import AuthErrorModalSection from "../AuthErrorModalSection";
 
 /* ---------- 타입/상수 ---------- */
@@ -571,12 +572,12 @@ export default function MyActivityClient() {
 
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col items-center overflow-y-auto px-2 pb-8 pt-3 scrollbar-hide"
+        className="scrollbar-hide flex h-screen w-full flex-col items-center overflow-y-auto px-2 pt-3 pb-8"
       >
         {/* 후기 탭 */}
         {selectedIndex === 0 && (
           <>
-            <section className="flex w-full justify-end gap-1 pb-3 pr-5 pt-1 text-sm text-grey-normal-active">
+            <section className="text-grey-normal-active flex w-full justify-end gap-1 pt-1 pr-5 pb-3 text-sm">
               <SortSelector
                 options={[
                   { label: "추천 순", value: "recommended" },
@@ -600,7 +601,7 @@ export default function MyActivityClient() {
             ) : (
               <section className="flex w-full flex-col items-center gap-7">
                 {reviewList.length === 0 ? (
-                  <div className="flex w-full items-center justify-center py-10 text-grey-normal-active">
+                  <div className="text-grey-normal-active flex w-full items-center justify-center py-10">
                     작성한 후기가 없습니다.
                   </div>
                 ) : (
@@ -661,7 +662,7 @@ export default function MyActivityClient() {
             ) : (
               <section className="flex w-full flex-col gap-5 px-2">
                 {myRestaurants.length === 0 ? (
-                  <div className="flex w-full items-center justify-center py-10 text-grey-normal-active">
+                  <div className="text-grey-normal-active flex w-full items-center justify-center py-10">
                     등록한 맛집이 없습니다.
                   </div>
                 ) : (
@@ -673,7 +674,7 @@ export default function MyActivityClient() {
                       >
                         <button
                           type="button"
-                          className="mb-1 w-full pr-2 text-end text-xs text-grey-normal-active underline"
+                          className="text-grey-normal-active mb-1 w-full pr-2 text-end text-xs underline"
                           onClick={() => {
                             setEditing(item);
                             setEditOpen(true);

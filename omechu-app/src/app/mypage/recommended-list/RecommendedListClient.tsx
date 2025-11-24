@@ -17,7 +17,6 @@ import {
 } from "@/constant/choSeong";
 import { suggestionList } from "@/constant/suggestionList";
 
-import AuthErrorModal from "../AuthErrorModalSection";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import {
   fetchRecommendManagement,
@@ -317,7 +316,7 @@ export default function RecommendedList() {
       {/* 메인 섹션 */}
       <main
         ref={mainRef}
-        className="relative mt-2 flex h-screen w-full flex-col items-center gap-3 overflow-y-auto px-2 scrollbar-hide"
+        className="scrollbar-hide relative mt-2 flex h-screen w-full flex-col items-center gap-3 overflow-y-auto px-2"
       >
         {/* 검색 창 */}
         <SearchBar
@@ -330,7 +329,7 @@ export default function RecommendedList() {
 
         {/* 초성 필터 버튼 */}
         <section>
-          <div className="grid h-[61px] w-[340px] grid-flow-dense grid-cols-7 rounded-2xl border-2 border-grey-dark-hover bg-white px-7 py-2">
+          <div className="border-grey-dark-hover grid h-[61px] w-[340px] grid-flow-dense grid-cols-7 rounded-2xl border-2 bg-white px-7 py-2">
             {filteredChoSeong.map((item, index) => (
               <button
                 key={index}
@@ -339,7 +338,7 @@ export default function RecommendedList() {
                     prev === index ? undefined : index,
                   )
                 }
-                className={`rounded-full text-[15px] text-grey-darker hover:bg-grey-light-active active:bg-grey-normal-active ${
+                className={`text-grey-darker hover:bg-grey-light-active active:bg-grey-normal-active rounded-full text-[15px] ${
                   selectedAlphabetIndex === index
                     ? "bg-[#d4f0ff] font-[#393939]"
                     : "font-normal"
@@ -386,7 +385,7 @@ export default function RecommendedList() {
         {/* Floating Action Button - 맨 위로 이동 */}
         <FloatingActionButton
           onClick={scrollToTop}
-          className="bottom-4 right-4 z-50"
+          className="right-4 bottom-4 z-50"
         />
       </main>
 

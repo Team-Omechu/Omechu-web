@@ -229,8 +229,8 @@ export default function ConditionStep() {
       />
 
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="mb-12 mt-20">
-          <div className="whitespace-pre px-10 text-center text-3xl font-medium leading-relaxed">
+        <section className="mt-20 mb-12">
+          <div className="px-10 text-center text-3xl leading-relaxed font-medium whitespace-pre">
             체질은 무엇인가요?
           </div>
         </section>
@@ -246,7 +246,7 @@ export default function ConditionStep() {
                   className={`h-14 w-full rounded-md border px-2 py-1 pt-1 text-lg ${
                     isSelected
                       ? "border-primary-normal bg-primary-normal text-white"
-                      : "border-primary-normal bg-white text-primary-normal"
+                      : "border-primary-normal text-primary-normal bg-white"
                   } `}
                   aria-pressed={isSelected}
                 >
@@ -264,13 +264,13 @@ export default function ConditionStep() {
             onClick={() =>
               router.push(`/mypage/user-info-edit/${indexToSlug[3]}`)
             }
-            className="ml-5 text-base text-grey-normal-active"
+            className="text-grey-normal-active ml-5 text-base"
           >
             {"<"} 이전으로
           </button>
           <button
             onClick={handleSkip}
-            className="mr-5 text-base text-grey-normal-active"
+            className="text-grey-normal-active mr-5 text-base"
           >
             건너뛰기 {">"}
           </button>
@@ -349,7 +349,7 @@ export default function ConditionStep() {
       )}
 
       {error && (
-        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+        <div className="absolute right-0 bottom-24 left-0 text-center text-red-600">
           {error}
         </div>
       )}
