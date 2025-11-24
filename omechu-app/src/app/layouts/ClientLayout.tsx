@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import BottomNav from "@/components/common/Bottom";
-import { useUserQuery } from "@/entities/user/lib/hooks/useAuth";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+import { useUserQuery } from "../../entities_FSD/user/lib/hooks/useAuth";
+import { useAuthStore } from "../../entities_FSD/user/model/auth.store";
 
 export default function ClientLayout({
   children,
@@ -128,7 +128,7 @@ export default function ClientLayout({
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-main-normal scrollbar-hide`}
+        className={`${showBottomNav ? "pb-20" : ""} bg-main-normal scrollbar-hide flex-1 overflow-y-scroll`}
       >
         {children}
       </main>
