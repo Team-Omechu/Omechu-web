@@ -1,3 +1,4 @@
+import axiosInstance from "../../../shared_FSD/api/axiosInstance";
 import { RandomMenu, RandomMenuRequest } from "../config/resultData";
 
 export const getRandomMenu = async (

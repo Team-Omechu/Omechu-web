@@ -1,3 +1,4 @@
+import axiosInstance from "../../../shared_FSD/api/axiosInstance";
 import { restaurantList, RestaurantRequest } from "../config/RestaurantData";
 
 export const getRestaurants = async (
