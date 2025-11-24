@@ -1,3 +1,6 @@
+// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
+// 새 위치: src/app/layouts/ClientLayout.tsx
+
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
@@ -96,14 +99,14 @@ export default function ClientLayout({
     // 추천맛집목록
     "/mypage/recommended-list",
     // 마이페이지-설정
-    "/mypage/settings",
-    "/mypage/settings/account-settings",
-    "/mypage/settings/account-settings/change-password",
+    "/settings",
+    "/settings/account-settings",
+    "/settings/account-settings/change-password",
     // 마이페이지-이용약관
-    "/mypage/settings/terms",
-    "/mypage/settings/terms/service",
-    "/mypage/settings/terms/personal-info",
-    "/mypage/settings/terms/location-info",
+    "/settings/terms",
+    "/settings/terms/service",
+    "/settings/terms/personal-info",
+    "/settings/terms/location-info",
     // 마이페이지-먹부림일지
     "/mypage/foodie-log",
     // 마이페이지-찜목록

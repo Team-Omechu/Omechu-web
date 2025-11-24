@@ -4,7 +4,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
+
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 import Link from "next/link";
@@ -15,7 +15,7 @@ import Header from "@/components/common/Header";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
-import AuthErrorModal from "../AuthErrorModalSection";
+import { fetchHeartList, likePlace, unlikePlace } from "../api/favorites";
 import AuthErrorModalSection from "../AuthErrorModalSection";
 
 export default function Favorites() {
@@ -274,13 +274,13 @@ export default function Favorites() {
       />
       <main
         ref={mainRef}
-        className="relative h-[calc(100dvh-3rem)] w-full overflow-y-auto px-6 pb-8 pt-3 scrollbar-hide"
+        className="scrollbar-hide relative h-[calc(100dvh-3rem)] w-full overflow-y-auto px-6 pt-3 pb-8"
       >
         {/* 필터 - 최신 순 | 오래된 순 */}
-        <section className="flex w-full justify-end gap-1 pb-3 pr-1 pt-2 text-sm text-grey-normal-active">
+        <section className="text-grey-normal-active flex w-full justify-end gap-1 pt-2 pr-1 pb-3 text-sm">
           <button
             className={
-              sortOrder === "latest" ? "font-semibold text-grey-darker" : ""
+              sortOrder === "latest" ? "text-grey-darker font-semibold" : ""
             }
             onClick={() => {
               setSortOrder("latest");
@@ -292,7 +292,7 @@ export default function Favorites() {
           <span>|</span>
           <button
             className={
-              sortOrder === "oldest" ? "font-semibold text-grey-darker" : ""
+              sortOrder === "oldest" ? "text-grey-darker font-semibold" : ""
             }
             onClick={() => {
               setSortOrder("oldest");

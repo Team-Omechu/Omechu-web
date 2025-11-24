@@ -10,7 +10,7 @@ import { indexToSlug } from "@/constant/UserInfoEditSteps";
 import { useOnboardingStore } from "@/lib/stores/onboarding.store";
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 import { updateProfile } from "@/mypage/api/updateProfile";
-import { buildCompletePayloadFromStore } from "@/mypage/mappers/profilePayload";
+
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import { resetBasicStateAndSync } from "../utils/resetBasicState";
@@ -141,7 +141,7 @@ export default function GenderStep() {
       />
 
       <main className="flex h-full w-full flex-col items-center px-4 py-6">
-        <section className="mb-16 mt-28">
+        <section className="mt-28 mb-16">
           <h1 className="text-3xl font-medium">성별은 무엇인가요?</h1>
         </section>
 
@@ -155,7 +155,7 @@ export default function GenderStep() {
                 className={`h-14 w-28 rounded-md border px-2.5 pt-1 text-xl ${
                   activeLabel === label
                     ? "border-primary-normal bg-primary-normal text-white"
-                    : "border-primary-normal bg-white text-primary-normal"
+                    : "border-primary-normal text-primary-normal bg-white"
                 } `}
                 aria-pressed={activeLabel === label}
               >
@@ -169,7 +169,7 @@ export default function GenderStep() {
       <section className="absolute bottom-0 flex w-full flex-col items-end gap-3 pb-[env(safe-area-inset-bottom)]">
         <button
           onClick={handleSkip}
-          className="mr-5 text-base text-grey-normal-active"
+          className="text-grey-normal-active mr-5 text-base"
         >
           건너뛰기 {">"}
         </button>
@@ -216,7 +216,7 @@ export default function GenderStep() {
       )}
 
       {error && (
-        <div className="absolute bottom-24 left-0 right-0 text-center text-red-600">
+        <div className="absolute right-0 bottom-24 left-0 text-center text-red-600">
           {error}
         </div>
       )}

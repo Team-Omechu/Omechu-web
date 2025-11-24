@@ -8,13 +8,13 @@ import {
   getPresignedUrl,
   uploadToS3,
   updateProfile,
-} from "../api/updateProfile";
+} from "@/mypage/api/updateProfile";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import ProfileImageUploader from "./ProfileImageUploader";
-import NicknameInput from "./NicknameInput";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import AlertModal from "@/components/common/AlertModal";
 import { LoadingSpinner } from "@/components/common/LoadingIndicator";
+import ProfileImageUploader from "./ProfileImageUploader";
+import NicknameInput from "./NicknameInput";
 
 export default function ProfileEditSection() {
   const router = useRouter();
@@ -128,7 +128,7 @@ export default function ProfileEditSection() {
   }
 
   return (
-    <main className="relative flex flex-col items-center overflow-y-auto px-4 py-32 scrollbar-hide">
+    <main className="scrollbar-hide relative flex flex-col items-center overflow-y-auto px-4 py-32">
       <section className="mt-24 flex h-44 items-center justify-center gap-10">
         <ProfileImageUploader
           imagePreview={imagePreview}
@@ -163,7 +163,7 @@ export default function ProfileEditSection() {
           aria-pressed={isPressed}
           className={`h-12 w-[335px] rounded-md text-lg font-medium text-white transition-colors duration-150 ${
             !isValid || isLoading
-              ? "cursor-not-allowed bg-grey-normal"
+              ? "bg-grey-normal cursor-not-allowed"
               : isPressed
                 ? "bg-[#DD6362]"
                 : "bg-primary-normal hover:bg-primary-normal-hover"
