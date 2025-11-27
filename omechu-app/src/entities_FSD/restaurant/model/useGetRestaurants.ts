@@ -1,13 +1,9 @@
-import {
-  Restaurant,
-  restaurantList,
-  RestaurantRequest,
-} from "@/constant/mainpage/RestaurantData";
+import { useLocationAnswerStore } from "@/entities_FSD/location";
 import { useQuery } from "@tanstack/react-query";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+import { restaurantList, RestaurantRequest } from "../config/RestaurantData";
 import { getRestaurants } from "../api/getRestaurants";
 
-function useGetRestaurants() {
+export function useGetRestaurants() {
   const { x, y, radius, keyword } = useLocationAnswerStore();
 
   const payload: RestaurantRequest = {
@@ -23,5 +19,3 @@ function useGetRestaurants() {
     staleTime: 1000 * 60 * 5,
   });
 }
-
-export default useGetRestaurants;

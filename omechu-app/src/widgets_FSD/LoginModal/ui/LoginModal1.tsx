@@ -10,7 +10,7 @@ type LoginPromptModalProps = {
   onSkip?: () => void; // "그냥 추천받기" 버튼 클릭 시
 };
 
-const LoginPromptModal = ({
+export const LoginPromptModal = ({
   onConfirm,
   onClose,
   onSkip,

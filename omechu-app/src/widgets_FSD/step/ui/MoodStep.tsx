@@ -5,13 +5,12 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 import ListButton from "@/components/common/button/ListButton";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerLayout from "./QuestionAnswerLayout";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { moodOptions } from "@/constant/mainpage/Option";
+import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
+import { moodOptions, useQuestionAnswerStore } from "@/entities_FSD/question";
+import { useTagStore } from "@/entities_FSD/tag";
 
-const MoodStep = () => {
+export const MoodStep = () => {
   const router = useRouter();
   const { mood, setMood } = useQuestionAnswerStore();
   const { setMoodTag } = useTagStore();
@@ -37,5 +36,3 @@ const MoodStep = () => {
     </QuestionAnswerLayout>
   );
 };
-
-export default MoodStep;

@@ -1,9 +1,9 @@
-import { RandomMenu } from "@/constant/mainpage/resultData";
+import { useQuestionAnswerStore } from "@/entities_FSD/question";
 import { useQuery } from "@tanstack/react-query";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { RandomMenu } from "../config/resultData";
 import { getRandomMenu } from "../api/getRandomMenu";
 
-function useGetRandomMenu() {
+export function useGetRandomMenu() {
   const { addition } = useQuestionAnswerStore();
   const payload = {
     addition, // If no addition, send null
@@ -14,5 +14,3 @@ function useGetRandomMenu() {
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 }
-
-export default useGetRandomMenu;

@@ -7,7 +7,7 @@ type QuestionAnswerLayoutProps = {
   paddingClassName?: string; // paddingClassName prop 추가
 };
 
-const QuestionAnswerLayout = ({
+export const QuestionAnswerLayout = ({
   title,
   children,
   contentClassName = "",
@@ -28,5 +28,3 @@ const QuestionAnswerLayout = ({
     </div>
   );
 };
-
-export default QuestionAnswerLayout;

@@ -10,7 +10,7 @@ interface MenuCardProps {
   selected?: boolean; // 선택된 카드 여부
 }
 
-export default function MenuCard({
+export function MenuCard({
   title,
   description,
   image,

@@ -10,15 +10,17 @@ import {
 
 import Header from "@/components/common/Header";
 import MenuInfo from "@/components/common/MenuInfoCard";
-import useGetRestaurants from "@/mainpage/hooks/useGetRestaurants";
-import { Restaurant } from "@/constant/mainpage/RestaurantData";
+
 import FoodCardEx from "@/mainpage/components/FoodCardEx";
-import useGetMenuDetail from "@/mainpage/hooks/useGetMenuDetail";
+
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import { useEffect, useState } from "react";
 import Toast from "@/components/common/Toast";
-import usePostMukburim from "@/mainpage/hooks/usePostMukburim";
+
 import { MenuDetail } from "@/lib/types/menu";
+import { Restaurant, useGetRestaurants } from "@/entities_FSD/restaurant";
+import { usePostMukburim } from "@/entities_FSD/mukburim";
+import { useGetMenuDetail } from "@/entities_FSD/menu";
 
 export default function MenuDetailPage() {
   const router = useRouter();

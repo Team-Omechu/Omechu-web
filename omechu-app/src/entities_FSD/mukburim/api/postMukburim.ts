@@ -1,4 +1,4 @@
-import axiosInstance from "../../../shared_FSD/api/axiosInstance";
+import { axiosInstance } from "@/shared_FSD/index";
 import { mukburimResponse } from "../config/mukburim";
 
 export const postMukburim = async (

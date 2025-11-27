@@ -1,13 +1,9 @@
+import { useQuestionAnswerStore } from "@/entities_FSD/question";
 import { useQuery } from "@tanstack/react-query";
-
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import {
-  MenuListResponse,
-  RecommendMenuRequest,
-} from "@/constant/mainpage/resultData";
+import { MenuListResponse, RecommendMenuRequest } from "../config/resultData";
 import { getMenu } from "../api/getMenu";
 
-function useGetMenu() {
+export function useGetMenu() {
   const { mealTime, purpose, mood, who, budget, exceptions } =
     useQuestionAnswerStore();
 
@@ -25,5 +21,3 @@ function useGetMenu() {
     staleTime: 1000 * 60 * 5,
   });
 }
-
-export default useGetMenu;

@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from "axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
-const axiosInstance: AxiosInstance = axios.create({
+export const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 

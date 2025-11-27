@@ -5,20 +5,23 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/common/Header";
 import Image from "next/image";
-import MenuCard from "@/mainpage/components/MenuCard";
+
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import { MenuItem } from "@/constant/mainpage/resultData";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
+
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import Toast from "@/components/common/Toast";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+
 import { exceptMenu } from "@/mypage/api/recommend";
-import useGetMenu from "../../../../entities_FSD/menu/model/useGetMenu";
+
 import ExcludeButton from "@/mainpage/components/ExcludeButton";
-import TagCard from "../../../../widgets_FSD/TagCard/ui/TagCard";
-import LoginPromptModal2 from "../../../../widgets_FSD/LoginModal/ui/LoginModal2";
+import { MenuItem, useGetMenu } from "@/entities_FSD/menu";
+import { useQuestionAnswerStore } from "@/entities_FSD/question";
+import { useLocationAnswerStore } from "@/entities_FSD/location";
+import { MenuCard } from "@/widgets_FSD/MenuCard";
+import { TagCard } from "@/widgets_FSD/TagCard";
+import { LoginPromptModal2 } from "@/widgets_FSD/LoginModal";
 
 export default function ResultPage() {
   const router = useRouter();

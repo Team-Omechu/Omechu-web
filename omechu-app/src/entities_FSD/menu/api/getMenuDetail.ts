@@ -1,5 +1,5 @@
 import { MenuDetail } from "@/lib/types/menu";
-import axiosInstance from "../../../shared_FSD/api/axiosInstance";
+import { axiosInstance } from "@/shared_FSD/index";
 
 export const getMenuDetail = async (
   name: string,

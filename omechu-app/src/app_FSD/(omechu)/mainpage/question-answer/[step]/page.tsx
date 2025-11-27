@@ -8,13 +8,15 @@ import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ProgressBar from "@/components/common/ProgressBar";
 import StepFooter from "@/components/common/StepFooter";
-import BudgetStep from "@/mainpage/components/BudgetStep";
+import { useQuestionAnswerStore } from "@/entities_FSD/question";
+import {
+  BudgetStep,
+  MealTimeStep,
+  MoodStep,
+  PurposeStep,
+  WhoStep,
+} from "@/widgets_FSD/step";
 import FinalChoiceStep from "@/mainpage/components/FinalChoiceStep";
-import MealTimeStep from "@/mainpage/components/MealTimeStep";
-import MoodStep from "@/mainpage/components/MoodStep";
-import PurposeStep from "@/mainpage/components/PurposeStep";
-import WhoStep from "@/mainpage/components/WhoStep";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
 const QUESTION_STEPS = 6;
 

@@ -5,11 +5,13 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import { handleLocation } from "../../../entities_FSD/location/model/handleLocation";
-import LoginPromptModal from "../../../widgets_FSD/LoginModal/ui/LoginModal1";
+import { useTagStore } from "@/entities_FSD/tag";
+import {
+  handleLocation,
+  useLocationAnswerStore,
+} from "@/entities_FSD/location";
+import { useQuestionAnswerStore } from "@/entities_FSD/question";
+import { LoginPromptModal } from "@/widgets_FSD/LoginModal";
 
 export default function MainPage() {
   const router = useRouter();

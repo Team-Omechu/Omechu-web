@@ -5,13 +5,15 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 import ListButton from "@/components/common/button/ListButton";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerLayout from "./QuestionAnswerLayout";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { purposeOptions } from "@/constant/mainpage/Option";
+import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
+import {
+  purposeOptions,
+  useQuestionAnswerStore,
+} from "@/entities_FSD/question";
+import { useTagStore } from "@/entities_FSD/tag";
 
-const PurposeStep = () => {
+export const PurposeStep = () => {
   const router = useRouter();
   const { purpose, setPurpose } = useQuestionAnswerStore();
   const { setPurposeTag } = useTagStore();
@@ -37,5 +39,3 @@ const PurposeStep = () => {
     </QuestionAnswerLayout>
   );
 };
-
-export default PurposeStep;

@@ -9,10 +9,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { Restaurant } from "@/constant/mainpage/RestaurantData";
 import { useAuthStore } from "@/lib/stores/auth.store";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import LoginPromptModal2 from "@/mainpage/example_testpage/components/LoginPromptModal2";
+import { Restaurant } from "@/entities_FSD/restaurant";
+import { LoginPromptModal2 } from "@/widgets_FSD/LoginModal";
 
 type FoodCardProps = {
   item: Restaurant;
@@ -21,12 +21,7 @@ type FoodCardProps = {
   onClick?: () => void;
 };
 
-export default function FoodCard({
-  item,
-  onClick,
-  menu,
-  restaurantId,
-}: FoodCardProps) {
+export function FoodCard({ item, onClick, menu, restaurantId }: FoodCardProps) {
   const router = useRouter();
   const qc = useQueryClient();
 

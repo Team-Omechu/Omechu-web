@@ -1,7 +1,7 @@
 import { useTagStore } from "@/lib/stores/tagData.store";
 import React from "react";
 
-export default function TagCard() {
+export function TagCard() {
   const { mealTimeTag, purposeTag, moodTag, whoTag, budgetTag } = useTagStore();
   return (
     <div>

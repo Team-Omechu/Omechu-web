@@ -1,4 +1,4 @@
-import axiosInstance from "../../../shared_FSD/api/axiosInstance";
+import { axiosInstance } from "@/shared_FSD/index";
 import { MenuListResponse, RecommendMenuRequest } from "../config/resultData";
 
 export const getMenu = async (

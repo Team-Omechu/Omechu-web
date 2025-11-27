@@ -5,13 +5,14 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 import ListButton from "@/components/common/button/ListButton";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
+import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
+import {
+  mealTimeOptions,
+  useQuestionAnswerStore,
+} from "@/entities_FSD/question";
+import { useTagStore } from "@/entities_FSD/tag";
 
-import QuestionAnswerLayout from "./QuestionAnswerLayout";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { mealTimeOptions } from "@/constant/mainpage/Option";
-
-const MealTimeStep = () => {
+export const MealTimeStep = () => {
   const router = useRouter();
   const { mealTime, setMealTime } = useQuestionAnswerStore();
   const { setMealTimeTag } = useTagStore();
@@ -37,5 +38,3 @@ const MealTimeStep = () => {
     </QuestionAnswerLayout>
   );
 };
-
-export default MealTimeStep;

@@ -3,12 +3,12 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import ListButton from "@/components/common/button/ListButton";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import QuestionAnswerLayout from "./QuestionAnswerLayout";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { budgetOptions } from "@/constant/mainpage/Option";
 
-const BudgetStep = () => {
+import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
+import { budgetOptions, useQuestionAnswerStore } from "@/entities_FSD/question";
+import { useTagStore } from "@/entities_FSD/tag";
+
+export const BudgetStep = () => {
   const router = useRouter();
   const { budget, setBudget } = useQuestionAnswerStore();
   const { setBudgetTag } = useTagStore();
@@ -35,5 +35,3 @@ const BudgetStep = () => {
     </QuestionAnswerLayout>
   );
 };
-
-export default BudgetStep;

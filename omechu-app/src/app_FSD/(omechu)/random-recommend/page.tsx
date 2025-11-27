@@ -10,9 +10,8 @@ import ModalWrapper from "@/components/common/ModalWrapper";
 import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/components/mainpage/MealStyleButton";
 import MealTypeGroup from "@/components/mainpage/MealTypeButton";
-
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
-import RandomRecommendModal from "../../../widgets_FSD/RandomRecommendModal/ui/RandomRecommendModal";
+import { useQuestionAnswerStore } from "@/entities_FSD/question";
+import { RandomRecommendModal } from "@/widgets_FSD/RandomRecommendModal";
 
 export default function RandomRecommendPage() {
   const router = useRouter();

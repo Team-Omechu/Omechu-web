@@ -1,15 +1,15 @@
 import Image from "next/image";
 import MainLoading from "@/components/mainpage/MainLoading";
 import { useRouter } from "next/navigation";
-import { useLocationAnswerStore } from "@/lib/stores/locationAnswer.store";
-import useGetRandomMenu from "../../../entities_FSD/menu/model/useGetRandomMenu";
+import { useGetRandomMenu } from "@/entities_FSD/menu";
+import { useLocationAnswerStore } from "@/entities_FSD/location";
 
 type ModalProps = {
   confirmText: string;
   retryText: string;
   onClose: () => void;
 };
-export default function RandomRecommendModal({
+export function RandomRecommendModal({
   confirmText,
   retryText,
   onClose,

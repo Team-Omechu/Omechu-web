@@ -3,13 +3,12 @@
 import { useRouter } from "next/navigation";
 
 import ListButton from "@/components/common/button/ListButton";
-import { useQuestionAnswerStore } from "@/lib/stores/questionAnswer.store";
 
-import QuestionAnswerLayout from "./QuestionAnswerLayout";
-import { useTagStore } from "@/lib/stores/tagData.store";
-import { whoOptions } from "@/constant/mainpage/Option";
+import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
+import { useQuestionAnswerStore, whoOptions } from "@/entities_FSD/question";
+import { useTagStore } from "@/entities_FSD/tag";
 
-const WhoStep = () => {
+export const WhoStep = () => {
   const router = useRouter();
   const { who, setWho } = useQuestionAnswerStore();
   const { setWhoTag } = useTagStore();
@@ -35,8 +34,6 @@ const WhoStep = () => {
     </QuestionAnswerLayout>
   );
 };
-
-export default WhoStep;
 
 // ...existing code...
 //"use client";
