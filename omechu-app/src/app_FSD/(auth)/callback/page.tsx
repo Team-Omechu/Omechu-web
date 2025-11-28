@@ -3,8 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useAuthStore } from "@/entities_FSD/user/model/auth.store";
-import { getCurrentUser } from "@/entities_FSD/user/api/authApi";
+import { useAuthStore, getCurrentUser } from "@/entities_FSD/user";
 import Toast from "@/components/common/Toast";
 
 export default function AuthCallbackPage() {

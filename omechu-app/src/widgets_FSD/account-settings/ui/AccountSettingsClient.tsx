@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useProfile } from "@/entities_FSD/user/lib/hooks/useProfile";
-import { logout } from "@/entities_FSD/user/api/authApi";
-import { useAuthStore } from "@/entities_FSD/user/model/auth.store";
+import { useProfile, logout, useAuthStore } from "@/entities_FSD/user";
 
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";

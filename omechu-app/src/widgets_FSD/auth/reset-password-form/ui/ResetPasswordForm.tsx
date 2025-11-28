@@ -6,12 +6,12 @@ import { useForm, Controller } from "react-hook-form";
 import Input from "@/components/common/Input";
 import {
   resetPasswordSchema,
+  ApiClientError,
   type ResetPasswordFormValues,
-} from "@/entities_FSD/user/model/auth.schema";
+} from "@/entities_FSD/user";
 import Toast from "@/components/common/Toast";
 import { useState } from "react";
 import SquareButton from "@/components/common/button/SquareButton";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
 
 type ResetPasswordFormProps = {
   onFormSubmit: (data: ResetPasswordFormValues) => Promise<void>;

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import RoundButton from "@/components/common/button/RoundButton";
 
-export default function EmailSentMessage() {
+export function EmailSentMessage() {
   return (
     <div className="flex w-full max-w-sm flex-col items-center gap-10 text-center">
       <div className="flex flex-col gap-3">

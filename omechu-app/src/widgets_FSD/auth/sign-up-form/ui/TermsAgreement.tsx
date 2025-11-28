@@ -5,7 +5,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 
 import Checkbox from "@/components/common/Checkbox";
-import type { SignupFormValues } from "@/entities_FSD/user/model/auth.schema";
+import type { SignupFormValues } from "@/entities_FSD/user";
 
 type ModalType = "service" | "privacy" | "location";
 

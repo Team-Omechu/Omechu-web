@@ -1,7 +1,6 @@
 import axios from "axios";
 import axiosInstance from "@/lib/api/axios";
-import type { ApiResponse } from "@/entities_FSD/user/api/authApi";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
+import { ApiClientError, type ApiResponse } from "@/entities_FSD/user";
 
 export interface AgreementConsentBody {
   agreeAll: boolean;

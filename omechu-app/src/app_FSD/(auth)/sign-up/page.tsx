@@ -12,16 +12,13 @@ import Toast from "@/components/common/Toast";
 import { TERMS_CONFIG } from "@/components/settings/terms.config";
 import {
   signupSchema,
-  type SignupFormValues,
-} from "@/entities_FSD/user/model/auth.schema";
-import {
   useSignupMutation,
   useLoginMutation,
-} from "@/entities_FSD/user/lib/hooks/useAuth";
-import { useAuthStore } from "@/entities_FSD/user/model/auth.store";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
-
-import SignUpForm from "@/widgets_FSD/auth/sign-up-form/ui/SignUpForm";
+  useAuthStore,
+  ApiClientError,
+  type SignupFormValues,
+} from "@/entities_FSD/user";
+import { SignUpForm } from "@/widgets_FSD/auth/sign-up-form";
 import TermsModal from "@/widgets_FSD/auth/sign-up-form/ui/TermsModal";
 
 type ModalType = "service" | "privacy" | "location";

@@ -5,13 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import AlertModal from "@/components/common/AlertModal";
 import ModalWrapper from "@/components/common/ModalWrapper";
-import type { ResetPasswordFormValues } from "@/entities_FSD/user/model/auth.schema";
-import { useResetPasswordMutation } from "@/entities_FSD/user/lib/hooks/useAuth";
+import {
+  useResetPasswordMutation,
+  ApiClientError,
+  type ResetPasswordFormValues,
+} from "@/entities_FSD/user";
 import Toast from "@/components/common/Toast";
-
-import ResetPasswordForm from "@/widgets_FSD/auth/reset-password-form/ui/ResetPasswordForm";
+import { ResetPasswordForm } from "@/widgets_FSD/auth/reset-password-form";
 import Header from "@/components/common/Header";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
 
 export default function ResetPasswordPage() {
   return (

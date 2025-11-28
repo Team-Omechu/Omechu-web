@@ -5,8 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "@/entities_FSD/user/api/profileApi";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
@@ -14,13 +12,14 @@ import Checkbox from "@/components/common/Checkbox";
 import SquareButton from "@/components/common/button/SquareButton";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { useAuthStore } from "@/entities_FSD/user/model/auth.store";
 import {
+  fetchProfile,
+  useAuthStore,
   loginSchema,
-  LoginFormValues,
-} from "@/entities_FSD/user/model/auth.schema";
-import { useLoginMutation } from "@/entities_FSD/user/lib/hooks/useAuth";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
+  useLoginMutation,
+  ApiClientError,
+  type LoginFormValues,
+} from "@/entities_FSD/user";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);

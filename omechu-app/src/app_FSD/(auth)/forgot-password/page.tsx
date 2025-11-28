@@ -5,11 +5,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Toast from "@/components/common/Toast";
-import type { FindPasswordFormValues } from "@/entities_FSD/user/model/auth.schema";
-import { useRequestPasswordResetMutation } from "@/entities_FSD/user/lib/hooks/useAuth";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
-
-import ForgotPasswordForm from "@/widgets_FSD/auth/forgot-password-form/ui/ForgotPasswordForm";
+import {
+  useRequestPasswordResetMutation,
+  ApiClientError,
+  type FindPasswordFormValues,
+} from "@/entities_FSD/user";
+import { ForgotPasswordForm } from "@/widgets_FSD/auth/forgot-password-form";
 
 export default function FindPasswordPage() {
   const [showToast, setShowToast] = useState(false);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { changePassword } from "@/entities_FSD/user/api/authApi";
+import { changePassword } from "@/entities_FSD/user";
 import AlertModal from "@/components/common/AlertModal";
 import Header from "@/components/common/Header";
 import Input from "@/components/common/Input";

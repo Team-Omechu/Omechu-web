@@ -1,6 +1,4 @@
-"use client";
-
-import EmailSentMessage from "./components/EmailSentMessage";
+import { EmailSentMessage } from "../../../../widgets_FSD/auth/email-sent-message";
 
 export default function FindPasswordEmailSentPage() {
   return (

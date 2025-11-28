@@ -7,10 +7,10 @@ import Input from "@/components/common/Input";
 import {
   useSendVerificationCodeMutation,
   useVerifyVerificationCodeMutation,
-} from "@/entities_FSD/user/lib/hooks/useAuth";
-import type { SignupFormValues } from "@/entities_FSD/user/model/auth.schema";
+  ApiClientError,
+  type SignupFormValues,
+} from "@/entities_FSD/user";
 import Toast from "@/components/common/Toast";
-import { ApiClientError } from "@/entities_FSD/user/api/authApi";
 
 export default function UserInfoFields() {
   const {
