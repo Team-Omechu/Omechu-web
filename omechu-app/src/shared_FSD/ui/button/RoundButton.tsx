@@ -5,7 +5,7 @@ type RoundButtonProps = {
   size?: "sm" | "md" | "lg";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const RoundButton = ({
+export const RoundButton = ({
   variant,
   size = "md",
   children,
@@ -38,5 +38,3 @@ const RoundButton = ({
     </button>
   );
 };
-
-export default RoundButton;

@@ -5,7 +5,7 @@ type SquareButtonProps = {
   size?: "sm" | "md" | "lg";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const SquareButton = ({
+export const SquareButton = ({
   variant,
   size = "md",
   children,
@@ -39,5 +39,3 @@ const SquareButton = ({
     </button>
   );
 };
-
-export default SquareButton;

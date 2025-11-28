@@ -5,7 +5,12 @@ type HeaderProps = {
   className?: string;
 };
 
-const Header = ({ title, leftChild, rightChild, className }: HeaderProps) => {
+export const Header = ({
+  title,
+  leftChild,
+  rightChild,
+  className,
+}: HeaderProps) => {
   return (
     <header
       className={`border-grey-darkHoverActive bg-main-normal hover:bg-main-normal-hover relative z-10 flex min-h-[49px] w-full items-center border-none px-5 py-2.5 text-[#393939] ${className}`}
@@ -18,5 +23,3 @@ const Header = ({ title, leftChild, rightChild, className }: HeaderProps) => {
     </header>
   );
 };
-
-export default Header;

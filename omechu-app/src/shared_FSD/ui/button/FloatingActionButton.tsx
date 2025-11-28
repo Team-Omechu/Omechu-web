@@ -19,7 +19,7 @@ type FloatingActionButtonProps = {
   alt?: string; // 이미지 대체 텍스트 (기본값: "floating-button")
 };
 
-export default function FloatingActionButton({
+export function FloatingActionButton({
   onClick,
   className,
   alt = "floating-button",

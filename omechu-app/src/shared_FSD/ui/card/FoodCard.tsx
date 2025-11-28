@@ -42,7 +42,7 @@ export function normalizeRestaurant(s: ServerRestaurant): Restaurant {
 const normalizeIsLiked = (value: boolean | undefined | null): boolean =>
   Boolean(value);
 
-export default function FoodCard({
+export function FoodCard({
   item,
   onClick,
   onLike,

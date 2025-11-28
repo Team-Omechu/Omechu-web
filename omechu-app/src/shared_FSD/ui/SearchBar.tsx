@@ -28,7 +28,7 @@ interface SearchBarProps {
 
 const RECENT_KEY = "recent_search_terms";
 
-export default function SearchBar({
+export function SearchBar({
   inputValue,
   setInputValue,
   onSearch,

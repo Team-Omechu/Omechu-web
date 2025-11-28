@@ -51,7 +51,7 @@ interface InputProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export default function Input({
+export function Input({
   label,
   value,
   type = "text",

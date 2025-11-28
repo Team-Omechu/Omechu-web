@@ -9,7 +9,7 @@ type CheckboxProps = {
   variant?: "square" | "round";
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+export const CheckBox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, id, variant = "square", ...props }, ref) => {
     return (
       <label htmlFor={id} className="flex cursor-pointer items-center">
@@ -68,6 +68,4 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   },
 );
 
-Checkbox.displayName = "Checkbox";
-
-export default Checkbox;
+CheckBox.displayName = "Checkbox";

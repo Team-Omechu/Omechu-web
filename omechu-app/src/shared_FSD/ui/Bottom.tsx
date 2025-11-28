@@ -43,7 +43,7 @@ const navItems: {
   },
 ];
 
-export default function BottomNav() {
+export function BottomNav() {
   const router = useRouter();
   const pathname = usePathname();
   const hasHydrated = useAuthStore.persist?.hasHydrated?.() ?? false;

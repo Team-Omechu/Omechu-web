@@ -9,7 +9,7 @@ interface MenuInfoProps {
   MenuItem?: MenuDetail;
 }
 
-export default function MenuInfo({ MenuItem }: MenuInfoProps) {
+export function MenuInfo({ MenuItem }: MenuInfoProps) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();

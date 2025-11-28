@@ -7,7 +7,7 @@ type ModalWrapperProps = {
   children: React.ReactNode;
 };
 
-export default function ModalWrapper({ children }: ModalWrapperProps) {
+export function ModalWrapper({ children }: ModalWrapperProps) {
   useEffect(() => {
     lockBodyScroll();
     return () => {

@@ -20,7 +20,7 @@ type ToastProps = {
   className?: string;
 };
 
-export default function Toast({ message, show, className }: ToastProps) {
+export function Toast({ message, show, className }: ToastProps) {
   const [visible, setVisible] = useState(false);
   const [isHiding, setIsHiding] = useState(false);
 

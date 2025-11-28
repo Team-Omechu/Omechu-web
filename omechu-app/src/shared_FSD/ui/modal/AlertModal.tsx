@@ -37,7 +37,7 @@ type AlertModalProps = {
   swapButtonOrder?: boolean;
 };
 
-export default function AlertModal({
+export function AlertModal({
   title,
   description,
   confirmText = "확인",

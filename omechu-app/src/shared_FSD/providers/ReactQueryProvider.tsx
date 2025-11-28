@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const STALE_TIME = 60 * 1000; // 1분
 
-export default function ReactQueryProvider({
+export function ReactQueryProvider({
   children,
 }: {
   children: React.ReactNode;

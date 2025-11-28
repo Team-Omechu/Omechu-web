@@ -10,7 +10,7 @@ type FoodBoxProp = {
   onClick: () => void;
 };
 
-export default function FoodBox({
+export function FoodBox({
   title,
   imageUrl,
   isExcluded,

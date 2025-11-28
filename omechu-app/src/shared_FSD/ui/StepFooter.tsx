@@ -10,7 +10,7 @@ type StepFooterProps = {
   children?: React.ReactNode;
 };
 
-const StepFooter = ({
+export const StepFooter = ({
   showPrev = false,
   showNext = false,
   onPrev,
@@ -50,5 +50,3 @@ const StepFooter = ({
     </footer>
   );
 };
-
-export default StepFooter;

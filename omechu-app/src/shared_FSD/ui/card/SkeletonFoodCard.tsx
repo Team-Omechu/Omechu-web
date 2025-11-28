@@ -1,4 +1,4 @@
-export default function SkeletonFoodCard() {
+export function SkeletonFoodCard() {
   return (
     <div className="flex w-96 animate-pulse flex-row items-start gap-4 rounded-lg bg-gray-100 p-4">
       {/* 좌측: 텍스트 영역 */}

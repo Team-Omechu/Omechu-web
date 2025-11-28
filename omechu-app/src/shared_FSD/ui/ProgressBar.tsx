@@ -32,7 +32,7 @@ type ProgressBarProps = {
   cancelButtonClassName?: string; // 버튼에 추가 클래스를 주기 위한 prop
 };
 
-export default function ProgressBar({
+export function ProgressBar({
   currentStep,
   totalSteps,
   onCancelClick,
