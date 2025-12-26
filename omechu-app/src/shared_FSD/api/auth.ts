@@ -2,14 +2,14 @@
 // 새 위치: src/entities/user/api/authApi.ts
 
 import axios from "axios";
-import type {
-  LoginFormValues,
-  SignupFormValues,
-  FindPasswordFormValues,
-  ResetPasswordFormValues,
-} from "../../../entities_FSD/user/model/auth.schema";
 import axiosInstance from "@/lib/api/axios";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import {
+  FindPasswordFormValues,
+  LoginFormValues,
+  ResetPasswordFormValues,
+  SignupFormValues,
+} from "@/entities_FSD/user/model/auth.schema";
 
 // 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
 export class ApiClientError extends Error {
