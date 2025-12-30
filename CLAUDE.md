@@ -45,11 +45,13 @@ pnpm fsd:check          # Check FSD architecture compliance
 ## Project Structure
 
 ### Current Structure
+
 - **Main App**: `/omechu-app/` - Next.js application
 - **Source Code**: `/omechu-app/src/app/` - Next.js App Router structure
 - **Migrating to**: Feature-Sliced Design (FSD) architecture
 
 ### Planned FSD Layers
+
 - **app/**: Application-wide settings, providers, and routing
 - **entities/**: Business entities (User, Restaurant, Menu, Review)
 - **widgets/**: Complex UI blocks composed of entities
@@ -58,6 +60,7 @@ pnpm fsd:check          # Check FSD architecture compliance
 ### Key Directory Organization
 
 **Current App Router Structure** (`/omechu-app/src/app/`):
+
 - `(auth)/` - Route group for authentication pages (sign-in, sign-up, forgot-password)
 - `auth/` - Authentication business logic (hooks, schemas, components)
 - `lib/` - Shared libraries (API clients, stores, hooks, providers)
@@ -72,6 +75,7 @@ pnpm fsd:check          # Check FSD architecture compliance
 ### 1. Authentication System
 
 **JWT-based with automatic token refresh:**
+
 - Access token stored in Zustand store (persisted to localStorage)
 - Refresh token used for automatic token renewal
 - Axios interceptor in `/lib/api/axios.ts` handles 401 errors and token refresh
@@ -79,12 +83,14 @@ pnpm fsd:check          # Check FSD architecture compliance
 - Client-side route protection in `ClientLayout.tsx`
 
 **Key Files:**
+
 - `/lib/stores/auth.store.ts` - Zustand store with persistence
 - `/lib/api/axios.ts` - Axios instance with interceptors
 - `/auth/schemas/auth.schema.ts` - Zod validation schemas
 - `ClientLayout.tsx` - Route guard implementation
 
 **Important Notes:**
+
 - Middleware (`middleware.ts`) handles URL rewrites but NOT authentication
 - Authentication state is managed client-side only
 - Logout clears both Zustand state and localStorage to prevent 401 loops
@@ -92,6 +98,7 @@ pnpm fsd:check          # Check FSD architecture compliance
 ### 2. State Management Architecture
 
 **Zustand stores with localStorage persistence:**
+
 - `auth.store.ts` - User authentication (accessToken, refreshToken, user)
 - `onboarding.store.ts` - Multi-step onboarding flow data
 - `tagData.store.ts` - Food preference tags
@@ -100,27 +107,36 @@ pnpm fsd:check          # Check FSD architecture compliance
 - `userInfoSetup.store.ts` - User profile setup flow
 
 **Pattern:**
+
 ```typescript
 // All stores use persist middleware with partialize
-const store = create(persist(
-  (set) => ({ /* state and actions */ }),
-  {
-    name: 'storage-key',
-    storage: createJSONStorage(() => localStorage),
-    partialize: (state) => ({ /* only persist these fields */ })
-  }
-))
+const store = create(
+  persist(
+    (set) => ({
+      /* state and actions */
+    }),
+    {
+      name: "storage-key",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        /* only persist these fields */
+      }),
+    },
+  ),
+);
 ```
 
 ### 3. API Architecture
 
 **Centralized Axios instance** (`/lib/api/axios.ts`):
+
 - Base URL from `NEXT_PUBLIC_API_URL` environment variable
 - Request interceptor injects Bearer token
 - Response interceptor handles 401 with automatic token refresh
 - Standardized response format: `{ resultType, error, success }`
 
 **TanStack Query integration:**
+
 - React Query Provider wraps entire app in `layout.tsx`
 - Query hooks in feature-specific `/hooks/` directories
 - DevTools available in development
@@ -128,12 +144,14 @@ const store = create(persist(
 ### 4. Styling System (Tailwind CSS v4)
 
 **CSS-First Configuration** (`src/app/globals.css`):
+
 - No `tailwind.config.js` file (migrated to CSS)
 - All theme customization in `@theme` block
 - Custom CSS variables for colors, fonts, breakpoints
 - Custom utilities defined with `@utility` directive
 
 **Custom Design Tokens:**
+
 ```css
 @theme {
   /* Colors: primary-*, secondary-*, main-*, grey-* */
@@ -150,10 +168,13 @@ const store = create(persist(
 }
 
 /* Custom utility */
-@utility scrollbar-hide { /* ... */ }
+@utility scrollbar-hide {
+  /* ... */
+}
 ```
 
 **Mobile-First Design:**
+
 - Fixed width layout (375px) for mobile
 - Korean typography (Noto Sans KR font)
 - Custom color system (primary, secondary, main, grey)
@@ -162,28 +183,32 @@ const store = create(persist(
 ### 5. Form Handling Pattern
 
 **React Hook Form + Zod v4:**
+
 - Form validation schemas in `/schemas/` directories
 - `@hookform/resolvers` for Zod integration
 - Toast notifications for validation errors
 - Multi-step forms use Zustand for state persistence
 
 **Zod v4 Breaking Changes:**
+
 ```typescript
 // OLD (v3):
-z.enum(['a', 'b'], { errorMap: () => ({ message: 'error' }) })
+z.enum(["a", "b"], { errorMap: () => ({ message: "error" }) });
 
 // NEW (v4):
-z.enum(['a', 'b'], { message: 'error' })
+z.enum(["a", "b"], { message: "error" });
 ```
 
 ### 6. Route Protection & Middleware
 
 **Middleware** (`middleware.ts`):
+
 - **ONLY handles URL rewrites** (query params → dynamic segments)
 - Example: `/restaurant-detail?id=123` → `/restaurant-detail/123`
 - Does NOT handle authentication
 
 **Client-side Route Guards** (`ClientLayout.tsx`):
+
 - Checks `useAuthStore` for authentication state
 - Redirects unauthenticated users
 - Conditionally renders bottom navigation
@@ -193,17 +218,20 @@ z.enum(['a', 'b'], { message: 'error' })
 ### 1. ESLint Configuration
 
 **ESLint 9 Flat Config** (`eslint.config.mjs`):
+
 - Uses flat config format (NOT `.eslintrc`)
-- Import ordering enforced: React → Next → Internal (@/*) → Parent/Sibling
+- Import ordering enforced: React → Next → Internal (@/\*) → Parent/Sibling
 - Automatic import sorting with `--fix`
 - TypeScript-aware with `@typescript-eslint/eslint-plugin`
 
 **Known Issue:**
+
 - `pnpm lint` may fail on Windows (use `npx eslint src` instead)
 
 ### 2. Date Library Usage
 
 **Two date libraries present** (consider consolidating):
+
 - `date-fns` - Used in `CustomDatePicker.tsx`
 - `dayjs` - Used in `FoodieLogClient.tsx`
 
@@ -218,11 +246,13 @@ z.enum(['a', 'b'], { message: 'error' })
 ### 4. Code Quality Standards
 
 **Enforced by pre-commit hooks:**
+
 - ESLint with `--fix` for auto-fixable issues
 - Prettier formatting
 - Import organization (via ESLint)
 
 **TypeScript Configuration:**
+
 - Strict mode enabled
 - `noImplicitAny: true`
 - Path aliases: `@/*` → `./src/app/*`
