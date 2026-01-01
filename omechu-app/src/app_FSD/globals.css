@@ -12,6 +12,15 @@
   --max-width-screen-mobile: 375px;
   --min-height-screen-mobile: 812px;
 
+  /*! 데모데이 이후 타이포 그래피 시스템 */
+  /* Font Sizes */
+  --text-body-1: 24px;
+  --text-body-2: 20px;
+  --text-body-3: 18px;
+  --text-body-4: 16px;
+  --text-caption-1: 14px;
+  --text-caption-2: 12px;
+
   /*! 데모데이 이후 컬러 시스템 */
   /* Custom Colors - Brancd */
   --color-brand-primary: #ff7676;
@@ -65,8 +74,6 @@
   --color-tag-background-blue: #f0f7ff;
   --color-tag-gray: #707070;
   --color-tag-backgorund-gray: #f5f5f5;
-
-  /*! 데모데이 이후 타이포 그래피 시스템 */
 
   /*! 기존(데모데이) 컬러 시스템 */
   /* Custom Colors - Primary */
