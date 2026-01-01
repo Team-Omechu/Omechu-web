@@ -1,19 +1,12 @@
-"use client";
+import Link from "next/link";
 
-import { BottomButton } from "@/shared_FSD/ui/button/BottomButton";
-
-export default function BottomButtonTestPage() {
+export default function ExampleTestPage() {
   return (
-    <div className="relative min-h-screen space-y-12 bg-gray-50 p-6">
-      <h1 className="text-body-2-bold">BottomButton Test</h1>
+    <div className="flex flex-col gap-4 p-6">
+      <h1 className="text-body-3-bold">공용 컴포넌트 테스트</h1>
 
-      {/* default */}
-      <BottomButton variant="default" onClick={() => alert("default click")}>
-        기본 버튼
-      </BottomButton>
-
-      {/* disabled */}
-      <BottomButton disabled>비활성 버튼</BottomButton>
+      <Link href="/example_testpage/button">Button</Link>
+      <Link href="/example_testpage/button/bottom-button">BottomButton</Link>
     </div>
   );
 }

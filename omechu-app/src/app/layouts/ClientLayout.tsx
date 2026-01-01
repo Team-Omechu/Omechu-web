@@ -19,6 +19,8 @@ export default function ClientLayout({
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
   const { isLoggedIn } = useAuthStore();
 
+  const isTestPageSection = pathname.startsWith("/example_testpage");
+
   const inAuthSection =
     pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
 
@@ -126,6 +128,7 @@ export default function ClientLayout({
   ];
 
   const showBottomNav = !(
+    isTestPageSection ||
     noBottomNavRoutes.includes(pathname) ||
     dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix))
   );
