@@ -1,19 +1,34 @@
 import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
+import clsx from "clsx";
 
 const bottomButtonStyles = cva(
-  "w-full h-[50px] rounded-t-[16px] text-brand-secondary text-body-4-regular flex items-center justify-center",
+  clsx(
+    // 위치
+    "fixed bottom-0 left-0 right-0 z-50",
+    "w-full h-[50px]",
+    "rounded-t-[16px]",
+    "flex items-center justify-center",
+
+    // 타이포그래피
+    "text-body-4-regular text-brand-secondary",
+
+    // 인터랙션
+    "active:bg-statelayer-pressed",
+    "disabled:bg-statelayer-disabled disabled:cursor-not-allowed disabled:active:bg-statelayer-disabled",
+
+    // iOS 대응
+    "pb-[env(safe-area-inset-bottom)]",
+  ),
   {
     variants: {
       variant: {
-        default: "bg-[var(--color-statelayer-default)]",
-        pressed: "bg-[var(--color-statelayer-pressed)]",
-        disabled: "bg-[var(--color-statelayer-disabled)]",
+        default: "bg-statelayer-default",
       },
     },
     defaultVariants: {
-      variant: "disabled",
+      variant: "default",
     },
   },
 );
@@ -24,12 +39,11 @@ type BottomButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
 export const BottomButton = ({
   variant,
   children,
-  onClick,
   ...props
 }: BottomButtonProps) => {
   return (
     <button
-      onClick={onClick}
+      type="button"
       className={bottomButtonStyles({ variant })}
       {...props}
     >

@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
+
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
+
 import { useQueryClient } from "@tanstack/react-query";
+
 // import { fetchProfile } from "@/mypage/api/profile";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
@@ -74,7 +77,7 @@ export default function BottomNav() {
   }, [accessToken, hasHydrated, queryClient]);
 
   return (
-    <div className="fixed bottom-0 left-1/2 z-50 h-20 w-full min-w-[375px] -translate-x-1/2 rounded-t-[10px] bg-grey-light pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+    <div className="bg-grey-light fixed bottom-0 left-1/2 z-50 h-20 w-full min-w-[375px] -translate-x-1/2 rounded-t-[10px] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
       <div className="flex w-full justify-between px-5 py-2.5">
         {navItems.map((item, index) => {
           const isActive = pathname === item.routingUrl;
@@ -84,7 +87,7 @@ export default function BottomNav() {
             <div
               key={index}
               onClick={() => handleNavClick(item)}
-              className="flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee] active:bg-grey-light-active"
+              className="active:bg-grey-light-active flex w-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg py-1 hover:bg-[#eeeeee]"
             >
               <Image src={iconSrc} alt={item.imgAlt} width={26} height={26} />
               <span
