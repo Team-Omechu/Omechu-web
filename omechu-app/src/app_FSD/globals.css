@@ -14,7 +14,25 @@
 
   /*! 데모데이 이후 타이포 그래피 시스템 */
   /* Font Weights */
+  --font-weight-regular: 400; /* Font Weights */
   --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Font Sizes */
+  --text-body-1: 24px;
+  --text-body-2: 20px;
+  --text-body-3: 18px;
+  --text-body-4: 16px;
+  --text-caption-1: 14px;
+  --text-caption-2: 12px;
+
+  /* Line Heights */
+  --leading-body-1: 1.4;
+  --leading-body-2: 1.4;
+  --leading-body-3: 1.45;
+  --leading-body-4: 1.5;
+  --leading-caption: 1.5;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
@@ -188,6 +206,89 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  /* Body 1 */
+  .text-body-1-bold {
+    font-size: var(--text-body-1);
+    line-height: var(--leading-body-1);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-body-1-medium {
+    font-size: var(--text-body-1);
+    line-height: var(--leading-body-1);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Body 2 */
+  .text-body-2-bold {
+    font-size: var(--text-body-2);
+    line-height: var(--leading-body-2);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-body-2-medium {
+    font-size: var(--text-body-2);
+    line-height: var(--leading-body-2);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-body-2-regular {
+    font-size: var(--text-body-2);
+    line-height: var(--leading-body-2);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Body 3 */
+  .text-body-3-bold {
+    font-size: var(--text-body-3);
+    line-height: var(--leading-body-3);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-body-3-medium {
+    font-size: var(--text-body-3);
+    line-height: var(--leading-body-3);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-body-3-regular {
+    font-size: var(--text-body-3);
+    line-height: var(--leading-body-3);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Body 4 */
+  .text-body-4-medium {
+    font-size: var(--text-body-4);
+    line-height: var(--leading-body-4);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-body-4-regular {
+    font-size: var(--text-body-4);
+    line-height: var(--leading-body-4);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Caption */
+  .text-caption-1-medium {
+    font-size: var(--text-caption-1);
+    line-height: var(--leading-caption);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-caption-1-regular {
+    font-size: var(--text-caption-1);
+    line-height: var(--leading-caption);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .text-caption-2-medium {
+    font-size: var(--text-caption-2);
+    line-height: var(--leading-caption);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-caption-2-regular {
+    font-size: var(--text-caption-2);
+    line-height: var(--leading-caption);
+    font-weight: var(--font-weight-regular);
   }
 }
 
