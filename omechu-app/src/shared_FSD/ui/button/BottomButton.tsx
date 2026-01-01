@@ -1,13 +1,38 @@
 import React from "react";
 
-type BottomButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+import { cva, VariantProps } from "class-variance-authority";
 
-export const BottomButton = ({ children, ...props }: BottomButtonProps) => {
-  const baseStyle =
-    "h-12 w-full bg-secondary-normal p-2 text-xl font-normal text-white hover:bg-[#0182CA] active:bg-secondary-normal-active disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:bg-gray-400";
+const bottomButtonStyles = cva(
+  "w-full h-[50px] rounded-t-[16px] text-brand-secondary text-body-4-regular flex items-center justify-center",
+  {
+    variants: {
+      variant: {
+        default: "bg-[var(--color-statelayer-default)]",
+        pressed: "bg-[var(--color-statelayer-pressed)]",
+        disabled: "bg-[var(--color-statelayer-disabled)]",
+      },
+    },
+    defaultVariants: {
+      variant: "disabled",
+    },
+  },
+);
 
+type BottomButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof bottomButtonStyles>;
+
+export const BottomButton = ({
+  variant,
+  children,
+  onClick,
+  ...props
+}: BottomButtonProps) => {
   return (
-    <button {...props} className={`${baseStyle} ${props.className || ""}`}>
+    <button
+      onClick={onClick}
+      className={bottomButtonStyles({ variant })}
+      {...props}
+    >
       {children}
     </button>
   );
