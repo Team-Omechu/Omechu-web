@@ -7,7 +7,7 @@ import { clsx } from "clsx";
 
 const inputStyles = cva(
   [
-    "w-full h-12 px-4",
+    "h-12 px-4",
     "rounded-[10px] border border-font-placeholder outline-none",
     "bg-background-secondary",
     "placeholder:text-font-placeholder",
