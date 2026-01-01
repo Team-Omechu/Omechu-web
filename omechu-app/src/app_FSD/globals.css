@@ -13,6 +13,11 @@
   --min-height-screen-mobile: 812px;
 
   /*! 데모데이 이후 타이포 그래피 시스템 */
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
   /* Font Sizes */
   --text-body-1: 24px;
   --text-body-2: 20px;
@@ -20,6 +25,13 @@
   --text-body-4: 16px;
   --text-caption-1: 14px;
   --text-caption-2: 12px;
+
+  /* Line Heights */
+  --leading-body-1: 1.4;
+  --leading-body-2: 1.4;
+  --leading-body-3: 1.45;
+  --leading-body-4: 1.5;
+  --leading-caption: 1.5;
 
   /*! 데모데이 이후 컬러 시스템 */
   /* Custom Colors - Brancd */
