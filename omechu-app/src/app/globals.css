@@ -65,6 +65,7 @@
   --color-status-positive: #5ad886;
   --color-status-negative: #ff9029;
   --color-status-warning: #e93d35;
+  --color-status-error: #ff364b;
 
   /* Custom Colors - Tag */
   --color-tag-red: #c11d15;
