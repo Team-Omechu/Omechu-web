@@ -1,9 +1,8 @@
-// src/app/example_testpage/toast/page.tsx
 "use client";
 
 import { useState } from "react";
 
-import Toast from "@/shared_FSD/ui/button/toast/Toast";
+import Toast from "@/shared_FSD/ui/toast/Toast";
 
 export default function ToastTestPage() {
   const [showError, setShowError] = useState(false);
