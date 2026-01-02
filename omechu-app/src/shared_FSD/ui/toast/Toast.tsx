@@ -43,7 +43,7 @@ export default function Toast({
       {state === "success" && (
         <span className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2">
           <Image
-            src="/circle/circle_currect.svg"
+            src="/circle/circle_correct.svg"
             alt="success icon"
             width="18"
             height="18"
