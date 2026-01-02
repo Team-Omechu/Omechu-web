@@ -18,7 +18,7 @@ const OnboardingButtonStyles = cva(
         sm: "w-[75.67px] text-body-3-regular",
       },
       selected: {
-        true: "bg-brand-primary text-brand-secondary border-nones",
+        true: "bg-brand-primary text-brand-secondary border-none",
         false:
           "bg-brand-secondary text-font-placeholder border border-font-placeholder ",
       },
