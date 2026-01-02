@@ -26,14 +26,8 @@
   --text-caption-1: 14px;
   --text-caption-2: 12px;
 
-  /* Line Heights */
-  --leading-body-1: 1.4;
-  --leading-body-2: 1.4;
-  --leading-body-3: 1.45;
-  --leading-body-4: 1.5;
-
   /*! 데모데이 이후 컬러 시스템 */
-  /* Custom Colors - Brand */
+  /* Custom Colors - Brancd */
   --color-brand-primary: #ff7676;
   --color-brand-secondary: #ffffff;
   --color-brand-tertiary: #24242414;
@@ -194,81 +188,67 @@
   /* Body 1 */
   .text-body-1-bold {
     font-size: var(--text-body-1);
-    line-height: var(--leading-body-1);
     font-weight: var(--font-weight-bold);
   }
   .text-body-1-medium {
     font-size: var(--text-body-1);
-    line-height: var(--leading-body-1);
     font-weight: var(--font-weight-medium);
   }
 
   /* Body 2 */
   .text-body-2-bold {
     font-size: var(--text-body-2);
-    line-height: var(--leading-body-2);
     font-weight: var(--font-weight-bold);
   }
   .text-body-2-medium {
     font-size: var(--text-body-2);
-    line-height: var(--leading-body-2);
     font-weight: var(--font-weight-medium);
   }
   .text-body-2-regular {
     font-size: var(--text-body-2);
-    line-height: var(--leading-body-2);
     font-weight: var(--font-weight-regular);
   }
 
   /* Body 3 */
   .text-body-3-bold {
     font-size: var(--text-body-3);
-    line-height: var(--leading-body-3);
     font-weight: var(--font-weight-bold);
   }
   .text-body-3-medium {
     font-size: var(--text-body-3);
-    line-height: var(--leading-body-3);
     font-weight: var(--font-weight-medium);
   }
   .text-body-3-regular {
     font-size: var(--text-body-3);
-    line-height: var(--leading-body-3);
     font-weight: var(--font-weight-regular);
   }
 
   /* Body 4 */
   .text-body-4-medium {
     font-size: var(--text-body-4);
-    line-height: var(--leading-body-4);
     font-weight: var(--font-weight-medium);
   }
   .text-body-4-regular {
     font-size: var(--text-body-4);
-    line-height: var(--leading-body-4);
     font-weight: var(--font-weight-regular);
   }
 
   /* Caption */
   .text-caption-1-medium {
     font-size: var(--text-caption-1);
-    line-height: var(--leading-caption);
     font-weight: var(--font-weight-medium);
   }
   .text-caption-1-regular {
     font-size: var(--text-caption-1);
-    line-height: var(--leading-caption);
     font-weight: var(--font-weight-regular);
   }
 
   .text-caption-2-medium {
     font-size: var(--text-caption-2);
-    line-height: var(--leading-caption);
     font-weight: var(--font-weight-medium);
   }
   .text-caption-2-regular {
     font-size: var(--text-caption-2);
-    line-height: var(--leading-caption);
     font-weight: var(--font-weight-regular);
   }
 }
