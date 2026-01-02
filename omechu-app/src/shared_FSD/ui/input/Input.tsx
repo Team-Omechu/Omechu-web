@@ -10,6 +10,7 @@ const inputStyles = cva(
     "h-12 px-4",
     "rounded-[10px] border border-font-placeholder outline-none",
     "bg-background-secondary",
+    "text-font-high",
     "placeholder:text-font-placeholder",
     "transition-colors flex items-center",
   ],
