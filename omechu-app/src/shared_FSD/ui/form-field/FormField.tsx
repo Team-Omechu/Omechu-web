@@ -22,7 +22,6 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
 export const FormField = ({
   label,
   id,
-  required,
   helperText,
   helperState,
   rightSlot,
@@ -42,9 +41,7 @@ export const FormField = ({
 
   return (
     <div className={clsx("flex flex-col", className)} {...props}>
-      <Label htmlFor={id} required={required}>
-        {label}
-      </Label>
+      <Label htmlFor={id}>{label}</Label>
 
       <div className={clsx("mt-2 flex items-center gap-3")}>
         {enhancedChildren}

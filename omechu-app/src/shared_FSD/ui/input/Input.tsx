@@ -17,8 +17,9 @@ const inputStyles = cva(
   {
     variants: {
       width: {
-        default: "w-[335px]",
-        verify: "w-[210px]",
+        default: "w-[336px]",
+        md: "w-[210px]",
+        sm: "w-[196px]",
       },
       state: {
         default: "",
@@ -26,7 +27,6 @@ const inputStyles = cva(
       },
     },
     defaultVariants: {
-      width: "default",
       state: "default",
     },
   },
@@ -44,11 +44,14 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
     };
 
     return (
-      <div className={clsx(inputStyles({ width, state }), className)}>
+      <div
+        className={clsx("relative", inputStyles({ width, state }), className)}
+      >
         <input
           ref={ref}
           type={isVisible ? "text" : "password"}
           disabled={disabled}
+          autoComplete={"off"}
           className="placeholder:text-font-placeholder flex-1 bg-transparent outline-none"
           {...props}
         />
@@ -92,6 +95,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
         ref={ref}
         type={type}
         disabled={props.disabled}
+        autoComplete={"off"}
         className={clsx(
           inputStyles({ width: props.width, state: props.state }),
           props.className,
