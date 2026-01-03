@@ -20,7 +20,7 @@ export const HelperText = ({
         "text-caption-2-regular mt-4 ml-1",
         {
           default: "text-font-placeholder",
-          error: "text-status-error", // 피그마에 토큰으로는 저장되어 있는데, 디자인 시스템에는 없어서 일단 하드코딩했습니당;
+          error: "text-status-error",
           success: "text-tag-blue",
         }[state],
         className,
