@@ -3,9 +3,10 @@
 
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
+
+import { usePathname, useRouter } from "next/navigation";
+
 import { useUserQuery } from "@/lib/hooks/useAuth";
 import { useAuthStore } from "@/lib/stores/auth.store";
 

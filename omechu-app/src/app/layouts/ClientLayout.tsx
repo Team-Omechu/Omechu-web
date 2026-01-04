@@ -1,8 +1,11 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+
+import { usePathname, useRouter } from "next/navigation";
+
 import BottomNav from "@/components/common/Bottom";
+
 import { useUserQuery } from "../../entities_FSD/user/lib/hooks/useAuth";
 import { useAuthStore } from "../../entities_FSD/user/model/auth.store";
 
@@ -15,6 +18,8 @@ export default function ClientLayout({
   const router = useRouter();
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
   const { isLoggedIn } = useAuthStore();
+
+  const isTestPageSection = pathname.startsWith("/example_testpage");
 
   const inAuthSection =
     pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
@@ -110,6 +115,9 @@ export default function ClientLayout({
     "/mypage/favorites",
     // 마이페이지-활동내역
     "/mypage/my-activity",
+
+    // FSD 컴포넌트 테스트용 페이지
+    "/example_testpage",
   ];
 
   const dynamicNoBottomNavPrefixes = [
@@ -120,6 +128,7 @@ export default function ClientLayout({
   ];
 
   const showBottomNav = !(
+    isTestPageSection ||
     noBottomNavRoutes.includes(pathname) ||
     dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix))
   );

@@ -3,48 +3,45 @@ import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-const bottomButtonStyles = cva(
+const buttonStyles = cva(
   clsx(
-    // 위치
-    "fixed bottom-0 left-0 right-0 z-50",
-    "w-full h-[50px]",
-    "rounded-t-[16px]",
+    // 모양
+    "h-12",
+    "rounded-[10px]",
     "flex items-center justify-center",
 
     // 타이포그래피
-    "text-body-4-regular text-brand-secondary",
+    "text-brand-secondary",
 
     // 인터랙션
     "active:bg-statelayer-pressed",
     "disabled:bg-statelayer-disabled disabled:cursor-not-allowed disabled:active:bg-statelayer-disabled",
-
-    // iOS 대응
-    "pb-[env(safe-area-inset-bottom)]",
   ),
   {
     variants: {
       variant: {
         default: "bg-statelayer-default",
       },
+      width: {
+        default: "w-[335px] text-body-4-regular",
+        verify: "w-[116px] text-caption-1-regular",
+      },
     },
     defaultVariants: {
       variant: "default",
+      width: "default",
     },
   },
 );
 
-type BottomButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof bottomButtonStyles>;
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonStyles>;
 
-export const BottomButton = ({
-  variant,
-  children,
-  ...props
-}: BottomButtonProps) => {
+export const Button = ({ variant, width, children, ...props }: ButtonProps) => {
   return (
     <button
       type="button"
-      className={bottomButtonStyles({ variant })}
+      className={buttonStyles({ variant, width })}
       {...props}
     >
       {children}

@@ -3,11 +3,14 @@
 
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import BottomNav from "./components/common/Bottom";
 import { useEffect } from "react";
+
+import { usePathname, useRouter } from "next/navigation";
+
 import { useUserQuery } from "@/lib/hooks/useAuth";
 import { useAuthStore } from "@/lib/stores/auth.store";
+
+import BottomNav from "./components/common/Bottom";
 
 export default function ClientLayout({
   children,
@@ -131,7 +134,7 @@ export default function ClientLayout({
   return (
     <>
       <main
-        className={`${showBottomNav ? "pb-20" : ""} flex-1 overflow-y-scroll bg-main-normal scrollbar-hide`}
+        className={`${showBottomNav ? "pb-20" : ""} bg-main-normal scrollbar-hide flex-1 overflow-y-scroll`}
       >
         {children}
       </main>

@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
+
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
+
 import { useQueryClient } from "@tanstack/react-query";
+
 // import { fetchProfile } from "@/mypage/api/profile";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
