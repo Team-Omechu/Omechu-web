@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { RecommendedFoodCard } from "@/shared_FSD/ui/card/RecommendedFoodCard";
 
-const initialMenus = [
+const INITIAL_MENUS = [
   {
     menuTitle: "샤브샤브",
     menuDesc: "신선한 채소와 고기를 육수에 살짝 담가 먹는 따끈한 건강식",
@@ -26,7 +26,7 @@ const initialMenus = [
 export default function RecommendedFoodCardTestPage() {
   const router = useRouter();
 
-  const [menus, setMenus] = useState(initialMenus);
+  const [menus, setMenus] = useState(INITIAL_MENUS);
   const [selectedMap, setSelectedMap] = useState<Record<string, boolean>>({});
 
   // const toggleSelect = (menuTitle: string) => {
@@ -49,7 +49,7 @@ export default function RecommendedFoodCardTestPage() {
     <main className="flex h-screen justify-center p-6">
       <div className="flex flex-col items-center gap-6">
         {menus.map(({ menuTitle, menuDesc, src }) => (
-          <div key={menuTitle} className="w-[336px]">
+          <div key={menuTitle} className="w-84">
             <RecommendedFoodCard
               menuTitle={menuTitle}
               menuDesc={menuDesc}
