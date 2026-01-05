@@ -6,18 +6,21 @@ type ProgressBarProps = {
   totalSteps: number;
 };
 
-const containerStyle = cva("flex justify-center w-[375px] px-5", {
+const containerStyle = cva("flex justify-center w-full px-5", {
   variants: {},
 });
 
-const segmentStyle = cva("h-[9px] rounded-[30px] border border-brand-primary", {
-  variants: {
-    filled: {
-      true: "bg-brand-primary border",
-      false: "bg-brand-secondary",
+const segmentStyle = cva(
+  "h-[9px] rounded-[30px] border-2 border-brand-primary",
+  {
+    variants: {
+      filled: {
+        true: "bg-brand-primary border",
+        false: "bg-brand-secondary",
+      },
     },
   },
-});
+);
 
 export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
   return (
