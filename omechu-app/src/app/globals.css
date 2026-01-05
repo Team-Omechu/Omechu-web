@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+button {
+  cursor: pointer;
+}
+
 /* Tailwind CSS v4 Configuration */
 @theme {
   /* Font Family */
@@ -119,16 +123,16 @@
   --color-main-darker: #574b59;
 
   /* Custom Colors - Grey */
-  --color-grey-light: #f6f6f6;
-  --color-grey-light-hover: #f1f1f1;
-  --color-grey-light-active: #e2e2e2;
-  --color-grey-normal: #a3a3a3;
-  --color-grey-normal-hover: #e2e2e2;
-  --color-grey-normal-active: #828282;
-  --color-grey-dark: #7a7a7a;
-  --color-grey-dark-hover: #97948f;
-  --color-grey-dark-active: #494949;
-  --color-grey-darker: #393939;
+  --color-foundation-grey-light: #f6f6f6;
+  --color-foundation-grey-light-hover: #f1f1f1;
+  --color-foundation-grey-light-active: #e2e2e2;
+  --color-foundation-grey-normal: #a3a3a3;
+  --color-foundation-grey-normal-hover: #e2e2e2;
+  --color-foundation-grey-normal-active: #828282;
+  --color-foundation-grey-dark: #7a7a7a;
+  --color-foundation-grey-dark-hover: #97948f;
+  --color-foundation-grey-dark-active: #494949;
+  --color-foundation-grey-darker: #393939;
 
   /* Custom Animations - Shake */
   --animate-shake: shake 0.5s ease-in-out;
@@ -261,7 +265,7 @@ body {
 
 /* .react-datepicker 관련 Tailwind 기반 커스터마이징은 globals.css 같은 전역 CSS 파일에만 작성 가능 */
 /* 컴포넌트 파일(JSX/TSX) 내부에 직접 넣을 수는 없음 */
-.react-datepicker {
+/* .react-datepicker {
   @apply border-grey-dark-hover! rounded-3xl! border-2! px-6!;
 }
 
@@ -287,4 +291,4 @@ body {
 
 .react-datepicker__day--outside-month {
   @apply text-gray-400!;
-}
+} */
