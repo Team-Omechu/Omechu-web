@@ -16,7 +16,7 @@ const mockMenus = {
   allergies: "연어, 대두, 글루텐",
 };
 
-const mockRestaurants = [
+const MOCK_MENUS = [
   {
     id: 1,
     name: "황톳길",
@@ -65,7 +65,7 @@ export default function RestaurantCardTestPage() {
         맛집 카드 테스트 페이지
       </h1>
 
-      {mockRestaurants.map((r) => (
+      {MOCK_MENUS.map((r) => (
         <RestaurantCard
           key={r.id}
           {...r}
