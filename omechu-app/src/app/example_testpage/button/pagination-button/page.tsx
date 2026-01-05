@@ -1,16 +1,22 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import PaginationButton from "@/shared_FSD/ui/button/PaginationButton";
 import { Header } from "@/shared_FSD/ui/Header";
 import { ProgressBar } from "@/shared_FSD/ui/ProgressBar";
 
 export default function PaginationTestPage() {
+  const router = useRouter();
+
   const handlePrev = () => {
     console.log("prev click");
+    router.push("/");
   };
 
   const handleNext = () => {
     console.log("next click");
+    router.push("/");
   };
 
   return (
