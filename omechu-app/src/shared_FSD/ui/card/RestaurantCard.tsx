@@ -49,7 +49,7 @@ const RestaurantCard = ({
       <div className="h-20 w-20">
         <Image
           src={"/image/image_empty.svg"}
-          alt=""
+          alt={`${name} 이미지`}
           width={80}
           height={80}
           priority
