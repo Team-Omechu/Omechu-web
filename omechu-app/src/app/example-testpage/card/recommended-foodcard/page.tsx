@@ -29,13 +29,6 @@ export default function RecommendedFoodCardTestPage() {
   const [menus, setMenus] = useState(INITIAL_MENUS);
   const [selectedMap, setSelectedMap] = useState<Record<string, boolean>>({});
 
-  // const toggleSelect = (menuTitle: string) => {
-  //   setSelectedMap((prev) => ({
-  //     ...prev,
-  //     [menuTitle]: !prev[menuTitle],
-  //   }));
-  // };
-
   const handleDelete = (menuTitle: string) => {
     setMenus((prev) => prev.filter((item) => item.menuTitle !== menuTitle));
     setSelectedMap((prev) => {
