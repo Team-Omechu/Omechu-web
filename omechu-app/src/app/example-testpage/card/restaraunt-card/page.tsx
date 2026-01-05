@@ -4,7 +4,17 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import IngredientCard from "@/shared_FSD/ui/card/IngredientCard";
 import RestaurantCard from "@/shared_FSD/ui/card/RestaurantCard";
+
+const mockMenus = {
+  kcal: "520",
+  carbohydrate: "40",
+  protein: "32",
+  fat: "28",
+  vitamin: "비타민 C 12mg",
+  allergies: "연어, 대두, 글루텐",
+};
 
 const mockRestaurants = [
   {
@@ -37,6 +47,14 @@ const mockRestaurants = [
 export default function RestaurantCardTestPage() {
   const router = useRouter();
 
+  const [log, setLog] = useState("");
+
+  const handleClick = () => {
+    const msg = `Card clicked at ${new Date().toLocaleTimeString()}`;
+    setLog(msg);
+    console.log(msg);
+  };
+
   return (
     <main
       className="mt-9 flex min-h-screen w-full flex-col items-center gap-6"
@@ -54,6 +72,7 @@ export default function RestaurantCardTestPage() {
           onCardClick={() => router.push(`/restaurant/${r.id}`)}
         />
       ))}
+      <IngredientCard {...mockMenus} onCardClick={handleClick} />
     </main>
   );
 }

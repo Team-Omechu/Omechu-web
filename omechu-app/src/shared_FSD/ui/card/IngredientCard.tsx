@@ -21,7 +21,7 @@ const IngredientCard = ({
 }: IngredientCardProps) => {
   return (
     <section
-      className="bg-background-secondary h-fit w-80 rounded-2xl p-5"
+      className="bg-background-secondary h-fit w-81.5 rounded-2xl p-5"
       onClick={onCardClick}
       role="button"
       aria-pressed={undefined}
