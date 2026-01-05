@@ -25,8 +25,7 @@ export const RecommendedFoodCard = ({
   return (
     <div className="relative">
       <button
-        className="absolute cursor-pointer"
-        style={{ top: "-13px", left: "2px" }}
+        className="absolute -top-3 left-2 cursor-pointer"
         onClick={(e) => {
           e.stopPropagation();
           onMinusButtonClick();
@@ -48,14 +47,14 @@ export const RecommendedFoodCard = ({
       <button
         onClick={onCardClick}
         className={clsx(
-          "bg-brand-secondary border-font-disabled flex h-28 w-[336px] gap-5 rounded-2xl border-[1.5px] p-3",
+          "bg-brand-secondary border-font-disabled flex h-28 w-84 gap-5 rounded-2xl border-[1.5px] p-3",
           selected && "bg-brand-primary scale-105",
         )}
         aria-label="추천 음식 카드"
         aria-pressed={selected}
         type="button"
       >
-        <div className="flex h-24 w-24 items-center justify-center rounded-2xl">
+        <div className="flex h-22 w-22 items-center justify-center rounded-2xl">
           <Image
             src={clsx(src ? src : "/image/image_empty.svg")}
             width={96}
