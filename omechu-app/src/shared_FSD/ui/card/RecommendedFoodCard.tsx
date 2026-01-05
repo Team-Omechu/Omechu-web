@@ -25,7 +25,7 @@ export const RecommendedFoodCard = ({
   return (
     <div className="relative">
       <button
-        className="absolute -top-3 left-2 cursor-pointer"
+        className="absolute -top-3.5 left-2 cursor-pointer"
         onClick={(e) => {
           e.stopPropagation();
           onMinusButtonClick();
