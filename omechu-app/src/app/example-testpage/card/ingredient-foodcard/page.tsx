@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import IngredientCard from "@/shared_FSD/ui/card/IngredientCard";
 
-const mockMenus = {
+const MOCK_MENUS = {
   kcal: "520",
   carbohydrate: "40",
   protein: "32",
@@ -25,7 +25,7 @@ export default function IngredientCardTestPage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-8">
       <div>
-        <IngredientCard {...mockMenus} onCardClick={handleClick} />
+        <IngredientCard {...MOCK_MENUS} onCardClick={handleClick} />
       </div>
 
       {log && (

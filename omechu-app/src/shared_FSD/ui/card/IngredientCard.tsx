@@ -54,7 +54,7 @@ const IngredientCard = ({
           알레르기 유발 성분
         </div>
         <div className="text-body-4-medium text-font-high flex w-56 flex-col">
-          {[allergies]}
+          {allergies ? [allergies] : "없음"}
         </div>
       </div>
     </section>
