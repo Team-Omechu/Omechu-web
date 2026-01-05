@@ -56,7 +56,7 @@ export const RecommendedFoodCard = ({
       >
         <div className="flex h-22 w-22 items-center justify-center rounded-2xl">
           <Image
-            src={clsx(src ? src : "/image/image_empty.svg")}
+            src={src || "/image/image_empty.svg"}
             width={96}
             height={96}
             alt="추천 음식 미리보기 이미지"
