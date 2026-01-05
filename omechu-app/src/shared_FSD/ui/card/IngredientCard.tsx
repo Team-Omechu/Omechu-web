@@ -1,3 +1,5 @@
+// ! 26.01.04 작업 완료
+
 interface IngredientCardProps {
   kcal?: string;
   carbohydrate?: string;
