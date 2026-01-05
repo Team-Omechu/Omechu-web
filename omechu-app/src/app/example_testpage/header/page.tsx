@@ -14,7 +14,7 @@ export default function HeaderTestPage() {
     router.push("/");
   };
   return (
-    <main className="space-y-6 py-6">
+    <main className="flex flex-col gap-3">
       <Header isRightChild={true} />
 
       <Header title="맞춤 추천" isRightChild={true} />

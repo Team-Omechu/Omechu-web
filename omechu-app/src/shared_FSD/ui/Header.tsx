@@ -7,7 +7,7 @@ import clsx from "clsx";
 
 const headerStyles = cva(
   clsx(
-    "flex items-center px-5 py-2.5",
+    "flex items-center px-5 py-2.5 mt-2",
     "w-full h-12",
     "text-body-3-medium text-font-high",
   ),
