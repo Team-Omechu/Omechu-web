@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import IngredientCard from "@/shared_FSD/ui/card/IngredientCard";
 import RestaurantCard from "@/shared_FSD/ui/card/RestaurantCard";
 
-const mockMenus = {
+const MOCK_MENUS = {
   kcal: "520",
   carbohydrate: "40",
   protein: "32",
@@ -16,7 +16,7 @@ const mockMenus = {
   allergies: "연어, 대두, 글루텐",
 };
 
-const MOCK_MENUS = [
+const MOCK_RESTAURANTS = [
   {
     id: 1,
     name: "황톳길",
@@ -65,14 +65,14 @@ export default function RestaurantCardTestPage() {
         맛집 카드 테스트 페이지
       </h1>
 
-      {MOCK_MENUS.map((r) => (
+      {MOCK_RESTAURANTS.map((r) => (
         <RestaurantCard
           key={r.id}
           {...r}
           onCardClick={() => router.push(`/restaurant/${r.id}`)}
         />
       ))}
-      <IngredientCard {...mockMenus} onCardClick={handleClick} />
+      <IngredientCard {...MOCK_MENUS} onCardClick={handleClick} />
     </main>
   );
 }
