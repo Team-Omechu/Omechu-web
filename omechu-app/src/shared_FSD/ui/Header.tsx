@@ -1,3 +1,5 @@
+//! 26.01.05 작업 완료
+
 "use client";
 
 import Image from "next/image";
@@ -7,7 +9,7 @@ import clsx from "clsx";
 
 const headerStyles = cva(
   clsx(
-    "flex items-center px-5 py-2.5 mt-2",
+    "flex items-center px-5 py-2.5 my-2",
     "w-full h-12",
     "text-body-3-medium text-font-high",
   ),
@@ -33,35 +35,33 @@ export const Header = ({
   className,
 }: HeaderProps) => {
   return (
-    <header className={clsx(headerStyles(), className)}>
+    <header className={clsx(headerStyles(), "justify-between", className)}>
       <button
         type="button"
         onClick={onLeftClick}
-        className={clsx("flex justify-start gap-2", title ? "w-1/6" : "w-2/6")}
+        className="flex shrink-0 items-center justify-start gap-2"
       >
         <Image
           src="/arrow/left-header-arrow.svg"
-          alt=""
+          alt="뒤로가기"
           width={24}
           height={24}
         />
         {leftChild}
       </button>
-      {title ? (
-        <div className="line-clamp-2 flex w-4/6 justify-center text-center">
-          {title}
-        </div>
-      ) : (
-        <div className="flex w-2/6" />
+      {title && (
+        <div className="mx-2 line-clamp-2 flex-1 text-center">{title}</div>
       )}
-      {isRightChild && (
+      {isRightChild ? (
         <button
           type="button"
           onClick={onRightClick}
-          className={clsx("flex justify-end", title ? "w-1/5" : "w-2/5")}
+          className="flex shrink-0 items-center justify-end"
         >
-          <Image src="/x/black_x_icon.svg" alt="" width={24} height={24} />
+          <Image src="/x/black_x_icon.svg" alt="닫기" width={24} height={24} />
         </button>
+      ) : (
+        <div className="w-6 shrink-0" />
       )}
     </header>
   );
