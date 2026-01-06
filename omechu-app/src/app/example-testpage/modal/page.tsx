@@ -22,6 +22,16 @@ export default function BaseModalTestPage() {
       {open && (
         <div className="flex flex-col items-center gap-10">
           <BaseModal
+            title="저장 완료!"
+            desc="이제 맛있는 메뉴 추천을 받아볼까요?"
+            leftButtonText="내 정보 보기"
+            rightButtonText="추천 받기"
+            onCloseClick={() => {}}
+            onLeftButtonClick={() => {}}
+            onRightButtonClick={() => {}}
+          />
+
+          <BaseModal
             title="메뉴추천을 중단하시겠어요?"
             leftButtonText="그만하기"
             rightButtonText="계속하기"
