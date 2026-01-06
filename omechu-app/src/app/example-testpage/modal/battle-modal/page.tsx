@@ -20,7 +20,7 @@ export default function BattleModalTestPage() {
 
     setToast({
       state: "success",
-      message: "링크 복사 완료 친구에게 공유해보세요",
+      message: "링크 복사 완료! 친구에게 공유해보세요",
       show: true,
     });
 
@@ -47,7 +47,7 @@ export default function BattleModalTestPage() {
 
       <BattleModal
         modalType="enterRoom"
-        battleRoomName="닉네임 입력 방"
+        battleRoomName="방 이름"
         onClose={() => console.log("닫기")}
         onEnter={handleEnter}
         value={nickname}
