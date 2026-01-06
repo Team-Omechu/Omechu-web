@@ -8,6 +8,7 @@ import ClientLayout from "@/layouts/ClientLayout";
 
 import ReactQueryProvider from "./lib/providers/ReactQueryProvider";
 
+import "zustand/middleware";
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"], // 사용할 폰트 굵기
   variable: "--font-noto-sans-kr", // CSS 변수 이름 설정
