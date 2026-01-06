@@ -14,12 +14,6 @@ const inputStyles = cva(
   ],
   {
     variants: {
-      variant: {
-        email: "",
-        password: "",
-        number: "",
-        search: "",
-      },
       width: {
         default: "w-[336px]",
         md: "w-[236px]",
