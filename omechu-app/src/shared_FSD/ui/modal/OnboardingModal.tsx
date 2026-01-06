@@ -1,3 +1,5 @@
+// ! 26.01.04 작업 완료
+
 import Image from "next/image";
 
 type OnboardingModalProps = {

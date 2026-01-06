@@ -41,6 +41,40 @@ export default function OnboardingButtonTestPage() {
         </OnboardingButton>
       </section>
 
+      <section className="flex flex-col gap-3">
+        <OnboardingButton
+          width="md"
+          selected={selected.includes("breakfast")}
+          onClick={() => toggleSelect("breakfast")}
+        >
+          아침
+        </OnboardingButton>
+
+        <OnboardingButton
+          width="md"
+          selected={selected.includes("lunch")}
+          onClick={() => toggleSelect("lunch")}
+        >
+          점심
+        </OnboardingButton>
+
+        <OnboardingButton
+          width="md"
+          selected={selected.includes("dinner")}
+          onClick={() => toggleSelect("dinner")}
+        >
+          저녁
+        </OnboardingButton>
+
+        <OnboardingButton
+          width="md"
+          selected={selected.includes("late-night-snack")}
+          onClick={() => toggleSelect("late-night-snack")}
+        >
+          야식
+        </OnboardingButton>
+      </section>
+
       <div className="flex flex-col gap-2.5">
         <section className="grid grid-cols-3 gap-2.5">
           {["달걀", "우유", "메밀", "대두", "밀", "땅콩"].map((item) => {
@@ -48,7 +82,7 @@ export default function OnboardingButtonTestPage() {
             return (
               <OnboardingButton
                 key={id}
-                width="sm"
+                width="xs"
                 selected={selected.includes(id)}
                 onClick={() => toggleSelect(id)}
               >
@@ -60,7 +94,7 @@ export default function OnboardingButtonTestPage() {
 
         <section className="grid grid-cols-2 gap-2.5">
           <OnboardingButton
-            width="md"
+            width="sm"
             selected={selected.includes("sulfur")}
             onClick={() => toggleSelect("sulfur")}
           >
@@ -68,7 +102,7 @@ export default function OnboardingButtonTestPage() {
           </OnboardingButton>
 
           <OnboardingButton
-            width="md"
+            width="sm"
             selected={selected.includes("other")}
             onClick={() => toggleSelect("other")}
           >

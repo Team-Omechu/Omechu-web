@@ -1,9 +1,10 @@
+// ! 26.01.04 작업 완료
+
 import * as React from "react";
 
 import { clsx } from "clsx";
 
-export interface LabelProps
-  extends React.LabelHTMLAttributes<HTMLLabelElement> {
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   children: React.ReactNode;
 }
 

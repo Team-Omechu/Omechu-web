@@ -19,7 +19,7 @@ export default function ClientLayout({
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
   const { isLoggedIn } = useAuthStore();
 
-  const isTestPageSection = pathname.startsWith("/example_testpage");
+  const isTestPageSection = pathname.startsWith("/example-testpage");
 
   const inAuthSection =
     pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");

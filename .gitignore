@@ -1,4 +1,7 @@
 # Ignore local dev SQL session script
 omechu-db.session.sql
 
+.DS_Store
+
+
 
