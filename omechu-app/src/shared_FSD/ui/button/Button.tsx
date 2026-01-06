@@ -28,6 +28,7 @@ const buttonStyles = cva(
       bgColor: {
         default: "bg-statelayer-default",
         white: "bg-[#F6F6F6] border border-font-disabled",
+        grey: "bg-brand-tertiary",
       },
       width: {
         xl: "w-[335px] text-body-4-regular",

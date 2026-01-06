@@ -22,7 +22,7 @@ export function ModalWrapper({ children }: ModalWrapperProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="bg-opacity-70 bg-foundation-grey-dark fixed inset-0 z-40 flex items-center justify-center"
+      className="fixed inset-0 z-40 flex items-center justify-center bg-white opacity-5"
     >
       {children}
     </div>
