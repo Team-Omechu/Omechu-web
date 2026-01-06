@@ -19,7 +19,11 @@ export function ModalWrapper({ children }: ModalWrapperProps) {
   }, []);
 
   return (
-    <div className="bg-opacity-70 bg-foundation-grey-dark fixed inset-0 z-40 flex items-center justify-center">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="bg-opacity-70 bg-foundation-grey-dark fixed inset-0 z-40 flex items-center justify-center"
+    >
       {children}
     </div>
   );
