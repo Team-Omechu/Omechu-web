@@ -1,83 +1,88 @@
-// ! 26.01.04 작업 완료
-
+"use client";
 import * as React from "react";
 
 import Image from "next/image";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { clsx } from "clsx";
+import clsx from "clsx";
 
 const inputStyles = cva(
   [
-    "h-12 px-4",
-    "rounded-[10px] border border-font-placeholder outline-none",
-    "bg-background-secondary",
-    "text-font-high",
-    "placeholder:text-font-placeholder",
-    "transition-colors flex items-center",
+    "flex items-center outline-none border border-font-placeholder",
+    "bg-background-secondary text-font-high placeholder:text-font-placeholder",
+    "px-4 transition-opacity duration-300",
   ],
   {
     variants: {
+      variant: {
+        email: "",
+        password: "",
+        number: "",
+        search: "",
+      },
       width: {
         default: "w-[336px]",
-        md: "w-[210px]",
-        sm: "w-[196px]",
+        md: "w-[236px]",
+        sm: "w-[210px]",
+        xs: "w-[196px]",
       },
-      state: {
-        default: "",
-        error: "border-color-status-warning",
+      height: {
+        md: "h-12",
+        sm: "h-10",
+      },
+      rounded: {
+        sm: "rounded-[10px]",
+        md: "rounded-[12px]",
       },
     },
     defaultVariants: {
-      state: "default",
+      width: "default",
+      height: "md",
+      rounded: "sm",
     },
   },
 );
 
 type BaseInputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  VariantProps<typeof inputStyles>;
+  VariantProps<typeof inputStyles> & {
+    onSearch?: () => void;
+  };
 
 const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
-  ({ className, width, state, disabled, ...props }, ref) => {
+  ({ className, width, height, rounded, disabled, ...props }, ref) => {
     const [isVisible, setIsVisible] = React.useState(false);
-
-    const toggleVisibility = () => {
-      setIsVisible((v) => !v);
-    };
+    const toggleVisibility = () => setIsVisible((v) => !v);
 
     return (
       <div
-        className={clsx("relative", inputStyles({ width, state }), className)}
+        className={clsx(
+          "relative",
+          inputStyles({ width, height, rounded }),
+          className,
+        )}
       >
         <input
           ref={ref}
           type={isVisible ? "text" : "password"}
           disabled={disabled}
-          autoComplete={"off"}
-          className="placeholder:text-font-placeholder flex-1 bg-transparent outline-none"
+          autoComplete="off"
+          className="flex-1 bg-transparent outline-none"
+          value={props.value}
+          onChange={props.onChange}
           {...props}
         />
         <button
           type="button"
           onClick={toggleVisibility}
-          className="flex items-center pl-4"
+          className="absolute right-3 flex items-center"
           aria-label="비밀번호 보기 전환"
         >
-          {isVisible ? (
-            <Image
-              src="/eye/eye_open.svg"
-              alt="비밀번호 보임"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/eye/eye_closed.svg"
-              alt="비밀번호 숨김"
-              width={24}
-              height={24}
-            />
-          )}
+          <Image
+            src={isVisible ? "/eye/eye_open.svg" : "/eye/eye_closed.svg"}
+            alt=""
+            width={20}
+            height={20}
+          />
         </button>
       </div>
     );
@@ -86,23 +91,70 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
 
 PasswordInput.displayName = "PasswordInput";
 
-export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
-  ({ type, ...props }, ref) => {
-    if (type === "password") {
-      return <PasswordInput ref={ref} {...props} />;
-    }
+const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
+  (
+    { className, width, height, rounded, disabled, onSearch, ...props },
+    ref,
+  ) => {
+    return (
+      <div
+        className={clsx(
+          "relative",
+          inputStyles({ width, height, rounded }),
+          className,
+        )}
+      >
+        <input
+          ref={ref}
+          type="search"
+          disabled={disabled}
+          autoComplete="off"
+          className="flex-1 bg-transparent outline-none"
+          value={props.value}
+          onChange={props.onChange}
+          {...props}
+        />
+        <button
+          type="button"
+          onClick={onSearch ?? (() => {})}
+          className="absolute right-3 flex items-center"
+          aria-label="검색 실행"
+        >
+          <Image src="/search/search.svg" alt="" width={20} height={20} />
+        </button>
+      </div>
+    );
+  },
+);
 
+SearchInput.displayName = "SearchInput";
+
+export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
+  (props, ref) => {
+    const { type = "text", ...rest } = props;
+    if (type === "password") {
+      return <PasswordInput ref={ref} {...rest} />;
+    }
+    if (type === "search") {
+      return <SearchInput ref={ref} {...rest} />;
+    }
     return (
       <input
         ref={ref}
-        type={type}
+        type={type === "number" ? "number" : type}
         disabled={props.disabled}
-        autoComplete={"off"}
+        autoComplete="off"
+        value={props.value}
+        onChange={props.onChange}
         className={clsx(
-          inputStyles({ width: props.width, state: props.state }),
+          inputStyles({
+            width: props.width,
+            height: props.height,
+            rounded: props.rounded,
+          }),
           props.className,
         )}
-        {...props}
+        {...rest}
       />
     );
   },

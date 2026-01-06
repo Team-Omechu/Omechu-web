@@ -24,7 +24,7 @@ const battleButtonStyles = cva(
       },
       bgColor: {
         default: "bg-statelayer-default",
-        grey: "bg-brand-tertiary ",
+        grey: "bg-brand-tertiary",
       },
       width: {
         xl: "w-2xs text-body-4-medium",
