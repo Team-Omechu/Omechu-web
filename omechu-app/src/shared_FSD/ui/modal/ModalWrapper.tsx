@@ -1,6 +1,9 @@
+//! 26.01. 작업 완료
+
 "use client";
 
 import { useEffect } from "react";
+
 import { lockBodyScroll, unlockBodyScroll } from "@/lib/utils/bodyScrollLock";
 
 type ModalWrapperProps = {
@@ -16,7 +19,7 @@ export function ModalWrapper({ children }: ModalWrapperProps) {
   }, []);
 
   return (
-    <div className="bg-opacity-70 fixed inset-0 z-9999 flex items-center justify-center bg-[#393939]">
+    <div className="bg-opacity-70 bg-foundation-grey-dark fixed inset-0 z-40 flex items-center justify-center">
       {children}
     </div>
   );
