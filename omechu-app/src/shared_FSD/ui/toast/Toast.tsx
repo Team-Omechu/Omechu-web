@@ -57,9 +57,14 @@ export default function Toast({
           state === "error" ? "flex w-full justify-center text-center" : "",
         )}
       >
-        <span className={clsx(state === "success" ? "ml-8" : "")}>
+        <div
+          className={clsx(
+            "w-full whitespace-pre-line",
+            state === "success" ? "ml-8" : "",
+          )}
+        >
           {message}
-        </span>
+        </div>
       </div>
     </div>
   );

@@ -29,7 +29,6 @@ export { ProgressBar } from "./ui/ProgressBar";
 export { SearchBar } from "./ui/SearchBar";
 export { StepFooter } from "./ui/StepFooter";
 export { CheckBox } from "./ui/box/CheckBox";
-export { FoodBox } from "./ui/box/FoodBox";
 export { SkeletonUIFoodBox } from "./ui/box/SkeletonUIFoodBox";
 export { BottomButton } from "./ui/button/BottomButton";
 export { FloatingActionButton } from "./ui/button/FloatingActionButton";
@@ -41,7 +40,7 @@ export { MenuInfo } from "./ui/card/MenuInfoCard";
 export { SkeletonFoodCard } from "./ui/card/SkeletonFoodCard";
 export { AlertModal } from "./ui/modal/AlertModal";
 export { ModalWrapper } from "./ui/modal/ModalWrapper";
-export { Toast } from "./ui/modal/Toast";
+
 export {
   ApiClientError,
   login,

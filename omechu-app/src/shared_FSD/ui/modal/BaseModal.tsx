@@ -48,7 +48,7 @@ const BaseModal = ({
           />
         </button>
       )}
-      {isCloseButtonShow && <div className="h-5" />}
+      {isCloseButtonShow && <div className="h-3" />}
       <div className="my-2 mt-1 flex w-full flex-col items-center">
         {isLogoShow && (
           <Image
