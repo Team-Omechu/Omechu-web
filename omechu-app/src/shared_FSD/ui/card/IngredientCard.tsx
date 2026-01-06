@@ -10,7 +10,7 @@ interface IngredientCardProps {
   onCardClick?: () => void;
 }
 
-const IngredientCard = ({
+export const IngredientCard = ({
   kcal,
   carbohydrate,
   protein,
@@ -65,5 +65,3 @@ const IngredientCard = ({
     </section>
   );
 };
-
-export default IngredientCard;

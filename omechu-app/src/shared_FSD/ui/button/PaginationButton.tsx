@@ -29,7 +29,7 @@ const buttonStyles = cva(
 type ButtonProps = VariantProps<typeof buttonStyles> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & { alt?: string };
 
-export default function PaginationButton({
+export function PaginationButton({
   direction = "left",
   onClick,
   alt = "pagination button",
