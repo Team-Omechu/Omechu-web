@@ -1,57 +1,63 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { Input } from "@/shared_FSD/ui/input/Input";
 
-export default function InputTestPage() {
-  const [value, setValue] = useState("");
+export default function InputVariantsPage() {
+  const [values, setValues] = useState<{ [key: string]: string }>({});
+
+  // 모든 variant 조합
+  const widths: Array<"default" | "md" | "sm" | "xs"> = [
+    "default",
+    "md",
+    "sm",
+    "xs",
+  ];
+  const heights: Array<"md" | "sm"> = ["md", "sm"];
+  const rounded: Array<"sm" | "md"> = ["sm", "md"];
+  const types: Array<"email" | "password" | "number" | "text" | "search"> = [
+    "email",
+    "password",
+    "number",
+    "text", // nickname용
+    "search",
+  ];
 
   return (
-    <main className="flex flex-col items-center gap-4 p-6">
-      <Input
-        type="email"
-        variant="email"
-        width="default"
-        height="sm"
-        rounded="sm"
-        placeholder="이메일 입력"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-
-      <Input
-        type="password"
-        variant="password"
-        width="sm"
-        height="sm"
-        rounded="md"
-        placeholder="비밀번호 입력"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-
-      <Input
-        type="number"
-        variant="number"
-        width="md"
-        height="sm"
-        rounded="md"
-        placeholder="인증번호 입력"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-
-      <Input
-        type="search"
-        width="xs"
-        height="sm"
-        rounded="md"
-        placeholder="검색어 입력"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onSearch={() => console.log("검색 실행")}
-      />
+    <main className="flex flex-col gap-6 p-8">
+      {types.map((t) =>
+        heights.map((h) =>
+          widths.map((w) =>
+            rounded.map((r) => {
+              const key = `${t}-${w}-${h}-${r}`;
+              return (
+                <div key={key} className="flex flex-col gap-2">
+                  <span className="text-caption-2-medium">
+                    {`type=${t}, width=${w}, height=${h}, rounded=${r}`}
+                  </span>
+                  <Input
+                    type={t}
+                    width={w}
+                    height={h}
+                    rounded={r}
+                    placeholder={`${t} 입력`}
+                    value={values[key] || ""}
+                    onChange={(e) =>
+                      setValues((prev) => ({ ...prev, [key]: e.target.value }))
+                    }
+                    onSearch={
+                      t === "search"
+                        ? () => console.log(`검색: ${values[key] || ""}`)
+                        : undefined
+                    }
+                  />
+                </div>
+              );
+            }),
+          ),
+        ),
+      )}
     </main>
   );
 }
