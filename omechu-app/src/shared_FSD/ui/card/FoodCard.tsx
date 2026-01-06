@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
+
 import { Restaurant } from "@/lib/types/restaurant";
 
 type FoodCardProps = {

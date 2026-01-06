@@ -6,7 +6,12 @@ import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
 const OnboardingButtonStyles = cva(
-  clsx("h-12 p-2.5", "flex items-center justify-center", "rounded-[10px]"),
+  clsx(
+    "h-12 p-2.5",
+    "flex items-center justify-center",
+    "rounded-[10px]",
+    "transition-all",
+  ),
   {
     variants: {
       width: {
@@ -18,7 +23,7 @@ const OnboardingButtonStyles = cva(
       selected: {
         true: "bg-brand-primary text-brand-secondary border-none",
         false:
-          "bg-brand-secondary text-font-placeholder border border-font-placeholder ",
+          "bg-brand-secondary text-font-placeholder border border-font-placeholder",
       },
     },
     defaultVariants: {

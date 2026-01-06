@@ -263,6 +263,12 @@ body {
   overscroll-behavior-y: none;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 /* .react-datepicker 관련 Tailwind 기반 커스터마이징은 globals.css 같은 전역 CSS 파일에만 작성 가능 */
 /* 컴포넌트 파일(JSX/TSX) 내부에 직접 넣을 수는 없음 */
 /* .react-datepicker {
