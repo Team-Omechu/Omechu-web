@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "noImplicitAny": true, // (리본) 다시 true로 변경경. (25-07-14)
+    "noImplicitAny": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -20,11 +20,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/app/*"],
-      "@/app_FSD/*": ["./src/app_FSD/*"],
-      "@/entities_FSD/*": ["./src/entities_FSD/*"],
-      "@/widgets_FSD/*": ["./src/widgets_FSD/*"],
-      "@/shared_FSD/*": ["./src/shared_FSD/*"]
+      "@/*": ["./src/*"],
+      "@/app/*": ["./src/app/*"],
+      "@/entities/*": ["./src/entities/*"],
+      "@/widgets/*": ["./src/widgets/*"],
+      "@/shared/*": ["./src/shared/*"]
     }
   },
   "include": [
