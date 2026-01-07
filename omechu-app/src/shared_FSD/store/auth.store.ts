@@ -1,11 +1,8 @@
-// TODO: [FSD 마이그레이션] 이 파일은 삭제해도 됩니다.
-// 새 위치: src/entities/user/model/auth.store.ts
-
-const AUTH_STORAGE_KEY = "auth-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-
 import type { LoginSuccessData } from "@/lib/api/auth";
+
+const AUTH_STORAGE_KEY = "auth-storage";
 
 interface AuthStoreState {
   isLoggedIn: boolean;
@@ -31,7 +28,36 @@ interface AuthStoreActions {
 
 type AuthStore = AuthStoreState & AuthStoreActions;
 
-export const useAuthStore = create<AuthStore>()(
+type PersistedAuthState = Pick<
+  AuthStoreState,
+  "isLoggedIn" | "user" | "accessToken" | "refreshToken"
+>;
+
+function normalizePersistedAuthState(input: unknown): PersistedAuthState {
+  if (!input || typeof input !== "object") {
+    return {
+      isLoggedIn: false,
+      user: null,
+      accessToken: null,
+      refreshToken: null,
+    };
+  }
+
+  const obj = input as Record<string, unknown>;
+
+  return {
+    isLoggedIn: typeof obj.isLoggedIn === "boolean" ? obj.isLoggedIn : false,
+    user: (obj.user ?? null) as LoginSuccessData | null,
+    accessToken: typeof obj.accessToken === "string" ? obj.accessToken : null,
+    refreshToken:
+      typeof obj.refreshToken === "string" ? obj.refreshToken : null,
+  };
+}
+
+export const useAuthStore = create<
+  AuthStore,
+  [["zustand/persist", PersistedAuthState]]
+>()(
   persist(
     (set) => ({
       isLoggedIn: false,
@@ -39,7 +65,18 @@ export const useAuthStore = create<AuthStore>()(
       accessToken: null,
       refreshToken: null,
       password: "",
-      login: ({ accessToken, refreshToken, user, password }) =>
+
+      login: ({
+        accessToken,
+        refreshToken,
+        user,
+        password,
+      }: {
+        accessToken: string;
+        refreshToken: string;
+        user: LoginSuccessData;
+        password?: string;
+      }) =>
         set({
           isLoggedIn: true,
           accessToken,
@@ -47,6 +84,7 @@ export const useAuthStore = create<AuthStore>()(
           user,
           password,
         }),
+
       logout: () => {
         set({
           isLoggedIn: false,
@@ -55,34 +93,36 @@ export const useAuthStore = create<AuthStore>()(
           refreshToken: null,
           password: "",
         });
+
         try {
-          // persist 스토리지까지 완전 초기화 (401 루프/다중 탭 문제 방지)
           localStorage.removeItem(AUTH_STORAGE_KEY);
         } catch {}
       },
-      setUser: (user) => set({ user }),
-      setAccessToken: (token) => set({ accessToken: token }),
-      setRefreshToken: (token) => set({ refreshToken: token }),
-      setPassword: (password) => set({ password }),
+
+      setUser: (user: LoginSuccessData) => set({ user }),
+      setAccessToken: (token: string | null) => set({ accessToken: token }),
+      setRefreshToken: (token: string | null) => set({ refreshToken: token }),
+      setPassword: (password: string) => set({ password }),
     }),
     {
       name: AUTH_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage),
+
+      // locks the persisted shape -> prevents `unknown` from spreading
+      storage: createJSONStorage<PersistedAuthState>(() => localStorage),
+
       version: 1,
-      partialize: (state) => ({
+
+      partialize: (state: AuthStore): PersistedAuthState => ({
         isLoggedIn: state.isLoggedIn,
         user: state.user,
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
       }),
-      migrate: (persistedState: any, version: number) => {
-        // persistedState here is the previously saved store state (not wrapped)
-        if (version === 0 && persistedState) {
-          const { password: _pw, ...rest } = persistedState;
-          return rest;
-        }
-        return persistedState;
-      },
+
+      migrate: (
+        persistedState: unknown,
+        _version: number,
+      ): PersistedAuthState => normalizePersistedAuthState(persistedState),
     },
   ),
 );

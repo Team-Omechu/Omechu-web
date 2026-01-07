@@ -13,7 +13,12 @@ interface FoodBoxProps {
   onClick?: () => void;
 }
 
-const FoodBox = ({ src, title, isSelected = false, onClick }: FoodBoxProps) => {
+export const FoodBox = ({
+  src,
+  title,
+  isSelected = false,
+  onClick,
+}: FoodBoxProps) => {
   return (
     <button
       onClick={onClick}
@@ -45,5 +50,3 @@ const FoodBox = ({ src, title, isSelected = false, onClick }: FoodBoxProps) => {
     </button>
   );
 };
-
-export default FoodBox;

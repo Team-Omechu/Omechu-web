@@ -20,7 +20,7 @@ interface BaseModalProps {
   onRightButtonClick?: () => void;
 }
 
-const BaseModal = ({
+export const BaseModal = ({
   children,
 
   title,
@@ -86,5 +86,3 @@ const BaseModal = ({
     </section>
   );
 };
-
-export default BaseModal;

@@ -29,7 +29,7 @@ const toastStyles = cva(
 
 export type ToastStyleProps = VariantProps<typeof toastStyles>;
 
-export default function Toast({
+export function Toast({
   message,
   state = "error",
   show,

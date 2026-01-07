@@ -13,7 +13,7 @@ interface RestaurantCardProps {
   onCardClick?: () => void;
 }
 
-const RestaurantCard = ({
+export const RestaurantCard = ({
   name,
   distance,
   category,
@@ -59,5 +59,3 @@ const RestaurantCard = ({
     </section>
   );
 };
-
-export default RestaurantCard;

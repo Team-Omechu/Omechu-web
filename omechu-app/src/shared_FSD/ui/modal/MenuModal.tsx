@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import BaseModal from "@/shared_FSD/ui/modal/BaseModal";
+import { BaseModal } from "@/shared_FSD/ui/modal/BaseModal";
 
 interface menuModalProps {
   menuTitle: string;
@@ -12,7 +12,7 @@ interface menuModalProps {
   onRightButtonClick: () => void;
 }
 
-const MenuModal = ({
+export const MenuModal = ({
   menuTitle,
   src,
   onCloseClick,
@@ -38,5 +38,3 @@ const MenuModal = ({
     </BaseModal>
   );
 };
-
-export default MenuModal;

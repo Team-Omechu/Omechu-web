@@ -3,7 +3,7 @@
 import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-import BaseModal from "@/shared_FSD/ui/modal/BaseModal";
+import { BaseModal } from "@/shared_FSD/ui/modal/BaseModal";
 
 const battleModalStyles = cva("flex flex-col items-center", {
   variants: {
@@ -29,7 +29,7 @@ type BattleModalProps = VariantProps<typeof battleModalStyles> & {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const BattleModal = ({
+export const BattleModal = ({
   modalType,
   battleRoomName,
   roomCode,
@@ -81,5 +81,3 @@ const BattleModal = ({
     </div>
   );
 };
-
-export default BattleModal;
