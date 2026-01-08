@@ -95,6 +95,7 @@ entity/
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 | Type | Convention | Example |
 | ------------------- | -------------------- | --------------- |
 | Variables/Functions | camelCase | `fetchData()` |
@@ -107,32 +108,39 @@ entity/
 | API files | `*.api.ts` or folder | `authApi.ts` |
 | Type files | `*.types.ts` | `user.types.ts` |
 =======
-| Type | Convention | Example |
-|------|------------|---------|
-| Variables/Functions | camelCase | `fetchData()` |
-| Components/Classes | PascalCase | `UserAvatar` |
-| Constants | UPPER_SNAKE_CASE | `MAX_LIMIT` |
-| Folders | kebab-case | `user-profile/` |
-| Component files | `*.tsx` | `UserCard.tsx` |
-| Hook files | `use*.ts` | `useAuth.ts` |
-| Store files | `*.store.ts` | `auth.store.ts` |
-| API files | `*.api.ts` or folder | `authApi.ts` |
-| Type files | `*.types.ts` | `user.types.ts` |
 =======
-| Type | Convention | Example |
+
+> > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
+> > > > > > > | Type | Convention | Example |
+> > > > > > > |------|------------|---------|
+> > > > > > > | Variables/Functions | camelCase | `fetchData()` |
+> > > > > > > | Components/Classes | PascalCase | `UserAvatar` |
+> > > > > > > | Constants | UPPER_SNAKE_CASE | `MAX_LIMIT` |
+> > > > > > > | Folders | kebab-case | `user-profile/` |
+> > > > > > > | Component files | `*.tsx` | `UserCard.tsx` |
+> > > > > > > | Hook files | `use*.ts` | `useAuth.ts` |
+> > > > > > > | Store files | `*.store.ts` | `auth.store.ts` |
+> > > > > > > | API files | `*.api.ts` or folder | `authApi.ts` |
+> > > > > > > | Type files | `*.types.ts` | `user.types.ts` |
+
+# <<<<<<< HEAD
+
+| Type                | Convention           | Example         |
 | ------------------- | -------------------- | --------------- |
-| Variables/Functions | camelCase | `fetchData()` |
-| Components/Classes | PascalCase | `UserAvatar` |
-| Constants | UPPER_SNAKE_CASE | `MAX_LIMIT` |
-| Folders | kebab-case | `user-profile/` |
-| Component files | `*.tsx` | `UserCard.tsx` |
-| Hook files | `use*.ts` | `useAuth.ts` |
-| Store files | `*.store.ts` | `auth.store.ts` |
-| API files | `*.api.ts` or folder | `authApi.ts` |
-| Type files | `*.types.ts` | `user.types.ts` |
+| Variables/Functions | camelCase            | `fetchData()`   |
+| Components/Classes  | PascalCase           | `UserAvatar`    |
+| Constants           | UPPER_SNAKE_CASE     | `MAX_LIMIT`     |
+| Folders             | kebab-case           | `user-profile/` |
+| Component files     | `*.tsx`              | `UserCard.tsx`  |
+| Hook files          | `use*.ts`            | `useAuth.ts`    |
+| Store files         | `*.store.ts`         | `auth.store.ts` |
+| API files           | `*.api.ts` or folder | `authApi.ts`    |
+| Type files          | `*.types.ts`         | `user.types.ts` |
 
 > > > > > > > f13f0ad5 (fix: FSD import 경로 및 export 오류 수정)
 
+> > > > > > > # c03261bd (fix: FSD import 경로 및 export 오류 수정)
+> > > > > > >
 > > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
 
 ## Core Architecture Patterns
@@ -142,6 +150,7 @@ entity/
 - JWT-based with automatic token refresh
 - Access token in Zustand store (persisted to localStorage)
 - Axios interceptor handles 401 errors with token refresh queue
+  <<<<<<< HEAD
 
 ### Authentication
 
@@ -185,6 +194,22 @@ Key files:
 
 > > > > > > > f13f0ad5 (fix: FSD import 경로 및 export 오류 수정)
 
+=======
+
+- Client-side route protection in `ClientLayout.tsx`
+- Middleware only handles URL rewrites, NOT authentication
+
+Key files:
+
+- Auth store: `src/entities/user/model/auth.store.ts`
+- Axios instance: `src/shared/lib/axiosInstance.ts`
+
+### State Management
+
+**Zustand stores** (with persist middleware):
+
+> > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
+
 - `auth.store.ts` - Authentication state
 - `onboarding.store.ts` - Multi-step onboarding flow
 - `tagData.store.ts` - Food preference tags
@@ -201,6 +226,11 @@ Key files:
 ### Styling (Tailwind CSS v4)
 
 CSS-first configuration in `src/app/globals.css`:
+<<<<<<< HEAD
+
+=======
+
+> > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
 
 - All theme customization in `@theme` block
 - Custom utilities via `@utility` directive
@@ -218,6 +248,8 @@ NEXT_PUBLIC_GOOGLE_PLACE_API_KEY=...
 ## Important Notes
 
 ### Zod v4 Syntax
+
+<<<<<<< HEAD
 
 - Custom utilities via `@utility` directive
 - Mobile-first: 375px fixed width layout
@@ -248,6 +280,22 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 
 ### Image Handling
 
+=======
+
+```typescript
+// Correct v4 syntax:
+z.enum(["a", "b"], { message: "error" });
+// NOT: z.enum(["a", "b"], { errorMap: () => ({ message: "error" }) })
+```
+
+### Date Libraries
+
+Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
+
+### Image Handling
+
+> > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
+
 - AWS S3 for uploads
 - Next.js Image with `remotePatterns` configured
 - NFC normalization for Korean filenames
@@ -255,6 +303,7 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 ### Code Quality
 
 - ESLint 9 flat config (`eslint.config.mjs`)
+  <<<<<<< HEAD
   <<<<<<< HEAD
   <<<<<<< HEAD
   =======
@@ -357,6 +406,9 @@ refactor/proxy-layout-#218   # proxy 마이그레이션 및 레이아웃 개선
 - `feature/#이슈번호-기능명` : 신규 기능 (develop에서 분기)
 - `fix/#이슈번호-기능명` : 버그 수정 (develop에서 분기)
 - # `hotfix/#이슈번호-기능명` : 긴급 수정 (main에서 분기)
+- Import ordering: React → Next → Internal (@/\*) → Relative
+- Husky pre-commit hooks run lint-staged
+  > > > > > > > # c03261bd (fix: FSD import 경로 및 export 오류 수정)
 - Import ordering: React → Next → Internal (@/\*) → Relative
 - Husky pre-commit hooks run lint-staged
   > > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
