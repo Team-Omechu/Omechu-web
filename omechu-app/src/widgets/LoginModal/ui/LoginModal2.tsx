@@ -3,7 +3,6 @@ import React from "react";
 import Image from "next/image";
 
 // TODO: RoundButton이 shared에 없음 - 추가 필요
-// import RoundButton from "@/components/common/button/RoundButton";
 
 type LoginPromptModal2Props = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
