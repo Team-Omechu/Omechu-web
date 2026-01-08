@@ -73,6 +73,7 @@ entity/
 ## Naming Conventions
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 | Type | Convention | Example |
 | ------------------- | -------------------- | --------------- |
 | Variables/Functions | camelCase | `fetchData()` |
@@ -96,6 +97,20 @@ entity/
 | Store files | `*.store.ts` | `auth.store.ts` |
 | API files | `*.api.ts` or folder | `authApi.ts` |
 | Type files | `*.types.ts` | `user.types.ts` |
+=======
+| Type | Convention | Example |
+| ------------------- | -------------------- | --------------- |
+| Variables/Functions | camelCase | `fetchData()` |
+| Components/Classes | PascalCase | `UserAvatar` |
+| Constants | UPPER_SNAKE_CASE | `MAX_LIMIT` |
+| Folders | kebab-case | `user-profile/` |
+| Component files | `*.tsx` | `UserCard.tsx` |
+| Hook files | `use*.ts` | `useAuth.ts` |
+| Store files | `*.store.ts` | `auth.store.ts` |
+| API files | `*.api.ts` or folder | `authApi.ts` |
+| Type files | `*.types.ts` | `user.types.ts` |
+
+> > > > > > > f13f0ad5 (fix: FSD import 경로 및 export 오류 수정)
 
 > > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
 
@@ -108,7 +123,12 @@ entity/
 - Axios interceptor handles 401 errors with token refresh queue
 - Client-side route protection in `ClientLayout.tsx`
   <<<<<<< HEAD
-- `proxy.ts` handles URL rewrites (Next.js 16: middleware → proxy)
+  <<<<<<< HEAD
+- # `proxy.ts` handles URL rewrites (Next.js 16: middleware → proxy)
+- # `proxy.ts` handles URL rewrites (Next.js 16: middleware → proxy)
+- Middleware only handles URL rewrites, NOT authentication
+  > > > > > > > 7bd93a00 (fix: FSD import 경로 및 export 오류 수정)
+  > > > > > > > f13f0ad5 (fix: FSD import 경로 및 export 오류 수정)
 
 Key files:
 
@@ -119,7 +139,7 @@ Key files:
 
 **Zustand stores** (with persist middleware):
 
-=======
+# <<<<<<< HEAD
 
 - Middleware only handles URL rewrites, NOT authentication
 
@@ -133,6 +153,10 @@ Key files:
 **Zustand stores** (with persist middleware):
 
 > > > > > > > c03261bd (fix: FSD import 경로 및 export 오류 수정)
+
+=======
+
+> > > > > > > f13f0ad5 (fix: FSD import 경로 및 export 오류 수정)
 
 - `auth.store.ts` - Authentication state
 - `onboarding.store.ts` - Multi-step onboarding flow
@@ -188,6 +212,9 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 
 - ESLint 9 flat config (`eslint.config.mjs`)
   <<<<<<< HEAD
+  <<<<<<< HEAD
+  =======
+  > > > > > > > f13f0ad5 (fix: FSD import 경로 및 export 오류 수정)
 - Import ordering: React → Next → Internal (@/\*) → Relative
 - Husky pre-commit hooks run lint-staged
 
