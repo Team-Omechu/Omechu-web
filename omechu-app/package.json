@@ -10,12 +10,9 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky",
-    "fsd:migrate": "node ../scripts/migrate-to-fsd.js",
-    "fsd:check": "echo 'FSD architecture check - to be implemented'"
+    "prepare": "husky"
   },
   "dependencies": {
-    "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.1.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.83.0",
@@ -24,7 +21,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
-    "fastest-levenshtein": "^1.0.16",
     "next": "^16.1.1",
     "react": "^19.0.0",
     "react-datepicker": "^8.4.0",

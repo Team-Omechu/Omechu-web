@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import SignInForm from "../../../widgets/auth/sign-in-form/ui/SignInForm";
+import { SignInForm } from "@/widgets/auth";
 
 export default function SignInPage() {
   return (

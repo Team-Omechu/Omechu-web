@@ -1,4 +1,4 @@
-import { useTagStore } from "@/shared/store/tagData.store";
+import { useTagStore } from "@/entities/tag/model/tagData.store";
 import React from "react";
 
 export function TagCard() {

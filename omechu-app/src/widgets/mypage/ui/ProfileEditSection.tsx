@@ -3,19 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getPresignedUrl,
-  uploadToS3,
-  updateProfile,
-} from "@/mypage/api/updateProfile";
-import { useAuthStore } from "@/lib/stores/auth.store";
-import { useProfile } from "../../../entities/mypage/model/useProfile";
-
-import ModalWrapper from "@/components/common/ModalWrapper";
-import AlertModal from "@/components/common/AlertModal";
-import { LoadingSpinner } from "@/components/common/LoadingIndicator";
-import ProfileImageUploader from "../../../entities/mypage/ui/ProfileImageUploader";
-import NicknameInput from "../../../entities/mypage/ui/NicknameInput";
+import { updateProfile } from "@/entities/mypage/api/updateProfile";
+import { getPresignedUrl, uploadToS3, ModalWrapper, BaseModal, LoadingSpinner } from "@/shared";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { useProfile } from "@/entities/mypage/model/useProfile";
+import ProfileImageUploader from "@/entities/mypage/ui/ProfileImageUploader";
+import NicknameInput from "@/entities/mypage/ui/NicknameInput";
 
 export default function ProfileEditSection() {
   const router = useRouter();
@@ -176,11 +169,12 @@ export default function ProfileEditSection() {
       </section>
       {showModal && (
         <ModalWrapper>
-          <AlertModal
+          <BaseModal
             title="프로필 변경 완료"
-            description="이제 맛집을 찾으러 가볼까요?"
-            confirmText="완료"
-            onConfirm={() => {
+            desc="이제 맛집을 찾으러 가볼까요?"
+            rightButtonText="완료"
+            isCloseButtonShow={false}
+            onRightButtonClick={() => {
               setShowModal(false);
               router.push("/");
             }}

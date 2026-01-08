@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import Header from "@/components/common/Header";
+import { Header } from "@/shared";
 
-import { indexToSlug } from "@/constant/UserInfoEditSteps";
+import { indexToSlug } from "@/shared/config/userInfoEditSteps";
 
-import { fetchProfile as fetchProfileApi } from "@/mypage/api/profile";
-import InfoRow from "../../../../entities/mypage/ui/InfoRow";
+import { fetchProfile as fetchProfileApi, InfoRow } from "@/entities/mypage";
 
 // 서버 응답을 페이지에서 쓰는 ProfileType으로 정규화
 function normalizeProfile(raw: any): ProfileType {

@@ -5,22 +5,21 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { Header, FloatingActionButton, LoadingSpinner } from "@/shared";
+// TODO: 아래 컴포넌트들은 shared에 없음 - 추가 필요
 import FoodCard from "@/components/common/FoodCard";
-import Header from "@/components/common/Header";
-import FloatingActionButton from "@/components/common/FloatingActionButton";
-import LoadingIndicator from "@/components/common/LoadingIndicator";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import {
   fetchHeartList,
   likePlace,
   unlikePlace,
-} from "../../../entities/mypage/api/favorites";
-import AuthErrorModalSection from "../../../entities/mypage/ui/AuthErrorModalSection";
+} from "@/entities/mypage/api/favorites";
+import AuthErrorModalSection from "@/entities/mypage/ui/AuthErrorModalSection";
 
 export default function Favorites() {
   // 라우터/DOM 참조
@@ -349,7 +348,7 @@ export default function Favorites() {
         </section>
 
         <div ref={loaderRef} className="h-px" />
-        {isLoading && <LoadingIndicator />}
+        {isLoading && <LoadingSpinner />}
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
         {modalOpen && (
           <AuthErrorModalSection

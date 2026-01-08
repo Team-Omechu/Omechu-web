@@ -5,22 +5,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "../../../../entities/user/api/profileApi";
+import { fetchProfile } from "@/entities/user/api/profileApi";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import Checkbox from "@/components/common/Checkbox";
-import SquareButton from "@/components/common/button/SquareButton";
+import { CheckBox, Toast } from "@/shared";
+// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
 import Input from "@/components/common/Input";
-import Toast from "@/components/common/Toast";
-import { useAuthStore } from "../../../../entities/user/model/auth.store";
+// TODO: SquareButton이 shared에 없음
+import SquareButton from "@/components/common/button/SquareButton";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 import {
   loginSchema,
   LoginFormValues,
-} from "../../../../entities/user/model/auth.schema";
-import { useLoginMutation } from "../../../../entities/user/lib/hooks/useAuth";
-import { ApiClientError } from "../../../../entities/user/api/authApi";
+} from "@/entities/user/model/auth.schema";
+import { useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
@@ -213,7 +214,7 @@ export default function SignInForm() {
         </div>
 
         <div className="text-grey-normal-active mt-2 flex items-center justify-between text-sm">
-          <Checkbox
+          <CheckBox
             id="remember-me"
             label="로그인 상태 유지"
             {...register("rememberMe")}

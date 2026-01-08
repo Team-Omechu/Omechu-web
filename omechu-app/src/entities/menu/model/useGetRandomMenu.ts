@@ -1,7 +1,7 @@
-import { useQuestionAnswerStore } from "../../question";
+import { useQuestionAnswerStore } from "@/entities/question";
 import { useQuery } from "@tanstack/react-query";
-import { RandomMenu } from "../config/resultData";
-import { getRandomMenu } from "../api/getRandomMenu";
+import { RandomMenu } from "@/entities/menu/config/resultData";
+import { getRandomMenu } from "@/entities/menu/api/getRandomMenu";
 
 export function useGetRandomMenu() {
   const { addition } = useQuestionAnswerStore();

@@ -9,10 +9,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
-import ModalWrapper from "@/components/common/ModalWrapper";
-import { Restaurant } from "../../../entities/restaurant";
-import { LoginPromptModal2 } from "../../LoginModal";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { ModalWrapper } from "@/shared";
+import { Restaurant } from "@/entities/restaurant";
+import { LoginPromptModal2 } from "@/widgets/LoginModal";
 
 type FoodCardProps = {
   item: Restaurant;

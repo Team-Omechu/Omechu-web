@@ -1,17 +1,15 @@
 "use client";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
-import ModalWrapper from "@/components/common/ModalWrapper";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useTagStore } from "../../../entities/tag";
-import {
-  handleLocation,
-  useLocationAnswerStore,
-} from "../../../entities/location";
-import { useQuestionAnswerStore } from "../../../entities/question";
-import { LoginPromptModal } from "../../../widgets/LoginModal";
+
+import { ModalWrapper } from "@/shared";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { useTagStore } from "@/entities/tag";
+import { handleLocation, useLocationAnswerStore } from "@/entities/location";
+import { useQuestionAnswerStore } from "@/entities/question";
+import { LoginPromptModal } from "@/widgets/LoginModal";
 
 export default function MainPage() {
   const router = useRouter();

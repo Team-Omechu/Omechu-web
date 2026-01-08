@@ -1,8 +1,8 @@
 import Image from "next/image";
-import MainLoading from "@/components/mainpage/MainLoading";
+import { MainLoading } from "@/shared";
 import { useRouter } from "next/navigation";
-import { useGetRandomMenu } from "../../../entities/menu";
-import { useLocationAnswerStore } from "../../../entities/location";
+import { useGetRandomMenu } from "@/entities/menu";
+import { useLocationAnswerStore } from "@/entities/location";
 
 type ModalProps = {
   confirmText: string;

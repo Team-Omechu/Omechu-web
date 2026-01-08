@@ -1,4 +1,4 @@
-import SettingsClient from "../../../widgets/settings-menu/ui/SettingsClient";
+import { SettingsClient } from "@/widgets/settings-menu";
 
 export default function SettingsPage() {
   return <SettingsClient />;

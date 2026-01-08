@@ -1,4 +1,4 @@
-import ChangePasswordClient from "../../../../../widgets/change-password/ui/ChangePasswordClient";
+import { ChangePasswordClient } from "@/widgets/change-password";
 
 export default function ChangePasswordPage() {
   return <ChangePasswordClient />;

@@ -1,5 +1,5 @@
-import { axiosInstance } from "../../../shared/index";
-import { RandomMenu, RandomMenuRequest } from "../config/resultData";
+import { axiosInstance } from "@/shared";
+import { RandomMenu, RandomMenuRequest } from "@/entities/menu/config/resultData";
 
 export const getRandomMenu = async (
   request: RandomMenuRequest,

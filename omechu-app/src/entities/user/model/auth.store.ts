@@ -2,7 +2,7 @@ const AUTH_STORAGE_KEY = "auth-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import type { LoginSuccessData } from "../api/authApi";
+import type { LoginSuccessData } from "@/entities/user/api/authApi";
 
 interface AuthStoreState {
   isLoggedIn: boolean;

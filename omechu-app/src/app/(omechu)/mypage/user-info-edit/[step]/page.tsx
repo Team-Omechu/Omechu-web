@@ -1,10 +1,13 @@
-import AllergyStep from "../../../../../entities/mypage/ui/AllergyStep";
-import ConditionStep from "../../../../../entities/mypage/ui/ConditionStep";
-import EditStart from "../../../../../entities/mypage/ui/EditStart";
-import FoodStep from "../../../../../entities/mypage/ui/FoodStep";
-import GenderStep from "../../../../../entities/mypage/ui/GenderStep";
-import StateStep from "../../../../../entities/mypage/ui/StateStep";
 import { notFound } from "next/navigation";
+
+import {
+  AllergyStep,
+  ConditionStep,
+  EditStart,
+  FoodStep,
+  GenderStep,
+  StateStep,
+} from "@/entities/mypage";
 
 const stepComponents = {
   gender: GenderStep,

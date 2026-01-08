@@ -14,8 +14,8 @@ import {
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/entities/mypage/model/profilePayload";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { useProfileQuery } from "../model/useProfileQuery";
-import { resetBasicStateAndSync } from "../model/resetBasicState";
+import { useProfileQuery } from "@/entities/mypage/model/useProfileQuery";
+import { resetBasicStateAndSync } from "@/entities/mypage/model/resetBasicState";
 
 // 스펙 라벨 통일: "다른나라"(기존 "다른나라 음식" 제거)
 const FOOD_LABELS = ["한식", "양식", "중식", "일식", "다른나라"] as const;

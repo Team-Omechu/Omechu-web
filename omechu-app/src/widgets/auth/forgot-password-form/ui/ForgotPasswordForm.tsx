@@ -5,12 +5,14 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { Button } from "@/shared/ui/button/Button";
-import { Input } from "@/shared/ui/input/Input";
+// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
+import Input from "@/components/common/Input";
+// TODO: SquareButton이 shared에 없음
+import SquareButton from "@/components/common/button/SquareButton";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,
-} from "../../../../entities/user/model/auth.schema";
+} from "@/entities/user/model/auth.schema";
 
 type ForgotPasswordFormProps = {
   onFormSubmit: (data: FindPasswordFormValues) => Promise<void>;

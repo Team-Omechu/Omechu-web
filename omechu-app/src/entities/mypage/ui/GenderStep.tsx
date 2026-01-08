@@ -14,8 +14,8 @@ import {
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/entities/mypage/model/profilePayload";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { resetBasicStateAndSync } from "../model/resetBasicState";
-import { useProfileQuery } from "../model/useProfileQuery";
+import { resetBasicStateAndSync } from "@/entities/mypage/model/resetBasicState";
+import { useProfileQuery } from "@/entities/mypage/model/useProfileQuery";
 
 const LABELS = ["여성", "남성"] as const;
 const toLabelFromCode = (code?: string | null) =>

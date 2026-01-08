@@ -1,5 +1,5 @@
-import { axiosInstance } from "../../../shared/index";
-import { mukburimResponse } from "../config/mukburim";
+import { axiosInstance } from "@/shared";
+import { mukburimResponse } from "@/entities/mukburim/config/mukburim";
 
 export const postMukburim = async (
   menuName: string,

@@ -4,13 +4,13 @@ import React from "react";
 
 import { useRouter } from "next/navigation";
 
-import ListButton from "@/components/common/button/ListButton";
+import { ListButton } from "@/shared";
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
 import {
   mealTimeOptions,
   useQuestionAnswerStore,
-} from "../../../entities/question";
-import { useTagStore } from "../../../entities/tag";
+} from "@/entities/question";
+import { useTagStore } from "@/entities/tag";
 
 export const MealTimeStep = () => {
   const router = useRouter();

@@ -7,20 +7,16 @@ import {
   useSearchParams,
   usePathname,
 } from "next/navigation";
-
-import Header from "@/components/common/Header";
-import MenuInfo from "@/components/common/MenuInfoCard";
-
-import FoodCardEx from "@/mainpage/components/FoodCardEx";
-
-import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import { useEffect, useState } from "react";
-import Toast from "@/components/common/Toast";
 
-import { MenuDetail } from "@/lib/types/menu";
-import { Restaurant, useGetRestaurants } from "../../../../entities/restaurant";
-import { usePostMukburim } from "../../../../entities/mukburim";
-import { useGetMenuDetail } from "../../../../entities/menu";
+import { Header, MenuInfo, Toast, type MenuDetail } from "@/shared";
+import { Restaurant, useGetRestaurants } from "@/entities/restaurant";
+import { usePostMukburim } from "@/entities/mukburim";
+import { useGetMenuDetail } from "@/entities/menu";
+// TODO: FoodCardEx가 widgets/shared에 없음 - 추가 필요
+import FoodCardEx from "@/mainpage/components/FoodCardEx";
+// TODO: SkeletonFoodCard가 shared에 없음 - 추가 필요
+import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 
 export default function MenuDetailPage() {
   const router = useRouter();

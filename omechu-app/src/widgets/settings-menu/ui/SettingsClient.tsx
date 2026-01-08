@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/components/common/Header";
+import { Header } from "@/shared";
 
 /** 설정 메뉴 아이템 타입 */
 interface SettingsMenuItem {

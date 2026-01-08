@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { Button } from "../button/Button";
+import { Button } from "@/shared/ui/button/Button";
 
 interface BaseModalProps {
   children?: React.ReactNode;

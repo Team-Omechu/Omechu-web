@@ -1,5 +1,5 @@
-import { axiosInstance } from "../../../shared/index";
-import { MenuListResponse, RecommendMenuRequest } from "../config/resultData";
+import { axiosInstance } from "@/shared";
+import { MenuListResponse, RecommendMenuRequest } from "@/entities/menu/config/resultData";
 
 export const getMenu = async (
   request: RecommendMenuRequest,

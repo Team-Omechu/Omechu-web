@@ -14,8 +14,8 @@ import {
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/entities/mypage/model/profilePayload";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { useProfileQuery } from "../model/useProfileQuery";
-import { resetBasicStateAndSync } from "../model/resetBasicState";
+import { useProfileQuery } from "@/entities/mypage/model/useProfileQuery";
+import { resetBasicStateAndSync } from "@/entities/mypage/model/resetBasicState";
 
 // 서버 스펙 라벨(스토어에는 이 값으로 저장)
 const BODY_LABELS = ["감기", "소화불량", "더위잘탐", "추위잘탐"] as const;

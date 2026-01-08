@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 import { LoadingSpinner } from "@/shared";
-import { useProfileQuery } from "../model/useProfileQuery";
+import { useProfileQuery } from "@/entities/mypage/model/useProfileQuery";
 import AuthErrorModalSection from "./AuthErrorModalSection";
 
 // 401/403 → 인증 만료로 판단하여 모달 표시

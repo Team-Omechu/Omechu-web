@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosInstance from "@/lib/api/axios";
+import { axiosInstance } from "@/shared";
 import type { ApiResponse } from "@/entities/user/api/authApi";
 import { ApiClientError } from "@/entities/user/api/authApi";
 

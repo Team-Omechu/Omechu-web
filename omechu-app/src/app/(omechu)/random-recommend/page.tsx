@@ -5,13 +5,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import Header from "@/components/common/Header";
-import ModalWrapper from "@/components/common/ModalWrapper";
+import { Header, ModalWrapper } from "@/shared";
+import { useQuestionAnswerStore } from "@/entities/question";
+import { RandomRecommendModal } from "@/widgets/RandomRecommendModal";
+// TODO: MealIngredientGroup, MealStyleGroup, MealTypeGroup가 shared/widgets에 없음 - 추가 필요
 import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
 import MealStyleGroup from "@/components/mainpage/MealStyleButton";
 import MealTypeGroup from "@/components/mainpage/MealTypeButton";
-import { useQuestionAnswerStore } from "../../../entities/question";
-import { RandomRecommendModal } from "../../../widgets/RandomRecommendModal";
 
 export default function RandomRecommendPage() {
   const router = useRouter();

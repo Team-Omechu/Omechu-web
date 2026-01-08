@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { clsx } from "clsx";
 
-import { HelperText } from "../input/HelperText";
-import { Label } from "../input/Label";
+import { HelperText } from "@/shared/ui/input/HelperText";
+import { Label } from "@/shared/ui/input/Label";
 
 type HelperState = "error" | "success";
 

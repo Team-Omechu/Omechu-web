@@ -1,5 +1,5 @@
 import { MenuDetail } from "@/shared/config/menu";
-import { axiosInstance } from "../../../shared/index";
+import { axiosInstance } from "@/shared";
 
 export const getMenuDetail = async (
   name: string,

@@ -7,10 +7,10 @@ import type {
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
-} from "../../model/auth.schema";
-import { useAuthStore } from "../../model/auth.store";
-import * as authApi from "../../api/authApi";
-import type { LoginSuccessData } from "../../api/authApi";
+} from "@/entities/user/model/auth.schema";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import * as authApi from "@/entities/user/api/authApi";
+import type { LoginSuccessData } from "@/entities/user/api/authApi";
 
 // 로그인
 export const useLoginMutation = () => {

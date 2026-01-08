@@ -5,16 +5,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import Header from "@/components/common/Header";
+import { Header, SortSelector, FloatingActionButton } from "@/shared";
+// TODO: 아래 컴포넌트들은 shared에 없음 - 추가 필요
 import SelectTabBar from "@/components/mypage/SelectTabBar";
-import SortSelector from "@/components/common/SortSelector";
-import FloatingActionButton from "@/components/common/FloatingActionButton";
 import FoodCard from "@/components/common/FoodCard";
 import FoodReviewCard from "@/components/common/RestaurantReviewCard";
 import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 import SkeletonRestaurantReviewCard from "@/components/common/SkeletonRestaurantReviewCard";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 import RestaurantEditModal from "@/restaurant/components/RestaurantAddModal/RestaurantEditModal";
 import {
@@ -35,8 +34,8 @@ import {
   fetchHeartList,
   likePlace,
   unlikePlace,
-} from "../../../entities/mypage/api/favorites";
-import AuthErrorModalSection from "../../../entities/mypage/ui/AuthErrorModalSection";
+} from "@/entities/mypage/api/favorites";
+import AuthErrorModalSection from "@/entities/mypage/ui/AuthErrorModalSection";
 
 /* ---------- 타입/상수 ---------- */
 type MyRestaurant = {

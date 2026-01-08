@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { getCurrentUser } from "@/entities/user/api/authApi";
-import Toast from "@/shared/ui/toast";
+import { Toast } from "@/shared";
 
 export default function AuthCallbackPage() {
   return (

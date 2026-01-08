@@ -2,26 +2,20 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import Header from "@/components/common/Header";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-import AlertModal from "@/components/common/AlertModal";
-import ModalWrapper from "@/components/common/ModalWrapper";
-
-import MainLoading from "@/components/mainpage/MainLoading";
-import { useAuthStore } from "@/lib/stores/auth.store";
-import Toast from "@/components/common/Toast";
-
-import { exceptMenu } from "@/mypage/api/recommend";
-
+import { Header, MainLoading, ModalWrapper, BaseModal, Toast } from "@/shared";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { exceptMenu } from "@/entities/mypage";
+import { MenuItem, useGetMenu } from "@/entities/menu";
+import { useQuestionAnswerStore } from "@/entities/question";
+import { useLocationAnswerStore } from "@/entities/location";
+import { MenuCard } from "@/widgets/MenuCard";
+import { TagCard } from "@/widgets/TagCard";
+import { LoginPromptModal2 } from "@/widgets/LoginModal";
+// TODO: ExcludeButton이 shared/widgets에 없음 - 추가 필요
 import ExcludeButton from "@/mainpage/components/ExcludeButton";
-import { MenuItem, useGetMenu } from "../../../../entities/menu";
-import { useQuestionAnswerStore } from "../../../../entities/question";
-import { useLocationAnswerStore } from "../../../../entities/location";
-import { MenuCard } from "../../../../widgets/MenuCard";
-import { TagCard } from "../../../../widgets/TagCard";
-import { LoginPromptModal2 } from "../../../../widgets/LoginModal";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -169,13 +163,13 @@ export default function ResultPage() {
 
       {showModal && (
         <ModalWrapper>
-          <AlertModal
+          <BaseModal
             title={"추천 목록에서 메뉴를\n 제외하시겠어요?"}
-            cancelText="취소"
-            confirmText="제외하기"
-            onConfirm={handleExclude}
-            onClose={() => setShowModal(false)}
-            swapButtonOrder
+            leftButtonText="취소"
+            rightButtonText="제외하기"
+            isCloseButtonShow={false}
+            onRightButtonClick={handleExclude}
+            onLeftButtonClick={() => setShowModal(false)}
           />
         </ModalWrapper>
       )}

@@ -4,27 +4,28 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import FloatingActionButton from "@/components/common/FloatingActionButton";
-import FoodBox from "@/components/common/FoodBox";
-import Header from "@/components/common/Header";
-import SearchBar from "@/components/common/SearchBar";
-import SelectTabBar from "@/components/mypage/SelectTabBar";
-import SkeletonUIFoodBox from "@/components/common/SkeletonUIFoodBox";
 import {
+  FloatingActionButton,
+  FoodBox,
+  Header,
+  SearchBar,
+  SkeletonUIFoodBox,
+  Toast,
   consonantGroupMap,
   filteredChoSeong,
   HANGUL_CHO_SEONG,
-} from "@/constant/choSeong";
-import { suggestionList } from "@/constant/suggestionList";
+  suggestionList,
+} from "@/shared";
+// TODO: SelectTabBar는 shared에 없음 - 추가 필요
+import SelectTabBar from "@/components/mypage/SelectTabBar";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 import {
   fetchRecommendManagement,
   exceptMenu,
   removeExceptMenu,
-} from "@/mypage/api/recommend";
-import Toast from "@/components/common/Toast";
-import AuthErrorModalSection from "../../../entities/mypage/ui/AuthErrorModalSection";
+} from "@/entities/mypage/api/recommend";
+import AuthErrorModalSection from "@/entities/mypage/ui/AuthErrorModalSection";
 
 type FoodItem = {
   id?: number;
