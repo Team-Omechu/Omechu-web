@@ -14,8 +14,8 @@ import {
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/entities/mypage/model/profilePayload";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { useProfileQuery } from "../model/useProfileQuery";
-import { resetBasicStateAndSync } from "../model/resetBasicState";
+import { useProfileQuery } from "@/entities/mypage/model/useProfileQuery";
+import { resetBasicStateAndSync } from "@/entities/mypage/model/resetBasicState";
 
 // 화면에서 사용할 라벨 상수 (스토어에는 라벨 문자열을 그대로 저장/토글)
 const OPTIONS = [

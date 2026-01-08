@@ -1,3 +1,5 @@
+// TODO: FSD 개선 - 도메인 특화 상수는 entities로 이동 권장
+// entities/user/config/profileOptions.ts로 이동 고려
 // 성별
 export const GENDER = ["남성", "여성"] as const;
 export type Gender = (typeof GENDER)[number];

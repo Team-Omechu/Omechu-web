@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import ListButton from "@/components/common/button/ListButton";
 
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
-import { moodOptions, useQuestionAnswerStore } from "../../../entities/question";
-import { useTagStore } from "../../../entities/tag";
+import { moodOptions, useQuestionAnswerStore } from "@/entities/question";
+import { useTagStore } from "@/entities/tag";
 
 export const MoodStep = () => {
   const router = useRouter();

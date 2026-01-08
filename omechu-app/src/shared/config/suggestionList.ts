@@ -1,3 +1,5 @@
+// TODO: FSD 개선 - 도메인 특화 데이터는 entities로 이동 권장
+// entities/menu/config/suggestionList.ts로 이동 고려
 export const suggestionList: string[] = [
   "치킨",
   "초콜릿",

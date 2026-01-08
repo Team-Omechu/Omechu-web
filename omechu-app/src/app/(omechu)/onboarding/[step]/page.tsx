@@ -3,23 +3,28 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import AlertModal from "@/components/common/AlertModal";
-import BottomButton from "@/components/common/button/BottomButton";
-import ModalWrapper from "@/components/common/ModalWrapper";
-import ProgressBar from "@/components/common/ProgressBar";
+import {
+  BaseModal,
+  BottomButton,
+  ModalWrapper,
+  ProgressBar,
+  Toast,
+  useOnboardingStore,
+} from "@/shared";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { type LoginSuccessData } from "@/entities/user/api/authApi";
+import {
+  useCompleteOnboardingMutation,
+  type OnboardingRequestData,
+  AllergyStep,
+  BodyTypeStep,
+  GenderStep,
+  PreferStep,
+  ProfileStep,
+  ExerciseStep,
+} from "@/entities/onboarding";
+// TODO: StepFooter가 shared에 없음 - 추가 필요
 import StepFooter from "@/components/common/StepFooter";
-import Toast from "@/components/common/Toast";
-import { useOnboardingStore } from "@/lib/stores/onboarding.store";
-import { useAuthStore } from "@/lib/stores/auth.store";
-import { useCompleteOnboardingMutation } from "@/onboarding/hooks/useOnboarding";
-import type { OnboardingRequestData } from "@/onboarding/api/onboarding";
-import AllergyStep from "@/onboarding/components/AllergyStep";
-import BodyTypeStep from "@/onboarding/components/BodyTypeStep";
-import GenderStep from "@/onboarding/components/GenderStep";
-import PreferStep from "@/onboarding/components/PreferStep";
-import ProfileStep from "@/onboarding/components/ProfileStep";
-import ExerciseStep from "@/onboarding/components/ExerciseStep";
-import type { LoginSuccessData } from "@/lib/api/auth";
 
 const ONBOARDING_STEPS = 6;
 
@@ -230,15 +235,17 @@ export default function OnboardingPage() {
 
   return (
     <div className="relative flex h-screen w-auto flex-col">
-      <header>
-        <ProgressBar
-          currentStep={step}
-          totalSteps={ONBOARDING_STEPS}
-          cancelButtonText="일단 시작하기"
-          cancelButtonAlign="right"
-          cancelButtonClassName="w-auto"
-          onCancelClick={() => setIsSkipModalOpen(true)}
-        />
+      <header className="flex items-center justify-between px-4 py-2">
+        {/* TODO: shared ProgressBar는 cancel button을 지원하지 않음 - 별도 버튼 추가 */}
+        <div className="flex-1">
+          <ProgressBar currentStep={step} totalSteps={ONBOARDING_STEPS} />
+        </div>
+        <button
+          onClick={() => setIsSkipModalOpen(true)}
+          className="text-grey-normal-active text-sm"
+        >
+          일단 시작하기
+        </button>
       </header>
 
       <main className="flex w-full flex-1 flex-col items-center px-4 py-6">
@@ -265,28 +272,28 @@ export default function OnboardingPage() {
 
       {isModalOpen && (
         <ModalWrapper>
-          <AlertModal
+          <BaseModal
             title="저장 완료!"
-            description="이제 맛있는 메뉴 추천을 받아볼까요?"
-            confirmText="추천받기"
-            cancelText="내 정보 다시 보기"
-            onConfirm={handleRecommend}
-            onClose={handleRecheck}
+            desc="이제 맛있는 메뉴 추천을 받아볼까요?"
+            rightButtonText="추천받기"
+            leftButtonText="내 정보 다시 보기"
+            isCloseButtonShow={false}
+            onRightButtonClick={handleRecommend}
+            onLeftButtonClick={handleRecheck}
           />
         </ModalWrapper>
       )}
 
       {isSkipModalOpen && (
         <ModalWrapper>
-          <AlertModal
+          <BaseModal
             title="기본 상태 입력을 중단하시겠어요?"
-            description="지금까지 작성한 내용은 저장되지 않아요."
-            // 디자인: 왼쪽(테두리) '그만하기', 오른쪽(컬러) '돌아가기'
-            confirmText="돌아가기"
-            cancelText="그만하기"
-            swapButtonOrder
-            onConfirm={handleCancelSkip}
-            onClose={handleConfirmSkip}
+            desc="지금까지 작성한 내용은 저장되지 않아요."
+            leftButtonText="그만하기"
+            rightButtonText="돌아가기"
+            isCloseButtonShow={false}
+            onLeftButtonClick={handleConfirmSkip}
+            onRightButtonClick={handleCancelSkip}
           />
         </ModalWrapper>
       )}

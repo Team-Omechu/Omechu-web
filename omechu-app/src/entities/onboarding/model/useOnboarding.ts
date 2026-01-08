@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import * as onboardingApi from "../api/onboarding";
+import * as onboardingApi from "@/entities/onboarding/api/onboarding";
 
 /**
  * 온보딩 완료(회원가입 완료) API를 호출하는 커스텀 훅

@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { BottomButton } from "@/shared/ui/button/BottomButton";
-import { ModalWrapper } from "@/shared/ui/modal/ModalWrapper";
-import { Toast } from "@/shared/ui/toast/Toast";
+import { BottomButton, ModalWrapper, Toast } from "@/shared";
+// TODO: TERMS_CONFIG가 shared에 없음 - 추가 필요
 import { TERMS_CONFIG } from "@/shared/constants/terms.config";
 import {
   signupSchema,
@@ -21,8 +20,7 @@ import {
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { ApiClientError } from "@/entities/user/api/authApi";
 
-import SignUpForm from "@/widgets/auth/sign-up-form/ui/SignUpForm";
-import TermsModal from "@/widgets/auth/sign-up-form/ui/TermsModal";
+import { SignUpForm, TermsModal } from "@/widgets/auth";
 
 type ModalType = "service" | "privacy" | "location";
 

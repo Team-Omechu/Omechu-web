@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 
-import FloatingActionButton from "@/components/common/FloatingActionButton";
-import Header from "@/components/common/Header";
+import { FloatingActionButton, Header } from "@/shared";
+// TODO: terms.config, TermsContent가 shared에 없음 - 추가 필요
 import TermsContent from "@/components/settings/TermsContent";
 import { TERMS_CONFIG, isValidTermsType } from "@/components/settings/terms.config";
 

@@ -3,15 +3,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
+import { Toast } from "@/shared";
+// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
 import Input from "@/components/common/Input";
 import {
   resetPasswordSchema,
   type ResetPasswordFormValues,
-} from "../../../../entities/user/model/auth.schema";
-import Toast from "@/components/common/Toast";
+} from "@/entities/user/model/auth.schema";
 import { useState } from "react";
+// TODO: SquareButton이 shared에 없음
 import SquareButton from "@/components/common/button/SquareButton";
-import { ApiClientError } from "../../../../entities/user/api/authApi";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 type ResetPasswordFormProps = {
   onFormSubmit: (data: ResetPasswordFormValues) => Promise<void>;

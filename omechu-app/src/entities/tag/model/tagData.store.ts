@@ -1,4 +1,4 @@
-import { TagData } from "../../menu";
+import { TagData } from "@/entities/menu";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 

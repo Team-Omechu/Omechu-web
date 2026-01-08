@@ -14,8 +14,8 @@ import {
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/entities/mypage/model/profilePayload";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { useProfileQuery } from "../model/useProfileQuery";
-import { resetBasicStateAndSync } from "../model/resetBasicState";
+import { useProfileQuery } from "@/entities/mypage/model/useProfileQuery";
+import { resetBasicStateAndSync } from "@/entities/mypage/model/resetBasicState";
 
 // 스펙 라벨 그대로 사용
 const LABELS = ["다이어트 중", "증량 중", "유지 중"] as const;

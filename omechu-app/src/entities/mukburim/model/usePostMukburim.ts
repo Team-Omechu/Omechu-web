@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { mukburimResponse } from "../config/mukburim";
-import { postMukburim } from "../api/postMukburim";
+import { mukburimResponse } from "@/entities/mukburim/config/mukburim";
+import { postMukburim } from "@/entities/mukburim/api/postMukburim";
 
 export function usePostMukburim() {
   const queryClient = useQueryClient();

@@ -10,8 +10,8 @@ import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
 import {
   purposeOptions,
   useQuestionAnswerStore,
-} from "../../../entities/question";
-import { useTagStore } from "../../../entities/tag";
+} from "@/entities/question";
+import { useTagStore } from "@/entities/tag";
 
 export const PurposeStep = () => {
   const router = useRouter();

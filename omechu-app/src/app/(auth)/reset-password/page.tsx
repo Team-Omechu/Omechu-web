@@ -3,15 +3,12 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { AlertModal } from "@/shared/ui/modal/Alert";
-import { ModalWrapper } from "@/shared/ui/modal/ModalWrapper";
+import { BaseModal, ModalWrapper, Toast, Header } from "@/shared";
 import type { ResetPasswordFormValues } from "@/entities/user/model/auth.schema";
 import { useResetPasswordMutation } from "@/entities/user/lib/hooks/useAuth";
-import { Toast } from "@/shared/ui/toast/Toast";
-
-import ResetPasswordForm from "../../../widgets/auth/reset-password-form/ui/ResetPasswordForm";
-import { Header } from "@/shared/ui/header/Header";
 import { ApiClientError } from "@/entities/user/api/authApi";
+
+import { ResetPasswordForm } from "@/widgets/auth";
 
 export default function ResetPasswordPage() {
   return (
@@ -78,11 +75,12 @@ function ResetPasswordClient() {
 
       {isModalOpen && (
         <ModalWrapper>
-          <AlertModal
+          <BaseModal
             title="비밀번호를 재설정했어요"
-            description="새로운 비밀번호로 로그인하세요"
-            confirmText="확인"
-            onConfirm={handleModalConfirm}
+            desc="새로운 비밀번호로 로그인하세요"
+            rightButtonText="확인"
+            isCloseButtonShow={false}
+            onRightButtonClick={handleModalConfirm}
           />
         </ModalWrapper>
       )}

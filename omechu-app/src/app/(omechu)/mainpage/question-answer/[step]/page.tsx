@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import AlertModal from "@/components/common/AlertModal";
-import ModalWrapper from "@/components/common/ModalWrapper";
-import ProgressBar from "@/components/common/ProgressBar";
-import StepFooter from "@/components/common/StepFooter";
-import { useQuestionAnswerStore } from "../../../../../entities/question";
+import { BaseModal, ModalWrapper, ProgressBar } from "@/shared";
+import { useQuestionAnswerStore } from "@/entities/question";
 import {
   BudgetStep,
   MealTimeStep,
   MoodStep,
   PurposeStep,
   WhoStep,
-} from "../../../../../widgets/step";
+} from "@/widgets/step";
+// TODO: StepFooter가 shared에 없음 - 추가 필요
+import StepFooter from "@/components/common/StepFooter";
+// TODO: FinalChoiceStep이 widgets/step에 없음 - 추가 필요
 import FinalChoiceStep from "@/mainpage/components/FinalChoiceStep";
 
 const QUESTION_STEPS = 6;
@@ -67,15 +67,17 @@ export default function QuestionAnswerPage() {
   return (
     <div className="relative flex h-screen w-auto flex-col">
       {step < QUESTION_STEPS ? (
-        <header>
-          <ProgressBar
-            currentStep={step}
-            totalSteps={5} // 마지막 스텝은 프로그레스에 포함하지 않음
-            onCancelClick={() => setShowModal(true)}
-            cancelButtonText="그만하기"
-            cancelButtonAlign="left"
-            cancelButtonClassName="w-auto"
-          />
+        <header className="flex items-center justify-between px-4 py-2">
+          {/* TODO: shared ProgressBar는 cancel button을 지원하지 않음 - 별도 버튼 추가 */}
+          <button
+            onClick={() => setShowModal(true)}
+            className="text-grey-normal-active text-sm"
+          >
+            그만하기
+          </button>
+          <div className="flex-1">
+            <ProgressBar currentStep={step} totalSteps={5} />
+          </div>
         </header>
       ) : (
         <div className="h-[60px]" />
@@ -95,12 +97,13 @@ export default function QuestionAnswerPage() {
 
       {showModal && (
         <ModalWrapper>
-          <AlertModal
+          <BaseModal
             title="메뉴 추천을 중단하시겠어요?"
-            onConfirm={handleConfirm}
-            onClose={() => setShowModal(false)}
-            confirmText="그만하기"
-            cancelText="취소"
+            rightButtonText="그만하기"
+            leftButtonText="취소"
+            isCloseButtonShow={false}
+            onRightButtonClick={handleConfirm}
+            onLeftButtonClick={() => setShowModal(false)}
           />
         </ModalWrapper>
       )}

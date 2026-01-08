@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import ListButton from "@/components/common/button/ListButton";
+import { ListButton } from "@/shared";
 
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
-import { budgetOptions, useQuestionAnswerStore } from "../../../entities/question";
-import { useTagStore } from "../../../entities/tag";
+import { budgetOptions, useQuestionAnswerStore } from "@/entities/question";
+import { useTagStore } from "@/entities/tag";
 
 export const BudgetStep = () => {
   const router = useRouter();

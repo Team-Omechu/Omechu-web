@@ -1,11 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Suspense } from "react";
 import Link from "next/link";
-import Header from "@/components/common/Header";
-import BottomNav from "@/components/common/Bottom";
+import { Header } from "@/shared";
+import { BottomNavigation } from "@/widgets/layout";
 
-import ProfileSection from "../../../entities/mypage/ui/ProfileSection";
-import MenuSection from "../../../entities/mypage/ui/MenuSection";
+import { ProfileSection, MenuSection } from "@/entities/mypage";
 
 const menuList: { title: string; href: string }[] = [
   { title: "프로필 관리", href: "/mypage/profile-edit" },
@@ -46,7 +45,7 @@ export default function MyPage() {
         </main>
       </Suspense>
       <Suspense fallback={null}>
-        <BottomNav />
+        <BottomNavigation />
       </Suspense>
     </>
   );

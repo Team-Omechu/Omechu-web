@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
+// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
 import Input from "@/components/common/Input";
 import {
   useSendVerificationCodeMutation,
   useVerifyVerificationCodeMutation,
-} from "../../../../entities/user/lib/hooks/useAuth";
-import type { SignupFormValues } from "../../../../entities/user/model/auth.schema";
-import Toast from "@/components/common/Toast";
-import { ApiClientError } from "../../../../entities/user/api/authApi";
+} from "@/entities/user/lib/hooks/useAuth";
+import type { SignupFormValues } from "@/entities/user/model/auth.schema";
+import { Toast } from "@/shared";
+import { ApiClientError } from "@/entities/user/api/authApi";
 
 export default function UserInfoFields() {
   const {

@@ -1,3 +1,5 @@
+// TODO: FSD 개선 - 도메인 특화 설정은 entities로 이동 권장
+// entities/user/config/userInfoEditSteps.ts로 이동 고려
 // step key 타입을 먼저 정의
 export type StepKey =
   | "start"

@@ -4,12 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { changePassword } from "../../../entities/user/api/authApi";
-import AlertModal from "@/components/common/AlertModal";
-import Header from "@/components/common/Header";
-import Input from "@/components/common/Input";
-import ModalWrapper from "@/components/common/ModalWrapper";
-import Toast from "@/components/common/Toast";
+import { changePassword } from "@/entities/user/api/authApi";
+import { BaseModal, Header, Input, ModalWrapper, Toast } from "@/shared";
 
 /**
  * 비밀번호 변경 페이지
@@ -176,11 +172,11 @@ export default function ChangePasswordClient() {
 
         {showModal && (
           <ModalWrapper>
-            <AlertModal
+            <BaseModal
               title="비밀번호가 변경되었습니다!"
-              confirmText="확인"
-              onConfirm={() => router.push("/settings/account-settings")}
-              onClose={() => setShowModal(false)}
+              rightButtonText="확인"
+              isCloseButtonShow={false}
+              onRightButtonClick={() => router.push("/settings/account-settings")}
             />
           </ModalWrapper>
         )}

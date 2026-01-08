@@ -4,9 +4,9 @@ import type {
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
-} from "../model/auth.schema";
+} from "@/entities/user/model/auth.schema";
 import axiosInstance from "@/shared/lib/axiosInstance";
-import { useAuthStore } from "../model/auth.store";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 
 // 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
 export class ApiClientError extends Error {

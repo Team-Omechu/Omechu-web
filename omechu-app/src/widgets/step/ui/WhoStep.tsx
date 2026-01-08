@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import ListButton from "@/components/common/button/ListButton";
 
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
-import { useQuestionAnswerStore, whoOptions } from "../../../entities/question";
-import { useTagStore } from "../../../entities/tag";
+import { useQuestionAnswerStore, whoOptions } from "@/entities/question";
+import { useTagStore } from "@/entities/tag";
 
 export const WhoStep = () => {
   const router = useRouter();

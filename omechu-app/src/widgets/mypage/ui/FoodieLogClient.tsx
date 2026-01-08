@@ -5,17 +5,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 
-import { useAuthStore } from "@/lib/stores/auth.store";
+import { useAuthStore } from "@/entities/user/model/auth.store";
 import {
   fetchMukburimStats,
   type MukburimStats,
   type PeriodOption,
-} from "@/mypage/api/mukburim";
-
-import CustomDatePicker from "@/components/common/CustomDatePicker";
-import FloatingActionButton from "@/components/common/FloatingActionButton";
-import Header from "@/components/common/Header";
-import SkeletonUIFoodBox from "@/components/common/SkeletonUIFoodBox";
+} from "@/entities/mypage/api/mukburim";
+import { CustomDatePicker, FloatingActionButton, Header, SkeletonUIFoodBox } from "@/shared";
 
 /* ---------- constants ---------- */
 const PERIOD_OPTIONS = [
