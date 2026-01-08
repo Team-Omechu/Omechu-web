@@ -38,13 +38,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body
-        className={`bg-gray-200 ${notoSansKR.variable}`}
-      >
+      <body className={`bg-gray-200 ${notoSansKR.variable}`}>
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
-        <div className="relative mx-auto flex min-h-screen w-full min-w-[375px] max-w-[430px] flex-col overflow-x-hidden bg-background-primary shadow-xl">
+        <div className="bg-background-primary relative mx-auto flex min-h-screen w-full max-w-[430px] min-w-[375px] flex-col overflow-x-hidden shadow-xl">
           <Providers>
-            <main className="flex flex-1 flex-col bg-background-primary scrollbar-hide overflow-y-scroll">
+            <main className="bg-background-primary scrollbar-hide flex flex-1 flex-col overflow-y-scroll">
               {children}
             </main>
           </Providers>

@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Suspense } from "react";
+
 import Link from "next/link";
-import { Header } from "@/shared";
 
 import { ProfileSection, MenuSection } from "@/entities/mypage";
+import { Header } from "@/shared";
 
 const menuList: { title: string; href: string }[] = [
   { title: "프로필 관리", href: "/mypage/profile-edit" },

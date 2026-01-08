@@ -187,7 +187,9 @@ export default function UserInfoFields() {
               (passwordBlurred && errors.password?.message) ||
               "* 영문 대소문자, 숫자 및 특수문자 포함 8자 이상"
             }
-            helperState={passwordBlurred && errors.password ? "error" : undefined}
+            helperState={
+              passwordBlurred && errors.password ? "error" : undefined
+            }
           >
             <Input
               type="password"
@@ -217,7 +219,9 @@ export default function UserInfoFields() {
                 : undefined
             }
             helperState={
-              passwordConfirmBlurred && errors.passwordConfirm ? "error" : undefined
+              passwordConfirmBlurred && errors.passwordConfirm
+                ? "error"
+                : undefined
             }
           >
             <Input

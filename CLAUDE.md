@@ -72,17 +72,17 @@ entity/
 
 ## Naming Conventions
 
-| Type | Convention | Example |
-|------|------------|---------|
-| Variables/Functions | camelCase | `fetchData()` |
-| Components/Classes | PascalCase | `UserAvatar` |
-| Constants | UPPER_SNAKE_CASE | `MAX_LIMIT` |
-| Folders | kebab-case | `user-profile/` |
-| Component files | `*.tsx` | `UserCard.tsx` |
-| Hook files | `use*.ts` | `useAuth.ts` |
-| Store files | `*.store.ts` | `auth.store.ts` |
-| API files | `*.api.ts` or folder | `authApi.ts` |
-| Type files | `*.types.ts` | `user.types.ts` |
+| Type                | Convention           | Example         |
+| ------------------- | -------------------- | --------------- |
+| Variables/Functions | camelCase            | `fetchData()`   |
+| Components/Classes  | PascalCase           | `UserAvatar`    |
+| Constants           | UPPER_SNAKE_CASE     | `MAX_LIMIT`     |
+| Folders             | kebab-case           | `user-profile/` |
+| Component files     | `*.tsx`              | `UserCard.tsx`  |
+| Hook files          | `use*.ts`            | `useAuth.ts`    |
+| Store files         | `*.store.ts`         | `auth.store.ts` |
+| API files           | `*.api.ts` or folder | `authApi.ts`    |
+| Type files          | `*.types.ts`         | `user.types.ts` |
 
 ## Core Architecture Patterns
 
@@ -95,12 +95,14 @@ entity/
 - `proxy.ts` handles URL rewrites (Next.js 16: middleware → proxy)
 
 Key files:
+
 - Auth store: `src/entities/user/model/auth.store.ts`
 - Axios instance: `src/shared/lib/axiosInstance.ts`
 
 ### State Management
 
 **Zustand stores** (with persist middleware):
+
 - `auth.store.ts` - Authentication state
 - `onboarding.store.ts` - Multi-step onboarding flow
 - `tagData.store.ts` - Food preference tags
@@ -117,6 +119,7 @@ Key files:
 ### Styling (Tailwind CSS v4)
 
 CSS-first configuration in `src/app/globals.css`:
+
 - All theme customization in `@theme` block
 - Custom utilities via `@utility` directive
 - Mobile-first: 375px fixed width layout
@@ -153,7 +156,7 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 ### Code Quality
 
 - ESLint 9 flat config (`eslint.config.mjs`)
-- Import ordering: React → Next → Internal (@/*) → Relative
+- Import ordering: React → Next → Internal (@/\*) → Relative
 - Husky pre-commit hooks run lint-staged
 
 ## Git Conventions
@@ -163,11 +166,13 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 ### Issue 제목
 
 **형식:**
+
 ```
 [FEAT/FIX/REFACTOR/CHORE] 이슈 이름
 ```
 
 **예시:**
+
 ```bash
 [FEAT] 로그인 페이지 UI 구현
 [FIX] 회원가입 시 상태 코드 오류 수정
@@ -177,11 +182,13 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 ### PR 제목
 
 **형식:**
+
 ```
 [FEAT/FIX/REFACTOR/CHORE] PR 제목 (#이슈번호)
 ```
 
 **예시:**
+
 ```bash
 [FEAT] 로그인 페이지 UI 구현 (#12)
 [FIX] 이미지 업로드 버그 수정 (#23)
@@ -191,6 +198,7 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 ### Commit Message
 
 **형식:**
+
 ```
 <type>: <subject> (#<issue_number>)
 ```
@@ -208,6 +216,7 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 | `remove` | 파일 삭제 |
 
 **예시:**
+
 ```bash
 feat: 로그인 페이지 UI 구현 (#12)
 fix: 회원가입 시 상태 코드 오류 수정 (#8)
@@ -217,6 +226,7 @@ refactor: BottomNav 제거 및 ClientLayout 정리 (#218)
 ## 커밋 메시지 규칙
 
 **절대로 커밋 메시지에 다음을 포함하지 마세요:**
+
 - `🤖 Generated with Claude Code`
 - `Co-Authored-By: Claude`
 - AI가 생성했다는 어떤 표시도 금지
@@ -224,11 +234,13 @@ refactor: BottomNav 제거 및 ClientLayout 정리 (#218)
 ### Branch Naming
 
 **형식:**
+
 ```
 <type>/<간단한_설명>-#<issue_number>
 ```
 
 **예시:**
+
 ```bash
 feat/signup-api-#14          # 회원가입 API 기능 추가
 fix/image-upload-#23         # 이미지 업로드 버그 수정
