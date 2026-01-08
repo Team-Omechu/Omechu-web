@@ -19,6 +19,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@hello-pangea/dnd":
         specifier: ^18.0.1
         version: 18.0.1(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -26,6 +27,8 @@ importers:
 >>>>>>> b5b917ec ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
 >>>>>>> 7e90e881 ([#220]hotfix)
+=======
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
       "@hookform/resolvers":
 =======
 =======
@@ -85,8 +88,13 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> b5b917ec ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
+=======
+=======
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
       '@hookform/resolvers':
 >>>>>>> 9025d247 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
@@ -633,6 +641,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "@babel/template@7.28.6":
     resolution:
       {
@@ -656,6 +665,8 @@ packages:
 >>>>>>> d5ee1241 ([#220]hotfix)
 =======
 >>>>>>> 27b936a4 (fix: FSD import 경로 및 export 오류 수정)
+=======
+>>>>>>> 3656b3b3 (fix: FSD import 경로 및 export 오류 수정)
   "@babel/runtime@7.28.6":
     resolution:
       {
@@ -707,6 +718,8 @@ packages:
 >>>>>>> e6d4d6d4 ([#220]hotfix)
 =======
 >>>>>>> 6e5b7915 (fix: FSD import 경로 및 export 오류 수정)
+=======
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
   '@babel/template@7.28.6':
     resolution: {integrity: sha512-YA6Ma2KsCdGb+WC6UpBVFJGXL58MDA6oyONbjyF/+5sBgxY/dwkhLogbMT2GXXyU84/IhRw/2D1Os1B/giz+BQ==}
     engines: {node: '>=6.9.0'}
@@ -771,6 +784,8 @@ packages:
   '@babel/traverse@7.28.6':
     resolution: {integrity: sha512-fgWX62k02qtjqdSNTAGxmKYY/7FSL9WAS1o2Hu5+I5m9T0yxZzr4cnrfXQ/MX0rIifthCSs6FKTlzYbJcPtMNg==}
 =======
+=======
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
   '@babel/template@7.27.2':
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
 >>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
@@ -1911,6 +1926,7 @@ packages:
 >>>>>>> 62c20fb8 ([#220]fix:의존성 재설치)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   '@typescript-eslint/eslint-plugin@8.53.0':
     resolution: {integrity: sha512-eEXsVvLPu8Z4PkFibtuFJLJOTAV/nPdgtSjkGoPpddpFk3/ym2oy97jynY6ic2m6+nc5M8SE1e9v/mHKsulcJg==}
 =======
@@ -1989,6 +2005,10 @@ packages:
 >>>>>>> dfc495f2 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 >>>>>>> 15b9bdc6 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 <<<<<<< HEAD
+=======
+  '@typescript-eslint/eslint-plugin@8.51.0':
+    resolution: {integrity: sha512-XtssGWJvypyM2ytBnSnKtHYOGT+4ZwTnBVl36TA4nRO2f4PRNGz5/1OszHzcZCvcBMh+qb7I06uoCmLTRdR9og==}
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 >>>>>>> 9025d247 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
@@ -4608,6 +4628,7 @@ snapshots:
   '@babel/parser@7.28.6':
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@babel/types": 7.28.6
 
 <<<<<<< HEAD
@@ -4668,6 +4689,8 @@ snapshots:
       "@babel/types": 7.28.6
 =======
 =======
+=======
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
       '@babel/types': 7.28.6
 >>>>>>> 5a0ac15e ([#220]fix:의존성 재설치)
 
@@ -4677,6 +4700,10 @@ snapshots:
 >>>>>>> 62c20fb8 ([#220]fix:의존성 재설치)
 =======
 =======
+=======
+      '@babel/types': 7.28.5
+
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
   '@babel/template@7.27.2':
 >>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
 >>>>>>> 6e5b7915 (fix: FSD import 경로 및 export 오류 수정)
@@ -4938,6 +4965,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "@hookform/resolvers@5.2.2(react-hook-form@7.71.1(react@19.2.3))":
     dependencies:
       "@standard-schema/utils": 0.3.0
@@ -4969,6 +4997,8 @@ snapshots:
 >>>>>>> badd7eb8 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
 >>>>>>> 7fff9e68 ([#220]fix:의존성 재설치)
+=======
+>>>>>>> 3656b3b3 (fix: FSD import 경로 및 export 오류 수정)
   "@hello-pangea/dnd@18.0.1(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)":
 =======
 <<<<<<< HEAD
@@ -5057,6 +5087,8 @@ snapshots:
 >>>>>>> b5b917ec ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
 >>>>>>> 3342a864 ([#220]fix:의존성 재설치)
+=======
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
   '@hookform/resolvers@5.2.2(react-hook-form@7.71.1(react@19.2.3))':
 =======
   '@hookform/resolvers@5.2.2(react-hook-form@7.70.0(react@19.2.3))':
@@ -5117,6 +5149,8 @@ snapshots:
   '@hookform/resolvers@5.2.2(react-hook-form@7.71.0(react@19.2.3))':
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
   '@hookform/resolvers@5.2.2(react-hook-form@7.70.0(react@19.2.3))':
 >>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
 <<<<<<< HEAD
@@ -5721,6 +5755,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "@typescript-eslint/eslint-plugin@8.53.0(@typescript-eslint/parser@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3)":
 =======
   "@typescript-eslint/eslint-plugin@8.51.0(@typescript-eslint/parser@8.51.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3)":
@@ -5741,6 +5776,8 @@ snapshots:
 >>>>>>> d5ee1241 ([#220]hotfix)
 =======
 >>>>>>> 27b936a4 (fix: FSD import 경로 및 export 오류 수정)
+=======
+>>>>>>> 3656b3b3 (fix: FSD import 경로 및 export 오류 수정)
   "@types/use-sync-external-store@0.0.6": {}
 
   "@typescript-eslint/eslint-plugin@8.53.0(@typescript-eslint/parser@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3)":
@@ -5751,8 +5788,12 @@ snapshots:
 
 =======
 >>>>>>> 6e5b7915 (fix: FSD import 경로 및 export 오류 수정)
+=======
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
   '@typescript-eslint/eslint-plugin@8.53.0(@typescript-eslint/parser@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3)':
 =======
+=======
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
   '@typescript-eslint/eslint-plugin@8.51.0(@typescript-eslint/parser@8.51.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.8.3)':
 >>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
 <<<<<<< HEAD
@@ -7628,6 +7669,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -7722,6 +7764,7 @@ snapshots:
 =======
 >>>>>>> e6d4d6d4 ([#220]hotfix)
 =======
+<<<<<<< HEAD
 >>>>>>> 1f83cff9 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
 =======
@@ -7734,6 +7777,9 @@ snapshots:
 =======
 >>>>>>> e6d4d6d4 ([#220]hotfix)
 >>>>>>> 7e90e881 ([#220]hotfix)
+=======
+>>>>>>> c03261bd (fix: FSD import 경로 및 export 오류 수정)
+>>>>>>> f1937a85 (fix: FSD import 경로 및 export 오류 수정)
   react@19.2.3: {}
 
   reflect.getprototypeof@1.0.10:
