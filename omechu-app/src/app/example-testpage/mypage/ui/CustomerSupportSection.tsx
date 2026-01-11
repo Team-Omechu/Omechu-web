@@ -16,7 +16,7 @@ const LIST_MAP = [
   { listTitle: "개인정보 처리 방침", hyperLink: "/" },
   { listTitle: "위치 기반 서비스 이용약관", hyperLink: "/" },
 ];
-export default function CutomerSupportSection() {
+export default function CustomerSupportSection() {
   const router = useRouter();
 
   return (

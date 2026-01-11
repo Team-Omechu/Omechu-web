@@ -17,6 +17,7 @@ interface UserInfoSectionProps {
   exerciseStatus: string;
   favoriteFood: string;
   allergy: string;
+  onNicknameClick: () => void;
 }
 
 export default function UserInfoCard({
@@ -24,9 +25,8 @@ export default function UserInfoCard({
   exerciseStatus,
   favoriteFood,
   allergy,
+  onNicknameClick,
 }: UserInfoSectionProps) {
-  const [currentName, setCurrentName] = useState(name);
-
   const router = useRouter();
 
   return (
@@ -41,15 +41,8 @@ export default function UserInfoCard({
         <div className="flex justify-between">
           <span className="text-body-3-bold">
             <span className="text-body-3-bold relative mr-4.5">
-              {currentName}
-              <button
-                onClick={() => {
-                  const nextName = prompt("이름을 입력하세요", currentName);
-                  if (nextName && nextName.trim() !== "") {
-                    setCurrentName(nextName.trim());
-                  }
-                }}
-              >
+              {name}
+              <button onClick={onNicknameClick}>
                 <WriteIcon className="absolute -top-1 -right-4 w-3.5" />
               </button>
             </span>
