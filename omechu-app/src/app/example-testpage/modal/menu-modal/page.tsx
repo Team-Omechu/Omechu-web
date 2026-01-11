@@ -1,6 +1,6 @@
 "use client";
 
-import MenuModal from "@/shared_FSD/ui/modal/MenuModal";
+import { MenuModal } from "@/shared_FSD/index";
 
 export default function MenuModalTestPage() {
   const mockData = [

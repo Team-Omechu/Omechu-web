@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-import BaseModal from "@/shared_FSD/ui/modal/BaseModal";
+import { BaseModal } from "@/shared_FSD/index";
 
 export default function BaseModalTestPage() {
   const [open, setOpen] = useState(true);

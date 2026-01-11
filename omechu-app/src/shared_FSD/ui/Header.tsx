@@ -12,6 +12,7 @@ const headerStyles = cva(
     "flex items-center px-5 py-2.5 my-2",
     "w-full h-12",
     "text-body-3-medium text-font-high",
+    "border-2 border-white bg-white",
   ),
 );
 
