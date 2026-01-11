@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //! 26.01.13 작업
 
 "use client";
@@ -66,6 +67,14 @@ export default function MypageMain() {
           />
         </ModalWrapper>
       )}
+=======
+import { Header } from "@/shared_FSD/index";
+
+export default function MypageMain() {
+  return (
+    <>
+      <Header />
+>>>>>>> 36422d58 (fix:변경사항 저장)
     </>
   );
 }
