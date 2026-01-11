@@ -1,21 +1,24 @@
 // src/app/mainpage/result/page.tsx (ResultPage)
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Header, MainLoading, ModalWrapper, BaseModal, Toast } from "@/shared";
+import {
+  Header,
+  MainLoading,
+  ModalWrapper,
+  BaseModal,
+  Toast,
+  RecommendedFoodCard,
+} from "@/shared";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { exceptMenu } from "@/entities/mypage";
 import { MenuItem, useGetMenu } from "@/entities/menu";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { useLocationAnswerStore } from "@/entities/location";
-import { MenuCard } from "@/widgets/MenuCard";
 import { TagCard } from "@/widgets/TagCard";
-import { LoginPromptModal2 } from "@/widgets/LoginModal";
 // TODO: ExcludeButton이 shared/widgets에 없음 - 추가 필요
-import ExcludeButton from "@/mainpage/components/ExcludeButton";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -99,44 +102,25 @@ export default function ResultPage() {
 
   return (
     <div className="flex h-screen flex-col">
-      <Header
-        leftChild={
-          <button
-            onClick={() => router.push("/mainpage")}
-            className="flex items-center font-bold"
-          >
-            <Image
-              src="/arrow/left-header-arrow.svg"
-              alt="back"
-              width={22}
-              height={30}
-            />
-            <span className="mb-0.5 ml-1 flex shrink-0">처음으로</span>
-          </button>
-        }
-        className="h-[60px] border-b-0"
-      />
+      <Header />
 
       <div className="mt-3 flex flex-col px-4">
         {!isLoading &&
           !error &&
           filteredMenus.map((menu) => (
-            <div key={menu.menu} className="relative mb-4">
-              <ExcludeButton
-                onClick={() => {
-                  handleExcludeCLick(menu.menu);
-                }}
-              />
-              <MenuCard
-                title={menu.menu}
-                description={menu.description}
-                image={menu.image_link}
-                onClick={() =>
-                  setOpenMenu(openMenu === menu.menu ? null : menu.menu)
-                }
-                selected={openMenu === menu.menu}
-              />
-            </div>
+            <RecommendedFoodCard
+              key={menu.id}
+              menuTitle={menu.menu}
+              onMinusButtonClick={() => {
+                handleExcludeCLick(menu.menu);
+              }}
+              menuDesc={menu.description}
+              src={menu.image_link}
+              onCardClick={() =>
+                setOpenMenu(openMenu === menu.menu ? null : menu.menu)
+              }
+              selected={openMenu === menu.menu}
+            />
           ))}
       </div>
 
@@ -175,11 +159,15 @@ export default function ResultPage() {
       )}
       {showLoginModal && (
         <ModalWrapper>
-          <LoginPromptModal2
-            onClose={() => {
+          <BaseModal
+            title="더 많은 기능을 원하시나요?"
+            desc="로그인 후 더 다양한 서비스를 누려보세요"
+            leftButtonText="로그인하기"
+            isLogoShow={true}
+            onCloseClick={() => {
               setShowLoginModal(false);
             }}
-            onConfirm={() => {
+            onLeftButtonClick={() => {
               router.push("/sign-in");
             }}
           />

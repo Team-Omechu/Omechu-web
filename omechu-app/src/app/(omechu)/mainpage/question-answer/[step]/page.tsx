@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { BaseModal, ModalWrapper, ProgressBar } from "@/shared";
+import {
+  BaseModal,
+  ModalWrapper,
+  PaginationButton,
+  ProgressBar,
+} from "@/shared";
 import { useQuestionAnswerStore } from "@/entities/question";
 import {
   BudgetStep,
@@ -13,21 +17,27 @@ import {
   PurposeStep,
   WhoStep,
 } from "@/widgets/step";
-// TODO: StepFooter가 shared에 없음 - 추가 필요
-import StepFooter from "@/components/common/StepFooter";
-// TODO: FinalChoiceStep이 widgets/step에 없음 - 추가 필요
-import FinalChoiceStep from "@/mainpage/components/FinalChoiceStep";
 
-const QUESTION_STEPS = 6;
+const QUESTION_STEPS = 5;
+const RESULT_PATH = "/mainpage/result";
 
 export default function QuestionAnswerPage() {
   const router = useRouter();
   const params = useParams();
+
   const store = useQuestionAnswerStore();
   const { setCurrentStep, questionReset } = store;
+
   const [showModal, setShowModal] = useState(false);
 
-  const step = Number(params.step);
+  const stepParam = params.step as string | undefined;
+
+  const isResult = stepParam === "result";
+
+  const step = useMemo(() => {
+    if (!stepParam || isResult) return NaN;
+    return Number(stepParam);
+  }, [stepParam, isResult]);
 
   const handleConfirm = () => {
     questionReset();
@@ -36,16 +46,33 @@ export default function QuestionAnswerPage() {
   };
 
   useEffect(() => {
-    if (isNaN(step) || step < 1 || step > QUESTION_STEPS) {
+    // result 페이지면 step 세팅 불필요(원하면 setCurrentStep(QUESTION_STEPS) 같은 걸로 유지해도 됨)
+    if (isResult) return;
+
+    if (Number.isNaN(step) || step < 1 || step > QUESTION_STEPS) {
       router.replace("/mainpage/question-answer/1");
       return;
     }
     setCurrentStep(step);
-  }, [step, router, setCurrentStep]);
+  }, [isResult, step, router, setCurrentStep]);
 
   const handlePrev = () => router.back();
-  const handleSkip = () => router.push(`/mainpage/question-answer/${step + 1}`);
+
+  const handleNext = () => {
+    // 1~4 -> 다음 step
+    // 5 -> result
+    if (step >= 1 && step < QUESTION_STEPS) {
+      router.push(`/mainpage/question-answer/${step + 1}`);
+      return;
+    }
+    if (step === QUESTION_STEPS) {
+      router.push(RESULT_PATH);
+    }
+  };
+
   const renderStepComponent = () => {
+    if (isResult) return null;
+
     switch (step) {
       case 1:
         return <MealTimeStep />;
@@ -57,26 +84,29 @@ export default function QuestionAnswerPage() {
         return <WhoStep />;
       case 5:
         return <BudgetStep />;
-      case 6:
-        return <FinalChoiceStep />;
       default:
         return null;
     }
   };
 
+  const isQuestionStep = !isResult && step >= 1 && step <= QUESTION_STEPS; // 1~5
+  const showPrev = isQuestionStep && step > 1; // 2~5
+  const showNext = isQuestionStep; // 1~5 (5면 result로 이동)
+
   return (
     <div className="relative flex h-screen w-auto flex-col">
-      {step < QUESTION_STEPS ? (
+      {/* header: 질문 스텝에서만 표시 */}
+      {isQuestionStep ? (
         <header className="flex items-center justify-between px-4 py-2">
-          {/* TODO: shared ProgressBar는 cancel button을 지원하지 않음 - 별도 버튼 추가 */}
           <button
             onClick={() => setShowModal(true)}
             className="text-grey-normal-active text-sm"
           >
             그만하기
           </button>
+
           <div className="flex-1">
-            <ProgressBar currentStep={step} totalSteps={5} />
+            <ProgressBar currentStep={step} totalSteps={QUESTION_STEPS} />
           </div>
         </header>
       ) : (
@@ -85,15 +115,31 @@ export default function QuestionAnswerPage() {
 
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         {renderStepComponent()}
+        {/* result 화면은 별도 라우트에서 렌더링한다고 가정 */}
       </main>
 
-      {/* 마지막 스텝에서는 footer를 보여주지 않음 */}
-      <StepFooter
-        showPrev={step > 1 && step < QUESTION_STEPS}
-        showNext={step >= 1 && step < QUESTION_STEPS}
-        onPrev={handlePrev}
-        onNext={handleSkip}
-      />
+      {/* footer: 질문 스텝에서만 표시(1~5) */}
+      {isQuestionStep && (
+        <footer className="flex w-full items-end justify-between px-4 pb-6">
+          {showPrev ? (
+            <PaginationButton
+              direction="left"
+              onClick={handlePrev}
+              alt="previous page"
+            />
+          ) : (
+            <div className="h-14 w-12" aria-hidden="true" />
+          )}
+
+          {showNext && (
+            <PaginationButton
+              direction="right"
+              onClick={handleNext}
+              alt="next page"
+            />
+          )}
+        </footer>
+      )}
 
       {showModal && (
         <ModalWrapper>

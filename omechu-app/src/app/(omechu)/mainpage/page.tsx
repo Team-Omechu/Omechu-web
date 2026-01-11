@@ -2,33 +2,25 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-import { ModalWrapper } from "@/shared";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { useTagStore } from "@/entities/tag";
 import { handleLocation, useLocationAnswerStore } from "@/entities/location";
 import { useQuestionAnswerStore } from "@/entities/question";
-import { LoginPromptModal } from "@/widgets/LoginModal";
 
 export default function MainPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
-  const [showModal, setShowModal] = useState(false);
   const { tagDataReset } = useTagStore();
   const { locationReset, setX, setY } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
 
   const handleStartClick = () => {
-    if (isLoggedIn) {
-      tagDataReset();
-      locationReset();
-      questionReset();
-      handleLocation(setX, setY);
-      router.push("mainpage/question-answer/1");
-    } else {
-      setShowModal(true);
-    }
+    tagDataReset();
+    locationReset();
+    questionReset();
+    handleLocation(setX, setY);
+    router.push("mainpage/question-answer/1");
   };
 
   const handleRandomClick = () => {
@@ -36,16 +28,7 @@ export default function MainPage() {
     locationReset();
     questionReset();
     handleLocation(setX, setY);
-    router.push("mainpage/random-recommend");
-  };
-
-  const handleSkipClick = () => {
-    setShowModal(false);
-    tagDataReset();
-    locationReset();
-    questionReset();
-    handleLocation(setX, setY);
-    router.push("mainpage/question-answer/1");
+    router.push("/random-recommend");
   };
 
   return (
@@ -76,15 +59,6 @@ export default function MainPage() {
           </button>
         </div>
       </div>
-      {showModal && (
-        <ModalWrapper>
-          <LoginPromptModal
-            onSkip={handleSkipClick}
-            onConfirm={() => router.push("/sign-in")}
-            onClose={() => setShowModal(false)}
-          />
-        </ModalWrapper>
-      )}
     </div>
   );
 }

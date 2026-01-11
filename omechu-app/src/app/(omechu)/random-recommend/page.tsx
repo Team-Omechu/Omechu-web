@@ -9,9 +9,6 @@ import { Header, ModalWrapper } from "@/shared";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { RandomRecommendModal } from "@/widgets/RandomRecommendModal";
 // TODO: MealIngredientGroup, MealStyleGroup, MealTypeGroup가 shared/widgets에 없음 - 추가 필요
-import MealIngredientGroup from "@/components/mainpage/MealIngredientButton";
-import MealStyleGroup from "@/components/mainpage/MealStyleButton";
-import MealTypeGroup from "@/components/mainpage/MealTypeButton";
 
 export default function RandomRecommendPage() {
   const router = useRouter();
@@ -50,13 +47,10 @@ export default function RandomRecommendPage() {
 
       <div className="mt-5 flex flex-col gap-2">
         {/* 1: type */}
-        <MealTypeGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 2: ingredient */}
-        <MealIngredientGroup selectedItems={addition} onToggle={toggleSelect} />
 
         {/* 3: style */}
-        <MealStyleGroup selectedItems={addition} onToggle={toggleSelect} />
       </div>
       <button className="relative mt-10" onClick={handleModal}>
         <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">

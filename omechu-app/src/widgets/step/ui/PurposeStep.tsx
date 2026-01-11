@@ -1,17 +1,11 @@
 "use client";
 
-import React from "react";
-
 import { useRouter } from "next/navigation";
 
-import ListButton from "@/components/common/button/ListButton";
-
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
-import {
-  purposeOptions,
-  useQuestionAnswerStore,
-} from "@/entities/question";
+import { purposeOptions, useQuestionAnswerStore } from "@/entities/question";
 import { useTagStore } from "@/entities/tag";
+import { ListButton } from "@/shared";
 
 export const PurposeStep = () => {
   const router = useRouter();

@@ -9,14 +9,18 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Header, MenuInfo, Toast, type MenuDetail } from "@/shared";
+import {
+  Header,
+  MenuInfo,
+  RestaurantCard,
+  SkeletonUIFoodBox,
+  Toast,
+  type MenuDetail,
+} from "@/shared";
 import { Restaurant, useGetRestaurants } from "@/entities/restaurant";
 import { usePostMukburim } from "@/entities/mukburim";
 import { useGetMenuDetail } from "@/entities/menu";
 // TODO: FoodCardEx가 widgets/shared에 없음 - 추가 필요
-import FoodCardEx from "@/mainpage/components/FoodCardEx";
-// TODO: SkeletonFoodCard가 shared에 없음 - 추가 필요
-import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -128,17 +132,19 @@ export default function MenuDetailPage() {
         {isLoading && (
           <div className="flex flex-col gap-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <SkeletonFoodCard key={i} />
+              <SkeletonUIFoodBox key={i} />
             ))}
           </div>
         )}
         {restaurants.map((item) => (
-          <FoodCardEx
+          <RestaurantCard
             key={item.id}
-            item={item}
-            menu={detailMenu?.name || ""}
-            restaurantId={item.id2}
-            onClick={() =>
+            name={item.displayName}
+            category={detailMenu?.name || ""}
+            distance="1.5km"
+            address={item.formattedAddress}
+            price="0"
+            onCardClick={() =>
               router.push(`/restaurant/restaurant-detail/${item.id2}`)
             }
           />

@@ -2,7 +2,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import RoundButton from "@/components/common/button/RoundButton";
+import { Button } from "@/shared";
 
 type LoginPromptModalProps = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
@@ -42,22 +42,10 @@ export const LoginPromptModal = ({
       </div>
 
       <div className="flex w-full items-center justify-center gap-3">
-        <RoundButton
-          onClick={onSkip}
-          variant="gray"
-          size="sm"
-          className="border-grey-normal-active flex-1 border"
-        >
-          그냥 추천받기
-        </RoundButton>
-        <RoundButton
-          onClick={onConfirm}
-          variant="red"
-          size="sm"
-          className="flex-1"
-        >
+        <Button width="sm">그냥 추천받기</Button>
+        <Button onClick={onConfirm} width="sm">
           로그인 하기
-        </RoundButton>
+        </Button>
       </div>
     </div>
   );

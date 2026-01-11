@@ -1,9 +1,7 @@
 import React from "react";
 
 import Image from "next/image";
-
-// TODO: RoundButton이 shared에 없음 - 추가 필요
-import RoundButton from "@/components/common/button/RoundButton";
+import { Button } from "@/shared";
 
 type LoginPromptModal2Props = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
@@ -38,14 +36,9 @@ export const LoginPromptModal2 = ({
       </div>
 
       <div className="w-full px-16">
-        <RoundButton
-          onClick={onConfirm}
-          variant="red"
-          size="md"
-          className="w-full"
-        >
+        <Button onClick={onConfirm} width="xl">
           로그인 하기
-        </RoundButton>
+        </Button>
       </div>
     </div>
   );
