@@ -8,6 +8,7 @@
 =======
 "use client";
 
+<<<<<<< HEAD
 import { Header, MypageModal } from "@/shared_FSD/index";
 >>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
 
@@ -16,6 +17,26 @@ import { Header, MypageModal } from "@/shared_FSD/index";
 
 import { useState } from "react";
 
+<<<<<<< HEAD
+=======
+=======
+import { useState } from "react";
+
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
+import { Header, ModalWrapper, MypageModal } from "@/shared_FSD/index";
+
+import CustomerSupportSection from "./ui/CustomerSupportSection";
+import SetAlarmSection from "./ui/SetAlarmSection";
+import UserInfoSection from "./ui/UserInfoSection";
+
+const MOCK_USER_INFO = {
+  name: "제나",
+  exerciseStatus: "다이어트 중",
+  favoriteFood: "한식 다른 나라",
+  allergy: "갑각류",
+};
+
+>>>>>>> abc167b9 ([#220]feat:MypageMain 구현)
 export default function MypageMain() {
   const [userInfo, setUserInfo] = useState(MOCK_USER_INFO);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +66,9 @@ export default function MypageMain() {
 =======
       <Header title="마이페이지" isRightChild={true} />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
           onNicknameClick={() => {
@@ -52,6 +76,7 @@ export default function MypageMain() {
             setIsModalOpen(true);
           }}
           {...userInfo}
+<<<<<<< HEAD
         />
 =======
       <main className="mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
@@ -62,6 +87,9 @@ export default function MypageMain() {
         />
         <UserInfoSection {...MOCK_USER_INFO} />
 >>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
+=======
+        />
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
         <SetAlarmSection />
         <CustomerSupportSection />
       </main>
@@ -78,6 +106,7 @@ export default function MypageMain() {
           />
         </ModalWrapper>
       )}
+<<<<<<< HEAD
 =======
 import { Header } from "@/shared_FSD/index";
 
@@ -86,7 +115,12 @@ export default function MypageMain() {
     <>
       <Header />
 >>>>>>> 36422d58 (fix:변경사항 저장)
+<<<<<<< HEAD
 >>>>>>> 54b356d0 (fix:변경사항 저장)
+=======
+=======
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
+>>>>>>> abc167b9 ([#220]feat:MypageMain 구현)
     </>
   );
 }
