@@ -238,6 +238,7 @@ importers:
         version: 7.70.0(react@19.2.3)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 15b9bdc6 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 =======
@@ -266,6 +267,8 @@ importers:
         version: 7.70.0(react@19.2.3)
 =======
 >>>>>>> 15b9bdc6 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
+=======
+>>>>>>> 0c781bd5 ([#220]feat:MypageMain 구현)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -4993,6 +4996,7 @@ packages:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   tailwind-merge@3.4.0:
     resolution:
       {
@@ -5019,6 +5023,8 @@ packages:
 >>>>>>> aa6bdf51 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 
 >>>>>>> 1f4ec17d ([#220]feat:MypageMain 구현)
+=======
+>>>>>>> 0c781bd5 ([#220]feat:MypageMain 구현)
   tailwindcss@4.1.18:
     resolution:
       {

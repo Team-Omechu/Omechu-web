@@ -44,13 +44,15 @@ export default function MypageMain() {
     <>
       <Header title="마이페이지" isRightChild={true} />
 
-      <main className="mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
-        <MypageModal
-          title={"닉네임 변경"}
-          onLeftButtonClick={() => {}}
-          onRightButtonClick={() => {}}
+      <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
+        <UserInfoSection
+          {...userInfo}
+          onNicknameClick={() => {
+            setInputValue(userInfo.name);
+            setIsModalOpen(true);
+          }}
+          {...userInfo}
         />
-        <UserInfoSection {...MOCK_USER_INFO} />
 
         <SetAlarmSection />
         <CustomerSupportSection />
