@@ -4,9 +4,7 @@
 
 import { useEffect } from "react";
 
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
-
+import { cn } from "@/shared/lib/cn.util";
 import {
   lockBodyScroll,
   unlockBodyScroll,
@@ -32,10 +30,9 @@ export function ModalWrapper({
     <div
       role="dialog"
       aria-modal="true"
-      className={twMerge(
-        clsx("fixed inset-0 z-50 flex items-center justify-center"),
-        className,
-      )}
+      className={
+        (cn("fixed inset-0 z-50 flex items-center justify-center"), className)
+      }
     >
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />

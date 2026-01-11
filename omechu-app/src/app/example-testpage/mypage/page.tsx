@@ -39,14 +39,15 @@ export default function MypageMain() {
 
   return (
     <>
-      <Header title="마이페이지" isRightChild={true} />
+      <Header title="마이페이지" isRightChild />
+
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
+          {...userInfo}
           onNicknameClick={() => {
             setInputValue(userInfo.name);
             setIsModalOpen(true);
           }}
-          {...userInfo}
         />
         <SetAlarmSection />
         <CustomerSupportSection />
@@ -55,10 +56,10 @@ export default function MypageMain() {
       {isModalOpen && (
         <ModalWrapper className="pb-52" onClose={handleCloseModal}>
           <MypageModal
-            title={"닉네임 변경"}
+            title="닉네임 변경"
             placeholder={userInfo.name}
-            onChangeInput={(value) => setInputValue(value)}
             inputValue={inputValue}
+            onChangeInput={setInputValue}
             onLeftButtonClick={handleCloseModal}
             onRightButtonClick={handleSubmitNickname}
           />
