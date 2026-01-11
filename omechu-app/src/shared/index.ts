@@ -84,8 +84,12 @@ export { ModalWrapper } from "./ui/modal/ModalWrapper";
 export { BaseModal } from "./ui/modal/BaseModal";
 export { MenuModal } from "./ui/modal/MenuModal";
 export { BattleModal } from "./ui/modal/BattleModal";
+<<<<<<< HEAD:omechu-app/src/shared/index.ts
 
 // UI - Toast
+=======
+export { MypageModal } from "./ui/modal/MypageModal";
+>>>>>>> deaee16d ([#220]feat:MypageModal 생성):omechu-app/src/shared_FSD/index.ts
 export { Toast } from "./ui/toast/Toast";
 
 // UI - Input
