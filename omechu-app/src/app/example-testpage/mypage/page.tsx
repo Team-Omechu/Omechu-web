@@ -1,5 +1,6 @@
 import { Header } from "@/shared_FSD/index";
 
+import CutomerSupportSection from "./ui/CustomerSupportSection";
 import SetAlarmSection from "./ui/SetAlarmSection";
 import UserInfoSection from "./ui/UserInfoSection";
 
@@ -17,6 +18,7 @@ export default function MypageMain() {
       <main className="mt-10 flex h-[80dvh] flex-col items-center gap-4 border border-black px-5">
         <UserInfoSection {...MOCK_USER_INFO} />
         <SetAlarmSection />
+        <CutomerSupportSection />
       </main>
     </>
   );
