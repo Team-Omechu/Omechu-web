@@ -104,14 +104,14 @@ export default function SignUpPage() {
     <FormProvider {...methods}>
       <div className="flex flex-col">
         {/* 헤더 */}
-        <Header />
+        <Header onLeftClick={() => router.back()} />
 
         {/* 제목 */}
         <div className="px-5 py-5 text-center">
           <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
-        </div>
+        </header>
 
         {/* 폼 영역 */}
         <main className="flex-1 px-5 pb-16">
