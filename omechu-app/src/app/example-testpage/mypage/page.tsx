@@ -53,7 +53,6 @@ export default function MypageMain() {
           }}
           {...userInfo}
         />
-
         <SetAlarmSection />
         <CustomerSupportSection />
       </main>
