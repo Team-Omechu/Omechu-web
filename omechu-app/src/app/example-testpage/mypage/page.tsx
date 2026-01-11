@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+//! 26.01.13 작업
+
+>>>>>>> 7a424794 (fix:변경사항 저장)
 "use client";
 
 import { useState } from "react";
@@ -66,6 +72,14 @@ export default function MypageMain() {
           />
         </ModalWrapper>
       )}
+=======
+import { Header } from "@/shared_FSD/index";
+
+export default function MypageMain() {
+  return (
+    <>
+      <Header />
+>>>>>>> 36422d58 (fix:변경사항 저장)
     </>
   );
 }
