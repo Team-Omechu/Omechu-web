@@ -23,13 +23,14 @@ export {
 
 // Terms Config
 export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
-export { TERMS_CONFIG, TERMS_MENU_LIST, isValidTermsType } from "./constants/terms";
+export {
+  TERMS_CONFIG,
+  TERMS_MENU_LIST,
+  isValidTermsType,
+} from "./constants/terms";
 
 // Lib
-export {
-  axiosInstance,
-  setupAxiosInterceptors,
-} from "./lib/axiosInstance";
+export { axiosInstance, setupAxiosInterceptors } from "./lib/axiosInstance";
 export type { AuthStoreGetter } from "./lib/axiosInstance";
 export { lockBodyScroll, unlockBodyScroll } from "./lib/bodyScrollLock";
 export { profileSchema, genderSchema } from "./lib/onboarding.schema";
