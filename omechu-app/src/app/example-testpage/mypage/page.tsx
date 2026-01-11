@@ -1,5 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 //! 26.01.13 작업
+=======
+"use client";
+
+import { Header, MypageModal } from "@/shared_FSD/index";
+>>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
 
 "use client";
 
@@ -43,6 +49,7 @@ export default function MypageMain() {
   return (
     <>
       <Header title="마이페이지" isRightChild={true} />
+<<<<<<< HEAD
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
           onNicknameClick={() => {
@@ -51,6 +58,15 @@ export default function MypageMain() {
           }}
           {...userInfo}
         />
+=======
+      <main className="mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
+        <MypageModal
+          title={"닉네임 변경"}
+          onLeftButtonClick={() => {}}
+          onRightButtonClick={() => {}}
+        />
+        <UserInfoSection {...MOCK_USER_INFO} />
+>>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
         <SetAlarmSection />
         <CustomerSupportSection />
       </main>
