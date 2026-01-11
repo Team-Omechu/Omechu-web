@@ -22,6 +22,7 @@ export const MealTimeStep = () => {
     <QuestionAnswerLayout title="언제 먹는 건가요?">
       {mealTimeOptions.map(({ label, value, description }) => (
         <ListButton
+          type="button"
           key={value}
           onClick={() => handleSelect(value, label, description)}
           isSelected={mealTime === value}

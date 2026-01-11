@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import {
   BaseModal,
+  Header,
   ModalWrapper,
   PaginationButton,
   ProgressBar,
@@ -26,7 +27,7 @@ export default function QuestionAnswerPage() {
   const params = useParams();
 
   const store = useQuestionAnswerStore();
-  const { setCurrentStep, questionReset } = store;
+  const { setCurrentStep, questionReset, currentStep } = store;
 
   const [showModal, setShowModal] = useState(false);
 
@@ -43,6 +44,11 @@ export default function QuestionAnswerPage() {
     questionReset();
     router.push("/mainpage");
     setShowModal(false);
+  };
+
+  const hanldeXClick = () => {
+    setShowModal(true);
+    console.log("xclick");
   };
 
   useEffect(() => {
@@ -96,31 +102,21 @@ export default function QuestionAnswerPage() {
   return (
     <div className="relative flex h-screen w-auto flex-col">
       {/* header: 질문 스텝에서만 표시 */}
-      {isQuestionStep ? (
-        <header className="flex items-center justify-between px-4 py-2">
-          <button
-            onClick={() => setShowModal(true)}
-            className="text-grey-normal-active text-sm"
-          >
-            그만하기
-          </button>
-
-          <div className="flex-1">
-            <ProgressBar currentStep={step} totalSteps={QUESTION_STEPS} />
-          </div>
-        </header>
-      ) : (
-        <div className="h-[60px]" />
-      )}
+      <Header
+        title="맞춤 추천"
+        isRightChild={true}
+        onLeftClick={() => router.back()}
+        onRightClick={hanldeXClick}
+      />
+      <ProgressBar currentStep={currentStep} totalSteps={5} />
 
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">
         {renderStepComponent()}
         {/* result 화면은 별도 라우트에서 렌더링한다고 가정 */}
       </main>
 
-      {/* footer: 질문 스텝에서만 표시(1~5) */}
       {isQuestionStep && (
-        <footer className="flex w-full items-end justify-between px-4 pb-6">
+        <footer className="absolute top-[55%] flex w-full items-end justify-between px-4 pb-6">
           {showPrev ? (
             <PaginationButton
               direction="left"
@@ -140,7 +136,6 @@ export default function QuestionAnswerPage() {
           )}
         </footer>
       )}
-
       {showModal && (
         <ModalWrapper>
           <BaseModal
