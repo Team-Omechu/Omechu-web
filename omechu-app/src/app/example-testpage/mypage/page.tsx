@@ -1,7 +1,7 @@
 import { Header } from "@/shared_FSD/index";
 
-import SetAlarmCard from "./ui/SetAlarmCard";
-import UserInfoCard from "./ui/UserInfoCard";
+import SetAlarmSection from "./ui/SetAlarmSection";
+import UserInfoSection from "./ui/UserInfoSection";
 
 const MOCK_USER_INFO = {
   name: "제나",
@@ -15,8 +15,8 @@ export default function MypageMain() {
     <>
       <Header title="마이페이지" isRightChild={true} />
       <main className="mt-10 flex h-[80dvh] flex-col items-center gap-4 border border-black px-5">
-        <UserInfoCard {...MOCK_USER_INFO} />
-        <SetAlarmCard />
+        <UserInfoSection {...MOCK_USER_INFO} />
+        <SetAlarmSection />
       </main>
     </>
   );

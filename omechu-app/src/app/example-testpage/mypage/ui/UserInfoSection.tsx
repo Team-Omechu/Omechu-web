@@ -5,12 +5,14 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-interface UserInfoCardProps {
+import HistoryRoundedIcon from "@/shared_FSD/assets/icons/mypage/HistoryRoundedIcon";
+import WriteIcon from "@/shared_FSD/assets/icons/mypage/WriteIcon";
+
+interface UserInfoSectionProps {
   name: string;
   exerciseStatus: string;
   favoriteFood: string;
@@ -22,7 +24,7 @@ export default function UserInfoCard({
   exerciseStatus,
   favoriteFood,
   allergy,
-}: UserInfoCardProps) {
+}: UserInfoSectionProps) {
   const [currentName, setCurrentName] = useState(name);
 
   const router = useRouter();
@@ -48,13 +50,7 @@ export default function UserInfoCard({
                   }
                 }}
               >
-                <Image
-                  src="/mypage/main/write.svg"
-                  width={16}
-                  height={16}
-                  alt={"list 이미지"}
-                  className="absolute -top-1 -right-4.5"
-                />
+                <WriteIcon className="absolute -top-1 -right-4 w-3.5" />
               </button>
             </span>
             <span className="text-body-4-medium">의 기본 상태</span>
@@ -103,13 +99,7 @@ export default function UserInfoCard({
           className="border-font-placeholder flex h-14 w-42 flex-1 items-center justify-center gap-2 border-r"
         >
           <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
-            <Image
-              src="/mypage/main/list.svg"
-              width={13}
-              height={13}
-              alt={"list 이미지"}
-              className="mt-0.5"
-            />
+            <WriteIcon className="text-font-extralow w-3" />
           </div>
           <span>추천 목록 관리</span>
         </button>
@@ -118,13 +108,7 @@ export default function UserInfoCard({
           className="flex h-14 w-42 items-center justify-center gap-2"
         >
           <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
-            <Image
-              src="/mypage/main/history-rounded.svg"
-              width={13}
-              height={13}
-              alt={"list 이미지"}
-              className="mt-0.5"
-            />
+            <HistoryRoundedIcon className="text-font-extralow mt-px ml-px w-3.5" />
           </div>
           <span>먹부림 기록</span>
         </button>

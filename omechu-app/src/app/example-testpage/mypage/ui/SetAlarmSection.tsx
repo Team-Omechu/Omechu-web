@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import ArrowIcon from "@/shared_FSD/assets/icons/mypage/ArrowIcon";
 
-export default function SetAlarmCard() {
+export default function SetAlarmSection() {
   const [isAlarmOn, setIsAlarmOn] = useState(true);
 
   return (
