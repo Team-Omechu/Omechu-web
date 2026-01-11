@@ -1,40 +1,50 @@
-//! 26.01.06 작업 완료
+//! 26.01.12 작업 완료
 
-import Image from "next/image";
+"use client";
 
+import React, { useState } from "react";
+
+import CloseIcon from "@/shared_FSD/assets/icons/mypage/CloseIcon";
 import { BaseModal } from "@/shared_FSD/ui/modal/BaseModal";
 
-interface mypageModalProps {
-  menuTitle: string;
-  src?: string;
-  onCloseClick: () => void;
+interface MypageModalProps {
+  title: string;
+  placeholder?: string;
   onLeftButtonClick: () => void;
   onRightButtonClick: () => void;
 }
 
 export const MypageModal = ({
-  menuTitle,
-  src,
-  onCloseClick,
+  title,
+  placeholder = "닉네임",
   onLeftButtonClick,
   onRightButtonClick,
-}: mypageModalProps) => {
+}: MypageModalProps) => {
+  const [value, setValue] = useState("");
   return (
     <BaseModal
-      onCloseClick={onCloseClick}
-      leftButtonText="다시추천"
-      rightButtonText="선택하기"
+      isCloseButtonShow={false}
+      leftButtonText="취소"
+      rightButtonText="변경하기"
       onLeftButtonClick={onLeftButtonClick}
       onRightButtonClick={onRightButtonClick}
     >
-      <Image
-        src={src && src.trim().length > 0 ? src : "/image/image_empty.svg"}
-        alt="음식 이미지"
-        width={130}
-        height={130}
-        className="object-cover"
-      />
-      <div className="text-body-2-bold text-font-high">{menuTitle}</div>
+      <div className="relative flex w-full flex-col items-center justify-center gap-4 px-1">
+        <div className="text-body-2-bold text-font-high">{title}</div>
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={placeholder}
+          className="border-font-disabled h-12 w-full rounded-[10px] border pr-9 pl-4"
+        />
+        <button
+          type="button"
+          onClick={() => setValue("")}
+          className="absolute right-4 bottom-3.5"
+        >
+          <CloseIcon className="h-5 w-5" />
+        </button>
+      </div>
     </BaseModal>
   );
 };

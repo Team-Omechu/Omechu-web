@@ -1,4 +1,6 @@
-import { Header } from "@/shared_FSD/index";
+"use client";
+
+import { Header, MypageModal } from "@/shared_FSD/index";
 
 import CutomerSupportSection from "./ui/CustomerSupportSection";
 import SetAlarmSection from "./ui/SetAlarmSection";
@@ -16,6 +18,11 @@ export default function MypageMain() {
     <>
       <Header title="마이페이지" isRightChild={true} />
       <main className="mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
+        <MypageModal
+          title={"닉네임 변경"}
+          onLeftButtonClick={() => {}}
+          onRightButtonClick={() => {}}
+        />
         <UserInfoSection {...MOCK_USER_INFO} />
         <SetAlarmSection />
         <CutomerSupportSection />
