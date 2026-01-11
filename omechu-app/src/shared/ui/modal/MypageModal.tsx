@@ -2,25 +2,26 @@
 
 "use client";
 
-import React, { useState } from "react";
-
 import CloseIcon from "@/shared_FSD/assets/icons/mypage/CloseIcon";
 import { BaseModal } from "@/shared_FSD/ui/modal/BaseModal";
 
 interface MypageModalProps {
   title: string;
   placeholder?: string;
+  inputValue?: string;
+  onChangeInput: (value: string) => void;
   onLeftButtonClick: () => void;
   onRightButtonClick: () => void;
 }
 
 export const MypageModal = ({
   title,
+  inputValue,
   placeholder = "닉네임",
+  onChangeInput,
   onLeftButtonClick,
   onRightButtonClick,
 }: MypageModalProps) => {
-  const [value, setValue] = useState("");
   return (
     <BaseModal
       isCloseButtonShow={false}
@@ -29,17 +30,17 @@ export const MypageModal = ({
       onLeftButtonClick={onLeftButtonClick}
       onRightButtonClick={onRightButtonClick}
     >
-      <div className="relative flex w-full flex-col items-center justify-center gap-4 px-1">
+      <div className="relative z-50 flex w-full flex-col items-center justify-center gap-4 px-1">
         <div className="text-body-2-bold text-font-high">{title}</div>
         <input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={inputValue}
+          onChange={(e) => onChangeInput(e.target.value)}
           placeholder={placeholder}
           className="border-font-disabled h-12 w-full rounded-[10px] border pr-9 pl-4"
         />
         <button
           type="button"
-          onClick={() => setValue("")}
+          onClick={() => onChangeInput("")}
           className="absolute right-4 bottom-3.5"
         >
           <CloseIcon className="h-5 w-5" />

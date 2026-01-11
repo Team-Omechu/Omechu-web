@@ -4,6 +4,7 @@
 =======
 "use client";
 
+<<<<<<< HEAD
 import { Header, MypageModal } from "@/shared_FSD/index";
 >>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
 
@@ -11,6 +12,10 @@ import { Header, MypageModal } from "@/shared_FSD/index";
 
 import { useState } from "react";
 
+=======
+import { useState } from "react";
+
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
 import { Header, ModalWrapper, MypageModal } from "@/shared_FSD/index";
 
 import CustomerSupportSection from "./ui/CustomerSupportSection";
@@ -50,6 +55,9 @@ export default function MypageMain() {
     <>
       <Header title="마이페이지" isRightChild={true} />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
           onNicknameClick={() => {
@@ -57,6 +65,7 @@ export default function MypageMain() {
             setIsModalOpen(true);
           }}
           {...userInfo}
+<<<<<<< HEAD
         />
 =======
       <main className="mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
@@ -67,6 +76,9 @@ export default function MypageMain() {
         />
         <UserInfoSection {...MOCK_USER_INFO} />
 >>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
+=======
+        />
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
         <SetAlarmSection />
         <CustomerSupportSection />
       </main>
@@ -83,6 +95,7 @@ export default function MypageMain() {
           />
         </ModalWrapper>
       )}
+<<<<<<< HEAD
 =======
 import { Header } from "@/shared_FSD/index";
 
@@ -91,6 +104,8 @@ export default function MypageMain() {
     <>
       <Header />
 >>>>>>> 36422d58 (fix:변경사항 저장)
+=======
+>>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
     </>
   );
 }
