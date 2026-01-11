@@ -2,7 +2,11 @@ interface CloseIconProps {
   className?: string;
 }
 
+<<<<<<< HEAD
 export const CloseIcon = ({ className }: CloseIconProps) => {
+=======
+export default function CloseIcon({ className }: CloseIconProps) {
+>>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
   return (
     <svg
       viewBox="0 0 19 18"
@@ -16,4 +20,8 @@ export const CloseIcon = ({ className }: CloseIconProps) => {
       />
     </svg>
   );
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> cfa94326 ([#220]feat:MypageModal 구현)
