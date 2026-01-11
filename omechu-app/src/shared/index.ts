@@ -87,7 +87,11 @@ export { ModalWrapper } from "./ui/modal/ModalWrapper";
 export { BaseModal } from "./ui/modal/BaseModal";
 export { MenuModal } from "./ui/modal/MenuModal";
 export { BattleModal } from "./ui/modal/BattleModal";
+
 export { MypageModal } from "./ui/modal/MypageModal";
+
+// UI - Toast
+
 export { Toast } from "./ui/toast/Toast";
 
 // UI - Input
