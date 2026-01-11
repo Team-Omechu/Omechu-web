@@ -42,7 +42,6 @@ export default function MypageMain() {
   return (
     <>
       <Header title="마이페이지" isRightChild={true} />
-
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
           onNicknameClick={() => {
