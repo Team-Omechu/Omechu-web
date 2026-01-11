@@ -60,7 +60,6 @@ export { ProgressBar } from "./ui/progress/ProgressBar";
 export { SearchBar } from "./ui/search/SearchBar";
 
 // UI - Picker
-export { CustomDatePicker } from "./ui/picker/CustomDatePicker";
 export { SortSelector } from "./ui/picker/SortSelector";
 
 // UI - Box
@@ -77,6 +76,9 @@ export { PaginationButton } from "./ui/button/PaginationButton";
 export { RandomDrawButton } from "./ui/button/RandomDrawButton";
 export { FloatingActionButton } from "./ui/button/FloatingActionButton";
 export { ListButton } from "./ui/button/ListButton";
+
+// UI - Card
+// FoodCard는 widgets/card로 이동 (FSD: entities 의존)
 export { MenuInfo } from "./ui/card/MenuInfoCard";
 export { IngredientCard } from "./ui/card/IngredientCard";
 export { RecommendedFoodCard } from "./ui/card/RecommendedFoodCard";
