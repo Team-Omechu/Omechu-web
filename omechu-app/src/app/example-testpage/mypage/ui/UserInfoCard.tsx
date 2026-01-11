@@ -1,0 +1,134 @@
+//! 26.01.12 작업 중
+// TODO : onClick 수정
+
+"use client";
+
+import { useState } from "react";
+
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import clsx from "clsx";
+
+interface UserInfoCardProps {
+  name: string;
+  exerciseStatus: string;
+  favoriteFood: string;
+  allergy: string;
+}
+
+export default function UserInfoCard({
+  name,
+  exerciseStatus,
+  favoriteFood,
+  allergy,
+}: UserInfoCardProps) {
+  const [currentName, setCurrentName] = useState(name);
+
+  const router = useRouter();
+
+  return (
+    <section
+      className={clsx(
+        "flex flex-col",
+        "h-fit w-84",
+        "bg-background-secondary border-font-placeholder rounded-xl border",
+      )}
+    >
+      <div className="border-font-placeholder flex h-fit w-full flex-col gap-2.5 border-b px-6 py-4">
+        <div className="flex justify-between">
+          <span className="text-body-3-bold">
+            <span className="text-body-3-bold relative mr-4.5">
+              {currentName}
+              <button
+                onClick={() => {
+                  const nextName = prompt("이름을 입력하세요", currentName);
+                  if (nextName && nextName.trim() !== "") {
+                    setCurrentName(nextName.trim());
+                  }
+                }}
+              >
+                <Image
+                  src="/mypage/main/write.svg"
+                  width={16}
+                  height={16}
+                  alt={"list 이미지"}
+                  className="absolute -top-1 -right-4.5"
+                />
+              </button>
+            </span>
+            <span className="text-body-4-medium">의 기본 상태</span>
+          </span>
+          <button
+            onClick={() => router.push("/")}
+            className="text-font-placeholder text-caption-1-medium"
+          >
+            다시 입력하기
+          </button>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <span className="text-font-high text-body-4-regular w-15">
+              운동 상태
+            </span>
+            <span>|</span>
+            <span className="text-brand-primary text-body-4-medium h-fit w-50 whitespace-pre-line">
+              {exerciseStatus}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <span className="text-font-high text-body-4-regular w-15">
+              선호 음식
+            </span>
+            <span>|</span>
+            <span className="text-brand-primary text-body-4-medium h-fit w-50 whitespace-pre-line">
+              {favoriteFood}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <span className="text-font-high text-body-4-regular mr-1 w-15">
+              알레르기
+            </span>
+            <span>|</span>
+            <span className="text-brand-primary text-body-4-medium h-fit w-50 whitespace-pre-line">
+              {allergy}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-font-high text-body-4-medium flex w-full">
+        <button
+          onClick={() => router.push("/")}
+          className="border-font-placeholder flex h-14 w-42 flex-1 items-center justify-center gap-2 border-r"
+        >
+          <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
+            <Image
+              src="/mypage/main/list.svg"
+              width={13}
+              height={13}
+              alt={"list 이미지"}
+              className="mt-0.5"
+            />
+          </div>
+          <span>추천 목록 관리</span>
+        </button>
+        <button
+          onClick={() => router.push("/")}
+          className="flex h-14 w-42 items-center justify-center gap-2"
+        >
+          <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
+            <Image
+              src="/mypage/main/history-rounded.svg"
+              width={13}
+              height={13}
+              alt={"list 이미지"}
+              className="mt-0.5"
+            />
+          </div>
+          <span>먹부림 기록</span>
+        </button>
+      </div>
+    </section>
+  );
+}
