@@ -64,6 +64,7 @@ export default function MypageMain() {
   return (
     <>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Header title="마이페이지" isRightChild />
 
 =======
@@ -76,6 +77,10 @@ export default function MypageMain() {
 =======
 >>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
 >>>>>>> be44bf0f ([#220]feat:MypageMain 구현)
+=======
+      <Header title="마이페이지" isRightChild />
+
+>>>>>>> 4e4d70ff ([#220]feat:MypageMain 구현)
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
           {...userInfo}
@@ -84,10 +89,13 @@ export default function MypageMain() {
             setIsModalOpen(true);
           }}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
           {...userInfo}
 <<<<<<< HEAD
 >>>>>>> be44bf0f ([#220]feat:MypageMain 구현)
+=======
+>>>>>>> 4e4d70ff ([#220]feat:MypageMain 구현)
         />
 =======
       <main className="mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
