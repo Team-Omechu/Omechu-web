@@ -1,8 +1,10 @@
+//! 26.01.13
+
 "use client";
 
 import { useRouter } from "next/navigation";
 
-import { Button, Header, Input } from "@/shared_FSD/index";
+import { Button, Header } from "@/shared_FSD/index";
 
 export default function StartForm() {
   const router = useRouter();
@@ -20,7 +22,7 @@ export default function StartForm() {
         <Button
           width={"sm"}
           className="mt-20"
-          onClick={() => router.push("basic-state/gender")}
+          onClick={() => router.push("basic-state/state")}
         >
           시작하기
         </Button>
