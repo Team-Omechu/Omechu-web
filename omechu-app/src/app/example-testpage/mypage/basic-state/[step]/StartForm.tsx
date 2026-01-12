@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { Button, Header } from "@/shared_FSD/index";
+import { Button, Header, Input } from "@/shared_FSD/index";
 
 export default function StartForm() {
   const router = useRouter();
@@ -24,6 +24,8 @@ export default function StartForm() {
         >
           시작하기
         </Button>
+
+        <Input type="password" />
       </section>
     </>
   );
