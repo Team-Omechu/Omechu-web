@@ -1,25 +1,23 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { BottomButton, ModalWrapper, Toast } from "@/shared";
-// TODO: TERMS_CONFIG가 shared에 없음 - 추가 필요
-import { TERMS_CONFIG } from "@/shared/constants/terms.config";
-import {
-  signupSchema,
-  type SignupFormValues,
-} from "@/entities/user/model/auth.schema";
+import { ApiClientError } from "@/entities/user/api/authApi";
 import {
   useSignupMutation,
   useLoginMutation,
 } from "@/entities/user/lib/hooks/useAuth";
+import {
+  signupSchema,
+  type SignupFormValues,
+} from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { ApiClientError } from "@/entities/user/api/authApi";
-
+import { BottomButton, ModalWrapper, Toast, TERMS_CONFIG } from "@/shared";
 import { SignUpForm, TermsModal } from "@/widgets/auth";
 
 type ModalType = "service" | "privacy" | "location";
@@ -82,12 +80,13 @@ export default function SignUpPage() {
           await loginAsync({ email: data.email, password: data.password });
           setPassword(data.password);
           router.push("/onboarding/1");
-        } catch (e: any) {
+        } catch (e: unknown) {
           // 자동 로그인 실패 시에도 온보딩으로 이동하되, 안내 토스트 노출
-          triggerToast(
-            e?.message ||
-              "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.",
-          );
+          const message =
+            e instanceof Error
+              ? e.message
+              : "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.";
+          triggerToast(message);
           router.push("/onboarding/1");
         }
       },
@@ -110,21 +109,24 @@ export default function SignUpPage() {
 
   return (
     <FormProvider {...methods}>
-      <div className="flex h-screen flex-col">
-        <header className="px-4 py-5 text-center">
-          <h1 className="text-grey-darker py-10 text-xl font-bold">
+      <div className="flex min-h-screen flex-col">
+        {/* 제목 */}
+        <header className="px-5 pt-20 pb-8 text-center">
+          <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
         </header>
 
-        <main className="flex-1 overflow-y-auto px-5">
+        {/* 폼 영역 */}
+        <main className="flex-1 overflow-y-auto px-5 pb-[70px]">
           <SignUpForm
             setActiveModal={setActiveModal}
             onSubmit={handleSubmit(onSubmit)}
           />
         </main>
 
-        <footer className="w-full pb-[env(safe-area-inset-bottom)]">
+        {/* 하단 버튼 */}
+        <footer className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[430px]">
           <BottomButton
             type="submit"
             form="signup-form"
