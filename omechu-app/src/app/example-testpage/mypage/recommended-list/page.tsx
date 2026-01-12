@@ -16,11 +16,32 @@ export default function RecommendedListPage() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isToggled, setIsToggled] = useState(false);
+  const [excludedSet, setExcludedSet] = useState<Set<number>>(new Set());
 
   const handleSearch = (term: string) => {
     console.log("검색 실행:", term);
   };
+
+  const toggleExclude = (index: number) => {
+    setExcludedSet((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  };
+
+  const filteredItems = Array.from({ length: 30 })
+    .map((_, i) => i)
+    .filter(
+      (i) =>
+        selectedIndex === 0
+          ? !excludedSet.has(i) // 추천 목록
+          : excludedSet.has(i), // 제외 목록
+    );
 
   const scrollToTop = () => {
     if (mainRef.current) {
@@ -47,13 +68,13 @@ export default function RecommendedListPage() {
           onSearch={handleSearch}
         />
         <section className="grid w-84 grid-cols-3 gap-3 pb-15">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {filteredItems.map((i) => (
             <RecommendedFoodBox
               key={i}
               title={`타코 ${i}`}
               src=""
-              onClick={() => setIsToggled(!isToggled)}
-              isToggled={isToggled}
+              onClick={() => toggleExclude(i)}
+              isToggled={excludedSet.has(i)}
             />
           ))}
         </section>
