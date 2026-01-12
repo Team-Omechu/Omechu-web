@@ -26,6 +26,15 @@ export default function StartForm() {
         >
           시작하기
         </Button>
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:omechu-app/src/app/example-testpage/mypage/basic-state/[step]/StartForm.tsx
+
+        <Input type="password" />
+        <Input type="search" />
+========
+>>>>>>>> 2c8e1694 ([#220]feat:StateForm 페이지  구현):omechu-app/src/app/example-testpage/mypage/basic-state/StartForm.tsx
+>>>>>>> 2c8e1694 ([#220]feat:StateForm 페이지  구현)
       </section>
     </>
   );
