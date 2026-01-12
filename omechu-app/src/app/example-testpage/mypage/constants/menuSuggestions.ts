@@ -1,4 +1,5 @@
 //! 26.01.13 작업
+
 export const MENU_SUGGESTIONS: string[] = [
   "케이크",
   "불고기",
