@@ -1,9 +1,16 @@
 //! 26.01.13 작업
+<<<<<<< HEAD
+=======
+
+>>>>>>> 304c0df8 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 "use client";
 
 import { useRef, useState } from "react";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 304c0df8 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
 import { FloatingActionButton, Header, SearchBar } from "@/shared";
 import { RecommendedFoodBox, SelectTab } from "@/widgets/mypage/ui";
 
@@ -28,7 +35,7 @@ export default function RecommendedListPage() {
 
   return (
     <>
-      <Header title="추천 목록 관리" />
+      <Header title="추천 목록 관리" isRightChild={true} />
       <main
         ref={mainRef}
         className="relative mt-2 flex h-[91.5dvh] flex-col items-center gap-5 overflow-y-auto"
