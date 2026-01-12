@@ -51,6 +51,7 @@ export const Button = ({
   width,
   className,
   children,
+  className,
   ...props
 }: ButtonProps) => {
   return (
