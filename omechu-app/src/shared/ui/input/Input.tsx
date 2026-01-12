@@ -5,6 +5,12 @@ import Image from "next/image";
 
 import { cva, type VariantProps } from "class-variance-authority";
 import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
+
+import {
+  CloseEyeIcon,
+  OpenEyeIcon,
+} from "@/shared_FSD/assets/icons/ui/Input/EyeIcon";
 
 const inputStyles = cva(
   [
@@ -60,7 +66,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           type={isVisible ? "text" : "password"}
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 bg-transparent outline-none"
+          className="flex-1 bg-transparent pr-6 outline-none"
           value={props.value}
           onChange={props.onChange}
           {...props}
@@ -71,12 +77,11 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           className="absolute right-3 flex items-center"
           aria-label="비밀번호 보기 전환"
         >
-          <Image
-            src={isVisible ? "/eye/eye_open.svg" : "/eye/eye_closed.svg"}
-            alt=""
-            width={20}
-            height={20}
-          />
+          {isVisible ? (
+            <OpenEyeIcon className="w-6" />
+          ) : (
+            <CloseEyeIcon className="w-6" />
+          )}
         </button>
       </div>
     );
@@ -125,32 +130,58 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
-    const { type = "text", className, width, height, rounded, disabled, ...rest } = props;
+    const {
+      type = "text",
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      ...rest
+    } = props;
     if (type === "password") {
-      return <PasswordInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
-    }
-    if (type === "search") {
-      return <SearchInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
-    }
-    return (
-      <div
-        className={clsx(
-          "relative",
-          inputStyles({ width, height, rounded }),
-          className,
-        )}
-      >
-        <input
+      return (
+        <PasswordInput
           ref={ref}
-          type={type === "number" ? "number" : type}
+          className={className}
+          width={width}
+          height={height}
+          rounded={rounded}
           disabled={disabled}
-          autoComplete="off"
-          value={props.value}
-          onChange={props.onChange}
-          className="w-full flex-1 bg-transparent outline-none"
           {...rest}
         />
-      </div>
+      );
+    }
+    if (type === "search") {
+      return (
+        <SearchInput
+          ref={ref}
+          className={className}
+          width={width}
+          height={height}
+          rounded={rounded}
+          disabled={disabled}
+          {...rest}
+        />
+      );
+    }
+    return (
+      <input
+        ref={ref}
+        type={type === "number" ? "number" : type}
+        disabled={props.disabled}
+        autoComplete="off"
+        value={props.value}
+        onChange={props.onChange}
+        className={twMerge(
+          inputStyles({
+            width: props.width,
+            height: props.height,
+            rounded: props.rounded,
+          }),
+          props.className,
+        )}
+      />
     );
   },
 );
