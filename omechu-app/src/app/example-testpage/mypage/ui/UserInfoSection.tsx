@@ -47,7 +47,7 @@ export default function UserInfoCard({
             <span className="text-body-4-medium">의 기본 상태</span>
           </span>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/basic-state/start")}
             className="text-font-placeholder text-caption-1-medium"
           >
             다시 입력하기
