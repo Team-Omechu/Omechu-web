@@ -142,7 +142,6 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           height={height}
           rounded={rounded}
           disabled={disabled}
-          onSearch={onSearch}
           {...rest}
         />
       );
@@ -157,6 +156,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           height={height}
           rounded={rounded}
           disabled={disabled}
+          onSearch={onSearch}
           {...rest}
         />
       );
