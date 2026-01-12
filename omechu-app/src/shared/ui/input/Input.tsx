@@ -3,11 +3,7 @@ import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import {
-  CloseEyeIcon,
-  OpenEyeIcon,
-  SearchIcon,
-} from "@/shared/assets/icons/index";
+import { CloseEyeIcon, OpenEyeIcon, SearchIcon } from "@/shared/assets/icons";
 import { cn } from "@/shared/lib/cn.util";
 
 const inputBaseStyles = cva(
@@ -126,16 +122,24 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
-    const { type = "text", width, height, rounded, className, ...rest } = props;
-
+    const {
+      type = "text",
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      ...rest
+    } = props;
     if (type === "password") {
       return (
         <PasswordInput
           ref={ref}
+          className={className}
           width={width}
           height={height}
           rounded={rounded}
-          className={className}
+          disabled={disabled}
           {...rest}
         />
       );
@@ -145,10 +149,11 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       return (
         <SearchInput
           ref={ref}
+          className={className}
           width={width}
           height={height}
           rounded={rounded}
-          className={className}
+          disabled={disabled}
           {...rest}
         />
       );
