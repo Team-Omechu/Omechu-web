@@ -125,31 +125,32 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
-    const { type = "text", ...rest } = props;
+    const { type = "text", className, width, height, rounded, disabled, ...rest } = props;
     if (type === "password") {
-      return <PasswordInput ref={ref} {...rest} />;
+      return <PasswordInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
     }
     if (type === "search") {
-      return <SearchInput ref={ref} {...rest} />;
+      return <SearchInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
     }
     return (
-      <input
-        ref={ref}
-        type={type === "number" ? "number" : type}
-        disabled={props.disabled}
-        autoComplete="off"
-        value={props.value}
-        onChange={props.onChange}
+      <div
         className={clsx(
-          inputStyles({
-            width: props.width,
-            height: props.height,
-            rounded: props.rounded,
-          }),
-          props.className,
+          "relative",
+          inputStyles({ width, height, rounded }),
+          className,
         )}
-        {...rest}
-      />
+      >
+        <input
+          ref={ref}
+          type={type === "number" ? "number" : type}
+          disabled={disabled}
+          autoComplete="off"
+          value={props.value}
+          onChange={props.onChange}
+          className="w-full flex-1 bg-transparent outline-none"
+          {...rest}
+        />
+      </div>
     );
   },
 );
