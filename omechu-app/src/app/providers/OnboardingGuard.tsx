@@ -24,7 +24,7 @@ export function OnboardingGuard({ children }: OnboardingGuardProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
-  const { isLoggedIn } = useAuthStore();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const inAuthSection =
     pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
