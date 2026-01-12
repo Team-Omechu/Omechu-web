@@ -132,6 +132,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       onSearch,
       ...rest
     } = props;
+
     if (type === "password") {
       return (
         <PasswordInput
@@ -141,6 +142,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           height={height}
           rounded={rounded}
           disabled={disabled}
+          onSearch={onSearch}
           {...rest}
         />
       );
