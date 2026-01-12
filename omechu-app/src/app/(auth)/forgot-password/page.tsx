@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="flex flex-1 flex-col bg-background-primary">
+    <main className="flex flex-1 flex-col">
       <Header onLeftClick={() => router.back()} />
 
       <div className="flex flex-col px-5">

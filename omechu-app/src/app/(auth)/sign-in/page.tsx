@@ -10,7 +10,7 @@ import { AuthButton } from "@/shared";
  */
 export default function SignInPage() {
   return (
-    <main className="flex flex-1 flex-col bg-background-primary">
+    <main className="flex flex-1 flex-col">
       {/* 상단 로고 영역 */}
       <div className="flex flex-1 flex-col items-center justify-center">
         <Image
