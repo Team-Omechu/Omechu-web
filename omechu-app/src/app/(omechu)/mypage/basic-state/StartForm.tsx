@@ -28,6 +28,7 @@ export default function StartForm() {
         </Button>
 
         <Input type="password" />
+        <Input type="search" />
       </section>
     </>
   );
