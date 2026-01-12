@@ -7,8 +7,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import {
+  BaseModal,
   BottomButton,
   Header,
+  ModalWrapper,
   OnboardingButton,
   ProgressBar,
 } from "@/shared_FSD/index";
@@ -39,6 +41,7 @@ const ALLERGY_OPTIONS = [
 export default function AllergyForm() {
   const router = useRouter();
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+  const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 
   return (
     <>
@@ -97,11 +100,23 @@ export default function AllergyForm() {
         </div>
         <BottomButton
           disabled={selectedIndexes.length === 0}
-          onClick={() => router.push("/example-testpage/mypage")}
+          onClick={() => setShowSaveModal(true)}
         >
           저장
         </BottomButton>
       </section>
+      {showSaveModal && (
+        <ModalWrapper>
+          <BaseModal
+            title="저장 완료!"
+            leftButtonText="내 정보 보기"
+            rightButtonText="추천 보기"
+            onCloseClick={() => setShowSaveModal(false)}
+            onLeftButtonClick={() => router.push("/example-testpage/mypage")}
+            onRightButtonClick={() => {}}
+          />
+        </ModalWrapper>
+      )}
     </>
   );
 }
