@@ -85,11 +85,7 @@ export function UserInfoSection({
 
       <div className="text-font-high text-body-4-medium flex w-full">
         <button
-<<<<<<<< HEAD:omechu-app/src/widgets/mypage/ui/UserInfoSection.tsx
           onClick={() => router.push("/mypage/recommended-list")}
-========
-          onClick={() => router.push("/recommended-list")}
->>>>>>>> 1cd6df41 ([#220]refactor:mypage 리팩토링):omechu-app/src/app/example-testpage/mypage/ui/UserInfoSection.tsx
           className="border-font-placeholder flex h-14 w-42 flex-1 items-center justify-center gap-2 border-r"
         >
           <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
@@ -98,11 +94,7 @@ export function UserInfoSection({
           <span>추천 목록 관리</span>
         </button>
         <button
-<<<<<<<< HEAD:omechu-app/src/widgets/mypage/ui/UserInfoSection.tsx
           onClick={() => router.push("mypage/mukburim-log")}
-========
-          onClick={() => router.push("mukburim-log")}
->>>>>>>> 1cd6df41 ([#220]refactor:mypage 리팩토링):omechu-app/src/app/example-testpage/mypage/ui/UserInfoSection.tsx
           className="flex h-14 w-42 items-center justify-center gap-2"
         >
           <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
