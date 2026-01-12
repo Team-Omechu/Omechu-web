@@ -10,8 +10,13 @@ import { BASIC_STATE_STEPS, type BasicStateStep } from "../steps";
 =======
 import { notFound } from "next/navigation";
 
+<<<<<<< HEAD
 import { BASIC_STATE_STEPS, type BasicStateStep, STEP_LABEL } from "../steps";
 >>>>>>> 97c55dc3 ([#220]fix:Button 공용 컴포넌트 수정)
+=======
+import StateForm from "./StateForm";
+import { BASIC_STATE_STEPS, type BasicStateStep } from "../steps";
+>>>>>>> 6ee7c480 ([#220]feat:StateForm 페이지  구현)
 
 type PageProps = {
   params: { step: string };
@@ -21,6 +26,7 @@ function isBasicStateStep(step: string): step is BasicStateStep {
   return (BASIC_STATE_STEPS as readonly string[]).includes(step);
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export default async function BasicStateStepPage({ params }: PageProps) {
   const { step } = await params;
@@ -40,6 +46,17 @@ export default function BasicStateStepPage({ params }: PageProps) {
     <main className="">
       <h1>{STEP_LABEL[step]}</h1>
 >>>>>>> 97c55dc3 ([#220]fix:Button 공용 컴포넌트 수정)
+=======
+export default async function BasicStateStepPage({ params }: PageProps) {
+  const { step } = await params;
+
+  if (!isBasicStateStep(step)) notFound();
+  return (
+    <main>
+      {step === "state" && <StateForm />}
+      {step === "food" && <FoodForm />}
+      {/* {step === "allergy" && <AllergyForm />} */}
+>>>>>>> 6ee7c480 ([#220]feat:StateForm 페이지  구현)
     </main>
   );
 }
