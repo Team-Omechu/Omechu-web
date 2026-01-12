@@ -41,7 +41,6 @@ export { useUserInfoSetupStore } from "./store/userInfoSetup.store";
 export { getPresignedUrl, uploadToS3 } from "./api/image";
 
 // UI Components
-// BottomNavigation은 widgets/layout으로 이동 (FSD: auth store 의존)
 export { Header } from "./ui/Header";
 export { MainLoading } from "./ui/MainLoading";
 export { CustomDatePicker } from "./ui/CustomDatePicker";

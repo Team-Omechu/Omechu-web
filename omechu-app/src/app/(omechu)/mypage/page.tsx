@@ -2,7 +2,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Header } from "@/shared";
-import { BottomNavigation } from "@/widgets/layout";
 
 import { ProfileSection, MenuSection } from "@/entities/mypage";
 
@@ -43,9 +42,6 @@ export default function MyPage() {
           <ProfileSection />
           <MenuSection menuList={menuList} />
         </main>
-      </Suspense>
-      <Suspense fallback={null}>
-        <BottomNavigation />
       </Suspense>
     </>
   );

@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useUserQuery } from "@/entities/user/lib/hooks/useAuth";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { setupAxiosInterceptors } from "@/shared/lib/axiosInstance";
-import { BottomNavigation } from "@/widgets/layout/BottomNavigation";
 
 export default function ClientLayout({
   children,
@@ -64,87 +63,9 @@ export default function ClientLayout({
     inAuthSection,
   ]);
 
-  const noBottomNavRoutes = [
-    // 메인페이지
-    "/mainpage/meal-answer",
-    "/mainpage/location-answer",
-    "/mainpage/result",
-    "/mainpage/random-recommend",
-
-    // 로그인, 회원가입, 온보딩 페이지
-    "/sign-in",
-    "/sign-up",
-    "/forgot-password",
-    "/forgot-password/sent",
-    "/auth/reset-password",
-    "/auth/callback",
-
-    // 온보딩 페이지
-    "/onboarding/1",
-    "/onboarding/2",
-    "/onboarding/3",
-    "/onboarding/4",
-    "/onboarding/5",
-    "/onboarding/6",
-
-    // 전체메뉴 페이지
-    "/fullmenu/menu-detail",
-    "/fullmenu/menu-detail/recipe-detail",
-
-    // 맛집-상세페이지
-    "/restaurant/restaurant-detail",
-
-    // 마이페이지
-    "/mypage/user-info-setup",
-    "/mypage/user-info-setup/gender",
-    "/mypage/profile-edit",
-    "/mypage/user-info-edit",
-    "/mypage/user-info-edit/start",
-    "/mypage/user-info-edit/gender",
-    "/mypage/user-info-edit/exercise",
-    "/mypage/user-info-edit/prefer",
-    "/mypage/user-info-edit/body_type",
-    "/mypage/user-info-edit/allergy",
-    // 추천맛집목록
-    "/mypage/recommended-list",
-    // 마이페이지-설정
-    "/settings",
-    "/settings/account-settings",
-    "/settings/account-settings/change-password",
-    // 마이페이지-이용약관
-    "/settings/terms",
-    "/settings/terms/service",
-    "/settings/terms/personal-info",
-    "/settings/terms/location-info",
-    // 마이페이지-먹부림일지
-    "/mypage/foodie-log",
-    // 마이페이지-찜목록
-    "/mypage/favorites",
-    // 마이페이지-활동내역
-    "/mypage/my-activity",
-  ];
-
-  const dynamicNoBottomNavPrefixes = [
-    // 동적 라우트가 있는 페이지들
-    "/restaurant/restaurant-detail/",
-    "/mainpage/question-answer/",
-    "/mainpage/result/",
-  ];
-
-  const showBottomNav = !(
-    noBottomNavRoutes.includes(pathname) ||
-    dynamicNoBottomNavPrefixes.some((prefix) => pathname.startsWith(prefix))
-  );
-
-  // ... existing code ...
   return (
-    <>
-      <main
-        className={`${showBottomNav ? "pb-20" : ""} bg-main-normal scrollbar-hide flex-1 overflow-y-scroll`}
-      >
-        {children}
-      </main>
-      {showBottomNav && <BottomNavigation />}
-    </>
+    <main className="bg-main-normal scrollbar-hide flex-1 overflow-y-scroll">
+      {children}
+    </main>
   );
 }
