@@ -23,7 +23,11 @@ const segmentStyle = cva("h-[9px] rounded-[30px] border border-brand-primary", {
   },
 });
 
-export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
+export function ProgressBar({
+  currentStep,
+  totalSteps,
+  className,
+}: ProgressBarProps) {
   return (
     <div className={containerStyle()}>
       <div className="flex w-full justify-center gap-1.5 pb-2.5">
