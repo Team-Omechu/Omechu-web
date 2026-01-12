@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 
 import { Header } from "@/shared_FSD/index";
 
+import { MENU_SUGGESTIONS } from "../constants/menuSuggestions";
 import FloatingActionButton from "../ui/FloatingActionButton";
 import { RecommendedFoodBox } from "../ui/RecommendedFoodBox";
 import { SearchBar } from "../ui/SearchBar";
@@ -66,6 +67,7 @@ export default function RecommendedListPage() {
           inputValue={searchTerm}
           setInputValue={setSearchTerm}
           onSearch={handleSearch}
+          suggestionList={MENU_SUGGESTIONS}
         />
         <section className="grid w-84 grid-cols-3 gap-3 pb-15">
           {filteredItems.map((i) => (
