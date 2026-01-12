@@ -49,7 +49,6 @@ export const Button = ({
   fontColor,
   bgColor,
   width,
-  className,
   children,
   className,
   ...props
