@@ -2,7 +2,6 @@
 import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import {
@@ -11,9 +10,9 @@ import {
 } from "@/shared_FSD/assets/icons/ui/input/EyeIcon";
 import { SearchIcon } from "@/shared_FSD/assets/icons/ui/input/SearchIcon";
 
-const inputStyles = cva(
+const inputBaseStyles = cva(
   [
-    "flex items-center outline-none border border-font-placeholder",
+    "outline-none border border-font-placeholder",
     "bg-background-secondary text-font-high placeholder:text-font-placeholder",
     "px-4 transition-opacity duration-300",
   ],
@@ -42,8 +41,10 @@ const inputStyles = cva(
   },
 );
 
+const inputWrapperStyles = "relative flex items-center";
+
 type BaseInputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  VariantProps<typeof inputStyles> & {
+  VariantProps<typeof inputBaseStyles> & {
     onSearch?: () => void;
   };
 
@@ -55,8 +56,8 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
     return (
       <div
         className={twMerge(
-          "relative",
-          inputStyles({ width, height, rounded }),
+          inputWrapperStyles,
+          inputBaseStyles({ width, height, rounded }),
           className,
         )}
       >
@@ -65,9 +66,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           type={isVisible ? "text" : "password"}
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 bg-transparent pr-6 outline-none"
-          value={props.value}
-          onChange={props.onChange}
+          className="w-full min-w-0 flex-1 bg-transparent pr-8 outline-none"
           {...props}
         />
         <button
@@ -97,8 +96,8 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
     return (
       <div
         className={twMerge(
-          "relative",
-          inputStyles({ width, height, rounded }),
+          inputWrapperStyles,
+          inputBaseStyles({ width, height, rounded }),
           className,
         )}
       >
@@ -107,9 +106,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           type="search"
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 bg-transparent pr-6 outline-none"
-          value={props.value}
-          onChange={props.onChange}
+          className="w-full min-w-0 flex-1 bg-transparent pr-8 outline-none"
           {...props}
         />
         <button
@@ -129,6 +126,7 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
+<<<<<<< HEAD:omechu-app/src/shared/ui/input/Input.tsx
     const {
       type = "text",
       className,
@@ -138,47 +136,60 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       disabled,
       ...rest
     } = props;
+=======
+    const { type = "text", width, height, rounded, className, ...rest } = props;
+
+>>>>>>> 821268f6 ([#220]fix:Input 수정):omechu-app/src/shared_FSD/ui/input/Input.tsx
     if (type === "password") {
       return (
         <PasswordInput
           ref={ref}
+<<<<<<< HEAD:omechu-app/src/shared/ui/input/Input.tsx
           className={className}
           width={width}
           height={height}
           rounded={rounded}
           disabled={disabled}
+=======
+          width={width}
+          height={height}
+          rounded={rounded}
+          className={className}
+>>>>>>> 821268f6 ([#220]fix:Input 수정):omechu-app/src/shared_FSD/ui/input/Input.tsx
           {...rest}
         />
       );
     }
+
     if (type === "search") {
       return (
         <SearchInput
           ref={ref}
+<<<<<<< HEAD:omechu-app/src/shared/ui/input/Input.tsx
           className={className}
           width={width}
           height={height}
           rounded={rounded}
           disabled={disabled}
+=======
+          width={width}
+          height={height}
+          rounded={rounded}
+          className={className}
+>>>>>>> 821268f6 ([#220]fix:Input 수정):omechu-app/src/shared_FSD/ui/input/Input.tsx
           {...rest}
         />
       );
     }
+
     return (
       <input
         ref={ref}
         type={type === "number" ? "number" : type}
-        disabled={props.disabled}
         autoComplete="off"
-        value={props.value}
-        onChange={props.onChange}
         className={twMerge(
-          inputStyles({
-            width: props.width,
-            height: props.height,
-            rounded: props.rounded,
-          }),
-          props.className,
+          inputBaseStyles({ width, height, rounded }),
+          className,
         )}
       />
     );
