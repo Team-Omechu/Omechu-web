@@ -1,8 +1,9 @@
+//! 26.01.13 수정
+
 "use client";
 import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
 
 import { CloseEyeIcon, OpenEyeIcon, SearchIcon } from "@/shared/assets/icons";
 import { cn } from "@/shared/lib/cn.util";
@@ -63,7 +64,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           type={isVisible ? "text" : "password"}
           disabled={disabled}
           autoComplete="off"
-          className="w-full min-w-0 flex-1 bg-transparent pr-8 outline-none"
+          className="flex-1 bg-transparent pr-6 outline-none"
+          value={props.value}
+          onChange={props.onChange}
           {...props}
         />
         <button
@@ -92,7 +95,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   ) => {
     return (
       <div
-        className={twMerge(
+        className={cn(
           "relative",
           inputBaseStyles({ width, height, rounded }),
           className,
@@ -125,6 +128,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
     const {
       type = "text",
+      className,
       width,
       height,
       rounded,
@@ -137,6 +141,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       return (
         <PasswordInput
           ref={ref}
+          className={className}
           width={width}
           height={height}
           rounded={rounded}
@@ -146,11 +151,11 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
         />
       );
     }
-
     if (type === "search") {
       return (
         <SearchInput
           ref={ref}
+          className={className}
           width={width}
           height={height}
           rounded={rounded}
@@ -160,15 +165,15 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
         />
       );
     }
-
     return (
       <input
         ref={ref}
         type={type === "number" ? "number" : type}
+        disabled={props.disabled}
         autoComplete="off"
         value={props.value}
         onChange={props.onChange}
-        className={twMerge(
+        className={cn(
           inputBaseStyles({
             width: props.width,
             height: props.height,
@@ -176,7 +181,6 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           }),
           props.className,
         )}
-        {...rest}
       />
     );
   },
