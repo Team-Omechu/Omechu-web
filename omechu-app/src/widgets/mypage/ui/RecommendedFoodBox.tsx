@@ -21,6 +21,7 @@ export const RecommendedFoodBox = ({
 }: RecommendedFoodBoxProps) => {
   return (
     <div
+<<<<<<< HEAD
       aria-label={`${title} 선택 버튼`}
       onClick={onClick}
       className="bg-brand-secondary relative h-25 w-25 rounded-xl transition-all"
@@ -32,14 +33,37 @@ export const RecommendedFoodBox = ({
           <CircleMinus className="w-5" currentColor="#A8A8A8" />
         )}
       </button>
+=======
+      onClick={onClick}
+      aria-label={`${title} 선택 버튼`}
+      className="bg-brand-secondary relative h-25 w-25 rounded-xl transition-all"
+    >
+      {isToggled ? (
+        <CirclePlus
+          className="absolute top-1 right-1 w-5"
+          currentColor="#A8A8A8"
+        />
+      ) : (
+        <CircleMinus
+          className="absolute top-1 right-1 w-5"
+          currentColor="#A8A8A8"
+        />
+      )}
+>>>>>>> 15b9bdc6 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
       <div className="flex h-full w-full flex-col items-center justify-between rounded-2xl p-2">
         <figure className="flex h-16 w-16 items-center">
           <Image
             src={src || "/image/image_empty.svg"}
             alt={`${title} 메뉴 이미지`}
+<<<<<<< HEAD
             width={80}
             height={80}
             sizes="80px"
+=======
+            width={70}
+            height={70}
+            sizes="70px"
+>>>>>>> 15b9bdc6 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
             loading="lazy"
             unoptimized={false}
             className="rounded-xl object-fill"

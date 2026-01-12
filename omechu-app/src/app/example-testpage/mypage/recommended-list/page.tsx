@@ -28,7 +28,7 @@ export default function RecommendedListPage() {
 
   return (
     <>
-      <Header title="추천 목록 관리" isRightChild={true} />
+      <Header title="추천 목록 관리" />
       <main
         ref={mainRef}
         className="relative mt-2 flex h-[91.5dvh] flex-col items-center gap-5 overflow-y-auto"
