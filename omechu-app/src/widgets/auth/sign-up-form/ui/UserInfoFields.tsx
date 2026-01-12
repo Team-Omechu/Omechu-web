@@ -213,8 +213,8 @@ export default function UserInfoFields() {
             id="signup-password-confirm"
             helperText={
               passwordConfirmBlurred && errors.passwordConfirm
-                ? errors.passwordConfirm?.message || "비밀번호를 다시 입력해주세요."
-                : "* 대소문자, 숫자 및 특수문자 포함 8자 이상"
+                ? errors.passwordConfirm?.message
+                : undefined
             }
             helperState={
               passwordConfirmBlurred && errors.passwordConfirm ? "error" : undefined

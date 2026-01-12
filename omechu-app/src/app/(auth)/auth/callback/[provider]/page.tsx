@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
@@ -35,14 +35,28 @@ function CallbackContent() {
 
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const toastTimerRef = useRef<number | null>(null);
 
   const provider = params.provider as string;
 
-  const triggerToast = (msg: string) => {
+  const triggerToast = useCallback((msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
-  };
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => {
+      setShowToast(false);
+      toastTimerRef.current = null;
+    }, 2500);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        window.clearTimeout(toastTimerRef.current);
+        toastTimerRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // provider 유효성 검사

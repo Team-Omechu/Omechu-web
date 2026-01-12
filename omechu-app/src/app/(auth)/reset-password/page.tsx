@@ -81,7 +81,7 @@ function ResetPasswordClient() {
       {isModalOpen && (
         <ModalWrapper>
           <BaseModal
-            title="비밀번호를 재설정 했어요"
+            title="비밀번호를 재설정했어요"
             desc="새로운 비밀번호로 로그인하세요"
             rightButtonText="확인"
             isCloseButtonShow={false}
