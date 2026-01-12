@@ -1,31 +1,30 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
 
 import { useUserQuery } from "@/entities/user/lib/hooks/useAuth";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { setupAxiosInterceptors } from "@/shared/lib/axiosInstance";
 
-export default function ClientLayout({
-  children,
-}: {
+interface OnboardingGuardProps {
   children: React.ReactNode;
-}) {
+}
+
+/**
+ * OnboardingGuard
+ * - 세션 복구 및 온보딩 미완료 사용자 리다이렉트 처리
+ * - 로그인 후 닉네임이 없으면 /onboarding/1로 이동
+ *
+ * 사용 예시:
+ * - app/(public)/layout.tsx에서 적용
+ * - 또는 특정 페이지에서만 적용 가능
+ */
+export function OnboardingGuard({ children }: OnboardingGuardProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { data: sessionUser, isSuccess, isError } = useUserQuery();
   const { isLoggedIn } = useAuthStore();
-  const interceptorsInitialized = useRef(false);
-
-  // Axios interceptors 초기화 (FSD: app에서 shared에 의존성 주입)
-  useEffect(() => {
-    if (!interceptorsInitialized.current) {
-      setupAxiosInterceptors(useAuthStore);
-      interceptorsInitialized.current = true;
-    }
-  }, []);
 
   const inAuthSection =
     pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
@@ -40,18 +39,17 @@ export default function ClientLayout({
 
     // 세션 복구 성공 시에만 상태 동기화
     if (isSuccess && sessionUser) {
-      // 토큰은 콜백에서 설정되므로 여기서는 사용자 정보만 동기화가 필요할 수 있음
+      // 토큰은 콜백에서 설정되므로 여기서는 사용자 정보만 동기화
       useAuthStore.getState().setUser(sessionUser);
       console.log("Session restored via Kakao login:", sessionUser);
 
-      // 401로 들어온 경우 또는 인증 섹션에서는 절대 자동 리다이렉트하지 않음
+      // 401로 들어온 경우 또는 인증 섹션에서는 자동 리다이렉트하지 않음
       if (from401 || inAuthSection) return;
 
-      // 온보딩 미완료 사용자는 온보딩으로만 유도 (그 외 페이지는 유지)
+      // 온보딩 미완료 사용자는 온보딩으로 유도
       if (!sessionUser.nickname) {
         router.push("/onboarding/1");
       }
-      // 닉네임이 있는 정상 사용자라면 현재 페이지 유지 (불필요한 /mainpage 강제 이동 금지)
     }
   }, [
     isSuccess,
@@ -63,9 +61,5 @@ export default function ClientLayout({
     inAuthSection,
   ]);
 
-  return (
-    <main className="bg-main-normal scrollbar-hide flex-1 overflow-y-scroll">
-      {children}
-    </main>
-  );
+  return <>{children}</>;
 }

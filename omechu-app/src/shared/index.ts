@@ -30,7 +30,8 @@ export type { AuthStoreGetter } from "./lib/axiosInstance";
 export { lockBodyScroll, unlockBodyScroll } from "./lib/bodyScrollLock";
 export { profileSchema, genderSchema } from "./lib/onboarding.schema";
 
-// Providers
+// Providers (entities 의존 없는 순수 providers만)
+// NOTE: ProtectedRoute, OnboardingGuard는 app/providers에 있음 (FSD: entities 의존)
 export { ReactQueryProvider } from "./providers/ReactQueryProvider";
 
 // Stores (shared에서 관리하는 것들만)
