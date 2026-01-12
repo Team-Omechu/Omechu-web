@@ -1,12 +1,13 @@
 import axios from "axios";
+
 import type {
   LoginFormValues,
   SignupFormValues,
   FindPasswordFormValues,
   ResetPasswordFormValues,
 } from "@/entities/user/model/auth.schema";
-import axiosInstance from "@/shared/lib/axiosInstance";
 import { useAuthStore } from "@/entities/user/model/auth.store";
+import axiosInstance from "@/shared/lib/axiosInstance";
 
 // 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
 export class ApiClientError extends Error {
@@ -432,6 +433,29 @@ export const changePassword = async (data: {
       err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
     );
   }
+};
+
+/**
+ * OAuth 콜백에서 사용하는 1회성 프로필 조회
+ * - 토큰을 직접 헤더에 붙여서 호출
+ * - axiosInstance 인터셉터를 거치지 않음
+ * @param token accessToken
+ */
+export const getCurrentUserWithToken = async (
+  token: string,
+): Promise<LoginSuccessData> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
+    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
+  });
+  const data = await res.json();
+  if (data?.resultType !== "SUCCESS" || !data?.success) {
+    throw new ApiClientError(
+      data?.error?.reason || "유저 조회 실패",
+      data?.error?.errorCode,
+    );
+  }
+  return data.success;
 };
 
 // 현재 로그인된 유저 정보 조회 (accessToken을 명시적으로 붙임)
