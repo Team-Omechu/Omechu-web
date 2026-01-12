@@ -186,6 +186,13 @@ fix: 회원가입 시 상태 코드 오류 수정 (#8)
 refactor: BottomNav 제거 및 ClientLayout 정리 (#218)
 ```
 
+## 커밋 메시지 규칙
+
+**절대로 커밋 메시지에 다음을 포함하지 마세요:**
+- `🤖 Generated with Claude Code`
+- `Co-Authored-By: Claude`
+- AI가 생성했다는 어떤 표시도 금지
+
 ### Branch Naming
 
 **형식:**
