@@ -41,15 +41,11 @@ const ALLERGY_OPTIONS = [
 export default function AllergyForm() {
   const router = useRouter();
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
-<<<<<<< HEAD
   const [showCancleModal, setShowCancleModal] = useState<boolean>(false);
-=======
->>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
   const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 
   return (
     <>
-<<<<<<< HEAD
       <Header
         title="기본 상태 입력"
         onLeftClick={() => router.back()}
@@ -60,16 +56,11 @@ export default function AllergyForm() {
         <h1 className="text-foundation-grey-darker mt-12 text-center text-[28px] font-medium whitespace-pre-line">
           알레르기가 있나요?
         </h1>
-        <div className="mt-12 h-fit w-[254px]">
-=======
-      <Header title="기본 상태 입력" onLeftClick={() => router.back()} />
-      <ProgressBar currentStep={3} totalSteps={3} />
-      <section className="relative flex min-h-[89dvh] flex-col items-center">
+        <div className="mt-12 h-fit w-63.5"></div>
         <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">
           알레르기가 있나요?
         </h1>
-        <div className="xs:mt-4 mt-10 h-fit w-[254px]">
->>>>>>> c441f150 ([#220]feat:AllergyForm 구현)
+        <div className="xs:mt-4 mt-10 h-fit w-63.5">
           <div className="grid grid-cols-3 gap-4">
             {ALLERGY_OPTIONS.slice(0, -2).map(({ label }, idx) => (
               <div key={idx}>
@@ -118,20 +109,12 @@ export default function AllergyForm() {
         </div>
         <BottomButton
           disabled={selectedIndexes.length === 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
           onClick={() => setShowSaveModal(true)}
-=======
-          onClick={() => router.push("/example-testpage/mypage")}
->>>>>>> c441f150 ([#220]feat:AllergyForm 구현)
-=======
-          onClick={() => setShowSaveModal(true)}
->>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
         >
           저장
         </BottomButton>
       </section>
-<<<<<<< HEAD
+
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal
@@ -146,28 +129,19 @@ export default function AllergyForm() {
         </ModalWrapper>
       )}
 
-=======
->>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
       {showSaveModal && (
         <ModalWrapper>
           <BaseModal
             title="저장 완료!"
-<<<<<<< HEAD
             desc="이제 맛있는 메뉴 추천을 받아볼까요?"
-=======
->>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
             leftButtonText="내 정보 보기"
             rightButtonText="추천 보기"
             onCloseClick={() => setShowSaveModal(false)}
             onLeftButtonClick={() => router.push("/example-testpage/mypage")}
-<<<<<<< HEAD
             onRightButtonClick={() => {
               setShowSaveModal(false);
               router.push("/mainpage");
             }}
-=======
-            onRightButtonClick={() => {}}
->>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
           />
         </ModalWrapper>
       )}
