@@ -1,19 +1,19 @@
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-type SelectTabBarProps = {
+type SelectTabProps = {
   tabs: string[];
   selectedIndex: number;
   onSelect: (index: number) => void;
   className?: string;
 };
 
-export default function SelectTabBar({
+export default function SelectTab({
   tabs,
   selectedIndex,
   onSelect,
   className,
-}: SelectTabBarProps) {
+}: SelectTabProps) {
   return (
     <section
       className={twMerge(
