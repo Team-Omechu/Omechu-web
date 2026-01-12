@@ -4,7 +4,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { Button, Header } from "@/shared/index";
+import { Button, Header, Input } from "@/shared/index";
 
 export default function StartForm() {
   const router = useRouter();
@@ -26,6 +26,8 @@ export default function StartForm() {
         >
           시작하기
         </Button>
+
+        <Input type="password" />
       </section>
     </>
   );
