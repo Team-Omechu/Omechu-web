@@ -27,7 +27,7 @@ export default function SelectTab({
           onClick={() => onSelect(index)}
           className={twMerge(
             clsx(
-              "text-body-4-medium h-12 w-[156px] rounded-xl p-2.5 transition-all duration-300",
+              "text-body-4-medium h-12 w-[156px] rounded-lg p-2.5 transition-all duration-300",
               selectedIndex === index
                 ? "bg-brand-primary text-brand-secondary"
                 : "text-font-medium",
