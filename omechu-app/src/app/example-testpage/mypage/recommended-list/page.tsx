@@ -9,6 +9,7 @@ import FloatingActionButton from "../ui/FloatingActionButton";
 import { RecommendedFoodBox } from "../ui/RecommendedFoodBox";
 import { SearchBar } from "../ui/SearchBar";
 import SelectTab from "../ui/SelectTab";
+import SelectTabBar from "../ui/SelectTabBar";
 
 export default function RecommendedListPage() {
   const mainRef = useRef<HTMLDivElement>(null);
