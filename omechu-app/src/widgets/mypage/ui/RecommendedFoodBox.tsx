@@ -32,21 +32,7 @@ export const RecommendedFoodBox = ({
           <CircleMinus className="w-5" currentColor="#A8A8A8" />
         )}
       </button>
-      {/* onClick={onClick}
-      aria-label={`${title} 선택 버튼`}
-      className="bg-brand-secondary relative h-25 w-25 rounded-xl transition-all"
-    > */}
-      {isToggled ? (
-        <CirclePlus
-          className="absolute top-1 right-1 w-5"
-          currentColor="#A8A8A8"
-        />
-      ) : (
-        <CircleMinus
-          className="absolute top-1 right-1 w-5"
-          currentColor="#A8A8A8"
-        />
-      )}
+
       <div className="flex h-full w-full flex-col items-center justify-between rounded-2xl p-2">
         <figure className="flex h-16 w-16 items-center">
           <Image
