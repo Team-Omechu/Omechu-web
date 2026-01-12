@@ -156,7 +156,7 @@ export default function EmailSignInPage() {
   const handleFormSubmit = handleSubmit(onSubmit);
 
   return (
-    <main className="flex flex-1 flex-col bg-background-primary">
+    <main className="flex flex-1 flex-col">
       <Header onLeftClick={() => router.back()} />
 
       <form onSubmit={handleFormSubmit} className="flex flex-1 flex-col gap-6 px-5">

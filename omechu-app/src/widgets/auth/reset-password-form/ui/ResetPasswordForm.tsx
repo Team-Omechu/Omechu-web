@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { ApiClientError } from "@/entities/user/api/authApi";
 import {
@@ -33,13 +33,14 @@ export default function ResetPasswordForm({
   });
 
   const [passwordBlurred, setPasswordBlurred] = useState(false);
+  const [passwordConfirmBlurred, setPasswordConfirmBlurred] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
   const triggerToast = useCallback((msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 1000);
+    setTimeout(() => setShowToast(false), 2500);
   }, []);
 
   const onSubmitHandler = useCallback(
@@ -74,9 +75,7 @@ export default function ResetPasswordForm({
   const onSubmit = handleSubmit(onSubmitHandler);
 
   return (
-    <main className="flex h-[calc(100dvh-3rem)] flex-col items-center px-4 py-2">
-      <Toast message={toastMessage} show={showToast} className="bottom-40" />
-
+    <>
       <form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
         <Controller
           name="password"
@@ -87,7 +86,7 @@ export default function ResetPasswordForm({
               id="reset-password"
               helperText={
                 (passwordBlurred && errors.password?.message) ||
-                "* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
+                "* 대소문자, 숫자 및 특수문자 포함 8자 이상"
               }
               helperState={passwordBlurred && errors.password ? "error" : undefined}
             >
@@ -115,17 +114,23 @@ export default function ResetPasswordForm({
               label="새 비밀번호 재확인"
               id="reset-password-confirm"
               helperText={
-                errors.passwordConfirm?.message ||
-                (errors.passwordConfirm && "* 새 비밀번호가 일치하지 않습니다!")
+                passwordConfirmBlurred && errors.passwordConfirm
+                  ? errors.passwordConfirm?.message || "* 새 비밀번호가 일치하지 않습니다!"
+                  : undefined
               }
-              helperState={errors.passwordConfirm ? "error" : undefined}
+              helperState={
+                passwordConfirmBlurred && errors.passwordConfirm ? "error" : undefined
+              }
             >
               <Input
                 type="password"
-                placeholder="새 비밀번호를 다시 입력해주세요"
+                placeholder="새 비밀번호를 입력해주세요"
                 value={field.value}
                 onChange={field.onChange}
-                onBlur={field.onBlur}
+                onBlur={() => {
+                  setPasswordConfirmBlurred(true);
+                  field.onBlur();
+                }}
                 width="default"
                 className="w-full"
               />
@@ -133,7 +138,7 @@ export default function ResetPasswordForm({
           )}
         />
 
-        <div className="mt-4">
+        <div className="pt-4">
           <Button
             type="submit"
             disabled={!isValid || isSubmitting}
@@ -143,6 +148,8 @@ export default function ResetPasswordForm({
           </Button>
         </div>
       </form>
-    </main>
+
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
+    </>
   );
 }

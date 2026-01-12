@@ -15,8 +15,8 @@ export default function OAuthCallbackPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-dvh items-center justify-center bg-background-primary">
-          <span className="text-grey-normal-active">로그인 처리 중...</span>
+        <main className="flex min-h-dvh items-center justify-center">
+          <span className="text-font-medium">로그인 처리 중...</span>
         </main>
       }
     >
@@ -85,8 +85,8 @@ function CallbackContent() {
   const providerName = provider === "kakao" ? "카카오" : provider === "google" ? "구글" : "";
 
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-background-primary">
-      <span className="text-grey-normal-active">
+    <main className="flex min-h-dvh items-center justify-center">
+      <span className="text-font-medium">
         {providerName} 로그인 처리 중...
       </span>
       <Toast message={toastMessage} show={showToast} />
