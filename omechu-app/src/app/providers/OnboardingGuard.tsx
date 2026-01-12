@@ -41,7 +41,6 @@ export function OnboardingGuard({ children }: OnboardingGuardProps) {
     if (isSuccess && sessionUser) {
       // 토큰은 콜백에서 설정되므로 여기서는 사용자 정보만 동기화
       useAuthStore.getState().setUser(sessionUser);
-      console.log("Session restored via Kakao login:", sessionUser);
 
       // 401로 들어온 경우 또는 인증 섹션에서는 자동 리다이렉트하지 않음
       if (from401 || inAuthSection) return;

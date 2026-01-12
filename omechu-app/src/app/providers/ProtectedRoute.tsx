@@ -22,24 +22,23 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    // Zustand persist 하이드레이션 대기
-    const unsubscribe = useAuthStore.persist.onFinishHydration(() => {
-      const state = useAuthStore.getState();
-
-      if (!state.isLoggedIn) {
+    // 인증 상태를 확인하고 라우팅을 처리하는 함수
+    const checkAuthAndProceed = (authStatus: boolean) => {
+      if (!authStatus) {
         router.replace("/sign-in");
       } else {
         setIsChecking(false);
       }
+    };
+
+    // Zustand persist 하이드레이션 대기
+    const unsubscribe = useAuthStore.persist.onFinishHydration(() => {
+      checkAuthAndProceed(useAuthStore.getState().isLoggedIn);
     });
 
     // 이미 하이드레이션이 완료된 경우
     if (useAuthStore.persist.hasHydrated()) {
-      if (!isLoggedIn) {
-        router.replace("/sign-in");
-      } else {
-        setIsChecking(false);
-      }
+      checkAuthAndProceed(isLoggedIn);
     }
 
     return () => {
