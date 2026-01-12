@@ -5,10 +5,13 @@ import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 
-import { FloatingActionButton, Header } from "@/shared";
-// TODO: terms.config, TermsContent가 shared에 없음 - 추가 필요
-import TermsContent from "@/components/settings/TermsContent";
-import { TERMS_CONFIG, isValidTermsType } from "@/components/settings/terms.config";
+import {
+  FloatingActionButton,
+  Header,
+  TermsContent,
+  TERMS_CONFIG,
+  isValidTermsType,
+} from "@/shared";
 
 /**
  * 약관 상세 페이지 (동적 라우팅)

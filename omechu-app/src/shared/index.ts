@@ -21,6 +21,10 @@ export {
   indexToSlug,
 } from "./config/userInfoEditSteps";
 
+// Terms Config
+export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
+export { TERMS_CONFIG, TERMS_MENU_LIST, isValidTermsType } from "./constants/terms";
+
 // Lib
 export {
   axiosInstance,
@@ -91,3 +95,6 @@ export { FormField } from "./ui/form-field/FormField";
 
 // UI - Auth
 export { AuthButton } from "./ui/auth";
+
+// UI - Terms
+export { TermsContent } from "./ui/terms";

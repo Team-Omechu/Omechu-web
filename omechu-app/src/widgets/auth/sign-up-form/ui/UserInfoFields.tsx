@@ -91,7 +91,7 @@ export default function UserInfoFields() {
   };
 
   return (
-    <div className="relative space-y-4">
+    <div className="relative flex flex-col gap-2">
       {/* 이메일 + 인증번호 전송 버튼 */}
       <Controller
         name="email"
@@ -103,21 +103,21 @@ export default function UserInfoFields() {
             helperText={errors.email?.message}
             helperState={errors.email ? "error" : undefined}
           >
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2.5">
               <Input
                 type="email"
-                placeholder="example@email.com"
+                placeholder="이메일을 입력해주세요"
                 value={field.value || ""}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
-                width="default"
+                width="sm"
                 className="flex-1"
               />
               <Button
                 type="button"
                 onClick={handleSendCode}
                 disabled={!field.value || isSending || isVerified}
-                className="w-[122px] shrink-0"
+                width="sm"
               >
                 {isSending
                   ? "전송 중..."
@@ -137,19 +137,19 @@ export default function UserInfoFields() {
           control={control}
           render={({ field }) => (
             <FormField
-              label="인증번호"
+              label=""
               id="signup-verification-code"
               helperText={errors.verificationCode?.message}
               helperState={errors.verificationCode ? "error" : undefined}
             >
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2.5">
                 <Input
-                  type="text"
+                  type="password"
                   placeholder="인증번호 6자리를 입력해주세요"
                   value={field.value || ""}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
-                  width="default"
+                  width="sm"
                   className="flex-1"
                 />
                 <Button
@@ -161,7 +161,7 @@ export default function UserInfoFields() {
                     isVerifying ||
                     isVerified
                   }
-                  className="w-[122px] shrink-0"
+                  width="sm"
                 >
                   {isVerifying
                     ? "확인 중..."
@@ -185,7 +185,7 @@ export default function UserInfoFields() {
             id="signup-password"
             helperText={
               (passwordBlurred && errors.password?.message) ||
-              "* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
+              "* 영문 대소문자, 숫자 및 특수문자 포함 8자 이상"
             }
             helperState={passwordBlurred && errors.password ? "error" : undefined}
           >
@@ -198,8 +198,6 @@ export default function UserInfoFields() {
                 setPasswordBlurred(true);
                 field.onBlur();
               }}
-              width="default"
-              className="w-full"
             />
           </FormField>
         )}
@@ -216,7 +214,7 @@ export default function UserInfoFields() {
             helperText={
               passwordConfirmBlurred && errors.passwordConfirm
                 ? errors.passwordConfirm?.message || "비밀번호를 다시 입력해주세요."
-                : undefined
+                : "* 대소문자, 숫자 및 특수문자 포함 8자 이상"
             }
             helperState={
               passwordConfirmBlurred && errors.passwordConfirm ? "error" : undefined
@@ -224,15 +222,13 @@ export default function UserInfoFields() {
           >
             <Input
               type="password"
-              placeholder="비밀번호를 다시 입력해주세요"
+              placeholder="비밀번호를 다시 입력해 주세요"
               value={field.value || ""}
               onChange={field.onChange}
               onBlur={() => {
                 setPasswordConfirmBlurred(true);
                 field.onBlur();
               }}
-              width="default"
-              className="w-full"
             />
           </FormField>
         )}

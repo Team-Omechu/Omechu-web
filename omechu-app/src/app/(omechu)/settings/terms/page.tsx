@@ -3,9 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Header } from "@/shared";
-// TODO: terms.config가 shared에 없음 - 추가 필요
-import { TERMS_MENU_LIST } from "@/components/settings/terms.config";
+import { Header, TERMS_MENU_LIST } from "@/shared";
 
 /**
  * 약관 목록 페이지
