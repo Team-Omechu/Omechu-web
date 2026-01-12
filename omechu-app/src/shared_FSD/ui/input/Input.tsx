@@ -54,7 +54,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
 
     return (
       <div
-        className={clsx(
+        className={twMerge(
           "relative",
           inputStyles({ width, height, rounded }),
           className,
@@ -96,7 +96,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   ) => {
     return (
       <div
-        className={clsx(
+        className={twMerge(
           "relative",
           inputStyles({ width, height, rounded }),
           className,

@@ -25,8 +25,8 @@ export default function StartForm() {
           시작하기
         </Button>
 
-        <Input type="password" />
-        <Input type="search" />
+        <Input type="password" className="w-20" />
+        <Input type="search" className="w-20" />
       </section>
     </>
   );
