@@ -1,4 +1,4 @@
-import StartForm from "./[step]/StartForm";
+import StartForm from "./StartForm";
 
 export default function BasicStateEntryPage() {
   return (
