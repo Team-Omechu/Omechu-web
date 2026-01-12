@@ -95,7 +95,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   ) => {
     return (
       <div
-        className={clsx(
+        className={twMerge(
           "relative",
           inputBaseStyles({ width, height, rounded }),
           className,
