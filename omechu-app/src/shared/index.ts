@@ -88,3 +88,6 @@ export { Label } from "./ui/input/Label";
 
 // UI - Form
 export { FormField } from "./ui/form-field/FormField";
+
+// UI - Auth
+export { AuthButton } from "./ui/auth";

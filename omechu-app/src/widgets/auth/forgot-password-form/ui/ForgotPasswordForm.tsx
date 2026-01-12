@@ -1,18 +1,17 @@
 "use client";
 
+import { useCallback } from "react";
+
 import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
-// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
-import Input from "@/components/common/Input";
-// TODO: SquareButton이 shared에 없음
-import SquareButton from "@/components/common/button/SquareButton";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,
 } from "@/entities/user/model/auth.schema";
+import { Button, FormField, Input } from "@/shared";
 
 type ForgotPasswordFormProps = {
   onFormSubmit: (data: FindPasswordFormValues) => Promise<void>;
@@ -27,59 +26,75 @@ export default function ForgotPasswordForm({
     formState: { errors, isSubmitting, isValid },
   } = useForm<FindPasswordFormValues>({
     resolver: zodResolver(findPasswordSchema),
-    mode: "onChange", // 입력값이 변경될 때마다 유효성 검사 실행
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+    },
   });
+
+  const onSubmit = useCallback(
+    async (data: FindPasswordFormValues) => {
+      await onFormSubmit(data);
+    },
+    [onFormSubmit],
+  );
+
+  // eslint-disable-next-line react-hooks/refs -- handleSubmit is from react-hook-form
+  const handleFormSubmit = handleSubmit(onSubmit);
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onFormSubmit)}
-        className="flex w-full flex-col gap-2 pt-4"
-      >
+      <form onSubmit={handleFormSubmit} className="flex w-full flex-col">
         <Controller
           name="email"
           control={control}
           render={({ field }) => (
-            <Input
+            <FormField
               label="이메일"
-              type="email"
-              placeholder="이메일을 입력해주세요"
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              showError={!!errors.email}
-              errorMessage={errors.email?.message}
-            />
+              id="forgot-email"
+              helperText={errors.email?.message}
+              helperState={errors.email ? "error" : undefined}
+            >
+              <Input
+                type="email"
+                placeholder="이메일을 입력해주세요"
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                width="default"
+                className="w-full"
+              />
+            </FormField>
           )}
         />
-        <div className="mt-4">
-          <SquareButton
+
+        <div className="pt-5">
+          <Button
             type="submit"
-            variant="red"
-            size="lg"
             disabled={!isValid || isSubmitting}
             className="w-full"
           >
             {isSubmitting ? "메일 발송 중..." : "메일 발송하기"}
-          </SquareButton>
+          </Button>
         </div>
       </form>
 
-      <div className="text-grey-normal-active flex flex-col items-center gap-1 pt-1 text-sm">
-        <div className="flex items-center justify-center gap-4">
-          <span>비밀번호가 생각났어요</span>
+      {/* 하단 링크 영역 */}
+      <div className="flex flex-col items-center gap-4 pt-8">
+        <div className="text-caption-1-regular flex items-center gap-5">
+          <span className="text-font-placeholder">비밀번호가 생각 났어요</span>
           <Link
             href="/sign-in"
-            className="text-grey-dark-active font-semibold hover:underline"
+            className="text-caption-1-medium text-font-high hover:underline"
           >
             로그인 하기
           </Link>
         </div>
-        <div className="flex items-center justify-center gap-4">
-          <span>계정이 아직 없어요</span>
+        <div className="text-caption-1-regular flex items-center gap-5">
+          <span className="text-font-placeholder">계정이 아직 없어요</span>
           <Link
             href="/sign-up"
-            className="text-grey-dark-active font-semibold hover:underline"
+            className="text-caption-1-medium text-font-high hover:underline"
           >
             회원가입하기
           </Link>
