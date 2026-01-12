@@ -110,6 +110,7 @@ export default function AllergyForm() {
               setShowSaveModal(false);
               router.push("/mainpage");
             }}
+            // onRightButtonClick={() => }
           />
         </ModalWrapper>
       )}
