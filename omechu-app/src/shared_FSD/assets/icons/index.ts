@@ -1,7 +1,12 @@
 export { ArrowIcon } from "./mypage/ArrowIcon";
+export { ArrowUpIcon } from "./mypage/ArrowUpIcon";
+
 export { CloseIcon } from "./mypage/CloseIcon";
 export { HistoryRoundedIcon } from "./mypage/HistoryRoundedIcon";
 export { WriteIcon } from "./mypage/WriteIcon";
+
+export { CirclePlus } from "./mypage/CirclePlus";
+export { CircleMinus } from "./mypage/CircleMinus";
 
 export { OpenEyeIcon, CloseEyeIcon } from "./ui/input/EyeIcon";
 export { SearchIcon } from "./ui/input/SearchIcon";
