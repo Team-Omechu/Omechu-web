@@ -1,7 +1,9 @@
-//! 26.01.12 작업 중
-
-import { redirect } from "next/navigation";
+import StartForm from "./[step]/StartForm";
 
 export default function BasicStateEntryPage() {
-  redirect("/basic-state/start");
+  return (
+    <main className="min-h-fit">
+      <StartForm />
+    </main>
+  );
 }

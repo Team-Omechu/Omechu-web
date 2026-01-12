@@ -4,6 +4,7 @@ import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const buttonStyles = cva(
   clsx(
@@ -33,7 +34,7 @@ const buttonStyles = cva(
       width: {
         xl: "w-[335px] text-body-4-regular",
         md: "w-[160px] text-body-3-regular",
-        sm: "w-[116px] text-caption-1-regular",
+        sm: "w-[116px] body-2-medium ",
       },
     },
     defaultVariants: {
@@ -52,15 +53,14 @@ export const Button = ({
   bgColor,
   width,
   children,
+  className,
   ...props
-}: ButtonProps) => {
-  return (
-    <button
-      type="button"
-      className={buttonStyles({ fontColor, bgColor, width })}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+}: ButtonProps) => (
+  <button
+    type="button"
+    className={twMerge(buttonStyles({ fontColor, bgColor, width }), className)}
+    {...props}
+  >
+    {children}
+  </button>
+);
