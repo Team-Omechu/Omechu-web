@@ -4,12 +4,14 @@ import { Suspense, useEffect, useState } from "react";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
+import { getCurrentUserWithToken } from "@/entities/user/api/authApi";
+import {
+  VALID_PROVIDERS,
+  PROVIDER_DISPLAY_NAMES,
+} from "@/entities/user/lib/constants/oauth.const";
 import { useAuthStore } from "@/entities/user/model/auth.store";
+import type { OAuthProvider } from "@/entities/user/model/auth.types";
 import { Toast } from "@/shared";
-
-type OAuthProvider = "kakao" | "google";
-
-const VALID_PROVIDERS: OAuthProvider[] = ["kakao", "google"];
 
 export default function OAuthCallbackPage() {
   return (
@@ -82,7 +84,8 @@ function CallbackContent() {
     })();
   }, [provider, searchParams, router, login]);
 
-  const providerName = provider === "kakao" ? "카카오" : provider === "google" ? "구글" : "";
+  const providerName =
+    PROVIDER_DISPLAY_NAMES[provider as OAuthProvider] ?? "";
 
   return (
     <main className="flex min-h-dvh items-center justify-center">
@@ -92,19 +95,4 @@ function CallbackContent() {
       <Toast message={toastMessage} show={showToast} />
     </main>
   );
-}
-
-/**
- * 토큰을 직접 헤더에 붙여 현재 사용자 정보를 1회성으로 불러오는 헬퍼
- */
-async function getCurrentUserWithToken(token: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
-    headers: { Authorization: `Bearer ${token}` },
-    credentials: "include",
-  });
-  const data = await res.json();
-  if (data?.resultType !== "SUCCESS" || !data?.success) {
-    throw new Error(data?.error?.reason || "유저 조회 실패");
-  }
-  return data.success;
 }
