@@ -46,6 +46,7 @@ export default function AllergyForm() {
 
   return (
     <>
+<<<<<<< HEAD
       <Header
         title="기본 상태 입력"
         onLeftClick={() => router.back()}
@@ -56,7 +57,20 @@ export default function AllergyForm() {
         <h1 className="text-foundation-grey-darker mt-12 text-center text-[28px] font-medium whitespace-pre-line">
           알레르기가 있나요?
         </h1>
+<<<<<<< HEAD
         <div className="xs:mt-4 mt-10 h-fit w-63.5">
+=======
+        <div className="mt-12 h-fit w-[254px]">
+=======
+      <Header title="기본 상태 입력" onLeftClick={() => router.back()} />
+      <ProgressBar currentStep={3} totalSteps={3} />
+      <section className="relative flex min-h-[89dvh] flex-col items-center">
+        <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">
+          알레르기가 있나요?
+        </h1>
+        <div className="xs:mt-4 mt-10 h-fit w-[254px]">
+>>>>>>> c441f150 ([#220]feat:AllergyForm 구현)
+>>>>>>> 209f1411 ([#220]feat:AllergyForm 구현)
           <div className="grid grid-cols-3 gap-4">
             {ALLERGY_OPTIONS.slice(0, -2).map(({ label }, idx) => (
               <div key={idx}>
@@ -103,6 +117,19 @@ export default function AllergyForm() {
             })}
           </div>
         </div>
+<<<<<<< HEAD
+=======
+        <BottomButton
+          disabled={selectedIndexes.length === 0}
+<<<<<<< HEAD
+          onClick={() => setShowSaveModal(true)}
+=======
+          onClick={() => router.push("/example-testpage/mypage")}
+>>>>>>> c441f150 ([#220]feat:AllergyForm 구현)
+        >
+          저장
+        </BottomButton>
+>>>>>>> 209f1411 ([#220]feat:AllergyForm 구현)
       </section>
       <BottomButton
         disabled={selectedIndexes.length === 0}
