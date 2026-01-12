@@ -25,6 +25,7 @@ export default function RecommendedListPage() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
   return (
     <>
       <Header title="추천 목록 관리" isRightChild={true} />
@@ -42,6 +43,7 @@ export default function RecommendedListPage() {
           setInputValue={setSearchTerm}
           onSearch={handleSearch}
         />
+
         <section className="grid w-84 grid-cols-3 gap-3 pb-15">
           {Array.from({ length: 30 }).map((_, i) => (
             <RecommendedFoodBox
@@ -50,6 +52,8 @@ export default function RecommendedListPage() {
               src=""
               onClick={() => setIsToggled(!isToggled)}
               isToggled={isToggled}
+              onClick={() => toggleExclude(i)}
+              isToggled={excludedSet.has(i)}
             />
           ))}
         </section>
