@@ -64,7 +64,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           type={isVisible ? "text" : "password"}
           disabled={disabled}
           autoComplete="off"
-          className="w-full min-w-0 flex-1 bg-transparent pr-8 outline-none"
+          className="flex-1 bg-transparent pr-6 outline-none"
+          value={props.value}
+          onChange={props.onChange}
           {...props}
         />
         <button
@@ -149,7 +151,6 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
         />
       );
     }
-
     if (type === "search") {
       return (
         <SearchInput
@@ -164,24 +165,23 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
         />
       );
     }
-
     return (
-      <div
+      <input
+        ref={ref}
+        type={type === "number" ? "number" : type}
+        disabled={props.disabled}
+        autoComplete="off"
+        value={props.value}
+        onChange={props.onChange}
         className={cn(
-          "relative",
-          inputBaseStyles({ width, height, rounded }),
-          className,
+          inputBaseStyles({
+            width: props.width,
+            height: props.height,
+            rounded: props.rounded,
+          }),
+          props.className,
         )}
-      >
-        <input
-          ref={ref}
-          type={type}
-          disabled={disabled}
-          autoComplete="off"
-          className="w-full min-w-0 flex-1 bg-transparent outline-none"
-          {...rest}
-        />
-      </div>
+      />
     );
   },
 );
