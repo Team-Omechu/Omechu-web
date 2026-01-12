@@ -41,7 +41,10 @@ const ALLERGY_OPTIONS = [
 export default function AllergyForm() {
   const router = useRouter();
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+<<<<<<< HEAD
   const [showCancleModal, setShowCancleModal] = useState<boolean>(false);
+=======
+>>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
   const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 
   return (
@@ -122,21 +125,29 @@ export default function AllergyForm() {
         <BottomButton
           disabled={selectedIndexes.length === 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
           onClick={() => setShowSaveModal(true)}
 =======
           onClick={() => router.push("/example-testpage/mypage")}
 >>>>>>> c441f150 ([#220]feat:AllergyForm 구현)
+=======
+          onClick={() => setShowSaveModal(true)}
+>>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
         >
           저장
         </BottomButton>
 >>>>>>> 209f1411 ([#220]feat:AllergyForm 구현)
       </section>
+<<<<<<< HEAD
       <BottomButton
         disabled={selectedIndexes.length === 0}
         onClick={() => setShowSaveModal(true)}
       >
         저장
       </BottomButton>
+=======
+<<<<<<< HEAD
+>>>>>>> 335fb196 ([#220]feat:BaseModal 변경)
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal
@@ -151,19 +162,32 @@ export default function AllergyForm() {
         </ModalWrapper>
       )}
 
+=======
+>>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
       {showSaveModal && (
         <ModalWrapper>
           <BaseModal
             title="저장 완료!"
+<<<<<<< HEAD
             desc="이제 맛있는 메뉴 추천을 받아볼까요?"
+=======
+>>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
             leftButtonText="내 정보 보기"
             rightButtonText="추천 보기"
             onCloseClick={() => setShowSaveModal(false)}
+<<<<<<< HEAD
             onLeftButtonClick={() => router.push("/mypage")}
+=======
+            onLeftButtonClick={() => router.push("/example-testpage/mypage")}
+<<<<<<< HEAD
+>>>>>>> 335fb196 ([#220]feat:BaseModal 변경)
             onRightButtonClick={() => {
               setShowSaveModal(false);
               router.push("/mainpage");
             }}
+=======
+            onRightButtonClick={() => {}}
+>>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
           />
         </ModalWrapper>
       )}
