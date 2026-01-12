@@ -160,6 +160,34 @@ Both `dayjs` and `date-fns` are installed. Prefer `date-fns` for new code.
 
 > 자세한 내용은 [CONVENTIONS.md](./omechu-app/docs/CONVENTIONS.md)를 참고하세요.
 
+### Issue 제목
+
+**형식:**
+```
+[FEAT/FIX/REFACTOR/CHORE] 이슈 이름
+```
+
+**예시:**
+```bash
+[FEAT] 로그인 페이지 UI 구현
+[FIX] 회원가입 시 상태 코드 오류 수정
+[REFACTOR] BottomNav 제거 및 ClientLayout 정리
+```
+
+### PR 제목
+
+**형식:**
+```
+[FEAT/FIX/REFACTOR/CHORE] PR 제목 (#이슈번호)
+```
+
+**예시:**
+```bash
+[FEAT] 로그인 페이지 UI 구현 (#12)
+[FIX] 이미지 업로드 버그 수정 (#23)
+[REFACTOR] proxy 마이그레이션 및 레이아웃 개선 (#218)
+```
+
 ### Commit Message
 
 **형식:**
