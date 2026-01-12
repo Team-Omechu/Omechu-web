@@ -298,3 +298,12 @@ input[type="search"]::-webkit-search-cancel-button {
 .react-datepicker__day--outside-month {
   @apply text-gray-400!;
 } */
+
+/* Autofill 스타일 초기화 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: var(--color-font-high) !important;
+}
