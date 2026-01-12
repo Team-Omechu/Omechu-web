@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import IngredientCard from "@/shared_FSD/ui/card/IngredientCard";
+import { IngredientCard } from "@/shared_FSD/ui/card/IngredientCard";
 
 const MOCK_MENUS = {
   kcal: "520",
