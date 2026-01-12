@@ -1,5 +1,3 @@
-//! 26.01.13 수정
-
 "use client";
 import * as React from "react";
 
@@ -131,8 +129,10 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       height,
       rounded,
       disabled,
+      onSearch,
       ...rest
     } = props;
+
     if (type === "password") {
       return (
         <PasswordInput
@@ -142,6 +142,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           height={height}
           rounded={rounded}
           disabled={disabled}
+          onSearch={onSearch}
           {...rest}
         />
       );
@@ -168,8 +169,16 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           inputBaseStyles({ width, height, rounded }),
           className,
         )}
-        {...rest}
-      />
+      >
+        <input
+          ref={ref}
+          type={type}
+          disabled={disabled}
+          autoComplete="off"
+          className="w-full min-w-0 flex-1 bg-transparent outline-none"
+          {...rest}
+        />
+      </div>
     );
   },
 );
