@@ -1,17 +1,21 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { getCurrentUser } from "@/entities/user/api/authApi";
 import { Toast } from "@/shared";
 
-export default function AuthCallbackPage() {
+type OAuthProvider = "kakao" | "google";
+
+const VALID_PROVIDERS: OAuthProvider[] = ["kakao", "google"];
+
+export default function OAuthCallbackPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-dvh items-center justify-center">
+        <main className="flex min-h-dvh items-center justify-center bg-background-primary">
           <span className="text-grey-normal-active">로그인 처리 중...</span>
         </main>
       }
@@ -23,10 +27,15 @@ export default function AuthCallbackPage() {
 
 function CallbackContent() {
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useParams();
+  const searchParams = useSearchParams();
   const { login } = useAuthStore();
+
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+
+  const provider = params.provider as string;
+
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
@@ -34,8 +43,15 @@ function CallbackContent() {
   };
 
   useEffect(() => {
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
+    // provider 유효성 검사
+    if (!VALID_PROVIDERS.includes(provider as OAuthProvider)) {
+      triggerToast("잘못된 로그인 경로입니다.");
+      router.replace("/sign-in");
+      return;
+    }
+
+    const accessToken = searchParams.get("accessToken");
+    const refreshToken = searchParams.get("refreshToken");
 
     if (!accessToken) {
       triggerToast("로그인에 실패했습니다. 다시 시도해 주세요.");
@@ -52,26 +68,35 @@ function CallbackContent() {
           user: me,
           password: "",
         });
-        if (!me.nickname) router.replace("/onboarding/1");
-        else router.replace("/mainpage");
-      } catch (e) {
+
+        // 닉네임이 없으면 온보딩으로, 있으면 메인페이지로
+        if (!me.nickname) {
+          router.replace("/onboarding/1");
+        } else {
+          router.replace("/mainpage");
+        }
+      } catch {
         triggerToast("로그인에 실패했습니다. 다시 시도해 주세요.");
         router.replace("/sign-in");
       }
     })();
-  }, [params, router, login]);
+  }, [provider, searchParams, router, login]);
+
+  const providerName = provider === "kakao" ? "카카오" : provider === "google" ? "구글" : "";
 
   return (
-    <main className="flex min-h-dvh items-center justify-center">
-      <>
-        <span className="text-grey-normal-active">로그인 처리 중...</span>
-        <Toast message={toastMessage} show={showToast} />
-      </>
+    <main className="flex min-h-dvh items-center justify-center bg-background-primary">
+      <span className="text-grey-normal-active">
+        {providerName} 로그인 처리 중...
+      </span>
+      <Toast message={toastMessage} show={showToast} />
     </main>
   );
 }
 
-// 토큰을 직접 헤더에 붙여 현재 사용자 정보를 1회성으로 불러오는 헬퍼
+/**
+ * 토큰을 직접 헤더에 붙여 현재 사용자 정보를 1회성으로 불러오는 헬퍼
+ */
 async function getCurrentUserWithToken(token: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
     headers: { Authorization: `Bearer ${token}` },

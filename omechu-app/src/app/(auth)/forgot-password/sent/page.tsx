@@ -1,11 +1,20 @@
 "use client";
 
-import EmailSentMessage from "./components/EmailSentMessage";
+import { useRouter } from "next/navigation";
 
-export default function FindPasswordEmailSentPage() {
+import { Header } from "@/shared";
+import { EmailSentMessage } from "@/widgets/auth";
+
+export default function PasswordResetEmailSentPage() {
+  const router = useRouter();
+
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4">
-      <EmailSentMessage />
+    <main className="flex flex-1 flex-col bg-background-primary">
+      <Header onLeftClick={() => router.back()} />
+
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <EmailSentMessage />
+      </div>
     </main>
   );
 }
