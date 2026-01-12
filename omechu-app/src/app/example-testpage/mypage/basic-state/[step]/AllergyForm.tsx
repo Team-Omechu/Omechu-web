@@ -11,12 +11,27 @@ import {
   ProgressBar,
 } from "@/shared_FSD/index";
 
-const STATE_OPTIONS = [
-  { label: "🍚 한식", value: "diet" },
-  { label: "🍝 양식", value: "bulk" },
-  { label: "🥟 중식", value: "maintain" },
-  { label: "🍣 일식", value: "maintain" },
-  { label: "🌮 다른 나라", value: "maintain" },
+const ALLERGY_OPTIONS = [
+  { label: "달걀", value: "egg" },
+  { label: "우유", value: "milk" },
+  { label: "메밀", value: "buckwheat" },
+  { label: "대두", value: "soy" },
+  { label: "밀", value: "wheat" },
+  { label: "땅콩", value: "peanut" },
+  { label: "호두", value: "walnut" },
+  { label: "잣", value: "pine_nut" },
+  { label: "돼지고기", value: "pork" },
+  { label: "소고기", value: "beef" },
+  { label: "닭고기", value: "chicken" },
+  { label: "고등어", value: "mackerel" },
+  { label: "새우", value: "shrimp" },
+  { label: "게", value: "crab" },
+  { label: "오징어", value: "squid" },
+  { label: "조개류", value: "shellfish" },
+  { label: "복숭아", value: "peach" },
+  { label: "토마토", value: "tomato" },
+  { label: "아황산류", value: "sulfites" },
+  { label: "그 외", value: "other" },
 ] as const;
 
 export default function AllergyForm() {
@@ -26,31 +41,63 @@ export default function AllergyForm() {
   return (
     <>
       <Header title="기본 상태 입력" onLeftClick={() => router.back()} />
-      <ProgressBar currentStep={1} totalSteps={3} />
+      <ProgressBar currentStep={3} totalSteps={3} />
       <section className="relative flex min-h-[89dvh] flex-col items-center">
-        <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">{`지금 어떤 운동 상태에 \n 가까운가요?`}</h1>
-        <div className="mt-20 flex flex-col gap-4">
-          {STATE_OPTIONS.map(({ label }, idx) => (
-            <OnboardingButton
-              key={idx}
-              selected={selectedIndexes.includes(idx)}
-              onClick={() => {
-                if (selectedIndexes.includes(idx)) {
-                  setSelectedIndexes(selectedIndexes.filter((i) => i !== idx));
-                } else if (selectedIndexes.length < 2) {
-                  setSelectedIndexes([...selectedIndexes, idx]);
-                }
-              }}
-            >
-              {label}
-            </OnboardingButton>
-          ))}
+        <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">
+          알레르기가 있나요?
+        </h1>
+        <div className="xs:mt-4 mt-10 h-fit w-[254px]">
+          <div className="grid grid-cols-3 gap-4">
+            {ALLERGY_OPTIONS.slice(0, -2).map(({ label }, idx) => (
+              <div key={idx}>
+                <OnboardingButton
+                  selected={selectedIndexes.includes(idx)}
+                  width="xs"
+                  onClick={() => {
+                    if (selectedIndexes.includes(idx)) {
+                      setSelectedIndexes(
+                        selectedIndexes.filter((i) => i !== idx),
+                      );
+                    } else {
+                      setSelectedIndexes([...selectedIndexes, idx]);
+                    }
+                  }}
+                >
+                  {label}
+                </OnboardingButton>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 mb-20 grid grid-cols-2 gap-4">
+            {ALLERGY_OPTIONS.slice(-2).map(({ label }, idx) => {
+              const actualIdx = ALLERGY_OPTIONS.length - 2 + idx;
+              return (
+                <div key={actualIdx}>
+                  <OnboardingButton
+                    selected={selectedIndexes.includes(actualIdx)}
+                    width="sm"
+                    onClick={() => {
+                      if (selectedIndexes.includes(actualIdx)) {
+                        setSelectedIndexes(
+                          selectedIndexes.filter((i) => i !== actualIdx),
+                        );
+                      } else {
+                        setSelectedIndexes([...selectedIndexes, actualIdx]);
+                      }
+                    }}
+                  >
+                    {label}
+                  </OnboardingButton>
+                </div>
+              );
+            })}
+          </div>
         </div>
         <BottomButton
           disabled={selectedIndexes.length === 0}
-          onClick={() => router.push("food")}
+          onClick={() => router.push("/example-testpage/mypage")}
         >
-          다음
+          저장
         </BottomButton>
       </section>
     </>
