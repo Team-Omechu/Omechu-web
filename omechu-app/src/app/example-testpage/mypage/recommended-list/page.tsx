@@ -11,7 +11,7 @@ export default function RecommendedListPage() {
   return (
     <>
       <Header title="추천 목록 관리" isRightChild={true} />
-      <main className="gap- relative mt-4 flex h-[91.5dvh] flex-col items-center px-5">
+      <main className="relative mt-2 flex h-[91.5dvh] flex-col items-center px-5">
         <SelectTab
           tabs={["추천 목록", "제외 목록"]}
           selectedIndex={selectedIndex}
