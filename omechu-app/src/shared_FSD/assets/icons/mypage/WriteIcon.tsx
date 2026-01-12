@@ -2,7 +2,7 @@ interface WriteIconProps {
   className?: string;
 }
 
-export default function WriteIcon({ className }: WriteIconProps) {
+export const WriteIcon = ({ className }: WriteIconProps) => {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -24,4 +24,4 @@ export default function WriteIcon({ className }: WriteIconProps) {
       />
     </svg>
   );
-}
+};

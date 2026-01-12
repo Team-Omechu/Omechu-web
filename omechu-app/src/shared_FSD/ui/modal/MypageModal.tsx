@@ -2,7 +2,7 @@
 
 "use client";
 
-import CloseIcon from "@/shared_FSD/assets/icons/mypage/CloseIcon";
+import { CloseIcon } from "@/shared_FSD/assets/icons/index";
 import { BaseModal } from "@/shared_FSD/ui/modal/BaseModal";
 
 interface MypageModalProps {

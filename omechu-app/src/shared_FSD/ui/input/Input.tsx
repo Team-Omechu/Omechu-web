@@ -1,8 +1,6 @@
 "use client";
 import * as React from "react";
 
-import Image from "next/image";
-
 import { cva, type VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -10,7 +8,8 @@ import { twMerge } from "tailwind-merge";
 import {
   CloseEyeIcon,
   OpenEyeIcon,
-} from "@/shared_FSD/assets/icons/ui/Input/EyeIcon";
+} from "@/shared_FSD/assets/icons/ui/input/EyeIcon";
+import { SearchIcon } from "@/shared_FSD/assets/icons/ui/input/SearchIcon";
 
 const inputStyles = cva(
   [
@@ -108,7 +107,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           type="search"
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 bg-transparent outline-none"
+          className="flex-1 bg-transparent pr-6 outline-none"
           value={props.value}
           onChange={props.onChange}
           {...props}
@@ -119,7 +118,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           className="absolute right-3 flex items-center"
           aria-label="검색 실행"
         >
-          <Image src="/search/search.svg" alt="" width={20} height={20} />
+          <SearchIcon className="w-5" />
         </button>
       </div>
     );

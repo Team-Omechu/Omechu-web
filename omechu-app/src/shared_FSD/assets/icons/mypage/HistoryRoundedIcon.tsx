@@ -2,9 +2,7 @@ interface HistoryRoundedIconProps {
   className?: string;
 }
 
-export default function HistoryRoundedIcon({
-  className,
-}: HistoryRoundedIconProps) {
+export const HistoryRoundedIcon = ({ className }: HistoryRoundedIconProps) => {
   return (
     <svg
       viewBox="0 0 13 13"
@@ -18,4 +16,4 @@ export default function HistoryRoundedIcon({
       />
     </svg>
   );
-}
+};

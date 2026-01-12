@@ -2,7 +2,7 @@ interface CloseIconProps {
   className?: string;
 }
 
-export default function CloseIcon({ className }: CloseIconProps) {
+export const CloseIcon = ({ className }: CloseIconProps) => {
   return (
     <svg
       viewBox="0 0 19 18"
@@ -16,4 +16,4 @@ export default function CloseIcon({ className }: CloseIconProps) {
       />
     </svg>
   );
-}
+};

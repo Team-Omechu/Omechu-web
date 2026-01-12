@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-import ArrowIcon from "@/shared_FSD/assets/icons/mypage/ArrowIcon";
+import { ArrowIcon } from "@/shared_FSD/assets/icons/index";
 
 const LIST_MAP = [
   { listTitle: "계정관리", hyperLink: "/" },

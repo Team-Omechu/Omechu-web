@@ -4,11 +4,11 @@ interface ArrowIconProps {
   height?: number | string;
 }
 
-export default function ArrowIcon({
+export const ArrowIcon = ({
   className,
   width = 9,
   height = 15,
-}: ArrowIconProps) {
+}: ArrowIconProps) => {
   return (
     <svg
       width={width}
@@ -21,4 +21,4 @@ export default function ArrowIcon({
       <path d="M1 1L7 7.5L1 14" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
-}
+};
