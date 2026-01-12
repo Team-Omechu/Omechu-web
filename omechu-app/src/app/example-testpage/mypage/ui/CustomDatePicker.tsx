@@ -1,0 +1,150 @@
+"use client";
+
+import { useState, useEffect, forwardRef } from "react";
+
+import Image from "next/image";
+
+import { ko } from "date-fns/locale";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { CalenderIcon } from "@/shared_FSD/assets/icons/index";
+
+interface CustomDatePickerProps {
+  /** start, end 값이 변경될 때 실행되는 콜백 */
+  onChange?: (start: Date | null, end: Date | null) => void;
+  /** 초기 값(optional) */
+  value?: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+}
+
+export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
+  const [startDate, setStartDate] = useState<Date | null>(
+    value?.startDate ?? null,
+  );
+  const [endDate, setEndDate] = useState<Date | null>(value?.endDate ?? null);
+
+  const CustomInput = forwardRef<
+    HTMLButtonElement,
+    { value?: string; onClick?: React.MouseEventHandler<HTMLButtonElement> }
+  >(({ value, onClick }, ref) => (
+    <button
+      type="button"
+      onClick={onClick}
+      ref={ref}
+      className="border-font-extralow bg-background-secondary text-font-high text-body-4-regular relative flex h-10 w-37.5 items-center rounded-[10px] border pl-5"
+    >
+      <CalenderIcon
+        className="absolute top-1.5 -right-3 w-12"
+        currentColor={"#707070"}
+      />
+
+      {value || "날짜 선택"}
+    </button>
+  ));
+  CustomInput.displayName = "CustomInput";
+
+  const renderCustomHeader = ({
+    date,
+    decreaseMonth,
+    increaseMonth,
+  }: {
+    date: Date;
+    decreaseMonth: () => void;
+    increaseMonth: () => void;
+  }) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return (
+      <div className="flex items-center justify-between px-4">
+        <button
+          onClick={decreaseMonth}
+          className="rounded-sm px-2 py-1 hover:bg-gray-200"
+        >
+          <Image
+            src="/arrow/left-calender-arrow.svg"
+            alt="이전 달로 이동"
+            width={14}
+            height={26}
+          />
+        </button>
+        <span className="text-grey-darker text-xl font-normal">
+          {`${year}년 ${month.toString().padStart(2, "0")}월`}
+        </span>
+        <button
+          onClick={increaseMonth}
+          className="rounded-sm px-2 py-1 text-sm hover:bg-gray-200"
+        >
+          <Image
+            src="/arrow/right-calender-arrow.svg"
+            alt="다음 달로 이동"
+            width={14}
+            height={26}
+          />
+        </button>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (startDate && endDate && startDate > endDate) {
+      setEndDate(null);
+    }
+  }, [endDate, startDate]);
+
+  // 부모에 값 전달
+  useEffect(() => {
+    onChange?.(startDate, endDate);
+  }, [startDate, endDate, onChange]);
+
+  return (
+    <section className="flex w-full flex-col items-end">
+      <section className="relative flex w-full items-center justify-center gap-4">
+        <DatePicker
+          selected={startDate}
+          dateFormat="yyyy.MM.dd"
+          customInput={<CustomInput />}
+          onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate ?? undefined}
+          renderCustomHeader={renderCustomHeader}
+          popperPlacement="bottom-start"
+          locale={ko}
+        />
+        <span> ~ </span>
+        <DatePicker
+          selected={endDate}
+          dateFormat="yyyy.MM.dd"
+          customInput={<CustomInput />}
+          onChange={(date) => {
+            if (startDate && date && date.getTime() < startDate.getTime())
+              return;
+            setEndDate(date);
+          }}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate ?? undefined}
+          renderCustomHeader={renderCustomHeader}
+          popperPlacement="bottom-end"
+          locale={ko}
+        />
+      </section>
+      {startDate && endDate && (
+        <button
+          onClick={() => {
+            setStartDate(null);
+            setEndDate(null);
+          }}
+          className="mt-1 mr-4 items-end text-xs text-gray-500"
+        >
+          선택 초기화
+        </button>
+      )}
+    </section>
+  );
+}

@@ -9,5 +9,7 @@ export { HomeIcon } from "./mypage/HomeIcon";
 export { CirclePlus } from "./mypage/CirclePlus";
 export { CircleMinus } from "./mypage/CircleMinus";
 
+export { CalenderIcon } from "./mypage/CalenderIcon";
+
 export { OpenEyeIcon, CloseEyeIcon } from "./ui/input/EyeIcon";
 export { SearchIcon } from "./ui/input/SearchIcon";
