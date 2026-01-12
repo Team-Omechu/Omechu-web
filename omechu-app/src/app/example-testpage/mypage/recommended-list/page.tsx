@@ -50,8 +50,6 @@ export default function RecommendedListPage() {
               key={i}
               title={`타코 ${i}`}
               src=""
-              onClick={() => setIsToggled(!isToggled)}
-              isToggled={isToggled}
               onClick={() => toggleExclude(i)}
               isToggled={excludedSet.has(i)}
             />
