@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 
+import AllergyForm from "./AllergyForm";
+import FoodForm from "./FoodForm";
 import StateForm from "./StateForm";
 import { BASIC_STATE_STEPS, type BasicStateStep } from "../steps";
 
@@ -19,7 +21,7 @@ export default async function BasicStateStepPage({ params }: PageProps) {
     <main>
       {step === "state" && <StateForm />}
       {step === "food" && <FoodForm />}
-      {/* {step === "allergy" && <AllergyForm />} */}
+      {step === "allergy" && <AllergyForm />}
     </main>
   );
 }
