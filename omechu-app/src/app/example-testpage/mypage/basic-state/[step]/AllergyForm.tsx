@@ -41,17 +41,22 @@ const ALLERGY_OPTIONS = [
 export default function AllergyForm() {
   const router = useRouter();
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+  const [showCancleModal, setShowCancleModal] = useState<boolean>(false);
   const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 
   return (
     <>
-      <Header title="기본 상태 입력" onLeftClick={() => router.back()} />
+      <Header
+        title="기본 상태 입력"
+        onLeftClick={() => router.back()}
+        onRightClick={() => setShowCancleModal(true)}
+      />
       <ProgressBar currentStep={3} totalSteps={3} />
       <section className="relative flex min-h-[89dvh] flex-col items-center">
-        <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">
+        <h1 className="text-foundation-grey-darker mt-12 text-center text-[28px] font-medium whitespace-pre-line">
           알레르기가 있나요?
         </h1>
-        <div className="xs:mt-4 mt-10 h-fit w-[254px]">
+        <div className="mt-12 h-fit w-[254px]">
           <div className="grid grid-cols-3 gap-4">
             {ALLERGY_OPTIONS.slice(0, -2).map(({ label }, idx) => (
               <div key={idx}>
@@ -105,15 +110,33 @@ export default function AllergyForm() {
           저장
         </BottomButton>
       </section>
+      {showCancleModal && (
+        <ModalWrapper>
+          <BaseModal
+            title="기본 상태 입력을 중단하시겠어요?"
+            desc="지금까지 작성한 내용은 저장되지 않아요."
+            isCloseButtonShow={false}
+            leftButtonText="그만하기"
+            rightButtonText="계속하기"
+            onLeftButtonClick={() => router.push("/example-testpage/mypage")}
+            onRightButtonClick={() => setShowCancleModal(false)}
+          />
+        </ModalWrapper>
+      )}
+
       {showSaveModal && (
         <ModalWrapper>
           <BaseModal
             title="저장 완료!"
+            desc="이제 맛있는 메뉴 추천을 받아볼까요?"
             leftButtonText="내 정보 보기"
             rightButtonText="추천 보기"
             onCloseClick={() => setShowSaveModal(false)}
             onLeftButtonClick={() => router.push("/example-testpage/mypage")}
-            onRightButtonClick={() => {}}
+            onRightButtonClick={() => {
+              setShowSaveModal(false);
+              router.push("/mainpage");
+            }}
           />
         </ModalWrapper>
       )}
