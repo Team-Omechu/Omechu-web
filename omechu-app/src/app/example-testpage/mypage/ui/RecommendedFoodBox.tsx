@@ -36,9 +36,9 @@ export const RecommendedFoodBox = ({
           <Image
             src={src || "/image/image_empty.svg"}
             alt={`${title} 메뉴 이미지`}
-            width={70}
-            height={70}
-            sizes="70px"
+            width={80}
+            height={80}
+            sizes="80px"
             loading="lazy"
             unoptimized={false}
             className="rounded-xl object-fill"
