@@ -2,8 +2,6 @@
 
 "use client";
 
-import type { ReactNode } from "react";
-
 import Image from "next/image";
 
 import { cva, VariantProps } from "class-variance-authority";
@@ -19,9 +17,9 @@ const headerStyles = cva([
 type HeaderStyleProps = VariantProps<typeof headerStyles>;
 
 type HeaderProps = {
-  title?: ReactNode;
-  leftChild?: ReactNode;
-  rightChild?: ReactNode;
+  title?: React.ReactNode;
+  leftChild?: React.ReactNode;
+  isRightChild?: boolean;
   className?: string;
   onLeftClick?: () => void;
   onRightClick?: () => void;
@@ -30,8 +28,7 @@ type HeaderProps = {
 export const Header = ({
   title,
   leftChild,
-  rightChild,
-
+  isRightChild = false,
   onLeftClick,
   onRightClick,
   className,
@@ -54,15 +51,17 @@ export const Header = ({
       {title && (
         <div className="mx-2 line-clamp-2 flex-1 text-center">{title}</div>
       )}
-      <button
-        type="button"
-        onClick={onRightClick}
-        className="flex shrink-0 items-center justify-end"
-      >
-        {rightChild ?? (
+      {isRightChild ? (
+        <button
+          type="button"
+          onClick={onRightClick}
+          className="flex shrink-0 items-center justify-end"
+        >
           <Image src="/x/black_x_icon.svg" alt="닫기" width={24} height={24} />
-        )}
-      </button>
+        </button>
+      ) : (
+        <div className="w-6 shrink-0" />
+      )}
     </header>
   );
 };
