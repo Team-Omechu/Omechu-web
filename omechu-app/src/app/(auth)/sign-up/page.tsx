@@ -7,34 +7,22 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
 import {
+  ApiClientError,
   useSignupMutation,
   useLoginMutation,
-} from "@/entities/user/lib/hooks/useAuth";
-import {
   signupSchema,
   type SignupFormValues,
-} from "@/entities/user/model/auth.schema";
-import { useAuthStore } from "@/entities/user/model/auth.store";
-import { BottomButton, ModalWrapper, Toast, TERMS_CONFIG } from "@/shared";
-import { SignUpForm, TermsModal } from "@/widgets/auth";
-
-type ModalType = "service" | "privacy" | "location";
-
-/** 모달 타입과 약관 설정 매핑 */
-const MODAL_TO_TERMS_TYPE = {
-  service: "service",
-  privacy: "personal-info",
-  location: "location-info",
-} as const;
-
-/** 모달 타입과 폼 필드 매핑 */
-const MODAL_TO_FORM_FIELD = {
-  service: "termsService",
-  privacy: "termsPrivacy",
-  location: "termsLocation",
-} as const;
+  useAuthStore,
+} from "@/entities/user";
+import { BottomButton, Header, ModalWrapper, Toast, TERMS_CONFIG } from "@/shared";
+import {
+  SignUpForm,
+  TermsModal,
+  type ModalType,
+  MODAL_TO_TERMS_TYPE,
+  MODAL_TO_FORM_FIELD,
+} from "@/widgets/auth";
 
 export default function SignUpPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
@@ -109,16 +97,19 @@ export default function SignUpPage() {
 
   return (
     <FormProvider {...methods}>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex flex-col">
+        {/* 헤더 */}
+        <Header onLeftClick={() => router.back()} />
+
         {/* 제목 */}
-        <header className="px-5 pt-20 pb-8 text-center">
+        <div className="px-5 py-5 text-center">
           <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
-        </header>
+        </div>
 
         {/* 폼 영역 */}
-        <main className="flex-1 overflow-y-auto px-5 pb-[70px]">
+        <main className="flex-1 px-5 pb-16">
           <SignUpForm
             setActiveModal={setActiveModal}
             onSubmit={handleSubmit(onSubmit)}
@@ -126,15 +117,14 @@ export default function SignUpPage() {
         </main>
 
         {/* 하단 버튼 */}
-        <footer className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[430px]">
-          <BottomButton
-            type="submit"
-            form="signup-form"
-            disabled={!isValid || isSigningUp}
-          >
-            {isSigningUp ? "가입하는 중..." : "가입하기"}
-          </BottomButton>
-        </footer>
+        <BottomButton
+          type="submit"
+          form="signup-form"
+          disabled={!isValid || isSigningUp}
+          className="mx-auto max-w-[430px]"
+        >
+          {isSigningUp ? "가입하는 중..." : "가입하기"}
+        </BottomButton>
 
         {/* 약관 모달 */}
         {activeModal && (
