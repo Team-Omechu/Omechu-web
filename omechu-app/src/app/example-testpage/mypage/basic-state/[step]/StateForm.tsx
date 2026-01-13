@@ -9,7 +9,7 @@ import {
   Header,
   OnboardingButton,
   ProgressBar,
-} from "@/shared_FSD/index";
+} from "@/shared/index";
 
 const STATE_OPTIONS = [
   { label: "🏃🏻 다이어트 중", value: "diet" },

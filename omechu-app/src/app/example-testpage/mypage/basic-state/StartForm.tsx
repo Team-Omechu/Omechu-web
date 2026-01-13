@@ -1,18 +1,8 @@
-<<<<<<< HEAD
-//! 26.01.13
-=======
-<<<<<<< HEAD
-//! 26.01.13 작업
-=======
-//! 26.01.13
->>>>>>> 6ee7c480 ([#220]feat:StateForm 페이지  구현)
->>>>>>> 98aa6d9f ([#220]feat:StateForm 페이지  구현)
-
 "use client";
 
 import { useRouter } from "next/navigation";
 
-import { Button, Header } from "@/shared_FSD/index";
+import { Button, Header, Input } from "@/shared/index";
 
 export default function StartForm() {
   const router = useRouter();
