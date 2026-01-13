@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { FoodBox } from "@/shared_FSD/ui/box/FoodBox";
+import { FoodBox } from "@/shared/ui/box/FoodBox";
 
 export default function FoodBoxTestPage() {
   const [selectedMap, setSelectedMap] = useState<Record<string, boolean>>({

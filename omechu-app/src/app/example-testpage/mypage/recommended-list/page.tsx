@@ -1,8 +1,13 @@
+<<<<<<< HEAD
+=======
+//! 26.01.13 작업
+
+>>>>>>> d169863f ([#220]hotfix:rebase 과정 중 버그 수정)
 "use client";
 
 import { useRef, useState } from "react";
 
-import { Header } from "@/shared_FSD/index";
+import { Header } from "@/shared/index";
 
 import { MENU_SUGGESTIONS } from "../constants/menuSuggestions";
 import FloatingActionButton from "../ui/FloatingActionButton";
@@ -62,7 +67,6 @@ export default function RecommendedListPage() {
           selectedIndex={selectedIndex}
           onSelect={setSelectedIndex}
         />
-
         <SearchBar
           inputValue={searchTerm}
           setInputValue={setSearchTerm}

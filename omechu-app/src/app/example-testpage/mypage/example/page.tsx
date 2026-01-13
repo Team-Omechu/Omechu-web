@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 
-import { Header } from "@/shared_FSD/index";
+import { Header } from "@/shared/index";
 
 import { CustomDatePicker } from "../ui/CustomDatePicker";
 import PeriodTap from "../ui/PeriodTap";

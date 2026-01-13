@@ -7,7 +7,7 @@ import { useState } from "react";
 
 import clsx from "clsx";
 
-import { ArrowIcon } from "@/shared_FSD/assets/icons/index";
+import { ArrowIcon } from "@/shared/assets/icons/index";
 
 export default function SetAlarmSection() {
   const [isAlarmOn, setIsAlarmOn] = useState(true);

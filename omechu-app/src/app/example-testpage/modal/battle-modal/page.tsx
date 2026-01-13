@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import Toast from "@/components/common/Toast";
-import { BattleModal } from "@/shared_FSD/index";
+import { BattleModal } from "@/shared/index";
 
 export default function BattleModalTestPage() {
   const [nickname, setNickname] = useState("");

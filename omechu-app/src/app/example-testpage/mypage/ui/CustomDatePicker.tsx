@@ -8,7 +8,7 @@ import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { ArrowCalenderIcon } from "@/shared_FSD/assets/icons/index";
+import { ArrowCalenderIcon } from "@/shared/assets/icons/index";
 
 import { CustomInput } from "./CustomInput";
 

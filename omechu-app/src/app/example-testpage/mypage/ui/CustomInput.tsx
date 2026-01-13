@@ -1,6 +1,6 @@
 import { forwardRef, type MouseEventHandler } from "react";
 
-import { CalenderIcon } from "@/shared_FSD/assets/icons/index";
+import { CalenderIcon } from "@/shared/assets/icons/index";
 
 export const CustomInput = forwardRef<
   HTMLButtonElement,

@@ -21,7 +21,7 @@ import { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { SearchIcon } from "@/shared_FSD/assets/icons";
+import { SearchIcon } from "@/shared/assets/icons";
 
 interface SearchBarProps {
   inputValue: string;

@@ -4,7 +4,7 @@
 
 import Image from "next/image";
 
-import { CirclePlus, CircleMinus } from "@/shared_FSD/assets/icons/index";
+import { CirclePlus, CircleMinus } from "@/shared/assets/icons/index";
 
 interface RecommendedFoodBoxProps {
   src: string;
@@ -32,7 +32,6 @@ export const RecommendedFoodBox = ({
           <CircleMinus className="w-5" currentColor="#A8A8A8" />
         )}
       </button>
-
       <div className="flex h-full w-full flex-col items-center justify-between rounded-2xl p-2">
         <figure className="flex h-16 w-16 items-center">
           <Image

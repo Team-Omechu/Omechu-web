@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import CustomDatePicker from "@/components/common/CustomDatePicker";
 import FloatingActionButton from "@/components/common/FloatingActionButton";
 import Header from "@/components/common/Header";
-import { SkeletonUIFoodBox } from "@/shared_FSD/index";
+import { SkeletonUIFoodBox } from "@/shared/index";
 
 /* ---------- constants ---------- */
 const PERIOD_OPTIONS = [

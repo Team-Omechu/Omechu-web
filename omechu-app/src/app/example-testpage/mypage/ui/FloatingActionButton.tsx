@@ -4,7 +4,7 @@
 
 import { twMerge } from "tailwind-merge";
 
-import { ArrowUpIcon } from "@/shared_FSD/assets/icons/index";
+import { ArrowUpIcon } from "@/shared/assets/icons/index";
 
 type FloatingActionButtonProps = {
   onClick: () => void;

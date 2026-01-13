@@ -4,7 +4,7 @@
 
 import Image from "next/image";
 
-import { CirclePlus, CircleMinus } from "@/shared_FSD/assets/icons/index";
+import { CirclePlus, CircleMinus } from "@/shared/assets/icons/index";
 
 interface MukburimFoodBoxProps {
   src: string;

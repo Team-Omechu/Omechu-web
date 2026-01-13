@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-import { HistoryRoundedIcon, WriteIcon } from "@/shared_FSD/assets/icons/index";
+import { HistoryRoundedIcon, WriteIcon } from "@/shared/assets/icons/index";
 
 interface UserInfoSectionProps {
   name: string;

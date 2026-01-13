@@ -13,7 +13,7 @@ import {
   ModalWrapper,
   OnboardingButton,
   ProgressBar,
-} from "@/shared_FSD/index";
+} from "@/shared/index";
 
 const ALLERGY_OPTIONS = [
   { label: "달걀", value: "egg" },
@@ -114,7 +114,6 @@ export default function AllergyForm() {
           저장
         </BottomButton>
       </section>
-
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal
