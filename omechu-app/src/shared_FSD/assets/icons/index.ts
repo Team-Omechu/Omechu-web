@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 export { ArrowIcon } from "./mypage/ArrowIcon";
 export { ArrowUpIcon } from "./mypage/ArrowUpIcon";
+export { ArrowCalenderIcon } from "./mypage/ArrowCalenderIcon";
 
 export { CloseIcon } from "./mypage/CloseIcon";
 export { HistoryRoundedIcon } from "./mypage/HistoryRoundedIcon";

@@ -8,12 +8,12 @@ import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { ArrowCalenderIcon } from "@/shared_FSD/assets/icons/index";
+
 import { CustomInput } from "./CustomInput";
 
 interface CustomDatePickerProps {
-  /** start, end 값이 변경될 때 실행되는 콜백 */
   onChange?: (start: Date | null, end: Date | null) => void;
-  /** 초기 값(optional) */
   value?: {
     startDate: Date | null;
     endDate: Date | null;
@@ -44,6 +44,7 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
           onClick={decreaseMonth}
           className="rounded-sm px-2 py-1 hover:bg-gray-200"
         >
+          {/* <ArrowCalenderIcon className="h-6.5 w-3.5 rotate-180 transition-transform" /> */}
           <Image
             src="/arrow/left-calender-arrow.svg"
             alt="이전 달로 이동"
@@ -58,20 +59,12 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
           onClick={increaseMonth}
           className="rounded-sm px-2 py-1 text-sm hover:bg-gray-200"
         >
-          <Image
-            src="/arrow/right-calender-arrow.svg"
-            alt="다음 달로 이동"
-            width={14}
-            height={26}
-          />
+          <ArrowCalenderIcon className="h-6.5 w-3.5" />
         </button>
       </div>
     );
   };
 
-  // Removed the effect that synchronously calls setEndDate to resolve the cascading render warning
-
-  // 부모에 값 전달
   useEffect(() => {
     onChange?.(startDate, endDate);
   }, [startDate, endDate, onChange]);
