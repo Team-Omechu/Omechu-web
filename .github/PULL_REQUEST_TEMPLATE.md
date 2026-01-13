@@ -1,10 +1,12 @@
-## 🔀 Pull Request Title
+## PR Title Format
 
-간결하고 명확한 제목 작성 (예: `feat: 로그인 기능 구현`)
+> **[FEAT/FIX/REFACTOR/CHORE] PR 제목**
+>
+> 예시: `[FEAT] 로그인 페이지 UI 구현` 또는 `feat: 로그인 페이지 UI 구현 (#12)`
 
-- Closes #3 (이슈 번호가 있다면)
+- Closes #이슈번호
 
-<br>
+---
 
 ## 📌 PR 설명
 
@@ -14,13 +16,13 @@
 - [ ]
 - [ ]
 
-<br>
+---
 
 ## 📷 스크린샷
 
 UI 변경이 있을 경우 스크린샷을 첨부해주세요.
 
-<br>
+---
 
 ## ✅ FSD Architecture Checklist
 
@@ -34,7 +36,7 @@ Feature-Sliced Design 원칙을 준수했는지 확인해주세요.
 
 ### 네이밍 컨벤션
 
-- [ ] 파일명이 정해진 패턴을 따름 (_.ui.tsx, _.hook.ts, \*.api.ts 등)
+- [ ] 파일명이 정해진 패턴을 따름 (*.tsx, *.hook.ts, *.api.ts 등)
 - [ ] 폴더명이 kebab-case로 작성됨
 - [ ] 배럴 익스포트(index.ts)를 사용함
 
@@ -42,6 +44,8 @@ Feature-Sliced Design 원칙을 준수했는지 확인해주세요.
 
 - [ ] 절대 경로 사용 (@/shared, @/entities, @/widgets, @/app)
 - [ ] 상대 경로 사용 최소화
+
+---
 
 ## 🔍 추가 설명
 
