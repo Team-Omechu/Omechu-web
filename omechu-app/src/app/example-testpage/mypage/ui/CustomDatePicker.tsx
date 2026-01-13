@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, forwardRef } from "react";
+import { useState, useEffect } from "react";
 
 import Image from "next/image";
 
@@ -8,7 +8,7 @@ import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { CalenderIcon } from "@/shared_FSD/assets/icons/index";
+import { CustomInput } from "./CustomInput";
 
 interface CustomDatePickerProps {
   /** start, end 값이 변경될 때 실행되는 콜백 */
@@ -25,26 +25,6 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
     value?.startDate ?? null,
   );
   const [endDate, setEndDate] = useState<Date | null>(value?.endDate ?? null);
-
-  const CustomInput = forwardRef<
-    HTMLButtonElement,
-    { value?: string; onClick?: React.MouseEventHandler<HTMLButtonElement> }
-  >(({ value, onClick }, ref) => (
-    <button
-      type="button"
-      onClick={onClick}
-      ref={ref}
-      className="border-font-extralow bg-background-secondary text-font-high text-body-4-regular relative flex h-10 w-37.5 items-center rounded-[10px] border pl-5"
-    >
-      <CalenderIcon
-        className="absolute top-1.5 -right-3 w-12"
-        currentColor={"#707070"}
-      />
-
-      {value || "날짜 선택"}
-    </button>
-  ));
-  CustomInput.displayName = "CustomInput";
 
   const renderCustomHeader = ({
     date,
@@ -89,11 +69,7 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
     );
   };
 
-  useEffect(() => {
-    if (startDate && endDate && startDate > endDate) {
-      setEndDate(null);
-    }
-  }, [endDate, startDate]);
+  // Removed the effect that synchronously calls setEndDate to resolve the cascading render warning
 
   // 부모에 값 전달
   useEffect(() => {
@@ -107,7 +83,12 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
           selected={startDate}
           dateFormat="yyyy.MM.dd"
           customInput={<CustomInput />}
-          onChange={(date) => setStartDate(date)}
+          onChange={(date) => {
+            setStartDate(date);
+            if (endDate && date && date > endDate) {
+              setEndDate(null);
+            }
+          }}
           selectsStart
           startDate={startDate}
           endDate={endDate ?? undefined}
