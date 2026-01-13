@@ -17,14 +17,14 @@ import {
   LoginFormValues,
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { CheckBox, Toast, Button, FormField, Input } from "@/shared";
+import { Button, FormField, Input, Toast, Header } from "@/shared";
 
 /**
- * SignInForm (Legacy)
- * - 이메일/비밀번호 로그인 폼
- * - 새로운 로그인 페이지는 /sign-in/email/page.tsx 사용 권장
+ * 이메일 로그인 페이지
+ * - 이메일/비밀번호 입력 폼
+ * - 비밀번호 찾기 링크
  */
-export default function SignInForm() {
+export default function EmailSignInPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const toastTimerRef = useRef<number | null>(null);
@@ -40,7 +40,6 @@ export default function SignInForm() {
     control,
     handleSubmit,
     formState: { errors },
-    register,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -102,7 +101,7 @@ export default function SignInForm() {
             });
             justLoggedInRef.current = true;
           } catch (e) {
-            console.warn("[SignIn] prefetch profile failed", e);
+            console.warn("[EmailSignIn] prefetch profile failed", e);
           }
         },
       });
@@ -157,21 +156,23 @@ export default function SignInForm() {
   const handleFormSubmit = handleSubmit(onSubmit);
 
   return (
-    <>
-      <form onSubmit={handleFormSubmit} className="flex w-full flex-col gap-4">
+    <main className="flex flex-1 flex-col">
+      <Header onLeftClick={() => router.back()} />
+
+      <form onSubmit={handleFormSubmit} className="flex flex-1 flex-col gap-6 px-5">
         <Controller
           name="email"
           control={control}
           render={({ field }) => (
             <FormField
               label="이메일"
-              id="signin-email"
+              id="email"
               helperText={errors.email?.message}
               helperState={errors.email ? "error" : undefined}
             >
               <Input
                 type="email"
-                placeholder="이메일을 입력해주세요"
+                placeholder="abc@omechu.com"
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -188,13 +189,13 @@ export default function SignInForm() {
           render={({ field }) => (
             <FormField
               label="비밀번호"
-              id="signin-password"
-              helperText={errors.password?.message}
+              id="password"
+              helperText={errors.password?.message || "* 대소문자, 숫자 및 특수문자 포함 8자 이상"}
               helperState={errors.password ? "error" : undefined}
             >
               <Input
                 type="password"
-                placeholder="비밀번호를 입력해주세요"
+                placeholder="비밀번호 입력"
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -205,31 +206,25 @@ export default function SignInForm() {
           )}
         />
 
-        <div className="mt-4">
+        <div className="flex-1" />
+
+        <div className="pb-6">
           <Button type="submit" disabled={isPending} className="w-full">
             {isPending ? "로그인 중..." : "로그인"}
           </Button>
-        </div>
 
-        <div className="text-grey-normal-active mt-2 flex items-center justify-between text-sm">
-          <CheckBox
-            id="remember-me"
-            label="로그인 상태 유지"
-            {...register("rememberMe")}
-          />
-          <div className="flex items-center gap-2">
-            <Link href="/forgot-password" className="hover:underline">
-              비밀번호 찾기
-            </Link>
-            <span className="text-grey-normal-active">|</span>
-            <Link href="/sign-up" className="hover:underline">
-              회원가입
+          <div className="mt-4 flex justify-center">
+            <Link
+              href="/forgot-password"
+              className="text-body-4-regular text-font-medium hover:underline"
+            >
+              비밀번호를 잊으셨나요?
             </Link>
           </div>
         </div>
       </form>
 
       <Toast message={toastMessage} show={showToast} className="bottom-20" />
-    </>
+    </main>
   );
 }

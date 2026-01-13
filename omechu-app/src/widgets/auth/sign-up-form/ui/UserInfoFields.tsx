@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useFormContext, Controller } from "react-hook-form";
 
-// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
-import Input from "@/components/common/Input";
+import { Controller, useFormContext } from "react-hook-form";
+
+import { ApiClientError } from "@/entities/user/api/authApi";
 import {
   useSendVerificationCodeMutation,
   useVerifyVerificationCodeMutation,
 } from "@/entities/user/lib/hooks/useAuth";
 import type { SignupFormValues } from "@/entities/user/model/auth.schema";
-import { Toast } from "@/shared";
-import { ApiClientError } from "@/entities/user/api/authApi";
+import { Button, FormField, Input, Toast } from "@/shared";
 
 export default function UserInfoFields() {
   const {
@@ -42,7 +41,6 @@ export default function UserInfoFields() {
 
   const handleSendCode = () => {
     const emailToSend = getValues("email");
-    // 폼 전체 검증을 트리거하지 않고, 이메일 형식만 로컬로 빠르게 확인
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(emailToSend)) {
       triggerToast("올바른 이메일 형식을 입력해 주세요.");
@@ -55,10 +53,9 @@ export default function UserInfoFields() {
       },
       onError: (error: unknown) => {
         const e = error as ApiClientError & { code?: string };
-        let msg: string =
+        const msg: string =
           e?.message ||
           "인증번호 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.";
-        // 필요 시 코드 별 보완
         triggerToast(msg);
       },
     });
@@ -79,8 +76,6 @@ export default function UserInfoFields() {
             code?: string;
           };
           let msg: string = e?.reason || e?.message || "인증에 실패했습니다.";
-          // V001, V002 코드에 대한 분기 처리는 유지하거나 백엔드 응답을 신뢰하고 제거할 수 있습니다.
-          // 현재는 유지하겠습니다.
           switch (e?.code) {
             case "V001":
               msg = e.reason || "인증번호가 올바르지 않습니다.";
@@ -96,97 +91,149 @@ export default function UserInfoFields() {
   };
 
   return (
-    <div className="relative space-y-4">
-      <div className="[&_button]:w-[122px]">
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <Input
-              label="이메일"
-              type="email"
-              placeholder="example@email.com"
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              showError={!!errors.email}
-              errorMessage={errors.email?.message}
-              showButton={true}
-              buttonText={isCodeSent ? "인증번호 재전송" : "인증번호 전송"}
-              onClick={handleSendCode}
-              disabled={!field.value || isSending || isVerified}
-            />
-          )}
-        />
-      </div>
-      {isCodeSent && (
-        <div className="[&_button]:w-[122px]">
-          <Controller
-            name="verificationCode"
-            control={control}
-            render={({ field }) => (
+    <div className="relative flex flex-col gap-2">
+      {/* 이메일 + 인증번호 전송 버튼 */}
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <FormField
+            label="이메일"
+            id="signup-email"
+            helperText={errors.email?.message}
+            helperState={errors.email ? "error" : undefined}
+          >
+            <div className="flex items-center gap-2.5">
               <Input
-                label="인증번호"
-                type="text"
-                placeholder="인증번호 6자리를 입력해주세요"
+                type="email"
+                placeholder="이메일을 입력해주세요"
                 value={field.value || ""}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
-                showError={!!errors.verificationCode}
-                errorMessage={errors.verificationCode?.message}
-                showButton={true}
-                buttonText={isVerified ? "인증 완료" : "인증번호 확인"}
-                onClick={handleVerifyCode}
-                disabled={
-                  !verificationCode ||
-                  verificationCode.length !== 6 ||
-                  isVerifying ||
-                  isVerified
-                }
+                width="sm"
+                className="flex-1"
               />
-            )}
-          />
-        </div>
+              <Button
+                type="button"
+                onClick={handleSendCode}
+                disabled={!field.value || isSending || isVerified}
+                width="sm"
+              >
+                {isSending
+                  ? "전송 중..."
+                  : isCodeSent
+                    ? "재전송"
+                    : "인증번호 전송"}
+              </Button>
+            </div>
+          </FormField>
+        )}
+      />
+
+      {/* 인증번호 입력 + 확인 버튼 (인증번호 전송 후 표시) */}
+      {isCodeSent && (
+        <Controller
+          name="verificationCode"
+          control={control}
+          render={({ field }) => (
+            <FormField
+              label=""
+              id="signup-verification-code"
+              helperText={errors.verificationCode?.message}
+              helperState={errors.verificationCode ? "error" : undefined}
+            >
+              <div className="flex items-center gap-2.5">
+                <Input
+                  type="password"
+                  placeholder="인증번호 6자리를 입력해주세요"
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  width="sm"
+                  className="flex-1"
+                />
+                <Button
+                  type="button"
+                  onClick={handleVerifyCode}
+                  disabled={
+                    !verificationCode ||
+                    verificationCode.length !== 6 ||
+                    isVerifying ||
+                    isVerified
+                  }
+                  width="sm"
+                >
+                  {isVerifying
+                    ? "확인 중..."
+                    : isVerified
+                      ? "인증 완료"
+                      : "인증번호 확인"}
+                </Button>
+              </div>
+            </FormField>
+          )}
+        />
       )}
+
+      {/* 비밀번호 */}
       <Controller
         name="password"
         control={control}
         render={({ field }) => (
-          <Input
+          <FormField
             label="비밀번호"
-            type="password"
-            placeholder="비밀번호를 입력해 주세요"
-            value={field.value || ""}
-            onChange={field.onChange}
-            onBlur={() => {
-              setPasswordBlurred(true);
-              field.onBlur();
-            }}
-            showError={passwordBlurred && !!errors.password}
-            // 에러일 때 동일 문구를 빨간색으로 표기, 아닐 때 회색 설명 문구
-            description="* 영문 대소문자, 숫자, 특수문자 포함 8자 이상"
-          />
+            id="signup-password"
+            helperText={
+              (passwordBlurred && errors.password?.message) ||
+              "* 영문 대소문자, 숫자 및 특수문자 포함 8자 이상"
+            }
+            helperState={passwordBlurred && errors.password ? "error" : undefined}
+          >
+            <Input
+              type="password"
+              placeholder="비밀번호를 입력해 주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={() => {
+                setPasswordBlurred(true);
+                field.onBlur();
+              }}
+            />
+          </FormField>
         )}
       />
+
+      {/* 비밀번호 재확인 */}
       <Controller
         name="passwordConfirm"
         control={control}
         render={({ field }) => (
-          <Input
+          <FormField
             label="비밀번호 재확인"
-            type="password"
-            placeholder="비밀번호를 다시 입력해주세요"
-            value={field.value || ""}
-            onChange={field.onChange}
-            onBlur={() => {
-              setPasswordConfirmBlurred(true);
-              field.onBlur();
-            }}
-            showError={passwordConfirmBlurred && !!errors.passwordConfirm}
-            errorMessage="비밀번호를 다시 입력해주세요."
-          />
+            id="signup-password-confirm"
+            helperText={
+              passwordConfirmBlurred && errors.passwordConfirm
+                ? errors.passwordConfirm?.message
+                : undefined
+            }
+            helperState={
+              passwordConfirmBlurred && errors.passwordConfirm ? "error" : undefined
+            }
+          >
+            <Input
+              type="password"
+              placeholder="비밀번호를 다시 입력해 주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={() => {
+                setPasswordConfirmBlurred(true);
+                field.onBlur();
+              }}
+            />
+          </FormField>
         )}
       />
+
       <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );

@@ -42,9 +42,9 @@ export default function RootLayout({
         className={`bg-gray-200 ${notoSansKR.variable}`}
       >
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
-        <div className="relative mx-auto flex min-h-screen w-full min-w-[375px] max-w-[430px] flex-col overflow-x-hidden bg-main-normal shadow-xl">
+        <div className="relative mx-auto flex min-h-screen w-full min-w-[375px] max-w-[430px] flex-col overflow-x-hidden bg-background-primary shadow-xl">
           <Providers>
-            <main className="bg-main-normal scrollbar-hide flex-1 overflow-y-scroll">
+            <main className="flex flex-1 flex-col bg-background-primary scrollbar-hide overflow-y-scroll">
               {children}
             </main>
           </Providers>
