@@ -41,10 +41,7 @@ const ALLERGY_OPTIONS = [
 export default function AllergyForm() {
   const router = useRouter();
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
-<<<<<<< HEAD
   const [showCancleModal, setShowCancleModal] = useState<boolean>(false);
-=======
->>>>>>> 03c95851 ([#220]feat:BaseModal 변경)
   const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 
   return (
@@ -139,6 +136,7 @@ export default function AllergyForm() {
 >>>>>>> 209f1411 ([#220]feat:AllergyForm 구현)
       </section>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <BottomButton
         disabled={selectedIndexes.length === 0}
         onClick={() => setShowSaveModal(true)}
@@ -148,6 +146,8 @@ export default function AllergyForm() {
 =======
 <<<<<<< HEAD
 >>>>>>> 335fb196 ([#220]feat:BaseModal 변경)
+=======
+>>>>>>> 16510f4a ([#220]hotfix:rebase 과정 중 버그 수정)
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal

@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+//! 26.01.13 작업
+
+>>>>>>> d169863f ([#220]hotfix:rebase 과정 중 버그 수정)
 "use client";
 
 import { useRef, useState } from "react";
