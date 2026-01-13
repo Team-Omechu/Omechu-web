@@ -4,11 +4,12 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Toast } from "@/shared";
-import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
-import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
-import { ApiClientError } from "@/entities/user/api/authApi";
-
+import {
+  ApiClientError,
+  useRequestPasswordResetMutation,
+  type FindPasswordFormValues,
+} from "@/entities/user";
+import { Header, Toast } from "@/shared";
 import { ForgotPasswordForm } from "@/widgets/auth";
 
 export default function FindPasswordPage() {
@@ -37,22 +38,33 @@ export default function FindPasswordPage() {
   };
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4">
-      <div className="flex w-full max-w-sm flex-col items-center gap-6">
-        <div className="flex flex-col gap-3 text-center">
-          <h1 className="text-grey-darker text-xl font-medium">
+    <div className="flex flex-1 flex-col">
+      <Header onLeftClick={() => router.back()} />
+
+      <div className="flex flex-col px-5">
+        {/* 타이틀 영역 */}
+        <div className="flex flex-col items-center p-12">
+          <h1 className="text-body-2-bold text-font-high text-center">
             비밀번호 찾기
           </h1>
-          <p className="text-grey-normal-active text-sm font-normal">
+        </div>
+
+        {/* 설명 영역 */}
+        <div className="flex items-center justify-center px-5 py-2.5">
+          <p className="text-body-4-regular text-font-low text-center">
             가입하신 이메일 주소를 입력하여
             <br />
             비밀번호를 재설정하실 수 있어요
           </p>
         </div>
 
-        <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
+        {/* 폼 영역 */}
+        <div className="pt-12">
+          <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
+        </div>
       </div>
-      <Toast message={toastMessage} show={showToast} className={"bottom-20"} />
-    </main>
+
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
+    </div>
   );
 }

@@ -104,14 +104,14 @@ export default function SignUpPage() {
     <FormProvider {...methods}>
       <div className="flex flex-col">
         {/* 헤더 */}
-        <Header />
+        <Header onLeftClick={() => router.back()} />
 
         {/* 제목 */}
         <div className="px-5 py-5 text-center">
           <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
-        </header>
+        </div>
 
         {/* 폼 영역 */}
         <main className="flex-1 px-5 pb-16">
@@ -126,7 +126,7 @@ export default function SignUpPage() {
           type="submit"
           form="signup-form"
           disabled={!isValid || isSigningUp}
-          className="mx-auto max-w-107.5"
+          className="mx-auto max-w-[430px]"
         >
           {isSigningUp ? "가입하는 중..." : "가입하기"}
         </BottomButton>
