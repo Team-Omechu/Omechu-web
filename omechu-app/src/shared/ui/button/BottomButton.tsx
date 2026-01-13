@@ -40,13 +40,14 @@ type BottomButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
 
 export const BottomButton = ({
   variant,
+  className,
   children,
   ...props
 }: BottomButtonProps) => {
   return (
     <button
       type="button"
-      className={bottomButtonStyles({ variant })}
+      className={clsx(bottomButtonStyles({ variant }), className)}
       {...props}
     >
       {children}

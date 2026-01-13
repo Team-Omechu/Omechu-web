@@ -51,13 +51,14 @@ export const Button = ({
   fontColor,
   bgColor,
   width,
+  className,
   children,
   ...props
 }: ButtonProps) => {
   return (
     <button
       type="button"
-      className={buttonStyles({ fontColor, bgColor, width })}
+      className={clsx(buttonStyles({ fontColor, bgColor, width }), className)}
       {...props}
     >
       {children}

@@ -48,13 +48,14 @@ export const BattleButton = ({
   fontColor,
   bgColor,
   width,
+  className,
   children,
   ...props
 }: BattleButtonProps) => {
   return (
     <button
       type="button"
-      className={battleButtonStyles({ fontColor, bgColor, width })}
+      className={clsx(battleButtonStyles({ fontColor, bgColor, width }), className)}
       {...props}
     >
       {children}
