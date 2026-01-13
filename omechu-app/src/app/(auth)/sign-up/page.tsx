@@ -111,7 +111,7 @@ export default function SignUpPage() {
           <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
-        </header>
+        </div>
 
         {/* 폼 영역 */}
         <main className="flex-1 px-5 pb-16">
