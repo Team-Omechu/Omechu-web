@@ -115,7 +115,7 @@ export default function SignUpPage() {
           <h1 className="text-grey-darker py-10 text-xl font-bold">
             회원 정보를 입력해 주세요
           </h1>
-        </header>
+        </div>
 
         <main className="flex-1 overflow-y-auto px-5">
           <SignUpForm

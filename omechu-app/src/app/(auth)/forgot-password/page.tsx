@@ -4,11 +4,10 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Toast } from "@/shared";
-import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
-import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
 import { ApiClientError } from "@/entities/user/api/authApi";
-
+import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
+import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
+import { Toast } from "@/shared";
 import { ForgotPasswordForm } from "@/widgets/auth";
 
 export default function FindPasswordPage() {
