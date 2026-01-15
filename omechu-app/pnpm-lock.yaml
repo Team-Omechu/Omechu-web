@@ -46,7 +46,11 @@ importers:
         version: 19.2.3(react@19.2.3)
       react-hook-form:
         specifier: ^7.59.0
+<<<<<<< HEAD
         version: 7.71.1(react@19.2.3)
+=======
+        version: 7.70.0(react@19.2.3)
+>>>>>>> 9c4cbf42 (chore: tailwind-merge 설치)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
