@@ -92,11 +92,6 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
         version: 7.70.0(react@19.2.3)
-=======
->>>>>>> 15b9bdc6 ([#220]feat:RecommendedFoodBox 컴포넌트 구현)
-      tailwind-merge:
-        specifier: ^3.4.0
-        version: 3.4.0
       zod:
         specifier: ^4.1.12
         version: 4.3.5
@@ -3911,6 +3906,9 @@ packages:
   tailwind-merge@3.4.0:
     resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
 
+  tailwind-merge@3.4.0:
+    resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
+
   tailwindcss@4.1.18:
     resolution:
       {
@@ -6742,6 +6740,8 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   tabbable@6.4.0: {}
+
+  tailwind-merge@3.4.0: {}
 
   tailwind-merge@3.4.0: {}
 
