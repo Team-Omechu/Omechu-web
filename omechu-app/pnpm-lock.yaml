@@ -231,6 +231,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         version: 7.71.1(react@19.2.3)
 =======
         version: 7.70.0(react@19.2.3)
@@ -269,6 +270,8 @@ importers:
 =======
 =======
 >>>>>>> b99654b5 ([#220]fix:의존성 재설치)
+=======
+>>>>>>> 69b843c1 (chore: tailwind-merge 설치)
         version: 7.71.1(react@19.2.3)
 =======
         version: 7.71.0(react@19.2.3)
@@ -311,7 +314,16 @@ importers:
 =======
         version: 7.71.1(react@19.2.3)
 >>>>>>> 62c20fb8 ([#220]fix:의존성 재설치)
+<<<<<<< HEAD
 >>>>>>> b99654b5 ([#220]fix:의존성 재설치)
+=======
+=======
+        version: 7.71.1(react@19.2.3)
+=======
+        version: 7.70.0(react@19.2.3)
+>>>>>>> 9c4cbf42 (chore: tailwind-merge 설치)
+>>>>>>> 71ca2560 (chore: tailwind-merge 설치)
+>>>>>>> 69b843c1 (chore: tailwind-merge 설치)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
