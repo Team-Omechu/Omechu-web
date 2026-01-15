@@ -4,9 +4,11 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
-import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
-import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
+import {
+  ApiClientError,
+  useRequestPasswordResetMutation,
+  type FindPasswordFormValues,
+} from "@/entities/user";
 import { Header, Toast } from "@/shared";
 import { ForgotPasswordForm } from "@/widgets/auth";
 
@@ -35,15 +37,19 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col">
       <Header onLeftClick={() => router.back()} />
 
       <div className="flex flex-col px-5">
         {/* 타이틀 영역 */}
-        <div className="flex flex-col items-center gap-3 py-5">
+        <div className="flex flex-col items-center p-12">
           <h1 className="text-body-2-bold text-font-high text-center">
             비밀번호 찾기
           </h1>
+        </div>
+
+        {/* 설명 영역 */}
+        <div className="flex items-center justify-center px-5 py-2.5">
           <p className="text-body-4-regular text-font-low text-center">
             가입하신 이메일 주소를 입력하여
             <br />
@@ -52,12 +58,12 @@ export default function ForgotPasswordPage() {
         </div>
 
         {/* 폼 영역 */}
-        <div className="pt-8">
+        <div className="pt-12">
           <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
         </div>
       </div>
 
       <Toast message={toastMessage} show={showToast} className="bottom-20" />
-    </main>
+    </div>
   );
 }

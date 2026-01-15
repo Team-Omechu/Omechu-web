@@ -1,9 +1,8 @@
 "use client";
 
+import type { ModalType } from "../types";
 import TermsAgreement from "./TermsAgreement";
 import UserInfoFields from "./UserInfoFields";
-
-type ModalType = "service" | "privacy" | "location";
 
 type SignUpFormProps = {
   setActiveModal: (modal: ModalType | null) => void;

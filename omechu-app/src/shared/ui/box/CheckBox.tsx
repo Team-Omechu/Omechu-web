@@ -11,9 +11,14 @@ type CheckboxProps = {
 
 export const CheckBox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, id, variant = "square", ...props }, ref) => {
+    const size = variant === "round" ? 18 : 17;
+
     return (
       <label htmlFor={id} className="flex cursor-pointer items-center">
-        <div className="relative h-[17px] w-[17px]">
+        <div
+          className="relative shrink-0"
+          style={{ width: size, height: size }}
+        >
           <input
             type="checkbox"
             id={id}
@@ -28,16 +33,16 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckboxProps>(
               <Image
                 src="/auth/unchecked-round.svg"
                 alt="unchecked"
-                width={17}
-                height={17}
+                width={18}
+                height={18}
                 className="peer-checked:hidden"
               />
               {/* Round Checked */}
               <Image
                 src="/auth/checked-round.svg"
                 alt="checked"
-                width={17}
-                height={17}
+                width={18}
+                height={18}
                 className="hidden peer-checked:block"
               />
             </>

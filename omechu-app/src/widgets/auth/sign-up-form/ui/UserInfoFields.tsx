@@ -4,12 +4,12 @@ import { useState } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
 import {
+  ApiClientError,
   useSendVerificationCodeMutation,
   useVerifyVerificationCodeMutation,
-} from "@/entities/user/lib/hooks/useAuth";
-import type { SignupFormValues } from "@/entities/user/model/auth.schema";
+  type SignupFormValues,
+} from "@/entities/user";
 import { Button, FormField, Input, Toast } from "@/shared";
 
 export default function UserInfoFields() {
@@ -102,17 +102,7 @@ export default function UserInfoFields() {
             id="signup-email"
             helperText={errors.email?.message}
             helperState={errors.email ? "error" : undefined}
-          >
-            <div className="flex items-center gap-2.5">
-              <Input
-                type="email"
-                placeholder="이메일을 입력해주세요"
-                value={field.value || ""}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                width="sm"
-                className="flex-1"
-              />
+            rightSlot={
               <Button
                 type="button"
                 onClick={handleSendCode}
@@ -125,7 +115,16 @@ export default function UserInfoFields() {
                     ? "재전송"
                     : "인증번호 전송"}
               </Button>
-            </div>
+            }
+          >
+            <Input
+              type="email"
+              placeholder="이메일을 입력해주세요"
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              className="flex-1!"
+            />
           </FormField>
         )}
       />
@@ -141,17 +140,7 @@ export default function UserInfoFields() {
               id="signup-verification-code"
               helperText={errors.verificationCode?.message}
               helperState={errors.verificationCode ? "error" : undefined}
-            >
-              <div className="flex items-center gap-2.5">
-                <Input
-                  type="password"
-                  placeholder="인증번호 6자리를 입력해주세요"
-                  value={field.value || ""}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  width="sm"
-                  className="flex-1"
-                />
+              rightSlot={
                 <Button
                   type="button"
                   onClick={handleVerifyCode}
@@ -169,7 +158,16 @@ export default function UserInfoFields() {
                       ? "인증 완료"
                       : "인증번호 확인"}
                 </Button>
-              </div>
+              }
+            >
+              <Input
+                type="password"
+                placeholder="인증번호 6자리를 입력해주세요"
+                value={field.value || ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                className="flex-1!"
+              />
             </FormField>
           )}
         />
@@ -198,6 +196,7 @@ export default function UserInfoFields() {
                 setPasswordBlurred(true);
                 field.onBlur();
               }}
+              className="w-full!"
             />
           </FormField>
         )}
@@ -229,6 +228,7 @@ export default function UserInfoFields() {
                 setPasswordConfirmBlurred(true);
                 field.onBlur();
               }}
+              className="w-full!"
             />
           </FormField>
         )}
