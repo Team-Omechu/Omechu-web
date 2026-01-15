@@ -133,6 +133,7 @@ importers:
         version: 7.71.1(react@19.2.3)
 =======
         version: 7.70.0(react@19.2.3)
+<<<<<<< HEAD
 >>>>>>> 9c4cbf42 (chore: tailwind-merge 설치)
 =======
         version: 7.71.0(react@19.2.3)
@@ -159,6 +160,8 @@ importers:
 =======
         version: 7.71.1(react@19.2.3)
 >>>>>>> ba50fa5d ([#220]fix:의존성 재설치)
+=======
+>>>>>>> 9c4cbf42 (chore: tailwind-merge 설치)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -2995,6 +2998,9 @@ packages:
       {
         integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==,
       }
+
+  tailwind-merge@3.4.0:
+    resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
 
   tailwindcss@4.1.18:
     resolution: {integrity: sha512-4+Z+0yiYyEtUVCScyfHCxOYP06L5Ne+JiHhY2IjR2KWMIWhJOYZKLSGZaP5HkZ8+bY0cxfzwDE5uOmzFXyIwxw==}
