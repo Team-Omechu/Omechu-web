@@ -23,16 +23,18 @@ export {
 
 // Terms Config
 export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
-export { TERMS_CONFIG, TERMS_MENU_LIST, isValidTermsType } from "./constants/terms";
+export {
+  TERMS_CONFIG,
+  TERMS_MENU_LIST,
+  isValidTermsType,
+} from "./constants/terms";
 
 // Lib
-export {
-  axiosInstance,
-  setupAxiosInterceptors,
-} from "./lib/axiosInstance";
+export { axiosInstance, setupAxiosInterceptors } from "./lib/axiosInstance";
 export type { AuthStoreGetter } from "./lib/axiosInstance";
 export { lockBodyScroll, unlockBodyScroll } from "./lib/bodyScrollLock";
 export { profileSchema, genderSchema } from "./lib/onboarding.schema";
+export { usePwaEntryModal } from "./lib/usePwaEntryModal";
 
 // Providers (entities 의존 없는 순수 providers만)
 // NOTE: ProtectedRoute, OnboardingGuard는 app/providers에 있음 (FSD: entities 의존)
