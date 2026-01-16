@@ -21,6 +21,10 @@ export {
   indexToSlug,
 } from "./config/userInfoEditSteps";
 
+// Terms Config
+export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
+export { TERMS_CONFIG, TERMS_MENU_LIST, isValidTermsType } from "./constants/terms";
+
 // Lib
 export {
   axiosInstance,
@@ -30,7 +34,8 @@ export type { AuthStoreGetter } from "./lib/axiosInstance";
 export { lockBodyScroll, unlockBodyScroll } from "./lib/bodyScrollLock";
 export { profileSchema, genderSchema } from "./lib/onboarding.schema";
 
-// Providers
+// Providers (entities 의존 없는 순수 providers만)
+// NOTE: ProtectedRoute, OnboardingGuard는 app/providers에 있음 (FSD: entities 의존)
 export { ReactQueryProvider } from "./providers/ReactQueryProvider";
 
 // Stores (shared에서 관리하는 것들만)
@@ -41,7 +46,6 @@ export { useUserInfoSetupStore } from "./store/userInfoSetup.store";
 export { getPresignedUrl, uploadToS3 } from "./api/image";
 
 // UI Components
-// BottomNavigation은 widgets/layout으로 이동 (FSD: auth store 의존)
 export { Header } from "./ui/Header";
 export { MainLoading } from "./ui/MainLoading";
 export { CustomDatePicker } from "./ui/CustomDatePicker";
@@ -88,3 +92,9 @@ export { Label } from "./ui/input/Label";
 
 // UI - Form
 export { FormField } from "./ui/form-field/FormField";
+
+// UI - Auth
+export { AuthButton } from "./ui/auth";
+
+// UI - Terms
+export { TermsContent } from "./ui/terms";

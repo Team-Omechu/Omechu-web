@@ -1,11 +1,8 @@
 "use client";
 
-import type { SubmitHandler } from "react-hook-form";
-
+import type { ModalType } from "../types";
 import TermsAgreement from "./TermsAgreement";
 import UserInfoFields from "./UserInfoFields";
-
-type ModalType = "service" | "privacy" | "location";
 
 type SignUpFormProps = {
   setActiveModal: (modal: ModalType | null) => void;
@@ -20,11 +17,12 @@ export default function SignUpForm({
     <form
       id="signup-form"
       onSubmit={onSubmit}
-      className="mx-auto flex w-full max-w-sm flex-col"
+      className="mx-auto flex w-full flex-col gap-6"
     >
       <UserInfoFields />
 
-      <hr className="my-6 border-t border-grey-dark-hover" />
+      {/* 구분선 */}
+      <hr className="border-t border-font-placeholder" />
 
       <TermsAgreement setActiveModal={setActiveModal} />
     </form>

@@ -1,8 +1,6 @@
 import Image from "next/image";
 
-import { RoundButton } from "@/shared/ui/button/RoundButton";
-import TermsContent from "@/components/settings/TermsContent";
-import type { TermsItem } from "@/components/settings/types";
+import { Button, TermsContent, type TermsItem } from "@/shared";
 
 interface TermsModalProps {
   title: string;
@@ -44,14 +42,9 @@ export default function TermsModal({
 
       {/* 확인 버튼 */}
       <div className="flex justify-center">
-        <RoundButton
-          variant="red"
-          size="md"
-          onClick={onConfirm}
-          className="px-12"
-        >
+        <Button width="md" onClick={onConfirm}>
           확인
-        </RoundButton>
+        </Button>
       </div>
     </div>
   );

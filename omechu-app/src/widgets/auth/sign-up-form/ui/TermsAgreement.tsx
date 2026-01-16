@@ -4,10 +4,10 @@ import React from "react";
 
 import { useFormContext } from "react-hook-form";
 
-import { Checkbox } from "@/shared/ui/checkbox/Checkbox";
-import type { SignupFormValues } from "@/entities/user/model/auth.schema";
+import type { SignupFormValues } from "@/entities/user";
+import { CheckBox } from "@/shared";
 
-type ModalType = "service" | "privacy" | "location";
+import type { ModalType } from "../types";
 
 type TermsAgreementProps = {
   setActiveModal: (modal: ModalType | null) => void;
@@ -50,92 +50,118 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
   };
 
   return (
-    <div className="text-grey-dark-hover space-y-3">
-      <h2 className="text-grey-darker text-center text-lg">
+    <div className="flex flex-col gap-[18px]">
+      {/* 제목 */}
+      <h2 className="text-body-4-medium text-font-high text-center">
         서비스 약관에 동의해 주세요
       </h2>
-      <Checkbox
+
+      {/* 전체 동의 */}
+      <CheckBox
         id="all"
-        label="아래의 내용을 모두 확인하였으며 모두 동의합니다"
+        label={
+          <span className="text-caption-1-regular text-font-high">
+            아래의 내용을 모두 확인하였으며 모두 동의합니다
+          </span>
+        }
         checked={isAllAgreed}
         onChange={handleAllAgreement}
         variant="round"
       />
 
-      <div className="space-y-2 py-3 pl-2">
+      {/* 개별 약관 */}
+      <div className="ml-4 flex flex-col gap-3">
+        {/* 서비스 이용약관 */}
         <div className="flex items-center justify-between">
-          <Checkbox
+          <CheckBox
             id="termsService"
-            label="서비스 이용약관 동의 (필수)"
+            label={
+              <span className="text-caption-1-regular text-font-high">
+                서비스 이용약관 동의(필수)
+              </span>
+            }
             {...register("termsService")}
             variant="round"
           />
           <button
             type="button"
             onClick={() => setActiveModal("service")}
-            className="text-grey-normal-active text-sm"
+            className="text-caption-2-regular text-font-extralow"
           >
             보기
           </button>
         </div>
         {shouldShowServiceError && (
-          <p className="text-primary-normal pl-2 text-xs">
+          <p className="text-caption-2-regular text-status-error ml-6">
             {errors.termsService?.message}
           </p>
         )}
 
+        {/* 개인정보 처리방침 */}
         <div className="flex items-center justify-between">
-          <Checkbox
+          <CheckBox
             id="termsPrivacy"
-            label="개인정보 처리방침 동의 (필수)"
+            label={
+              <span className="text-caption-1-regular text-font-high">
+                개인정보 처리방침 동의(필수)
+              </span>
+            }
             {...register("termsPrivacy")}
             variant="round"
           />
           <button
             type="button"
             onClick={() => setActiveModal("privacy")}
-            className="text-grey-normal-active text-sm"
+            className="text-caption-2-regular text-font-extralow"
           >
             보기
           </button>
         </div>
         {shouldShowPrivacyError && (
-          <p className="text-primary-normal pl-2 text-xs">
+          <p className="text-caption-2-regular text-status-error ml-6">
             {errors.termsPrivacy?.message}
           </p>
         )}
 
+        {/* 위치 기반 서비스 */}
         <div className="flex items-center justify-between">
-          <Checkbox
+          <CheckBox
             id="termsLocation"
-            label="위치 기반 서비스 이용약관 동의 (필수)"
+            label={
+              <span className="text-caption-1-regular text-font-high">
+                위치 기반 서비스 이용약관 동의(필수)
+              </span>
+            }
             {...register("termsLocation")}
             variant="round"
           />
           <button
             type="button"
             onClick={() => setActiveModal("location")}
-            className="text-grey-normal-active text-sm"
+            className="text-caption-2-regular text-font-extralow"
           >
             보기
           </button>
         </div>
         {shouldShowLocationError && (
-          <p className="text-primary-normal pl-2 text-xs">
+          <p className="text-caption-2-regular text-status-error ml-6">
             {errors.termsLocation?.message}
           </p>
         )}
-      </div>
 
-      <div className="pl-2">
-        <Checkbox
+        {/* 만 14세 이상 */}
+        <CheckBox
           id="termsAge"
-          label="본인은 만 14세 이상입니다. (필수)"
+          label={
+            <span className="text-caption-1-regular text-font-high">
+              본인은 만 14세 이상입니다. (필수)
+            </span>
+          }
           {...register("termsAge")}
           variant="round"
         />
         {shouldShowAgeError && (
-          <p className="text-primary-normal pl-2 text-xs">
+          <p className="text-caption-2-regular text-status-error ml-6">
             {errors.termsAge?.message}
           </p>
         )}

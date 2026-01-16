@@ -1,28 +1,29 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "@/entities/user/api/profileApi";
-
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 
-import { CheckBox, Toast } from "@/shared";
-// TODO: Input API가 다름 (label, errorMessage 등 없음) - 호환 필요
-import Input from "@/components/common/Input";
-// TODO: SquareButton이 shared에 없음
-import SquareButton from "@/components/common/button/SquareButton";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+import { ApiClientError } from "@/entities/user/api/authApi";
+import { fetchProfile } from "@/entities/user/api/profileApi";
+import { useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
 import {
   loginSchema,
   LoginFormValues,
 } from "@/entities/user/model/auth.schema";
-import { useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
-import { ApiClientError } from "@/entities/user/api/authApi";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { CheckBox, Toast, Button, FormField, Input } from "@/shared";
 
+/**
+ * SignInForm (Legacy)
+ * - 이메일/비밀번호 로그인 폼
+ * - 새로운 로그인 페이지는 /sign-in/email/page.tsx 사용 권장
+ */
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -42,9 +43,13 @@ export default function SignInForm() {
     register,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const triggerToast = (msg: string) => {
+  const triggerToast = useCallback((msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
     if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
@@ -52,7 +57,7 @@ export default function SignInForm() {
       setShowToast(false);
       toastTimerRef.current = null;
     }, 2500);
-  };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -65,64 +70,52 @@ export default function SignInForm() {
     };
   }, []);
 
-  const onSubmit = (data: LoginFormValues) => {
-    login(data, {
-      onSuccess: async (res) => {
-        try {
-          // 로그인 응답: { resultType, success: { userId, accessToken, refreshToken } }
-          const userKey = res?.success?.userId ?? "me";
+  const onSubmit = useCallback(
+    (data: LoginFormValues) => {
+      login(data, {
+        onSuccess: async (res) => {
+          try {
+            const userKey = res?.success?.userId ?? "me";
 
-          // (1) 캐시에 최소 프로필 시드 → /mypage 최초 진입 즉시 렌더 방지
-          queryClient.setQueryData(["profile", userKey], {
-            id: isNaN(Number(userKey)) ? 0 : Number(userKey),
-            email: "",
-            nickname: "-",
-            gender: "",
-            bodyType: "",
-            exercise: "",
-            prefer: [],
-            allergy: [],
-            profileImageUrl: null,
-            createdAt: "",
-            updatedAt: "",
-          });
+            queryClient.setQueryData(["profile", userKey], {
+              id: isNaN(Number(userKey)) ? 0 : Number(userKey),
+              email: "",
+              nickname: "-",
+              gender: "",
+              bodyType: "",
+              exercise: "",
+              prefer: [],
+              allergy: [],
+              profileImageUrl: null,
+              createdAt: "",
+              updatedAt: "",
+            });
 
-          // (2) 백그라운드에서 실제 프로필 동기화 (200/304)
-          await queryClient.prefetchQuery({
-            queryKey: ["profile", userKey],
-            queryFn: fetchProfile,
-          });
+            await queryClient.prefetchQuery({
+              queryKey: ["profile", userKey],
+              queryFn: fetchProfile,
+            });
 
-          // (3) 최신화 트리거(시드 유지) → /mypage 진입 시 최신값으로 교체
-          queryClient.invalidateQueries({
-            queryKey: ["profile"],
-            exact: false,
-          });
-          justLoggedInRef.current = true;
-        } catch (e) {
-          // prefetch 실패해도 로그인 플로우는 계속 진행
-          console.warn("[SignIn] prefetch profile failed", e);
-        }
-      },
-    });
-  };
+            queryClient.invalidateQueries({
+              queryKey: ["profile"],
+              exact: false,
+            });
+            justLoggedInRef.current = true;
+          } catch (e) {
+            console.warn("[SignIn] prefetch profile failed", e);
+          }
+        },
+      });
+    },
+    [login, queryClient],
+  );
 
-  // 로그인 응답은 토큰 중심으로 처리되고, 최종 유저 정보는 전역에서 /profile 동기화된다고 가정
   const user = useAuthStore((s) => s.user);
 
-  // 최종 유저 프로필 동기화 완료 후 라우팅 (중복 이동 방지)
   useEffect(() => {
-    // 이 폼 인스턴스에서 막 로그인한 경우에만 라우팅 수행
     if (navigatedRef.current) return;
     if (!justLoggedInRef.current) return;
     if (!isSuccess || !user?.email) return;
-
-    if (process.env.NODE_ENV !== "production") {
-      console.log("[SignIn] navigate after login:", {
-        email: user.email,
-        nickname: user.nickname,
-      });
-    }
 
     navigatedRef.current = true;
     if (user.nickname && user.nickname.trim().length > 0) {
@@ -136,9 +129,8 @@ export default function SignInForm() {
     if (!error) return;
     const e = error as ApiClientError & { code?: string; status?: number };
     const code = e?.code;
-    // 1) 서버에서 내려준 reason을 최우선으로 노출
     let msg: string | null = e?.message || null;
-    // 2) 보조 메시지: 특정 코드만 보완
+
     if (!msg) {
       switch (code) {
         case "C001":
@@ -159,28 +151,34 @@ export default function SignInForm() {
       }
     }
     triggerToast(msg || "로그인에 실패했습니다.");
-  }, [error]);
+  }, [error, triggerToast]);
+
+  // eslint-disable-next-line react-hooks/refs -- handleSubmit is from react-hook-form
+  const handleFormSubmit = handleSubmit(onSubmit);
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col gap-4"
-      >
+      <form onSubmit={handleFormSubmit} className="flex w-full flex-col gap-4">
         <Controller
           name="email"
           control={control}
           render={({ field }) => (
-            <Input
+            <FormField
               label="이메일"
-              type="email"
-              placeholder="이메일을 입력해주세요"
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              showError={!!errors.email}
-              errorMessage={errors.email?.message}
-            />
+              id="signin-email"
+              helperText={errors.email?.message}
+              helperState={errors.email ? "error" : undefined}
+            >
+              <Input
+                type="email"
+                placeholder="이메일을 입력해주세요"
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                width="default"
+                className="w-full"
+              />
+            </FormField>
           )}
         />
 
@@ -188,29 +186,29 @@ export default function SignInForm() {
           name="password"
           control={control}
           render={({ field }) => (
-            <Input
+            <FormField
               label="비밀번호"
-              type="password"
-              placeholder="비밀번호를 입력해주세요"
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              showError={!!errors.password}
-              errorMessage={errors.password?.message}
-            />
+              id="signin-password"
+              helperText={errors.password?.message}
+              helperState={errors.password ? "error" : undefined}
+            >
+              <Input
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                width="default"
+                className="w-full"
+              />
+            </FormField>
           )}
         />
 
         <div className="mt-4">
-          <SquareButton
-            type="submit"
-            variant="red"
-            size="lg"
-            disabled={isPending}
-            className="w-full"
-          >
+          <Button type="submit" disabled={isPending} className="w-full">
             {isPending ? "로그인 중..." : "로그인"}
-          </SquareButton>
+          </Button>
         </div>
 
         <div className="text-grey-normal-active mt-2 flex items-center justify-between text-sm">
