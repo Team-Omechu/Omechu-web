@@ -19,7 +19,7 @@ export const MoodStep = () => {
   };
 
   return (
-    <QuestionAnswerLayout title="기분 상태는 어떤가요?">
+    <QuestionAnswerLayout title="날씨는 어떤가요?">
       {moodOptions.map(({ label, value, description }) => (
         <ListButton
           key={value}

@@ -26,7 +26,7 @@ export function RandomRecommendModal({
       return;
     }
     setKeyword(menu.name);
-    router.push(`/mainpage/result/${encodeURIComponent(menu.name)}?record=1`);
+    router.push(`/random-recommend/${encodeURIComponent(menu.name)}?record=1`);
   };
 
   const handleRetry = () => {

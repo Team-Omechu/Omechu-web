@@ -20,6 +20,26 @@ import { useLocationAnswerStore } from "@/entities/location";
 import { TagCard } from "@/widgets/TagCard";
 // TODO: ExcludeButton이 shared/widgets에 없음 - 추가 필요
 
+const menuMock = [
+  {
+    id: 1,
+    menu: "샤브샤브",
+    description: "신성한 채소와 고기를 육수에 살짝 담가 먹는 따끈한 건강식",
+    image_link: "../public/logo/logo.svg",
+  },
+  {
+    id: 2,
+    menu: "스테이크",
+    description: "두툼한 고기의 풍미를 그대로 살린 육즙 가득한 정통 스테이크",
+    image_link: "../public/logo/logo.svg",
+  },
+  {
+    id: 3,
+    menu: "사케동",
+    description: "부드러운 연어회가 듬뿍 올라간 일본식 연어 덮밥",
+    image_link: "../public/logo/logo.svg",
+  },
+];
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } = useGetMenu();
@@ -96,32 +116,32 @@ export default function ResultPage() {
     setExcludeMenu(null);
   };
 
-  if (isLoading || isRefetching) {
-    return <MainLoading />;
-  }
+  // if (isLoading || isRefetching) {
+  //   return <MainLoading />;
+  // } -> 컴포넌트 교체로 잠시 제거
 
   return (
     <div className="flex h-screen flex-col">
-      <Header />
+      <Header onLeftClick={() => router.push("./")} />
 
-      <div className="mt-3 flex flex-col px-4">
-        {!isLoading &&
-          !error &&
-          filteredMenus.map((menu) => (
-            <RecommendedFoodCard
-              key={menu.id}
-              menuTitle={menu.menu}
-              onMinusButtonClick={() => {
-                handleExcludeCLick(menu.menu);
-              }}
-              menuDesc={menu.description}
-              src={menu.image_link}
-              onCardClick={() =>
-                setOpenMenu(openMenu === menu.menu ? null : menu.menu)
-              }
-              selected={openMenu === menu.menu}
-            />
-          ))}
+      {/*!isLoading &&
+          !error && */}
+      <div className="mt-3 ml-2.5 flex flex-col gap-4 px-4">
+        {menuMock.map((menu) => (
+          <RecommendedFoodCard
+            key={menu.id}
+            menuTitle={menu.menu}
+            onMinusButtonClick={() => {
+              handleExcludeCLick(menu.menu);
+            }}
+            menuDesc={menu.description}
+            src={menu.image_link}
+            onCardClick={() =>
+              setOpenMenu(openMenu === menu.menu ? null : menu.menu)
+            }
+            selected={openMenu === menu.menu}
+          />
+        ))}
       </div>
 
       <div className="flex gap-2 px-4 py-2">
