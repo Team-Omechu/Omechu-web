@@ -4,10 +4,7 @@
 
 import { useEffect } from "react";
 
-import {
-  lockBodyScroll,
-  unlockBodyScroll,
-} from "@/shared/lib/bodyScrollLock";
+import { lockBodyScroll, unlockBodyScroll } from "@/shared/lib/bodyScrollLock";
 
 type ModalWrapperProps = {
   children: React.ReactNode;
@@ -25,9 +22,13 @@ export function ModalWrapper({ children }: ModalWrapperProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-40 flex items-center justify-center bg-white opacity-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
     >
-      {children}
+      {/* dim overlay */}
+      <div className="absolute inset-0 bg-black/20" />
+
+      {/* modal content */}
+      <div className="relative z-10 opacity-100">{children}</div>
     </div>
   );
 }

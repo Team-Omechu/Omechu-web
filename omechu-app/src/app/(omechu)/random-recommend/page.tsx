@@ -54,7 +54,11 @@ export default function RandomRecommendPage() {
 
   return (
     <div className="flex h-screen w-full flex-col items-center">
-      <Header onLeftClick={() => router.back()} />
+      <Header
+        onLeftClick={() => router.back()}
+        title="랜덤 추천"
+        isRightChild={true}
+      />
 
       <div className="border-font-placeholder/80 mt-5 flex flex-col gap-2 border-b pb-4">
         <RandomDrawSelector

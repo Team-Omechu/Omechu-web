@@ -43,6 +43,7 @@ const menuMock = [
 export default function ResultPage() {
   const router = useRouter();
   const { data, isLoading, error, refetch, isRefetching } = useGetMenu();
+  const [excludeAttemptCount, setExcludeAttemptCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -68,10 +69,26 @@ export default function ResultPage() {
   const { setKeyword } = useLocationAnswerStore();
 
   const handleExcludeCLick = (menuName: string) => {
-    if (isLoggedIn === false) {
-      setShowLoginModal(true);
+    if (!isLoggedIn) {
+      setExcludeAttemptCount((prev) => {
+        const next = prev + 1;
+
+        // ✅ 3번 이상 누르면 로그인 유도 모달
+        if (next >= 3) {
+          setShowLoginModal(true);
+          return next;
+        }
+
+        // ✅ 1~2번은 기존처럼 "제외 확인 모달"
+        setExcludeMenu(menuName);
+        setShowModal(true);
+        return next;
+      });
+
       return;
     }
+
+    // 로그인 상태면 기존 로직 그대로
     setExcludeMenu(menuName);
     setShowModal(true);
   };
@@ -122,7 +139,11 @@ export default function ResultPage() {
 
   return (
     <div className="flex h-screen flex-col">
-      <Header onLeftClick={() => router.push("./")} />
+      <Header
+        onLeftClick={() => router.push("./")}
+        title="맞춤 추천"
+        isRightChild={true}
+      />
 
       {/*!isLoading &&
           !error && */}

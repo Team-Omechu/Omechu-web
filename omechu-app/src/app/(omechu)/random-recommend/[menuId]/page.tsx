@@ -103,7 +103,11 @@ export default function MenuDetailPage() {
 
   return (
     <div className="flex w-full flex-col">
-      <Header onLeftClick={() => router.push("../")} />
+      <Header
+        onLeftClick={() => router.push("../")}
+        title="오늘의 메뉴"
+        isRightChild={true}
+      />
 
       <div className="mt-4 flex-col items-center justify-center p-4">
         <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">

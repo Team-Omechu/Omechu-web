@@ -101,7 +101,11 @@ export default function MenuDetailPage() {
 
   return (
     <div className="flex w-full flex-col">
-      <Header onLeftClick={() => router.back()} />
+      <Header
+        onLeftClick={() => router.back()}
+        title="맞춤 추천"
+        isRightChild={true}
+      />
 
       <div className="mt-4 flex-col items-center justify-center p-4">
         <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
@@ -143,7 +147,7 @@ export default function MenuDetailPage() {
         </button>
       </div>
 
-      <div className="mt-3 ml-2 items-center justify-center space-y-3.5 px-4">
+      <div className="mt-3 ml-2 items-center justify-center space-y-3.5 px-4 pb-6">
         {/* {isLoading && (
           <div className="flex flex-col gap-4">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -164,7 +168,7 @@ export default function MenuDetailPage() {
             }
           />
         ))}
-        <p className="mr-2 text-center text-[A8A8A8]"> 더보기 </p>
+        <p className="mr-2 text-center text-[#A8A8A8]"> 더보기 </p>
       </div>
 
       <Toast
