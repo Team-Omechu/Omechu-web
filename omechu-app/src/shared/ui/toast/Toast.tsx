@@ -3,16 +3,17 @@
 import Image from "next/image";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const toastStyles = cva(
-  clsx(
+  [
     "fixed left-1/2 -translate-x-1/2 z-50",
     "px-4 py-3 rounded-xl shadow-lg",
     "rounded-[10px] bg-font-disabled",
     "text-caption-1-medium text-brand-secondary whitespace-pre-wrap",
     "transition-opacity duration-300 ease-in-out",
-  ),
+  ],
   {
     variants: {
       state: {
@@ -41,7 +42,7 @@ export function Toast({
   className?: string;
 }) {
   return (
-    <div className={clsx(toastStyles({ state, show }), className)}>
+    <div className={cn(toastStyles({ state, show }), className)}>
       {state === "success" && (
         <span className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2">
           <Image
@@ -53,12 +54,12 @@ export function Toast({
         </span>
       )}
       <div
-        className={clsx(
+        className={cn(
           state === "error" ? "flex w-full justify-center text-center" : "",
         )}
       >
         <div
-          className={clsx(
+          className={cn(
             "w-full whitespace-pre-line",
             state === "success" ? "ml-8" : "",
           )}

@@ -3,17 +3,18 @@
 import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const RandomDrawButtonStyles = cva(
-  clsx(
+  [
     "h-10",
     "flex items-center justify-center",
     "text-background-secondary text-caption-1-regular",
     "rounded-xl",
     "active:bg-statelayer-pressed active:text-brand-secondary",
     "transition-all",
-  ),
+  ],
   {
     variants: {
       width: {
@@ -49,7 +50,7 @@ export const RandomDrawButton = ({
     <button
       type="button"
       onClick={onClick}
-      className={clsx(RandomDrawButtonStyles({ width, selected }), className)}
+      className={cn(RandomDrawButtonStyles({ width, selected }), className)}
       {...props}
     >
       {children}
