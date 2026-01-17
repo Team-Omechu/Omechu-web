@@ -56,10 +56,6 @@ export default function AllergyForm() {
         <h1 className="text-foundation-grey-darker mt-12 text-center text-[28px] font-medium whitespace-pre-line">
           알레르기가 있나요?
         </h1>
-        <div className="mt-12 h-fit w-63.5"></div>
-        <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">
-          알레르기가 있나요?
-        </h1>
         <div className="xs:mt-4 mt-10 h-fit w-63.5">
           <div className="grid grid-cols-3 gap-4">
             {ALLERGY_OPTIONS.slice(0, -2).map(({ label }, idx) => (
