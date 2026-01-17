@@ -2,7 +2,7 @@
 
 import { cva } from "class-variance-authority";
 
-import { cn } from "../lib/cn.util";
+import { cn } from "@/shared/lib/cn.util";
 
 type ProgressBarProps = {
   currentStep: number;
