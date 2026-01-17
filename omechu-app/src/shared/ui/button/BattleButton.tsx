@@ -3,10 +3,11 @@
 import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const battleButtonStyles = cva(
-  clsx(
+  [
     // 모양
     "h-12",
     "rounded-[10px]",
@@ -15,7 +16,7 @@ const battleButtonStyles = cva(
     // 인터랙션
     "active:bg-statelayer-pressed active:text-brand-secondary",
     "disabled:bg-statelayer-disabled disabled:cursor-not-allowed disabled:active:bg-statelayer-disabled",
-  ),
+  ],
   {
     variants: {
       fontColor: {
@@ -55,7 +56,7 @@ export const BattleButton = ({
   return (
     <button
       type="button"
-      className={clsx(battleButtonStyles({ fontColor, bgColor, width }), className)}
+      className={cn(battleButtonStyles({ fontColor, bgColor, width }), className)}
       {...props}
     >
       {children}

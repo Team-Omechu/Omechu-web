@@ -4,7 +4,8 @@ import * as React from "react";
 import Image from "next/image";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const inputStyles = cva(
   [
@@ -49,7 +50,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
 
     return (
       <div
-        className={clsx(
+        className={cn(
           "relative",
           inputStyles({ width, height, rounded }),
           className,
@@ -92,7 +93,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   ) => {
     return (
       <div
-        className={clsx(
+        className={cn(
           "relative",
           inputStyles({ width, height, rounded }),
           className,
@@ -134,7 +135,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
     }
     return (
       <div
-        className={clsx(
+        className={cn(
           "relative",
           inputStyles({ width, height, rounded }),
           className,

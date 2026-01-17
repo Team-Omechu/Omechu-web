@@ -4,7 +4,7 @@
 
 import Image from "next/image";
 
-import clsx from "clsx";
+import { cn } from "@/shared/lib/cn.util";
 
 interface FoodBoxProps {
   src: string;
@@ -23,13 +23,13 @@ export const FoodBox = ({
     <button
       onClick={onClick}
       aria-label={`${title} 선택 버튼`}
-      className={clsx(
+      className={cn(
         "bg-brand-secondary h-25 w-25 rounded-xl transition-all",
         isSelected ? "border-brand-primary border-2" : "",
       )}
     >
       <div
-        className={clsx(
+        className={cn(
           "flex h-full w-full flex-col items-center justify-between rounded-2xl p-2",
           isSelected ? "bg-brand-secondary opacity-40" : "",
         )}

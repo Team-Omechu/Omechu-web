@@ -3,19 +3,20 @@
 import Image from "next/image";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const buttonContainerStyle = "w-12 h-14 flex flex-col gap-2 items-center";
 
 const buttonLabelStyle = "text-caption-2-regular text-font-disabled";
 
 const buttonStyles = cva(
-  clsx(
+  [
     "flex items-center justify-center",
     "w-[30px] h-[30px]",
     "bg-[#CACACA] opacity-100",
     "rounded-full transition-colors",
-  ),
+  ],
   {
     variants: {
       direction: {
@@ -43,7 +44,7 @@ export function PaginationButton({
       aria-label={direction === "left" ? "이전 페이지" : "다음 페이지"}
     >
       <div
-        className={clsx(buttonStyles({ direction }), className)}
+        className={cn(buttonStyles({ direction }), className)}
         aria-hidden="true"
       >
         <Image

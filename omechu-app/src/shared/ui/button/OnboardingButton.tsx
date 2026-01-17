@@ -3,15 +3,16 @@
 import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const OnboardingButtonStyles = cva(
-  clsx(
+  [
     "h-12 p-2.5",
     "flex items-center justify-center",
     "rounded-[10px]",
     "transition-all",
-  ),
+  ],
   {
     variants: {
       width: {
@@ -49,7 +50,7 @@ export const OnboardingButton = ({
     <button
       type="button"
       onClick={onClick}
-      className={clsx(OnboardingButtonStyles({ width, selected }), className)}
+      className={cn(OnboardingButtonStyles({ width, selected }), className)}
       {...props}
     >
       {children}

@@ -13,6 +13,8 @@
 
 import Image from "next/image";
 
+import { cn } from "@/shared/lib/cn.util";
+
 type FloatingActionButtonProps = {
   onClick: () => void; // 클릭 시 실행할 함수 (예: scrollToTop)
   className?: string; // 페이지별로 컴포넌트 위치 설정 (예: bottom-24)
@@ -26,7 +28,7 @@ export function FloatingActionButton({
 }: FloatingActionButtonProps) {
   return (
     <section
-      className={`fixed right-4 z-10 -translate-x-1/2 transform ${className}`}
+      className={cn("fixed right-4 z-10 -translate-x-1/2 transform", className)}
     >
       <button onClick={onClick}>
         <Image

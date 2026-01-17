@@ -1,7 +1,8 @@
 //! 26.01.06 작업
 
 import { cva } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 type ProgressBarProps = {
   currentStep: number;
@@ -31,7 +32,7 @@ export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
         {Array.from({ length: totalSteps }).map((_, index) => (
           <div
             key={index}
-            className={clsx(
+            className={cn(
               "flex-1",
               segmentStyle({ filled: index < currentStep }),
             )}
