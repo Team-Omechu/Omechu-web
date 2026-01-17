@@ -61,11 +61,7 @@ export default function ExamplePage() {
           <CustomDatePicker onChange={handleDateRangeChange} />
         </section>
       )}
-      <main className="flex flex-col items-center">
-        <div className="mt-10 text-center whitespace-pre-line">
-          {`SVGR 라이브러리 사용해보셨나요? \n\n 근데 이게 Webpack 기반이라 \n turbopack 기반인 Next.js에서 안된대요. ㅠㅠ`}
-        </div>
-      </main>
+      <main className="flex flex-col items-center"></main>
     </>
   );
 }

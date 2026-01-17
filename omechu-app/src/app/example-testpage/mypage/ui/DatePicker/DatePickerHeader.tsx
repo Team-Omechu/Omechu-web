@@ -1,9 +1,11 @@
-// DatePickerHeader.tsx
+//* 26.01.18 작업
+
 "use client";
 
 import { useState } from "react";
 
 import { getMonth, getYear } from "date-fns";
+import type { ReactDatePickerCustomHeaderProps } from "react-datepicker";
 
 import { ArrowCalenderIcon } from "@/shared/assets/icons/mypage/ArrowCalenderIcon";
 
@@ -18,7 +20,7 @@ export function DatePickerHeader({
   increaseMonth,
   prevMonthButtonDisabled,
   nextMonthButtonDisabled,
-}: any) {
+}: ReactDatePickerCustomHeaderProps) {
   const [isMonthOpen, setIsMonthOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
 
@@ -35,14 +37,13 @@ export function DatePickerHeader({
         <ArrowCalenderIcon className="h-6 w-3 scale-x-[-1]" />
       </button>
 
-      {/* 월 */}
       <div className="relative">
         <button
           type="button"
           onClick={() => setIsMonthOpen((prev) => !prev)}
           className="border-font-disabled text-font-high flex h-7 w-22 items-center justify-between rounded-lg border px-2 text-sm"
         >
-          <span>{month}월</span>
+          <span>{month}</span>
           <span className="text-xs">▼</span>
         </button>
 
@@ -61,7 +62,7 @@ export function DatePickerHeader({
                     : ""
                 }`}
               >
-                {m}월
+                {m}
               </button>
             ))}
           </div>
@@ -75,7 +76,7 @@ export function DatePickerHeader({
           onClick={() => setIsYearOpen((prev) => !prev)}
           className="border-font-disabled text-font-high flex h-7 w-22 items-center justify-between rounded-lg border px-2 text-sm"
         >
-          <span>{year}년</span>
+          <span>{year}</span>
           <span className="text-xs">▼</span>
         </button>
 
