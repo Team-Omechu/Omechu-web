@@ -4,7 +4,6 @@
 import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { CloseEyeIcon, OpenEyeIcon, SearchIcon } from "@/shared/assets/icons";
