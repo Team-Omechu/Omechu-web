@@ -47,13 +47,13 @@ export default function StateForm() {
             </OnboardingButton>
           ))}
         </div>
-        <BottomButton
-          disabled={selectedIndex === null}
-          onClick={() => router.push("food")}
-        >
-          다음
-        </BottomButton>
       </section>
+      <BottomButton
+        disabled={selectedIndex === null}
+        onClick={() => router.push("food")}
+      >
+        다음
+      </BottomButton>
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal

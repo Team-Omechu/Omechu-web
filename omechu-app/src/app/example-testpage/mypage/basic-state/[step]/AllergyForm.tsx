@@ -103,13 +103,13 @@ export default function AllergyForm() {
             })}
           </div>
         </div>
-        <BottomButton
-          disabled={selectedIndexes.length === 0}
-          onClick={() => setShowSaveModal(true)}
-        >
-          저장
-        </BottomButton>
       </section>
+      <BottomButton
+        disabled={selectedIndexes.length === 0}
+        onClick={() => setShowSaveModal(true)}
+      >
+        저장
+      </BottomButton>
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal
