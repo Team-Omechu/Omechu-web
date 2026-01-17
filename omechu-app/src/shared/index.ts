@@ -46,13 +46,21 @@ export { useUserInfoSetupStore } from "./store/userInfoSetup.store";
 // API
 export { getPresignedUrl, uploadToS3 } from "./api/image";
 
-// UI Components
-export { Header } from "./ui/Header";
-export { MainLoading } from "./ui/MainLoading";
-export { SortSelector } from "./ui/SortSelector";
-export { LoadingSpinner } from "./ui/LoadingIndicator";
-export { ProgressBar } from "./ui/ProgressBar";
-export { SearchBar } from "./ui/SearchBar";
+// UI - Header
+export { Header } from "./ui/header/Header";
+
+// UI - Loading
+export { MainLoading } from "./ui/loading/MainLoading";
+export { LoadingSpinner } from "./ui/loading/LoadingIndicator";
+
+// UI - Progress
+export { ProgressBar } from "./ui/progress/ProgressBar";
+
+// UI - Search
+export { SearchBar } from "./ui/search/SearchBar";
+
+// UI - Picker
+export { SortSelector } from "./ui/picker/SortSelector";
 
 // UI - Box
 export { CheckBox } from "./ui/box/CheckBox";
@@ -96,7 +104,7 @@ export { Label } from "./ui/input/Label";
 export { FormField } from "./ui/form-field/FormField";
 
 // UI - Auth
-export { AuthButton } from "./ui/auth";
+export { AuthButton } from "./ui/auth/AuthButton";
 
 // UI - Terms
-export { TermsContent } from "./ui/terms";
+export { TermsContent } from "./ui/terms/TermsContent";
