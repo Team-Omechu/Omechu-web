@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { ALLERGY_OPTIONS } from "@/shared/constants/mypage";
 import {
   BaseModal,
   BottomButton,
@@ -14,29 +15,6 @@ import {
   OnboardingButton,
   ProgressBar,
 } from "@/shared/index";
-
-const ALLERGY_OPTIONS = [
-  { label: "달걀", value: "egg" },
-  { label: "우유", value: "milk" },
-  { label: "메밀", value: "buckwheat" },
-  { label: "대두", value: "soy" },
-  { label: "밀", value: "wheat" },
-  { label: "땅콩", value: "peanut" },
-  { label: "호두", value: "walnut" },
-  { label: "잣", value: "pine_nut" },
-  { label: "돼지고기", value: "pork" },
-  { label: "소고기", value: "beef" },
-  { label: "닭고기", value: "chicken" },
-  { label: "고등어", value: "mackerel" },
-  { label: "새우", value: "shrimp" },
-  { label: "게", value: "crab" },
-  { label: "오징어", value: "squid" },
-  { label: "조개류", value: "shellfish" },
-  { label: "복숭아", value: "peach" },
-  { label: "토마토", value: "tomato" },
-  { label: "아황산류", value: "sulfites" },
-  { label: "그 외", value: "other" },
-] as const;
 
 export default function AllergyForm() {
   const router = useRouter();

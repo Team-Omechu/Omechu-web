@@ -1,49 +1,72 @@
-/* eslint-disable @next/next/no-img-element */
-import { Suspense } from "react";
+"use client";
 
-import Link from "next/link";
+import { useState } from "react";
 
-import { ProfileSection, MenuSection } from "@/entities/mypage";
-import { Header } from "@/shared";
+import { Header, ModalWrapper } from "@/shared";
+import { MypageModal } from "@/shared/ui/modal/MypageModal";
+import {
+  CustomerSupportSection,
+  SetAlarmSection,
+  UserInfoSection,
+} from "@/widgets/mypage/ui";
 
-const menuList: { title: string; href: string }[] = [
-  { title: "프로필 관리", href: "/mypage/profile-edit" },
-  { title: "기본 상태 입력", href: "/mypage/user-info-edit" },
-  { title: "추천 목록 관리", href: "/mypage/recommended-list" },
-  { title: "먹부림 기록", href: "/mypage/foodie-log" },
-  { title: "활동 내역", href: "/mypage/my-activity" },
-  { title: "찜 목록", href: "/mypage/favorites" },
-];
+const MOCK_USER_INFO = {
+  name: "제나",
+  exerciseStatus: "다이어트 중",
+  favoriteFood: "한식 다른 나라",
+  allergy: "갑각류",
+};
 
-export default function MyPage() {
+export default function MypageMain() {
+  const [userInfo, setUserInfo] = useState(MOCK_USER_INFO);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleCloseModal = () => {
+    setInputValue("");
+    setIsModalOpen(false);
+  };
+
+  const handleSubmitNickname = () => {
+    if (!inputValue.trim()) return;
+
+    // TODO: 닉네임 변경 API
+    setUserInfo((prev) => ({
+      ...prev,
+      name: inputValue,
+    }));
+
+    handleCloseModal();
+  };
+
   return (
     <>
-      <Suspense fallback={<div className="h-12" />}>
-        <Header
-          className={"border-b-0"}
-          rightChild={
-            <Link href="/settings">
-              <img
-                src="/setting/setting.svg"
-                alt="설정"
-                width={25}
-                height={25}
-              />
-            </Link>
-          }
-        />
-      </Suspense>
+      <Header title="마이페이지" isRightChild />
 
-      <Suspense
-        fallback={
-          <div className="text-grey-normal p-6 text-sm">로딩 중...</div>
-        }
-      >
-        <main className="scrollbar-hide flex h-[calc(100dvh-8rem)] w-full flex-col items-center justify-start gap-16 overflow-y-auto px-10 py-16 pb-[env(safe-area-inset-bottom)]">
-          <ProfileSection />
-          <MenuSection menuList={menuList} />
-        </main>
-      </Suspense>
+      <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
+        <UserInfoSection
+          {...userInfo}
+          onNicknameClick={() => {
+            setInputValue(userInfo.name);
+            setIsModalOpen(true);
+          }}
+        />
+        <SetAlarmSection />
+        <CustomerSupportSection />
+      </main>
+
+      {isModalOpen && (
+        <ModalWrapper className="pb-52" onClose={handleCloseModal}>
+          <MypageModal
+            title="닉네임 변경"
+            placeholder={userInfo.name}
+            inputValue={inputValue}
+            onChangeInput={setInputValue}
+            onLeftButtonClick={handleCloseModal}
+            onRightButtonClick={handleSubmitNickname}
+          />
+        </ModalWrapper>
+      )}
     </>
   );
 }

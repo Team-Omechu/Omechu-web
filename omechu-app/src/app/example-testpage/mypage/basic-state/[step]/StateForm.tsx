@@ -62,7 +62,7 @@ export default function StateForm() {
             isCloseButtonShow={false}
             leftButtonText="그만하기"
             rightButtonText="계속하기"
-            onLeftButtonClick={() => router.push("/example-testpage/mypage")}
+            onLeftButtonClick={() => router.push("/mypage")}
             onRightButtonClick={() => setShowCancleModal(false)}
           />
         </ModalWrapper>

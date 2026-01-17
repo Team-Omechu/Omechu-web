@@ -94,7 +94,8 @@
   line-height: 32px !important;
 }
 
-.react-datepicker__day--in-range {
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range {
   color: --var(--color-font-high) !important;
   background-color: #eeeeee !important;
   border-radius: 0.3rem;
@@ -105,8 +106,15 @@
   background-color: #242424 !important;
   border-radius: 0.3rem;
 } */
+
 .react-datepicker__day--range-start,
 .react-datepicker__day--range-end {
+  color: #fff !important;
+  background-color: #242424 !important;
+  border-radius: 0.3rem;
+}
+
+.react-datepicker__day--keyboard-selected {
   color: #fff !important;
   background-color: #242424 !important;
   border-radius: 0.3rem;

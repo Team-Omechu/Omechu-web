@@ -17,7 +17,7 @@ interface UserInfoSectionProps {
   onNicknameClick: () => void;
 }
 
-export default function UserInfoCard({
+export function UserInfoSection({
   name,
   exerciseStatus,
   favoriteFood,
@@ -85,7 +85,7 @@ export default function UserInfoCard({
 
       <div className="text-font-high text-body-4-medium flex w-full">
         <button
-          onClick={() => router.push("/recommended-list")}
+          onClick={() => router.push("/mypage/recommended-list")}
           className="border-font-placeholder flex h-14 w-42 flex-1 items-center justify-center gap-2 border-r"
         >
           <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
@@ -94,7 +94,7 @@ export default function UserInfoCard({
           <span>추천 목록 관리</span>
         </button>
         <button
-          onClick={() => router.push("mukburim-log")}
+          onClick={() => router.push("mypage/mukburim-log")}
           className="flex h-14 w-42 items-center justify-center gap-2"
         >
           <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">

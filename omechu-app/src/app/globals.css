@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* 커스텀은 항상 마지막 */
+@import "react-datepicker/dist/react-datepicker.css";
+
 @import "../styles/datepicker.css";
 
 button {

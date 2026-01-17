@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { Header } from "@/shared/ui/Header";
+import { Header } from "@/shared";
 
 /**
  * 로그인 관련 페이지 레이아웃
@@ -34,9 +34,7 @@ export default function SignInLayout({
       </div>
 
       {/* 컨텐츠 영역 */}
-      <div className="flex flex-1 flex-col items-center">
-        {children}
-      </div>
+      <div className="flex flex-1 flex-col items-center">{children}</div>
     </>
   );
 }

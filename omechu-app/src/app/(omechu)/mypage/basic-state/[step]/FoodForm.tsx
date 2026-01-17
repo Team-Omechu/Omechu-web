@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { FOOD_OPTIONS } from "@/shared/constants/mypage";
 import {
   BaseModal,
   BottomButton,
@@ -14,14 +15,6 @@ import {
   OnboardingButton,
   ProgressBar,
 } from "@/shared/index";
-
-const FOOD_OPTIONS = [
-  { label: "🍚 한식", value: "korean" },
-  { label: "🍝 양식", value: "western" },
-  { label: "🥟 중식", value: "chinese" },
-  { label: "🍣 일식", value: "japanese" },
-  { label: "🌮 다른 나라", value: "other" },
-] as const;
 
 export default function FoodForm() {
   const router = useRouter();
