@@ -55,13 +55,13 @@ export default function FoodForm() {
             </OnboardingButton>
           ))}
         </div>
-        <BottomButton
-          disabled={selectedIndexes.length === 0}
-          onClick={() => router.push("allergy")}
-        >
-          다음
-        </BottomButton>
       </section>
+      <BottomButton
+        disabled={selectedIndexes.length === 0}
+        onClick={() => router.push("allergy")}
+      >
+        다음
+      </BottomButton>
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal
