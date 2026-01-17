@@ -16,10 +16,10 @@
 | Classes & Components               | **PascalCase**                      | `User`, `EmptyList`                     |
 | Constants                          | **UPPER_SNAKE_CASE**                | `const MAX_LIMIT = 100;`                |
 | Folders                            | **kebab-case**                      | `user-profile/`, `food-recommendation/` |
-| Component Files                    | **component-name.ui.tsx**           | `user-avatar.ui.tsx`                    |
-| Hook Files                         | **use-feature.hook.ts**             | `use-debounce.hook.ts`                  |
-| Utility Files                      | **feature.util.ts**                 | `format.util.ts`                        |
-| API Files                          | **feature.api.ts**                  | `auth.api.ts`                           |
+| Component Files                    | **PascalCase.tsx**                  | `UserCard.tsx`, `Header.tsx`            |
+| Hook Files                         | **use*.ts**                         | `useAuth.ts`, `useProfile.ts`           |
+| Utility Files                      | **camelCase.ts**                    | `formatDate.ts`, `validation.ts`        |
+| API Files                          | **camelCaseApi.ts or folder**       | `authApi.ts`, `profileApi.ts`           |
 | Store Files                        | **feature.store.ts**                | `user.store.ts`                         |
 | Type Files                         | **feature.types.ts**                | `user.types.ts`                         |
 | Constant Files                     | **feature.const.ts**                | `routes.const.ts`                       |
