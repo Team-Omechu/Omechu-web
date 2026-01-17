@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+
+import clsx from "clsx";
 
 import { Header } from "@/shared/index";
 
@@ -86,6 +88,12 @@ export default function ExamplePage() {
     endDate: Date | null;
   }>({ startDate: null, endDate: null });
 
+  type SortOrder = "MostLogged" | "LatestLogged";
+
+  const [sortOrder, setSortOrder] = useState<SortOrder>("MostLogged");
+
+  const supportsLatestSort = true;
+
   const handlePeriodChange = (period: Period) => {
     setSelectedPeriod(period);
     setVisibleCount(INITIAL_VISIBLE);
@@ -120,16 +128,51 @@ export default function ExamplePage() {
         </section>
       )}
       <main className="flex flex-col items-center">
-        <section className="grid grid-cols-3 gap-4.5">
-          {MUKBURIM_FOOD_MOCK_DATA.map((item, index) => (
-            <MukburimFoodFoodBox
-              key={index}
-              frequency={item.frequency}
-              src={item.src}
-              title={item.title}
-            />
-          ))}
-        </section>
+        {/* 정렬 */}
+        <div>
+          <section className="text-caption-2-medium mt-2 mb-3 flex w-full justify-end gap-2">
+            <button
+              className={
+                sortOrder === "MostLogged"
+                  ? "text-font-high"
+                  : "text-font-extralow"
+              }
+              onClick={() => setSortOrder("MostLogged")}
+            >
+              많이 먹은 순
+            </button>
+            <span>|</span>
+            <button
+              disabled={!supportsLatestSort}
+              title={
+                !supportsLatestSort
+                  ? "API에서 최근 시각 정보가 없어 정렬할 수 없습니다."
+                  : undefined
+              }
+              className={clsx(
+                sortOrder === "LatestLogged"
+                  ? "text-font-high"
+                  : "text-font-extralow",
+                !supportsLatestSort ? "cursor-not-allowed opacity-50" : "",
+              )}
+              onClick={() => supportsLatestSort && setSortOrder("LatestLogged")}
+            >
+              최근 먹은 순
+            </button>
+          </section>
+
+          {/* 먹부림 카드 */}
+          <section className="grid grid-cols-3 gap-4.5">
+            {MUKBURIM_FOOD_MOCK_DATA.map((item) => (
+              <MukburimFoodFoodBox
+                key={item.id}
+                frequency={item.frequency}
+                src={item.src}
+                title={item.title}
+              />
+            ))}
+          </section>
+        </div>
       </main>
     </>
   );
