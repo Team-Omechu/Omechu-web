@@ -7,10 +7,7 @@ import { useEffect } from "react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import {
-  lockBodyScroll,
-  unlockBodyScroll,
-} from "@/shared_FSD/lib/bodyScrollLock";
+import { lockBodyScroll, unlockBodyScroll } from "@/shared/lib/bodyScrollLock";
 
 type ModalWrapperProps = {
   children: React.ReactNode;

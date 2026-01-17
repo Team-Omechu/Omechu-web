@@ -6,11 +6,8 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
 
-import {
-  CloseEyeIcon,
-  OpenEyeIcon,
-} from "@/shared_FSD/assets/icons/ui/input/EyeIcon";
-import { SearchIcon } from "@/shared_FSD/assets/icons/ui/input/SearchIcon";
+import { CloseEyeIcon, OpenEyeIcon } from "@/shared/assets/icons/index";
+import { SearchIcon } from "@/shared/assets/icons/index";
 
 const inputBaseStyles = cva(
   [

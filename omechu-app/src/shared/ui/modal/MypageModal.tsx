@@ -2,8 +2,8 @@
 
 "use client";
 
+import { CloseIcon } from "@/shared/assets/icons/index";
 import { BaseModal } from "@/shared/index";
-import { CloseIcon } from "@/shared_FSD/assets/icons/index";
 
 interface MypageModalProps {
   title: string;

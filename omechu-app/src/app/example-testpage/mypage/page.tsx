@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-import { Header, ModalWrapper, MypageModal } from "@/shared_FSD/index";
+import { Header, ModalWrapper } from "@/shared";
+import { MypageModal } from "@/shared/ui/modal/MypageModal";
 
 import CustomerSupportSection from "./ui/CustomerSupportSection";
 import SetAlarmSection from "./ui/SetAlarmSection";

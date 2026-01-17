@@ -3,12 +3,12 @@ import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/shared/lib/cn.util";
 import {
   CloseEyeIcon,
   OpenEyeIcon,
   SearchIcon,
-} from "@/shared_FSD/assets/icons";
+} from "@/shared/assets/icons/index";
+import { cn } from "@/shared/lib/cn.util";
 
 const inputBaseStyles = cva(
   [

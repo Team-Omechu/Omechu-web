@@ -4,11 +4,8 @@
 
 import { useEffect } from "react";
 
+import { lockBodyScroll, unlockBodyScroll } from "@/shared/lib/bodyScrollLock";
 import { cn } from "@/shared/lib/cn.util";
-import {
-  lockBodyScroll,
-  unlockBodyScroll,
-} from "@/shared_FSD/lib/bodyScrollLock";
 
 type ModalWrapperProps = {
   children: React.ReactNode;
