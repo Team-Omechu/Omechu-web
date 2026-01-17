@@ -18,7 +18,7 @@ import {
 type Period = (typeof PERIOD_OPTIONS)[number];
 const INITIAL_VISIBLE = 9;
 
-export default function ExamplePage() {
+export default function MukburimLogPage() {
   const router = useRouter();
 
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("전체");
