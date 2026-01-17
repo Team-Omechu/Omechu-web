@@ -9,8 +9,8 @@ import { cn } from "@/shared/lib/cn.util";
 const bottomButtonStyles = cva(
   [
     // 위치
-    "fixed bottom-0 left-0 right-0 z-50",
-    "w-full h-[50px]",
+    "fixed bottom-0  z-50",
+    "min-w-108 h-[50px]",
     "rounded-t-[16px]",
     "flex items-center justify-center",
 
