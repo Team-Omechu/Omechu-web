@@ -4,50 +4,35 @@
 
 import Image from "next/image";
 
-import { CirclePlus, CircleMinus } from "@/shared/assets/icons/index";
-
 interface MukburimFoodBoxProps {
   src: string;
   title: string;
-  onClick?: () => void;
-  isToggled: boolean;
+  frequency: string;
 }
 
 export const MukburimFoodFoodBox = ({
   src,
+  frequency = "0",
   title,
-  onClick,
-  isToggled,
 }: MukburimFoodBoxProps) => {
   return (
-    <div
-      aria-label={`${title} 선택 버튼`}
-      className="bg-brand-secondary relative h-25 w-25 rounded-xl transition-all"
-    >
-      <button className="absolute top-1 right-1" onClick={onClick}>
-        {isToggled ? (
-          <CirclePlus className="w-5" currentColor="#A8A8A8" />
-        ) : (
-          <CircleMinus className="w-5" currentColor="#A8A8A8" />
-        )}
-      </button>
-      <div className="flex h-full w-full flex-col items-center justify-between rounded-2xl p-2">
-        <figure className="flex h-16 w-16 items-center">
-          <Image
-            src={src || "/image/image_empty.svg"}
-            alt={`${title} 메뉴 이미지`}
-            width={80}
-            height={80}
-            sizes="80px"
-            loading="lazy"
-            unoptimized={false}
-            className="rounded-xl object-fill"
-          />
-        </figure>
-        <figcaption className="text-body-4-medium text-font-high">
-          {title}
-        </figcaption>
-      </div>
+    <div className="relatvie bg-brand-secondary relative h-25 w-25 rounded-xl transition-all">
+      <span className="text-body-4-medium text-font-high absolute top-1 left-1/2 -translate-x-1/2">
+        {frequency} 회
+      </span>
+      <Image
+        src={src || "/image/image_empty.svg"}
+        alt={`${title} 메뉴 이미지`}
+        width={100}
+        height={100}
+        sizes="80px"
+        loading="lazy"
+        unoptimized={false}
+        className="rounded-xl object-fill"
+      />
+      <span className="text-body-4-medium text-font-high absolute bottom-1 left-1/2 w-full -translate-x-1/2 text-center">
+        {title}
+      </span>
     </div>
   );
 };
