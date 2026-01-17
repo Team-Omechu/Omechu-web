@@ -99,7 +99,7 @@ export default function SignUpPage() {
     <FormProvider {...methods}>
       <div className="flex flex-col">
         {/* 헤더 */}
-        <Header onLeftClick={() => router.back()} />
+        <Header />
 
         {/* 제목 */}
         <div className="px-5 py-5 text-center">
