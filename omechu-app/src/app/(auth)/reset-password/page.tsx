@@ -57,7 +57,7 @@ function ResetPasswordClient() {
 
   return (
     <main className="flex flex-1 flex-col">
-      <Header onLeftClick={() => router.back()} />
+      <Header />
 
       <div className="flex flex-col px-5">
         {/* 타이틀 영역 */}

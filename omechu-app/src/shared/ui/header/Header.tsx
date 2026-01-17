@@ -1,64 +1,128 @@
-//! 26.01.05 작업 완료
+//! 26.01.17 리팩토링
 
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-import { cva, VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/shared/lib/cn.util";
 
-const headerStyles = cva([
-  "flex items-center px-5 py-2.5 my-2",
-  "w-full h-12",
-  "text-body-3-medium text-font-high",
-]);
+const headerStyles = cva(
+  [
+    "flex items-center justify-between",
+    "w-full",
+    "px-5 pt-5 pb-2.5",
+  ],
+  {
+    variants: {
+      variant: {
+        default: "", // 뒤로가기 + 타이틀 + 홈
+        mypage: "justify-end", // 프로필 아이콘만 (우측)
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
 
-type HeaderStyleProps = VariantProps<typeof headerStyles>;
-
-type HeaderProps = {
-  title?: React.ReactNode;
-  leftChild?: React.ReactNode;
-  isRightChild?: boolean;
+type HeaderProps = VariantProps<typeof headerStyles> & {
+  title?: string;
+  showBackButton?: boolean;
+  showHomeButton?: boolean;
+  showProfileButton?: boolean;
+  onBackClick?: () => void;
   className?: string;
-  onLeftClick?: () => void;
-  onRightClick?: () => void;
-} & HeaderStyleProps;
+};
 
 export const Header = ({
+  variant = "default",
   title,
-  leftChild,
-  isRightChild = false,
-  onLeftClick,
-  onRightClick,
+  showBackButton = true,
+  showHomeButton = true,
+  showProfileButton = false,
+  onBackClick,
   className,
 }: HeaderProps) => {
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (onBackClick) {
+      onBackClick();
+    } else {
+      router.back();
+    }
+  };
+
+  // mypage variant: 프로필 아이콘만 표시
+  if (variant === "mypage") {
+    return (
+      <header className={cn(headerStyles({ variant }), className)}>
+        <Link href="/mypage" aria-label="마이페이지">
+          <Image
+            src="/header/person.svg"
+            alt=""
+            width={24}
+            height={24}
+          />
+        </Link>
+      </header>
+    );
+  }
+
+  // default variant: 뒤로가기 + 타이틀 + 홈
   return (
-    <header className={cn(headerStyles(), "justify-between", className)}>
-      <button
-        type="button"
-        onClick={onLeftClick}
-        className="flex shrink-0 items-center justify-start gap-2"
-      >
-        <Image
-          src="/arrow/left-header-arrow.svg"
-          alt="뒤로가기"
-          width={24}
-          height={24}
-        />
-        {leftChild}
-      </button>
-      {title && (
-        <div className="mx-2 line-clamp-2 flex-1 text-center">{title}</div>
-      )}
-      {isRightChild ? (
+    <header className={cn(headerStyles({ variant }), className)}>
+      {/* 왼쪽: 뒤로가기 버튼 */}
+      {showBackButton ? (
         <button
           type="button"
-          onClick={onRightClick}
-          className="flex shrink-0 items-center justify-end"
+          onClick={handleBack}
+          className="shrink-0"
+          aria-label="뒤로가기"
         >
-          <Image src="/x/black_x_icon.svg" alt="닫기" width={24} height={24} />
+          <Image
+            src="/header/chevron-left.svg"
+            alt=""
+            width={24}
+            height={24}
+          />
         </button>
+      ) : (
+        <div className="w-6 shrink-0" />
+      )}
+
+      {/* 중앙: 타이틀 (없어도 공간 유지) */}
+      <div className="flex-1 mx-2">
+        {title && (
+          <p className="text-body-2-medium text-font-high text-center">
+            {title}
+          </p>
+        )}
+      </div>
+
+      {/* 오른쪽: 홈 버튼 또는 프로필 버튼 (둘 중 하나만) */}
+      {showHomeButton ? (
+        <Link href="/mainpage" className="shrink-0" aria-label="홈으로">
+          <Image
+            src="/header/home.svg"
+            alt=""
+            width={24}
+            height={24}
+          />
+        </Link>
+      ) : showProfileButton ? (
+        <Link href="/mypage" className="shrink-0" aria-label="마이페이지">
+          <Image
+            src="/header/person.svg"
+            alt=""
+            width={24}
+            height={24}
+          />
+        </Link>
       ) : (
         <div className="w-6 shrink-0" />
       )}
