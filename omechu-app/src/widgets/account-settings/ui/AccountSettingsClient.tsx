@@ -9,10 +9,10 @@ import { logout } from "@/entities/user/api/authApi";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 
 import AlertModal from "@/shared/ui/modal/AlertModal";
-import { Header } from "@/shared/ui/Header";
+import { Header } from "@/shared/ui/header/Header";
 import { ModalWrapper } from "@/shared/ui/modal/ModalWrapper";
 import { Toast } from "@/shared/ui/toast/Toast";
-import { LoadingSpinner } from "@/shared/ui/LoadingIndicator";
+import { LoadingSpinner } from "@/shared/ui/loading/LoadingIndicator";
 
 /** 상수 정의 */
 const TOAST_DURATION = 2000; // 토스트 표시 시간 (ms)
