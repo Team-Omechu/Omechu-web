@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ApiClientError } from "@/entities/user/api/authApi";
 import { useResetPasswordMutation } from "@/entities/user/lib/hooks/useAuth";
 import type { ResetPasswordFormValues } from "@/entities/user/model/auth.schema";
-import { BaseModal, Header, ModalWrapper, Toast } from "@/shared";
+import { BaseModal, Header, ModalWrapper } from "@/shared";
 import { ResetPasswordForm } from "@/widgets/auth";
 
 export default function ResetPasswordPage() {
@@ -26,18 +26,10 @@ export default function ResetPasswordPage() {
 
 function ResetPasswordClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
   const { mutateAsync: resetPassword } = useResetPasswordMutation();
-
-  const triggerToast = (msg: string) => {
-    setToastMessage(msg);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
-  };
 
   const handleFormSubmit = async (data: ResetPasswordFormValues) => {
     if (!token) {
@@ -75,8 +67,6 @@ function ResetPasswordClient() {
           <ResetPasswordForm onFormSubmit={handleFormSubmit} />
         </div>
       </div>
-
-      <Toast message={toastMessage} show={showToast} className="bottom-20" />
 
       {isModalOpen && (
         <ModalWrapper>
