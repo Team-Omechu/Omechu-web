@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 
 import { Header } from "@/shared/index";
 
-import { CustomDatePicker } from "../ui/CustomDatePicker";
+import { CustomDatePicker } from "../ui/DatePicker/CustomDatePicker";
 import PeriodTap from "../ui/PeriodTap";
 
 const PERIOD_OPTIONS = [

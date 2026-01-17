@@ -1,6 +1,7 @@
 import { forwardRef, type MouseEventHandler } from "react";
 
 import { CalenderIcon } from "@/shared/assets/icons/index";
+import { cn } from "@/shared/lib/cn.util";
 
 export const CustomInput = forwardRef<
   HTMLButtonElement,
@@ -10,7 +11,10 @@ export const CustomInput = forwardRef<
     type="button"
     onClick={onClick}
     ref={ref}
-    className="border-font-extralow bg-background-secondary text-font-high text-body-4-regular relative flex h-10 w-37.5 items-center rounded-[10px] border pl-5"
+    className={cn(
+      "border-font-extralow bg-background-secondary text-body-4-regular relative flex h-10 w-37.5 items-center rounded-[10px] border pl-5",
+      value ? "text-font-high" : "text-font-placeholder",
+    )}
   >
     <CalenderIcon
       className="absolute top-1.5 -right-3 w-12"

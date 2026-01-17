@@ -8,7 +8,8 @@ import { ko } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { ArrowCalenderIcon } from "@/shared/assets/icons/index";
+
+import { ArrowCalenderIcon } from "@/shared/assets/icons/mypage/ArrowCalenderIcon";
 
 import { CustomInput } from "./CustomInput";
 
@@ -114,7 +115,7 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
             setStartDate(null);
             setEndDate(null);
           }}
-          className="mt-1 mr-4 items-end text-xs text-gray-500"
+          className="mt-2 mr-1 items-end text-xs text-gray-500"
         >
           선택 초기화
         </button>
