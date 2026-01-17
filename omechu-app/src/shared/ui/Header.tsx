@@ -5,16 +5,14 @@
 import Image from "next/image";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
 
-const headerStyles = cva(
-  clsx(
-    "flex items-center px-5 py-2.5 my-2",
-    "w-full h-12",
-    "text-body-3-medium text-font-high",
-    "border-2 border-white bg-white",
-  ),
-);
+import { cn } from "@/shared/lib/cn.util";
+
+const headerStyles = cva([
+  "flex items-center px-5 py-2.5 my-2",
+  "w-full h-12",
+  "text-body-3-medium text-font-high",
+]);
 
 type HeaderStyleProps = VariantProps<typeof headerStyles>;
 
@@ -36,7 +34,7 @@ export const Header = ({
   className,
 }: HeaderProps) => {
   return (
-    <header className={clsx(headerStyles(), "justify-between", className)}>
+    <header className={cn(headerStyles(), "justify-between", className)}>
       <button
         type="button"
         onClick={onLeftClick}
