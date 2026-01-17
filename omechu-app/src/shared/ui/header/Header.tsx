@@ -98,9 +98,9 @@ export const Header = ({
       {/* 중앙: 타이틀 (없어도 공간 유지) */}
       <div className="flex-1 mx-2">
         {title && (
-          <h1 className="text-body-2-medium text-font-high text-center">
+          <p className="text-body-2-medium text-font-high text-center">
             {title}
-          </h1>
+          </p>
         )}
       </div>
 
