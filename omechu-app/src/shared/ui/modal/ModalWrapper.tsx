@@ -27,11 +27,11 @@ export function ModalWrapper({
     <div
       role="dialog"
       aria-modal="true"
-      className={
-        (cn("fixed inset-0 z-50 flex items-center justify-center"), className)
-      }
+      className={cn(
+        "fixed inset-0 z-50 flex items-center justify-center",
+        className,
+      )}
     >
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
       <div className="relative z-10" onClick={(e) => e.stopPropagation()}>
