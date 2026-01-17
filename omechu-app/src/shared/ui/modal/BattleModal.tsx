@@ -1,7 +1,8 @@
 "use client";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 import { BaseModal } from "./BaseModal";
 
@@ -40,7 +41,7 @@ export const BattleModal = ({
   onChange,
 }: BattleModalProps) => {
   return (
-    <div className={clsx(battleModalStyles({ modalType }))}>
+    <div className={cn(battleModalStyles({ modalType }))}>
       {modalType === "createDone" ? (
         <BaseModal
           title={`[${battleRoomName}] 생성 완료!`}

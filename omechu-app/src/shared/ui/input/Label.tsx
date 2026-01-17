@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { clsx } from "clsx";
+import { cn } from "@/shared/lib/cn.util";
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
 
 export const Label = ({ children, className, ...props }: LabelProps) => {
   return (
-    <label className={clsx("text-body-3-medium mb-3.5", className)} {...props}>
+    <label className={cn("text-body-3-medium", className)} {...props}>
       {children}
     </label>
   );

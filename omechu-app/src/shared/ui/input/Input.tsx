@@ -4,13 +4,13 @@
 import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
 
+import { cn } from "@/shared/lib/cn.util";
 import {
   CloseEyeIcon,
   OpenEyeIcon,
-} from "@/shared_FSD/assets/icons/ui/input/EyeIcon";
-import { SearchIcon } from "@/shared_FSD/assets/icons/ui/input/SearchIcon";
+  SearchIcon,
+} from "@/shared_FSD/assets/icons";
 
 const inputBaseStyles = cva(
   [
@@ -57,8 +57,8 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
 
     return (
       <div
-        className={twMerge(
-          inputWrapperStyles,
+        className={cn(
+          "relative",
           inputBaseStyles({ width, height, rounded }),
           className,
         )}
@@ -97,8 +97,8 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   ) => {
     return (
       <div
-        className={twMerge(
-          inputWrapperStyles,
+        className={cn(
+          "relative",
           inputBaseStyles({ width, height, rounded }),
           className,
         )}
@@ -128,36 +128,16 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
-<<<<<<< HEAD:omechu-app/src/shared/ui/input/Input.tsx
-    const {
-      type = "text",
-      className,
-      width,
-      height,
-      rounded,
-      disabled,
-      ...rest
-    } = props;
-=======
     const { type = "text", width, height, rounded, className, ...rest } = props;
 
->>>>>>> 821268f6 ([#220]fix:Input 수정):omechu-app/src/shared_FSD/ui/input/Input.tsx
     if (type === "password") {
       return (
         <PasswordInput
           ref={ref}
-<<<<<<< HEAD:omechu-app/src/shared/ui/input/Input.tsx
-          className={className}
-          width={width}
-          height={height}
-          rounded={rounded}
-          disabled={disabled}
-=======
           width={width}
           height={height}
           rounded={rounded}
           className={className}
->>>>>>> 821268f6 ([#220]fix:Input 수정):omechu-app/src/shared_FSD/ui/input/Input.tsx
           {...rest}
         />
       );
@@ -167,32 +147,23 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       return (
         <SearchInput
           ref={ref}
-<<<<<<< HEAD:omechu-app/src/shared/ui/input/Input.tsx
-          className={className}
-          width={width}
-          height={height}
-          rounded={rounded}
-          disabled={disabled}
-=======
           width={width}
           height={height}
           rounded={rounded}
           className={className}
->>>>>>> 821268f6 ([#220]fix:Input 수정):omechu-app/src/shared_FSD/ui/input/Input.tsx
           {...rest}
         />
       );
     }
 
     return (
-      <input
-        ref={ref}
-        type={type === "number" ? "number" : type}
-        autoComplete="off"
-        className={twMerge(
+      <div
+        className={cn(
+          "relative",
           inputBaseStyles({ width, height, rounded }),
           className,
         )}
+        {...rest}
       />
     );
   },

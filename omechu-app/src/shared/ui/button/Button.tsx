@@ -3,23 +3,20 @@
 import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const buttonStyles = cva(
-  clsx(
+  [
     // 모양
     "h-12",
     "rounded-[10px]",
     "flex items-center justify-center",
 
-    // 타이포그래피
-    // "text-brand-secondary",
-
     // 인터랙션
     "active:bg-statelayer-pressed",
     "disabled:bg-statelayer-disabled disabled:cursor-not-allowed disabled:active:bg-statelayer-disabled",
-  ),
+  ],
   {
     variants: {
       fontColor: {
@@ -55,12 +52,14 @@ export const Button = ({
   className,
   children,
   ...props
-}: ButtonProps) => (
-  <button
-    type="button"
-    className={twMerge(buttonStyles({ fontColor, bgColor, width }), className)}
-    {...props}
-  >
-    {children}
-  </button>
-);
+}: ButtonProps) => {
+  return (
+    <button
+      type="button"
+      className={cn(buttonStyles({ fontColor, bgColor, width }), className)}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};

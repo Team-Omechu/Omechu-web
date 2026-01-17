@@ -2,8 +2,7 @@
 
 import * as React from "react";
 
-import { clsx } from "clsx";
-
+import { cn } from "@/shared/lib/cn.util";
 import { HelperText } from "@/shared/ui/input/HelperText";
 import { Label } from "@/shared/ui/input/Label";
 
@@ -42,10 +41,10 @@ export const FormField = ({
     : children;
 
   return (
-    <div className={clsx("flex flex-col", className)} {...props}>
+    <div className={cn("flex flex-col", className)} {...props}>
       <Label htmlFor={id}>{label}</Label>
 
-      <div className={clsx("mt-2 flex items-center gap-3")}>
+      <div className={cn("mt-2 flex items-center gap-3")}>
         {enhancedChildren}
         {rightSlot}
       </div>

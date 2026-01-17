@@ -3,10 +3,11 @@
 import React from "react";
 
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 const bottomButtonStyles = cva(
-  clsx(
+  [
     // 위치
     "fixed bottom-0 left-0 right-0 z-50",
     "w-full h-[50px]",
@@ -22,7 +23,7 @@ const bottomButtonStyles = cva(
 
     // iOS 대응
     "pb-[env(safe-area-inset-bottom)]",
-  ),
+  ],
   {
     variants: {
       variant: {
@@ -47,7 +48,7 @@ export const BottomButton = ({
   return (
     <button
       type="button"
-      className={clsx(bottomButtonStyles({ variant }), className)}
+      className={cn(bottomButtonStyles({ variant }), className)}
       {...props}
     >
       {children}
