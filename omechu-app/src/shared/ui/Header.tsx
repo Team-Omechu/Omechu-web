@@ -7,6 +7,8 @@ import Image from "next/image";
 import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
+import { cn } from "../lib/cn.util";
+
 const headerStyles = cva(
   clsx(
     "flex items-center px-5 py-2.5 my-2",
@@ -36,7 +38,7 @@ export const Header = ({
   className,
 }: HeaderProps) => {
   return (
-    <header className={clsx(headerStyles(), "justify-between", className)}>
+    <header className={cn(headerStyles(), "justify-between", className)}>
       <button
         type="button"
         onClick={onLeftClick}
