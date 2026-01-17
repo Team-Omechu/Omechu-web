@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { MainLoading } from "@/shared";
+import { MainLoading } from "@/shared/ui/MainLoading";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
