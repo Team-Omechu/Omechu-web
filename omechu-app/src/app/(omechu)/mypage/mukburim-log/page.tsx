@@ -60,7 +60,7 @@ export default function ExamplePage() {
 
   return (
     <>
-      <Header title="먹부림 기록" onLeftClick={() => router.push("/mypage")} />
+      <Header title="먹부림 기록" onBackClick={() => router.push("/mypage")} />
       <PeriodTap value={selectedPeriod} onChange={handlePeriodChange} />
       {selectedPeriod === "직접입력" && (
         <section className="-mt-1 flex h-fit w-full items-center justify-between border-t px-6 py-3">

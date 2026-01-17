@@ -11,7 +11,7 @@ export default function StartForm() {
 
   return (
     <>
-      <Header onLeftClick={() => router.back()} />
+      <Header onBackClick={() => router.back()} />
       <section className="mt-30 flex h-[40dvh] flex-col items-center px-10">
         <h1 className="text-foundation-grey-darker text-body-2-bold">
           기본 상태 입력하기

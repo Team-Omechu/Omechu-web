@@ -57,7 +57,7 @@ export default function RecommendedListPage() {
     <>
       <Header
         title="추천 목록 관리"
-        onLeftClick={() => router.push("/mypage")}
+        onBackClick={() => router.push("/mypage")}
       />
 
       <main

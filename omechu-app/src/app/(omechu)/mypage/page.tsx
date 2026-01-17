@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { Header, ModalWrapper } from "@/shared";
 import { MypageModal } from "@/shared/ui/modal/MypageModal";
 import {
@@ -18,6 +20,7 @@ const MOCK_USER_INFO = {
 };
 
 export default function MypageMain() {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState(MOCK_USER_INFO);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -41,7 +44,7 @@ export default function MypageMain() {
 
   return (
     <>
-      <Header title="마이페이지" isRightChild />
+      <Header title="마이페이지" onBackClick={() => router.push("/")} />
 
       <main className="relative mt-10 flex h-[80dvh] flex-col items-center gap-6 px-5">
         <UserInfoSection
