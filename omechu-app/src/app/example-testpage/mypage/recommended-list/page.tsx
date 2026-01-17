@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-//! 26.01.13 작업
-
->>>>>>> d169863f ([#220]hotfix:rebase 과정 중 버그 수정)
 "use client";
 
 import { useRef, useState } from "react";
@@ -15,7 +10,6 @@ import FloatingActionButton from "../ui/FloatingActionButton";
 import { RecommendedFoodBox } from "../ui/RecommendedFoodBox";
 import { SearchBar } from "../ui/SearchBar";
 import SelectTab from "../ui/SelectTab";
-import SelectTabBar from "../ui/SelectTabBar";
 
 export default function RecommendedListPage() {
   const mainRef = useRef<HTMLDivElement>(null);

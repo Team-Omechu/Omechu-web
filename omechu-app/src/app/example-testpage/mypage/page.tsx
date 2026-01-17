@@ -18,6 +18,7 @@ import { Header, MypageModal } from "@/shared_FSD/index";
 import { useState } from "react";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Header, ModalWrapper } from "@/shared";
 import { MypageModal } from "@/shared/ui/modal/MypageModal";
 =======
@@ -27,6 +28,10 @@ import { useState } from "react";
 >>>>>>> 4455f176 ([#220]feat:MypageMain 구현)
 import { Header, ModalWrapper, MypageModal } from "@/shared_FSD/index";
 >>>>>>> be44bf0f ([#220]feat:MypageMain 구현)
+=======
+import { Header, ModalWrapper } from "@/shared";
+import { MypageModal } from "@/shared/ui/modal/MypageModal";
+>>>>>>> 225571c2 ([#220]fix:errors)
 
 import CustomerSupportSection from "./ui/CustomerSupportSection";
 import SetAlarmSection from "./ui/SetAlarmSection";
