@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* 커스텀은 항상 마지막 */
 @import "../styles/datepicker.css";
 
 button {

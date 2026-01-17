@@ -2,11 +2,25 @@
 
 import { useState, useEffect } from "react";
 
-import { ko } from "date-fns/locale";
+import { isBefore, isSameMonth, startOfMonth } from "date-fns";
 import DatePicker from "react-datepicker";
 
 import { CustomInput } from "./CustomInput";
 import { DatePickerHeader } from "./DatePickerHeader";
+
+function getDayClassName(viewMonth: Date, date: Date) {
+  const monthStart = startOfMonth(viewMonth);
+
+  if (isBefore(date, monthStart)) {
+    return "dp-prev-month";
+  }
+
+  if (!isSameMonth(date, viewMonth)) {
+    return "dp-next-month";
+  }
+
+  return "";
+}
 
 interface CustomDatePickerProps {
   onChange?: (start: Date | null, end: Date | null) => void;
@@ -21,6 +35,7 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
     value?.startDate ?? null,
   );
   const [endDate, setEndDate] = useState<Date | null>(value?.endDate ?? null);
+  const [viewMonth, setViewMonth] = useState<Date>(new Date());
 
   useEffect(() => {
     onChange?.(startDate, endDate);
@@ -44,7 +59,9 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
           endDate={endDate ?? undefined}
           renderCustomHeader={(props) => <DatePickerHeader {...props} />}
           popperPlacement="bottom-start"
-          locale={ko}
+          formatWeekDay={(day) => day.slice(0, 2)}
+          onMonthChange={(date) => setViewMonth(date)}
+          dayClassName={(date) => getDayClassName(viewMonth, date)}
         />
         <span> ~ </span>
         <DatePicker
@@ -60,9 +77,9 @@ export function CustomDatePicker({ onChange, value }: CustomDatePickerProps) {
           startDate={startDate}
           endDate={endDate}
           minDate={startDate ?? undefined}
+          dayClassName={(date) => getDayClassName(viewMonth, date)}
           renderCustomHeader={(props) => <DatePickerHeader {...props} />}
           popperPlacement="bottom-end"
-          locale={ko}
         />
       </section>
       {startDate && endDate && (
