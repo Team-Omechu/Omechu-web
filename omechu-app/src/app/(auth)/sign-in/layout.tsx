@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
-import { Header } from "@/shared/ui/Header";
+import { Header } from "@/shared/ui/header/Header";
 
 /**
  * 로그인 관련 페이지 레이아웃
@@ -16,11 +15,9 @@ export default function SignInLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-
   return (
     <>
-      <Header onLeftClick={() => router.back()} />
+      <Header />
 
       {/* 로고 - 고정 위치 */}
       <div className="mt-12 flex justify-center">
