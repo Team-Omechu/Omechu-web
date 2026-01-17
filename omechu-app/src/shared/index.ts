@@ -60,7 +60,6 @@ export { ProgressBar } from "./ui/progress/ProgressBar";
 export { SearchBar } from "./ui/search/SearchBar";
 
 // UI - Picker
-export { CustomDatePicker } from "./ui/picker/CustomDatePicker";
 export { SortSelector } from "./ui/picker/SortSelector";
 
 // UI - Box

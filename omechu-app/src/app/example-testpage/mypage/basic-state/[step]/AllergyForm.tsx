@@ -176,11 +176,15 @@ export default function AllergyForm() {
             rightButtonText="추천 보기"
             onCloseClick={() => setShowSaveModal(false)}
 <<<<<<< HEAD
+<<<<<<< HEAD
             onLeftButtonClick={() => router.push("/mypage")}
 =======
             onLeftButtonClick={() => router.push("/example-testpage/mypage")}
 <<<<<<< HEAD
 >>>>>>> 335fb196 ([#220]feat:BaseModal 변경)
+=======
+            onLeftButtonClick={() => router.push("/mypage")}
+>>>>>>> 6368913b ([#220]refactor:mypage 리팩토링)
             onRightButtonClick={() => {
               setShowSaveModal(false);
               router.push("/mainpage");
