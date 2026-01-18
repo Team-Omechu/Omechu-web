@@ -3,8 +3,10 @@
 import { useRouter } from "next/navigation";
 
 import { Header } from "@/shared";
-import { termsForLocationServiceMain } from "@/shared/constants/terms/data/locationInfo";
-import { termsForLocationServiceServe } from "@/shared/constants/terms/data/locationInfo";
+import {
+  termsForLocationServiceMain,
+  termsForLocationServiceServe,
+} from "@/shared/constants/terms";
 
 export default function TermForService() {
   const router = useRouter();

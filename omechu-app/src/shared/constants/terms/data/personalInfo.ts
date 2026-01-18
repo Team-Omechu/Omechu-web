@@ -1,6 +1,6 @@
 import type { TermsItem } from "../types";
 
-export const termsForPersonalInfo: TermsItem[] = [
+export const termsForPersonalInfoMain: TermsItem[] = [
   {
     index: 1,
     about: "목적",
@@ -168,8 +168,15 @@ export const termsForPersonalInfo: TermsItem[] = [
 3. 대검찰청: 1301
 4. 경찰청: 182`,
   },
+];
+export const termsForPersonalInfoServe: TermsItem[] = [
   {
-    index: 21,
+    index: null,
+    about: null,
+    content: "부칙",
+  },
+  {
+    index: 1,
     about: "시행일",
     content: `본 방침은 2025.08.22.부터 시행됩니다.`,
   },
