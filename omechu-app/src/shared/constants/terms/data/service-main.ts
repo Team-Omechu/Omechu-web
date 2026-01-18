@@ -1,6 +1,6 @@
 import type { TermsItem } from "../types";
 
-export const termsForService: TermsItem[] = [
+export const termsForServiceMain: TermsItem[] = [
   {
     index: 1,
     about: "목적",
@@ -126,15 +126,5 @@ export const termsForService: TermsItem[] = [
     about: "관할법원 및 준거법",
     content:
       "본 약관과 관련된 분쟁은 대한민국 법을 준거법으로 하며 관할법원은 민사소송법에 따릅니다.",
-  },
-  {
-    index: null,
-    about: null,
-    content: "부칙",
-  },
-  {
-    index: 1,
-    about: "시행일",
-    content: "본 약관은 2025.08.22.부터 시행됩니다.",
   },
 ];
