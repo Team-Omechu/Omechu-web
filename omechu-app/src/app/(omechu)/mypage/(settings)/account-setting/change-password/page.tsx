@@ -118,7 +118,20 @@ export default function ChangePasswordPage() {
           <FormField
             label={"새 비밀번호 재확인"}
             id={""}
-            helperText="* 대소문자, 숫자 및 특수문자 포함 8자 이상"
+            helperText={
+              inputConfirmPassword.length === 0
+                ? undefined
+                : inputNewPassword === inputConfirmPassword
+                  ? "* 비밀번호가 일치합니다"
+                  : "* 비밀번호가 일치하지 않습니다"
+            }
+            helperState={
+              inputConfirmPassword.length === 0
+                ? "default"
+                : inputNewPassword === inputConfirmPassword
+                  ? "success"
+                  : "error"
+            }
           >
             <Input
               type="password"
