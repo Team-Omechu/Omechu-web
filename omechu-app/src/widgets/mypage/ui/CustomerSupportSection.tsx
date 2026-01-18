@@ -12,9 +12,9 @@ import { ArrowIcon } from "@/shared/assets/icons/index";
 const LIST_MAP = [
   { listTitle: "계정관리", hyperLink: "/" },
   { listTitle: "이메일 문의", hyperLink: "/" },
-  { listTitle: "서비스 이용약관", hyperLink: "/" },
-  { listTitle: "개인정보 처리 방침", hyperLink: "/" },
-  { listTitle: "위치 기반 서비스 이용약관", hyperLink: "/" },
+  { listTitle: "서비스 이용약관", hyperLink: "/mypage/service" },
+  { listTitle: "개인정보 처리 방침", hyperLink: "/mypage/personal" },
+  { listTitle: "위치 기반 서비스 이용약관", hyperLink: "/mypage/location" },
 ];
 export function CustomerSupportSection() {
   const router = useRouter();
