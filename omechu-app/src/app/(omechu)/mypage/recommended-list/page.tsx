@@ -5,11 +5,10 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { MENU_SUGGESTIONS } from "@/shared/constants/mypage";
-import { Header } from "@/shared/index";
+import { Header, SearchBar } from "@/shared/index";
 import {
   FloatingActionButton,
   RecommendedFoodBox,
-  SearchBar,
   SelectTab,
 } from "@/widgets/mypage/ui";
 
