@@ -38,15 +38,16 @@ const inputBaseStyles = cva(
   },
 );
 
-const inputWrapperStyles = "relative flex items-center";
-
 type BaseInputProps = React.InputHTMLAttributes<HTMLInputElement> &
   VariantProps<typeof inputBaseStyles> & {
     onSearch?: () => void;
   };
 
 const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
-  ({ className, width, height, rounded, disabled, ...props }, ref) => {
+  (
+    { className, width, height, rounded, disabled, placeholder, ...props },
+    ref,
+  ) => {
     const [isVisible, setIsVisible] = React.useState(false);
     const toggleVisibility = () => setIsVisible((v) => !v);
 
@@ -61,6 +62,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
         <input
           ref={ref}
           type={isVisible ? "text" : "password"}
+          placeholder={placeholder}
           disabled={disabled}
           autoComplete="off"
           className="flex-1 bg-transparent pr-6 outline-none"
@@ -89,7 +91,16 @@ PasswordInput.displayName = "PasswordInput";
 
 const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (
-    { className, width, height, rounded, disabled, onSearch, ...props },
+    {
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      placeholder,
+      onSearch,
+      ...props
+    },
     ref,
   ) => {
     return (
@@ -104,6 +115,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           ref={ref}
           type="search"
           disabled={disabled}
+          placeholder={placeholder}
           autoComplete="off"
           className="w-full min-w-0 flex-1 bg-transparent pr-8 outline-none"
           {...props}
@@ -132,6 +144,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
       height,
       rounded,
       disabled,
+      placeholder,
       onSearch,
       ...rest
     } = props;
@@ -145,6 +158,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           height={height}
           rounded={rounded}
           disabled={disabled}
+          placeholder={placeholder}
           onSearch={onSearch}
           {...rest}
         />
@@ -159,6 +173,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
           height={height}
           rounded={rounded}
           disabled={disabled}
+          placeholder={placeholder}
           onSearch={onSearch}
           {...rest}
         />
@@ -172,6 +187,7 @@ export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
         autoComplete="off"
         value={props.value}
         onChange={props.onChange}
+        placeholder={placeholder}
         className={cn(
           inputBaseStyles({
             width: props.width,
