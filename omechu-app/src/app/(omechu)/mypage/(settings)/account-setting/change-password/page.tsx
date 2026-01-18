@@ -90,7 +90,12 @@ export default function ChangePasswordPage() {
       <main className="relative mt-12 flex h-[80dvh] w-full flex-col items-center justify-between gap-8 px-6">
         <section className="flex w-full flex-col gap-5">
           <FormField label={"기존 비밀번호"} id={""}>
-            <Input placeholder={"비밀번호를 입력해주세요"} />
+            <Input
+              type="password"
+              placeholder={"비밀번호를 입력해주세요"}
+              value={inputPassword}
+              onChange={(e) => setInputPassword(e.target.value)}
+            />
           </FormField>
 
           <FormField
@@ -98,7 +103,16 @@ export default function ChangePasswordPage() {
             id={""}
             helperText="* 대소문자, 숫자 및 특수문자 포함 8자 이상"
           >
-            <Input placeholder={"새 비밀번호를 입력해주세요"} />
+            <Input
+              type="password"
+              placeholder={"새 비밀번호를 입력해주세요"}
+              value={inputNewPassword}
+              onChange={(e) => {
+                const value = e.target.value;
+                setInputNewPassword(value);
+                setNewPasswordError(hasPasswordError(value));
+              }}
+            />
           </FormField>
 
           <FormField
@@ -106,10 +120,21 @@ export default function ChangePasswordPage() {
             id={""}
             helperText="* 대소문자, 숫자 및 특수문자 포함 8자 이상"
           >
-            <Input placeholder={"새 비밀번호를 다시 입력해주세요"} />
+            <Input
+              type="password"
+              placeholder={"새 비밀번호를 다시 입력해주세요"}
+              value={inputConfirmPassword}
+              onChange={(e) => {
+                const value = e.target.value;
+                setInputConfirmPassword(value);
+                setConfirmPasswordError(value !== inputNewPassword);
+              }}
+            />
           </FormField>
         </section>
-        <Button onClick={() => setShowModal(true)}>비밀번호 변경하기</Button>
+        <Button disabled={!isFormValid || pending} onClick={handleSubmit}>
+          비밀번호 변경하기
+        </Button>
       </main>
       {showModal && (
         <ModalWrapper>
@@ -121,6 +146,12 @@ export default function ChangePasswordPage() {
           />
         </ModalWrapper>
       )}
+      <Toast
+        message={toastMessage}
+        state="error"
+        show={showToast}
+        className="bottom-6"
+      />
     </>
   );
 }
