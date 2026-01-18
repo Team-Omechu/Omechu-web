@@ -1,29 +1,19 @@
 "use client";
 
-/*****************
-//****** SearchBar 컴포넌트 부모 컴포넌트에서 아래 props를 넘겨줘야 함: ********
-//**** - inputValue: string
-          → 현재 input에 들어있는 값
-//**** - setInputValue: (v: string) => void
-          → input 값 바뀔 때 상태 업데이트
-//**** - onSearch: (searchTerm: string) => void
-          → Enter나 검색 버튼 누르면 실행됨
-//**** - placeholder?: string
-          → input에 표시되는 안내 문구 (선택)
-//**** - suggestionList?: string[]
-          → 자동완성용 추천어 리스트 (선택)
-***********************/
-
-import { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from "react";
+import { useState, useRef, ChangeEvent, KeyboardEvent, useMemo } from "react";
 
 import Image from "next/image";
+
+import { MENU_SUGGESTIONS } from "@/shared/constants/mypage";
+import { cn } from "@/shared/lib/cn.util";
+
+import { SearchIcon } from "../assets/icons";
 
 interface SearchBarProps {
   inputValue: string;
   setInputValue: (v: string) => void;
   onSearch: (searchTerm: string) => void;
   placeholder?: string;
-  suggestionList?: string[];
 }
 
 const RECENT_KEY = "recent_search_terms";
@@ -32,25 +22,23 @@ export function SearchBar({
   inputValue,
   setInputValue,
   onSearch,
-  placeholder = "검색어를 입력하세요.",
-  suggestionList = [],
+  placeholder = "음식명을 입력하세요",
 }: SearchBarProps) {
   const isJustResetRef = useRef(false);
   const lastSearchedRef = useRef("");
   const [isFocused, setIsFocused] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [recentSearches, setRecentSearches] = useState<string[]>(() => {
+    try {
+      const stored = localStorage.getItem(RECENT_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const showSuggestions =
     isFocused && (inputValue.trim().length > 0 || recentSearches.length > 0);
-
-  // 최근 검색어 불러오기
-  useEffect(() => {
-    const stored = localStorage.getItem(RECENT_KEY);
-    if (stored) {
-      setRecentSearches(JSON.parse(stored));
-    }
-  }, []);
 
   // 최근 검색어 저장 (중복 제거 + 최대 10개)
   const saveRecent = (term: string) => {
@@ -105,6 +93,14 @@ export function SearchBar({
   };
 
   // 키보드 이벤트 처리
+  const filteredSuggestions = useMemo(
+    () =>
+      MENU_SUGGESTIONS.filter((item: string) =>
+        item.toLowerCase().includes(inputValue.toLowerCase()),
+      ).slice(0, 10),
+    [inputValue],
+  );
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const hasSuggestions = filteredSuggestions.length > 0;
 
@@ -139,11 +135,6 @@ export function SearchBar({
     localStorage.setItem(RECENT_KEY, JSON.stringify(updated));
   };
 
-  // 추천어 필터링
-  const filteredSuggestions = suggestionList
-    .filter((item) => item.toLowerCase().includes(inputValue.toLowerCase()))
-    .slice(0, 10);
-
   return (
     <section className="relative w-85">
       <input
@@ -153,13 +144,13 @@ export function SearchBar({
         onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
         onBlur={() => {
-          setTimeout(() => {
-            setIsFocused(false);
-            setSelectedIndex(-1);
-          }, 150);
+          setIsFocused(false);
+          setSelectedIndex(-1);
         }}
         placeholder={placeholder}
-        className={`border-grey-dark-hover flex h-10 w-full items-center rounded-t-3xl border-2 bg-white px-6 pr-10 ${showSuggestions ? "" : "rounded-b-3xl"}`}
+        className={cn(
+          "border-grey-dark-hover text-caption-1-regular text-font-placeholder flex h-12 w-full items-center rounded-[10px] border-2 bg-white px-6 pr-10",
+        )}
       />
 
       <button
@@ -168,25 +159,23 @@ export function SearchBar({
         aria-label="검색"
       >
         <div className="relative h-full w-full">
-          <Image
-            src="/search/search.svg"
-            alt="검색"
-            fill
-            className="object-contain"
-          />
+          <SearchIcon className="absolute top-1.5" currentColor="#A8A8A8" />
         </div>
       </button>
 
       {showSuggestions && (
-        <ul className="border-grey-dark-hover absolute top-full left-0 z-10 w-full rounded-b-3xl border-2 border-t-0 bg-white shadow-md">
+        <ul
+          onMouseDown={(e) => e.preventDefault()}
+          className="border-grey-dark-hover absolute top-full left-0 z-10 w-full rounded-b-[10px] border-2 border-t-0 bg-white shadow-md"
+        >
           {inputValue.trim() === "" ? (
             <>
               <li className="px-4 py-2 text-sm font-bold text-gray-600">
                 최근 검색어
               </li>
-              {recentSearches.map((term, idx) => (
+              {recentSearches.map((term) => (
                 <li
-                  key={idx}
+                  key={term}
                   className="flex cursor-pointer items-center justify-between px-4 py-2 text-sm hover:bg-gray-100"
                 >
                   <span onClick={() => handleSuggestionClick(term)}>
@@ -221,9 +210,13 @@ export function SearchBar({
 
               return (
                 <li
-                  key={idx}
+                  key={item}
                   onClick={() => handleSuggestionClick(item)}
-                  className={`cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 ${isSelected ? "bg-gray-100 font-semibold" : ""} ${isLast ? "rounded-b-3xl pb-3" : ""} `}
+                  className={cn(
+                    "cursor-pointer px-4 py-2 text-sm hover:bg-gray-100",
+                    isSelected && "bg-gray-100 font-semibold",
+                    isLast && "rounded-b-3xl pb-3",
+                  )}
                 >
                   {item}
                 </li>
