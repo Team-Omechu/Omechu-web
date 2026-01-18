@@ -15,7 +15,7 @@ export default function TermForService() {
         onBackClick={() => router.push("/mypage")}
         showHomeButton={false}
       />
-      <main className="mt-6 h-full w-full px-7.5">
+      <main className="mt-6 mb-10 h-full w-full px-7.5">
         {termsForLocationServiceMain.map((item) => (
           <div key={item.index} className="">
             <span className="flex gap-0.5">
