@@ -23,12 +23,8 @@ export default function FoodForm() {
 
   return (
     <>
-      <Header
-        title="기본 상태 입력"
-        onLeftClick={() => router.back()}
-        onRightClick={() => setShowCancleModal(true)}
-      />
-      <ProgressBar currentStep={2} totalSteps={3} />
+      <Header title="기본 상태 입력" onBackClick={() => router.back()} />
+      <ProgressBar currentStep={2} totalSteps={3} className="mt-1" />
       <section className="relative flex min-h-[89dvh] flex-col items-center">
         <h1 className="text-foundation-grey-darker mt-16 text-center text-[28px] font-medium whitespace-pre-line">{`평소 자주 먹거나 좋아하는 \n 음식이 있나요?`}</h1>
         <div className="mt-20 flex flex-col gap-4">

@@ -23,7 +23,7 @@ export default function AllergyForm() {
   return (
     <>
       <Header title="기본 상태 입력" onBackClick={() => router.back()} />
-      <ProgressBar currentStep={3} totalSteps={3} />
+      <ProgressBar currentStep={3} totalSteps={3} className="mt-1" />
       <section className="relative flex min-h-[89dvh] flex-col items-center">
         <h1 className="text-foundation-grey-darker mt-12 text-center text-[28px] font-medium whitespace-pre-line">
           알레르기가 있나요?
@@ -75,14 +75,13 @@ export default function AllergyForm() {
             })}
           </div>
         </div>
-
-        <BottomButton
-          disabled={selectedIndexes.length === 0}
-          onClick={() => setShowSaveModal(true)}
-        >
-          저장
-        </BottomButton>
       </section>
+      <BottomButton
+        disabled={selectedIndexes.length === 0}
+        onClick={() => setShowSaveModal(true)}
+      >
+        저장
+      </BottomButton>
       {showCancleModal && (
         <ModalWrapper>
           <BaseModal

@@ -145,7 +145,7 @@ export function SearchBar({
     .slice(0, 10);
 
   return (
-    <section className="relative w-[340px]">
+    <section className="relative w-85">
       <input
         type="text"
         value={inputValue}
@@ -194,7 +194,7 @@ export function SearchBar({
                   </span>
                   <button
                     onClick={() => removeRecent(term)}
-                    className="text-gray-500 hover:text-[#393939]"
+                    className="hover:text-foundation-grey-darker text-gray-500"
                   >
                     ✕
                   </button>
@@ -203,7 +203,7 @@ export function SearchBar({
               {recentSearches.length > 0 && (
                 <li className="flex justify-end px-4 py-2">
                   <button
-                    className="text-xs text-gray-500 hover:text-[#393939]"
+                    className="hover:text-foundation-grey-darker text-xs text-gray-500"
                     onClick={() => {
                       setRecentSearches([]);
                       localStorage.removeItem(RECENT_KEY);
