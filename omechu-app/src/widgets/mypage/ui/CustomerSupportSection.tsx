@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { ArrowIcon } from "@/shared/assets/icons/index";
 
 const LIST_MAP = [
-  { listTitle: "계정관리", hyperLink: "/" },
+  { listTitle: "계정관리", hyperLink: "/mypage/account-setting" },
   { listTitle: "이메일 문의", hyperLink: "/mypage/email-inquiry" },
   { listTitle: "서비스 이용약관", hyperLink: "/mypage/service" },
   { listTitle: "개인정보 처리 방침", hyperLink: "/mypage/personal" },
