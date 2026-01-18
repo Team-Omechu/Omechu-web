@@ -2,13 +2,20 @@
 
 "use client";
 
+import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 
 import { OnboardingCharacterIcon } from "@/shared/assets/icons/onboarding/OnboardingCharacterIcon";
-import { BottomButton, Button, FormField, Header, Input } from "@/shared/index";
+import { BottomButton, FormField, Input } from "@/shared/index";
 
 export default function OnboardingStartForm() {
   const router = useRouter();
+
+  const [nickname, setNickname] = useState("");
+
+  const nicknameRegex = /^[A-Za-z가-힣]{2,12}$/;
+  const isValidNickname = nicknameRegex.test(nickname);
 
   return (
     <>
@@ -24,12 +31,20 @@ export default function OnboardingStartForm() {
           helperText={"* 한영문자 2-12자로 입력해 주세요"}
           className="mt-8"
         >
-          <Input width="xs" placeholder="닉네임을 입력해주세요" />
+          <Input
+            width="xs"
+            placeholder="닉네임을 입력해주세요"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
         </FormField>
       </section>
       <BottomButton
-        disabled={false}
-        onClick={() => router.push("/onboarding/state")}
+        disabled={!isValidNickname}
+        onClick={() => {
+          if (!isValidNickname) return;
+          router.push("/onboarding/state");
+        }}
       >
         다음
       </BottomButton>
