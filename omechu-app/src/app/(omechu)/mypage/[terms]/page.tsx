@@ -2,6 +2,7 @@
 
 import { notFound } from "next/navigation";
 
+import TermForLocationInfo from "./components/TermForLocationInfo";
 import TermForPersonalInfo from "./components/TermForPersonalInfo";
 import TermForService from "./components/TermForService";
 import { BASIC_STATE_STEPS, type BasicStateStep } from "./steps";
@@ -22,8 +23,8 @@ export default async function BasicStateStepPage({ params }: PageProps) {
   return (
     <main>
       {terms === "service" && <TermForService />}
-      {terms === "personalinfo" && <TermForPersonalInfo />}
-      {/* {terms === "allergy" && <AllergyForm />} */}
+      {terms === "personal" && <TermForPersonalInfo />}
+      {terms === "location" && <TermForLocationInfo />}
     </main>
   );
 }

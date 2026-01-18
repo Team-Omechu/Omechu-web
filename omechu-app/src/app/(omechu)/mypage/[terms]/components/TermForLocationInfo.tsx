@@ -1,0 +1,56 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
+import { Header } from "@/shared";
+import { termsForLocationServiceMain } from "@/shared/constants/terms/data/locationInfo";
+import { termsForLocationServiceServe } from "@/shared/constants/terms/data/locationInfo";
+
+export default function TermForService() {
+  const router = useRouter();
+  return (
+    <>
+      <Header
+        title="위치기반 서비스 이용약관"
+        onBackClick={() => router.push("/mypage")}
+        showHomeButton={false}
+      />
+      <main className="mt-6 h-full w-full px-7.5">
+        {termsForLocationServiceMain.map((item) => (
+          <div key={item.index} className="">
+            <span className="flex gap-0.5">
+              <span>제</span>
+              <span>{item.index}</span>
+              <span>조</span>
+              <span>({item.about})</span>
+            </span>
+            <div className="text-body-4-medium text-font-extralow mb-4 px-2 leading-6 whitespace-pre-line">
+              {item.content}
+            </div>
+          </div>
+        ))}
+        {termsForLocationServiceServe.map((item) => (
+          <div key={item.index} className="">
+            {item.index && (
+              <span className="flex gap-0.5">
+                <span>제</span>
+                <span>{item.index}</span>
+                <span>조</span>
+                <span>({item.about})</span>
+              </span>
+            )}
+            {item.index ? (
+              <div className="text-body-4-medium text-font-extralow mb-4 px-2 leading-6 whitespace-pre-line">
+                {item.content}
+              </div>
+            ) : (
+              <div className="text-font-high text-body-3-bold mb-1">
+                {item.content}
+              </div>
+            )}
+          </div>
+        ))}
+      </main>
+    </>
+  );
+}
