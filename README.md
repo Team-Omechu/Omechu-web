@@ -131,14 +131,14 @@ git clone <your-repo-url>
 cd omechu
 
 # 2) 패키지 설치
-yarn install
+pnpm install
 
 # 3) 개발 서버
-yarn dev # http://localhost:3000
+pnpm dev # http://localhost:3000
 
 # 4) 빌드/미리보기
-yarn build
-yarn start
+pnpm build
+pnpm start
 ```
 
 ### 🔐 환경 변수 예시 (`.env.local`)
@@ -150,7 +150,7 @@ NEXT_PUBLIC_GOOGLE_PLACE_API_KEY=...
 GOOGLE_MAP_SERVER_API_KEY=...
 ```
 
-> 이미지 최적화를 위해 `sharp` 설치를 권장합니다: `pnpm add sharp`.
+> 이미지 최적화를 위해 `sharp`가 자동으로 설치됩니다.
 
 ---
 

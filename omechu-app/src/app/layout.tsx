@@ -4,12 +4,11 @@ import { Noto_Sans_KR } from "next/font/google";
 
 import type { Metadata } from "next";
 
-import ReactQueryProvider from "./lib/providers/ReactQueryProvider";
-import ClientLayout from "@/ClientLayout";
+import { Providers } from "@/app/providers";
 
 const notoSansKR = Noto_Sans_KR({
-  weight: ["400", "700"], // 사용할 폰트 굵기
-  variable: "--font-noto-sans-kr", // CSS 변수 이름 설정
+  weight: ["400", "700"],
+  variable: "--font-noto-sans-kr",
   display: "swap",
   preload: false,
 });
@@ -26,6 +25,9 @@ export const metadata: Metadata = {
     apple: "/logo/logo.png",
   },
   manifest: "/manifest.webmanifest",
+};
+
+export const viewport = {
   themeColor: "#ffffff",
 };
 
@@ -37,11 +39,16 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`relative mx-auto flex min-h-screen min-w-[375px] flex-col overflow-x-hidden ${notoSansKR.variable}`}
+        className={`bg-gray-200 ${notoSansKR.variable}`}
       >
-        <ReactQueryProvider>
-          <ClientLayout>{children}</ClientLayout>
-        </ReactQueryProvider>
+        {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
+        <div className="relative mx-auto flex min-h-screen w-full min-w-[375px] max-w-[430px] flex-col overflow-x-hidden bg-background-primary shadow-xl">
+          <Providers>
+            <main className="flex flex-1 flex-col bg-background-primary scrollbar-hide overflow-y-scroll">
+              {children}
+            </main>
+          </Providers>
+        </div>
       </body>
     </html>
   );

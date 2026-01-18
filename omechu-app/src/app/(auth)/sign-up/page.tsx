@@ -7,26 +7,22 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
-import BottomButton from "@/components/common/button/BottomButton";
-import ModalWrapper from "@/components/common/ModalWrapper";
-import Toast from "@/components/common/Toast";
-import { termsForLocationInfo } from "@/constant/terms/locationInfo";
-import { termsForPersonlInfo } from "@/constant/terms/personlInfo";
-import { termsForService } from "@/constant/terms/service";
 import {
+  ApiClientError,
+  useSignupMutation,
+  useLoginMutation,
   signupSchema,
   type SignupFormValues,
-} from "@/auth/schemas/auth.schema";
-import { useSignupMutation } from "@/lib/hooks/useAuth";
-import { useAuthStore } from "@/lib/stores/auth.store";
-import { useLoginMutation } from "@/lib/hooks/useAuth";
-import { ApiClientError } from "@/lib/api/auth";
-
-import SignUpForm from "./components/SignUpForm";
-import TermsModal from "./components/TermsModal";
-import { agreeToTerms } from "./api/agreements";
-
-type ModalType = "service" | "privacy" | "location";
+  useAuthStore,
+} from "@/entities/user";
+import { BottomButton, Header, ModalWrapper, Toast, TERMS_CONFIG } from "@/shared";
+import {
+  SignUpForm,
+  TermsModal,
+  type ModalType,
+  MODAL_TO_TERMS_TYPE,
+  MODAL_TO_FORM_FIELD,
+} from "@/widgets/auth";
 
 export default function SignUpPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
@@ -72,83 +68,76 @@ export default function SignUpPage() {
           await loginAsync({ email: data.email, password: data.password });
           setPassword(data.password);
           router.push("/onboarding/1");
-        } catch (e: any) {
+        } catch (e: unknown) {
           // 자동 로그인 실패 시에도 온보딩으로 이동하되, 안내 토스트 노출
-          triggerToast(
-            e?.message ||
-              "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.",
-          );
+          const message =
+            e instanceof Error
+              ? e.message
+              : "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.";
+          triggerToast(message);
           router.push("/onboarding/1");
         }
       },
       onError: (error: unknown) => {
         const e = error as ApiClientError & { code?: string };
-        let msg: string = e?.message || "회원가입에 실패했습니다.";
-        // 필요한 경우 추가 코드 매핑 가능 (e.code)
+        const msg: string = e?.message || "회원가입에 실패했습니다.";
         triggerToast(msg);
       },
     });
   };
 
+  /** 약관 동의 확인 핸들러 */
+  const handleTermsConfirm = () => {
+    if (activeModal) {
+      const termKey = MODAL_TO_FORM_FIELD[activeModal];
+      setValue(termKey, true, { shouldValidate: true });
+    }
+    setActiveModal(null);
+  };
+
   return (
     <FormProvider {...methods}>
-      <div className="flex h-screen flex-col">
-        <header className="px-4 py-5 text-center">
-          <h1 className="py-10 text-xl font-bold text-grey-darker">
+      <div className="flex flex-col">
+        {/* 헤더 */}
+        <Header />
+
+        {/* 제목 */}
+        <div className="px-5 py-5 text-center">
+          <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
-        </header>
+        </div>
 
-        <main className="flex-1 overflow-y-auto px-5">
+        {/* 폼 영역 */}
+        <main className="flex-1 px-5 pb-16">
           <SignUpForm
             setActiveModal={setActiveModal}
             onSubmit={handleSubmit(onSubmit)}
           />
         </main>
 
-        <footer className="w-full pb-[env(safe-area-inset-bottom)]">
-          <BottomButton
-            type="submit"
-            form="signup-form"
-            disabled={!isValid || isSigningUp}
-          >
-            {isSigningUp ? "가입하는 중..." : "가입하기"}
-          </BottomButton>
-        </footer>
+        {/* 하단 버튼 */}
+        <BottomButton
+          type="submit"
+          form="signup-form"
+          disabled={!isValid || isSigningUp}
+          className="mx-auto max-w-[430px]"
+        >
+          {isSigningUp ? "가입하는 중..." : "가입하기"}
+        </BottomButton>
 
+        {/* 약관 모달 */}
         {activeModal && (
           <ModalWrapper>
             <TermsModal
-              title={
-                activeModal === "service"
-                  ? "서비스 이용약관"
-                  : activeModal === "privacy"
-                    ? "개인정보 처리방침"
-                    : "위치기반서비스 이용약관"
-              }
-              terms={
-                activeModal === "service"
-                  ? termsForService
-                  : activeModal === "privacy"
-                    ? termsForPersonlInfo
-                    : termsForLocationInfo
-              }
-              onConfirm={() => {
-                if (activeModal) {
-                  const termKey =
-                    activeModal === "service"
-                      ? "termsService"
-                      : activeModal === "privacy"
-                        ? "termsPrivacy"
-                        : "termsLocation";
-                  setValue(termKey, true, { shouldValidate: true });
-                }
-                setActiveModal(null);
-              }}
+              title={TERMS_CONFIG[MODAL_TO_TERMS_TYPE[activeModal]].title}
+              terms={TERMS_CONFIG[MODAL_TO_TERMS_TYPE[activeModal]].data}
+              onConfirm={handleTermsConfirm}
               onClose={() => setActiveModal(null)}
             />
           </ModalWrapper>
         )}
+
         <Toast message={toastMessage} show={showToast} className="bottom-20" />
       </div>
     </FormProvider>

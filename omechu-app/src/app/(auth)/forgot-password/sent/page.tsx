@@ -1,11 +1,9 @@
-"use client";
+import { EmailSentMessage } from "@/widgets/auth";
 
-import EmailSentMessage from "./components/EmailSentMessage";
-
-export default function FindPasswordEmailSentPage() {
+export default function PasswordResetEmailSentPage() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4">
+    <div className="flex flex-1 flex-col items-center justify-center px-4">
       <EmailSentMessage />
-    </main>
+    </div>
   );
 }

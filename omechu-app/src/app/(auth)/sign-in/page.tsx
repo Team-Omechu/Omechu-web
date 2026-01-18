@@ -1,46 +1,52 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
 
-import SignInForm from "./components/SignInForm";
+import { AuthButton } from "@/shared";
 
+/**
+ * 소셜 로그인 메인 페이지
+ * - 카카오, 구글 소셜 로그인 버튼
+ * - 이메일 로그인/회원가입 링크
+ */
 export default function SignInPage() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4">
-      <div className="flex w-full max-w-sm flex-col items-center gap-8 py-10">
-        <Link href="/">
-          <Image
-            src="/logo/logo.png"
-            alt="Omechu Logo"
-            width={139}
-            height={92}
-            priority
-          />
-        </Link>
+    <div className="flex flex-col items-center">
+      {/* 로그인 버튼 영역 */}
+      <div className="mt-20 flex w-80 flex-col gap-6">
+        {/* 카카오 로그인 */}
+        <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          <AuthButton
+            variant="kakao"
+            icon="/kakao/kakao.svg"
+            iconAlt="카카오 아이콘"
+            type="button"
+          >
+            카카오 로그인
+          </AuthButton>
+        </a>
 
-        <SignInForm />
-
-        <div className="relative flex w-full items-center">
-          <hr className="w-full border-t border-grey-darkHover" />
-          <span className="absolute left-1/2 -translate-x-1/2 bg-main-normal px-2 text-xs text-grey-normalActive">
-            or
-          </span>
-        </div>
-
-        <a
-          href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}
-          className="flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#FEE500] p-2 text-lg font-medium text-grey-darker transition-colors hover:bg-[#f3da00] active:bg-[#e0c900]"
-        >
-          <Image
-            src="/kakao/kakao.svg"
-            alt="카카오 아이콘"
-            width={24}
-            height={24}
-          />
-          카카오 로그인
+        {/* 구글 로그인 */}
+        <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}>
+          <AuthButton
+            variant="google"
+            icon="/google/google.svg"
+            iconAlt="구글 아이콘"
+            type="button"
+          >
+            구글로 로그인
+          </AuthButton>
         </a>
       </div>
-    </main>
+
+      {/* 이메일 로그인 / 회원가입 링크 */}
+      <div className="mt-10 flex items-center gap-3 text-caption-1-regular">
+        <Link href="/sign-in/email" className="text-font-medium hover:underline">
+          이메일 로그인
+        </Link>
+        <span className="text-caption-2-medium text-font-placeholder">ㅣ</span>
+        <Link href="/sign-up" className="text-font-medium hover:underline">
+          이메일 회원가입
+        </Link>
+      </div>
+    </div>
   );
 }
