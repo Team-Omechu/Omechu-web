@@ -74,12 +74,13 @@ export default function SignUpPage() {
           await loginAsync({ email: data.email, password: data.password });
           setPassword(data.password);
           router.push("/onboarding/1");
-        } catch (e: any) {
+        } catch (e: unknown) {
           // 자동 로그인 실패 시에도 온보딩으로 이동하되, 안내 토스트 노출
-          triggerToast(
-            e?.message ||
-              "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.",
-          );
+          const message =
+            e instanceof Error
+              ? e.message
+              : "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.";
+          triggerToast(message);
           router.push("/onboarding/1");
         }
       },
@@ -104,14 +105,14 @@ export default function SignUpPage() {
     <FormProvider {...methods}>
       <div className="flex flex-col">
         {/* 헤더 */}
-        <Header onLeftClick={() => router.back()} />
+        <Header />
 
         {/* 제목 */}
         <div className="px-5 py-5 text-center">
           <h1 className="text-body-2-bold text-font-high">
             회원 정보를 입력해 주세요
           </h1>
-        </header>
+        </div>
 
         {/* 폼 영역 */}
         <main className="flex-1 px-5 pb-16">
@@ -126,7 +127,7 @@ export default function SignUpPage() {
           type="submit"
           form="signup-form"
           disabled={!isValid || isSigningUp}
-          className="mx-auto max-w-107.5"
+          className="mx-auto max-w-[430px]"
         >
           {isSigningUp ? "가입하는 중..." : "가입하기"}
         </BottomButton>

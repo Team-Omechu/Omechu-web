@@ -1,7 +1,8 @@
 "use client";
-import * as React from "react";
 
-import { cva, type VariantProps } from "class-variance-authority";
+import React from "react";
+
+import { cva, VariantProps } from "class-variance-authority";
 
 import { CloseEyeIcon, OpenEyeIcon, SearchIcon } from "@/shared/assets/icons";
 import { cn } from "@/shared/lib/cn.util";

@@ -1,6 +1,4 @@
-//! 26.01.04 작업 완료
-
-import React from "react";
+//* 26.01.04 작업 완료
 
 import { cva, VariantProps } from "class-variance-authority";
 
@@ -49,17 +47,17 @@ export const Button = ({
   fontColor,
   bgColor,
   width,
-  children,
+
   className,
+  children,
+
   ...props
-}: ButtonProps) => {
-  return (
-    <button
-      type="button"
-      className={cn(buttonStyles({ fontColor, bgColor, width }), className)}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+}: ButtonProps) => (
+  <button
+    type="button"
+    className={cn(buttonStyles({ fontColor, bgColor, width }), className)}
+    {...props}
+  >
+    {children}
+  </button>
+);

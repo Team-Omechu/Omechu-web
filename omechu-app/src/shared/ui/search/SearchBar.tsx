@@ -1,5 +1,3 @@
-//! 26.01.13 작업
-
 "use client";
 
 /*****************
@@ -16,12 +14,9 @@
           → 자동완성용 추천어 리스트 (선택)
 ***********************/
 
-import { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
+import { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from "react";
 
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
-
-import { SearchIcon } from "@/shared/assets/icons";
+import Image from "next/image";
 
 interface SearchBarProps {
   inputValue: string;
@@ -29,7 +24,6 @@ interface SearchBarProps {
   onSearch: (searchTerm: string) => void;
   placeholder?: string;
   suggestionList?: string[];
-  className?: string;
 }
 
 const RECENT_KEY = "recent_search_terms";
@@ -38,26 +32,25 @@ export function SearchBar({
   inputValue,
   setInputValue,
   onSearch,
-  placeholder = "음식명을 입력하세요.",
+  placeholder = "검색어를 입력하세요.",
   suggestionList = [],
-  className,
 }: SearchBarProps) {
   const isJustResetRef = useRef(false);
   const lastSearchedRef = useRef("");
   const [isFocused, setIsFocused] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    const stored = localStorage.getItem(RECENT_KEY);
-    try {
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const showSuggestions =
     isFocused && (inputValue.trim().length > 0 || recentSearches.length > 0);
+
+  // 최근 검색어 불러오기
+  useEffect(() => {
+    const stored = localStorage.getItem(RECENT_KEY);
+    if (stored) {
+      setRecentSearches(JSON.parse(stored));
+    }
+  }, []);
 
   // 최근 검색어 저장 (중복 제거 + 최대 10개)
   const saveRecent = (term: string) => {
@@ -152,7 +145,7 @@ export function SearchBar({
     .slice(0, 10);
 
   return (
-    <section className={twMerge("relative w-84", className)}>
+    <section className="relative w-[340px]">
       <input
         type="text"
         value={inputValue}
@@ -166,7 +159,7 @@ export function SearchBar({
           }, 150);
         }}
         placeholder={placeholder}
-        className="border-font-disabled bg-brand-secondary placeholder:text-font-placeholder placeholder:text-caption-1-regular flex h-12 w-full items-center rounded-[10px] border px-6 pr-10"
+        className={`border-grey-dark-hover flex h-10 w-full items-center rounded-t-3xl border-2 bg-white px-6 pr-10 ${showSuggestions ? "" : "rounded-b-3xl"}`}
       />
 
       <button
@@ -175,18 +168,20 @@ export function SearchBar({
         aria-label="검색"
       >
         <div className="relative h-full w-full">
-          <SearchIcon
-            className="text-font-placeholder absolute top-1.5"
-            currentColor={"#A8A8A8"}
+          <Image
+            src="/search/search.svg"
+            alt="검색"
+            fill
+            className="object-contain"
           />
         </div>
       </button>
 
       {showSuggestions && (
-        <ul className="border-grey-dark-hover absolute top-full left-0 z-10 h-fit w-full rounded-b-[10px] bg-white shadow-md">
+        <ul className="border-grey-dark-hover absolute top-full left-0 z-10 w-full rounded-b-3xl border-2 border-t-0 bg-white shadow-md">
           {inputValue.trim() === "" ? (
             <>
-              <li className="text-font-placeholder px-4 py-2 text-sm font-bold">
+              <li className="px-4 py-2 text-sm font-bold text-gray-600">
                 최근 검색어
               </li>
               {recentSearches.map((term, idx) => (
@@ -199,7 +194,7 @@ export function SearchBar({
                   </span>
                   <button
                     onClick={() => removeRecent(term)}
-                    className="hover:text-foundation-grey-darker text-gray-500"
+                    className="text-gray-500 hover:text-[#393939]"
                   >
                     ✕
                   </button>
@@ -208,7 +203,7 @@ export function SearchBar({
               {recentSearches.length > 0 && (
                 <li className="flex justify-end px-4 py-2">
                   <button
-                    className="hover:text-foundation-grey-darker text-xs text-gray-500"
+                    className="text-xs text-gray-500 hover:text-[#393939]"
                     onClick={() => {
                       setRecentSearches([]);
                       localStorage.removeItem(RECENT_KEY);
@@ -228,13 +223,7 @@ export function SearchBar({
                 <li
                   key={idx}
                   onClick={() => handleSuggestionClick(item)}
-                  className={twMerge(
-                    clsx(
-                      "cursor-pointer px-4 py-2 text-sm hover:bg-gray-100",
-                      isSelected && "bg-gray-100 font-semibold",
-                      isLast && "rounded-b-3xl pb-3",
-                    ),
-                  )}
+                  className={`cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 ${isSelected ? "bg-gray-100 font-semibold" : ""} ${isLast ? "rounded-b-3xl pb-3" : ""} `}
                 >
                   {item}
                 </li>

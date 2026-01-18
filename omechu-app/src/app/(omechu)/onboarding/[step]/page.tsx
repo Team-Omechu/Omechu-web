@@ -1,18 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import { useParams, useRouter } from "next/navigation";
 
-import {
-  BaseModal,
-  BottomButton,
-  ModalWrapper,
-  ProgressBar,
-  Toast,
-  useOnboardingStore,
-} from "@/shared";
-import { useAuthStore } from "@/entities/user/model/auth.store";
-import { type LoginSuccessData } from "@/entities/user/api/authApi";
+import StepFooter from "@/components/common/StepFooter";
 import {
   useCompleteOnboardingMutation,
   type OnboardingRequestData,
@@ -23,8 +15,17 @@ import {
   ProfileStep,
   ExerciseStep,
 } from "@/entities/onboarding";
+import { type LoginSuccessData } from "@/entities/user/api/authApi";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import {
+  BaseModal,
+  BottomButton,
+  ModalWrapper,
+  ProgressBar,
+  Toast,
+  useOnboardingStore,
+} from "@/shared";
 // TODO: StepFooter가 shared에 없음 - 추가 필요
-import StepFooter from "@/components/common/StepFooter";
 
 const ONBOARDING_STEPS = 6;
 

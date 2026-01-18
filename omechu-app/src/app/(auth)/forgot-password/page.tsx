@@ -4,13 +4,15 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
-import { useRequestPasswordResetMutation } from "@/entities/user/lib/hooks/useAuth";
-import type { FindPasswordFormValues } from "@/entities/user/model/auth.schema";
-import { Toast } from "@/shared";
+import {
+  ApiClientError,
+  useRequestPasswordResetMutation,
+  type FindPasswordFormValues,
+} from "@/entities/user";
+import { Header, Toast } from "@/shared";
 import { ForgotPasswordForm } from "@/widgets/auth";
 
-export default function FindPasswordPage() {
+export default function ForgotPasswordPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
@@ -28,7 +30,6 @@ export default function FindPasswordPage() {
       router.push("/forgot-password/sent");
     } catch (error: unknown) {
       const e = error as ApiClientError & { code?: string; status?: number };
-      // 서버에서 내려준 reason을 ApiClientError.message로 전달하고 있으므로 그대로 노출
       const msg: string =
         e?.message || "요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.";
       triggerToast(msg);
@@ -36,22 +37,33 @@ export default function FindPasswordPage() {
   };
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4">
-      <div className="flex w-full max-w-sm flex-col items-center gap-6">
-        <div className="flex flex-col gap-3 text-center">
-          <h1 className="text-grey-darker text-xl font-medium">
+    <div className="flex flex-1 flex-col">
+      <Header />
+
+      <div className="flex flex-col px-5">
+        {/* 타이틀 영역 */}
+        <div className="flex flex-col items-center p-12">
+          <h1 className="text-body-2-bold text-font-high text-center">
             비밀번호 찾기
           </h1>
-          <p className="text-grey-normal-active text-sm font-normal">
+        </div>
+
+        {/* 설명 영역 */}
+        <div className="flex items-center justify-center px-5 py-2.5">
+          <p className="text-body-4-regular text-font-low text-center">
             가입하신 이메일 주소를 입력하여
             <br />
             비밀번호를 재설정하실 수 있어요
           </p>
         </div>
 
-        <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
+        {/* 폼 영역 */}
+        <div className="pt-12">
+          <ForgotPasswordForm onFormSubmit={handleFormSubmit} />
+        </div>
       </div>
-      <Toast message={toastMessage} show={showToast} className={"bottom-20"} />
-    </main>
+
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
+    </div>
   );
 }

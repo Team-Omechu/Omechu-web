@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { Header } from "@/shared";
+import { Header } from "@/shared/ui/header/Header";
 
 /**
  * 로그인 관련 페이지 레이아웃
