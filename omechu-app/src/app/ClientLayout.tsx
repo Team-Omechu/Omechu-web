@@ -93,23 +93,32 @@ export default function ClientLayout({
     "/mypage/user-info-edit/prefer",
     "/mypage/user-info-edit/body_type",
     "/mypage/user-info-edit/allergy",
+
     // 추천맛집목록
     "/mypage/recommended-list",
+
     // 마이페이지-설정
     "/mypage/settings",
     "/mypage/settings/account-settings",
     "/mypage/settings/account-settings/change-password",
+
     // 마이페이지-이용약관
     "/mypage/settings/terms",
     "/mypage/settings/terms/service",
     "/mypage/settings/terms/personal-info",
     "/mypage/settings/terms/location-info",
+
     // 마이페이지-먹부림일지
     "/mypage/foodie-log",
+
     // 마이페이지-찜목록
     "/mypage/favorites",
+
     // 마이페이지-활동내역
     "/mypage/my-activity",
+
+    // 메뉴배틀페이지
+    "/menubattle",
   ];
 
   const dynamicNoBottomNavPrefixes = [
