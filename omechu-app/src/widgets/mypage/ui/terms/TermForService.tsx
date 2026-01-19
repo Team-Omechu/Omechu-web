@@ -8,7 +8,7 @@ import {
   termsForServiceServe,
 } from "@/shared/constants/terms";
 
-export default function TermForService() {
+export function TermForService() {
   const router = useRouter();
   return (
     <>

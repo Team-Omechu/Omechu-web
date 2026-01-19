@@ -23,11 +23,6 @@ export {
 
 // Terms Config
 export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
-export {
-  TERMS_CONFIG,
-  TERMS_MENU_LIST,
-  isValidTermsType,
-} from "./constants/terms";
 
 // Lib
 export { axiosInstance, setupAxiosInterceptors } from "./lib/axiosInstance";
@@ -51,8 +46,7 @@ export { getPresignedUrl, uploadToS3 } from "./api/image";
 // UI Components
 export { Header } from "./ui/Header";
 export { MainLoading } from "./ui/MainLoading";
-export { SortSelector } from "./ui/SortSelector";
-export { LoadingSpinner } from "./ui/LoadingIndicator";
+
 export { ProgressBar } from "./ui/ProgressBar";
 export { SearchBar } from "./ui/SearchBar";
 
@@ -68,12 +62,10 @@ export { Button } from "./ui/button/Button";
 export { OnboardingButton } from "./ui/button/OnboardingButton";
 export { PaginationButton } from "./ui/button/PaginationButton";
 export { RandomDrawButton } from "./ui/button/RandomDrawButton";
-export { FloatingActionButton } from "./ui/button/FloatingActionButton";
 export { ListButton } from "./ui/button/ListButton";
 
 // UI - Card
 // FoodCard는 widgets/card로 이동 (FSD: entities 의존)
-export { MenuInfo } from "./ui/card/MenuInfoCard";
 export { IngredientCard } from "./ui/card/IngredientCard";
 export { RecommendedFoodCard } from "./ui/card/RecommendedFoodCard";
 export { RestaurantCard } from "./ui/card/RestaurantCard";
