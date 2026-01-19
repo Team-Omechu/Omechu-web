@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 import {
@@ -9,20 +7,13 @@ import {
   useRequestPasswordResetMutation,
   type FindPasswordFormValues,
 } from "@/entities/user";
-import { Header, Toast } from "@/shared";
+import { Header, Toast, useToast } from "@/shared";
 import { ForgotPasswordForm } from "@/widgets/auth";
 
 export default function ForgotPasswordPage() {
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
   const { mutateAsync: requestReset } = useRequestPasswordResetMutation();
-
-  const triggerToast = (msg: string) => {
-    setToastMessage(msg);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
-  };
+  const { show: showToast, message: toastMessage, triggerToast } = useToast();
 
   const handleFormSubmit = async (data: FindPasswordFormValues) => {
     try {

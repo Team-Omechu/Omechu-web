@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect } from "react";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
@@ -11,7 +11,7 @@ import {
 } from "@/entities/user/lib/constants/oauth.const";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import type { OAuthProvider } from "@/entities/user/model/auth.types";
-import { Toast } from "@/shared";
+import { Toast, useToast } from "@/shared";
 
 export default function OAuthCallbackPage() {
   return (
@@ -32,31 +32,9 @@ function CallbackContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { login } = useAuthStore();
-
-  const [toastMessage, setToastMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
-  const toastTimerRef = useRef<number | null>(null);
+  const { show: showToast, message: toastMessage, triggerToast } = useToast();
 
   const provider = params.provider as string;
-
-  const triggerToast = useCallback((msg: string) => {
-    setToastMessage(msg);
-    setShowToast(true);
-    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
-    toastTimerRef.current = window.setTimeout(() => {
-      setShowToast(false);
-      toastTimerRef.current = null;
-    }, 2500);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (toastTimerRef.current) {
-        window.clearTimeout(toastTimerRef.current);
-        toastTimerRef.current = null;
-      }
-    };
-  }, []);
 
   useEffect(() => {
     // provider 유효성 검사
@@ -96,7 +74,7 @@ function CallbackContent() {
         router.replace("/sign-in");
       }
     })();
-  }, [provider, searchParams, router, login]);
+  }, [provider, searchParams, router, login, triggerToast]);
 
   const providerName = PROVIDER_DISPLAY_NAMES[provider as OAuthProvider] ?? "";
 

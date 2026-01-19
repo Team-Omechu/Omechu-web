@@ -17,7 +17,7 @@ import {
   LoginFormValues,
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { Button, FormField, Input, Toast } from "@/shared";
+import { Button, FormField, Input, Toast, useToast } from "@/shared";
 
 /**
  * 이메일 로그인 페이지
@@ -26,15 +26,13 @@ import { Button, FormField, Input, Toast } from "@/shared";
  * - 비밀번호 찾기 / 회원가입 링크
  */
 export default function EmailSignInPage() {
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
-  const toastTimerRef = useRef<number | null>(null);
   const navigatedRef = useRef(false);
   const justLoggedInRef = useRef(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { show: showToast, message: toastMessage, triggerToast } = useToast();
 
   const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
 
@@ -49,27 +47,6 @@ export default function EmailSignInPage() {
       password: "",
     },
   });
-
-  const triggerToast = useCallback((msg: string) => {
-    setToastMessage(msg);
-    setShowToast(true);
-    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
-    toastTimerRef.current = window.setTimeout(() => {
-      setShowToast(false);
-      toastTimerRef.current = null;
-    }, 2500);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (toastTimerRef.current) {
-        window.clearTimeout(toastTimerRef.current);
-        toastTimerRef.current = null;
-      }
-      justLoggedInRef.current = false;
-      navigatedRef.current = false;
-    };
-  }, []);
 
   const onSubmit = useCallback(
     (data: LoginFormValues) => {

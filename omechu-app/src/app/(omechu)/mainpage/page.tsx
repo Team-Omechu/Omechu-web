@@ -8,7 +8,8 @@ import { useTagStore } from "@/entities/tag";
 import { handleLocation, useLocationAnswerStore } from "@/entities/location";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { StartButton } from "@/widgets/mainpage/ui/StartButton";
-import { BaseModal, ModalWrapper, usePwaEntryModal } from "@/shared";
+import { BaseModal, ModalWrapper } from "@/shared";
+import { usePwaEntryModal } from "@/shared/lib/usePwaEntryModal";
 
 type Pick = "start" | "battle" | "random" | null;
 

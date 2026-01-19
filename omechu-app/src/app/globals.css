@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@import "react-datepicker/dist/react-datepicker.css";
+
+@import "../styles/datepicker.css";
+
 button {
   cursor: pointer;
 }
@@ -34,7 +38,7 @@ button {
   /* Custom Colors - Brancd */
   --color-brand-primary: #ff7676;
   --color-brand-secondary: #ffffff;
-  --color-brand-tertiary: #24242414;
+  --color-brand-tertiary: #eeeeee;
   --color-brand-logo: #505889;
 
   /* Custom Colors - Font */
@@ -268,36 +272,6 @@ input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
 }
-
-/* .react-datepicker 관련 Tailwind 기반 커스터마이징은 globals.css 같은 전역 CSS 파일에만 작성 가능 */
-/* 컴포넌트 파일(JSX/TSX) 내부에 직접 넣을 수는 없음 */
-/* .react-datepicker {
-  @apply border-grey-dark-hover! rounded-3xl! border-2! px-6!;
-}
-
-.react-datepicker__triangle {
-  display: none;
-}
-
-.react-datepicker__header {
-  @apply border-none! bg-white! pb-0!;
-}
-
-.react-datepicker__day-names {
-  @apply m-0! pb-0!;
-}
-
-.react-datepicker__day-name {
-  @apply text-grey-normal-active! h-fit!;
-}
-
-.react-datepicker__month {
-  @apply m-0! mb-2! h-fit! w-fit! text-xs!;
-}
-
-.react-datepicker__day--outside-month {
-  @apply text-gray-400!;
-} */
 
 /* Autofill 스타일 초기화 */
 input:-webkit-autofill,

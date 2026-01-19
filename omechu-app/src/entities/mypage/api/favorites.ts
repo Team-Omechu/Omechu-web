@@ -1,7 +1,8 @@
 // src/app/mypage/api/favorites.ts
-import { axiosInstance } from "@/shared/lib/axiosInstance"; // 공통 axios 인스턴스
-import { useAuthStore } from "@/entities/user/model/auth.store";
 import axios from "axios";
+
+import { useAuthStore } from "@/entities/user/model/auth.store";
+import { axiosInstance } from "@/shared/lib/axiosInstance"; // 공통 axios 인스턴스
 
 /** 공통 응답 스펙 */
 interface ApiSuccess<T = unknown> {
