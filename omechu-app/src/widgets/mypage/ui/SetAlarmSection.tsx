@@ -5,11 +5,15 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import clsx from "clsx";
 
 import { ArrowIcon } from "@/shared/assets/icons/index";
 
 export function SetAlarmSection() {
+  const router = useRouter();
+
   const [isAlarmOn, setIsAlarmOn] = useState(true);
 
   return (
@@ -34,7 +38,7 @@ export function SetAlarmSection() {
       </div>
       <button
         className="absolute right-4 bottom-4"
-        onClick={() => setIsAlarmOn((prev) => !prev)}
+        onClick={() => router.push("/mypage/alarm-setting")}
       >
         <ArrowIcon className="text-font-extralow" width={9} height={15} />
       </button>

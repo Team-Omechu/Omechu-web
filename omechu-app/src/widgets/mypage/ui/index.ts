@@ -11,3 +11,6 @@ export { SelectTab } from "@/widgets/mypage/ui/SelectTab";
 export { SelectTabBar } from "@/widgets/mypage/ui/SelectTabBar";
 export { SetAlarmSection } from "@/widgets/mypage/ui/SetAlarmSection";
 export { UserInfoSection } from "@/widgets/mypage/ui/UserInfoSection";
+
+export { TimePickerModal } from "@/widgets/mypage/ui/TimePickerModal";
+export { ToggleSwitch } from "@/widgets/mypage/ui/ToggleSwitch";
