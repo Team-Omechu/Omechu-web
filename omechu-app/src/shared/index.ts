@@ -44,7 +44,6 @@ export { getPresignedUrl, uploadToS3 } from "./api/image";
 // UI Components
 export { Header } from "./ui/Header";
 export { MainLoading } from "./ui/MainLoading";
-export { SortSelector } from "./ui/SortSelector";
 export { LoadingSpinner } from "./ui/LoadingIndicator";
 export { ProgressBar } from "./ui/ProgressBar";
 export { SearchBar } from "./ui/SearchBar";
