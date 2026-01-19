@@ -39,7 +39,6 @@ export default function ForgotPasswordForm({
     [onFormSubmit],
   );
 
-  // eslint-disable-next-line react-hooks/refs -- handleSubmit is from react-hook-form
   const handleFormSubmit = handleSubmit(onSubmit);
 
   return (

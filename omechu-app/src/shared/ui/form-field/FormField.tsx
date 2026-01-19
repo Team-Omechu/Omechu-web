@@ -6,7 +6,7 @@ import { cn } from "@/shared/lib/cn.util";
 import { HelperText } from "@/shared/ui/input/HelperText";
 import { Label } from "@/shared/ui/input/Label";
 
-type HelperState = "error" | "success";
+type HelperState = "default" | "error" | "success";
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
@@ -49,19 +49,10 @@ export const FormField = ({
         {rightSlot}
       </div>
 
-      {helperText && helperState && (
-        <HelperText id={helperId} state={helperState}>
+      {helperText && (
+        <HelperText id={helperId} state={helperState ?? "default"}>
           {helperText}
         </HelperText>
-      )}
-
-      {helperText && !helperState && (
-        <p
-          id={helperId}
-          className="text-caption-2-regular text-font-placeholder mt-4 ml-1"
-        >
-          {helperText}
-        </p>
       )}
     </div>
   );

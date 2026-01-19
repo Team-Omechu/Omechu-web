@@ -1,4 +1,5 @@
-// omechu-app/src/app/lib/utils/bodyScrollLock.ts
+// ! 26.01.12 작업 완료
+
 let lockCount = 0;
 let previousOverflow: string | null = null;
 

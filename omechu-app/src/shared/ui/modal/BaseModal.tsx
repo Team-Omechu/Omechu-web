@@ -80,7 +80,9 @@ export const BaseModal = ({
               {leftButtonText}
             </Button>
           )}
-          <Button onClick={onRightButtonClick}>{rightButtonText}</Button>
+          <Button className="text-brand-secondary" onClick={onRightButtonClick}>
+            {rightButtonText}
+          </Button>
         </div>
       </div>
     </section>

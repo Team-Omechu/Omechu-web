@@ -31,9 +31,7 @@ export default function SignInLayout({
       </div>
 
       {/* 컨텐츠 영역 */}
-      <div className="flex flex-1 flex-col items-center">
-        {children}
-      </div>
+      <div className="flex flex-1 flex-col items-center">{children}</div>
     </>
   );
 }

@@ -8,7 +8,8 @@ import { cn } from "@/shared/lib/cn.util";
 
 const OnboardingButtonStyles = cva(
   [
-    "h-12 p-2.5",
+    "h-12 p-1",
+
     "flex items-center justify-center",
     "rounded-[10px]",
     "transition-all",
