@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBar } from "@/shared/ui/search/SearchBar";
+import { SearchBar } from "@/shared/ui/SearchBar";
 import { FoodBox } from "@/shared/ui/box/FoodBox";
 
 // 임시 메뉴 데이터
