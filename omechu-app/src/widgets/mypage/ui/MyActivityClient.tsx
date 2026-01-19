@@ -132,12 +132,12 @@ export default function MyActivityClient() {
           ...r,
           isLiked: Boolean(
             r.isLiked ??
-              r.is_liked ??
-              r.myLike ??
-              r.my_like ??
-              r.liked ??
-              r.userLiked ??
-              (typeof r.like === "number" ? r.like > 0 : false),
+            r.is_liked ??
+            r.myLike ??
+            r.my_like ??
+            r.liked ??
+            r.userLiked ??
+            (typeof r.like === "number" ? r.like > 0 : false),
           ),
         }));
         setReviewList(normalized);
@@ -170,13 +170,13 @@ export default function MyActivityClient() {
         const mapped: MyRestaurant[] = places.map((item: any) => {
           const serverLiked = Boolean(
             item.isLiked ??
-              item.is_liked ??
-              item.isHearted ??
-              item.hearted ??
-              item.my_heart ??
-              item.myHeart ??
-              item.favorited ??
-              item.is_favorite,
+            item.is_liked ??
+            item.isHearted ??
+            item.hearted ??
+            item.my_heart ??
+            item.myHeart ??
+            item.favorited ??
+            item.is_favorite,
           );
           return {
             id: Number(item.id),
@@ -219,13 +219,13 @@ export default function MyActivityClient() {
       const mapped: MyRestaurant[] = places.map((item: any) => {
         const serverLiked = Boolean(
           item.isLiked ??
-            item.is_liked ??
-            item.isHearted ??
-            item.hearted ??
-            item.my_heart ??
-            item.myHeart ??
-            item.favorited ??
-            item.is_favorite,
+          item.is_liked ??
+          item.isHearted ??
+          item.hearted ??
+          item.my_heart ??
+          item.myHeart ??
+          item.favorited ??
+          item.is_favorite,
         );
         return {
           id: Number(item.id),
@@ -263,13 +263,13 @@ export default function MyActivityClient() {
       const mapped: MyRestaurant[] = places.map((item: any) => {
         const serverLiked = Boolean(
           item.isLiked ??
-            item.is_liked ??
-            item.isHearted ??
-            item.hearted ??
-            item.my_heart ??
-            item.myHeart ??
-            item.favorited ??
-            item.is_favorite,
+          item.is_liked ??
+          item.isHearted ??
+          item.hearted ??
+          item.my_heart ??
+          item.myHeart ??
+          item.favorited ??
+          item.is_favorite,
         );
         return {
           id: Number(item.id),

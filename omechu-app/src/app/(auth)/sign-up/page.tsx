@@ -15,7 +15,13 @@ import {
   type SignupFormValues,
   useAuthStore,
 } from "@/entities/user";
-import { BottomButton, Header, ModalWrapper, Toast, TERMS_CONFIG } from "@/shared";
+import {
+  BottomButton,
+  Header,
+  ModalWrapper,
+  Toast,
+  TERMS_CONFIG,
+} from "@/shared";
 import {
   SignUpForm,
   TermsModal,

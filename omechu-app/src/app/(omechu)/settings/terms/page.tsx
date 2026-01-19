@@ -25,13 +25,13 @@ export default function TermsListPage() {
         }
       />
 
-      <main className="h-[calc(100dvh-3rem)] overflow-y-auto px-2 py-2 scrollbar-hide">
+      <main className="scrollbar-hide h-[calc(100dvh-3rem)] overflow-y-auto px-2 py-2">
         <ul className="flex flex-col">
           {TERMS_MENU_LIST.map((item) => (
             <li key={item.id}>
               <Link
                 href={`/settings/terms/${item.type}`}
-                className="flex w-full items-center justify-between rounded-sm px-6 py-3 hover:bg-main-normal-hover active:bg-main-normal-active"
+                className="hover:bg-main-normal-hover active:bg-main-normal-active flex w-full items-center justify-between rounded-sm px-6 py-3"
                 aria-label={`${item.title} 보기`}
               >
                 <span className="text-xl font-normal">{item.title}</span>

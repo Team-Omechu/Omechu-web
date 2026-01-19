@@ -56,7 +56,10 @@ export const BattleButton = ({
   return (
     <button
       type="button"
-      className={cn(battleButtonStyles({ fontColor, bgColor, width }), className)}
+      className={cn(
+        battleButtonStyles({ fontColor, bgColor, width }),
+        className,
+      )}
       {...props}
     >
       {children}

@@ -16,7 +16,7 @@ const OnboardingStepLayout = ({
   return (
     <div className="flex w-full flex-col items-center px-4 py-6">
       <section className="my-20 text-center">
-        <h1 className="whitespace-pre-line text-2xl font-bold text-grey-darker">
+        <h1 className="text-grey-darker text-2xl font-bold whitespace-pre-line">
           {title}
         </h1>
       </section>

@@ -42,7 +42,7 @@ export default function TermsContent({
 
           {/* 조항 내용 */}
           <div
-            className={`whitespace-pre-wrap ${contentSizeClass} font-normal leading-relaxed ${
+            className={`whitespace-pre-wrap ${contentSizeClass} leading-relaxed font-normal ${
               item.index ? "text-font-low" : "text-font-high"
             }`}
           >

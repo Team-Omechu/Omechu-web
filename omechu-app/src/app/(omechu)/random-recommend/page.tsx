@@ -63,8 +63,12 @@ export default function RandomRecommendPage() {
         />
       </div>
 
-      <button onClick={handleModal} type="button" className="active:scale-[0.99]">
-        <p className=" text-center text-[1.25rem] font-bold text-[#FF364B]">
+      <button
+        onClick={handleModal}
+        type="button"
+        className="active:scale-[0.99]"
+      >
+        <p className="text-center text-[1.25rem] font-bold text-[#FF364B]">
           Press me!
         </p>
         <Image

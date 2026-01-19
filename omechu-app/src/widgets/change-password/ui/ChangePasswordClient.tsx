@@ -176,7 +176,9 @@ export default function ChangePasswordClient() {
               title="비밀번호가 변경되었습니다!"
               rightButtonText="확인"
               isCloseButtonShow={false}
-              onRightButtonClick={() => router.push("/settings/account-settings")}
+              onRightButtonClick={() =>
+                router.push("/settings/account-settings")
+              }
             />
           </ModalWrapper>
         )}

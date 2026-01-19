@@ -16,14 +16,14 @@ export default function MenuSection({ menuList }: MenuSectionProps) {
   const router = useRouter();
 
   return (
-    <section className="w-full rounded-lg border-2 border-secondary-normal bg-white">
+    <section className="border-secondary-normal w-full rounded-lg border-2 bg-white">
       {menuList.map((item, index) => {
         const isLast = index === menuList.length - 1;
         return (
           <div key={index}>
             <button
               onClick={() => router.push(item.href)}
-              className="flex w-full items-center justify-between rounded-lg bg-white px-4 pb-2.5 pt-3 text-secondary-normal hover:bg-grey-light-hover hover:text-[#0182CA] active:bg-grey-light-active active:text-[#0182CA]"
+              className="text-secondary-normal hover:bg-grey-light-hover active:bg-grey-light-active flex w-full items-center justify-between rounded-lg bg-white px-4 pt-3 pb-2.5 hover:text-[#0182CA] active:text-[#0182CA]"
             >
               <span className="pl-3 text-lg">{item.title}</span>
               <img
@@ -34,7 +34,7 @@ export default function MenuSection({ menuList }: MenuSectionProps) {
               />
             </button>
             {!isLast && (
-              <div className="mx-auto h-[1.2px] w-[calc(100%-2.5rem)] bg-secondary-light-active" />
+              <div className="bg-secondary-light-active mx-auto h-[1.2px] w-[calc(100%-2.5rem)]" />
             )}
           </div>
         );

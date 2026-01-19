@@ -46,7 +46,7 @@ export default function ProfileImageUploader({
           className="h-full w-full object-cover"
         />
       </div>
-      <button className="absolute right-1 top-1" onClick={handleImageClick}>
+      <button className="absolute top-1 right-1" onClick={handleImageClick}>
         <img src="/profile/camera.svg" alt="upload" width={25} height={20} />
       </button>
       <input

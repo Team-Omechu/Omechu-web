@@ -126,12 +126,40 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
-    const { type = "text", className, width, height, rounded, disabled, ...rest } = props;
+    const {
+      type = "text",
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      ...rest
+    } = props;
     if (type === "password") {
-      return <PasswordInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
+      return (
+        <PasswordInput
+          ref={ref}
+          className={className}
+          width={width}
+          height={height}
+          rounded={rounded}
+          disabled={disabled}
+          {...rest}
+        />
+      );
     }
     if (type === "search") {
-      return <SearchInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
+      return (
+        <SearchInput
+          ref={ref}
+          className={className}
+          width={width}
+          height={height}
+          rounded={rounded}
+          disabled={disabled}
+          {...rest}
+        />
+      );
     }
     return (
       <div

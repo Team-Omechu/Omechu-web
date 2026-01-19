@@ -49,7 +49,7 @@ export default function SettingsClient() {
           {SETTINGS_MENU.map((item) => (
             <li
               key={item.id}
-              className="flex w-full flex-col px-6 py-3 hover:bg-main-normal-hover active:bg-main-normal-active"
+              className="hover:bg-main-normal-hover active:bg-main-normal-active flex w-full flex-col px-6 py-3"
             >
               <button
                 onClick={() => router.push(item.url)}

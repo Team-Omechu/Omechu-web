@@ -1,5 +1,8 @@
 import { axiosInstance } from "@/shared";
-import { restaurantList, RestaurantRequest } from "@/entities/restaurant/config/RestaurantData";
+import {
+  restaurantList,
+  RestaurantRequest,
+} from "@/entities/restaurant/config/RestaurantData";
 
 export const getRestaurants = async (
   request: RestaurantRequest,

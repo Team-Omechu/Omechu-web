@@ -88,7 +88,9 @@ export default function ResetPasswordForm({
                 (passwordBlurred && errors.password?.message) ||
                 "* 대소문자, 숫자 및 특수문자 포함 8자 이상"
               }
-              helperState={passwordBlurred && errors.password ? "error" : undefined}
+              helperState={
+                passwordBlurred && errors.password ? "error" : undefined
+              }
             >
               <Input
                 type="password"
@@ -115,11 +117,14 @@ export default function ResetPasswordForm({
               id="reset-password-confirm"
               helperText={
                 passwordConfirmBlurred && errors.passwordConfirm
-                  ? errors.passwordConfirm?.message || "* 새 비밀번호가 일치하지 않습니다!"
+                  ? errors.passwordConfirm?.message ||
+                    "* 새 비밀번호가 일치하지 않습니다!"
                   : undefined
               }
               helperState={
-                passwordConfirmBlurred && errors.passwordConfirm ? "error" : undefined
+                passwordConfirmBlurred && errors.passwordConfirm
+                  ? "error"
+                  : undefined
               }
             >
               <Input

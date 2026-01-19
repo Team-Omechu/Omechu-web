@@ -160,7 +160,10 @@ export default function EmailSignInPage() {
   return (
     <div className="flex w-full flex-col items-center">
       {/* 로그인 폼 */}
-      <form onSubmit={handleFormSubmit} className="mt-14 flex w-full flex-col gap-5 px-5">
+      <form
+        onSubmit={handleFormSubmit}
+        className="mt-14 flex w-full flex-col gap-5 px-5"
+      >
         {/* 입력 필드 + 체크박스 + 버튼 영역 */}
         <div className="flex flex-col gap-3">
           {/* 입력 필드들 */}
@@ -196,7 +199,10 @@ export default function EmailSignInPage() {
                 <FormField
                   label="비밀번호"
                   id="password"
-                  helperText={errors.password?.message || "* 대소문자, 숫자 및 특수문자 포함 8자 이상"}
+                  helperText={
+                    errors.password?.message ||
+                    "* 대소문자, 숫자 및 특수문자 포함 8자 이상"
+                  }
                   helperState={errors.password ? "error" : undefined}
                 >
                   <Input
@@ -216,7 +222,7 @@ export default function EmailSignInPage() {
               <button
                 type="button"
                 onClick={() => setRememberMe(!rememberMe)}
-                className="flex size-5 items-center justify-center rounded-sm border-[0.5px] border-font-high bg-background-secondary"
+                className="border-font-high bg-background-secondary flex size-5 items-center justify-center rounded-sm border-[0.5px]"
               >
                 {rememberMe && (
                   <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
@@ -243,7 +249,7 @@ export default function EmailSignInPage() {
         </div>
 
         {/* 비밀번호 찾기 / 회원가입 링크 */}
-        <div className="flex items-center justify-center gap-1 text-caption-1-regular">
+        <div className="text-caption-1-regular flex items-center justify-center gap-1">
           <Link href="/forgot-password" className="text-font-medium">
             비밀번호 찾기
           </Link>

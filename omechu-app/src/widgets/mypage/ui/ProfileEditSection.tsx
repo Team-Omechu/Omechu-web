@@ -4,7 +4,13 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
-import { getPresignedUrl, uploadToS3, ModalWrapper, BaseModal, LoadingSpinner } from "@/shared";
+import {
+  getPresignedUrl,
+  uploadToS3,
+  ModalWrapper,
+  BaseModal,
+  LoadingSpinner,
+} from "@/shared";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import { useProfile } from "@/entities/mypage/model/useProfile";
 import ProfileImageUploader from "@/entities/mypage/ui/ProfileImageUploader";

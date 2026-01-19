@@ -11,7 +11,12 @@ import {
   type MukburimStats,
   type PeriodOption,
 } from "@/entities/mypage/api/mukburim";
-import { CustomDatePicker, FloatingActionButton, Header, SkeletonUIFoodBox } from "@/shared";
+import {
+  CustomDatePicker,
+  FloatingActionButton,
+  Header,
+  SkeletonUIFoodBox,
+} from "@/shared";
 
 /* ---------- constants ---------- */
 const PERIOD_OPTIONS = [
@@ -249,7 +254,7 @@ export default function FoodieLog() {
 
       <main
         ref={mainRef}
-        className="flex h-screen w-full flex-col overflow-y-auto px-4 scrollbar-hide"
+        className="scrollbar-hide flex h-screen w-full flex-col overflow-y-auto px-4"
       >
         {/* 기간 탭 */}
         <section className="flex h-fit w-full items-center justify-center gap-0.5 px-1 pt-2">
@@ -257,9 +262,9 @@ export default function FoodieLog() {
             <button
               key={item}
               onClick={() => setSelectedPeriod(item)}
-              className={`mx-0.5 px-1 pb-2 pt-1 text-base hover:bg-main-normal-hover ${
+              className={`hover:bg-main-normal-hover mx-0.5 px-1 pt-1 pb-2 text-base ${
                 selectedPeriod === item
-                  ? "border-b-[3px] border-grey-dark-hover font-bold text-grey-darker"
+                  ? "border-grey-dark-hover text-grey-darker border-b-[3px] font-bold"
                   : "font-normal text-[#716F6C]"
               }`}
             >
@@ -276,10 +281,10 @@ export default function FoodieLog() {
         )}
 
         {/* 정렬 */}
-        <section className="border-grey-darkHoverActive -mt-1 flex w-full justify-end gap-3 border-t pr-3 pt-4 text-sm text-grey-normal-active">
+        <section className="border-grey-darkHoverActive text-grey-normal-active -mt-1 flex w-full justify-end gap-3 border-t pt-4 pr-3 text-sm">
           <button
             className={
-              sortOrder === "MostLogged" ? "font-semibold text-grey-darker" : ""
+              sortOrder === "MostLogged" ? "text-grey-darker font-semibold" : ""
             }
             onClick={() => setSortOrder("MostLogged")}
           >
@@ -295,7 +300,7 @@ export default function FoodieLog() {
             }
             className={[
               sortOrder === "LatestLogged"
-                ? "font-semibold text-grey-darker"
+                ? "text-grey-darker font-semibold"
                 : "",
               !supportsLatestSort ? "cursor-not-allowed opacity-50" : "",
             ].join(" ")}
@@ -307,7 +312,7 @@ export default function FoodieLog() {
 
         {/* 요약/기간 */}
         {stats && (
-          <section className="my-2 w-full px-3 text-xs text-grey-normal-active">
+          <section className="text-grey-normal-active my-2 w-full px-3 text-xs">
             <div className="flex items-center justify-between">
               <span>{stats.dateRange?.displayRange}</span>
               <span>
@@ -348,7 +353,7 @@ export default function FoodieLog() {
                 return (
                   <div
                     key={`${name || "no-name"}-${idx}`}
-                    className="flex h-fit w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border border-grey-dark-hover bg-white py-3"
+                    className="border-grey-dark-hover flex h-fit w-[100px] cursor-pointer flex-col items-center justify-start gap-2 rounded-xl border bg-white py-3"
                     title={name || "(이름 없음)"}
                   >
                     {url ? (
@@ -369,7 +374,7 @@ export default function FoodieLog() {
                       <div className="h-[70px] w-[70px] rounded-lg bg-gray-200" />
                     )}
 
-                    <div className="line-clamp-2 px-2 text-center text-[15px] leading-tight text-grey-darker">
+                    <div className="text-grey-darker line-clamp-2 px-2 text-center text-[15px] leading-tight">
                       {name || "(이름 없음)"}
                     </div>
                     <div className="text-xs text-gray-500">
@@ -384,13 +389,11 @@ export default function FoodieLog() {
 
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />
 
-        {visibleCount < totalCount && (
-          <div ref={loaderRef} className="h-px" />
-        )}
+        {visibleCount < totalCount && <div ref={loaderRef} className="h-px" />}
 
         {listLoading && visibleCount < totalCount && (
           <div className="mt-4 flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-grey-dark-hover border-t-gray-800" />
+            <div className="border-grey-dark-hover h-6 w-6 animate-spin rounded-full border-4 border-t-gray-800" />
             <span className="ml-2 text-sm text-gray-600">로딩 중...</span>
           </div>
         )}

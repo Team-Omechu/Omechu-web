@@ -24,19 +24,19 @@ export default function TermsModal({
     <div className="flex max-h-[80vh] w-[335px] flex-col gap-4 rounded-2xl bg-white p-5 shadow-lg">
       {/* 헤더 */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-grey-darker">{title}</h2>
+        <h2 className="text-grey-darker text-lg font-bold">{title}</h2>
         <button onClick={onClose} aria-label="닫기">
           <Image src="/x/black_x_icon.svg" alt="닫기" width={17} height={17} />
         </button>
       </div>
 
       {/* 약관 내용 스크롤 영역 */}
-      <div className="grow overflow-y-auto rounded-md border bg-gray-50 p-3 text-grey-darker [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-secondary-normal [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
+      <div className="text-grey-darker [&::-webkit-scrollbar-thumb]:bg-secondary-normal grow overflow-y-auto rounded-md border bg-gray-50 p-3 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-track]:bg-transparent">
         <TermsContent data={terms} textSize="sm" />
       </div>
 
       {/* 동의 안내 문구 */}
-      <div className="mb-2 text-center text-sm text-grey-normal-active">
+      <div className="text-grey-normal-active mb-2 text-center text-sm">
         위의 내용을 모두 확인했으며 <br /> 이에 동의합니다.
       </div>
 

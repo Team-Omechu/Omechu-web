@@ -54,7 +54,7 @@ export default function TermsDetailPage() {
       />
       <main
         ref={mainRef}
-        className="relative h-[calc(100dvh-3rem)] w-full overflow-y-auto overflow-x-hidden px-7 py-9 scrollbar-hide"
+        className="scrollbar-hide relative h-[calc(100dvh-3rem)] w-full overflow-x-hidden overflow-y-auto px-7 py-9"
       >
         <TermsContent data={config.data} />
         <FloatingActionButton onClick={scrollToTop} className="bottom-4" />

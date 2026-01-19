@@ -1,6 +1,9 @@
 import { useQuestionAnswerStore } from "@/entities/question";
 import { useQuery } from "@tanstack/react-query";
-import { MenuListResponse, RecommendMenuRequest } from "@/entities/menu/config/resultData";
+import {
+  MenuListResponse,
+  RecommendMenuRequest,
+} from "@/entities/menu/config/resultData";
 import { getMenu } from "@/entities/menu/api/getMenu";
 
 export function useGetMenu() {
