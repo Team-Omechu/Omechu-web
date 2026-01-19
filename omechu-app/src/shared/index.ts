@@ -23,11 +23,6 @@ export {
 
 // Terms Config
 export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
-export {
-  TERMS_CONFIG,
-  TERMS_MENU_LIST,
-  isValidTermsType,
-} from "./constants/terms";
 
 // Lib
 export { axiosInstance, setupAxiosInterceptors } from "./lib/axiosInstance";
@@ -71,7 +66,6 @@ export { ListButton } from "./ui/button/ListButton";
 
 // UI - Card
 // FoodCard는 widgets/card로 이동 (FSD: entities 의존)
-export { MenuInfo } from "./ui/card/MenuInfoCard";
 export { IngredientCard } from "./ui/card/IngredientCard";
 export { RecommendedFoodCard } from "./ui/card/RecommendedFoodCard";
 export { RestaurantCard } from "./ui/card/RestaurantCard";
