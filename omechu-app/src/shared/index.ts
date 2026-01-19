@@ -60,7 +60,6 @@ export { Button } from "./ui/button/Button";
 export { OnboardingButton } from "./ui/button/OnboardingButton";
 export { PaginationButton } from "./ui/button/PaginationButton";
 export { RandomDrawButton } from "./ui/button/RandomDrawButton";
-export { FloatingActionButton } from "./ui/button/FloatingActionButton";
 export { ListButton } from "./ui/button/ListButton";
 
 // UI - Card
