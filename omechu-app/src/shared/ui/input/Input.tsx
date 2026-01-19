@@ -1,15 +1,15 @@
 "use client";
-import * as React from "react";
 
-import Image from "next/image";
+import React from "react";
 
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva, VariantProps } from "class-variance-authority";
 
+import { CloseEyeIcon, OpenEyeIcon, SearchIcon } from "@/shared/assets/icons";
 import { cn } from "@/shared/lib/cn.util";
 
-const inputStyles = cva(
+const inputBaseStyles = cva(
   [
-    "flex items-center outline-none border border-font-placeholder",
+    "outline-none border border-font-placeholder",
     "bg-background-secondary text-font-high placeholder:text-font-placeholder",
     "px-4 transition-opacity duration-300",
   ],
@@ -39,12 +39,15 @@ const inputStyles = cva(
 );
 
 type BaseInputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  VariantProps<typeof inputStyles> & {
+  VariantProps<typeof inputBaseStyles> & {
     onSearch?: () => void;
   };
 
 const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
-  ({ className, width, height, rounded, disabled, ...props }, ref) => {
+  (
+    { className, width, height, rounded, disabled, placeholder, ...props },
+    ref,
+  ) => {
     const [isVisible, setIsVisible] = React.useState(false);
     const toggleVisibility = () => setIsVisible((v) => !v);
 
@@ -52,16 +55,17 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
       <div
         className={cn(
           "relative",
-          inputStyles({ width, height, rounded }),
+          inputBaseStyles({ width, height, rounded }),
           className,
         )}
       >
         <input
           ref={ref}
           type={isVisible ? "text" : "password"}
+          placeholder={placeholder}
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 bg-transparent outline-none"
+          className="flex-1 bg-transparent pr-6 outline-none"
           value={props.value}
           onChange={props.onChange}
           {...props}
@@ -72,12 +76,11 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           className="absolute right-3 flex items-center"
           aria-label="비밀번호 보기 전환"
         >
-          <Image
-            src={isVisible ? "/eye/eye_open.svg" : "/eye/eye_closed.svg"}
-            alt=""
-            width={20}
-            height={20}
-          />
+          {isVisible ? (
+            <OpenEyeIcon className="w-6" />
+          ) : (
+            <CloseEyeIcon className="w-6" />
+          )}
         </button>
       </div>
     );
@@ -88,14 +91,23 @@ PasswordInput.displayName = "PasswordInput";
 
 const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (
-    { className, width, height, rounded, disabled, onSearch, ...props },
+    {
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      placeholder,
+      onSearch,
+      ...props
+    },
     ref,
   ) => {
     return (
       <div
         className={cn(
           "relative",
-          inputStyles({ width, height, rounded }),
+          inputBaseStyles({ width, height, rounded }),
           className,
         )}
       >
@@ -103,10 +115,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           ref={ref}
           type="search"
           disabled={disabled}
+          placeholder={placeholder}
           autoComplete="off"
-          className="flex-1 bg-transparent outline-none"
-          value={props.value}
-          onChange={props.onChange}
+          className="w-full min-w-0 flex-1 bg-transparent pr-8 outline-none"
           {...props}
         />
         <button
@@ -115,7 +126,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           className="absolute right-3 flex items-center"
           aria-label="검색 실행"
         >
-          <Image src="/search/search.svg" alt="" width={20} height={20} />
+          <SearchIcon className="w-5" />
         </button>
       </div>
     );
@@ -126,32 +137,66 @@ SearchInput.displayName = "SearchInput";
 
 export const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (props, ref) => {
-    const { type = "text", className, width, height, rounded, disabled, ...rest } = props;
+    const {
+      type = "text",
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      placeholder,
+      onSearch,
+      ...rest
+    } = props;
+
     if (type === "password") {
-      return <PasswordInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
-    }
-    if (type === "search") {
-      return <SearchInput ref={ref} className={className} width={width} height={height} rounded={rounded} disabled={disabled} {...rest} />;
-    }
-    return (
-      <div
-        className={cn(
-          "relative",
-          inputStyles({ width, height, rounded }),
-          className,
-        )}
-      >
-        <input
+      return (
+        <PasswordInput
           ref={ref}
-          type={type === "number" ? "number" : type}
+          className={className}
+          width={width}
+          height={height}
+          rounded={rounded}
           disabled={disabled}
-          autoComplete="off"
-          value={props.value}
-          onChange={props.onChange}
-          className="w-full flex-1 bg-transparent outline-none"
+          placeholder={placeholder}
+          onSearch={onSearch}
           {...rest}
         />
-      </div>
+      );
+    }
+    if (type === "search") {
+      return (
+        <SearchInput
+          ref={ref}
+          className={className}
+          width={width}
+          height={height}
+          rounded={rounded}
+          disabled={disabled}
+          placeholder={placeholder}
+          onSearch={onSearch}
+          {...rest}
+        />
+      );
+    }
+    return (
+      <input
+        ref={ref}
+        type={type === "number" ? "number" : type}
+        disabled={props.disabled}
+        autoComplete="off"
+        value={props.value}
+        onChange={props.onChange}
+        placeholder={placeholder}
+        className={cn(
+          inputBaseStyles({
+            width: props.width,
+            height: props.height,
+            rounded: props.rounded,
+          }),
+          props.className,
+        )}
+      />
     );
   },
 );

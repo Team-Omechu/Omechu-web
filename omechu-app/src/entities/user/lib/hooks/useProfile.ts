@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchProfile } from "@/entities/user/api/profileApi";
+
+import { fetchProfile } from "@/entities/mypage/api/profile";
 import { ProfileType } from "@/entities/user/model/profile.types";
 
 // userId는 number 타입으로 사용합니다.

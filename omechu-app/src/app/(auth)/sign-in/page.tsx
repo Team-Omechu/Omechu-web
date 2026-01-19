@@ -38,8 +38,11 @@ export default function SignInPage() {
       </div>
 
       {/* 이메일 로그인 / 회원가입 링크 */}
-      <div className="mt-10 flex items-center gap-3 text-caption-1-regular">
-        <Link href="/sign-in/email" className="text-font-medium hover:underline">
+      <div className="text-caption-1-regular mt-10 flex items-center gap-3">
+        <Link
+          href="/sign-in/email"
+          className="text-font-medium hover:underline"
+        >
           이메일 로그인
         </Link>
         <span className="text-caption-2-medium text-font-placeholder">ㅣ</span>
