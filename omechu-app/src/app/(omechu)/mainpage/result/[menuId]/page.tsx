@@ -7,13 +7,12 @@ import {
   useSearchParams,
   usePathname,
 } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Header,
   MenuInfo,
   RestaurantCard,
-  SkeletonUIFoodBox,
   Toast,
   type MenuDetail,
 } from "@/shared";
@@ -44,6 +43,7 @@ export const restaurantMockData = [
     price: "13500",
   },
 ];
+
 export default function MenuDetailPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -51,7 +51,21 @@ export default function MenuDetailPage() {
 
   const [showToast, setShowToast] = useState(false);
 
-  const { data, isLoading } = useGetRestaurants();
+  // ✅ 토스트 타이머 중복 방지
+  const toastTimerRef = useRef<number | null>(null);
+  const openToast = (ms = 2000) => {
+    setShowToast(true);
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => setShowToast(false), ms);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
+  const { data } = useGetRestaurants();
   const { menuId } = useParams();
   const { mutate } = usePostMukburim();
 
@@ -80,28 +94,106 @@ export default function MenuDetailPage() {
     const already = sessionStorage.getItem(key);
 
     if (already) {
-      // 이미 처리한 메뉴면 토스트/뮤테이트 둘 다 스킵하고 URL만 정리
       cleanQuery();
       return;
     }
 
-    // 새로고침 중복 방지: 먼저 “처리 중” 마킹 + URL 즉시 정리
     cleanQuery();
 
     mutate(decodeMenuId, {
       onSuccess: () => {
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 2000);
+        openToast(2000);
         sessionStorage.setItem(key, "done");
       },
-      onError: () => {}, // cleanup function
+      onError: () => {},
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decodeMenuId, shouldRecord]); // searchParams 객체 자체는 deps에서 제외 //
+  }, [decodeMenuId, shouldRecord]);
+
+  // ✅ 공유에 사용할 값들
+  const shareTitle = useMemo(() => {
+    const name = detailMenu?.name ?? "오늘의 메뉴";
+    return `${name} 추천받았어!`;
+  }, [detailMenu?.name]);
+
+  const shareText = useMemo(() => {
+    const name = detailMenu?.name ?? "오늘의 메뉴";
+    return `오늘은 ${name} 어때?`;
+  }, [detailMenu?.name]);
+
+  const shareUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    return window.location.href;
+  }, []);
+
+  // ✅ 공유 로직 (Web Share -> Clipboard fallback)
+  const handleShare = async () => {
+    try {
+      const url = typeof window !== "undefined" ? window.location.href : "";
+
+      if (!url) return;
+
+      // ✅ navigator를 never로 좁히지 않게 window.navigator를 로컬 변수로
+      const nav = typeof window !== "undefined" ? window.navigator : null;
+
+      // 1) Web Share API
+      if (
+        nav &&
+        typeof (nav as Navigator & { share?: unknown }).share === "function"
+      ) {
+        await (
+          nav as Navigator & {
+            share: (data: {
+              title?: string;
+              text?: string;
+              url?: string;
+            }) => Promise<void>;
+          }
+        ).share({
+          title: detailMenu?.name ? `${detailMenu.name} 추천!` : "오늘의 메뉴",
+          text: detailMenu?.name
+            ? `오늘은 ${detailMenu.name} 어때?`
+            : "오늘의 메뉴 확인해봐!",
+          url,
+        });
+        return;
+      }
+
+      // 2) Clipboard API
+      if (
+        nav &&
+        nav.clipboard &&
+        typeof nav.clipboard.writeText === "function"
+      ) {
+        await nav.clipboard.writeText(url);
+        // 토스트/알림
+        return;
+      }
+
+      // 3) Legacy fallback
+      const textarea = document.createElement("textarea");
+      textarea.value = url;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      // 토스트/알림
+    } catch {
+      alert("공유에 실패했어요. 다시 시도해 주세요.");
+    }
+  };
 
   return (
     <div className="flex w-full flex-col">
-      <Header title="맞춤 추천" showBackButton={false} />
+      <Header
+        title="오늘의 메뉴"
+        showBackButton={false}
+        showShareButton={true}
+        onShareClick={handleShare}
+      />
 
       <div className="mt-4 flex-col items-center justify-center p-4">
         <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
@@ -144,13 +236,6 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-3 ml-2 items-center justify-center space-y-3.5 px-4 pb-6">
-        {/* {isLoading && (
-          <div className="flex flex-col gap-4">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <SkeletonUIFoodBox key={i} />
-            ))}
-          </div>
-        )} */}
         {restaurantMockData.map((item) => (
           <RestaurantCard
             key={item.id}
@@ -164,7 +249,7 @@ export default function MenuDetailPage() {
             }
           />
         ))}
-        {/*api 연동시 enhancement */}
+
         <button className="itmes-center mr-2 flex w-full justify-center text-center text-[#A8A8A8]">
           <p>더보기</p>
           <Image
@@ -178,7 +263,7 @@ export default function MenuDetailPage() {
       </div>
 
       <Toast
-        message="먹부림 기록에 등록되었습니다."
+        message={showToast ? "링크가 복사됐어요." : ""}
         show={showToast}
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
       />

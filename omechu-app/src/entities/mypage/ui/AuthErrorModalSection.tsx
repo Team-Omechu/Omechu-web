@@ -1,9 +1,10 @@
 "use client";
 
 import { ModalWrapper } from "@/shared";
+import { LoginPromptModal2 } from "@/widgets/LoginModal/ui/LoginModal2";
 // TODO: FSD 위반 - entities에서 widgets를 import하면 안 됨
 // AuthErrorModalSection을 widgets로 이동하거나, BaseModal로 대체 필요
-import { LoginPromptModal2 } from "@/widgets/LoginModal";
+
 
 interface Props {
   isOpen: boolean;
