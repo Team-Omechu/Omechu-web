@@ -17,10 +17,6 @@ const buttonStyles = cva(
   ],
   {
     variants: {
-      fontColor: {
-        default: "text-brand-secondary",
-        black: "text-font-medium active:text-brand-secondary",
-      },
       bgColor: {
         default: "bg-statelayer-default",
         white: "bg-[#F6F6F6] border border-font-disabled",
@@ -29,7 +25,11 @@ const buttonStyles = cva(
       width: {
         xl: "w-[335px] text-body-4-regular",
         md: "w-[160px] text-body-3-regular",
-        sm: "w-[116px] body-2-medium ",
+        sm: "w-[116px] text-body-2-medium",
+      },
+      fontColor: {
+        default: "text-brand-secondary",
+        black: "text-font-medium active:text-brand-secondary",
       },
     },
     defaultVariants: {
@@ -55,7 +55,7 @@ export const Button = ({
 }: ButtonProps) => (
   <button
     type="button"
-    className={cn(buttonStyles({ fontColor, bgColor, width }), className)}
+    className={cn(buttonStyles({ bgColor, width, fontColor }), className)}
     {...props}
   >
     {children}

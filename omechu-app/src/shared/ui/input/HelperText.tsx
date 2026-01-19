@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { cn } from "@/shared/lib/cn.util";
+import clsx from "clsx";
 
 export interface HelperTextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ export const HelperText = ({
 }: HelperTextProps) => {
   return (
     <p
-      className={cn(
+      className={clsx(
         "text-caption-2-regular mt-4 ml-1",
         {
           default: "text-font-placeholder",

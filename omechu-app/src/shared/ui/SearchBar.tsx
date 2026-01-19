@@ -2,8 +2,6 @@
 
 import { useState, useRef, ChangeEvent, KeyboardEvent, useMemo } from "react";
 
-import Image from "next/image";
-
 import { MENU_SUGGESTIONS } from "@/shared/constants/mypage";
 import { cn } from "@/shared/lib/cn.util";
 
@@ -14,6 +12,8 @@ interface SearchBarProps {
   setInputValue: (v: string) => void;
   onSearch: (searchTerm: string) => void;
   placeholder?: string;
+
+  suggestionList?: string[];
 }
 
 const RECENT_KEY = "recent_search_terms";

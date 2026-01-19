@@ -54,7 +54,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
     return (
       <div
         className={cn(
-          "relative",
+          "relative flex items-center",
           inputBaseStyles({ width, height, rounded }),
           className,
         )}
@@ -65,7 +65,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           placeholder={placeholder}
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 bg-transparent pr-6 outline-none"
+          className="w-full bg-transparent pr-8 outline-none"
           value={props.value}
           onChange={props.onChange}
           {...props}
