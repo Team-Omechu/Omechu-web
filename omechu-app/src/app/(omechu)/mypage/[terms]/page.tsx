@@ -2,9 +2,12 @@
 
 import { notFound } from "next/navigation";
 
-import TermForLocationInfo from "./components/TermForLocationInfo";
-import TermForPersonalInfo from "./components/TermForPersonalInfo";
-import TermForService from "./components/TermForService";
+import {
+  TermForLocationInfo,
+  TermForPersonalInfo,
+  TermForService,
+} from "@/widgets/mypage/ui";
+
 import { BASIC_STATE_STEPS, type BasicStateStep } from "./steps";
 
 type PageProps = {

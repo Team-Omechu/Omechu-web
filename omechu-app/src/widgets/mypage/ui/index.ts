@@ -13,3 +13,8 @@ export { UserInfoSection } from "@/widgets/mypage/ui/UserInfoSection";
 
 export { TimePickerModal } from "@/widgets/mypage/ui/TimePickerModal";
 export { ToggleSwitch } from "@/widgets/mypage/ui/ToggleSwitch";
+
+// Terms : 이용약관
+export { TermForService } from "@/widgets/mypage/ui/terms/TermForService";
+export { TermForPersonalInfo } from "@/widgets/mypage/ui/terms/TermForPersonalInfo";
+export { TermForLocationInfo } from "@/widgets/mypage/ui/terms/TermForLocationInfo";
