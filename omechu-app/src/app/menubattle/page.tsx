@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import SearchBar from "@/components/common/SearchBar";
-import FoodBox from "@/components/common/FoodBox";
+import { SearchBar } from "@/shared/ui/search/SearchBar";
+import { FoodBox } from "@/shared/ui/box/FoodBox";
 
 // 임시 메뉴 데이터
 const dummyMenus = [
@@ -90,12 +90,9 @@ export default function MenuBattlePage() {
         <div className="grid grid-cols-3 gap-4">
           {filteredMenus.map((food, idx) => (
             <FoodBox
-              key={idx}
+              src={food.image_link}
               title={food.name}
-              imageUrl={food.image_link}
-              isExcluded={false}
-              isToggled={selectedMenus.includes(food.name)}
-              onToggle={() => toggleMenu(food.name)}
+              isSelected={selectedMenus.includes(food.name)}
               onClick={() => toggleMenu(food.name)}
             />
           ))}
