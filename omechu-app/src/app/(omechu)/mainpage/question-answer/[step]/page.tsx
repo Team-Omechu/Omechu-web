@@ -102,12 +102,7 @@ export default function QuestionAnswerPage() {
   return (
     <div className="relative flex h-screen w-auto flex-col">
       {/* header: 질문 스텝에서만 표시 */}
-      <Header
-        title="맞춤 추천"
-        isRightChild={true}
-        onLeftClick={() => router.back()}
-        onRightClick={hanldeXClick}
-      />
+      <Header title="맞춤 추천" showBackButton={false} />
       <ProgressBar currentStep={currentStep} totalSteps={5} />
 
       <main className="flex min-h-[calc(100vh-9rem)] w-full flex-col items-center px-4 py-6">

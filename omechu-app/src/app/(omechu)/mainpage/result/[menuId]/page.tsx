@@ -101,11 +101,7 @@ export default function MenuDetailPage() {
 
   return (
     <div className="flex w-full flex-col">
-      <Header
-        onLeftClick={() => router.back()}
-        title="맞춤 추천"
-        isRightChild={true}
-      />
+      <Header title="맞춤 추천" showBackButton={false} />
 
       <div className="mt-4 flex-col items-center justify-center p-4">
         <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
@@ -168,7 +164,17 @@ export default function MenuDetailPage() {
             }
           />
         ))}
-        <p className="mr-2 text-center text-[#A8A8A8]"> 더보기 </p>
+        {/*api 연동시 enhancement */}
+        <button className="itmes-center mr-2 flex w-full justify-center text-center text-[#A8A8A8]">
+          <p>더보기</p>
+          <Image
+            src={"/arrow/navigate_next.svg"}
+            alt="더보기 버튼"
+            width={25}
+            height={25}
+            className="items-center justify-center"
+          />
+        </button>
       </div>
 
       <Toast

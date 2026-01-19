@@ -59,7 +59,7 @@ export function RandomDrawSelector({
   const rows = useMemo(() => RANDOM_DRAW_GROUPS, []);
 
   return (
-    <div className={clsx("w-full max-w-[360px]", className)}>
+    <div className={clsx("w-full max-w-[360px] p-2", className)}>
       {rows.map((group, idx) => {
         const isFirst = idx === 0;
 

@@ -54,21 +54,17 @@ export default function RandomRecommendPage() {
 
   return (
     <div className="flex h-screen w-full flex-col items-center">
-      <Header
-        onLeftClick={() => router.back()}
-        title="랜덤 추천"
-        isRightChild={true}
-      />
+      <Header title="랜덤 추천" showBackButton={false} />
 
-      <div className="border-font-placeholder/80 mt-5 flex flex-col gap-2 border-b pb-4">
+      <div className="mt-8 flex flex-col gap-2 p-4">
         <RandomDrawSelector
           value={selection}
           onSelectionChange={handleSelectionChange}
         />
       </div>
 
-      <button className="relative mt-10" onClick={handleModal} type="button">
-        <p className="absolute -top-1 left-1/2 -translate-x-1/2 text-center font-bold text-[#FF624F]">
+      <button onClick={handleModal} type="button" className="active:scale-[0.99]">
+        <p className=" text-center text-[1.25rem] font-bold text-[#FF364B]">
           Press me!
         </p>
         <Image
