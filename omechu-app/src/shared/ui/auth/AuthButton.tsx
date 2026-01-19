@@ -5,7 +5,8 @@ import * as React from "react";
 import Image from "next/image";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import clsx from "clsx";
+
+import { cn } from "@/shared/lib/cn.util";
 
 /**
  * AuthButton
@@ -14,7 +15,7 @@ import clsx from "clsx";
  * - 추후 Button 컴포넌트에 통합 예정
  */
 const authButtonStyles = cva(
-  clsx(
+  [
     // 기존 Button과 동일한 기본 스타일
     "h-12",
     "rounded-[10px]",
@@ -24,7 +25,7 @@ const authButtonStyles = cva(
 
     // 인터랙션
     "disabled:bg-statelayer-disabled disabled:cursor-not-allowed disabled:active:bg-statelayer-disabled",
-  ),
+  ],
   {
     variants: {
       variant: {
@@ -76,7 +77,7 @@ export const AuthButton = React.forwardRef<HTMLButtonElement, AuthButtonProps>(
       <button
         ref={ref}
         disabled={disabled || isLoading}
-        className={clsx(authButtonStyles({ variant }), className)}
+        className={cn(authButtonStyles({ variant }), className)}
         {...props}
       >
         {icon && (

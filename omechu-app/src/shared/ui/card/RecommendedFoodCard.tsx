@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import clsx from "clsx";
+import { cn } from "@/shared/lib/cn.util";
 
 interface RecommendedFoodCardProps {
   menuDesc: string;
@@ -46,7 +46,7 @@ export const RecommendedFoodCard = ({
 
       <button
         onClick={onCardClick}
-        className={clsx(
+        className={cn(
           "bg-brand-secondary border-font-disabled flex h-28 w-84 gap-5 rounded-2xl border-[1.5px] p-3",
           selected && "bg-brand-primary scale-105",
         )}
