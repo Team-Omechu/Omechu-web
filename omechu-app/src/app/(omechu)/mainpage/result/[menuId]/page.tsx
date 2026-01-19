@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Header,
-  MenuInfo,
+  IngredientCard,
   RestaurantCard,
   Toast,
   type MenuDetail,
@@ -209,7 +209,7 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mt-10 w-full p-4">
-        <MenuInfo MenuItem={detailMenu} />
+        <IngredientCard />
       </div>
 
       <div className="mx-4 mt-5 flex items-center justify-between">
