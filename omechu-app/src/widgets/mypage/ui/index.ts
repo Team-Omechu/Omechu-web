@@ -8,7 +8,6 @@ export { PeriodTap } from "@/widgets/mypage/ui/PeriodTap";
 export { RecommendedFoodBox } from "@/widgets/mypage/ui/RecommendedFoodBox";
 
 export { SelectTab } from "@/widgets/mypage/ui/SelectTab";
-export { SelectTabBar } from "@/widgets/mypage/ui/SelectTabBar";
 export { SetAlarmSection } from "@/widgets/mypage/ui/SetAlarmSection";
 export { UserInfoSection } from "@/widgets/mypage/ui/UserInfoSection";
 
