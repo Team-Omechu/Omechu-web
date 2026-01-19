@@ -8,7 +8,7 @@ import {
   termsForLocationServiceServe,
 } from "@/shared/constants/terms";
 
-export default function TermForService() {
+export function TermForLocationInfo() {
   const router = useRouter();
   return (
     <>

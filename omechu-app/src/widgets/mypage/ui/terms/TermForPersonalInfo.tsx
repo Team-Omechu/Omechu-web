@@ -8,7 +8,7 @@ import {
   termsForPersonalInfoMain,
 } from "@/shared/constants/terms";
 
-export default function TermForPersonalInfo() {
+export function TermForPersonalInfo() {
   const router = useRouter();
   return (
     <>
