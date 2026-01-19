@@ -13,3 +13,5 @@ export { CalenderIcon } from "./mypage/CalenderIcon";
 
 export { OpenEyeIcon, CloseEyeIcon } from "./mypage/input/EyeIcon";
 export { SearchIcon } from "./mypage/input/SearchIcon";
+
+export { CheckIcon } from "./mypage/CheckIcon";
