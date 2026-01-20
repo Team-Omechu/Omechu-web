@@ -43,7 +43,7 @@ export { useProfileQuery } from "./model/useProfileQuery";
 export { resetBasicStateAndSync } from "./model/resetBasicState";
 
 // UI
-export { default as AllergyStep } from "./ui/AllergyStep";
+
 export { default as AuthErrorModalSection } from "./ui/AuthErrorModalSection";
 export { default as ConditionStep } from "./ui/ConditionStep";
 export { default as EditStart } from "./ui/EditStart";

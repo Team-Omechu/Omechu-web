@@ -1,5 +1,5 @@
-import { axiosInstance } from "@/shared/lib/axiosInstance";
 import type { ApiResponse } from "@/entities/user/api/authApi";
+import { axiosInstance } from "@/shared/lib/axiosInstance";
 
 /**
  * 온보딩 완료(회원 정보 완료) 요청 데이터 타입
