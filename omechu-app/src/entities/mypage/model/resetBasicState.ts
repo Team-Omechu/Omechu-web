@@ -1,8 +1,9 @@
 "use client";
 
+import { QueryClient } from "@tanstack/react-query";
+
 import { updateProfile } from "@/entities/mypage/api/updateProfile";
 import { buildCompletePayloadFromStore } from "@/entities/mypage/model/profilePayload";
-import { QueryClient } from "@tanstack/react-query";
 
 type Profile = { email?: string | null } | null | undefined;
 

@@ -3,32 +3,6 @@
 // FSD 규칙: entities는 shared만 의존
 // ============================================
 
-// API
-export { fetchProfile, ProfileApiError } from "./api/profile";
-export { updateProfile } from "./api/updateProfile";
-export { fetchHeartList, likePlace, unlikePlace } from "./api/favorites";
-export {
-  fetchMukburimStats,
-  type MukburimStats,
-  type PeriodOption,
-} from "./api/mukburim";
-export {
-  fetchRecommendManagement,
-  exceptMenu,
-  removeExceptMenu,
-} from "./api/recommend";
-export {
-  fetchMyReviews,
-  fetchMyPlaces,
-  toggleReviewLike,
-  deleteMyReview,
-  type MyPlaceItem,
-  type FetchMyPlaceResponse,
-  type MyReviewItem,
-  type FetchMyReviewsResponse,
-} from "./api/myActivity";
-export { updateRestaurant } from "./api/updateRestaurant";
-
 // Model
 export {
   type UpdateProfilePayload,
