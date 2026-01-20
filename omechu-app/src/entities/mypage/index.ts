@@ -46,7 +46,6 @@ export { resetBasicStateAndSync } from "./model/resetBasicState";
 
 export { default as AuthErrorModalSection } from "./ui/AuthErrorModalSection";
 
-export { default as FoodStep } from "./ui/FoodStep";
 export { default as GenderStep } from "./ui/GenderStep";
 export { default as InfoRow } from "./ui/InfoRow";
 export { default as MenuSection } from "./ui/MenuSection";
