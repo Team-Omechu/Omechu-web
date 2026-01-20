@@ -15,7 +15,6 @@ export { useCompleteOnboardingMutation } from "./model/useOnboarding";
 
 // UI
 
-export { default as ExerciseStep } from "./ui/ExerciseStep";
 export { default as GenderStep } from "./ui/GenderStep";
 export { default as OnboardingStepLayout } from "./ui/OnboardingStepLayout";
 export { default as PreferStep } from "./ui/PreferStep";
