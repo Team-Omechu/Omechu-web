@@ -1,15 +1,10 @@
 "use client";
 
-import React from "react";
-
 import { useRouter } from "next/navigation";
 
 import { ListButton } from "@/shared";
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
-import {
-  mealTimeOptions,
-  useQuestionAnswerStore,
-} from "@/entities/question";
+import { mealTimeOptions, useQuestionAnswerStore } from "@/entities/question";
 import { useTagStore } from "@/entities/tag";
 
 export const MealTimeStep = () => {
@@ -27,6 +22,7 @@ export const MealTimeStep = () => {
     <QuestionAnswerLayout title="언제 먹는 건가요?">
       {mealTimeOptions.map(({ label, value, description }) => (
         <ListButton
+          type="button"
           key={value}
           onClick={() => handleSelect(value, label, description)}
           isSelected={mealTime === value}

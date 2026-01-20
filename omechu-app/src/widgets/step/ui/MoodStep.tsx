@@ -1,14 +1,11 @@
 "use client";
 
-import React from "react";
-
 import { useRouter } from "next/navigation";
-
-import ListButton from "@/components/common/button/ListButton";
 
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
 import { moodOptions, useQuestionAnswerStore } from "@/entities/question";
 import { useTagStore } from "@/entities/tag";
+import { ListButton } from "@/shared";
 
 export const MoodStep = () => {
   const router = useRouter();
@@ -22,7 +19,7 @@ export const MoodStep = () => {
   };
 
   return (
-    <QuestionAnswerLayout title="기분 상태는 어떤가요?">
+    <QuestionAnswerLayout title="날씨는 어떤가요?">
       {moodOptions.map(({ label, value, description }) => (
         <ListButton
           key={value}

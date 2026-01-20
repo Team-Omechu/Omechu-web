@@ -76,14 +76,11 @@ function CallbackContent() {
     })();
   }, [provider, searchParams, router, login, triggerToast]);
 
-  const providerName =
-    PROVIDER_DISPLAY_NAMES[provider as OAuthProvider] ?? "";
+  const providerName = PROVIDER_DISPLAY_NAMES[provider as OAuthProvider] ?? "";
 
   return (
     <main className="flex min-h-dvh items-center justify-center">
-      <span className="text-font-medium">
-        {providerName} 로그인 처리 중...
-      </span>
+      <span className="text-font-medium">{providerName} 로그인 처리 중...</span>
       <Toast message={toastMessage} show={showToast} />
     </main>
   );

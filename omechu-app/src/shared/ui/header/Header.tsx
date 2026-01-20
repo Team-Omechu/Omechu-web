@@ -11,11 +11,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/shared/lib/cn.util";
 
 const headerStyles = cva(
-  [
-    "flex items-center justify-between",
-    "w-full",
-    "px-5 pt-5 pb-2.5",
-  ],
+  ["flex items-center justify-between", "w-full", "px-5 pt-5 pb-2.5"],
   {
     variants: {
       variant: {
@@ -62,12 +58,7 @@ export const Header = ({
     return (
       <header className={cn(headerStyles({ variant }), className)}>
         <Link href="/mypage" aria-label="마이페이지">
-          <Image
-            src="/header/person.svg"
-            alt=""
-            width={24}
-            height={24}
-          />
+          <Image src="/header/person.svg" alt="" width={24} height={24} />
         </Link>
       </header>
     );
@@ -84,19 +75,14 @@ export const Header = ({
           className="shrink-0"
           aria-label="뒤로가기"
         >
-          <Image
-            src="/header/chevron-left.svg"
-            alt=""
-            width={24}
-            height={24}
-          />
+          <Image src="/header/chevron-left.svg" alt="" width={24} height={24} />
         </button>
       ) : (
         <div className="w-6 shrink-0" />
       )}
 
       {/* 중앙: 타이틀 (없어도 공간 유지) */}
-      <div className="flex-1 mx-2">
+      <div className="mx-2 flex-1">
         {title && (
           <p className="text-body-2-medium text-font-high text-center">
             {title}
@@ -107,21 +93,11 @@ export const Header = ({
       {/* 오른쪽: 홈 버튼 또는 프로필 버튼 (둘 중 하나만) */}
       {showHomeButton ? (
         <Link href="/mainpage" className="shrink-0" aria-label="홈으로">
-          <Image
-            src="/header/home.svg"
-            alt=""
-            width={24}
-            height={24}
-          />
+          <Image src="/header/home.svg" alt="" width={24} height={24} />
         </Link>
       ) : showProfileButton ? (
         <Link href="/mypage" className="shrink-0" aria-label="마이페이지">
-          <Image
-            src="/header/person.svg"
-            alt=""
-            width={24}
-            height={24}
-          />
+          <Image src="/header/person.svg" alt="" width={24} height={24} />
         </Link>
       ) : (
         <div className="w-6 shrink-0" />

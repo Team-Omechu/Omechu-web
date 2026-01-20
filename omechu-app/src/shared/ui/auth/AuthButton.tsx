@@ -35,14 +35,8 @@ const authButtonStyles = cva(
           "active:bg-statelayer-pressed",
         ],
         // 소셜 로그인용 variants
-        kakao: [
-          "bg-[#FDDC3F] text-font-high",
-          "active:bg-[#eacc2f]",
-        ],
-        google: [
-          "bg-[#F2F2F2] text-font-high",
-          "active:bg-[#dedede]",
-        ],
+        kakao: ["bg-[#FDDC3F] text-font-high", "active:bg-[#eacc2f]"],
+        google: ["bg-[#F2F2F2] text-font-high", "active:bg-[#dedede]"],
       },
     },
     defaultVariants: {
@@ -52,7 +46,8 @@ const authButtonStyles = cva(
 );
 
 interface AuthButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof authButtonStyles> {
   icon?: string;
   iconAlt?: string;

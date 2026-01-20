@@ -9,14 +9,42 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Header, MenuInfo, Toast, type MenuDetail } from "@/shared";
+import {
+  Header,
+  MenuInfo,
+  RestaurantCard,
+  SkeletonUIFoodBox,
+  Toast,
+  type MenuDetail,
+} from "@/shared";
 import { Restaurant, useGetRestaurants } from "@/entities/restaurant";
 import { usePostMukburim } from "@/entities/mukburim";
 import { useGetMenuDetail } from "@/entities/menu";
 // TODO: FoodCardEx가 widgets/shared에 없음 - 추가 필요
-import FoodCardEx from "@/mainpage/components/FoodCardEx";
-// TODO: SkeletonFoodCard가 shared에 없음 - 추가 필요
-import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
+
+export const restaurantMockData = [
+  {
+    id: 101,
+    displayName: "을지로 칼국수집",
+    formattedAddress: "서울 중구 을지로 12길 7",
+    distance: "0.8km",
+    price: "9000",
+  },
+  {
+    id: 102,
+    displayName: "연남동 파스타 바",
+    formattedAddress: "서울 마포구 연남로 3길 22",
+    distance: "1.5km",
+    price: "17000",
+  },
+  {
+    id: 103,
+    displayName: "성수 수제버거",
+    formattedAddress: "서울 성동구 성수이로 20길 45",
+    distance: "2.3km",
+    price: "13500",
+  },
+];
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -76,31 +104,19 @@ export default function MenuDetailPage() {
   return (
     <div className="flex w-full flex-col">
       <Header
-        leftChild={
-          <button
-            onClick={() => router.push("/mainpage")}
-            className="flex items-center font-bold"
-          >
-            <Image
-              src="/arrow/left-header-arrow.svg"
-              alt="back"
-              width={22}
-              height={30}
-            />
-            <span className="mb-0.5 ml-1 flex shrink-0">처음으로</span>
-          </button>
-        }
-        className="h-[60px] border-b-0"
+        onLeftClick={() => router.push("../")}
+        title="오늘의 메뉴"
+        isRightChild={true}
       />
 
-      <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
-        <p className="text-secondary-normal text-center font-semibold">
-          {detailMenu?.name}
+      <div className="mt-4 flex-col items-center justify-center p-4">
+        <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
+          {/* {detailMenu?.name} */} 비빔밥
         </p>
         <Image
           src={detailMenu?.image_link || "/image/image_empty.svg"}
           alt={detailMenu?.name || "메뉴 이미지"}
-          className="mx-auto h-24 w-24 rounded-sm"
+          className="mx-auto h-24 w-24 rounded-md"
           width={96}
           height={96}
         />
@@ -111,38 +127,50 @@ export default function MenuDetailPage() {
       </div>
 
       <div className="mx-4 mt-5 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">취향 저격! 추천 맛집</h3>
+        <h3 className="text-[1.125rem] font-semibold whitespace-nowrap">
+          취향 저격! 추천 메뉴 있는 맛집
+        </h3>
         <button
-          className="text-grey-normal-active px-4 text-sm"
+          className="flex items-center justify-center gap-1 px-4"
           onClick={() =>
             router.push(
               `/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`,
             )
           }
         >
-          더보기 &gt;
+          <Image
+            src={"/map/mage_location-fill.svg"}
+            alt="현위치"
+            width={20}
+            height={20}
+            className="h-4 w-4"
+          />
+          <p className="text-sm whitespace-nowrap text-[5E5E5E]">현위치로</p>
         </button>
       </div>
 
-      <div className="mt-3 space-y-2 px-4">
-        {isLoading && (
-          <div className="flex flex-col gap-4">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <SkeletonFoodCard key={i} />
-            ))}
-          </div>
-        )}
-        {restaurants.map((item) => (
-          <FoodCardEx
+      <div className="mt-3 ml-2 items-center justify-center space-y-3.5 px-4">
+        {/* {isLoading && (
+            <div className="flex flex-col gap-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <SkeletonUIFoodBox key={i} />
+              ))}
+            </div>
+          )} */}
+        {restaurantMockData.map((item) => (
+          <RestaurantCard
             key={item.id}
-            item={item}
-            menu={detailMenu?.name || ""}
-            restaurantId={item.id2}
-            onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id2}`)
+            name={item.displayName}
+            category={detailMenu?.name || ""}
+            distance="1.5K"
+            address={item.formattedAddress}
+            price="0"
+            onCardClick={() =>
+              router.push(`/restaurant/restaurant-detail/${item.id}`)
             }
           />
         ))}
+        <p className="mr-2 text-center text-[A8A8A8]"> 더보기 </p>
       </div>
 
       <Toast

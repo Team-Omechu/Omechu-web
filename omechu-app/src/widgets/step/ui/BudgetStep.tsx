@@ -17,7 +17,7 @@ export const BudgetStep = () => {
   const handleSelect = (value: number, label: string, description: string) => {
     setBudget(value);
     setBudgetTag(label, description);
-    router.push("/mainpage/question-answer/6");
+    router.push("/mainpage/result");
   };
 
   return (

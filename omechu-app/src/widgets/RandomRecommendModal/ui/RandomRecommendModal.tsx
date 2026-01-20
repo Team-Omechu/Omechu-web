@@ -15,7 +15,7 @@ export function RandomRecommendModal({
   onClose,
 }: ModalProps) {
   const router = useRouter();
-  const { data, isLoading, isRefetching, refetch } = useGetRandomMenu(); // 로딩이랑 리패칭 추가하기
+  const { data, isLoading, isRefetching, refetch } = useGetRandomMenu();
 
   const menu = data;
   const { setKeyword } = useLocationAnswerStore();
@@ -25,8 +25,8 @@ export function RandomRecommendModal({
       refetch();
       return;
     }
-    setKeyword(menu.name);
-    router.push(`/mainpage/result/${encodeURIComponent(menu.name)}?record=1`);
+    setKeyword("비빔밥");
+    router.push(`/random-recommend/${encodeURIComponent(menu.name)}?record=1`);
   };
 
   const handleRetry = () => {

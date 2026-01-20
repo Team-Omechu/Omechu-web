@@ -5,7 +5,7 @@ import axios from "axios";
 /** 스웨거 기준 기간 옵션 (직접입력은 start/end 사용) */
 export type PeriodOption =
   | "전체"
-  | "1주" 
+  | "1주"
   | "1개월"
   | "3개월"
   | "6개월"

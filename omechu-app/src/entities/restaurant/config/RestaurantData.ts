@@ -8,9 +8,7 @@ export interface RestaurantRequest {
 
 export interface Restaurant {
   id: string;
-  displayName: {
-    text: string;
-  };
+  displayName: string;
   formattedAddress: string;
   rating: number;
   userRatingCount: number;

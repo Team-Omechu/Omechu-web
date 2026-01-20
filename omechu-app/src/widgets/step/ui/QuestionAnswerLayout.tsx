@@ -23,7 +23,9 @@ export const QuestionAnswerLayout = ({
       <section
         className={`w-full max-w-xs ${paddingClassName} ${contentClassName}`}
       >
-        <div className="flex w-full flex-col gap-5 text-base">{children}</div>
+        <div className="flex w-full flex-col items-center gap-5 text-base">
+          {children}
+        </div>
       </section>
     </div>
   );

@@ -8,36 +8,36 @@
 
 ### Files & Folders
 
-| Type | Convention | Example |
-|------|------------|---------|
-| Folders | kebab-case | `user-profile/`, `question-answer/` |
-| Component files | PascalCase.tsx | `UserCard.tsx`, `Header.tsx` |
-| Hook files | use*.ts | `useAuth.ts`, `useProfile.ts` |
-| Store files | *.store.ts | `auth.store.ts`, `onboarding.store.ts` |
-| API files | *.api.ts or folder | `authApi.ts`, `api/profile.ts` |
-| Type files | *.types.ts | `user.types.ts`, `menu.types.ts` |
-| Utility files | camelCase.ts | `formatDate.ts`, `validation.ts` |
+| Type            | Convention          | Example                                |
+| --------------- | ------------------- | -------------------------------------- |
+| Folders         | kebab-case          | `user-profile/`, `question-answer/`    |
+| Component files | PascalCase.tsx      | `UserCard.tsx`, `Header.tsx`           |
+| Hook files      | use\*.ts            | `useAuth.ts`, `useProfile.ts`          |
+| Store files     | \*.store.ts         | `auth.store.ts`, `onboarding.store.ts` |
+| API files       | \*.api.ts or folder | `authApi.ts`, `api/profile.ts`         |
+| Type files      | \*.types.ts         | `user.types.ts`, `menu.types.ts`       |
+| Utility files   | camelCase.ts        | `formatDate.ts`, `validation.ts`       |
 
 ### Variables & Functions
 
-| Type | Convention | Example |
-|------|------------|---------|
-| Variables | camelCase | `userName`, `isLoading` |
-| Functions | camelCase | `fetchData()`, `handleSubmit()` |
-| Components | PascalCase | `UserAvatar`, `LoginForm` |
-| Constants | UPPER_SNAKE_CASE | `MAX_LIMIT`, `API_BASE_URL` |
-| Types/Interfaces | PascalCase | `UserType`, `ProfileResponse` |
+| Type             | Convention       | Example                         |
+| ---------------- | ---------------- | ------------------------------- |
+| Variables        | camelCase        | `userName`, `isLoading`         |
+| Functions        | camelCase        | `fetchData()`, `handleSubmit()` |
+| Components       | PascalCase       | `UserAvatar`, `LoginForm`       |
+| Constants        | UPPER_SNAKE_CASE | `MAX_LIMIT`, `API_BASE_URL`     |
+| Types/Interfaces | PascalCase       | `UserType`, `ProfileResponse`   |
 
 ### Method Naming
 
-| Action | Prefix | Example |
-|--------|--------|---------|
-| 조회 (단건) | `get`, `fetch` | `getUser()`, `fetchProfile()` |
-| 조회 (목록) | `get`, `fetch`, `search` | `getUsers()`, `searchMenus()` |
-| 생성 | `create`, `add` | `createUser()`, `addItem()` |
-| 수정 | `update`, `modify` | `updateProfile()` |
-| 삭제 | `delete`, `remove` | `deleteUser()`, `removeItem()` |
-| 검증 | `validate`, `check`, `is` | `validateEmail()`, `isLoggedIn()` |
+| Action      | Prefix                    | Example                           |
+| ----------- | ------------------------- | --------------------------------- |
+| 조회 (단건) | `get`, `fetch`            | `getUser()`, `fetchProfile()`     |
+| 조회 (목록) | `get`, `fetch`, `search`  | `getUsers()`, `searchMenus()`     |
+| 생성        | `create`, `add`           | `createUser()`, `addItem()`       |
+| 수정        | `update`, `modify`        | `updateProfile()`                 |
+| 삭제        | `delete`, `remove`        | `deleteUser()`, `removeItem()`    |
+| 검증        | `validate`, `check`, `is` | `validateEmail()`, `isLoggedIn()` |
 
 ---
 
@@ -93,6 +93,7 @@ import { formatDate } from "./utils";
 ### Branch Naming
 
 #### 브랜치 구조
+
 ```
 main                        # 운영 브랜치
 develop                     # 개발 브랜치
@@ -100,17 +101,19 @@ develop                     # 개발 브랜치
 ```
 
 #### 형식
+
 ```
 <type>/<간단한_설명>-#<issue_number>
 ```
 
-| 구성요소 | 설명 | 예시 |
-|----------|------|------|
-| `type` | 작업 유형 | `feat`, `fix`, `refactor`, `hotfix` |
-| `설명` | 간단한 작업 설명 (영문, 케밥케이스) | `signup-api`, `image-upload` |
-| `issue_number` | GitHub 이슈 번호 **(필수)** | `#14`, `#23`, `#218` |
+| 구성요소       | 설명                                | 예시                                |
+| -------------- | ----------------------------------- | ----------------------------------- |
+| `type`         | 작업 유형                           | `feat`, `fix`, `refactor`, `hotfix` |
+| `설명`         | 간단한 작업 설명 (영문, 케밥케이스) | `signup-api`, `image-upload`        |
+| `issue_number` | GitHub 이슈 번호 **(필수)**         | `#14`, `#23`, `#218`                |
 
 #### 예시
+
 ```bash
 feat/signup-api-#14          # 회원가입 API 기능 추가
 fix/image-upload-#23         # 이미지 업로드 버그 수정
@@ -124,6 +127,7 @@ chore/docker-setup-#5        # Docker 환경 설정
 ### Commit Message
 
 #### 형식
+
 ```
 <type>: <subject> (#<issue_number>)
 
@@ -132,24 +136,26 @@ chore/docker-setup-#5        # Docker 환경 설정
 
 #### 커밋 유형 (Type)
 
-| Type | 설명 |
-|------|------|
-| `feat` | 새로운 기능 추가 |
-| `fix` | 버그 수정 |
-| `docs` | 문서 수정 |
-| `refactor` | 코드 리팩토링 |
-| `style` | UI 스타일 수정 (기능 변경 없음) |
-| `chore` | 빌드 설정, 패키지 매니저 등 |
-| `rename` | 파일/폴더 이름 변경 또는 이동 |
-| `remove` | 파일 삭제 |
+| Type       | 설명                            |
+| ---------- | ------------------------------- |
+| `feat`     | 새로운 기능 추가                |
+| `fix`      | 버그 수정                       |
+| `docs`     | 문서 수정                       |
+| `refactor` | 코드 리팩토링                   |
+| `style`    | UI 스타일 수정 (기능 변경 없음) |
+| `chore`    | 빌드 설정, 패키지 매니저 등     |
+| `rename`   | 파일/폴더 이름 변경 또는 이동   |
+| `remove`   | 파일 삭제                       |
 
 #### 규칙
+
 1. **type**: 소문자 영문
 2. **subject**: 한글 또는 영문, 50자 이내, 마침표 없음
 3. **body**: 한글 작성 권장, 무엇을 왜 변경했는지 설명
 4. **이슈 번호**: 가능하면 포함
 
 #### 예시
+
 ```bash
 # 간단한 커밋
 feat: 로그인 페이지 UI 구현 (#12)
@@ -233,7 +239,7 @@ export function ComponentName({ ...props }: Props) {
 
 1. React / Next.js
 2. 외부 라이브러리
-3. 내부 모듈 (@/*)
+3. 내부 모듈 (@/\*)
 4. 상대 경로
 
 ```typescript

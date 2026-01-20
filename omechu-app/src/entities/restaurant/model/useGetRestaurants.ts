@@ -1,6 +1,9 @@
 import { useLocationAnswerStore } from "@/entities/location";
 import { useQuery } from "@tanstack/react-query";
-import { restaurantList, RestaurantRequest } from "@/entities/restaurant/config/RestaurantData";
+import {
+  restaurantList,
+  RestaurantRequest,
+} from "@/entities/restaurant/config/RestaurantData";
 import { getRestaurants } from "@/entities/restaurant/api/getRestaurants";
 
 export function useGetRestaurants() {

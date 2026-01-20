@@ -4,55 +4,50 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { ModalWrapper } from "@/shared";
-import { useAuthStore } from "@/entities/user/model/auth.store";
 import { useTagStore } from "@/entities/tag";
 import { handleLocation, useLocationAnswerStore } from "@/entities/location";
 import { useQuestionAnswerStore } from "@/entities/question";
-import { LoginPromptModal } from "@/widgets/LoginModal";
+import { StartButton } from "@/widgets/mainpage/ui/StartButton";
+import { BaseModal, ModalWrapper } from "@/shared";
+import { usePwaEntryModal } from "@/shared/lib/usePwaEntryModal";
+
+type Pick = "start" | "battle" | "random" | null;
 
 export default function MainPage() {
   const router = useRouter();
-  const { isLoggedIn } = useAuthStore();
-  const [showModal, setShowModal] = useState(false);
   const { tagDataReset } = useTagStore();
   const { locationReset, setX, setY } = useLocationAnswerStore();
   const { questionReset } = useQuestionAnswerStore();
 
-  const handleStartClick = () => {
-    if (isLoggedIn) {
-      tagDataReset();
-      locationReset();
-      questionReset();
-      handleLocation(setX, setY);
-      router.push("mainpage/question-answer/1");
-    } else {
-      setShowModal(true);
-    }
-  };
+  const { open, skip, agree } = usePwaEntryModal();
+  const [picked, setPicked] = useState<Pick>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
-  const handleRandomClick = () => {
+  const resetAll = () => {
     tagDataReset();
     locationReset();
     questionReset();
     handleLocation(setX, setY);
-    router.push("mainpage/random-recommend");
   };
 
-  const handleSkipClick = () => {
-    setShowModal(false);
-    tagDataReset();
-    locationReset();
-    questionReset();
-    handleLocation(setX, setY);
-    router.push("mainpage/question-answer/1");
+  const go = (next: string, pick: Exclude<Pick, null>) => {
+    if (isNavigating) return;
+    setIsNavigating(true);
+    setPicked(pick);
+
+    // 선택 효과(커짐/보더/투명) 잠깐 보여준 뒤 이동
+    window.setTimeout(() => {
+      resetAll();
+      router.push(next);
+    }, 120);
   };
 
   return (
-    <div className="scrollbar-hide relative flex h-[calc(100dvh-5rem)] w-full justify-center overflow-hidden bg-linear-to-b from-pink-200 to-purple-300">
-      {/* 데스크톱용 컨테이너 */}
+    <div className="scrollbar-hide relative flex h-screen w-full justify-center overflow-hidden bg-linear-to-b from-pink-200 to-purple-300">
+      {/* 어두운 오버레이 */}
+      <div className="pointer-events-none absolute inset-0 bg-black/50" />
+
       <div className="relative mx-auto w-full max-w-md lg:max-w-lg xl:max-w-xl">
-        {/* 메인 배경 이미지 */}
         <Image
           src="/mainpage/mainpage.svg"
           alt="메인 페이지"
@@ -60,28 +55,43 @@ export default function MainPage() {
           style={{ objectFit: "cover" }}
           className="object-cover lg:object-contain"
         />
-        {/* 버튼들 */}
-        <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 transform gap-4 lg:bottom-8">
-          <button
-            className="bg-primary-normal hover:bg-primary-normal-hover active:bg-primary-normal-hover flex h-11.25 w-36.25 shrink-0 items-center justify-center gap-2.5 rounded-md p-5 text-center text-white transition-all duration-200 lg:h-12 lg:w-40"
-            onClick={handleStartClick}
-          >
-            <span>시작하기</span>
-          </button>
-          <button
-            className="hover:bg-grey-light-active active:bg-grey-light-active flex h-11.25 w-36.25 shrink-0 items-center justify-center gap-2.5 rounded-md border border-[#00A3FF] bg-[#FFF] p-5 text-center text-[#00A3FF] transition-all duration-200 lg:h-12 lg:w-40"
-            onClick={handleRandomClick}
-          >
-            <span>랜덤추천</span>
-          </button>
-        </div>
       </div>
-      {showModal && (
+
+      {/* 버튼이 오버레이 위로 올라오게 */}
+      <div className="absolute top-[55%] left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-5">
+        <StartButton
+          title="맞춤 추천"
+          subTitle="바로 지금, 나만을 위한 메뉴는?"
+          selected={picked === "start"}
+          dimmed={picked !== null && picked !== "start"}
+          onClick={() => go("/mainpage/question-answer/1", "start")}
+        />
+        <StartButton
+          title="메뉴 배틀"
+          subTitle="오늘의 메뉴, 배틀로 정하자"
+          selected={picked === "battle"}
+          dimmed={picked !== null && picked !== "battle"}
+          onClick={() => go("/menu-battle", "battle")}
+        />
+        <StartButton
+          title="랜덤 추천"
+          subTitle="클릭 한 번으로 바로 결정!"
+          selected={picked === "random"}
+          dimmed={picked !== null && picked !== "random"}
+          onClick={() => go("/random-recommend", "random")}
+        />
+      </div>
+      {open && (
         <ModalWrapper>
-          <LoginPromptModal
-            onSkip={handleSkipClick}
-            onConfirm={() => router.push("/sign-in")}
-            onClose={() => setShowModal(false)}
+          <BaseModal
+            isLogoShow
+            isCloseButtonShow={false}
+            title={`“오늘 뭐 먹지” 고민, 끝내드릴게요`}
+            desc={`식사 시간에 맞춰 딱 맞는 메뉴를 추천받을 수 있도록\n림을 보내드릴게요.\n\n* 광고성 정보 수신 동의가 포함되며, 마이페이지에서\n언제든지 변경할 수 있습니다.`}
+            leftButtonText="다음에요"
+            rightButtonText="동의하기"
+            onLeftButtonClick={skip}
+            onRightButtonClick={agree}
           />
         </ModalWrapper>
       )}
