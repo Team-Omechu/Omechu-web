@@ -12,7 +12,3 @@ export {
 
 // Model
 export { useCompleteOnboardingMutation } from "./model/useOnboarding";
-
-// UI
-
-export { default as OnboardingStepLayout } from "./ui/OnboardingStepLayout";
