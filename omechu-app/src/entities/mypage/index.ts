@@ -46,8 +46,6 @@ export { resetBasicStateAndSync } from "./model/resetBasicState";
 
 export { default as AuthErrorModalSection } from "./ui/AuthErrorModalSection";
 
-export { default as GenderStep } from "./ui/GenderStep";
-export { default as InfoRow } from "./ui/InfoRow";
 export { default as MenuSection } from "./ui/MenuSection";
 export { default as NicknameInput } from "./ui/NicknameInput";
 export { default as ProfileImageUploader } from "./ui/ProfileImageUploader";
