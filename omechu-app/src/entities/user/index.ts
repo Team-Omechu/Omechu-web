@@ -62,6 +62,7 @@ export {
 
 // Model - Store
 export { useAuthStore } from "./model/auth.store";
+export { useUserInfoSetupStore } from "./model/userInfoSetup.store";
 
 // Model - Types
 export type { OAuthProvider } from "./model/auth.types";
