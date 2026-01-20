@@ -1,5 +1,3 @@
-// TODO: FSD 위반 - shared 레이어에 도메인 store가 있으면 안 됨
-// entities/onboarding/model/onboarding.store.ts로 이동 필요
 import { create } from "zustand";
 // 기본 상태 입력 정보 Local Storage 임시 저장을 위해 persist 미들웨어 추가
 import { persist } from "zustand/middleware";
@@ -210,7 +208,9 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
         });
         try {
           localStorage.removeItem("onboarding-storage");
-        } catch {}
+        } catch {
+          //
+        }
       },
 
       reset: () => {

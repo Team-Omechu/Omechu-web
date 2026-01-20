@@ -36,9 +36,6 @@ export type { UseToastReturn, UseToastOptions } from "./lib/useToast";
 // NOTE: ProtectedRoute, OnboardingGuard는 app/providers에 있음 (FSD: entities 의존)
 export { ReactQueryProvider } from "./providers/ReactQueryProvider";
 
-// Stores (shared에서 관리하는 것들만)
-export { useOnboardingStore } from "./store/onboarding.store";
-
 // API
 export { getPresignedUrl, uploadToS3 } from "./api/image";
 
