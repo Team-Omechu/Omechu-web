@@ -41,10 +41,3 @@ export { type MyPlaceApiResponseType } from "./model/MyPlaceApiResponseType";
 export { useProfile } from "./model/useProfile";
 export { useProfileQuery } from "./model/useProfileQuery";
 export { resetBasicStateAndSync } from "./model/resetBasicState";
-
-// UI
-
-export { default as AuthErrorModalSection } from "./ui/AuthErrorModalSection";
-
-export { default as ProfileSection } from "./ui/ProfileSection";
-export { default as StateStep } from "./ui/StateStep";
