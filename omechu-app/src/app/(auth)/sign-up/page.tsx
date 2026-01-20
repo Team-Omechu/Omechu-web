@@ -15,13 +15,17 @@ import {
   type SignupFormValues,
   useAuthStore,
 } from "@/entities/user";
+import { BottomButton, Header, ModalWrapper, Toast } from "@/shared";
 import {
-  BottomButton,
-  Header,
-  ModalWrapper,
-  Toast,
-  TERMS_CONFIG,
-} from "@/shared";
+  termsForServiceMain,
+  termsForServiceServe,
+  termsForPersonalInfoMain,
+  termsForPersonalInfoServe,
+  termsForLocationServiceMain,
+  termsForLocationServiceServe,
+  type TermsConfig,
+  type TermsType,
+} from "@/shared/constants/terms";
 import {
   SignUpForm,
   TermsModal,
@@ -29,6 +33,21 @@ import {
   MODAL_TO_TERMS_TYPE,
   MODAL_TO_FORM_FIELD,
 } from "@/widgets/auth";
+
+const TERMS_CONFIG: Record<TermsType, TermsConfig> = {
+  service: {
+    title: "서비스 이용약관",
+    data: [...termsForServiceMain, ...termsForServiceServe],
+  },
+  "personal-info": {
+    title: "개인정보 처리방침",
+    data: [...termsForPersonalInfoMain, ...termsForPersonalInfoServe],
+  },
+  "location-info": {
+    title: "위치기반 서비스 이용약관",
+    data: [...termsForLocationServiceMain, ...termsForLocationServiceServe],
+  },
+};
 
 export default function SignUpPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
