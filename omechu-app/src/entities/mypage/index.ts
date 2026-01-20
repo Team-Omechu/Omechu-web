@@ -46,7 +46,6 @@ export { resetBasicStateAndSync } from "./model/resetBasicState";
 
 export { default as AuthErrorModalSection } from "./ui/AuthErrorModalSection";
 
-export { default as NicknameInput } from "./ui/NicknameInput";
 export { default as ProfileImageUploader } from "./ui/ProfileImageUploader";
 export { default as ProfileSection } from "./ui/ProfileSection";
 export { default as StateStep } from "./ui/StateStep";
