@@ -16,5 +16,3 @@ export { useCompleteOnboardingMutation } from "./model/useOnboarding";
 // UI
 
 export { default as OnboardingStepLayout } from "./ui/OnboardingStepLayout";
-
-export { default as ProfileStep } from "./ui/ProfileStep";
