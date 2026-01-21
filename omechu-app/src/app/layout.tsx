@@ -1,10 +1,10 @@
 import "./globals.css";
 
 import { Noto_Sans_KR } from "next/font/google";
-import Script from "next/script";
 
 import type { Metadata } from "next";
 
+import { KakaoScript } from "@/app/KakaoScript";
 import { Providers } from "@/app/providers";
 
 const notoSansKR = Noto_Sans_KR({
@@ -41,21 +41,7 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         {/* Kakao SDK */}
-        <Script
-          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"
-          integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-          onLoad={() => {
-            if (
-              typeof window !== "undefined" &&
-              window.Kakao &&
-              !window.Kakao.isInitialized()
-            ) {
-              window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
-            }
-          }}
-        />
+        <KakaoScript />
       </head>
       <body className={`bg-gray-200 ${notoSansKR.variable}`}>
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
