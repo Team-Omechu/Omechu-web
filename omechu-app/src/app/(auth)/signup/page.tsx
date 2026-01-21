@@ -92,7 +92,7 @@ export default function SignUpPage() {
         router.push("/onboarding/1");
       },
       onError: (error: unknown) => {
-        const e = error as ApiClientError & { code?: string };
+        const e = error as ApiClientError;
         const msg = getAuthErrorMessage(e?.code, "회원가입에 실패했습니다.");
         triggerToast(msg);
       },

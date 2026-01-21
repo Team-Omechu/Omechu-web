@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
+import { ApiClientError, getAuthErrorMessage } from "@/entities/user";
 import {
   resetPasswordSchema,
   type ResetPasswordFormValues,
@@ -41,27 +41,8 @@ export default function ResetPasswordForm({
       try {
         await onFormSubmit(values);
       } catch (err: unknown) {
-        const e = err as ApiClientError & { code?: string };
-        const code = e?.code;
-        let msg: string | null = null;
-
-        // 백엔드 에러 코드 처리
-        switch (code) {
-          case "E001":
-            // Invalid or expired token
-            msg = "링크가 만료되었어요. 비밀번호 찾기를 다시 진행해 주세요.";
-            break;
-          case "E002":
-            // User not found
-            msg = "사용자를 찾을 수 없습니다. 다시 시도해 주세요.";
-            break;
-          case "INVALID_INPUT":
-            // Bad request (missing params, invalid password format, etc.)
-            msg = e?.message || "입력값이 올바르지 않습니다.";
-            break;
-          default:
-            msg = e?.message || "비밀번호 재설정에 실패했습니다.";
-        }
+        const e = err as ApiClientError;
+        const msg = getAuthErrorMessage(e?.code, "비밀번호 재설정에 실패했습니다.");
         triggerToast(msg);
       }
     },

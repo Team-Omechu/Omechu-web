@@ -25,7 +25,7 @@ import { Button, FormField, Input, Toast, useToast } from "@/shared";
  * - 로그인 상태 유지 체크박스
  * - 비밀번호 찾기 / 회원가입 링크
  */
-export default function EmailSignInPage() {
+export default function EmailLoginPage() {
   const [rememberMe, setRememberMe] = useState(true);
   const navigatedRef = useRef(false);
   const justLoggedInRef = useRef(false);
@@ -34,7 +34,7 @@ export default function EmailSignInPage() {
   const queryClient = useQueryClient();
   const { show: showToast, message: toastMessage, triggerToast } = useToast();
 
-  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
+  const { mutate: login, isPending, isSuccess } = useLoginMutation();
 
   const {
     control,
@@ -55,20 +55,7 @@ export default function EmailSignInPage() {
           try {
             const userKey = res?.success?.userId ?? "me";
 
-            queryClient.setQueryData(["profile", userKey], {
-              id: isNaN(Number(userKey)) ? 0 : Number(userKey),
-              email: "",
-              nickname: "-",
-              gender: "",
-              bodyType: "",
-              exercise: "",
-              prefer: [],
-              allergy: [],
-              profileImageUrl: null,
-              createdAt: "",
-              updatedAt: "",
-            });
-
+            // 프로필 prefetch로 화면 로딩 최적화
             await queryClient.prefetchQuery({
               queryKey: ["profile", userKey],
               queryFn: fetchProfile,
@@ -80,12 +67,17 @@ export default function EmailSignInPage() {
             });
             justLoggedInRef.current = true;
           } catch (e) {
-            console.warn("[EmailSignIn] prefetch profile failed", e);
+            console.warn("[EmailLogin] prefetch profile failed", e);
           }
+        },
+        onError: (error: unknown) => {
+          const e = error as ApiClientError;
+          const msg = getAuthErrorMessage(e?.code, "로그인에 실패했습니다.");
+          triggerToast(msg);
         },
       });
     },
-    [login, queryClient],
+    [login, queryClient, triggerToast],
   );
 
   const user = useAuthStore((s) => s.user);
@@ -102,13 +94,6 @@ export default function EmailSignInPage() {
       router.push("/onboarding/1");
     }
   }, [isSuccess, user, router]);
-
-  useEffect(() => {
-    if (!error) return;
-    const e = error as ApiClientError & { code?: string };
-    const msg = getAuthErrorMessage(e?.code, "로그인에 실패했습니다.");
-    triggerToast(msg);
-  }, [error, triggerToast]);
 
   // eslint-disable-next-line react-hooks/refs -- handleSubmit is from react-hook-form
   const handleFormSubmit = handleSubmit(onSubmit);
