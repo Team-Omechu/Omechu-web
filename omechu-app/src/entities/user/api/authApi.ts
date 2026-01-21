@@ -109,6 +109,94 @@ const readAccessToken = (): string | null => {
 };
 
 /**
+ * Kakao SDK 로그인 API
+ * @param code Kakao authorization code
+ */
+export const kakaoLogin = async (code: string): Promise<LoginTokens> => {
+  try {
+    const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
+      "/auth/login/kakao",
+      { code },
+    );
+
+    const apiResponse = response.data;
+
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      const reason = apiResponse.error?.reason || "카카오 로그인에 실패했습니다.";
+      const code = apiResponse.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+
+    return apiResponse.success as LoginTokens;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "카카오 로그인에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
+  }
+};
+
+/**
+ * Google SDK 로그인 API
+ * @param code Google authorization code
+ */
+export const googleLogin = async (code: string): Promise<LoginTokens> => {
+  try {
+    const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
+      "/auth/login/google",
+      { code },
+    );
+
+    const apiResponse = response.data;
+
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      const reason = apiResponse.error?.reason || "구글 로그인에 실패했습니다.";
+      const code = apiResponse.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+
+    return apiResponse.success as LoginTokens;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "구글 로그인에 실패했습니다.";
+      const code = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        code,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
+  }
+};
+
+/**
  * 로그인 API
  * @param data email, password
  */
