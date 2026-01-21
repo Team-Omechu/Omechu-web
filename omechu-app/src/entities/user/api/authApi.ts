@@ -413,13 +413,14 @@ export const requestPasswordReset = async (
 
 /**
  * 비밀번호 재설정 API
+ * @param data password, passwordConfirm, token
  */
 export const resetPassword = async (
   data: ResetPasswordFormValues & { token: string },
 ): Promise<string> => {
   try {
     const response = await axiosInstance.patch<ApiResponse<string>>(
-      `/reset-passwd?token=${encodeURIComponent(data.token)}`,
+      `/auth/reset-passwd?token=${encodeURIComponent(data.token)}`,
       { newPassword: data.password },
     );
     const apiResponse = response.data;
