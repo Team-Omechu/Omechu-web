@@ -35,6 +35,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.19
+      kakao-js-sdk:
+        specifier: ^1.2.3
+        version: 1.2.3
       next:
         specifier: ^16.1.4
         version: 16.1.4(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1602,6 +1605,9 @@ packages:
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
+
+  kakao-js-sdk@1.2.3:
+    resolution: {integrity: sha512-VdKKF205YxKATFOwjifCwZ2JKAGSabn1IM6b15sxz+qkUYKoYYJitdUPqn3JtvO8IhzYQbDOBVlwti+S+9BVNg==}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -3924,6 +3930,8 @@ snapshots:
       array.prototype.flat: 1.3.3
       object.assign: 4.1.7
       object.values: 1.2.1
+
+  kakao-js-sdk@1.2.3: {}
 
   keyv@4.5.4:
     dependencies:
