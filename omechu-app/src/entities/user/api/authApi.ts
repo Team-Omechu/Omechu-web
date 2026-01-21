@@ -43,14 +43,14 @@ export interface ApiError {
   data?: unknown;
 }
 
-// 로그인 성공 시 success 객체 구조
+// 프로필 조회 성공 시 success 객체 구조 (GET /user/profile)
+// 주의: 로그인 직후에는 일부 필드가 없을 수 있음 (프로필 prefetch 후 채워짐)
 export interface LoginSuccessData {
   id: string;
-  email: string;
-  gender: "남성" | "여성";
-  nickname: string;
-  created_at: string;
-  updated_at: string;
+  nickname?: string;
+  exercise?: string;
+  prefer?: string[];
+  allergy?: string[];
 }
 
 export interface LoginTokens {
@@ -61,10 +61,10 @@ export interface LoginTokens {
 
 // 회원가입 성공 시 success 객체 구조
 export interface SignupSuccessData {
-  id: number;
+  id: string;
   email: string;
-  created_at: string;
-  updated_at: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 // 이메일 인증번호 전송 성공 시 success 객체 구조
