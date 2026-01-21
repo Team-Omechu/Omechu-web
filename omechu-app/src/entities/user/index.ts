@@ -24,6 +24,8 @@ export {
   changePassword,
   getCurrentUserWithToken,
   getCurrentUser,
+  kakaoLogin,
+  googleLogin,
 } from "./api/authApi";
 
 export { ProfileApiError, fetchProfile } from "./api/profileApi";
@@ -41,6 +43,10 @@ export {
 } from "./lib/hooks/useAuth";
 
 export { useProfile } from "./lib/hooks/useProfile";
+
+export { useKakaoLogin } from "./lib/hooks/useKakaoLogin";
+
+export { useGoogleLogin } from "./lib/hooks/useGoogleLogin";
 
 // Constants
 export {
@@ -64,5 +70,5 @@ export {
 export { useAuthStore } from "./model/auth.store";
 
 // Model - Types
-export type { OAuthProvider } from "./model/auth.types";
+export type { OAuthProvider, OAuthError } from "./model/auth.types";
 export type { ProfileType, UpdateProfileBody } from "./model/profile.types";

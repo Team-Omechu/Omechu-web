@@ -7,7 +7,11 @@ out/
 build/
 
 # env files
-.env*
+.env
+.env.local
+.env.production
+.env.development
+# ✅ .env.example은 git에 올림 (실제 값 없음)
 
 # debug logs
 npm-debug.log*
