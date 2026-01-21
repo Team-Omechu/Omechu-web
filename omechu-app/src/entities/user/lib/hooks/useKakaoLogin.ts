@@ -4,8 +4,8 @@ import { useCallback, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { kakaoLogin, getCurrentUserWithToken } from "@/entities/user/api/authApi";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+import { kakaoLogin } from "@/entities/user/api/authApi";
+import { handleOAuthCallback } from "@/entities/user/lib/utils/oauthCallbackHandler";
 import { useToast } from "@/shared";
 
 declare global {
@@ -21,7 +21,6 @@ declare global {
  */
 export const useKakaoLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { login: setLoginState } = useAuthStore();
   const router = useRouter();
   const { triggerToast } = useToast();
 
@@ -35,13 +34,19 @@ export const useKakaoLogin = () => {
         return;
       }
 
+      const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+      if (!redirectUri) {
+        triggerToast("카카오 리다이렉트 URI가 설정되지 않았습니다.");
+        return;
+      }
+
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
       }
 
       // Kakao.Auth.authorize()를 호출하여 리다이렉트 방식 로그인
       window.Kakao.Auth.authorize({
-        redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
+        redirectUri,
         scope: "profile_nickname,account_email,gender",
       });
     } catch (error) {
@@ -61,23 +66,18 @@ export const useKakaoLogin = () => {
         // 1. code를 백엔드로 전송하여 토큰 획득
         const tokens = await kakaoLogin(code);
 
-        // 2. 토큰으로 유저 정보 조회
-        const user = await getCurrentUserWithToken(tokens.accessToken);
-
-        // 3. Zustand store에 저장
-        setLoginState({
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          user,
-          password: "",
+        // 2. 공통 OAuth 콜백 핸들러 호출 (프로필 조회, 저장, 리다이렉트)
+        await handleOAuthCallback({
+          tokens,
+          router,
+          onError: (error) => {
+            const errorMessage =
+              error instanceof Error
+                ? error.message
+                : "로그인에 실패했습니다. 다시 시도해주세요.";
+            triggerToast(errorMessage);
+          },
         });
-
-        // 4. 닉네임 여부에 따라 리다이렉트
-        if (!user.nickname) {
-          router.push("/onboarding/1");
-        } else {
-          router.push("/mainpage");
-        }
       } catch (error) {
         console.error("[Kakao Callback] Error:", error);
         const errorMessage =
@@ -90,7 +90,7 @@ export const useKakaoLogin = () => {
         setIsLoading(false);
       }
     },
-    [setLoginState, router, triggerToast]
+    [router, triggerToast]
   );
 
   return {

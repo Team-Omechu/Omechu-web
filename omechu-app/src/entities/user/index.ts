@@ -70,5 +70,5 @@ export {
 export { useAuthStore } from "./model/auth.store";
 
 // Model - Types
-export type { OAuthProvider, OAuthError } from "./model/auth.types";
+export type { OAuthProvider } from "./model/auth.types";
 export type { ProfileType, UpdateProfileBody } from "./model/profile.types";

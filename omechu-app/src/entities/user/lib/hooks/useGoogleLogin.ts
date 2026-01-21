@@ -5,8 +5,8 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGoogleLogin as useGoogleOAuthLogin } from "@react-oauth/google";
 
-import { googleLogin, getCurrentUserWithToken } from "@/entities/user/api/authApi";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+import { googleLogin } from "@/entities/user/api/authApi";
+import { handleOAuthCallback } from "@/entities/user/lib/utils/oauthCallbackHandler";
 import { useToast } from "@/shared";
 
 /**
@@ -16,7 +16,6 @@ import { useToast } from "@/shared";
  */
 export const useGoogleLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { login: setLoginState } = useAuthStore();
   const router = useRouter();
   const { triggerToast } = useToast();
 
@@ -32,29 +31,25 @@ export const useGoogleLogin = () => {
 
         if (!code) {
           triggerToast("인증 코드를 받지 못했습니다.");
+          setIsLoading(false);
           return;
         }
 
         // 1. code를 백엔드로 전송하여 토큰 획득
         const tokens = await googleLogin(code);
 
-        // 2. 토큰으로 유저 정보 조회
-        const user = await getCurrentUserWithToken(tokens.accessToken);
-
-        // 3. Zustand store에 저장
-        setLoginState({
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          user,
-          password: "",
+        // 2. 공통 OAuth 콜백 핸들러 호출 (프로필 조회, 저장, 리다이렉트)
+        await handleOAuthCallback({
+          tokens,
+          router,
+          onError: (error) => {
+            const errorMessage =
+              error instanceof Error
+                ? error.message
+                : "로그인에 실패했습니다. 다시 시도해주세요.";
+            triggerToast(errorMessage);
+          },
         });
-
-        // 4. 닉네임 여부에 따라 리다이렉트
-        if (!user.nickname) {
-          router.push("/onboarding/1");
-        } else {
-          router.push("/mainpage");
-        }
       } catch (error) {
         console.error("[Google Login] Error:", error);
         const errorMessage =
@@ -62,11 +57,13 @@ export const useGoogleLogin = () => {
             ? error.message
             : "로그인에 실패했습니다. 다시 시도해주세요.";
         triggerToast(errorMessage);
+        // Google 팝업 실패 시에도 sign-in으로 리다이렉트
+        router.push("/sign-in");
       } finally {
         setIsLoading(false);
       }
     },
-    [setLoginState, router, triggerToast]
+    [router, triggerToast]
   );
 
   /**
