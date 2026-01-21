@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
+import { ApiClientError, getAuthErrorMessage } from "@/entities/user";
 import { fetchProfile } from "@/entities/user/api/profileApi";
 import { useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
 import {
@@ -105,30 +105,9 @@ export default function EmailSignInPage() {
 
   useEffect(() => {
     if (!error) return;
-    const e = error as ApiClientError & { code?: string; status?: number };
-    const code = e?.code;
-    let msg: string | null = e?.message || null;
-
-    if (!msg) {
-      switch (code) {
-        case "C001":
-          msg = "이메일 또는 비밀번호를 입력해 주세요.";
-          break;
-        case "C003":
-          msg = "로그인이 필요합니다. 다시 시도해 주세요.";
-          break;
-        case "S001":
-          msg = "세션이 만료되었어요. 다시 로그인해 주세요.";
-          break;
-        case "T002":
-        case "T003":
-          msg = "인증에 문제가 발생했어요. 다시 로그인해 주세요.";
-          break;
-        default:
-          msg = null;
-      }
-    }
-    triggerToast(msg || "로그인에 실패했습니다.");
+    const e = error as ApiClientError & { code?: string };
+    const msg = getAuthErrorMessage(e?.code, "로그인에 실패했습니다.");
+    triggerToast(msg);
   }, [error, triggerToast]);
 
   // eslint-disable-next-line react-hooks/refs -- handleSubmit is from react-hook-form

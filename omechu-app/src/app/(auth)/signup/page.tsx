@@ -9,6 +9,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import {
   ApiClientError,
+  getAuthErrorMessage,
   useSignupMutation,
   signupSchema,
   type SignupFormValues,
@@ -92,7 +93,7 @@ export default function SignUpPage() {
       },
       onError: (error: unknown) => {
         const e = error as ApiClientError & { code?: string };
-        const msg: string = e?.message || "회원가입에 실패했습니다.";
+        const msg = getAuthErrorMessage(e?.code, "회원가입에 실패했습니다.");
         triggerToast(msg);
       },
     });

@@ -52,7 +52,9 @@ export { useGoogleLogin } from "./lib/hooks/useGoogleLogin";
 export {
   VALID_PROVIDERS,
   PROVIDER_DISPLAY_NAMES,
-} from "./lib/constants/oauth.const";
+  AUTH_ERROR_MESSAGES,
+  getAuthErrorMessage,
+} from "./lib/constants";
 
 // Model - Schema
 export {
