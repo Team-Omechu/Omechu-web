@@ -1,7 +1,7 @@
 export { EmailSentMessage } from "./email-sent-message";
 export { ForgotPasswordForm } from "./forgot-password-form";
 export { ResetPasswordForm } from "./reset-password-form";
-export { SignInForm } from "./sign-in-form";
+export { SignInForm } from "./login-form";
 export {
   SignUpForm,
   TermsModal,
@@ -9,4 +9,4 @@ export {
   type ModalType,
   MODAL_TO_TERMS_TYPE,
   MODAL_TO_FORM_FIELD,
-} from "./sign-up-form";
+} from "./signup-form";

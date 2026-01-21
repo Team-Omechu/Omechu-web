@@ -50,13 +50,13 @@ export default function SignInPage() {
       {/* 이메일 로그인 / 회원가입 링크 */}
       <div className="text-caption-1-regular mt-10 flex items-center gap-3">
         <Link
-          href="/sign-in/email"
+          href="/login/email"
           className="text-font-medium hover:underline"
         >
           이메일 로그인
         </Link>
         <span className="text-caption-2-medium text-font-placeholder">ㅣ</span>
-        <Link href="/sign-up" className="text-font-medium hover:underline">
+        <Link href="/signup" className="text-font-medium hover:underline">
           이메일 회원가입
         </Link>
       </div>

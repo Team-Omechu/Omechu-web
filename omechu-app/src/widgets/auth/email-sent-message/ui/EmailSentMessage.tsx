@@ -16,7 +16,7 @@ export default function EmailSentMessage() {
         </p>
       </div>
 
-      <Link href="/sign-in" className="w-full">
+      <Link href="/login" className="w-full">
         <Button type="button" className="w-full">
           로그인하기
         </Button>

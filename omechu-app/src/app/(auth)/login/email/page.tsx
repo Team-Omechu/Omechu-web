@@ -231,7 +231,7 @@ export default function EmailSignInPage() {
             비밀번호 찾기
           </Link>
           <span className="text-font-placeholder">|</span>
-          <Link href="/sign-up" className="text-font-medium">
+          <Link href="/signup" className="text-font-medium">
             회원가입
           </Link>
         </div>

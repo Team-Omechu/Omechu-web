@@ -35,13 +35,13 @@ function CallbackContent() {
     // Kakao 전용 (Google은 popup 방식이므로 이 페이지 사용 안함)
     if (provider !== "kakao") {
       triggerToast("잘못된 로그인 경로입니다.");
-      router.replace("/sign-in");
+      router.replace("/login");
       return;
     }
 
     if (!code) {
       triggerToast("인증 코드가 없습니다.");
-      router.replace("/sign-in");
+      router.replace("/login");
       return;
     }
 

@@ -91,7 +91,7 @@ export default function ProfileSection() {
           isOpen={authModalOpen}
           onConfirm={() => {
             setAuthModalOpen(false);
-            router.push("/sign-in");
+            router.push("/login");
           }}
           onClose={() => setAuthModalOpen(false)}
         />

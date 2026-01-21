@@ -153,7 +153,7 @@ export default function AllergyStep() {
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) {
-        router.push(`/sign-in`);
+        router.push(`/login`);
         return;
       }
       const reason =

@@ -22,7 +22,7 @@ import { CheckBox, Toast, Button, FormField, Input } from "@/shared";
 /**
  * SignInForm (Legacy)
  * - 이메일/비밀번호 로그인 폼
- * - 새로운 로그인 페이지는 /sign-in/email/page.tsx 사용 권장
+ * - 새로운 로그인 페이지는 /login/email/page.tsx 사용 권장
  */
 export default function SignInForm() {
   const [showToast, setShowToast] = useState(false);
@@ -222,7 +222,7 @@ export default function SignInForm() {
               비밀번호 찾기
             </Link>
             <span className="text-grey-normal-active">|</span>
-            <Link href="/sign-up" className="hover:underline">
+            <Link href="/signup" className="hover:underline">
               회원가입
             </Link>
           </div>

@@ -182,7 +182,7 @@ export default function ResultPage() {
   };
 
   const handleLoginButton = () => {
-    router.push("/sign-in");
+    router.push("/login");
     setShowLoginModalForReshuffle(false);
     setShowLoginModalForExclude(false);
   };

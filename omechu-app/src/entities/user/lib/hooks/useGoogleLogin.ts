@@ -57,8 +57,8 @@ export const useGoogleLogin = () => {
             ? error.message
             : "로그인에 실패했습니다. 다시 시도해주세요.";
         triggerToast(errorMessage);
-        // Google 팝업 실패 시에도 sign-in으로 리다이렉트
-        router.push("/sign-in");
+        // Google 팝업 실패 시에도 login으로 리다이렉트
+        router.push("/login");
       } finally {
         setIsLoading(false);
       }

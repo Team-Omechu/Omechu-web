@@ -29,7 +29,7 @@ const ensureAuth = () => {
   if (!token) {
     const err: any = new Error("Unauthorized");
     err.status = 401;
-    throw err; // 호출부에서 /sign-in 등으로 라우팅 처리
+    throw err; // 호출부에서 /login 등으로 라우팅 처리
   }
 };
 
