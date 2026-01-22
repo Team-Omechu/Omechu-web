@@ -10,7 +10,7 @@ import { Header } from "@/shared/ui/header/Header";
  * - 로고 고정 위치
  * - 컨텐츠 중앙 정렬
  */
-export default function SignInLayout({
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode;

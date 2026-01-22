@@ -49,7 +49,7 @@ const TERMS_CONFIG: Record<TermsType, TermsConfig> = {
   },
 };
 
-export default function SignUpPage() {
+export default function SignupPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);

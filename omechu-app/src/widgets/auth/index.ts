@@ -1,7 +1,7 @@
 export { EmailSentMessage } from "./email-sent-message";
 export { ForgotPasswordForm } from "./forgot-password-form";
 export { ResetPasswordForm } from "./reset-password-form";
-export { SignInForm } from "./login-form";
+export { LoginForm } from "./login-form";
 export {
   SignUpForm,
   TermsModal,

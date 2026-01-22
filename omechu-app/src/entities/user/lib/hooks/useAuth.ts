@@ -10,7 +10,6 @@ import type {
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import * as authApi from "@/entities/user/api/authApi";
-import type { LoginSuccessData } from "@/entities/user/api/authApi";
 
 // 로그인
 export const useLoginMutation = () => {
@@ -21,7 +20,7 @@ export const useLoginMutation = () => {
     mutationFn: authApi.login,
     onSuccess: async (tokens, variables) => {
       // 1) 토큰 보관 (로그인 직후는 프로필 정보 없음 - prefetch로 채움)
-      const tempUser: LoginSuccessData = {
+      const tempUser = {
         id: tokens.userId,
       };
 
@@ -66,7 +65,7 @@ export const useSignupMutation = () => {
     mutationFn: authApi.signup,
     onSuccess: async (data) => {
       // 1) 토큰 보관 (signup에서 즉시 토큰 반환)
-      const newUser: LoginSuccessData = {
+      const newUser = {
         id: data.id,
       };
 

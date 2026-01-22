@@ -11,7 +11,7 @@ import { Toast, useToast } from "@/shared";
  * - 카카오, 구글 SDK 기반 소셜 로그인 버튼
  * - 이메일 로그인/회원가입 링크
  */
-export default function SignInPage() {
+export default function LoginPage() {
   const { initiateKakaoLogin, isLoading: kakaoLoading } = useKakaoLogin();
   const { handleGoogleLogin, isLoading: googleLoading } = useGoogleLogin();
   const { show, message } = useToast();
