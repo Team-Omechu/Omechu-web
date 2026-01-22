@@ -533,7 +533,7 @@ export const changePassword = async (data: {
 export const getCurrentUserWithToken = async (
   token: string,
 ): Promise<LoginSuccessData> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/profile`, {
     headers: { Authorization: `Bearer ${token}` },
     credentials: "include",
   });
@@ -551,7 +551,7 @@ export const getCurrentUserWithToken = async (
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   try {
     const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
-      "/profile",
+      "/user/profile",
       {
         // 304도 정상으로 간주해 직접 분기 처리
         validateStatus: (s) => s === 200 || s === 304,
