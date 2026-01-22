@@ -12,12 +12,4 @@ export {
 
 // Model
 export { useCompleteOnboardingMutation } from "./model/useOnboarding";
-
-// UI
-export { default as AllergyStep } from "./ui/AllergyStep";
-export { default as BodyTypeStep } from "./ui/BodyTypeStep";
-export { default as ExerciseStep } from "./ui/ExerciseStep";
-export { default as GenderStep } from "./ui/GenderStep";
-export { default as OnboardingStepLayout } from "./ui/OnboardingStepLayout";
-export { default as PreferStep } from "./ui/PreferStep";
-export { default as ProfileStep } from "./ui/ProfileStep";
+export { useOnboardingStore } from "./model/onboarding.store";
