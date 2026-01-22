@@ -14,6 +14,7 @@ export {
   type SendVerificationCodeSuccessData,
   type VerifyVerificationCodeSuccessData,
   type RequestPasswordResetSuccessData,
+  type OAuthStartResponse,
   login,
   signup,
   sendVerificationCode,
@@ -24,8 +25,8 @@ export {
   changePassword,
   getCurrentUserWithToken,
   getCurrentUser,
-  kakaoLogin,
-  googleLogin,
+  startKakaoLogin,
+  startGoogleLogin,
 } from "./api/authApi";
 
 export { ProfileApiError, fetchProfile } from "./api/profileApi";

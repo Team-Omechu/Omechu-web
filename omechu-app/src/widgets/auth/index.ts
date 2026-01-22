@@ -9,4 +9,4 @@ export {
   type ModalType,
   MODAL_TO_TERMS_TYPE,
   MODAL_TO_FORM_FIELD,
-} from "./signup-form";
+} from "./sign-up-form";

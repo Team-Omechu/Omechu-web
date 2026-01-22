@@ -4,7 +4,6 @@ import { Noto_Sans_KR } from "next/font/google";
 
 import type { Metadata } from "next";
 
-import { KakaoScript } from "@/app/KakaoScript";
 import { Providers } from "@/app/providers";
 
 const notoSansKR = Noto_Sans_KR({
@@ -39,10 +38,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <head>
-        {/* Kakao SDK */}
-        <KakaoScript />
-      </head>
       <body className={`bg-gray-200 ${notoSansKR.variable}`}>
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
         <div className="bg-background-primary relative mx-auto flex min-h-screen w-full max-w-[430px] min-w-[375px] flex-col overflow-x-hidden shadow-xl">

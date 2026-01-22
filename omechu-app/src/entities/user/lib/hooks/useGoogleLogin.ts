@@ -2,90 +2,50 @@
 
 import { useCallback, useState } from "react";
 
-import { useRouter } from "next/navigation";
-import { useGoogleLogin as useGoogleOAuthLogin } from "@react-oauth/google";
-
-import { googleLogin } from "@/entities/user/api/authApi";
-import { handleOAuthCallback } from "@/entities/user/lib/utils/oauthCallbackHandler";
+import { startGoogleLogin } from "@/entities/user/api/authApi";
 import { useToast } from "@/shared";
 
 /**
- * Google OAuth 기반 로그인 훅
- * - handleGoogleLogin: Google 팝업 로그인 시작
- * - isLoading: 로그인 진행 중 상태
+ * 구글 로그인 훅 (BE API 방식)
+ * - initiateGoogleLogin: 구글 로그인 시작 (authorizeUrl로 리다이렉트)
  */
 export const useGoogleLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const { triggerToast } = useToast();
 
   /**
-   * Google authorization code 받은 후 처리
+   * 구글 로그인 시작
+   * 1. BE에 redirectUri 전송
+   * 2. authorizeUrl 응답 받음
+   * 3. authorizeUrl로 리다이렉트
    */
-  const handleGoogleSuccess = useCallback(
-    async (codeResponse: any) => {
-      setIsLoading(true);
-      try {
-        // codeResponse.code에는 authorization code가 포함됨
-        const code = codeResponse.code;
+  const initiateGoogleLogin = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // 현재 origin + 콜백 경로로 redirectUri 생성
+      const redirectUri = `${window.location.origin}/auth/callback/google`;
 
-        if (!code) {
-          triggerToast("인증 코드를 받지 못했습니다.");
-          setIsLoading(false);
-          return;
-        }
+      // BE API 호출하여 authorizeUrl 받기
+      const { authorizeUrl } = await startGoogleLogin(redirectUri);
 
-        // 1. code를 백엔드로 전송하여 토큰 획득
-        const tokens = await googleLogin(code);
-
-        // 2. 공통 OAuth 콜백 핸들러 호출 (프로필 조회, 저장, 리다이렉트)
-        await handleOAuthCallback({
-          tokens,
-          router,
-          onError: (error) => {
-            const errorMessage =
-              error instanceof Error
-                ? error.message
-                : "로그인에 실패했습니다. 다시 시도해주세요.";
-            triggerToast(errorMessage);
-          },
-        });
-      } catch (error) {
-        console.error("[Google Login] Error:", error);
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : "로그인에 실패했습니다. 다시 시도해주세요.";
-        triggerToast(errorMessage);
-        // Google 팝업 실패 시에도 login으로 리다이렉트
-        router.push("/login");
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [router, triggerToast]
-  );
-
-  /**
-   * Google 로그인 에러 처리
-   */
-  const handleGoogleError = useCallback(() => {
-    triggerToast("구글 로그인이 취소되었습니다.");
-    setIsLoading(false);
+      // 구글 로그인 페이지로 이동
+      window.location.href = authorizeUrl;
+    } catch (error) {
+      console.error("[Google Login] Error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "구글 로그인 중 오류가 발생했습니다.";
+      triggerToast(errorMessage);
+      setIsLoading(false);
+    }
+    // 참고: 리다이렉트 되므로 setIsLoading(false)는 에러 시에만 호출
   }, [triggerToast]);
 
-  /**
-   * @react-oauth/google의 useGoogleLogin 훅 사용
-   * flow: "auth-code" - authorization code 방식
-   */
-  const handleGoogleLogin = useGoogleOAuthLogin({
-    onSuccess: handleGoogleSuccess,
-    onError: handleGoogleError,
-    flow: "auth-code",
-  });
-
+  // 기존 호환성을 위해 handleGoogleLogin도 export
   return {
-    handleGoogleLogin,
+    initiateGoogleLogin,
+    handleGoogleLogin: initiateGoogleLogin,
     isLoading,
   };
 };

@@ -108,40 +108,49 @@ const readAccessToken = (): string | null => {
   return null;
 };
 
+// OAuth 로그인 시작 응답 타입
+export interface OAuthStartResponse {
+  authorizeUrl: string;
+}
+
 /**
- * Kakao SDK 로그인 API
- * @param code Kakao authorization code
+ * 카카오 로그인 시작 API (BE API 방식)
+ * @param redirectUri 로그인 후 리다이렉트될 FE URL
+ * @returns authorizeUrl (카카오 로그인 페이지 URL)
  */
-export const kakaoLogin = async (code: string): Promise<LoginTokens> => {
+export const startKakaoLogin = async (
+  redirectUri: string,
+): Promise<OAuthStartResponse> => {
   try {
-    const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
+    const response = await axiosInstance.post<ApiResponse<OAuthStartResponse>>(
       "/auth/login/kakao",
-      { code },
+      { redirectUri },
     );
 
     const apiResponse = response.data;
 
     if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-      const reason = apiResponse.error?.reason || "카카오 로그인에 실패했습니다.";
-      const code = apiResponse.error?.errorCode;
+      const reason =
+        apiResponse.error?.reason || "카카오 로그인 시작에 실패했습니다.";
+      const errorCode = apiResponse.error?.errorCode;
       throw new ApiClientError(
         reason,
-        code,
+        errorCode,
         response.status,
         apiResponse.error?.data,
       );
     }
 
-    return apiResponse.success as LoginTokens;
+    return apiResponse.success;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       const api = err.response?.data as ApiResponse<unknown> | undefined;
       const reason =
-        api?.error?.reason || err.message || "카카오 로그인에 실패했습니다.";
-      const code = api?.error?.errorCode;
+        api?.error?.reason || err.message || "카카오 로그인 시작에 실패했습니다.";
+      const errorCode = api?.error?.errorCode;
       throw new ApiClientError(
         reason,
-        code,
+        errorCode,
         err.response?.status,
         api?.error?.data,
       );
@@ -153,39 +162,43 @@ export const kakaoLogin = async (code: string): Promise<LoginTokens> => {
 };
 
 /**
- * Google SDK 로그인 API
- * @param code Google authorization code
+ * 구글 로그인 시작 API (BE API 방식)
+ * @param redirectUri 로그인 후 리다이렉트될 FE URL
+ * @returns authorizeUrl (구글 로그인 페이지 URL)
  */
-export const googleLogin = async (code: string): Promise<LoginTokens> => {
+export const startGoogleLogin = async (
+  redirectUri: string,
+): Promise<OAuthStartResponse> => {
   try {
-    const response = await axiosInstance.post<ApiResponse<LoginTokens>>(
+    const response = await axiosInstance.post<ApiResponse<OAuthStartResponse>>(
       "/auth/login/google",
-      { code },
+      { redirectUri },
     );
 
     const apiResponse = response.data;
 
     if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
-      const reason = apiResponse.error?.reason || "구글 로그인에 실패했습니다.";
-      const code = apiResponse.error?.errorCode;
+      const reason =
+        apiResponse.error?.reason || "구글 로그인 시작에 실패했습니다.";
+      const errorCode = apiResponse.error?.errorCode;
       throw new ApiClientError(
         reason,
-        code,
+        errorCode,
         response.status,
         apiResponse.error?.data,
       );
     }
 
-    return apiResponse.success as LoginTokens;
+    return apiResponse.success;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       const api = err.response?.data as ApiResponse<unknown> | undefined;
       const reason =
-        api?.error?.reason || err.message || "구글 로그인에 실패했습니다.";
-      const code = api?.error?.errorCode;
+        api?.error?.reason || err.message || "구글 로그인 시작에 실패했습니다.";
+      const errorCode = api?.error?.errorCode;
       throw new ApiClientError(
         reason,
-        code,
+        errorCode,
         err.response?.status,
         api?.error?.data,
       );
