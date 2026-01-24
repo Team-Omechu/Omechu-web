@@ -15,7 +15,7 @@ export class ProfileApiError extends Error {
 export async function fetchProfile(): Promise<ProfileType> {
   try {
     // axiosInstance가 인터셉터에서 토큰을 붙인다는 가정
-    const res = await axiosInstance.get("/profile", {
+    const res = await axiosInstance.get("/user/profile", {
       // 304일 때도 여기서 처리할 수 있게 허용
       validateStatus: (s) => s === 200 || s === 304,
       params: { _ts: Date.now() },

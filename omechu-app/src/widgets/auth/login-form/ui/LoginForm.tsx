@@ -20,11 +20,11 @@ import { useAuthStore } from "@/entities/user/model/auth.store";
 import { CheckBox, Toast, Button, FormField, Input } from "@/shared";
 
 /**
- * SignInForm (Legacy)
+ * LoginForm (Legacy)
  * - 이메일/비밀번호 로그인 폼
- * - 새로운 로그인 페이지는 /sign-in/email/page.tsx 사용 권장
+ * - 새로운 로그인 페이지는 /login/email/page.tsx 사용 권장
  */
-export default function SignInForm() {
+export default function LoginForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const toastTimerRef = useRef<number | null>(null);
@@ -75,7 +75,7 @@ export default function SignInForm() {
       login(data, {
         onSuccess: async (res) => {
           try {
-            const userKey = res?.success?.userId ?? "me";
+            const userKey = res?.userId ?? "me";
 
             queryClient.setQueryData(["profile", userKey], {
               id: isNaN(Number(userKey)) ? 0 : Number(userKey),
@@ -102,7 +102,7 @@ export default function SignInForm() {
             });
             justLoggedInRef.current = true;
           } catch (e) {
-            console.warn("[SignIn] prefetch profile failed", e);
+            console.warn("[Login] prefetch profile failed", e);
           }
         },
       });
@@ -115,7 +115,7 @@ export default function SignInForm() {
   useEffect(() => {
     if (navigatedRef.current) return;
     if (!justLoggedInRef.current) return;
-    if (!isSuccess || !user?.email) return;
+    if (!isSuccess || !user?.id) return;
 
     navigatedRef.current = true;
     if (user.nickname && user.nickname.trim().length > 0) {
@@ -222,7 +222,7 @@ export default function SignInForm() {
               비밀번호 찾기
             </Link>
             <span className="text-grey-normal-active">|</span>
-            <Link href="/sign-up" className="hover:underline">
+            <Link href="/signup" className="hover:underline">
               회원가입
             </Link>
           </div>

@@ -10,65 +10,92 @@ import type {
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import * as authApi from "@/entities/user/api/authApi";
-import type { LoginSuccessData } from "@/entities/user/api/authApi";
 
 // 로그인
 export const useLoginMutation = () => {
   const { login: setLoginState } = useAuthStore();
   const queryClient = useQueryClient();
 
-  return useMutation<any, Error, LoginFormValues>({
+  return useMutation<authApi.LoginTokens, Error, LoginFormValues>({
     mutationFn: authApi.login,
     onSuccess: async (tokens, variables) => {
-      // 1) 토큰 보관
+      // 1) 토큰 보관 (로그인 직후는 프로필 정보 없음 - prefetch로 채움)
+      const tempUser = {
+        id: tokens.userId,
+      };
+
       setLoginState({
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
-        user: {
-          id: tokens.userId,
-          email: "",
-          nickname: "",
-          profileImageUrl: null,
-          gender: null as any,
-          body_type: null as any,
-          exercise: null as any,
-          prefer: [],
-          allergy: [],
-          created_at: "",
-          updated_at: "",
-        } as LoginSuccessData,
-        password: (variables as any).password,
-      } as any);
+        user: tempUser,
+        password: variables.password,
+      });
 
       // 2) axios 인스턴스에 Authorization 주입 (중복 401 방지)
       if (tokens?.accessToken) {
         axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokens.accessToken}`;
       }
 
-      // 3) 프로필은 react-query 캐시에 미리 채워서, 화면 훅(useUserQuery)이 중복 호출하지 않도록 함
+      // 3) 프로필 정보 prefetch (프로필 로딩 최적화)
       try {
-        const me = await queryClient.fetchQuery({
+        const profile = await queryClient.fetchQuery({
           queryKey: ["user", "me"],
           queryFn: authApi.getCurrentUser,
           staleTime: 1000 * 60 * 10, // 10분 신선
         });
-        // 스토어와 동기화
-        useAuthStore.getState().setUser(me as any);
-      } catch (e) {
-        // 프로필 동기화 실패는 치명적이지 않으니 무시(필요시 로깅)
-        // console.error(e);
+        // 프로필 데이터로 스토어 동기화
+        useAuthStore.getState().setUser(profile);
+      } catch (err) {
+        // 프로필 조회 실패는 무시 (필요시 화면에서 재조회 가능)
+        console.warn("[Auth] 프로필 prefetch 실패:", err instanceof Error ? err.message : String(err));
       }
     },
     onError: (error) => {
-      console.error("로그인 실패:", error.message);
+      console.error("[Auth] 로그인 실패:", error.message);
     },
   });
 };
 
 // 회원가입
 export const useSignupMutation = () => {
+  const { login: setLoginState } = useAuthStore();
+  const queryClient = useQueryClient();
+
   return useMutation<authApi.SignupSuccessData, Error, SignupFormValues>({
     mutationFn: authApi.signup,
+    onSuccess: async (data) => {
+      // 1) 토큰 보관 (signup에서 즉시 토큰 반환)
+      const newUser = {
+        id: data.id,
+      };
+
+      setLoginState({
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        user: newUser,
+      });
+
+      // 2) axios 인스턴스에 Authorization 주입
+      if (data?.accessToken) {
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+      }
+
+      // 3) 프로필 정보 prefetch (선택사항 - 온보딩에서 조회 가능)
+      try {
+        const profile = await queryClient.fetchQuery({
+          queryKey: ["user", "me"],
+          queryFn: authApi.getCurrentUser,
+          staleTime: 1000 * 60 * 10,
+        });
+        useAuthStore.getState().setUser(profile);
+      } catch (err) {
+        // 프로필 조회 실패는 무시 (온보딩에서 재조회 가능)
+        console.warn("[Auth] 회원가입 후 프로필 prefetch 실패:", err instanceof Error ? err.message : String(err));
+      }
+    },
+    onError: (error) => {
+      console.error("[Auth] 회원가입 실패:", error.message);
+    },
   });
 };
 

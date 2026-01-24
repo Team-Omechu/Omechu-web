@@ -70,7 +70,7 @@ export function FoodCard({ item, onClick, menu, restaurantId }: FoodCardProps) {
         <ModalWrapper>
           <LoginPromptModal2
             onClose={() => setShowLoginModal(false)}
-            onConfirm={() => router.push("/sign-in")}
+            onConfirm={() => router.push("/login")}
           />
         </ModalWrapper>
       )}

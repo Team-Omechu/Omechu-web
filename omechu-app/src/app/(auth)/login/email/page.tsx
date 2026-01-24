@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
+import { ApiClientError, getAuthErrorMessage } from "@/entities/user";
 import { fetchProfile } from "@/entities/user/api/profileApi";
 import { useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
 import {
@@ -25,7 +25,7 @@ import { Button, FormField, Input, Toast, useToast } from "@/shared";
  * - 로그인 상태 유지 체크박스
  * - 비밀번호 찾기 / 회원가입 링크
  */
-export default function EmailSignInPage() {
+export default function EmailLoginPage() {
   const [rememberMe, setRememberMe] = useState(true);
   const navigatedRef = useRef(false);
   const justLoggedInRef = useRef(false);
@@ -34,7 +34,7 @@ export default function EmailSignInPage() {
   const queryClient = useQueryClient();
   const { show: showToast, message: toastMessage, triggerToast } = useToast();
 
-  const { mutate: login, isPending, isSuccess, error } = useLoginMutation();
+  const { mutate: login, isPending, isSuccess } = useLoginMutation();
 
   const {
     control,
@@ -53,22 +53,9 @@ export default function EmailSignInPage() {
       login(data, {
         onSuccess: async (res) => {
           try {
-            const userKey = res?.success?.userId ?? "me";
+            const userKey = res?.userId ?? "me";
 
-            queryClient.setQueryData(["profile", userKey], {
-              id: isNaN(Number(userKey)) ? 0 : Number(userKey),
-              email: "",
-              nickname: "-",
-              gender: "",
-              bodyType: "",
-              exercise: "",
-              prefer: [],
-              allergy: [],
-              profileImageUrl: null,
-              createdAt: "",
-              updatedAt: "",
-            });
-
+            // 프로필 prefetch로 화면 로딩 최적화
             await queryClient.prefetchQuery({
               queryKey: ["profile", userKey],
               queryFn: fetchProfile,
@@ -80,12 +67,17 @@ export default function EmailSignInPage() {
             });
             justLoggedInRef.current = true;
           } catch (e) {
-            console.warn("[EmailSignIn] prefetch profile failed", e);
+            console.warn("[EmailLogin] prefetch profile failed", e);
           }
+        },
+        onError: (error: unknown) => {
+          const e = error as ApiClientError;
+          const msg = getAuthErrorMessage(e?.code, "로그인에 실패했습니다.");
+          triggerToast(msg);
         },
       });
     },
-    [login, queryClient],
+    [login, queryClient, triggerToast],
   );
 
   const user = useAuthStore((s) => s.user);
@@ -93,7 +85,7 @@ export default function EmailSignInPage() {
   useEffect(() => {
     if (navigatedRef.current) return;
     if (!justLoggedInRef.current) return;
-    if (!isSuccess || !user?.email) return;
+    if (!isSuccess || !user?.id) return;
 
     navigatedRef.current = true;
     if (user.nickname && user.nickname.trim().length > 0) {
@@ -102,34 +94,6 @@ export default function EmailSignInPage() {
       router.push("/onboarding/1");
     }
   }, [isSuccess, user, router]);
-
-  useEffect(() => {
-    if (!error) return;
-    const e = error as ApiClientError & { code?: string; status?: number };
-    const code = e?.code;
-    let msg: string | null = e?.message || null;
-
-    if (!msg) {
-      switch (code) {
-        case "C001":
-          msg = "이메일 또는 비밀번호를 입력해 주세요.";
-          break;
-        case "C003":
-          msg = "로그인이 필요합니다. 다시 시도해 주세요.";
-          break;
-        case "S001":
-          msg = "세션이 만료되었어요. 다시 로그인해 주세요.";
-          break;
-        case "T002":
-        case "T003":
-          msg = "인증에 문제가 발생했어요. 다시 로그인해 주세요.";
-          break;
-        default:
-          msg = null;
-      }
-    }
-    triggerToast(msg || "로그인에 실패했습니다.");
-  }, [error, triggerToast]);
 
   // eslint-disable-next-line react-hooks/refs -- handleSubmit is from react-hook-form
   const handleFormSubmit = handleSubmit(onSubmit);
@@ -231,7 +195,7 @@ export default function EmailSignInPage() {
             비밀번호 찾기
           </Link>
           <span className="text-font-placeholder">|</span>
-          <Link href="/sign-up" className="text-font-medium">
+          <Link href="/signup" className="text-font-medium">
             회원가입
           </Link>
         </div>

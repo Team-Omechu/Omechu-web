@@ -83,7 +83,7 @@ export default function ForgotPasswordForm({
         <div className="text-caption-1-regular flex items-center gap-5">
           <span className="text-font-placeholder">비밀번호가 생각 났어요</span>
           <Link
-            href="/sign-in"
+            href="/login"
             className="text-caption-1-medium text-font-high hover:underline"
           >
             로그인 하기
@@ -92,7 +92,7 @@ export default function ForgotPasswordForm({
         <div className="text-caption-1-regular flex items-center gap-5">
           <span className="text-font-placeholder">계정이 아직 없어요</span>
           <Link
-            href="/sign-up"
+            href="/signup"
             className="text-caption-1-medium text-font-high hover:underline"
           >
             회원가입하기

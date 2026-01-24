@@ -9,8 +9,8 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import {
   ApiClientError,
+  getAuthErrorMessage,
   useSignupMutation,
-  useLoginMutation,
   signupSchema,
   type SignupFormValues,
   useAuthStore,
@@ -49,14 +49,13 @@ const TERMS_CONFIG: Record<TermsType, TermsConfig> = {
   },
 };
 
-export default function SignUpPage() {
+export default function SignupPage() {
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const router = useRouter();
   const { setPassword } = useAuthStore();
   const { mutate: signup, isPending: isSigningUp } = useSignupMutation();
-  const { mutateAsync: loginAsync } = useLoginMutation();
 
   const methods = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -87,25 +86,14 @@ export default function SignUpPage() {
 
   const onSubmit = (data: SignupFormValues) => {
     signup(data, {
-      onSuccess: async () => {
-        try {
-          // 회원가입 직후 자동 로그인하여 토큰을 확보 → 온보딩 완료 API에서 401 방지
-          await loginAsync({ email: data.email, password: data.password });
-          setPassword(data.password);
-          router.push("/onboarding/1");
-        } catch (e: unknown) {
-          // 자동 로그인 실패 시에도 온보딩으로 이동하되, 안내 토스트 노출
-          const message =
-            e instanceof Error
-              ? e.message
-              : "자동 로그인에 실패했습니다. 로그인 후 계속 진행해 주세요.";
-          triggerToast(message);
-          router.push("/onboarding/1");
-        }
+      onSuccess: () => {
+        // 회원가입 성공 → 토큰이 useSignupMutation의 onSuccess에서 자동 저장됨
+        setPassword(data.password);
+        router.push("/onboarding/1");
       },
       onError: (error: unknown) => {
-        const e = error as ApiClientError & { code?: string };
-        const msg: string = e?.message || "회원가입에 실패했습니다.";
+        const e = error as ApiClientError;
+        const msg = getAuthErrorMessage(e?.code, "회원가입에 실패했습니다.");
         triggerToast(msg);
       },
     });

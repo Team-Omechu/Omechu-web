@@ -44,7 +44,7 @@ function ResetPasswordClient() {
 
   const handleModalConfirm = () => {
     setIsModalOpen(false);
-    router.push("/sign-in");
+    router.push("/login");
   };
 
   return (

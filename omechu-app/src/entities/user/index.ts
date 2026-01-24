@@ -14,6 +14,7 @@ export {
   type SendVerificationCodeSuccessData,
   type VerifyVerificationCodeSuccessData,
   type RequestPasswordResetSuccessData,
+  type OAuthStartResponse,
   login,
   signup,
   sendVerificationCode,
@@ -24,6 +25,8 @@ export {
   changePassword,
   getCurrentUserWithToken,
   getCurrentUser,
+  startKakaoLogin,
+  startGoogleLogin,
 } from "./api/authApi";
 
 export { ProfileApiError, fetchProfile } from "./api/profileApi";
@@ -42,11 +45,17 @@ export {
 
 export { useProfile } from "./lib/hooks/useProfile";
 
+export { useKakaoLogin } from "./lib/hooks/useKakaoLogin";
+
+export { useGoogleLogin } from "./lib/hooks/useGoogleLogin";
+
 // Constants
 export {
   VALID_PROVIDERS,
   PROVIDER_DISPLAY_NAMES,
-} from "./lib/constants/oauth.const";
+  AUTH_ERROR_MESSAGES,
+  getAuthErrorMessage,
+} from "./lib/constants";
 
 // Model - Schema
 export {

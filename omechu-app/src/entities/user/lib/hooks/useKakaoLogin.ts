@@ -1,0 +1,49 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
+import { startKakaoLogin } from "@/entities/user/api/authApi";
+import { useToast } from "@/shared";
+
+/**
+ * 카카오 로그인 훅 (BE API 방식)
+ * - initiateKakaoLogin: 카카오 로그인 시작 (authorizeUrl로 리다이렉트)
+ */
+export const useKakaoLogin = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { triggerToast } = useToast();
+
+  /**
+   * 카카오 로그인 시작
+   * 1. BE에 redirectUri 전송
+   * 2. authorizeUrl 응답 받음
+   * 3. authorizeUrl로 리다이렉트
+   */
+  const initiateKakaoLogin = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // 현재 origin + 콜백 경로로 redirectUri 생성
+      const redirectUri = `${window.location.origin}/auth/callback/kakao`;
+
+      // BE API 호출하여 authorizeUrl 받기
+      const { authorizeUrl } = await startKakaoLogin(redirectUri);
+
+      // 카카오 로그인 페이지로 이동
+      window.location.href = authorizeUrl;
+    } catch (error) {
+      console.error("[Kakao Login] Error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "카카오 로그인 중 오류가 발생했습니다.";
+      triggerToast(errorMessage);
+      setIsLoading(false);
+    }
+    // 참고: 리다이렉트 되므로 setIsLoading(false)는 에러 시에만 호출
+  }, [triggerToast]);
+
+  return {
+    initiateKakaoLogin,
+    isLoading,
+  };
+};
