@@ -1,5 +1,3 @@
-// TODO: FSD 위반 - shared 레이어에 도메인 store가 있으면 안 됨
-// entities/user/model/userInfoSetup.store.ts로 이동 필요
 import { create } from "zustand";
 
 type UserInfoSetupState = {
