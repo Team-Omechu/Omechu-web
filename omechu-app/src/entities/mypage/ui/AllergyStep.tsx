@@ -87,8 +87,7 @@ export default function AllergyStep() {
   const queryClient = useQueryClient();
   const authUser = useAuthStore((s) => s.user);
   const accessToken = useAuthStore((s) => s.accessToken);
-  const userKey =
-    authUser?.id ?? authUser?.email ?? (accessToken ? "me" : "guest");
+  const userKey = authUser?.id ?? (accessToken ? "me" : "guest");
 
   const handleClick = (item: string) => {
     userInteractedRef.current = true; // prevent re-hydrate after any user change

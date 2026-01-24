@@ -75,7 +75,7 @@ export default function LoginForm() {
       login(data, {
         onSuccess: async (res) => {
           try {
-            const userKey = res?.success?.userId ?? "me";
+            const userKey = res?.userId ?? "me";
 
             queryClient.setQueryData(["profile", userKey], {
               id: isNaN(Number(userKey)) ? 0 : Number(userKey),
@@ -115,7 +115,7 @@ export default function LoginForm() {
   useEffect(() => {
     if (navigatedRef.current) return;
     if (!justLoggedInRef.current) return;
-    if (!isSuccess || !user?.email) return;
+    if (!isSuccess || !user?.id) return;
 
     navigatedRef.current = true;
     if (user.nickname && user.nickname.trim().length > 0) {

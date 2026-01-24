@@ -43,8 +43,9 @@ export interface ApiError {
   data?: unknown;
 }
 
-// 프로필 조회 성공 시 success 객체 구조 (GET /user/profile)
-// 주의: 로그인 직후에는 일부 필드가 없을 수 있음 (프로필 prefetch 후 채워짐)
+// 프로필 데이터 구조 (GET /user/profile 응답)
+// - 로그인/회원가입 직후: id만 존재 (임시 user 객체)
+// - prefetch 완료 후: 전체 필드 채워짐
 export interface LoginSuccessData {
   id: string;
   nickname?: string;

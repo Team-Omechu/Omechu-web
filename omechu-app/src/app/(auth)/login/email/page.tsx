@@ -53,7 +53,7 @@ export default function EmailLoginPage() {
       login(data, {
         onSuccess: async (res) => {
           try {
-            const userKey = res?.success?.userId ?? "me";
+            const userKey = res?.userId ?? "me";
 
             // 프로필 prefetch로 화면 로딩 최적화
             await queryClient.prefetchQuery({
@@ -85,7 +85,7 @@ export default function EmailLoginPage() {
   useEffect(() => {
     if (navigatedRef.current) return;
     if (!justLoggedInRef.current) return;
-    if (!isSuccess || !user?.email) return;
+    if (!isSuccess || !user?.id) return;
 
     navigatedRef.current = true;
     if (user.nickname && user.nickname.trim().length > 0) {
