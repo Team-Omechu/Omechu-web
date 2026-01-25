@@ -53,4 +53,3 @@ export interface RestaurantListResponse {
 
 // 필요하면 편의 타입
 export type RestaurantList = Restaurant[];
-

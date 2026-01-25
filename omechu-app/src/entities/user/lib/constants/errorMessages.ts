@@ -78,7 +78,7 @@ export const AUTH_ERROR_MESSAGES: Record<string, string> = {
  */
 export const getAuthErrorMessage = (
   errorCode: string | undefined,
-  defaultMessage: string = "오류가 발생했습니다."
+  defaultMessage: string = "오류가 발생했습니다.",
 ): string => {
   if (!errorCode) return defaultMessage;
   return AUTH_ERROR_MESSAGES[errorCode] || defaultMessage;

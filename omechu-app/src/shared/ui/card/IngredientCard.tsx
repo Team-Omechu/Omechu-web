@@ -19,23 +19,21 @@ export const IngredientCard = ({
   allergies,
   onCardClick,
 }: IngredientCardProps) => {
+  const rawAllergies = Array.isArray(allergies)
+    ? allergies.join(",")
+    : typeof allergies === "string"
+      ? allergies
+      : allergies == null
+        ? ""
+        : String(allergies);
 
-const rawAllergies = Array.isArray(allergies)
-  ? allergies.join(",")
-  : typeof allergies === "string"
-    ? allergies
-    : allergies == null
-      ? ""
-      : String(allergies);
-
-const allergyText = rawAllergies.trim()
-  ? rawAllergies
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .join(", ")
-  : "없음";
-
+  const allergyText = rawAllergies.trim()
+    ? rawAllergies
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .join(", ")
+    : "없음";
 
   return (
     <section className="w-full">

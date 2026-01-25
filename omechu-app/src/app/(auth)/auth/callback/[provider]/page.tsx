@@ -53,7 +53,11 @@ function CallbackContent() {
 
       // 에러 처리
       if (error) {
-        triggerToast(error === "access_denied" ? "로그인이 취소되었습니다." : "로그인에 실패했습니다.");
+        triggerToast(
+          error === "access_denied"
+            ? "로그인이 취소되었습니다."
+            : "로그인에 실패했습니다.",
+        );
         router.replace("/login");
         return;
       }
@@ -93,7 +97,8 @@ function CallbackContent() {
     handleCallback();
   }, [provider, accessToken, refreshToken, error, router, triggerToast]);
 
-  const providerName = provider === "kakao" ? "카카오" : provider === "google" ? "구글" : "";
+  const providerName =
+    provider === "kakao" ? "카카오" : provider === "google" ? "구글" : "";
 
   return (
     <main className="flex min-h-dvh items-center justify-center">
