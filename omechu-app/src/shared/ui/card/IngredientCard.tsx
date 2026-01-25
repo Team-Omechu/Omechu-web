@@ -5,8 +5,8 @@ interface IngredientCardProps {
   carbohydrate?: string;
   protein?: string;
   fat?: string;
-  vitamin?: string;
-  allergies?: string;
+  vitamin?: string[];
+  allergies?: string[];
   onCardClick?: () => void;
 }
 
@@ -19,6 +19,24 @@ export const IngredientCard = ({
   allergies,
   onCardClick,
 }: IngredientCardProps) => {
+
+const rawAllergies = Array.isArray(allergies)
+  ? allergies.join(",")
+  : typeof allergies === "string"
+    ? allergies
+    : allergies == null
+      ? ""
+      : String(allergies);
+
+const allergyText = rawAllergies.trim()
+  ? rawAllergies
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .join(", ")
+  : "없음";
+
+
   return (
     <section className="w-full">
       <div className="text-body-3-medium text-font-high mb-3 ml-0.5">
@@ -58,7 +76,7 @@ export const IngredientCard = ({
             알레르기 유발 성분
           </div>
           <div className="text-body-4-medium text-font-high flex w-56 flex-col">
-            {allergies ? [allergies] : "없음"}
+            {allergyText}
           </div>
         </div>
       </div>

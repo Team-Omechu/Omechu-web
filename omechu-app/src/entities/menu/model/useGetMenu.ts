@@ -1,4 +1,4 @@
-import { useQuestionAnswerStore } from "@/entities/question";
+import { useQuestionAnswerStore, whoOptions } from "@/entities/question";
 import { useQuery } from "@tanstack/react-query";
 import {
   MenuListResponse,
@@ -11,12 +11,12 @@ export function useGetMenu() {
     useQuestionAnswerStore();
 
   const payload: RecommendMenuRequest = {
-    mealTime,
-    purpose,
-    mood,
-    with: who,
-    budget,
-    exceptions,
+    동반자: who,
+    식사목적: purpose,
+    날씨: mood,
+    언제: mealTime,
+    예산: budget,
+    제외음식: exceptions,
   };
   return useQuery<MenuListResponse>({
     queryKey: ["recommendMenu", payload],

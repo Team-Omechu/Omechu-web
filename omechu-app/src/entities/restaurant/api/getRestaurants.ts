@@ -1,14 +1,14 @@
 import { axiosInstance } from "@/shared";
-import {
-  restaurantList,
+import type {
+  RestaurantListResponse,
   RestaurantRequest,
 } from "@/entities/restaurant/config/RestaurantData";
 
 export const getRestaurants = async (
   request: RestaurantRequest,
-): Promise<restaurantList> => {
-  const { data } = await axiosInstance.post<restaurantList>(
-    "/fetch-google-places",
+): Promise<RestaurantListResponse> => {
+  const { data } = await axiosInstance.post<RestaurantListResponse>(
+    "/menu/fetch-google-places",
     request,
   );
 

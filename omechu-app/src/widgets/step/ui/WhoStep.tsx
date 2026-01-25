@@ -13,7 +13,7 @@ export const WhoStep = () => {
   const { setWhoTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
-    setWho(value);
+    setWho(label);
     setWhoTag(label, description);
     router.push("/mainpage/question-answer/5");
   };
@@ -24,7 +24,7 @@ export const WhoStep = () => {
         <ListButton
           key={value}
           onClick={() => handleSelect(value, label, description)}
-          isSelected={who === value}
+          isSelected={who === label}
           textSize="base"
         >
           {label}

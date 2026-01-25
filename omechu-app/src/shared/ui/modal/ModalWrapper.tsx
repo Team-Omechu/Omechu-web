@@ -1,13 +1,8 @@
-//! 26.01.12 작업 완료
-
 "use client";
 
 import { useEffect } from "react";
-
 import { lockBodyScroll, unlockBodyScroll } from "@/shared/lib/bodyScrollLock";
-
 import { cn } from "@/shared/lib/cn.util";
-
 
 type ModalWrapperProps = {
   children: React.ReactNode;
@@ -22,33 +17,35 @@ export function ModalWrapper({
 }: ModalWrapperProps) {
   useEffect(() => {
     lockBodyScroll();
-    return () => unlockBodyScroll();
-  }, []);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose?.();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      unlockBodyScroll();
+    };
+  }, [onClose]);
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-
-      className="fixed inset-0 z-[9999] flex items-center justify-center"
-    >
-      {/* dim overlay */}
-      <div className="absolute inset-0 bg-black/20" />
-
-      {/* modal content */}
-      <div className="relative z-10 opacity-100">{children}</div>
-
       className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center",
+        "fixed inset-0 z-[9999] flex items-center justify-center",
         className,
       )}
-
+    >
+      {/* dim overlay */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
+      {/* modal content */}
       <div className="relative z-10" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
-
     </div>
   );
 }

@@ -25,7 +25,7 @@ export function RandomRecommendModal({
       refetch();
       return;
     }
-    setKeyword("비빔밥");
+    setKeyword(menu.name);
     router.push(`/random-recommend/${encodeURIComponent(menu.name)}?record=1`);
   };
 

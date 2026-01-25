@@ -9,7 +9,7 @@ export const getRandomMenu = async (
 ): Promise<RandomMenu> => {
   // POST 로 body 에 실어서 보내기
   const { data } = await axiosInstance.post<RandomMenu>(
-    "/recommend/random",
+    "/menu/recommend/random",
     request,
   );
   return data;

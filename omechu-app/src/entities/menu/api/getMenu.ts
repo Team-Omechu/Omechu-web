@@ -9,7 +9,7 @@ export const getMenu = async (
 ): Promise<MenuListResponse> => {
   // POST 로 body 에 실어서 보내기
   const { data } = await axiosInstance.post<MenuListResponse>(
-    "/recommend",
+    "/recommend/menu",
     request,
   );
   return data;

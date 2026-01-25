@@ -13,7 +13,7 @@ export const PurposeStep = () => {
   const { setPurposeTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
-    setPurpose(value);
+    setPurpose(label);
     setPurposeTag(label, description);
     router.push("/mainpage/question-answer/3");
   };
@@ -24,7 +24,7 @@ export const PurposeStep = () => {
         <ListButton
           key={value}
           onClick={() => handleSelect(value, label, description)}
-          isSelected={purpose === value}
+          isSelected={purpose === label}
           textSize="base"
         >
           {label}

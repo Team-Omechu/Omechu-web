@@ -14,32 +14,10 @@ import {
   Button,
 } from "@/shared";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { exceptMenu } from "@/entities/mypage";
 import { MenuItem, useGetMenu } from "@/entities/menu";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { useLocationAnswerStore } from "@/entities/location";
 import { TagCard } from "@/widgets/TagCard";
-
-const menuMock = [
-  {
-    id: 1,
-    menu: "샤브샤브",
-    description: "신성한 채소와 고기를 육수에 살짝 담가 먹는 따끈한 건강식",
-    image_link: "../public/logo/logo.svg",
-  },
-  {
-    id: 2,
-    menu: "스테이크",
-    description: "두툼한 고기의 풍미를 그대로 살린 육즙 가득한 정통 스테이크",
-    image_link: "../public/logo/logo.svg",
-  },
-  {
-    id: 3,
-    menu: "사케동",
-    description: "부드러운 연어회가 듬뿍 올라간 일본식 연어 덮밥",
-    image_link: "../public/logo/logo.svg",
-  },
-];
 
 export default function ResultPage() {
   const router = useRouter();
@@ -51,7 +29,7 @@ export default function ResultPage() {
   const { setKeyword } = useLocationAnswerStore();
 
   const menus: MenuItem[] = useMemo(
-    () => (Array.isArray(data) ? data : []),
+    () => (Array.isArray(data?.results) ? data.results : []),
     [data],
   );
 
@@ -172,9 +150,9 @@ export default function ResultPage() {
       if (openMenu === excludeMenu) setOpenMenu(null);
 
       // 서버 제외 요청
-      exceptMenu({ menuName: excludeMenu }).catch(() => {
-        triggerToast("메뉴 제외에 실패했습니다.");
-      });
+      // exceptMenu({ menuName: excludeMenu }).catch(() => {
+      //   triggerToast("메뉴 제외에 실패했습니다.");
+      // });
     }
 
     setShowExcludeConfirmModal(false);
@@ -197,13 +175,12 @@ export default function ResultPage() {
       <Header title="맞춤 추천" onBackClick={handleHeaderBack} />
 
       <div className="mt-3 ml-2.5 flex flex-col gap-4 px-4">
-        {/* 현재는 mock으로 렌더링 중 */}
-        {menuMock.map((menu) => (
+        {menus.map((menu) => (
           <RecommendedFoodCard
-            key={menu.id}
+            key={menu.menu}
             menuTitle={menu.menu}
-            menuDesc={menu.description}
-            src={menu.image_link}
+            menuDesc={menu.text}
+            src={menu.image_link || ""}
             onMinusButtonClick={() => handleExcludeClick(menu.menu)}
             onCardClick={() =>
               setOpenMenu(openMenu === menu.menu ? null : menu.menu)
