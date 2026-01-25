@@ -69,7 +69,7 @@ export const RecommendedFoodCard = ({
           <div className="text-body-4-medium text-font-high mt-1 mb-2">
             {menuTitle}
           </div>
-          <p className="text-caption-1-regular text-font-placeholder leading-tight">
+          <p className="text-caption-1-regular text-font-placeholder line-clamp-3 leading-tight">
             {menuDesc}
           </p>
         </div>

@@ -4,8 +4,11 @@ import { axiosInstance } from "@/shared";
 export const postMukburim = async (
   menuName: string,
 ): Promise<mukburimResponse> => {
-  const { data } = await axiosInstance.post<mukburimResponse>("/mukburim", {
-    menu_name: menuName,
-  });
+  const { data } = await axiosInstance.post<mukburimResponse>(
+    "/menu/mukburim",
+    {
+      menu_name: menuName,
+    },
+  );
   return data;
 };

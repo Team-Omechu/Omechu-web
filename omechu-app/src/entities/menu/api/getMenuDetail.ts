@@ -8,7 +8,7 @@ export const getMenuDetail = async (
   if (!name) throw new Error("menu name is required");
 
   const res = await axiosInstance.post<MenuDetail>(
-    "/menu-info",
+    "/menu/menu-info",
     { name: name.trim() },
     {
       headers: { "Content-Type": "application/json" },

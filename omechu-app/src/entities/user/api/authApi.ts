@@ -147,7 +147,9 @@ export const startKakaoLogin = async (
     if (axios.isAxiosError(err)) {
       const api = err.response?.data as ApiResponse<unknown> | undefined;
       const reason =
-        api?.error?.reason || err.message || "카카오 로그인 시작에 실패했습니다.";
+        api?.error?.reason ||
+        err.message ||
+        "카카오 로그인 시작에 실패했습니다.";
       const errorCode = api?.error?.errorCode;
       throw new ApiClientError(
         reason,

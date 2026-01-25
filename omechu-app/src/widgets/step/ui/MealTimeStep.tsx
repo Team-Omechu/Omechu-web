@@ -13,7 +13,7 @@ export const MealTimeStep = () => {
   const { setMealTimeTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
-    setMealTime(value);
+    setMealTime(label);
     setMealTimeTag(label, description);
     router.push("/mainpage/question-answer/2");
   };
@@ -25,7 +25,7 @@ export const MealTimeStep = () => {
           type="button"
           key={value}
           onClick={() => handleSelect(value, label, description)}
-          isSelected={mealTime === value}
+          isSelected={mealTime === label}
           textSize="base"
         >
           {label}

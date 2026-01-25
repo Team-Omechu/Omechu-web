@@ -47,7 +47,10 @@ export const useLoginMutation = () => {
         useAuthStore.getState().setUser(profile);
       } catch (err) {
         // 프로필 조회 실패는 무시 (필요시 화면에서 재조회 가능)
-        console.warn("[Auth] 프로필 prefetch 실패:", err instanceof Error ? err.message : String(err));
+        console.warn(
+          "[Auth] 프로필 prefetch 실패:",
+          err instanceof Error ? err.message : String(err),
+        );
       }
     },
     onError: (error) => {
@@ -90,7 +93,10 @@ export const useSignupMutation = () => {
         useAuthStore.getState().setUser(profile);
       } catch (err) {
         // 프로필 조회 실패는 무시 (온보딩에서 재조회 가능)
-        console.warn("[Auth] 회원가입 후 프로필 prefetch 실패:", err instanceof Error ? err.message : String(err));
+        console.warn(
+          "[Auth] 회원가입 후 프로필 prefetch 실패:",
+          err instanceof Error ? err.message : String(err),
+        );
       }
     },
     onError: (error) => {

@@ -13,7 +13,7 @@ export const MoodStep = () => {
   const { setMoodTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
-    setMood(value);
+    setMood(label);
     setMoodTag(label, description);
     router.push("/mainpage/question-answer/4");
   };
@@ -24,7 +24,7 @@ export const MoodStep = () => {
         <ListButton
           key={value}
           onClick={() => handleSelect(value, label, description)}
-          isSelected={mood === value}
+          isSelected={mood === label}
           textSize="base"
         >
           {label}

@@ -7,44 +7,22 @@ import {
   useSearchParams,
   usePathname,
 } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Header,
-  MenuInfo,
+  IngredientCard,
   RestaurantCard,
   SkeletonUIFoodBox,
   Toast,
   type MenuDetail,
 } from "@/shared";
-import { Restaurant, useGetRestaurants } from "@/entities/restaurant";
+import type { Restaurant } from "@/entities/restaurant";
+import { useGetRestaurants } from "@/entities/restaurant";
 import { usePostMukburim } from "@/entities/mukburim";
 import { useGetMenuDetail } from "@/entities/menu";
-// TODO: FoodCardEx가 widgets/shared에 없음 - 추가 필요
 
-export const restaurantMockData = [
-  {
-    id: 101,
-    displayName: "을지로 칼국수집",
-    formattedAddress: "서울 중구 을지로 12길 7",
-    distance: "0.8km",
-    price: "9000",
-  },
-  {
-    id: 102,
-    displayName: "연남동 파스타 바",
-    formattedAddress: "서울 마포구 연남로 3길 22",
-    distance: "1.5km",
-    price: "17000",
-  },
-  {
-    id: 103,
-    displayName: "성수 수제버거",
-    formattedAddress: "서울 성동구 성수이로 20길 45",
-    distance: "2.3km",
-    price: "13500",
-  },
-];
+const PAGE_SIZE = 3;
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -53,12 +31,16 @@ export default function MenuDetailPage() {
 
   const [showToast, setShowToast] = useState(false);
 
-  const { data, isLoading } = useGetRestaurants();
+  // ✅ 페이지네이션 상태 + 누적 리스트
+  const [page, setPage] = useState(1);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+
+  const { data, isLoading, isFetching } = useGetRestaurants(page, PAGE_SIZE);
+
   const { menuId } = useParams();
   const { mutate } = usePostMukburim();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
-  const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
   const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
   const detailMenu: MenuDetail | undefined = menuDetailData;
 
@@ -82,12 +64,10 @@ export default function MenuDetailPage() {
     const already = sessionStorage.getItem(key);
 
     if (already) {
-      // 이미 처리한 메뉴면 토스트/뮤테이트 둘 다 스킵하고 URL만 정리
       cleanQuery();
       return;
     }
 
-    // 새로고침 중복 방지: 먼저 “처리 중” 마킹 + URL 즉시 정리
     cleanQuery();
 
     mutate(decodeMenuId, {
@@ -96,22 +76,50 @@ export default function MenuDetailPage() {
         setTimeout(() => setShowToast(false), 2000);
         sessionStorage.setItem(key, "done");
       },
-      onError: () => {},
+      onError: () => {
+        console.log(decodeMenuId);
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decodeMenuId, shouldRecord]); // searchParams 객체 자체는 deps에서 제외
+  }, [decodeMenuId, shouldRecord]);
+
+  // ✅ page 바뀔 때마다 data.items를 누적(append)
+  useEffect(() => {
+    if (!data?.items) return;
+
+    setRestaurants((prev) => {
+      const prevIds = new Set(prev.map((r) => r.id));
+      const merged = [...prev];
+
+      for (const item of data.items) {
+        if (!prevIds.has(item.id)) merged.push(item);
+      }
+      return merged;
+    });
+  }, [data?.items]);
+
+  // ✅ 더보기 가능 여부
+  const canLoadMore = useMemo(() => {
+    if (!data) return false;
+    return page < data.totalPages;
+  }, [data, page]);
+
+  const handleLoadMore = () => {
+    if (!canLoadMore || isFetching) return;
+    setPage((p) => p + 1);
+  };
 
   return (
     <div className="flex w-full flex-col">
       <Header
-        onLeftClick={() => router.push("../")}
         title="오늘의 메뉴"
-        isRightChild={true}
+        showHomeButton={true}
+        showShareButton={true}
       />
 
       <div className="mt-4 flex-col items-center justify-center p-4">
         <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
-          {/* {detailMenu?.name} */} 비빔밥
+          {detailMenu?.name}
         </p>
         <Image
           src={detailMenu?.image_link || "/image/image_empty.svg"}
@@ -122,11 +130,18 @@ export default function MenuDetailPage() {
         />
       </div>
 
-      <div className="mt-10 w-full p-4">
-        <MenuInfo MenuItem={detailMenu} />
+      <div className="mt-10 ml-4 w-full p-4">
+        <IngredientCard
+          kcal={detailMenu?.calory}
+          carbohydrate={detailMenu?.carbo}
+          protein={detailMenu?.protein}
+          fat={detailMenu?.fat}
+          vitamin={detailMenu?.vitamin}
+          allergies={detailMenu?.allergic}
+        />
       </div>
 
-      <div className="mx-4 mt-5 flex items-center justify-between">
+      <div className="mt-5 ml-4 flex items-center justify-between">
         <h3 className="text-[1.125rem] font-semibold whitespace-nowrap">
           취향 저격! 추천 메뉴 있는 맛집
         </h3>
@@ -149,28 +164,41 @@ export default function MenuDetailPage() {
         </button>
       </div>
 
-      <div className="mt-3 ml-2 items-center justify-center space-y-3.5 px-4">
-        {/* {isLoading && (
-            <div className="flex flex-col gap-4">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <SkeletonUIFoodBox key={i} />
-              ))}
-            </div>
-          )} */}
-        {restaurantMockData.map((item) => (
+      <div className="mt-3 ml-4 items-center justify-center space-y-3.5 px-4">
+        {(isLoading || (isFetching && restaurants.length === 0)) && (
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonUIFoodBox key={i} />
+            ))}
+          </div>
+        )}
+
+        {restaurants.map((item) => (
           <RestaurantCard
             key={item.id}
-            name={item.displayName}
+            name={item.displayName.text}
             category={detailMenu?.name || ""}
-            distance="1.5K"
+            distance={`${Math.round(item.distance / 10) / 100}K`} // 1250 -> 1.25K
             address={item.formattedAddress}
-            price="0"
+            price={item.priceLevel}
             onCardClick={() =>
               router.push(`/restaurant/restaurant-detail/${item.id}`)
             }
           />
         ))}
-        <p className="mr-2 text-center text-[A8A8A8]"> 더보기 </p>
+
+        <button
+          type="button"
+          onClick={handleLoadMore}
+          disabled={!canLoadMore || isFetching}
+          className="mr-2 w-full text-center text-[A8A8A8] disabled:opacity-50"
+        >
+          {isFetching
+            ? "불러오는 중..."
+            : canLoadMore
+              ? "더보기"
+              : "마지막입니다"}
+        </button>
       </div>
 
       <Toast

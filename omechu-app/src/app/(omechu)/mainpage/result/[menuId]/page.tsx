@@ -13,47 +13,37 @@ import {
   Header,
   IngredientCard,
   RestaurantCard,
+  SkeletonUIFoodBox,
   Toast,
   type MenuDetail,
 } from "@/shared";
-import { Restaurant, useGetRestaurants } from "@/entities/restaurant";
+import type { Restaurant } from "@/entities/restaurant";
+import { useGetRestaurants } from "@/entities/restaurant";
 import { usePostMukburim } from "@/entities/mukburim";
 import { useGetMenuDetail } from "@/entities/menu";
 
-export const restaurantMockData = [
-  {
-    id: 101,
-    displayName: "을지로 칼국수집",
-    formattedAddress: "서울 중구 을지로 12길 7",
-    distance: "0.8km",
-    price: "9000",
-  },
-  {
-    id: 102,
-    displayName: "연남동 파스타 바",
-    formattedAddress: "서울 마포구 연남로 3길 22",
-    distance: "1.5km",
-    price: "17000",
-  },
-  {
-    id: 103,
-    displayName: "성수 수제버거",
-    formattedAddress: "서울 성동구 성수이로 20길 45",
-    distance: "2.3km",
-    price: "13500",
-  },
-];
+const PAGE_SIZE = 3;
 
 export default function MenuDetailPage() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [showToast, setShowToast] = useState(false);
+  const { menuId } = useParams();
+  const decodeMenuId = decodeURIComponent(menuId as string);
 
-  // ✅ 토스트 타이머 중복 방지
+  const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
+  const detailMenu: MenuDetail | undefined = menuDetailData;
+
+  const { mutate } = usePostMukburim();
+
+  // ✅ 토스트(공유/기록) 통합
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const toastTimerRef = useRef<number | null>(null);
-  const openToast = (ms = 2000) => {
+
+  const openToast = (msg: string, ms = 2000) => {
+    setToastMessage(msg);
     setShowToast(true);
     if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
     toastTimerRef.current = window.setTimeout(() => setShowToast(false), ms);
@@ -65,18 +55,41 @@ export default function MenuDetailPage() {
     };
   }, []);
 
-  const { data } = useGetRestaurants();
-  const { menuId } = useParams();
-  const { mutate } = usePostMukburim();
+  // ✅ 페이지네이션 상태 + 누적 리스트
+  const [page, setPage] = useState(1);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
-  const decodeMenuId = decodeURIComponent(menuId as string);
-  const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
-  const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
-  const detailMenu: MenuDetail | undefined = menuDetailData;
+  const { data, isLoading, isFetching } = useGetRestaurants(page, PAGE_SIZE);
 
+  // ✅ page 바뀔 때마다 data.items 누적(append)
+  useEffect(() => {
+    if (!data?.items) return;
+
+    setRestaurants((prev) => {
+      const prevIds = new Set(prev.map((r) => r.id));
+      const merged = [...prev];
+
+      for (const item of data.items) {
+        if (!prevIds.has(item.id)) merged.push(item);
+      }
+      return merged;
+    });
+  }, [data?.items]);
+
+  // ✅ 더보기 가능 여부
+  const canLoadMore = useMemo(() => {
+    if (!data) return false;
+    return page < data.totalPages;
+  }, [data, page]);
+
+  const handleLoadMore = () => {
+    if (!canLoadMore || isFetching) return;
+    setPage((p) => p + 1);
+  };
+
+  // ✅ record 파라미터 처리
   const shouldRecord = searchParams.get("record") === "1";
 
-  // URL에서 record 파라미터 제거
   const cleanQuery = () => {
     const next = new URLSearchParams(searchParams.toString());
     if (next.has("record")) {
@@ -102,7 +115,7 @@ export default function MenuDetailPage() {
 
     mutate(decodeMenuId, {
       onSuccess: () => {
-        openToast(2000);
+        openToast("먹부림 기록에 등록되었습니다.", 2000);
         sessionStorage.setItem(key, "done");
       },
       onError: () => {},
@@ -110,30 +123,12 @@ export default function MenuDetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decodeMenuId, shouldRecord]);
 
-  // ✅ 공유에 사용할 값들
-  const shareTitle = useMemo(() => {
-    const name = detailMenu?.name ?? "오늘의 메뉴";
-    return `${name} 추천받았어!`;
-  }, [detailMenu?.name]);
-
-  const shareText = useMemo(() => {
-    const name = detailMenu?.name ?? "오늘의 메뉴";
-    return `오늘은 ${name} 어때?`;
-  }, [detailMenu?.name]);
-
-  const shareUrl = useMemo(() => {
-    if (typeof window === "undefined") return "";
-    return window.location.href;
-  }, []);
-
   // ✅ 공유 로직 (Web Share -> Clipboard fallback)
   const handleShare = async () => {
     try {
       const url = typeof window !== "undefined" ? window.location.href : "";
-
       if (!url) return;
 
-      // ✅ navigator를 never로 좁히지 않게 window.navigator를 로컬 변수로
       const nav = typeof window !== "undefined" ? window.navigator : null;
 
       // 1) Web Share API
@@ -166,7 +161,7 @@ export default function MenuDetailPage() {
         typeof nav.clipboard.writeText === "function"
       ) {
         await nav.clipboard.writeText(url);
-        // 토스트/알림
+        openToast("링크가 복사됐어요.", 2000);
         return;
       }
 
@@ -180,7 +175,8 @@ export default function MenuDetailPage() {
       textarea.select();
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      // 토스트/알림
+
+      openToast("링크가 복사됐어요.", 2000);
     } catch {
       alert("공유에 실패했어요. 다시 시도해 주세요.");
     }
@@ -195,9 +191,9 @@ export default function MenuDetailPage() {
         onShareClick={handleShare}
       />
 
-      <div className="mt-4 flex-col items-center justify-center p-4">
+      <div className="mt-4 ml-4 flex-col items-center justify-center p-4">
         <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
-          {/* {detailMenu?.name} */} 비빔밥
+          {detailMenu?.name}
         </p>
         <Image
           src={detailMenu?.image_link || "/image/image_empty.svg"}
@@ -208,11 +204,18 @@ export default function MenuDetailPage() {
         />
       </div>
 
-      <div className="mt-10 w-full p-4">
-        <IngredientCard />
+      <div className="mt-10 ml-4 w-full p-4">
+        <IngredientCard
+          kcal={detailMenu?.calory}
+          carbohydrate={detailMenu?.carbo}
+          protein={detailMenu?.protein}
+          fat={detailMenu?.fat}
+          vitamin={detailMenu?.vitamin}
+          allergies={detailMenu?.allergic}
+        />
       </div>
 
-      <div className="mx-4 mt-5 flex items-center justify-between">
+      <div className="mt-5 ml-4 flex items-center justify-between">
         <h3 className="text-[1.125rem] font-semibold whitespace-nowrap">
           취향 저격! 추천 메뉴 있는 맛집
         </h3>
@@ -235,35 +238,45 @@ export default function MenuDetailPage() {
         </button>
       </div>
 
-      <div className="mt-3 ml-2 items-center justify-center space-y-3.5 px-4 pb-6">
-        {restaurantMockData.map((item) => (
+      <div className="mt-3 ml-4 items-center justify-center space-y-3.5 px-4 pb-6">
+        {(isLoading || (isFetching && restaurants.length === 0)) && (
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <SkeletonUIFoodBox key={i} />
+            ))}
+          </div>
+        )}
+
+        {restaurants.map((item) => (
           <RestaurantCard
             key={item.id}
-            name={item.displayName}
+            name={item.displayName.text}
             category={detailMenu?.name || ""}
-            distance="1.5K"
+            distance={`${Math.round(item.distance / 10) / 100}K`}
             address={item.formattedAddress}
-            price="0"
+            price={item.priceLevel}
             onCardClick={() =>
               router.push(`/restaurant/restaurant-detail/${item.id}`)
             }
           />
         ))}
 
-        <button className="itmes-center mr-2 flex w-full justify-center text-center text-[#A8A8A8]">
-          <p>더보기</p>
-          <Image
-            src={"/arrow/navigate_next.svg"}
-            alt="더보기 버튼"
-            width={25}
-            height={25}
-            className="items-center justify-center"
-          />
+        <button
+          type="button"
+          onClick={handleLoadMore}
+          disabled={!canLoadMore || isFetching}
+          className="mr-2 w-full text-center text-[#A8A8A8] disabled:opacity-50"
+        >
+          {isFetching
+            ? "불러오는 중..."
+            : canLoadMore
+              ? "더보기"
+              : "마지막입니다"}
         </button>
       </div>
 
       <Toast
-        message={showToast ? "링크가 복사됐어요." : ""}
+        message={toastMessage}
         show={showToast}
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
       />

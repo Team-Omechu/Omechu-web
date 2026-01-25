@@ -49,10 +49,7 @@ export default function LoginPage() {
 
       {/* 이메일 로그인 / 회원가입 링크 */}
       <div className="text-caption-1-regular mt-10 flex items-center gap-3">
-        <Link
-          href="/login/email"
-          className="text-font-medium hover:underline"
-        >
+        <Link href="/login/email" className="text-font-medium hover:underline">
           이메일 로그인
         </Link>
         <span className="text-caption-2-medium text-font-placeholder">ㅣ</span>

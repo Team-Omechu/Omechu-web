@@ -42,7 +42,10 @@ export default function ResetPasswordForm({
         await onFormSubmit(values);
       } catch (err: unknown) {
         const e = err as ApiClientError;
-        const msg = getAuthErrorMessage(e?.code, "비밀번호 재설정에 실패했습니다.");
+        const msg = getAuthErrorMessage(
+          e?.code,
+          "비밀번호 재설정에 실패했습니다.",
+        );
         triggerToast(msg);
       }
     },
