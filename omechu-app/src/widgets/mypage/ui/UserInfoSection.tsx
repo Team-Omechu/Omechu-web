@@ -7,7 +7,11 @@ import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-import { HistoryRoundedIcon, WriteIcon } from "@/shared/assets/icons/index";
+import {
+  HistoryRoundedIcon,
+  ListIcon,
+  WriteIcon,
+} from "@/widgets/mypage/assets";
 
 interface UserInfoSectionProps {
   name: string;
@@ -89,7 +93,7 @@ export function UserInfoSection({
           className="border-font-placeholder flex h-14 w-42 flex-1 items-center justify-center gap-2 border-r"
         >
           <div className="border-font-extra-low flex h-5 w-5 items-center justify-center rounded-full border">
-            <WriteIcon className="text-font-extra-low w-3" />
+            <ListIcon className="text-font-extra-low w-3" />
           </div>
           <span>추천 목록 관리</span>
         </button>
