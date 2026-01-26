@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { logout } from "@/entities/user/api/authApi";
+import { logout } from "@/entities/user";
 import { BaseModal, Button, Header, ModalWrapper } from "@/shared";
 import { ArrowIcon } from "@/shared/assets/icons";
 

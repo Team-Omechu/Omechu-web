@@ -22,8 +22,8 @@ export default function MukburimLogPage() {
   const router = useRouter();
 
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("전체");
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
-  const [range, setRange] = useState<{
+  const [_visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const [_range, setRange] = useState<{
     startDate: Date | null;
     endDate: Date | null;
   }>({ startDate: null, endDate: null });

@@ -59,7 +59,7 @@ export default function AlarmSettingPage() {
     handleCloseModal();
   };
 
-  const isMealAlarmEnabled = mealAlarms.some((alarm) => alarm.enabled);
+  const _isMealAlarmEnabled = mealAlarms.some((alarm) => alarm.enabled);
 
   return (
     <>
