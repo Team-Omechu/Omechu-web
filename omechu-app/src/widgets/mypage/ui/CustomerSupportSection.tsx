@@ -40,7 +40,11 @@ export function CustomerSupportSection() {
               <div className="text-font-extra-low text-body-4-regular">
                 {item.listTitle}
               </div>
-              <ArrowIcon className="text-font-extra-low" width={9} height={15} />
+              <ArrowIcon
+                className="text-font-extra-low"
+                width={9}
+                height={15}
+              />
             </button>
           </li>
         ))}
