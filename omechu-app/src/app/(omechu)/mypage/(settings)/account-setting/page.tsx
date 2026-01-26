@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { logout } from "@/entities/user";
 import { BaseModal, Button, Header, ModalWrapper } from "@/shared";
-import { ArrowIcon } from "@/shared/assets/icons";
+import { SectionArrow } from "@/widgets/mypage/assets/icons";
 
 interface AccontSettingPageProps {
   email: string;
@@ -52,7 +52,7 @@ export default function AccontSettingPage({ email }: AccontSettingPageProps) {
               }
               className="flex h-8.5 items-center"
             >
-              <ArrowIcon currentColor="#707070" />
+              <SectionArrow currentColor="#707070" />
             </button>
           </div>
         </section>
