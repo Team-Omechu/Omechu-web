@@ -42,9 +42,9 @@ jobs:
         run: pnpm format:check
         working-directory: ./omechu-app
 
-      # 6. ESLint 린팅 실행
+      # 6. ESLint 린팅 실행 (next lint는 ESLint 9 flat config와 호환 이슈)
       - name: Run ESLint
-        run: pnpm lint
+        run: npx eslint src
         working-directory: ./omechu-app
 
       # 7. 빌드 실행
