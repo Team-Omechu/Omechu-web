@@ -14,8 +14,24 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "오메추",
-  description: "오늘 뭐 먹지? Omechu가 추천해드려요!",
+  metadataBase: new URL("https://omechu.log8.kr"),
+  title: {
+    default: "오메추 | 오늘 뭐 먹지? 메뉴 추천 서비스",
+    template: "%s | 오메추",
+  },
+  description:
+    "당신의 취향과 상황을 분석하여 오늘 딱 맞는 메뉴와 주변 맛집을 추천해드립니다.",
+  keywords: [
+    "메뉴추천",
+    "오늘뭐먹지",
+    "맛집추천",
+    "오메추",
+    "점심메뉴",
+    "저녁메뉴",
+    "음식추천",
+  ],
+  authors: [{ name: "OMECHU Team" }],
+  creator: "OMECHU Team",
   icons: {
     icon: [
       { url: "/logo/logo.png", sizes: "32x32", type: "image/png" },
@@ -24,7 +40,42 @@ export const metadata: Metadata = {
     ],
     apple: "/logo/logo.png",
   },
-  manifest: "/manifest.webmanifest",
+  openGraph: {
+    title: "오메추 - 오늘 뭐 먹지?",
+    description: "취향 저격 메뉴 추천 서비스",
+    url: "https://omechu.log8.kr",
+    siteName: "오메추",
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "/logo/logo.png",
+        width: 512,
+        height: 512,
+        alt: "오메추 로고",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "오메추 - 오늘 뭐 먹지?",
+    description: "당신의 완벽한 식사를 위한 추천 서비스",
+    images: ["/logo/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export const viewport = {
