@@ -3,5 +3,5 @@ export { useGetRestaurants } from "./model/useGetRestaurants";
 export type {
   RestaurantRequest,
   Restaurant,
-  restaurantList,
+  RestaurantList,
 } from "./config/RestaurantData";

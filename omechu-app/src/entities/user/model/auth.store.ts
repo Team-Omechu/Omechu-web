@@ -53,9 +53,10 @@ export const useAuthStore = create<AuthStore>()(
           password: "",
         });
         try {
-          // persist 스토리지까지 완전 초기화 (401 루프/다중 탭 문제 방지)
           localStorage.removeItem(AUTH_STORAGE_KEY);
-        } catch {}
+        } catch {
+          // SSR 환경에서 localStorage 접근 실패 무시
+        }
       },
       setUser: (user) => set({ user }),
       setAccessToken: (token) => set({ accessToken: token }),

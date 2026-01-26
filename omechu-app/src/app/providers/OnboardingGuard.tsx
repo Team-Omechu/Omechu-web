@@ -27,7 +27,7 @@ export function OnboardingGuard({ children }: OnboardingGuardProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const inAuthSection =
-    pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
+    pathname.startsWith("/login") || pathname.startsWith("/signup");
 
   useEffect(() => {
     const from401 =

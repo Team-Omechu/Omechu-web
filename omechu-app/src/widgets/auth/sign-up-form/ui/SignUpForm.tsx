@@ -22,7 +22,7 @@ export default function SignUpForm({
       <UserInfoFields />
 
       {/* 구분선 */}
-      <hr className="border-t border-font-placeholder" />
+      <hr className="border-font-placeholder border-t" />
 
       <TermsAgreement setActiveModal={setActiveModal} />
     </form>

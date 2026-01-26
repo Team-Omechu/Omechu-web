@@ -43,14 +43,15 @@ export interface ApiError {
   data?: unknown;
 }
 
-// 로그인 성공 시 success 객체 구조
+// 프로필 데이터 구조 (GET /user/profile 응답)
+// - 로그인/회원가입 직후: id만 존재 (임시 user 객체)
+// - prefetch 완료 후: 전체 필드 채워짐
 export interface LoginSuccessData {
   id: string;
-  email: string;
-  gender: "남성" | "여성";
-  nickname: string;
-  created_at: string;
-  updated_at: string;
+  nickname?: string;
+  exercise?: string;
+  prefer?: string[];
+  allergy?: string[];
 }
 
 export interface LoginTokens {
@@ -61,10 +62,10 @@ export interface LoginTokens {
 
 // 회원가입 성공 시 success 객체 구조
 export interface SignupSuccessData {
-  id: number;
+  id: string;
   email: string;
-  created_at: string;
-  updated_at: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 // 이메일 인증번호 전송 성공 시 success 객체 구조
@@ -106,6 +107,109 @@ const readAccessToken = (): string | null => {
     console.warn("[AUTH] readAccessToken localStorage parse error:", e);
   }
   return null;
+};
+
+// OAuth 로그인 시작 응답 타입
+export interface OAuthStartResponse {
+  authorizeUrl: string;
+}
+
+/**
+ * 카카오 로그인 시작 API (BE API 방식)
+ * @param redirectUri 로그인 후 리다이렉트될 FE URL
+ * @returns authorizeUrl (카카오 로그인 페이지 URL)
+ */
+export const startKakaoLogin = async (
+  redirectUri: string,
+): Promise<OAuthStartResponse> => {
+  try {
+    const response = await axiosInstance.post<ApiResponse<OAuthStartResponse>>(
+      "/auth/login/kakao",
+      { redirectUri },
+    );
+
+    const apiResponse = response.data;
+
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      const reason =
+        apiResponse.error?.reason || "카카오 로그인 시작에 실패했습니다.";
+      const errorCode = apiResponse.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason ||
+        err.message ||
+        "카카오 로그인 시작에 실패했습니다.";
+      const errorCode = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        errorCode,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
+  }
+};
+
+/**
+ * 구글 로그인 시작 API (BE API 방식)
+ * @param redirectUri 로그인 후 리다이렉트될 FE URL
+ * @returns authorizeUrl (구글 로그인 페이지 URL)
+ */
+export const startGoogleLogin = async (
+  redirectUri: string,
+): Promise<OAuthStartResponse> => {
+  try {
+    const response = await axiosInstance.post<ApiResponse<OAuthStartResponse>>(
+      "/auth/login/google",
+      { redirectUri },
+    );
+
+    const apiResponse = response.data;
+
+    if (apiResponse.resultType === "FAIL" || !apiResponse.success) {
+      const reason =
+        apiResponse.error?.reason || "구글 로그인 시작에 실패했습니다.";
+      const errorCode = apiResponse.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        errorCode,
+        response.status,
+        apiResponse.error?.data,
+      );
+    }
+
+    return apiResponse.success;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const api = err.response?.data as ApiResponse<unknown> | undefined;
+      const reason =
+        api?.error?.reason || err.message || "구글 로그인 시작에 실패했습니다.";
+      const errorCode = api?.error?.errorCode;
+      throw new ApiClientError(
+        reason,
+        errorCode,
+        err.response?.status,
+        api?.error?.data,
+      );
+    }
+    throw new ApiClientError(
+      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.",
+    );
+  }
 };
 
 /**
@@ -325,13 +429,14 @@ export const requestPasswordReset = async (
 
 /**
  * 비밀번호 재설정 API
+ * @param data password, passwordConfirm, token
  */
 export const resetPassword = async (
   data: ResetPasswordFormValues & { token: string },
 ): Promise<string> => {
   try {
     const response = await axiosInstance.patch<ApiResponse<string>>(
-      `/reset-passwd?token=${encodeURIComponent(data.token)}`,
+      `/auth/reset-passwd?token=${encodeURIComponent(data.token)}`,
       { newPassword: data.password },
     );
     const apiResponse = response.data;
@@ -444,7 +549,7 @@ export const changePassword = async (data: {
 export const getCurrentUserWithToken = async (
   token: string,
 ): Promise<LoginSuccessData> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/profile`, {
     headers: { Authorization: `Bearer ${token}` },
     credentials: "include",
   });
@@ -462,7 +567,7 @@ export const getCurrentUserWithToken = async (
 export const getCurrentUser = async (): Promise<LoginSuccessData> => {
   try {
     const response = await axiosInstance.get<ApiResponse<LoginSuccessData>>(
-      "/profile",
+      "/user/profile",
       {
         // 304도 정상으로 간주해 직접 분기 처리
         validateStatus: (s) => s === 200 || s === 304,

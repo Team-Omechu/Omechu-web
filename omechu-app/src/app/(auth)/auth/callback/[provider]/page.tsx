@@ -1,16 +1,11 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { getCurrentUserWithToken } from "@/entities/user/api/authApi";
-import {
-  VALID_PROVIDERS,
-  PROVIDER_DISPLAY_NAMES,
-} from "@/entities/user/lib/constants/oauth.const";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import type { OAuthProvider } from "@/entities/user/model/auth.types";
 import { Toast, useToast } from "@/shared";
 
 export default function OAuthCallbackPage() {
@@ -31,59 +26,83 @@ function CallbackContent() {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
-  const { login } = useAuthStore();
   const { show: showToast, message: toastMessage, triggerToast } = useToast();
+  const processedRef = useRef(false);
 
   const provider = params.provider as string;
 
+  // URL 쿼리에서 토큰 추출
+  const accessToken = searchParams.get("accessToken");
+  const refreshToken = searchParams.get("refreshToken");
+  // 에러 파라미터 (BE에서 에러 시 전달할 수 있음)
+  const error = searchParams.get("error");
+
   useEffect(() => {
-    // provider 유효성 검사
-    if (!VALID_PROVIDERS.includes(provider as OAuthProvider)) {
-      triggerToast("잘못된 로그인 경로입니다.");
-      router.replace("/sign-in");
-      return;
-    }
+    // 중복 실행 방지
+    if (processedRef.current) return;
 
-    const accessToken = searchParams.get("accessToken");
-    const refreshToken = searchParams.get("refreshToken");
+    const handleCallback = async () => {
+      processedRef.current = true;
 
-    if (!accessToken) {
-      triggerToast("로그인에 실패했습니다. 다시 시도해 주세요.");
-      router.replace("/sign-in");
-      return;
-    }
+      // provider 검증
+      if (provider !== "kakao" && provider !== "google") {
+        triggerToast("잘못된 로그인 경로입니다.");
+        router.replace("/login");
+        return;
+      }
 
-    (async () => {
+      // 에러 처리
+      if (error) {
+        triggerToast(
+          error === "access_denied"
+            ? "로그인이 취소되었습니다."
+            : "로그인에 실패했습니다.",
+        );
+        router.replace("/login");
+        return;
+      }
+
+      // 토큰 검증
+      if (!accessToken) {
+        triggerToast("인증 정보가 없습니다.");
+        router.replace("/login");
+        return;
+      }
+
       try {
-        const me = await getCurrentUserWithToken(accessToken);
-        login({
+        // 1. 토큰으로 유저 정보 조회
+        const user = await getCurrentUserWithToken(accessToken);
+
+        // 2. Zustand store에 저장
+        useAuthStore.getState().login({
           accessToken,
-          refreshToken: refreshToken ?? "",
-          user: me,
+          refreshToken: refreshToken || "",
+          user,
           password: "",
         });
 
-        // 닉네임이 없으면 온보딩으로, 있으면 메인페이지로
-        if (!me.nickname) {
+        // 3. 닉네임 여부에 따라 리다이렉트
+        if (!user.nickname) {
           router.replace("/onboarding/1");
         } else {
           router.replace("/mainpage");
         }
-      } catch {
-        triggerToast("로그인에 실패했습니다. 다시 시도해 주세요.");
-        router.replace("/sign-in");
+      } catch (err) {
+        console.error(`[${provider} Callback] Error:`, err);
+        triggerToast("로그인 처리 중 오류가 발생했습니다.");
+        router.replace("/login");
       }
-    })();
-  }, [provider, searchParams, router, login, triggerToast]);
+    };
+
+    handleCallback();
+  }, [provider, accessToken, refreshToken, error, router, triggerToast]);
 
   const providerName =
-    PROVIDER_DISPLAY_NAMES[provider as OAuthProvider] ?? "";
+    provider === "kakao" ? "카카오" : provider === "google" ? "구글" : "";
 
   return (
     <main className="flex min-h-dvh items-center justify-center">
-      <span className="text-font-medium">
-        {providerName} 로그인 처리 중...
-      </span>
+      <span className="text-font-medium">{providerName} 로그인 처리 중...</span>
       <Toast message={toastMessage} show={showToast} />
     </main>
   );

@@ -1,12 +1,14 @@
 // resultData.ts
 export interface RecommendMenuRequest {
-  mealTime: number | null;
-  purpose: number | null;
-  mood: number | null;
-  with: number | null;
-  budget: number | null;
-  exceptions: string[] | null;
-  weather?: string;
+  동반자: string | null;
+  식사목적: string | null;
+  날씨: string | null;
+  언제: string | null;
+  선호음식?: string | null;
+  예산: string | null;
+  제외음식?: string[] | null;
+  알레르기?: string[] | null;
+  이전추천메뉴?: string[] | null;
 }
 
 export interface RandomMenuRequest {
@@ -19,22 +21,15 @@ export type RandomMenu = {
 };
 
 export type MenuItem = {
-  id: number;
-  name?: string;
   menu: string;
-  calory: number;
-  protein: number;
-  carbo: number;
-  fat: number;
-  sodium: number;
-  vitamin: string[];
-  allergic: string[];
-  description: string;
+  text: string;
   image_link: string;
+  allergens: string[];
 };
 
 export type MenuListResponse = {
-  menus: MenuItem[];
+  query_text: string;
+  results: MenuItem[];
 };
 
 export type TagData = {

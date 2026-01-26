@@ -15,9 +15,9 @@ export const BudgetStep = () => {
   // 각 옵션에 순서대로 value(1,2,3) 할당
 
   const handleSelect = (value: number, label: string, description: string) => {
-    setBudget(value);
+    setBudget(label);
     setBudgetTag(label, description);
-    router.push("/mainpage/question-answer/6");
+    router.push("/mainpage/result");
   };
 
   return (
@@ -26,7 +26,7 @@ export const BudgetStep = () => {
         <ListButton
           key={value}
           onClick={() => handleSelect(value, label, description)}
-          isSelected={budget === value}
+          isSelected={budget === label}
           textSize="base"
         >
           {label}

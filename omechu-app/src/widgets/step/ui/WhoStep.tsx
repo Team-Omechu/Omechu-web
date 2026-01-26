@@ -2,11 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
-import ListButton from "@/components/common/button/ListButton";
-
 import { QuestionAnswerLayout } from "./QuestionAnswerLayout";
 import { useQuestionAnswerStore, whoOptions } from "@/entities/question";
 import { useTagStore } from "@/entities/tag";
+import { ListButton } from "@/shared";
 
 export const WhoStep = () => {
   const router = useRouter();
@@ -14,7 +13,7 @@ export const WhoStep = () => {
   const { setWhoTag } = useTagStore();
 
   const handleSelect = (value: number, label: string, description: string) => {
-    setWho(value);
+    setWho(label);
     setWhoTag(label, description);
     router.push("/mainpage/question-answer/5");
   };
@@ -25,7 +24,7 @@ export const WhoStep = () => {
         <ListButton
           key={value}
           onClick={() => handleSelect(value, label, description)}
-          isSelected={who === value}
+          isSelected={who === label}
           textSize="base"
         >
           {label}

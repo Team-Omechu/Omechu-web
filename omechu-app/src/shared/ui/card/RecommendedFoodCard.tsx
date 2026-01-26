@@ -48,7 +48,7 @@ export const RecommendedFoodCard = ({
         onClick={onCardClick}
         className={cn(
           "bg-brand-secondary border-font-disabled flex h-28 w-84 gap-5 rounded-2xl border-[1.5px] p-3",
-          selected && "bg-brand-primary scale-105",
+          selected && "border-[#242424]",
         )}
         aria-label="추천 음식 카드"
         aria-pressed={selected}
@@ -69,7 +69,7 @@ export const RecommendedFoodCard = ({
           <div className="text-body-4-medium text-font-high mt-1 mb-2">
             {menuTitle}
           </div>
-          <p className="text-caption-1-regular text-font-placeholder leading-tight">
+          <p className="text-caption-1-regular text-font-placeholder line-clamp-3 leading-tight">
             {menuDesc}
           </p>
         </div>

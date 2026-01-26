@@ -7,16 +7,22 @@ import {
   useSearchParams,
   usePathname,
 } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { Header, MenuInfo, Toast, type MenuDetail } from "@/shared";
-import { Restaurant, useGetRestaurants } from "@/entities/restaurant";
+import {
+  Header,
+  IngredientCard,
+  RestaurantCard,
+  SkeletonUIFoodBox,
+  Toast,
+  type MenuDetail,
+} from "@/shared";
+import type { Restaurant } from "@/entities/restaurant";
+import { useGetRestaurants } from "@/entities/restaurant";
 import { usePostMukburim } from "@/entities/mukburim";
 import { useGetMenuDetail } from "@/entities/menu";
-// TODO: FoodCardEx가 widgets/shared에 없음 - 추가 필요
-import FoodCardEx from "@/mainpage/components/FoodCardEx";
-// TODO: SkeletonFoodCard가 shared에 없음 - 추가 필요
-import SkeletonFoodCard from "@/components/common/SkeletonFoodCard";
+
+const PAGE_SIZE = 3;
 
 export default function MenuDetailPage() {
   const router = useRouter();
@@ -25,12 +31,16 @@ export default function MenuDetailPage() {
 
   const [showToast, setShowToast] = useState(false);
 
-  const { data, isLoading } = useGetRestaurants();
+  // ✅ 페이지네이션 상태 + 누적 리스트
+  const [page, setPage] = useState(1);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+
+  const { data, isLoading, isFetching } = useGetRestaurants(page, PAGE_SIZE);
+
   const { menuId } = useParams();
   const { mutate } = usePostMukburim();
 
   const decodeMenuId = decodeURIComponent(menuId as string);
-  const restaurants: Restaurant[] = Array.isArray(data) ? data : [];
   const { data: menuDetailData } = useGetMenuDetail(decodeMenuId);
   const detailMenu: MenuDetail | undefined = menuDetailData;
 
@@ -54,12 +64,10 @@ export default function MenuDetailPage() {
     const already = sessionStorage.getItem(key);
 
     if (already) {
-      // 이미 처리한 메뉴면 토스트/뮤테이트 둘 다 스킵하고 URL만 정리
       cleanQuery();
       return;
     }
 
-    // 새로고침 중복 방지: 먼저 “처리 중” 마킹 + URL 즉시 정리
     cleanQuery();
 
     mutate(decodeMenuId, {
@@ -68,81 +76,129 @@ export default function MenuDetailPage() {
         setTimeout(() => setShowToast(false), 2000);
         sessionStorage.setItem(key, "done");
       },
-      onError: () => {},
+      onError: () => {
+        console.log(decodeMenuId);
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decodeMenuId, shouldRecord]); // searchParams 객체 자체는 deps에서 제외
+  }, [decodeMenuId, shouldRecord]);
+
+  // ✅ page 바뀔 때마다 data.items를 누적(append)
+  useEffect(() => {
+    if (!data?.items) return;
+
+    setRestaurants((prev) => {
+      const prevIds = new Set(prev.map((r) => r.id));
+      const merged = [...prev];
+
+      for (const item of data.items) {
+        if (!prevIds.has(item.id)) merged.push(item);
+      }
+      return merged;
+    });
+  }, [data?.items]);
+
+  // ✅ 더보기 가능 여부
+  const canLoadMore = useMemo(() => {
+    if (!data) return false;
+    return page < data.totalPages;
+  }, [data, page]);
+
+  const handleLoadMore = () => {
+    if (!canLoadMore || isFetching) return;
+    setPage((p) => p + 1);
+  };
 
   return (
     <div className="flex w-full flex-col">
       <Header
-        leftChild={
-          <button
-            onClick={() => router.push("/mainpage")}
-            className="flex items-center font-bold"
-          >
-            <Image
-              src="/arrow/left-header-arrow.svg"
-              alt="back"
-              width={22}
-              height={30}
-            />
-            <span className="mb-0.5 ml-1 flex shrink-0">처음으로</span>
-          </button>
-        }
-        className="h-[60px] border-b-0"
+        title="오늘의 메뉴"
+        showHomeButton={true}
+        showShareButton={true}
       />
 
-      <div className="mt-4 flex-col items-center justify-center gap-4 p-4">
-        <p className="text-secondary-normal text-center font-semibold">
+      <div className="mt-4 flex-col items-center justify-center p-4">
+        <p className="text-brand-primary mb-3 text-center text-[1.5rem] font-semibold">
           {detailMenu?.name}
         </p>
         <Image
           src={detailMenu?.image_link || "/image/image_empty.svg"}
           alt={detailMenu?.name || "메뉴 이미지"}
-          className="mx-auto h-24 w-24 rounded-sm"
+          className="mx-auto h-24 w-24 rounded-md"
           width={96}
           height={96}
         />
       </div>
 
-      <div className="mt-10 w-full p-4">
-        <MenuInfo MenuItem={detailMenu} />
+      <div className="mt-10 ml-4 w-full p-4">
+        <IngredientCard
+          kcal={detailMenu?.calory}
+          carbohydrate={detailMenu?.carbo}
+          protein={detailMenu?.protein}
+          fat={detailMenu?.fat}
+          vitamin={detailMenu?.vitamin}
+          allergies={detailMenu?.allergic}
+        />
       </div>
 
-      <div className="mx-4 mt-5 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">취향 저격! 추천 맛집</h3>
+      <div className="mt-5 ml-4 flex items-center justify-between">
+        <h3 className="text-[1.125rem] font-semibold whitespace-nowrap">
+          취향 저격! 추천 메뉴 있는 맛집
+        </h3>
         <button
-          className="text-grey-normal-active px-4 text-sm"
+          className="flex items-center justify-center gap-1 px-4"
           onClick={() =>
             router.push(
               `/restaurant?query=${encodeURIComponent(detailMenu?.name || "")}`,
             )
           }
         >
-          더보기 &gt;
+          <Image
+            src={"/map/mage_location-fill.svg"}
+            alt="현위치"
+            width={20}
+            height={20}
+            className="h-4 w-4"
+          />
+          <p className="text-sm whitespace-nowrap text-[5E5E5E]">현위치로</p>
         </button>
       </div>
 
-      <div className="mt-3 space-y-2 px-4">
-        {isLoading && (
+      <div className="mt-3 ml-4 items-center justify-center space-y-3.5 px-4">
+        {(isLoading || (isFetching && restaurants.length === 0)) && (
           <div className="flex flex-col gap-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <SkeletonFoodCard key={i} />
+              <SkeletonUIFoodBox key={i} />
             ))}
           </div>
         )}
+
         {restaurants.map((item) => (
-          <FoodCardEx
+          <RestaurantCard
             key={item.id}
-            item={item}
-            menu={detailMenu?.name || ""}
-            restaurantId={item.id2}
-            onClick={() =>
-              router.push(`/restaurant/restaurant-detail/${item.id2}`)
+            name={item.displayName.text}
+            category={detailMenu?.name || ""}
+            distance={`${Math.round(item.distance / 10) / 100}K`} // 1250 -> 1.25K
+            address={item.formattedAddress}
+            price={item.priceLevel}
+            onCardClick={() =>
+              router.push(`/restaurant/restaurant-detail/${item.id}`)
             }
           />
         ))}
+
+        <button
+          type="button"
+          onClick={handleLoadMore}
+          disabled={!canLoadMore || isFetching}
+          className="mr-2 w-full text-center text-[A8A8A8] disabled:opacity-50"
+        >
+          {isFetching
+            ? "불러오는 중..."
+            : canLoadMore
+              ? "더보기"
+              : "마지막입니다"}
+        </button>
       </div>
 
       <Toast

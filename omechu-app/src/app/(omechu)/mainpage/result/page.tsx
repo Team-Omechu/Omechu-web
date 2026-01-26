@@ -1,62 +1,93 @@
 // src/app/mainpage/result/page.tsx (ResultPage)
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Header, MainLoading, ModalWrapper, BaseModal, Toast } from "@/shared";
+import {
+  Header,
+  MainLoading,
+  ModalWrapper,
+  BaseModal,
+  Toast,
+  RecommendedFoodCard,
+  Button,
+} from "@/shared";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import { exceptMenu } from "@/entities/mypage";
 import { MenuItem, useGetMenu } from "@/entities/menu";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { useLocationAnswerStore } from "@/entities/location";
-import { MenuCard } from "@/widgets/MenuCard";
 import { TagCard } from "@/widgets/TagCard";
-import { LoginPromptModal2 } from "@/widgets/LoginModal";
-// TODO: ExcludeButton이 shared/widgets에 없음 - 추가 필요
-import ExcludeButton from "@/mainpage/components/ExcludeButton";
 
 export default function ResultPage() {
   const router = useRouter();
+
   const { data, isLoading, error, refetch, isRefetching } = useGetMenu();
-  const [showModal, setShowModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
-  const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
   const { addException } = useQuestionAnswerStore();
+  const { setKeyword } = useLocationAnswerStore();
 
   const menus: MenuItem[] = useMemo(
-    () => (Array.isArray(data) ? data : []),
+    () => (Array.isArray(data?.results) ? data.results : []),
     [data],
   );
+
+  // UI states
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+
+  // filtered list (로그인 제외 API 성공 여부와 별개로 UI에서 즉시 제거)
+  const [filteredMenus, setFilteredMenus] = useState<MenuItem[]>([]);
+
+  // ----- 모달 상태들 -----
+  // 1) 로그인 상태에서 "제외하시겠어요?" 확인 모달
+  const [showExcludeConfirmModal, setShowExcludeConfirmModal] = useState(false);
+  const [excludeMenu, setExcludeMenu] = useState<string | null>(null);
+
+  // 2) 비로그인: 다시추천 3번 눌렀을 때 로그인 유도 모달 (A)
+  const [reshuffleAttemptCount, setReshuffleAttemptCount] = useState(0);
+  const [showLoginModalForReshuffle, setShowLoginModalForReshuffle] =
+    useState(false);
+
+  // 3) 비로그인: 제외하기(마이너스) 눌렀을 때 로그인 유도 모달 (B)
+  const [showLoginModalForExclude, setShowLoginModalForExclude] =
+    useState(false);
+
+  // 4) 홈으로(추천 중단) 모달
+  const [showStopRecommendModal, setShowStopRecommendModal] = useState(false);
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
+    window.setTimeout(() => setShowToast(false), 2500);
   };
 
-  const [filteredMenus, setFilteredMenus] = useState(menus);
-
-  const { setKeyword } = useLocationAnswerStore();
-
-  const handleExcludeCLick = (menuName: string) => {
-    if (isLoggedIn === false) {
-      setShowLoginModal(true);
-      return;
-    }
-    setExcludeMenu(menuName);
-    setShowModal(true);
-  };
-
+  // menus -> filteredMenus sync
   useEffect(() => {
+    // 서버 data 쓰는 중이면 menus로, 지금은 mock 쓰면 아래 map 렌더에서 menuMock 쓰는 구조니까
+    // 향후 data 적용할 거면 아래처럼 menus 기반으로 세팅하면 됨.
     setFilteredMenus(menus);
   }, [menus]);
 
+  // --- 헤더 "홈으로" (추천 중단) ---
+  // Header에 showBack/onBack을 연결해서 "홈으로 눌렀을 경우" 시나리오를 만들었어.
+  const handleHeaderBack = () => {
+    setShowStopRecommendModal(true);
+  };
+
+  const handleStopAndGoHome = () => {
+    setShowStopRecommendModal(false);
+    router.push("/mainpage"); // 홈 경로가 다르면 여기만 바꾸면 됨
+  };
+
+  const handleContinueRecommend = () => {
+    setShowStopRecommendModal(false);
+  };
+
+  // --- 카드 선택 후 다음 ---
   const handleNext = () => {
     if (openMenu != null) {
       setKeyword(openMenu);
@@ -64,127 +95,182 @@ export default function ResultPage() {
     } else {
       triggerToast("메뉴를 선택해주세요.");
     }
-  }; // record=1을 넘겨줄 필요가 없는거 같은데..?
+  };
 
-  // ← 여기서 refetch()를 호출
+  // --- 다시 추천 ---
   const handleReshuffle = () => {
-    //기존 메뉴를 제외하기위해 exceptions에 추가.
+    if (!isLoggedIn) {
+      setReshuffleAttemptCount((prev) => {
+        const next = prev + 1;
+        if (next >= 3) {
+          setShowLoginModalForReshuffle(true);
+          return next;
+        }
+        return next;
+      });
+
+      // 비로그인이라도 1~2회는 재추천 허용
+      if (reshuffleAttemptCount + 1 < 3) {
+        const exceptionMenus = menus.slice(0, 3).map((m) => m.menu);
+        const unique = Array.from(new Set(exceptionMenus));
+        unique.forEach(addException);
+        refetch();
+        setOpenMenu(null);
+      }
+      return;
+    }
+
+    // 로그인 상태: 제한 없이 재추천
     const exceptionMenus = menus.slice(0, 3).map((m) => m.menu);
     const unique = Array.from(new Set(exceptionMenus));
     unique.forEach(addException);
     refetch();
     setOpenMenu(null);
-    if (isLoading) {
-      return <MainLoading />;
-    }
   };
 
-  const handleExclude = () => {
+  // --- 제외하기(마이너스) ---
+  const handleExcludeClick = (menuName: string) => {
+    if (!isLoggedIn) {
+      // 비로그인: 제외하기 누르면 로그인 유도 모달(B)
+      setShowLoginModalForExclude(true);
+      return;
+    }
+
+    // 로그인: "제외하시겠어요?" 모달
+    setExcludeMenu(menuName);
+    setShowExcludeConfirmModal(true);
+  };
+
+  const handleExcludeConfirm = () => {
     if (excludeMenu != null) {
+      // UI 즉시 제거 (현재 렌더는 mock 기반이지만, 실제 data 렌더로 바뀌면 filteredMenus 사용하면 됨)
       setFilteredMenus((prev) =>
         prev.filter((menu) => menu.menu !== excludeMenu),
       );
       if (openMenu === excludeMenu) setOpenMenu(null);
-      exceptMenu({ menuName: excludeMenu }).catch(() => {
-        triggerToast("메뉴 제외에 실패했습니다.");
-      });
+
+      // 서버 제외 요청
+      // exceptMenu({ menuName: excludeMenu }).catch(() => {
+      //   triggerToast("메뉴 제외에 실패했습니다.");
+      // });
     }
-    setShowModal(false);
+
+    setShowExcludeConfirmModal(false);
     setExcludeMenu(null);
   };
 
-  if (isLoading || isRefetching) {
-    return <MainLoading />;
-  }
+  const handleLoginButton = () => {
+    router.push("/login");
+    setShowLoginModalForReshuffle(false);
+    setShowLoginModalForExclude(false);
+  };
+
+  // 로딩 처리 (핸들러 내부에서 return 컴포넌트 하면 안 됨)
+  if (isLoading || isRefetching) return <MainLoading />;
+  // error 처리 필요하면 여기서 분기
+  // if (error) ...
 
   return (
     <div className="flex h-screen flex-col">
-      <Header
-        leftChild={
-          <button
-            onClick={() => router.push("/mainpage")}
-            className="flex items-center font-bold"
-          >
-            <Image
-              src="/arrow/left-header-arrow.svg"
-              alt="back"
-              width={22}
-              height={30}
-            />
-            <span className="mb-0.5 ml-1 flex shrink-0">처음으로</span>
-          </button>
-        }
-        className="h-[60px] border-b-0"
-      />
+      <Header title="맞춤 추천" onBackClick={handleHeaderBack} />
 
-      <div className="mt-3 flex flex-col px-4">
-        {!isLoading &&
-          !error &&
-          filteredMenus.map((menu) => (
-            <div key={menu.menu} className="relative mb-4">
-              <ExcludeButton
-                onClick={() => {
-                  handleExcludeCLick(menu.menu);
-                }}
-              />
-              <MenuCard
-                title={menu.menu}
-                description={menu.description}
-                image={menu.image_link}
-                onClick={() =>
-                  setOpenMenu(openMenu === menu.menu ? null : menu.menu)
-                }
-                selected={openMenu === menu.menu}
-              />
-            </div>
-          ))}
+      <div className="mt-3 ml-2.5 flex flex-col gap-4 px-4">
+        {menus.map((menu) => (
+          <RecommendedFoodCard
+            key={menu.menu}
+            menuTitle={menu.menu}
+            menuDesc={menu.text}
+            src={menu.image_link || ""}
+            onMinusButtonClick={() => handleExcludeClick(menu.menu)}
+            onCardClick={() =>
+              setOpenMenu(openMenu === menu.menu ? null : menu.menu)
+            }
+            selected={openMenu === menu.menu}
+          />
+        ))}
       </div>
 
-      <div className="flex gap-2 px-4 py-2">
-        <button
-          className="border-grey-dark-hover hover:bg-grey-normal flex-1 rounded-md border bg-[#FFF] px-4 py-2 text-[#393939]"
+      <div className="mt-2 flex gap-2 px-4 py-2">
+        <Button
+          className="hover:bg-grey-normal flex-1 rounded-md border border-[#2424243d] bg-[#EEE] px-4 py-2 text-[#393939]"
           onClick={handleReshuffle}
         >
           다시 추천
-        </button>
-        <button
+        </Button>
+
+        <Button
           className="bg-primary-normal hover:bg-primary-normal-hover flex-1 rounded-md px-4 py-2 text-[#FFF]"
           onClick={handleNext}
         >
           선택하기
-        </button>
+        </Button>
       </div>
 
       <div className="px-4 py-2">
-        <div className="rounded-md border bg-white p-3 text-sm">
+        <div className="rounded-xl border bg-white p-3 text-sm">
           <TagCard />
         </div>
       </div>
 
-      {showModal && (
+      {/* 1) 로그인 상태: 제외 확인 모달 */}
+      {showExcludeConfirmModal && (
         <ModalWrapper>
           <BaseModal
             title={"추천 목록에서 메뉴를\n 제외하시겠어요?"}
             leftButtonText="취소"
             rightButtonText="제외하기"
             isCloseButtonShow={false}
-            onRightButtonClick={handleExclude}
-            onLeftButtonClick={() => setShowModal(false)}
+            onRightButtonClick={handleExcludeConfirm}
+            onLeftButtonClick={() => {
+              setShowExcludeConfirmModal(false);
+              setExcludeMenu(null);
+            }}
           />
         </ModalWrapper>
       )}
-      {showLoginModal && (
+
+      {/* 2) 비로그인: 다시추천 3회 이상 로그인 유도 모달(A) */}
+      {showLoginModalForReshuffle && (
         <ModalWrapper>
-          <LoginPromptModal2
-            onClose={() => {
-              setShowLoginModal(false);
-            }}
-            onConfirm={() => {
-              router.push("/sign-in");
-            }}
+          <BaseModal
+            title="딱 맞는 추천을 원하시나요?"
+            desc="로그인 후 더 다양한 서비스를 누려보세요"
+            rightButtonText="로그인하기"
+            isLogoShow
+            isCloseButtonShow={false}
+            onRightButtonClick={handleLoginButton}
           />
         </ModalWrapper>
       )}
+
+      {/* 3) 비로그인: 제외하기(마이너스) 로그인 유도 모달(B) */}
+      {showLoginModalForExclude && (
+        <ModalWrapper>
+          <BaseModal
+            title="더 많은 기능을 원하시나요?"
+            desc="로그인 후 더 다양한 서비스를 누려보세요"
+            rightButtonText="로그인하기"
+            isLogoShow
+            isCloseButtonShow={false}
+            onRightButtonClick={handleLoginButton}
+          />
+        </ModalWrapper>
+      )}
+
+      {/* 4) 홈으로(추천 중단) 모달 */}
+      {showStopRecommendModal && (
+        <ModalWrapper>
+          <BaseModal
+            title="메뉴 추천을 중단하시겠어요?"
+            leftButtonText="홈으로"
+            rightButtonText="계속하기"
+            isCloseButtonShow={false}
+            onLeftButtonClick={handleStopAndGoHome}
+            onRightButtonClick={handleContinueRecommend}
+          />
+        </ModalWrapper>
+      )}
+
       <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );

@@ -8,13 +8,13 @@ export interface Menu {
 export interface MenuDetail {
   name: string;
   description: string;
-  calory: number;
-  carbo: number;
-  protein: number;
-  fat: number;
-  sodium: number;
-  vitamin: number;
-  allergic: string;
+  calory: string;
+  carbo: string;
+  protein: string;
+  fat: string;
+  sodium: string;
+  vitamin: string[];
+  allergic: string[];
   image_link: string | null;
   recipe_link: string | null;
   recipe_link_source: string | null;

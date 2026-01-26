@@ -1,9 +1,7 @@
 import React from "react";
 
 import Image from "next/image";
-
-// TODO: RoundButton이 shared에 없음 - 추가 필요
-// import RoundButton from "@/components/common/button/RoundButton";
+import { Button } from "@/shared";
 
 type LoginPromptModal2Props = {
   onConfirm: () => void; // "로그인 하기" 버튼 클릭 시
@@ -15,7 +13,7 @@ export const LoginPromptModal2 = ({
   onClose,
 }: LoginPromptModal2Props) => {
   return (
-    <div className="relative flex w-78.75 flex-col items-center rounded-[20px] bg-white px-6 pt-6 pb-6 text-center shadow-lg">
+    <div className="relative flex w-[315px] flex-col items-center rounded-[20px] bg-white px-6 pt-6 pb-6 text-center shadow-lg">
       <button onClick={onClose} className="absolute top-5 right-5 z-10 p-1">
         <Image src="/x/black_x_icon.svg" alt="close" width={24} height={24} />
       </button>
@@ -38,14 +36,9 @@ export const LoginPromptModal2 = ({
       </div>
 
       <div className="w-full px-16">
-        <RoundButton
-          onClick={onConfirm}
-          variant="red"
-          size="md"
-          className="w-full"
-        >
+        <Button onClick={onConfirm} width="xl">
           로그인 하기
-        </RoundButton>
+        </Button>
       </div>
     </div>
   );
