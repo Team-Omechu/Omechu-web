@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 import { Header, ModalWrapper } from "@/shared";
-import { ArrowIcon } from "@/shared/assets/icons";
+import { SectionArrowIcon } from "@/widgets/mypage/assets/icons";
 import { TimePickerModal, ToggleSwitch } from "@/widgets/mypage/ui";
 
 type MealType = "breakfast" | "lunch" | "dinner";
@@ -116,7 +116,7 @@ export default function AlarmSettingPage() {
                 >
                   {isAlarmFeatureEnabled && alarm.enabled ? alarm.time : "OFF"}
                 </span>
-                <ArrowIcon currentColor="#707070" />
+                <SectionArrowIcon className="text-font-low h-4 w-3" />
               </div>
             </button>
           ))}

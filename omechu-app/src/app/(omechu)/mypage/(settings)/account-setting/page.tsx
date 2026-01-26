@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { logout } from "@/entities/user";
 import { BaseModal, Button, Header, ModalWrapper } from "@/shared";
-import { SectionArrow } from "@/widgets/mypage/assets/icons";
+import { SectionArrowIcon } from "@/widgets/mypage/assets/icons";
 
 interface AccontSettingPageProps {
   email: string;
@@ -52,7 +52,7 @@ export default function AccontSettingPage({ email }: AccontSettingPageProps) {
               }
               className="flex h-8.5 items-center"
             >
-              <SectionArrow currentColor="#707070" />
+              <SectionArrowIcon className="text-font-low mt-1 h-5 w-4" />
             </button>
           </div>
         </section>
@@ -66,7 +66,7 @@ export default function AccontSettingPage({ email }: AccontSettingPageProps) {
           <span className="text-body-4-regular text-font-placeholder">
             회원탈퇴
           </span>
-          <ArrowIcon currentColor="#A8A8A8" width={8.5} />
+          <SectionArrowIcon className="text-font-placeholder mt-px h-4 w-2.5" />
         </button>
       </main>
       {showLogoutModal && (

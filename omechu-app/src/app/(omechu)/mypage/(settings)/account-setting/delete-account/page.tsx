@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 import { BaseModal, Button, Header, ModalWrapper } from "@/shared";
-import { CheckIcon } from "@/shared/assets/icons";
+import { CheckIcon } from "@/widgets/mypage/assets/icons";
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -70,14 +70,13 @@ export default function ChangePasswordPage() {
               type="button"
               className={clsx(
                 "border-font-high relative h-4.5 w-4.5 rounded-full border",
-                isChecked ? "bg-brand-primary" : "bg-font-placeholder",
+                isChecked ? "bg-brand-primary" : "bg-brand-tertiary",
               )}
             >
               <CheckIcon
                 width={18}
                 height={18}
-                className="absolute -top-px -left-[1.5px]"
-                currentColor="#FFFFFF"
+                className="text-brand-secondary absolute -top-px -left-[1.5px]"
               />
             </button>
             <span>안내사항을 모두 확인했습니다.</span>
@@ -116,7 +115,7 @@ export default function ChangePasswordPage() {
                     className="flex items-center gap-1.5"
                   >
                     {selectedReason === reason ? (
-                      <CheckIcon />
+                      <CheckIcon className="text-font-high h-5.5 w-5.5" />
                     ) : (
                       <div className="h-5.25 w-5.25"></div>
                     )}
