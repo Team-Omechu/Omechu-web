@@ -1,6 +1,6 @@
 # `src/app` 디렉토리 구조 및 설명
 
-Next.js v.15.4.2 App Router 기반의 `src/app` 폴더 전체 구조를 정리하고, 각 파일·폴더의 역할을 설명합니다.
+Next.js v.16.1.1 App Router 기반의 `src/app` 폴더 전체 구조를 정리하고, 각 파일·폴더의 역할을 설명합니다.
 
 ## 전체 디렉토리 트리 (2025.08.02)
 
@@ -20,13 +20,13 @@ src/app
 │   │   ├── components/
 │   │   │   └── ResetPasswordForm.tsx
 │   │   └── page.tsx
-│   ├── sign-in/
+│   ├── login/
 │   │   ├── components/
-│   │   │   └── SignInForm.tsx
+│   │   │   └── LoginForm.tsx
 │   │   └── page.tsx
-│   ├── sign-up/
+│   ├── signup/
 │   │   ├── components/
-│   │   │   ├── SignUpForm.tsx
+│   │   │   ├── SignupForm.tsx
 │   │   │   ├── TermsAgreement.tsx
 │   │   │   ├── TermsModal.tsx
 │   │   │   └── UserInfoFields.tsx
@@ -255,7 +255,7 @@ src/app
 - Parallel Route Group: 로그인·회원가입·비밀번호 재설정과 관련된 UI 전용 라우트 그룹
 - 구성:
 - layout.tsx — 공통 레이아웃 (예: 인증 전용 헤더)
-- forgot-password, reset-password, sign-in, sign-up, logouttest 페이지
+- forgot-password, reset-password, login, signup, logouttest 페이지
 
 auth/
 - 비즈니스 로직: 인증 상태 관리, 스키마, 훅

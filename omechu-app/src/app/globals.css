@@ -1,38 +1,283 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@import "react-datepicker/dist/react-datepicker.css";
+
+@import "../styles/datepicker.css";
+
+button {
+  cursor: pointer;
+}
+
+/* Tailwind CSS v4 Configuration */
+@theme {
+  /* Font Family */
+  --font-family-sans: var(--font-noto-sans-kr), sans-serif;
+
+  /* Custom Breakpoints */
+  --breakpoint-mobile: 375px;
+
+  /* Custom Spacing */
+  --max-width-screen-mobile: 375px;
+  --min-height-screen-mobile: 812px;
+
+  /*! 데모데이 이후 타이포 그래피 시스템 */
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Font Sizes */
+  --text-body-1: 24px;
+  --text-body-2: 20px;
+  --text-body-3: 18px;
+  --text-body-4: 16px;
+  --text-caption-1: 14px;
+  --text-caption-2: 12px;
+
+  /*! 데모데이 이후 컬러 시스템 */
+  /* Custom Colors - Brancd */
+  --color-brand-primary: #ff7676;
+  --color-brand-secondary: #ffffff;
+  --color-brand-tertiary: #eeeeee;
+  --color-brand-logo: #505889;
+
+  /* Custom Colors - Font */
+  --color-font-high: #242424;
+  --color-font-medium: #5e5e5e;
+  --color-font-low: #707070;
+  --color-font-extralow: #919191;
+  --color-font-placeholder: #a8a8a8;
+  --color-font-disabled: #2424243d;
+
+  /* Custom Colors - Background */
+  --color-background-primary: #f9e4ff;
+  --color-background-secondary: #ffffff;
+
+  /* Custom Colors - State Layer */
+  --color-statelayer-default: #ff7676;
+  --color-statelayer-pressed: #dd6362;
+  --color-statelayer-disabled: #a8a8a8;
+
+  /* Custom Colors - Component */
+  --color-component-default: #2424240a;
+  --color-component-strong: #2424241f;
+
+  /* Custom Colors - Surface */
+  --color-surface-dimmed: #2424248a;
+
+  /* Custom Colors - Line */
+  --color-line-strong: #2424241f;
+  --color-line-low: #24242414;
+
+  /* Custom Colors - Status */
+  --color-status-positive: #5ad886;
+  --color-status-negative: #ff9029;
+  --color-status-warning: #e93d35;
+  --color-status-error: #ff364b;
+
+  /* Custom Colors - Tag */
+  --color-tag-red: #c11d15;
+  --color-tag-background-red: #fdf2f1;
+  --color-tag-orange: #c25e00;
+  --color-tag-background-orange: #fff7f0;
+  --color-tag-yellow: #db9a00;
+  --color-tag-background-yellow: #fffcf5;
+  --color-tag-green: #26a151;
+  --color-tag-background-green: #f3fcf6;
+  --color-tag-blue: #0058bd;
+  --color-tag-background-blue: #f0f7ff;
+  --color-tag-gray: #707070;
+  --color-tag-background-gray: #f5f5f5;
+
+  /*! 기존(데모데이) 컬러 시스템 */
+  /* Custom Colors - Primary */
+  --color-primary-light: #ffeded;
+  --color-primary-light-hover: #fee3e3;
+  --color-primary-light-active: #fec6c6;
+  --color-primary-normal: #ff7676;
+  --color-primary-normal-hover: #e2403f;
+  --color-primary-normal-active: #c93938;
+  --color-primary-dark: #bc3535;
+  --color-primary-dark-hover: #972b2a;
+  --color-primary-dark-active: #71201f;
+  --color-primary-darker: #581919;
+
+  /* Custom Colors - Secondary */
+  --color-secondary-light: #e9f5fb;
+  --color-secondary-light-hover: #ddf0f9;
+  --color-secondary-light-active: #bae0f4;
+  --color-secondary-normal: #1f9bda;
+  --color-secondary-normal-hover: #1c8cc4;
+  --color-secondary-normal-active: #197cae;
+  --color-secondary-dark: #1774a4;
+  --color-secondary-dark-hover: #135d83;
+  --color-secondary-dark-active: #0e4662;
+  --color-secondary-darker: #0b364c;
+
+  /* Custom Colors - Main */
+  --color-main-light: #fefbff;
+  --color-main-light-hover: #fef9ff;
+  --color-main-light-active: #fdf2ff;
+  --color-main-normal: #ffdefb;
+  --color-main-normal-hover: #dfc0e6;
+  --color-main-normal-active: #c6aacc;
+  --color-main-dark: #baa0bf;
+  --color-main-dark-hover: #958099;
+  --color-main-dark-active: #706073;
+  --color-main-darker: #574b59;
+
+  /* Custom Colors - Grey */
+  --color-foundation-grey-light: #f6f6f6;
+  --color-foundation-grey-light-hover: #f1f1f1;
+  --color-foundation-grey-light-active: #e2e2e2;
+  --color-foundation-grey-normal: #a3a3a3;
+  --color-foundation-grey-normal-hover: #e2e2e2;
+  --color-foundation-grey-normal-active: #828282;
+  --color-foundation-grey-dark: #7a7a7a;
+  --color-foundation-grey-dark-hover: #97948f;
+  --color-foundation-grey-dark-active: #494949;
+  --color-foundation-grey-darker: #393939;
+
+  /* Custom Animations - Shake */
+  --animate-shake: shake 0.5s ease-in-out;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-1px);
+    }
+    40% {
+      transform: translateX(1px);
+    }
+    60% {
+      transform: translateX(-1px);
+    }
+    80% {
+      transform: translateX(1px);
+    }
+  }
+}
+
+/* Custom Media Query for Mobile */
+@custom-media --mobile (max-width: 375px);
+
+/* Custom Utility - Scrollbar Hide */
+@utility scrollbar-hide {
+  /* For Chrome, Safari, Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* For IE, Edge, Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  /* Body 1 */
+  .text-body-1-bold {
+    font-size: var(--text-body-1);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-body-1-medium {
+    font-size: var(--text-body-1);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Body 2 */
+  .text-body-2-bold {
+    font-size: var(--text-body-2);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-body-2-medium {
+    font-size: var(--text-body-2);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-body-2-regular {
+    font-size: var(--text-body-2);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Body 3 */
+  .text-body-3-bold {
+    font-size: var(--text-body-3);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-body-3-medium {
+    font-size: var(--text-body-3);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-body-3-regular {
+    font-size: var(--text-body-3);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Body 4 */
+  .text-body-4-medium {
+    font-size: var(--text-body-4);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-body-4-regular {
+    font-size: var(--text-body-4);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Caption */
+  .text-caption-1-medium {
+    font-size: var(--text-caption-1);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-caption-1-regular {
+    font-size: var(--text-caption-1);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .text-caption-2-medium {
+    font-size: var(--text-caption-2);
+    font-weight: var(--font-weight-medium);
+  }
+  .text-caption-2-regular {
+    font-size: var(--text-caption-2);
+    font-weight: var(--font-weight-regular);
+  }
+}
 
 html,
 body {
   overscroll-behavior-y: none;
 }
 
-/* .react-datepicker 관련 Tailwind 기반 커스터마이징은 globals.css 같은 전역 CSS 파일에만 작성 가능 */
-/* 컴포넌트 파일(JSX/TSX) 내부에 직접 넣을 수는 없음 */
-.react-datepicker {
-  @apply rounded-3xl border-2 border-grey-darkHover px-6 !important;
-}
-
-.react-datepicker__triangle {
+input[type="search"]::-webkit-search-cancel-button {
   display: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.react-datepicker__header {
-  @apply border-none bg-white pb-0 !important;
-}
-
-.react-datepicker__day-names {
-  @apply m-0 pb-0 !important;
-}
-
-.react-datepicker__day-name {
-  @apply h-fit text-grey-normalActive !important;
-}
-
-.react-datepicker__month {
-  @apply m-0 mb-2 h-fit w-fit text-xs !important;
-}
-
-.react-datepicker__day--outside-month {
-  @apply text-gray-400 !important;
+/* Autofill 스타일 초기화 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: var(--color-font-high) !important;
 }

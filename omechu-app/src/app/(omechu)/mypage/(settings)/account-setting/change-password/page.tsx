@@ -1,0 +1,175 @@
+"use client";
+
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
+import {
+  BaseModal,
+  Button,
+  FormField,
+  Header,
+  Input,
+  ModalWrapper,
+  Toast,
+} from "@/shared";
+
+const MOCK_PASSWORD: string = "Kang@1234";
+
+export default function ChangePasswordPage() {
+  const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+
+  const [inputPassword, setInputPassword] = useState("");
+  const [inputNewPassword, setInputNewPassword] = useState("");
+  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
+  const [pending, setPending] = useState(false);
+
+  const hasPasswordError = (password: string) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
+    return !regex.test(password);
+  };
+
+  const isFormValid =
+    inputPassword === MOCK_PASSWORD &&
+    !hasPasswordError(inputNewPassword) &&
+    inputNewPassword === inputConfirmPassword &&
+    inputNewPassword !== inputPassword;
+
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 1000);
+  };
+
+  const handleSubmit = async () => {
+    if (pending) return;
+
+    if (!isFormValid) {
+      if (hasPasswordError(inputNewPassword))
+        triggerToast("비밀번호 형식을 확인해주세요.");
+      else if (inputNewPassword !== inputConfirmPassword)
+        triggerToast("새 비밀번호가 일치하지 않습니다.");
+      else if (inputNewPassword === inputPassword)
+        triggerToast("새 비밀번호는 기존 비밀번호와 달라야 합니다.");
+      else triggerToast("입력이 올바르지 않습니다.");
+      return;
+    }
+
+    if (inputPassword !== MOCK_PASSWORD) {
+      triggerToast("기존 비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    setShowModal(true);
+  };
+
+  const confirmHelperText =
+    inputConfirmPassword.length === 0
+      ? undefined
+      : inputNewPassword === inputConfirmPassword
+        ? "* 비밀번호가 일치합니다"
+        : "* 비밀번호가 일치하지 않습니다";
+
+  const confirmHelperState =
+    inputConfirmPassword.length === 0
+      ? "default"
+      : inputNewPassword === inputConfirmPassword
+        ? "success"
+        : "error";
+
+  const currentPasswordHelperText =
+    inputPassword.length === 0
+      ? undefined
+      : inputPassword === MOCK_PASSWORD
+        ? "* 비밀번호가 일치합니다"
+        : "* 비밀번호가 일치하지 않습니다";
+
+  const currentPasswordHelperState =
+    inputPassword.length === 0
+      ? "default"
+      : inputPassword === MOCK_PASSWORD
+        ? "success"
+        : "error";
+
+  return (
+    <>
+      <Header
+        title="비밀번호 변경"
+        onBackClick={() => router.push("/mypage/account-setting")}
+        showHomeButton={false}
+      />
+
+      <main className="relative mt-12 flex h-[80dvh] w-full flex-col items-center justify-between gap-8 px-6">
+        <section className="flex w-full flex-col gap-5">
+          <FormField
+            label={"기존 비밀번호"}
+            id={""}
+            helperText={currentPasswordHelperText}
+            helperState={currentPasswordHelperState}
+          >
+            <Input
+              type="password"
+              placeholder={"비밀번호를 입력해주세요"}
+              value={inputPassword}
+              onChange={(e) => setInputPassword(e.target.value)}
+            />
+          </FormField>
+
+          <FormField
+            label={"새 비밀번호"}
+            id={""}
+            helperText="* 대소문자, 숫자 및 특수문자 포함 8자 이상"
+          >
+            <Input
+              type="password"
+              placeholder={"새 비밀번호를 입력해주세요"}
+              value={inputNewPassword}
+              onChange={(e) => {
+                const value = e.target.value;
+                setInputNewPassword(value);
+              }}
+            />
+          </FormField>
+
+          <FormField
+            label={"새 비밀번호 재확인"}
+            id={""}
+            helperText={confirmHelperText}
+            helperState={confirmHelperState}
+          >
+            <Input
+              type="password"
+              placeholder={"새 비밀번호를 다시 입력해주세요"}
+              value={inputConfirmPassword}
+              onChange={(e) => {
+                setInputConfirmPassword(e.target.value);
+              }}
+            />
+          </FormField>
+        </section>
+        <Button disabled={!isFormValid || pending} onClick={handleSubmit}>
+          비밀번호 변경하기
+        </Button>
+      </main>
+      {showModal && (
+        <ModalWrapper>
+          <BaseModal
+            title="비밀번호가 변경되었어요."
+            rightButtonText="확인"
+            isCloseButtonShow={false}
+            onRightButtonClick={() => router.push("/mypage/account-setting")}
+          />
+        </ModalWrapper>
+      )}
+      <Toast
+        message={toastMessage}
+        state="error"
+        show={showToast}
+        className="bottom-44"
+      />
+    </>
+  );
+}
