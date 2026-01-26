@@ -11,7 +11,7 @@ import {
   HistoryRoundedIcon,
   ListIcon,
   WriteIcon,
-} from "@/widgets/mypage/assets";
+} from "@/widgets/mypage/assets/icons";
 
 interface UserInfoSectionProps {
   name: string;

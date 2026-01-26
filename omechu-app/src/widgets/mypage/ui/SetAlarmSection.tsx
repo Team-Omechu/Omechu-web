@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-import { ArrowIcon } from "@/shared/assets/icons/index";
+import { SectionArrow } from "@/widgets/mypage/assets/icons";
 
 export function SetAlarmSection() {
   const router = useRouter();
@@ -37,10 +37,10 @@ export function SetAlarmSection() {
         </span>
       </div>
       <button
-        className="absolute right-4 bottom-4"
+        className="absolute right-4 bottom-3.5"
         onClick={() => router.push("/mypage/alarm-setting")}
       >
-        <ArrowIcon className="text-font-extra-low" width={9} height={15} />
+        <SectionArrow className="text-font-extra-low" />
       </button>
     </section>
   );
