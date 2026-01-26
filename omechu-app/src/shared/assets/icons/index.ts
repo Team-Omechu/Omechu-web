@@ -1,4 +1,3 @@
-export { ArrowIcon } from "./mypage/ArrowIcon";
 export { ArrowUpIcon } from "./mypage/ArrowUpIcon";
 
 export { CloseIcon } from "./mypage/CloseIcon";
