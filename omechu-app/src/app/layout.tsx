@@ -5,6 +5,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import type { Metadata } from "next";
 
 import { Providers } from "@/app/providers";
+import { BASE_URL } from "@/shared/constants/url";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"],
@@ -14,7 +15,7 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://omechu.log8.kr"),
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "오메추 | 오늘 뭐 먹지? 메뉴 추천 서비스",
     template: "%s | 오메추",
@@ -41,9 +42,7 @@ export const metadata: Metadata = {
     apple: "/logo/logo.png",
   },
   openGraph: {
-    title: "오메추 - 오늘 뭐 먹지?",
-    description: "취향 저격 메뉴 추천 서비스",
-    url: "https://omechu.log8.kr",
+    url: BASE_URL,
     siteName: "오메추",
     locale: "ko_KR",
     type: "website",
@@ -58,9 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "오메추 - 오늘 뭐 먹지?",
-    description: "당신의 완벽한 식사를 위한 추천 서비스",
-    images: ["/logo/logo.png"],
+    images: [{ url: "/logo/logo.png", alt: "오메추 로고" }],
   },
   robots: {
     index: true,

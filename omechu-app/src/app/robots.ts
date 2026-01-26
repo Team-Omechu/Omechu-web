@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 
+import { BASE_URL } from "@/shared/constants/url";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://omechu.log8.kr/sitemap.xml",
+    sitemap: `${BASE_URL}/sitemap.xml`,
   };
 }
