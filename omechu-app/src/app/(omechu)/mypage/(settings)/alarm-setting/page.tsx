@@ -85,7 +85,7 @@ export default function AlarmSettingPage() {
               }}
             />
           </div>
-          <div className="text-caption-1-regular text-font-extralow">
+          <div className="text-caption-1-regular text-font-extra-low">
             매일 식사 시간마다 메뉴를 결정해 드려요.
           </div>
           {mealAlarms.map((alarm) => (
@@ -111,7 +111,7 @@ export default function AlarmSettingPage() {
                   className={
                     isAlarmFeatureEnabled && alarm.enabled
                       ? "text-brand-primary"
-                      : "text-font-extralow"
+                      : "text-font-extra-low"
                   }
                 >
                   {isAlarmFeatureEnabled && alarm.enabled ? alarm.time : "OFF"}

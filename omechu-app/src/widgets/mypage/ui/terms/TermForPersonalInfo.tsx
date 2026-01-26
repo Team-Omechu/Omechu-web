@@ -26,7 +26,7 @@ export function TermForPersonalInfo() {
               <span>조</span>
               <span>({item.about})</span>
             </span>
-            <div className="text-body-4-medium text-font-extralow mb-4 px-2 leading-6 whitespace-pre-line">
+            <div className="text-body-4-medium text-font-extra-low mb-4 px-2 leading-6 whitespace-pre-line">
               {item.content}
             </div>
           </div>
@@ -42,7 +42,7 @@ export function TermForPersonalInfo() {
               </span>
             )}
             {item.index ? (
-              <div className="text-body-4-medium text-font-extralow mb-4 px-2 leading-6 whitespace-pre-line">
+              <div className="text-body-4-medium text-font-extra-low mb-4 px-2 leading-6 whitespace-pre-line">
                 {item.content}
               </div>
             ) : (

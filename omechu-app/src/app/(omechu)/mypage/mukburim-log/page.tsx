@@ -75,7 +75,7 @@ export default function MukburimLogPage() {
               className={
                 sortOrder === "MostLogged"
                   ? "text-font-high"
-                  : "text-font-extralow"
+                  : "text-font-extra-low"
               }
               onClick={() => setSortOrder("MostLogged")}
             >
@@ -92,7 +92,7 @@ export default function MukburimLogPage() {
               className={clsx(
                 sortOrder === "LatestLogged"
                   ? "text-font-high"
-                  : "text-font-extralow",
+                  : "text-font-extra-low",
                 !supportsLatestSort ? "cursor-not-allowed opacity-50" : "",
               )}
               onClick={() => supportsLatestSort && setSortOrder("LatestLogged")}

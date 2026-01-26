@@ -86,7 +86,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("service")}
-            className="text-caption-2-regular text-font-extralow"
+            className="text-caption-2-regular text-font-extra-low"
           >
             보기
           </button>
@@ -112,7 +112,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("privacy")}
-            className="text-caption-2-regular text-font-extralow"
+            className="text-caption-2-regular text-font-extra-low"
           >
             보기
           </button>
@@ -138,7 +138,7 @@ const TermsAgreement = ({ setActiveModal }: TermsAgreementProps) => {
           <button
             type="button"
             onClick={() => setActiveModal("location")}
-            className="text-caption-2-regular text-font-extralow"
+            className="text-caption-2-regular text-font-extra-low"
           >
             보기
           </button>

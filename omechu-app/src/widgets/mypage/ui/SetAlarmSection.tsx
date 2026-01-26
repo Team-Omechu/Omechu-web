@@ -40,7 +40,7 @@ export function SetAlarmSection() {
         className="absolute right-4 bottom-4"
         onClick={() => router.push("/mypage/alarm-setting")}
       >
-        <ArrowIcon className="text-font-extralow" width={9} height={15} />
+        <ArrowIcon className="text-font-extra-low" width={9} height={15} />
       </button>
     </section>
   );
