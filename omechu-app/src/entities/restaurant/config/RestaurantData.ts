@@ -41,6 +41,8 @@ export interface Restaurant {
   primaryType: string;
   photo: RestaurantPhoto | null;
   distance: number;
+  rating?: number;
+  userRatingCount?: number;
 }
 
 export interface RestaurantListResponse {
