@@ -4,9 +4,11 @@ import { Suspense, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ApiClientError } from "@/entities/user/api/authApi";
-import { useResetPasswordMutation } from "@/entities/user/lib/hooks/useAuth";
-import type { ResetPasswordFormValues } from "@/entities/user/model/auth.schema";
+import {
+  ApiClientError,
+  useResetPasswordMutation,
+  type ResetPasswordFormValues,
+} from "@/entities/user";
 import { BaseModal, Header, ModalWrapper } from "@/shared";
 import { ResetPasswordForm } from "@/widgets/auth";
 

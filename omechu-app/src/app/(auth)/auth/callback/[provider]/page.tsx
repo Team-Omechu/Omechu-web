@@ -4,8 +4,7 @@ import { Suspense, useEffect, useRef } from "react";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { getCurrentUserWithToken } from "@/entities/user/api/authApi";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+import { getCurrentUserWithToken, useAuthStore } from "@/entities/user";
 import { Toast, useToast } from "@/shared";
 
 export default function OAuthCallbackPage() {

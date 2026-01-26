@@ -23,7 +23,7 @@ export default function ChangePasswordPage() {
   const [inputPassword, setInputPassword] = useState("");
   const [inputNewPassword, setInputNewPassword] = useState("");
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
-  const [pending, setPending] = useState(false);
+  const [pending, _setPending] = useState(false);
 
   const hasPasswordError = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
