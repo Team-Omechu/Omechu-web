@@ -57,7 +57,7 @@ export default function EmailInquiryPage() {
           접수하기
         </Button>
 
-        <section className="text-font-extralow bg-brand-tertiary flex h-20 w-83.5 items-center justify-center rounded-[10px] text-sm font-medium whitespace-pre-line">
+        <section className="text-font-extra-low bg-brand-tertiary flex h-20 w-83.5 items-center justify-center rounded-[10px] text-sm font-medium whitespace-pre-line">
           {`접수하신 문의는 운영자 메일로 전송됩니다. \n 순차적으로 확인 후 최대한 빠르게 이메일로 \n 답장드리겠습니다.`}
         </section>
       </main>

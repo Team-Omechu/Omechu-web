@@ -14,7 +14,7 @@ export const CustomInput = forwardRef<
     onClick={onClick}
     ref={ref}
     className={cn(
-      "border-font-extralow bg-background-secondary text-body-4-regular relative flex h-10 w-37.5 items-center rounded-[10px] border pl-5",
+      "border-font-extra-low bg-background-secondary text-body-4-regular relative flex h-10 w-37.5 items-center rounded-[10px] border pl-5",
       value ? "text-font-high" : "text-font-placeholder",
     )}
   >
