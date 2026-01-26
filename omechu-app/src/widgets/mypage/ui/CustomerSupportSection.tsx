@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-import { ArrowIcon } from "@/shared/assets/icons/index";
+import { SectionArrow } from "@/widgets/mypage/assets/icons";
 
 const LIST_MAP = [
   { listTitle: "계정관리", hyperLink: "/mypage/account-setting" },
@@ -23,7 +23,7 @@ export function CustomerSupportSection() {
     <section
       className={clsx(
         "relative flex flex-col gap-2",
-        "px-6 py-3",
+        "py-3 pr-5 pl-6",
         "h-fit w-84",
         "bg-background-secondary border-font-placeholder rounded-xl border",
       )}
@@ -40,11 +40,7 @@ export function CustomerSupportSection() {
               <div className="text-font-extra-low text-body-4-regular">
                 {item.listTitle}
               </div>
-              <ArrowIcon
-                className="text-font-extra-low"
-                width={9}
-                height={15}
-              />
+              <SectionArrow className="text-font-extra-low" />
             </button>
           </li>
         ))}

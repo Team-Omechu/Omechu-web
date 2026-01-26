@@ -3,4 +3,5 @@ export { default as HistoryRoundedIcon } from "@/widgets/mypage/assets/icons/use
 export { default as ListIcon } from "@/widgets/mypage/assets/icons/user-info-section/list.svg";
 export { default as WriteIcon } from "@/widgets/mypage/assets/icons/user-info-section/write.svg";
 
+// SetAlarmSection 및 CustomerSupportSection 컴포넌트 내 아이콘
 export { default as SectionArrow } from "@/widgets/mypage/assets/icons/common/arrow-section.svg";
