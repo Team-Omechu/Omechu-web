@@ -20,13 +20,13 @@ jobs:
     steps:
       # 1. 소스 코드 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. Node.js 환경 설정
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "22"
 
       # 3. Corepack 활성화 및 pnpm 설정
       - name: Enable Corepack and Setup pnpm
@@ -42,9 +42,9 @@ jobs:
         run: pnpm format:check
         working-directory: ./omechu-app
 
-      # 6. ESLint 린팅 실행
+      # 6. ESLint 린팅 실행 (next lint는 ESLint 9 flat config와 호환 이슈)
       - name: Run ESLint
-        run: pnpm lint
+        run: npx eslint src
         working-directory: ./omechu-app
 
       # 7. 빌드 실행

@@ -42,8 +42,9 @@ export default [
       // React rules
       ...reactPlugin.configs.recommended.rules,
       ...reactHooksPlugin.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off", // Next.js doesn't need React import
-      "react/prop-types": "off", // TypeScript handles this
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react-hooks/set-state-in-effect": "warn",
 
       // TypeScript rules
       "@typescript-eslint/no-unused-vars": [

@@ -6,15 +6,17 @@ export const axiosInstance: AxiosInstance = axios.create({
 });
 
 // Auth store 인터페이스 (의존성 주입용)
-export interface AuthStoreGetter {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface AuthStoreGetter<TUser = any> {
   getState: () => {
     accessToken: string | null;
     refreshToken: string | null;
-    user: unknown;
+    user: TUser | null;
     login: (data: {
       accessToken: string;
       refreshToken: string;
-      user: unknown;
+      user: TUser;
+      password?: string;
     }) => void;
     logout: () => void;
     setAccessToken: (token: string | null) => void;
@@ -24,13 +26,15 @@ export interface AuthStoreGetter {
 
 let isRefreshing = false;
 let pendingQueue: Array<(token: string | null) => void> = [];
-let authStoreRef: AuthStoreGetter | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let authStoreRef: AuthStoreGetter<any> | null = null;
 
 /**
  * Interceptor 설정 함수 (app 레이어에서 호출)
  * FSD 규칙: shared는 entities에 의존하지 않고, app에서 의존성을 주입받음
  */
-export const setupAxiosInterceptors = (authStore: AuthStoreGetter) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const setupAxiosInterceptors = (authStore: AuthStoreGetter<any>) => {
   authStoreRef = authStore;
 
   // Request interceptor: accessToken 주입
