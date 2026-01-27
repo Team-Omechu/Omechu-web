@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import axiosInstance from "@/shared/lib/axiosInstance";
-
+import * as authApi from "@/entities/user/api/authApi";
 import type {
   LoginFormValues,
   SignupFormValues,
@@ -9,7 +8,7 @@ import type {
   ResetPasswordFormValues,
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
-import * as authApi from "@/entities/user/api/authApi";
+import axiosInstance from "@/shared/lib/axiosInstance";
 
 // 로그인
 export const useLoginMutation = () => {

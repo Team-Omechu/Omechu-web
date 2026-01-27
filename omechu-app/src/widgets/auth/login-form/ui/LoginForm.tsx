@@ -78,17 +78,11 @@ export default function LoginForm() {
             const userKey = res?.userId ?? "me";
 
             queryClient.setQueryData(["profile", userKey], {
-              id: isNaN(Number(userKey)) ? 0 : Number(userKey),
-              email: "",
-              nickname: "-",
-              gender: "",
-              bodyType: "",
+              id: String(userKey),
+              nickname: "",
               exercise: "",
               prefer: [],
               allergy: [],
-              profileImageUrl: null,
-              createdAt: "",
-              updatedAt: "",
             });
 
             await queryClient.prefetchQuery({

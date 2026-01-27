@@ -7,6 +7,7 @@
 // Restaurant 타입은 entities/restaurant/model/restaurant.types.ts로 이동 (FSD)
 
 // Config
+export type { ApiResponse, ApiError } from "./config/api.types";
 export {
   filteredChoSeong,
   consonantGroupMap,
