@@ -129,7 +129,9 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
         ).slice(0, 2);
 
         const bodyTypeFirst = normBodyType(
-          (profile?.bodyType as string) ?? (profile?.body_type as string) ?? null,
+          (profile?.bodyType as string) ??
+            (profile?.body_type as string) ??
+            null,
         );
         const bodyType = bodyTypeFirst ? [bodyTypeFirst] : [];
 

@@ -55,7 +55,9 @@ export default function MypageMain() {
       <>
         <Header title="마이페이지" onBackClick={() => router.push("/")} />
         <main className="flex h-[80dvh] items-center justify-center">
-          <p className="text-font-low">{error?.message || "프로필을 불러올 수 없습니다."}</p>
+          <p className="text-font-low">
+            {error?.message || "프로필을 불러올 수 없습니다."}
+          </p>
         </main>
       </>
     );
