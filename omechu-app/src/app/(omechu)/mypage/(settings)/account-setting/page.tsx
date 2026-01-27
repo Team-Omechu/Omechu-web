@@ -4,22 +4,16 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { logout } from "@/entities/user";
+import { logout, useAuthStore } from "@/entities/user";
 import { BaseModal, Button, Header, ModalWrapper } from "@/shared";
 import { ArrowIcon } from "@/shared/assets/icons";
 
-interface AccontSettingPageProps {
-  email: string;
-}
-
-const MOCK_EMAIL: string = "dlapdlf@gmail.com";
-
-export default function AccontSettingPage({ email }: AccontSettingPageProps) {
+export default function AccountSettingPage() {
   const router = useRouter();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // TODO 임시 MOCK_DATA;
-  email = MOCK_EMAIL;
+  const user = useAuthStore((s) => s.user);
+  const email = (user as { email?: string } | null)?.email || "-";
 
   const handleLogoutConfirm = async () => {
     try {

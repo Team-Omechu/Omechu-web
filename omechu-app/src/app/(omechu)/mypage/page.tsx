@@ -4,7 +4,8 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Header, ModalWrapper } from "@/shared";
+import { useProfile, updateProfile } from "@/entities/user";
+import { Header, ModalWrapper, MainLoading } from "@/shared";
 import { MypageModal } from "@/shared/ui/modal/MypageModal";
 import {
   CustomerSupportSection,
@@ -12,34 +13,59 @@ import {
   UserInfoSection,
 } from "@/widgets/mypage/ui";
 
-const MOCK_USER_INFO = {
-  name: "제나",
-  exerciseStatus: "다이어트 중",
-  favoriteFood: "한식 다른 나라",
-  allergy: "갑각류",
-};
-
 export default function MypageMain() {
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState(MOCK_USER_INFO);
+  const { profile, loading, error } = useProfile();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleCloseModal = () => {
     setInputValue("");
     setIsModalOpen(false);
   };
 
-  const handleSubmitNickname = () => {
-    if (!inputValue.trim()) return;
+  const handleSubmitNickname = async () => {
+    if (!inputValue.trim() || isUpdating) return;
 
-    // TODO: 닉네임 변경 API
-    setUserInfo((prev) => ({
-      ...prev,
-      name: inputValue,
-    }));
+    setIsUpdating(true);
+    try {
+      await updateProfile({ nickname: inputValue.trim() });
+      window.location.reload();
+    } catch {
+      alert("닉네임 변경에 실패했습니다.");
+    } finally {
+      setIsUpdating(false);
+      handleCloseModal();
+    }
+  };
 
-    handleCloseModal();
+  if (loading) {
+    return (
+      <>
+        <Header title="마이페이지" onBackClick={() => router.push("/")} />
+        <MainLoading />
+      </>
+    );
+  }
+
+  if (error || !profile) {
+    return (
+      <>
+        <Header title="마이페이지" onBackClick={() => router.push("/")} />
+        <main className="flex h-[80dvh] items-center justify-center">
+          <p className="text-font-low">{error?.message || "프로필을 불러올 수 없습니다."}</p>
+        </main>
+      </>
+    );
+  }
+
+  const userInfo = {
+    name: profile.nickname || "사용자",
+    exerciseStatus: profile.exercise || "미설정",
+    favoriteFood: profile.prefer?.join(", ") || "미설정",
+    allergy: profile.allergy?.join(", ") || "없음",
   };
 
   return (
