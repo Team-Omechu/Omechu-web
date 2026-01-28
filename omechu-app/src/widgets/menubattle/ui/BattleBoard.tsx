@@ -1,6 +1,7 @@
 import { Player } from "@/entities/menubattle/model/types";
 
 export function BattleBoard({ players }: { players: Player[] }) {
+  console.log("PlayerChips players:", players);
   return (
     <>
       <p className="text-sm text-gray-600">
@@ -9,7 +10,10 @@ export function BattleBoard({ players }: { players: Player[] }) {
 
       <div className="mt-2 flex justify-center gap-2">
         {players.map((p) => (
-          <span key={p.id} className="rounded-full border px-3 py-1 text-sm">
+          <span
+            key={p.id}
+            className="border-statelayer-default text-statelayer-default rounded-full border bg-white px-3 py-1 text-sm"
+          >
             {p.name}
           </span>
         ))}
