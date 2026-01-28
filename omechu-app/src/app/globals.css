@@ -45,7 +45,7 @@ button {
   --color-font-high: #242424;
   --color-font-medium: #5e5e5e;
   --color-font-low: #707070;
-  --color-font-extralow: #919191;
+  --color-font-extra-low: #919191;
   --color-font-placeholder: #a8a8a8;
   --color-font-disabled: #2424243d;
 
@@ -68,6 +68,7 @@ button {
   /* Custom Colors - Line */
   --color-line-strong: #2424241f;
   --color-line-low: #24242414;
+  --color-line-tertiary: rgba(145, 145, 145, 0.12);
 
   /* Custom Colors - Status */
   --color-status-positive: #5ad886;

@@ -22,8 +22,8 @@ export default function MukburimLogPage() {
   const router = useRouter();
 
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("전체");
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
-  const [range, setRange] = useState<{
+  const [_visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const [_range, setRange] = useState<{
     startDate: Date | null;
     endDate: Date | null;
   }>({ startDate: null, endDate: null });
@@ -75,7 +75,7 @@ export default function MukburimLogPage() {
               className={
                 sortOrder === "MostLogged"
                   ? "text-font-high"
-                  : "text-font-extralow"
+                  : "text-font-extra-low"
               }
               onClick={() => setSortOrder("MostLogged")}
             >
@@ -92,7 +92,7 @@ export default function MukburimLogPage() {
               className={clsx(
                 sortOrder === "LatestLogged"
                   ? "text-font-high"
-                  : "text-font-extralow",
+                  : "text-font-extra-low",
                 !supportsLatestSort ? "cursor-not-allowed opacity-50" : "",
               )}
               onClick={() => supportsLatestSort && setSortOrder("LatestLogged")}

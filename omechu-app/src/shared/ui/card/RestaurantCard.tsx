@@ -37,12 +37,12 @@ export const RestaurantCard = ({
             {`${distance}m`}
           </span>
         </div>
-        <div className="text-body-4-regular text-font-extralow flex gap-1">
+        <div className="text-body-4-regular text-font-extra-low flex gap-1">
           <span className="w-fit">{category}</span>
           <span>·</span>
           <span>{`￦ ${price}`}</span>
         </div>
-        <div className="text-body-4-regular text-font-extralow flex">
+        <div className="text-body-4-regular text-font-extra-low flex">
           <span className="text-left whitespace-pre-line">{address}</span>
         </div>
       </div>
