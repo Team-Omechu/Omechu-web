@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useOnboardingStore } from "@/entities/onboarding";
 import { ALLERGY_OPTIONS } from "@/shared/constants/mypage";
+import { Toast, useToast } from "@/shared";
 import {
   BaseModal,
   BottomButton,
@@ -33,6 +34,7 @@ export function BasicAllergyForm({ onCancel, onSave }: BasicAllergyFormProps) {
   const { allergy, toggleAllergy } = useOnboardingStore();
   const [showCancleModal, setShowCancleModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const { show: showToast, message: toastMessage, triggerToast } = useToast();
 
   const handleSave = async () => {
     try {
@@ -40,6 +42,7 @@ export function BasicAllergyForm({ onCancel, onSave }: BasicAllergyFormProps) {
       setShowSaveModal(true);
     } catch (error) {
       console.error("저장 실패:", error);
+      triggerToast("저장에 실패했어요. 다시 시도해 주세요.");
     }
   };
 
@@ -120,6 +123,8 @@ export function BasicAllergyForm({ onCancel, onSave }: BasicAllergyFormProps) {
           />
         </ModalWrapper>
       )}
+
+      <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </>
   );
 }
