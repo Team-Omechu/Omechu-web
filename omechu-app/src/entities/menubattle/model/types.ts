@@ -13,6 +13,8 @@ export type PlayerResult = {
 };
 
 export type Menu = {
-  name: string;
+  menuId: string;
+  menuName: string;
   centerAngle: number;
+  color: string;
 };
