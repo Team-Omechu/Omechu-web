@@ -111,7 +111,9 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
       setAllergy: (allergy: string[]) => set({ allergy }),
 
       hydrateFromProfile: (raw: unknown) => {
-        const profile = raw as Record<string, unknown> | null;
+        if (!raw) return; // null/undefined인 경우 기존 데이터 보존
+
+        const profile = raw as Record<string, unknown>;
         const nickname =
           (profile?.nickname as string) ?? (profile?.name as string) ?? "";
 
