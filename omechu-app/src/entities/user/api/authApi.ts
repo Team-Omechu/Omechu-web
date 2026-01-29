@@ -7,9 +7,11 @@ import type {
   ResetPasswordFormValues,
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
+import type { ApiResponse, ApiError } from "@/shared/config/api.types";
 import axiosInstance from "@/shared/lib/axiosInstance";
 
-// 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
+export type { ApiResponse, ApiError };
+
 export class ApiClientError extends Error {
   code?: string;
   status?: number;
@@ -29,30 +31,9 @@ export class ApiClientError extends Error {
   }
 }
 
-// API 응답의 기본 구조
-export interface ApiResponse<T> {
-  resultType: "SUCCESS" | "FAIL";
-  error: ApiError | null;
-  success: T | null;
-}
+import type { ProfileType } from "@/entities/user/model/profile.types";
 
-// API 에러 객체 구조
-export interface ApiError {
-  errorCode: string;
-  reason: string;
-  data?: unknown;
-}
-
-// 프로필 데이터 구조 (GET /user/profile 응답)
-// - 로그인/회원가입 직후: id만 존재 (임시 user 객체)
-// - prefetch 완료 후: 전체 필드 채워짐
-export interface LoginSuccessData {
-  id: string;
-  nickname?: string;
-  exercise?: string;
-  prefer?: string[];
-  allergy?: string[];
-}
+export type LoginSuccessData = Partial<ProfileType> & { id: string };
 
 export interface LoginTokens {
   userId: string;
@@ -497,10 +478,6 @@ export const changePassword = async (data: {
   }
 
   try {
-    console.log("[DEBUG] changePassword 호출");
-    console.log("[DEBUG] Token(head 12):", accessToken.slice(0, 12));
-    console.log("[DEBUG] Request Body:", data);
-
     const response = await axiosInstance.patch<ApiResponse<string>>(
       "/auth/change-passwd",
       data,

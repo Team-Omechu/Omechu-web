@@ -1,9 +1,3 @@
-// ============================================
-// entities/user 배럴 export
-// FSD 규칙: entities는 shared만 의존 가능
-// ============================================
-
-// API
 export {
   ApiClientError,
   type ApiResponse,
@@ -29,9 +23,13 @@ export {
   startGoogleLogin,
 } from "./api/authApi";
 
-export { ProfileApiError, fetchProfile } from "./api/profileApi";
+export {
+  ProfileApiError,
+  fetchProfile,
+  updateProfile,
+  withdrawAccount,
+} from "./api/profileApi";
 
-// Hooks
 export {
   useLoginMutation,
   useSignupMutation,
@@ -49,7 +47,6 @@ export { useKakaoLogin } from "./lib/hooks/useKakaoLogin";
 
 export { useGoogleLogin } from "./lib/hooks/useGoogleLogin";
 
-// Constants
 export {
   VALID_PROVIDERS,
   PROVIDER_DISPLAY_NAMES,
@@ -57,7 +54,6 @@ export {
   getAuthErrorMessage,
 } from "./lib/constants";
 
-// Model - Schema
 export {
   loginSchema,
   type LoginFormValues,
@@ -69,10 +65,15 @@ export {
   type ResetPasswordFormValues,
 } from "./model/auth.schema";
 
-// Model - Store
 export { useAuthStore } from "./model/auth.store";
-export { useUserInfoSetupStore } from "./model/user.infoSetup.store";
 
-// Model - Types
 export type { OAuthProvider } from "./model/auth.types";
-export type { ProfileType, UpdateProfileBody } from "./model/profile.types";
+export type {
+  ProfileType,
+  UpdateProfileBody,
+  WithdrawRequestBody,
+  WithdrawResponse,
+  ExerciseType,
+  PreferType,
+  AllergyType,
+} from "./model/profile.types";

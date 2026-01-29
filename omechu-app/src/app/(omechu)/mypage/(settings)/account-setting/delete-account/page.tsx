@@ -6,28 +6,44 @@ import { useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
-import { BaseModal, Button, Header, ModalWrapper } from "@/shared";
+import {
+  withdrawAccount,
+  useAuthStore,
+  useProfile,
+  ApiClientError,
+} from "@/entities/user";
+import { BaseModal, Button, Header, ModalWrapper, Toast } from "@/shared";
 import { CheckIcon } from "@/shared/assets/icons";
 
-export default function ChangePasswordPage() {
+const WITHDRAW_REASONS = [
+  "선택해 주세요.",
+  "자주 사용하지 않아요.",
+  "원하는 메뉴/기능이 없어요.",
+  "재미 없어요.",
+  "기타",
+];
+
+export default function DeleteAccountPage() {
   const router = useRouter();
+  const { profile } = useProfile();
+  const logoutAction = useAuthStore((s) => s.logout);
 
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [selectedReason, setSelectedReason] = useState("선택해 주세요.");
+  const [isPending, setIsPending] = useState(false);
 
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const [selectedReason, setSelectedReason] =
-    useState<string>("선택해 주세요.");
 
-  const reasons = [
-    "선택해 주세요.",
-    "자주 사용하지 않아요.",
-    "원하는 메뉴/기능이 없어요.",
-    "재미 없어요.",
-    "기타",
-  ];
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -43,6 +59,35 @@ export default function ChangePasswordPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const nickname = profile?.nickname || "회원";
+  const isValidForm = isChecked && selectedReason !== "선택해 주세요.";
+
+  const handleWithdraw = async () => {
+    if (!isValidForm || isPending) return;
+
+    setIsPending(true);
+    try {
+      await withdrawAccount({
+        confirmed: true,
+        reason: selectedReason,
+      });
+      setShowModal(true);
+    } catch (err) {
+      if (err instanceof ApiClientError) {
+        triggerToast(err.message || "회원 탈퇴에 실패했습니다.");
+      } else {
+        triggerToast("회원 탈퇴에 실패했습니다.");
+      }
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const handleModalConfirm = () => {
+    logoutAction();
+    router.push("/");
+  };
+
   return (
     <>
       <Header
@@ -54,7 +99,7 @@ export default function ChangePasswordPage() {
       <main className="relative mt-12 flex h-[80dvh] w-full flex-col items-center px-6">
         <section className="flex w-full flex-col gap-5 px-3">
           <div className="body-3-medium text-font-high">
-            (닉네임)님, 정말 오메추를 떠나시나요?
+            {nickname}님, 정말 오메추를 떠나시나요?
           </div>
           <div className="text-body-4-regular text-font-low flex flex-col gap-4.5 whitespace-pre-line">
             <span>
@@ -83,9 +128,10 @@ export default function ChangePasswordPage() {
             <span>안내사항을 모두 확인했습니다.</span>
           </div>
         </section>
+
         <section className="mt-12 flex w-full flex-col gap-4.5 px-3">
           <div className="body-3-medium text-font-high">
-            (닉네임)님이 탈퇴하려는 이유가 궁금해요.
+            {nickname}님이 탈퇴하려는 이유가 궁금해요.
           </div>
           <div ref={dropdownRef} className="relative w-full">
             <button
@@ -105,24 +151,24 @@ export default function ChangePasswordPage() {
             </button>
 
             {showDropDown && (
-              <ul className="border-font-disabled absolute z-50 mt-2 flex h-fit flex-col gap-2 overflow-hidden rounded-[10px] border bg-white p-2.5 not-visited:w-50">
-                {reasons.map((reason) => (
+              <ul className="border-font-disabled absolute z-50 mt-2 flex h-fit w-full flex-col gap-2 overflow-hidden rounded-[10px] border bg-white p-2.5">
+                {WITHDRAW_REASONS.map((reason) => (
                   <li
                     key={reason}
                     onClick={() => {
                       setSelectedReason(reason);
                       setShowDropDown(false);
                     }}
-                    className="flex items-center gap-1.5"
+                    className="flex cursor-pointer items-center gap-1.5"
                   >
                     {selectedReason === reason ? (
                       <CheckIcon />
                     ) : (
-                      <div className="h-5.25 w-5.25"></div>
+                      <div className="h-5.25 w-5.25" />
                     )}
                     <span
                       className={clsx(
-                        "text-caption-1-regular hover:bg-background-secondary w-full cursor-pointer",
+                        "text-caption-1-regular hover:bg-background-secondary w-full",
                         selectedReason === reason
                           ? "text-font-high"
                           : "text-font-placeholder",
@@ -141,30 +187,39 @@ export default function ChangePasswordPage() {
           <Button
             width="md"
             bgColor="grey"
-            fontColor={"black"}
+            fontColor="black"
             className="border-font-disabled border"
+            onClick={() => router.push("/mypage/account-setting")}
           >
             취소
           </Button>
           <Button
-            onClick={() => setShowModal(true)}
+            onClick={handleWithdraw}
             width="md"
-            disabled={selectedReason === "선택해 주세요." || !isChecked}
+            disabled={!isValidForm || isPending}
           >
-            확인
+            {isPending ? "처리 중..." : "확인"}
           </Button>
         </section>
       </main>
+
       {showModal && (
         <ModalWrapper>
           <BaseModal
             title="계정 탈퇴가 완료되었습니다"
             rightButtonText="확인"
             isCloseButtonShow={false}
-            onRightButtonClick={() => router.push("/mypage/account-setting")}
+            onRightButtonClick={handleModalConfirm}
           />
         </ModalWrapper>
       )}
+
+      <Toast
+        message={toastMessage}
+        state="error"
+        show={showToast}
+        className="bottom-44"
+      />
     </>
   );
 }

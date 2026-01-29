@@ -134,7 +134,7 @@ export default function SignupPage() {
           type="submit"
           form="signup-form"
           disabled={!isValid || isSigningUp}
-          className="mx-auto max-w-[430px]"
+          className="mx-auto max-w-[480px]"
         >
           {isSigningUp ? "가입하는 중..." : "가입하기"}
         </BottomButton>
