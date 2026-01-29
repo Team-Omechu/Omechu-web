@@ -13,7 +13,7 @@ export default function AccountSettingPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const user = useAuthStore((s) => s.user);
-  const email = (user as { email?: string } | null)?.email || "-";
+  const email = user?.email || "-";
 
   const handleLogoutConfirm = async () => {
     try {

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { useProfile, updateProfile } from "@/entities/user";
+import { useProfile, useUpdateProfileMutation } from "@/entities/user";
 import { Header, ModalWrapper, MainLoading } from "@/shared";
 import { MypageModal } from "@/shared/ui/modal/MypageModal";
 import {
@@ -16,29 +16,26 @@ import {
 export default function MypageMain() {
   const router = useRouter();
   const { profile, loading, error } = useProfile();
+  const updateProfileMutation = useUpdateProfileMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleCloseModal = () => {
     setInputValue("");
     setIsModalOpen(false);
   };
 
-  const handleSubmitNickname = async () => {
-    if (!inputValue.trim() || isUpdating) return;
+  const handleSubmitNickname = () => {
+    if (!inputValue.trim() || updateProfileMutation.isPending) return;
 
-    setIsUpdating(true);
-    try {
-      await updateProfile({ nickname: inputValue.trim() });
-      window.location.reload();
-    } catch {
-      alert("닉네임 변경에 실패했습니다.");
-    } finally {
-      setIsUpdating(false);
-      handleCloseModal();
-    }
+    updateProfileMutation.mutate(
+      { nickname: inputValue.trim() },
+      {
+        onSuccess: () => handleCloseModal(),
+        onError: () => alert("닉네임 변경에 실패했습니다."),
+      },
+    );
   };
 
   if (loading) {

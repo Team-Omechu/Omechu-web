@@ -92,7 +92,7 @@ export default function EmailLoginPage() {
     if (user.nickname && user.nickname.trim().length > 0) {
       router.push("/mainpage");
     } else {
-      router.push("/onboarding/1");
+      router.push("/onboarding");
     }
   }, [isSuccess, user, router]);
 

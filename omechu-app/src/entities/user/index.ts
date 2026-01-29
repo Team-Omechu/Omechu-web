@@ -38,10 +38,9 @@ export {
   useVerifyVerificationCodeMutation,
   useRequestPasswordResetMutation,
   useResetPasswordMutation,
-  useUserQuery,
 } from "./lib/hooks/useAuth";
 
-export { useProfile } from "./lib/hooks/useProfile";
+export { useProfile, useUpdateProfileMutation } from "./lib/hooks/useProfile";
 
 export { useKakaoLogin } from "./lib/hooks/useKakaoLogin";
 

@@ -13,7 +13,6 @@ import {
   useSignupMutation,
   signupSchema,
   type SignupFormValues,
-  useAuthStore,
 } from "@/entities/user";
 import { BottomButton, Header, ModalWrapper, Toast } from "@/shared";
 import {
@@ -54,7 +53,6 @@ export default function SignupPage() {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const router = useRouter();
-  const { setPassword } = useAuthStore();
   const { mutate: signup, isPending: isSigningUp } = useSignupMutation();
 
   const methods = useForm<SignupFormValues>({
@@ -88,8 +86,7 @@ export default function SignupPage() {
     signup(data, {
       onSuccess: () => {
         // 회원가입 성공 → 토큰이 useSignupMutation의 onSuccess에서 자동 저장됨
-        setPassword(data.password);
-        router.push("/onboarding/1");
+        router.push("/onboarding");
       },
       onError: (error: unknown) => {
         const e = error as ApiClientError;

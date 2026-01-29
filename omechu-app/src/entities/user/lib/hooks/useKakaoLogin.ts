@@ -13,6 +13,15 @@ export const useKakaoLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { triggerToast } = useToast();
 
+  const isSafeAuthorizeUrl = (value: string) => {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && url.hostname === "kauth.kakao.com";
+    } catch {
+      return false;
+    }
+  };
+
   /**
    * 카카오 로그인 시작
    * 1. BE에 redirectUri 전송
@@ -27,6 +36,10 @@ export const useKakaoLogin = () => {
 
       // BE API 호출하여 authorizeUrl 받기
       const { authorizeUrl } = await startKakaoLogin(redirectUri);
+
+      if (!isSafeAuthorizeUrl(authorizeUrl)) {
+        throw new Error("유효하지 않은 인증 URL입니다.");
+      }
 
       // 카카오 로그인 페이지로 이동
       window.location.href = authorizeUrl;

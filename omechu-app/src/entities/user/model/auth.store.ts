@@ -9,7 +9,6 @@ interface AuthStoreState {
   user: LoginSuccessData | null;
   accessToken: string | null;
   refreshToken: string | null;
-  password?: string;
 }
 
 interface AuthStoreActions {
@@ -17,13 +16,11 @@ interface AuthStoreActions {
     accessToken: string;
     refreshToken: string;
     user: LoginSuccessData;
-    password?: string;
   }) => void;
   logout: () => void;
   setUser: (user: LoginSuccessData) => void;
   setAccessToken: (token: string | null) => void;
   setRefreshToken: (token: string | null) => void;
-  setPassword: (password: string) => void;
 }
 
 type AuthStore = AuthStoreState & AuthStoreActions;
@@ -35,14 +32,12 @@ export const useAuthStore = create<AuthStore>()(
       user: null,
       accessToken: null,
       refreshToken: null,
-      password: "",
-      login: ({ accessToken, refreshToken, user, password }) =>
+      login: ({ accessToken, refreshToken, user }) =>
         set({
           isLoggedIn: true,
           accessToken,
           refreshToken,
           user,
-          password,
         }),
       logout: () => {
         set({
@@ -50,10 +45,13 @@ export const useAuthStore = create<AuthStore>()(
           user: null,
           accessToken: null,
           refreshToken: null,
-          password: "",
         });
         try {
+          // 모든 user-specific storage 클리어
           localStorage.removeItem(AUTH_STORAGE_KEY);
+          localStorage.removeItem("onboarding-storage");
+          localStorage.removeItem("tag-data-storage");
+          localStorage.removeItem("recent_search_terms");
         } catch {
           // SSR 환경에서 localStorage 접근 실패 무시
         }
@@ -61,7 +59,6 @@ export const useAuthStore = create<AuthStore>()(
       setUser: (user) => set({ user }),
       setAccessToken: (token) => set({ accessToken: token }),
       setRefreshToken: (token) => set({ refreshToken: token }),
-      setPassword: (password) => set({ password }),
     }),
     {
       name: AUTH_STORAGE_KEY,
@@ -73,13 +70,19 @@ export const useAuthStore = create<AuthStore>()(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
       }),
-      migrate: (persistedState: any, version: number) => {
-        // persistedState here is the previously saved store state (not wrapped)
-        if (version === 0 && persistedState) {
-          const { password: _pw, ...rest } = persistedState;
-          return rest;
+      migrate: (persistedState: unknown, version: number) => {
+        if (
+          version === 0 &&
+          persistedState &&
+          typeof persistedState === "object"
+        ) {
+          const { password: _pw, ...rest } = persistedState as Record<
+            string,
+            unknown
+          >;
+          return rest as unknown as AuthStoreState;
         }
-        return persistedState;
+        return persistedState as AuthStoreState;
       },
     },
   ),
