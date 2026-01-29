@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+cd omechu-app
+pnpm exec lint-staged
