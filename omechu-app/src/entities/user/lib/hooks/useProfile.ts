@@ -17,7 +17,7 @@ export function useProfile() {
     staleTime: 1000 * 60 * 10,
   });
 
-  const resolvedData = accessToken ? data ?? null : null;
+  const resolvedData = accessToken ? (data ?? null) : null;
 
   return {
     profile: resolvedData,

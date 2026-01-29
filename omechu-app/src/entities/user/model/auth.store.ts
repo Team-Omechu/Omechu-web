@@ -71,8 +71,15 @@ export const useAuthStore = create<AuthStore>()(
         refreshToken: state.refreshToken,
       }),
       migrate: (persistedState: unknown, version: number) => {
-        if (version === 0 && persistedState && typeof persistedState === "object") {
-          const { password: _pw, ...rest } = persistedState as Record<string, unknown>;
+        if (
+          version === 0 &&
+          persistedState &&
+          typeof persistedState === "object"
+        ) {
+          const { password: _pw, ...rest } = persistedState as Record<
+            string,
+            unknown
+          >;
           return rest as unknown as AuthStoreState;
         }
         return persistedState as AuthStoreState;
