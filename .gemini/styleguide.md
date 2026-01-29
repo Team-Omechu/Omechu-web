@@ -8,6 +8,8 @@
 
 ## **📌 Code Convention**
 
+> 상세 규칙은 `omechu-app/docs/CONVENTIONS.md` 기준으로 판단합니다.
+
 ### **1. Naming Convention**
 
 | Type                               | Notation                            | Example                                 |

@@ -1,6 +1,8 @@
 # `src/app` 디렉토리 구조 및 설명
 
-Next.js v.16.1.1 App Router 기반의 `src/app` 폴더 전체 구조를 정리하고, 각 파일·폴더의 역할을 설명합니다.
+Next.js v16 App Router 기반의 `src/app` 폴더 전체 구조를 정리하고, 각 파일·폴더의 역할을 설명합니다.
+
+> FSD 레이어 구조와 코드 규칙은 `docs/CONVENTIONS.md`를 참고하세요.
 
 ## 전체 디렉토리 트리 (2025.08.02)
 
