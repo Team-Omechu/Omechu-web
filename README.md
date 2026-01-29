@@ -128,7 +128,7 @@ flowchart LR
 ```bash
 # 1) 클론
 git clone <your-repo-url>
-cd omechu
+cd Omechu/web/omechu-app
 
 # 2) 패키지 설치
 pnpm install
@@ -144,7 +144,7 @@ pnpm start
 ### 🔐 환경 변수 예시 (`.env.local`)
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=https://api.example.com
+NEXT_PUBLIC_API_URL=https://api.example.com
 NEXT_PUBLIC_KAKAO_MAP_API_KEY=...
 NEXT_PUBLIC_GOOGLE_PLACE_API_KEY=...
 GOOGLE_MAP_SERVER_API_KEY=...
@@ -192,6 +192,8 @@ GOOGLE_MAP_SERVER_API_KEY=...
 ---
 
 ## 🤝 협업 규칙
+
+협업 규칙 상세는 `omechu-app/docs/CONVENTIONS.md`를 참고하세요.
 
 태그 기반 커밋 컨벤션을 사용합니다.
 

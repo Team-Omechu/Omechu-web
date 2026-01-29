@@ -41,9 +41,11 @@
 
 ---
 
-## FSD Architecture Rules
+## Coding Conventions
 
-### Layer Hierarchy
+### FSD Architecture Rules
+
+#### Layer Hierarchy
 
 ```
 app → widgets → entities → shared
@@ -53,7 +55,7 @@ app → widgets → entities → shared
 - 동일 레이어 간 import 금지
 - 순환 의존성 금지
 
-### Directory Structure
+#### Directory Structure
 
 ```
 src/
@@ -63,7 +65,7 @@ src/
 └── shared/        # Reusable code (ui, api, lib, config)
 ```
 
-### Entity Module Structure
+#### Entity Module Structure
 
 ```
 entity/
@@ -75,7 +77,7 @@ entity/
 └── index.ts      # Barrel exports
 ```
 
-### Import Rules
+#### Import Rules
 
 ```typescript
 // 절대 경로 사용 (권장)
@@ -83,6 +85,78 @@ import { Button } from "@/shared/ui/button/Button";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 
 // 상대 경로는 같은 모듈 내에서만
+import { formatDate } from "./utils";
+```
+
+---
+
+### Code Style
+
+#### TypeScript
+
+```typescript
+// 타입 정의는 interface 우선 사용
+interface UserProps {
+  name: string;
+  age: number;
+}
+
+// 유니온 타입은 type 사용
+type Status = "loading" | "success" | "error";
+
+// 함수 컴포넌트
+export function UserCard({ name, age }: UserProps) {
+  return <div>{name}</div>;
+}
+
+// 훅
+export function useUser(userId: string) {
+  // ...
+}
+```
+
+#### React
+
+```tsx
+// 컴포넌트 파일 구조
+"use client"; // 필요한 경우
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { Button } from "@/shared/ui/button/Button";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+
+interface Props {
+  // ...
+}
+
+export function ComponentName({ ...props }: Props) {
+  // hooks
+  // state
+  // effects
+  // handlers
+  // render
+}
+```
+
+#### Import Order
+
+1. React / Next.js
+2. 외부 라이브러리
+3. 내부 모듈 (@/\*)
+4. 상대 경로
+
+```typescript
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
+
+import { Button } from "@/shared/ui/button/Button";
+import { useAuthStore } from "@/entities/user/model/auth.store";
+
 import { formatDate } from "./utils";
 ```
 
@@ -184,73 +258,3 @@ refactor: BottomNavigation 제거 및 ClientLayout 정리 (#218)
 - PR 머지 시 이슈 자동 종료: `Closes #14`, `Fixes #14`
 
 ---
-
-## Code Style
-
-### TypeScript
-
-```typescript
-// 타입 정의는 interface 우선 사용
-interface UserProps {
-  name: string;
-  age: number;
-}
-
-// 유니온 타입은 type 사용
-type Status = "loading" | "success" | "error";
-
-// 함수 컴포넌트
-export function UserCard({ name, age }: UserProps) {
-  return <div>{name}</div>;
-}
-
-// 훅
-export function useUser(userId: string) {
-  // ...
-}
-```
-
-### React
-
-```tsx
-// 컴포넌트 파일 구조
-"use client"; // 필요한 경우
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-import { Button } from "@/shared/ui/button/Button";
-import { useAuthStore } from "@/entities/user/model/auth.store";
-
-interface Props {
-  // ...
-}
-
-export function ComponentName({ ...props }: Props) {
-  // hooks
-  // state
-  // effects
-  // handlers
-  // render
-}
-```
-
-### Import Order
-
-1. React / Next.js
-2. 외부 라이브러리
-3. 내부 모듈 (@/\*)
-4. 상대 경로
-
-```typescript
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-import { useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
-
-import { Button } from "@/shared/ui/button/Button";
-import { useAuthStore } from "@/entities/user/model/auth.store";
-
-import { formatDate } from "./utils";
-```
