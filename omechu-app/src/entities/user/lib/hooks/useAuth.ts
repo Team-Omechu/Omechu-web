@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import * as authApi from "@/entities/user/api/authApi";
 import type {
@@ -28,7 +28,6 @@ export const useLoginMutation = () => {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
         user: tempUser,
-        password: variables.password,
       });
 
       // 2) axios 인스턴스에 Authorization 주입 (중복 401 방지)
@@ -160,21 +159,3 @@ export const useResetPasswordMutation = () => {
   });
 };
 
-// 현재 사용자 조회
-export const useUserQuery = () => {
-  const token = useAuthStore.getState().accessToken;
-
-  return useQuery({
-    queryKey: ["user", "me"],
-    queryFn: authApi.getCurrentUser,
-    // 토큰이 있어야만 조회 실행
-    enabled: !!token,
-    // 실패 시 재시도 불필요
-    retry: false,
-    // 포커스/마운트 시 과도한 재요청 방지
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    // 로그인 직후 prefetch된 경우, 10분 동안 신선하게 유지
-    staleTime: 1000 * 60 * 10,
-  });
-};

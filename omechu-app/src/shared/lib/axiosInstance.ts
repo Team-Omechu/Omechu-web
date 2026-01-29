@@ -16,7 +16,6 @@ export interface AuthStoreGetter<TUser = any> {
       accessToken: string;
       refreshToken: string;
       user: TUser;
-      password?: string;
     }) => void;
     logout: () => void;
     setAccessToken: (token: string | null) => void;
