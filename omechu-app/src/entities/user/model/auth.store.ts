@@ -53,7 +53,11 @@ export const useAuthStore = create<AuthStore>()(
           password: "",
         });
         try {
+          // 모든 user-specific storage 클리어
           localStorage.removeItem(AUTH_STORAGE_KEY);
+          localStorage.removeItem("onboarding-storage");
+          localStorage.removeItem("tag-data-storage");
+          localStorage.removeItem("recent_search_terms");
         } catch {
           // SSR 환경에서 localStorage 접근 실패 무시
         }
