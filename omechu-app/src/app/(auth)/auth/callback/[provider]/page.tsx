@@ -82,7 +82,7 @@ function CallbackContent() {
 
         // 3. 닉네임 여부에 따라 리다이렉트
         if (!user.nickname) {
-          router.replace("/onboarding/1");
+          router.replace("/onboarding");
         } else {
           router.replace("/mainpage");
         }

@@ -14,7 +14,7 @@ interface OnboardingGuardProps {
 /**
  * OnboardingGuard
  * - 세션 복구 및 온보딩 미완료 사용자 리다이렉트 처리
- * - 로그인 후 닉네임이 없으면 /onboarding/1로 이동
+ * - 로그인 후 닉네임이 없으면 /onboarding으로 이동
  *
  * 사용 예시:
  * - app/(public)/layout.tsx에서 적용
@@ -47,7 +47,7 @@ export function OnboardingGuard({ children }: OnboardingGuardProps) {
 
       // 온보딩 미완료 사용자는 온보딩으로 유도
       if (!sessionUser.nickname) {
-        router.push("/onboarding/1");
+        router.push("/onboarding");
       }
     }
   }, [
