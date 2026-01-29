@@ -40,7 +40,7 @@ export function useUpdateProfileMutation() {
     mutationFn: (data: UpdateProfileBody) => updateProfile(data),
     onSuccess: (updatedProfile) => {
       setUser(updatedProfile);
-      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
+      queryClient.setQueryData(["user", "profile"], updatedProfile);
     },
   });
 }

@@ -16,7 +16,7 @@ export const useKakaoLogin = () => {
   const isSafeAuthorizeUrl = (value: string) => {
     try {
       const url = new URL(value);
-      return url.protocol === "https:";
+      return url.protocol === "https:" && url.hostname === "kauth.kakao.com";
     } catch {
       return false;
     }
