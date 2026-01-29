@@ -33,11 +33,14 @@ export const FormField = ({
   const helperId = helperText ? `${id}-helper` : undefined;
 
   const enhancedChildren = React.isValidElement(children)
-    ? React.cloneElement(children as React.ReactElement<any>, {
-        id,
-        "aria-describedby": helperId,
-        "aria-invalid": helperState === "error" ? true : undefined,
-      })
+    ? React.cloneElement(
+        children as React.ReactElement<Record<string, unknown>>,
+        {
+          id,
+          "aria-describedby": helperId,
+          "aria-invalid": helperState === "error" ? true : undefined,
+        },
+      )
     : children;
 
   return (

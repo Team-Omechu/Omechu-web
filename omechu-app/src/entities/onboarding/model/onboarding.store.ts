@@ -2,15 +2,6 @@ import { create } from "zustand";
 // 기본 상태 입력 정보 Local Storage 임시 저장을 위해 persist 미들웨어 추가
 import { persist } from "zustand/middleware";
 
-// ── Normalizers (UI/store 라벨을 스펙 라벨로 통일) ───────────────────────────
-const normGender = (v?: string | null) => {
-  const s = (v ?? "").trim();
-  if (!s) return null;
-  const u = s.toUpperCase();
-  if (u === "F" || s === "여성") return "여성" as const;
-  if (u === "M" || s === "남성") return "남성" as const;
-  return s as "여성" | "남성" | null; // 이미 라벨일 가능성
-};
 const normExercise = (v?: string | null) => {
   const s = (v ?? "").trim();
   if (!s) return null;
@@ -52,11 +43,11 @@ const normAllergy = (v?: string | null) => {
   return v ?? null;
 };
 const uniq = <T>(arr: T[]) => Array.from(new Set(arr));
-const toArray = (v: any) => (Array.isArray(v) ? v : v ? [v] : []);
+const toArray = (v: unknown): unknown[] =>
+  Array.isArray(v) ? v : v ? [v] : [];
 
 type OnboardingState = {
   nickname: string;
-  gender: "남성" | "여성" | null;
   exercise: string | null;
   prefer: string[];
   bodyType: string[];
@@ -67,7 +58,6 @@ type OnboardingState = {
 
 type OnboardingActions = {
   setNickname: (nickname: string) => void;
-  setGender: (gender: "남성" | "여성" | null) => void;
   setExercise: (exercise: string | null) => void;
   setPrefer: (prefer: string[]) => void;
   setBodyType: (bodyType: string[]) => void;
@@ -77,7 +67,6 @@ type OnboardingActions = {
   toggleAllergy: (allergy: string) => void;
   setCurrentStep: (step: number) => void;
   reset: () => void;
-  resetGender: () => void;
   resetExercise: () => void;
   resetPrefer: () => void;
   resetBodyType: () => void;
@@ -90,7 +79,6 @@ type OnboardingActions = {
 
 const initialState: OnboardingState = {
   nickname: "",
-  gender: null,
   exercise: null,
   prefer: [],
   bodyType: [],
@@ -104,22 +92,18 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
     (set, get) => ({
       ...initialState,
       setNickname: (nickname) => set({ nickname }),
-      setGender: (gender) => set({ gender }),
       setExercise: (exercise) => set({ exercise }),
       setPrefer: (prefer) => set({ prefer }),
       setBodyType: (bodyType: string[]) => set({ bodyType }),
       setAllergy: (allergy: string[]) => set({ allergy }),
 
       hydrateFromProfile: (raw: unknown) => {
-        if (!raw) return; // null/undefined인 경우 기존 데이터 보존
+        if (!raw) return;
 
         const profile = raw as Record<string, unknown>;
         const nickname =
           (profile?.nickname as string) ?? (profile?.name as string) ?? "";
 
-        const gender = normGender(
-          (profile?.gender as string) ?? (profile?.sex as string) ?? null,
-        );
         const exercise = normExercise(
           (profile?.exercise as string) ?? (profile?.state as string) ?? null,
         );
@@ -145,7 +129,6 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
 
         set({
           nickname,
-          gender: gender as OnboardingState["gender"],
           exercise,
           prefer: preferArr,
           bodyType,
@@ -185,7 +168,6 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
         const { nickname } = get();
         set({
           nickname,
-          gender: null,
           exercise: null,
           prefer: [],
           bodyType: [],
@@ -212,8 +194,6 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
         get().hardReset();
       },
 
-      // 상태별 초기화
-      resetGender: () => set({ gender: null }),
       resetExercise: () => set({ exercise: null }),
       resetPrefer: () => set({ prefer: [] }),
       resetBodyType: () => set({ bodyType: [] }),

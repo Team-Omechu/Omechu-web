@@ -7,6 +7,7 @@ import type {
   ResetPasswordFormValues,
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
+import type { ProfileType } from "@/entities/user/model/profile.types";
 import type { ApiResponse, ApiError } from "@/shared/config/api.types";
 import axiosInstance from "@/shared/lib/axiosInstance";
 
@@ -31,7 +32,23 @@ export class ApiClientError extends Error {
   }
 }
 
-import type { ProfileType } from "@/entities/user/model/profile.types";
+export interface NotModifiedError extends Error {
+  code: 304;
+}
+
+export const createNotModifiedError = (): NotModifiedError => {
+  const err = new Error("Not Modified") as NotModifiedError;
+  err.code = 304;
+  return err;
+};
+
+export const isNotModifiedError = (err: unknown): err is NotModifiedError => {
+  return (
+    err instanceof Error &&
+    "code" in err &&
+    (err as NotModifiedError).code === 304
+  );
+};
 
 export type LoginSuccessData = Partial<ProfileType> & { id: string };
 
@@ -558,9 +575,7 @@ export const getCurrentUser = async (): Promise<LoginSuccessData> => {
     if (response.status === 304) {
       const cached = useAuthStore.getState().user as LoginSuccessData | null;
       if (cached) return cached;
-      const err: any = new Error("Not Modified");
-      err.code = 304;
-      throw err;
+      throw createNotModifiedError();
     }
 
     // 200 OK 처리
@@ -574,9 +589,8 @@ export const getCurrentUser = async (): Promise<LoginSuccessData> => {
       );
     }
     return apiResponse.success;
-  } catch (err: any) {
-    // 네트워크/기타 에러 시 그대로 상위로 전달
-    if (err?.code === 304) throw err; // 상위 훅에서 캐시 fallback 가능
+  } catch (err: unknown) {
+    if (isNotModifiedError(err)) throw err;
     throw err;
   }
 };

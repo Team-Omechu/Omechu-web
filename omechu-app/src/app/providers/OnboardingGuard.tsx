@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
 
-import { useUserQuery } from "@/entities/user/lib/hooks/useAuth";
+import { useProfile } from "@/entities/user/lib/hooks/useProfile";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 
 interface OnboardingGuardProps {
@@ -23,7 +23,7 @@ interface OnboardingGuardProps {
 export function OnboardingGuard({ children }: OnboardingGuardProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: sessionUser, isSuccess, isError } = useUserQuery();
+  const { data: sessionUser, isSuccess, isError } = useProfile();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const inAuthSection =
