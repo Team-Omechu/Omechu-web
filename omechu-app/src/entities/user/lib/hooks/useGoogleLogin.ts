@@ -16,7 +16,9 @@ export const useGoogleLogin = () => {
   const isSafeAuthorizeUrl = (value: string) => {
     try {
       const url = new URL(value);
-      return url.protocol === "https:" && url.hostname === "accounts.google.com";
+      return (
+        url.protocol === "https:" && url.hostname === "accounts.google.com"
+      );
     } catch {
       return false;
     }
