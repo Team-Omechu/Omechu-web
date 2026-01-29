@@ -37,6 +37,7 @@ export type LoginSuccessData = Partial<ProfileType> & { id: string };
 
 export interface LoginTokens {
   userId: string;
+  email?: string;
   accessToken: string;
   refreshToken: string;
 }

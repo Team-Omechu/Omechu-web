@@ -26,6 +26,7 @@ export type AllergyType =
 
 export interface ProfileType {
   id: string;
+  email?: string;
   nickname: string;
   exercise: ExerciseType | null;
   prefer: PreferType[];

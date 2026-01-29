@@ -21,6 +21,7 @@ export const useLoginMutation = () => {
       // 1) 토큰 보관 (로그인 직후는 프로필 정보 없음 - prefetch로 채움)
       const tempUser = {
         id: tokens.userId,
+        email: tokens.email ?? variables.email,
       };
 
       setLoginState({
@@ -42,8 +43,12 @@ export const useLoginMutation = () => {
           queryFn: authApi.getCurrentUser,
           staleTime: 1000 * 60 * 10, // 10분 신선
         });
-        // 프로필 데이터로 스토어 동기화
-        useAuthStore.getState().setUser(profile);
+        // 프로필 데이터로 스토어 동기화 (email은 기존 값 유지)
+        const currentEmail = useAuthStore.getState().user?.email;
+        useAuthStore.getState().setUser({
+          ...profile,
+          email: profile.email ?? currentEmail,
+        });
       } catch (err) {
         // 프로필 조회 실패는 무시 (필요시 화면에서 재조회 가능)
         console.warn(
@@ -69,6 +74,7 @@ export const useSignupMutation = () => {
       // 1) 토큰 보관 (signup에서 즉시 토큰 반환)
       const newUser = {
         id: data.id,
+        email: data.email,
       };
 
       setLoginState({
@@ -89,9 +95,12 @@ export const useSignupMutation = () => {
           queryFn: authApi.getCurrentUser,
           staleTime: 1000 * 60 * 10,
         });
-        useAuthStore.getState().setUser(profile);
+        const currentEmail = useAuthStore.getState().user?.email;
+        useAuthStore.getState().setUser({
+          ...profile,
+          email: profile.email ?? currentEmail,
+        });
       } catch (err) {
-        // 프로필 조회 실패는 무시 (온보딩에서 재조회 가능)
         console.warn(
           "[Auth] 회원가입 후 프로필 prefetch 실패:",
           err instanceof Error ? err.message : String(err),
