@@ -9,14 +9,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 
-import { ApiClientError, getAuthErrorMessage } from "@/entities/user";
-import { fetchProfile } from "@/entities/user/api/profileApi";
-import { useLoginMutation } from "@/entities/user/lib/hooks/useAuth";
 import {
+  ApiClientError,
+  getAuthErrorMessage,
+  fetchProfile,
+  useLoginMutation,
   loginSchema,
-  LoginFormValues,
-} from "@/entities/user/model/auth.schema";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+  type LoginFormValues,
+  useAuthStore,
+} from "@/entities/user";
 import { Button, FormField, Input, Toast, useToast } from "@/shared";
 
 /**
@@ -91,7 +92,7 @@ export default function EmailLoginPage() {
     if (user.nickname && user.nickname.trim().length > 0) {
       router.push("/mainpage");
     } else {
-      router.push("/onboarding/1");
+      router.push("/onboarding");
     }
   }, [isSuccess, user, router]);
 

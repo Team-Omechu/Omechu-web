@@ -88,8 +88,8 @@ export function UserInfoSection({
           onClick={() => router.push("/mypage/recommended-list")}
           className="border-font-placeholder flex h-14 w-42 flex-1 items-center justify-center gap-2 border-r"
         >
-          <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
-            <WriteIcon className="text-font-extralow w-3" />
+          <div className="border-font-extra-low flex h-5 w-5 items-center justify-center rounded-full border">
+            <WriteIcon className="text-font-extra-low w-3" />
           </div>
           <span>추천 목록 관리</span>
         </button>
@@ -97,8 +97,8 @@ export function UserInfoSection({
           onClick={() => router.push("/mypage/mukburim-log")}
           className="flex h-14 w-42 items-center justify-center gap-2"
         >
-          <div className="border-font-extralow flex h-5 w-5 items-center justify-center rounded-full border">
-            <HistoryRoundedIcon className="text-font-extralow mt-px ml-px w-3.5" />
+          <div className="border-font-extra-low flex h-5 w-5 items-center justify-center rounded-full border">
+            <HistoryRoundedIcon className="text-font-extra-low mt-px ml-px w-3.5" />
           </div>
           <span>먹부림 기록</span>
         </button>

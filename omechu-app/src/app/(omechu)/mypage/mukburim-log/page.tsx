@@ -1,12 +1,18 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
+import { format } from "date-fns";
 
-import { MUKBURIM_FOOD_MOCK_DATA } from "@/shared/constants/mocks/mukburim";
+import {
+  getMukburimStatistics,
+  type MukburimPeriod,
+  type MukburimSortBy,
+} from "@/entities/mukburim";
 import { PERIOD_OPTIONS } from "@/shared/constants/mypage";
 import { Header } from "@/shared/index";
 import {
@@ -16,39 +22,72 @@ import {
 } from "@/widgets/mypage/ui";
 
 type Period = (typeof PERIOD_OPTIONS)[number];
-const INITIAL_VISIBLE = 9;
+
+type SortOrder = "MostLogged" | "LatestLogged";
+
+const SORT_ORDER_MAP: Record<SortOrder, MukburimSortBy> = {
+  MostLogged: "count",
+  LatestLogged: "recent",
+};
+
+const periodToApiPeriod = (period: Period): MukburimPeriod | undefined => {
+  if (period === "직접입력") return undefined;
+  return period as MukburimPeriod;
+};
 
 export default function MukburimLogPage() {
   const router = useRouter();
 
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("전체");
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("MostLogged");
   const [range, setRange] = useState<{
     startDate: Date | null;
     endDate: Date | null;
   }>({ startDate: null, endDate: null });
 
-  type SortOrder = "MostLogged" | "LatestLogged";
+  const apiParams = useMemo(() => {
+    const params: {
+      period?: MukburimPeriod;
+      startDate?: string;
+      endDate?: string;
+      sortBy: MukburimSortBy;
+    } = {
+      sortBy: SORT_ORDER_MAP[sortOrder],
+    };
 
-  const [sortOrder, setSortOrder] = useState<SortOrder>("MostLogged");
+    if (selectedPeriod === "직접입력") {
+      if (range.startDate) {
+        params.startDate = format(range.startDate, "yyyy-MM-dd");
+      }
+      if (range.endDate) {
+        params.endDate = format(range.endDate, "yyyy-MM-dd");
+      }
+    } else {
+      params.period = periodToApiPeriod(selectedPeriod);
+    }
 
-  const supportsLatestSort = true;
+    return params;
+  }, [selectedPeriod, sortOrder, range]);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["mukburim-statistics", apiParams],
+    queryFn: () => getMukburimStatistics(apiParams),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const menuStatistics = data?.success?.menuStatistics ?? [];
 
   const handlePeriodChange = (period: Period) => {
     setSelectedPeriod(period);
-    setVisibleCount(INITIAL_VISIBLE);
-
     if (period !== "직접입력") {
       setRange({ startDate: null, endDate: null });
     }
   };
+
   const handleDateRangeChange = useCallback(
     (s: Date | null, e: Date | null) => {
       setRange((prev) => {
-        const next = {
-          startDate: s,
-          endDate: e,
-        };
+        const next = { startDate: s, endDate: e };
         return prev.startDate === next.startDate &&
           prev.endDate === next.endDate
           ? prev
@@ -68,14 +107,13 @@ export default function MukburimLogPage() {
         </section>
       )}
       <main className="flex flex-col items-center">
-        {/* 정렬 */}
         <div>
           <section className="text-caption-2-medium mt-2 mb-3 flex w-full justify-end gap-2">
             <button
               className={
                 sortOrder === "MostLogged"
                   ? "text-font-high"
-                  : "text-font-extralow"
+                  : "text-font-extra-low"
               }
               onClick={() => setSortOrder("MostLogged")}
             >
@@ -83,35 +121,52 @@ export default function MukburimLogPage() {
             </button>
             <span>|</span>
             <button
-              disabled={!supportsLatestSort}
-              title={
-                !supportsLatestSort
-                  ? "API에서 최근 시각 정보가 없어 정렬할 수 없습니다."
-                  : undefined
-              }
-              className={clsx(
+              className={
                 sortOrder === "LatestLogged"
                   ? "text-font-high"
-                  : "text-font-extralow",
-                !supportsLatestSort ? "cursor-not-allowed opacity-50" : "",
-              )}
-              onClick={() => supportsLatestSort && setSortOrder("LatestLogged")}
+                  : "text-font-extra-low"
+              }
+              onClick={() => setSortOrder("LatestLogged")}
             >
               최근 먹은 순
             </button>
           </section>
 
-          {/* 먹부림 카드 */}
-          <section className="grid grid-cols-3 gap-4.5">
-            {MUKBURIM_FOOD_MOCK_DATA.map((item) => (
-              <MukburimFoodBox
-                key={item.id}
-                frequency={item.frequency}
-                src={item.src}
-                title={item.title}
-              />
-            ))}
-          </section>
+          {isLoading && (
+            <section className="grid grid-cols-3 gap-4.5">
+              {Array.from({ length: 9 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-brand-secondary h-25 w-25 animate-pulse rounded-xl"
+                />
+              ))}
+            </section>
+          )}
+
+          {isError && (
+            <p className="text-body-3-medium text-font-low py-10 text-center">
+              데이터를 불러오는 중 오류가 발생했습니다.
+            </p>
+          )}
+
+          {!isLoading && !isError && menuStatistics.length === 0 && (
+            <p className="text-body-3-medium text-font-low py-10 text-center">
+              해당 기간에 먹부림 기록이 없습니다.
+            </p>
+          )}
+
+          {!isLoading && !isError && menuStatistics.length > 0 && (
+            <section className="grid grid-cols-3 gap-4.5">
+              {menuStatistics.map((item) => (
+                <MukburimFoodBox
+                  key={item.menu_name}
+                  frequency={String(item.count)}
+                  src="/image/image_empty.svg"
+                  title={item.menu_name}
+                />
+              ))}
+            </section>
+          )}
         </div>
       </main>
     </>

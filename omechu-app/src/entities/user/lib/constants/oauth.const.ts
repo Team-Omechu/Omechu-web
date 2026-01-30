@@ -1,4 +1,4 @@
-import type { OAuthProvider } from "../../model/auth.types";
+import type { OAuthProvider } from "@/entities/user/model/auth.types";
 
 /**
  * OAuth 인증 관련 상수

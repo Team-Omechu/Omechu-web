@@ -4,8 +4,7 @@ import { Suspense, useEffect, useRef } from "react";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { getCurrentUserWithToken } from "@/entities/user/api/authApi";
-import { useAuthStore } from "@/entities/user/model/auth.store";
+import { getCurrentUserWithToken, useAuthStore } from "@/entities/user";
 import { Toast, useToast } from "@/shared";
 
 export default function OAuthCallbackPage() {
@@ -44,6 +43,12 @@ function CallbackContent() {
     const handleCallback = async () => {
       processedRef.current = true;
 
+      // 🔒 보안: URL에서 민감한 토큰 정보 즉시 제거
+      // 브라우저 히스토리, 로그, Referrer 헤더 등으로 토큰 유출 방지
+      if (accessToken || refreshToken || error) {
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+
       // provider 검증
       if (provider !== "kakao" && provider !== "google") {
         triggerToast("잘못된 로그인 경로입니다.");
@@ -78,12 +83,11 @@ function CallbackContent() {
           accessToken,
           refreshToken: refreshToken || "",
           user,
-          password: "",
         });
 
         // 3. 닉네임 여부에 따라 리다이렉트
         if (!user.nickname) {
-          router.replace("/onboarding/1");
+          router.replace("/onboarding");
         } else {
           router.replace("/mainpage");
         }

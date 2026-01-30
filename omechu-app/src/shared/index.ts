@@ -7,6 +7,7 @@
 // Restaurant 타입은 entities/restaurant/model/restaurant.types.ts로 이동 (FSD)
 
 // Config
+export type { ApiResponse, ApiError } from "./config/api.types";
 export {
   filteredChoSeong,
   consonantGroupMap,
@@ -28,7 +29,7 @@ export type { TermsItem, TermsType, TermsConfig } from "./constants/terms";
 export { axiosInstance, setupAxiosInterceptors } from "./lib/axiosInstance";
 export type { AuthStoreGetter } from "./lib/axiosInstance";
 export { lockBodyScroll, unlockBodyScroll } from "./lib/bodyScrollLock";
-export { profileSchema, genderSchema } from "./lib/onboarding.schema";
+export { profileSchema } from "./lib/onboarding.schema";
 export { useToast } from "./lib/useToast";
 export type { UseToastReturn, UseToastOptions } from "./lib/useToast";
 

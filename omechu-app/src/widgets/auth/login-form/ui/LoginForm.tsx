@@ -78,17 +78,11 @@ export default function LoginForm() {
             const userKey = res?.userId ?? "me";
 
             queryClient.setQueryData(["profile", userKey], {
-              id: isNaN(Number(userKey)) ? 0 : Number(userKey),
-              email: "",
-              nickname: "-",
-              gender: "",
-              bodyType: "",
+              id: String(userKey),
+              nickname: "",
               exercise: "",
               prefer: [],
               allergy: [],
-              profileImageUrl: null,
-              createdAt: "",
-              updatedAt: "",
             });
 
             await queryClient.prefetchQuery({
@@ -121,7 +115,7 @@ export default function LoginForm() {
     if (user.nickname && user.nickname.trim().length > 0) {
       router.push("/mainpage");
     } else {
-      router.push("/onboarding/1");
+      router.push("/onboarding");
     }
   }, [isSuccess, user, router]);
 

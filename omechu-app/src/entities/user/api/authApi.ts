@@ -7,9 +7,12 @@ import type {
   ResetPasswordFormValues,
 } from "@/entities/user/model/auth.schema";
 import { useAuthStore } from "@/entities/user/model/auth.store";
+import type { ProfileType } from "@/entities/user/model/profile.types";
+import type { ApiResponse, ApiError } from "@/shared/config/api.types";
 import axiosInstance from "@/shared/lib/axiosInstance";
 
-// 클라이언트에서 에러코드/상태코드를 함께 다룰 수 있도록 Error 확장
+export type { ApiResponse, ApiError };
+
 export class ApiClientError extends Error {
   code?: string;
   status?: number;
@@ -29,33 +32,29 @@ export class ApiClientError extends Error {
   }
 }
 
-// API 응답의 기본 구조
-export interface ApiResponse<T> {
-  resultType: "SUCCESS" | "FAIL";
-  error: ApiError | null;
-  success: T | null;
+export interface NotModifiedError extends Error {
+  code: 304;
 }
 
-// API 에러 객체 구조
-export interface ApiError {
-  errorCode: string;
-  reason: string;
-  data?: unknown;
-}
+export const createNotModifiedError = (): NotModifiedError => {
+  const err = new Error("Not Modified") as NotModifiedError;
+  err.code = 304;
+  return err;
+};
 
-// 프로필 데이터 구조 (GET /user/profile 응답)
-// - 로그인/회원가입 직후: id만 존재 (임시 user 객체)
-// - prefetch 완료 후: 전체 필드 채워짐
-export interface LoginSuccessData {
-  id: string;
-  nickname?: string;
-  exercise?: string;
-  prefer?: string[];
-  allergy?: string[];
-}
+export const isNotModifiedError = (err: unknown): err is NotModifiedError => {
+  return (
+    err instanceof Error &&
+    "code" in err &&
+    (err as NotModifiedError).code === 304
+  );
+};
+
+export type LoginSuccessData = Partial<ProfileType> & { id: string };
 
 export interface LoginTokens {
   userId: string;
+  email?: string;
   accessToken: string;
   refreshToken: string;
 }
@@ -497,10 +496,6 @@ export const changePassword = async (data: {
   }
 
   try {
-    console.log("[DEBUG] changePassword 호출");
-    console.log("[DEBUG] Token(head 12):", accessToken.slice(0, 12));
-    console.log("[DEBUG] Request Body:", data);
-
     const response = await axiosInstance.patch<ApiResponse<string>>(
       "/auth/change-passwd",
       data,
@@ -580,9 +575,7 @@ export const getCurrentUser = async (): Promise<LoginSuccessData> => {
     if (response.status === 304) {
       const cached = useAuthStore.getState().user as LoginSuccessData | null;
       if (cached) return cached;
-      const err: any = new Error("Not Modified");
-      err.code = 304;
-      throw err;
+      throw createNotModifiedError();
     }
 
     // 200 OK 처리
@@ -596,9 +589,8 @@ export const getCurrentUser = async (): Promise<LoginSuccessData> => {
       );
     }
     return apiResponse.success;
-  } catch (err: any) {
-    // 네트워크/기타 에러 시 그대로 상위로 전달
-    if (err?.code === 304) throw err; // 상위 훅에서 캐시 fallback 가능
+  } catch (err: unknown) {
+    if (isNotModifiedError(err)) throw err;
     throw err;
   }
 };

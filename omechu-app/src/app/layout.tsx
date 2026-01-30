@@ -5,6 +5,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import type { Metadata } from "next";
 
 import { Providers } from "@/app/providers";
+import { BASE_URL } from "@/shared/constants/url";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "700"],
@@ -14,8 +15,24 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "오메추",
-  description: "오늘 뭐 먹지? Omechu가 추천해드려요!",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "오메추 | 오늘 뭐 먹지? 메뉴 추천 서비스",
+    template: "%s | 오메추",
+  },
+  description:
+    "당신의 취향과 상황을 분석하여 오늘 딱 맞는 메뉴와 주변 맛집을 추천해드립니다.",
+  keywords: [
+    "메뉴추천",
+    "오늘뭐먹지",
+    "맛집추천",
+    "오메추",
+    "점심메뉴",
+    "저녁메뉴",
+    "음식추천",
+  ],
+  authors: [{ name: "OMECHU Team" }],
+  creator: "OMECHU Team",
   icons: {
     icon: [
       { url: "/logo/home.png", sizes: "32x32", type: "image/png" },
@@ -24,7 +41,38 @@ export const metadata: Metadata = {
     ],
     apple: "/logo/home.png",
   },
-  manifest: "/manifest.webmanifest",
+  openGraph: {
+    url: BASE_URL,
+    siteName: "오메추",
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "/logo/logo.png",
+        width: 512,
+        height: 512,
+        alt: "오메추 로고",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    images: [{ url: "/logo/logo.png", alt: "오메추 로고" }],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export const viewport = {
@@ -40,7 +88,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`bg-gray-200 ${notoSansKR.variable}`}>
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
-        <div className="bg-background-primary relative mx-auto flex min-h-screen w-full max-w-[430px] min-w-[375px] flex-col overflow-x-hidden shadow-xl">
+        <div className="bg-background-primary relative mx-auto flex min-h-screen w-full max-w-[480px] min-w-[375px] flex-col overflow-x-hidden shadow-xl">
           <Providers>
             <main className="bg-background-primary scrollbar-hide flex flex-1 flex-col overflow-y-scroll">
               {children}
