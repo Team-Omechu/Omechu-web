@@ -8,11 +8,14 @@ button {
   cursor: pointer;
 }
 
+/* next/font CSS 변수는 런타임에 주입되므로 @theme inline 사용 필수 */
+@theme inline {
+  --font-sans: var(--font-noto-sans-kr), sans-serif;
+  --default-font-family: var(--font-noto-sans-kr), sans-serif;
+}
+
 /* Tailwind CSS v4 Configuration */
 @theme {
-  /* Font Family */
-  --font-family-sans: var(--font-noto-sans-kr), sans-serif;
-
   /* Custom Breakpoints */
   --breakpoint-mobile: 375px;
 

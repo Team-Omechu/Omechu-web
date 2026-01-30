@@ -8,7 +8,7 @@ import { Providers } from "@/app/providers";
 import { BASE_URL } from "@/shared/constants/url";
 
 const notoSansKR = Noto_Sans_KR({
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
   variable: "--font-noto-sans-kr",
   display: "swap",
   preload: false,
@@ -85,8 +85,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
-      <body className={`bg-gray-200 ${notoSansKR.variable}`}>
+    <html lang="ko" className={notoSansKR.variable}>
+      <body className="bg-gray-200">
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
         <div className="bg-background-primary relative mx-auto flex min-h-screen w-full max-w-[480px] min-w-[375px] flex-col overflow-x-hidden shadow-xl">
           <Providers>
