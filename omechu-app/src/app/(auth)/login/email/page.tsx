@@ -133,10 +133,7 @@ export default function EmailLoginPage() {
                 <FormField
                   label="비밀번호"
                   id="password"
-                  helperText={
-                    errors.password?.message ||
-                    "* 대소문자, 숫자 및 특수문자 포함 8자 이상"
-                  }
+                  helperText={errors.password?.message}
                   helperState={errors.password ? "error" : undefined}
                 >
                   <Input
