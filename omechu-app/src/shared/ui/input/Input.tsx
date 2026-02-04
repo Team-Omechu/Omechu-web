@@ -45,7 +45,16 @@ type BaseInputProps = React.InputHTMLAttributes<HTMLInputElement> &
 
 const PasswordInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (
-    { className, width, height, rounded, disabled, placeholder, ...props },
+    {
+      className,
+      width,
+      height,
+      rounded,
+      disabled,
+      placeholder,
+      onSearch: _onSearch,
+      ...props
+    },
     ref,
   ) => {
     const [isVisible, setIsVisible] = React.useState(false);
