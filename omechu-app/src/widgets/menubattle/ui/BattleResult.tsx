@@ -16,75 +16,43 @@ type BattleResultProps = {
   debug?: boolean;
 };
 
-export function BattleResult({ debug = true }: { debug?: boolean }) {
-  const mockRankings = [
-    {
-      rank: 1,
-      nickname: "이삭",
-      closestMenuName: "불고기",
-      distanceToBoundary: 3,
-    },
-    {
-      rank: 2,
-      nickname: "제나",
-      closestMenuName: "리조또",
-      distanceToBoundary: 12,
-    },
-    {
-      rank: 3,
-      nickname: "민수",
-      closestMenuName: "파스타",
-      distanceToBoundary: 25,
-    },
-  ];
+export function BattleResult({
+  battleId,
+  finished,
+  isHost,
+  nickname,
+}: BattleResultProps) {
+  const [rankings, setRankings] = useState<Ranking[]>([]);
+  const [winner, setWinner] = useState<Ranking | null>(null);
 
-  const winner = mockRankings[0];
+  useEffect(() => {
+    if (!finished || !isHost) return;
+
+    fetchJSON<{
+      success: {
+        winner: Winner;
+      };
+    }>(`/menu/battles/${battleId}/finish`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nickname }),
+    }).then((res) => {
+      setWinner(res.success.winner);
+    });
+  }, [finished, isHost, battleId, nickname]);
+
+  useEffect(() => {
+    if (!finished) return;
+
+    fetchJSON<Ranking[]>(`/menu/battles/${battleId}/rankings`).then(
+      setRankings,
+    );
+  }, [finished, battleId]);
 
   return (
     <section className="my-14 space-y-4.5">
-      <WinnerCard winner={winner} />
-      <RankingList rankings={mockRankings} />
+      {winner && <WinnerCard winner={winner} />}
+      {Array.isArray(rankings) && <RankingList rankings={rankings} />}
     </section>
   );
 }
-
-// export function BattleResult({
-//   battleId,
-//   finished,
-//   isHost,
-//   nickname,
-// }: BattleResultProps) {
-//   const [rankings, setRankings] = useState<Ranking[]>([]);
-//   const [winner, setWinner] = useState<Ranking | null>(null);
-
-//   useEffect(() => {
-//     if (!finished || !isHost) return;
-
-//     fetchJSON<{
-//       success: {
-//         winner: Winner;
-//       };
-//     }>(`/menu/battles/${battleId}/finish`, {
-//       method: "PATCH",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ nickname }),
-//     }).then((res) => {
-//       setWinner(res.success.winner);
-//     });
-//   }, [finished, isHost, battleId, nickname]);
-
-//   useEffect(() => {
-//     if (!finished) return;
-
-//     fetchJSON<Ranking[]>(`/menu/battles/${battleId}/rankings`).then(
-//       setRankings,
-//     );
-//   }, [finished, battleId]);
-
-//   return (
-//     <section className="my-14 space-y-4.5">
-//       {winner && <WinnerCard winner={winner} />}
-//       {Array.isArray(rankings) && <RankingList rankings={rankings} />}
-//     </section>
-//   );
-// }
