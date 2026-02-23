@@ -14,6 +14,11 @@
 - https://omechu.log8.kr/random-recommend
 - https://omechu.log8.kr/menu-battle
 
+## Dynamic URL templates
+- Result detail template: https://omechu.log8.kr/mainpage/result/{menuId}
+- Random detail template: https://omechu.log8.kr/random-recommend/{menuId}
+- Battle play template: https://omechu.log8.kr/menu-battle/play/{id}
+
 ## Machine-readable resources
 - OpenAPI: https://omechu.log8.kr/openapi.json
 - AI Plugin manifest: https://omechu.log8.kr/.well-known/ai-plugin.json

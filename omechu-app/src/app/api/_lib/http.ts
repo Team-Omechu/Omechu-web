@@ -2,9 +2,6 @@ type JsonValue = Record<string, unknown>;
 
 const BASE_HEADERS: Record<string, string> = {
   "Content-Type": "application/json; charset=utf-8",
-  "X-RateLimit-Limit": "60",
-  "X-RateLimit-Remaining": "59",
-  "X-RateLimit-Reset": "60",
 };
 
 export function acceptsJson(req: Request): boolean {
