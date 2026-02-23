@@ -1,14 +1,16 @@
-import "./globals.css";
-
 import { Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
 
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 
 import { Providers } from "@/app/providers";
 import { THEME_COLOR } from "@/shared/constants/theme";
 import { BASE_URL } from "@/shared/constants/url";
 import { siteJsonLd } from "@/shared/lib/siteJsonLd";
+
+import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "500", "700"],
@@ -102,6 +104,8 @@ export default function RootLayout({
             </main>
           </Providers>
         </div>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
