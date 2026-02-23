@@ -1,12 +1,14 @@
 import "./globals.css";
 
 import { Noto_Sans_KR } from "next/font/google";
+import Script from "next/script";
 
 import type { Metadata } from "next";
 
 import { Providers } from "@/app/providers";
 import { THEME_COLOR } from "@/shared/constants/theme";
 import { BASE_URL } from "@/shared/constants/url";
+import { siteJsonLd } from "@/shared/lib/siteJsonLd";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["400", "500", "700"],
@@ -89,6 +91,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={notoSansKR.variable}>
       <body className="bg-gray-200">
+        <Script id="website-jsonld" type="application/ld+json">
+          {JSON.stringify(siteJsonLd)}
+        </Script>
         {/* 모바일 앱 컨테이너 - max-width 제한, 중앙 정렬 */}
         <div className="bg-background-primary relative mx-auto flex min-h-screen w-full max-w-120 min-w-93.75 flex-col overflow-x-hidden shadow-xl">
           <Providers>
