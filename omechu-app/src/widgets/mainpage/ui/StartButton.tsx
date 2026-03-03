@@ -6,6 +6,7 @@ interface StartButtonProps {
   dimmed?: boolean;
 }
 
+// StartButton 전용 버튼
 export function StartButton({
   title,
   subTitle,
