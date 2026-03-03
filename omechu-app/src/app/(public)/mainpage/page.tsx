@@ -8,12 +8,14 @@ import { useRouter } from "next/navigation";
 import { handleLocation, useLocationAnswerStore } from "@/entities/location";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { useTagStore } from "@/entities/tag";
-import { useRecommendManagement } from "@/entities/user";
+import { useAuthStore, useRecommendManagement } from "@/entities/user";
 import { Header } from "@/shared";
 import { MainPick, MainStartSection } from "@/widgets/mainpage";
 
 export default function MainPage() {
   const router = useRouter();
+
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
 
   const { tagDataReset } = useTagStore();
   const { locationReset, setX, setY, setLocationDenied } =
@@ -47,6 +49,9 @@ export default function MainPage() {
 
   // 1) "이 페이지로 돌아왔을 때" API를 다시 치게 만들기
   useEffect(() => {
+    // 로그인이 안되어 있을 시 재요청 block
+    if (!isLoggedIn) return;
+
     const runRefetch = () => {
       // refetch는 Promise 반환하지만 여기서는 fire-and-forget
       void refetch();
@@ -67,10 +72,17 @@ export default function MainPage() {
       window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("focus", onFocus);
     };
+    //prettier-ignore
   }, [refetch]);
 
   //2) 응답에서 exceptedMenus.name만 뽑아서 addException에 넣기
   useEffect(() => {
+    if (!isLoggedIn) {
+      //로그아웃 후 메인페이지 리다이렉 시 이전 로그인 상태에서 남아있던 제외목록을 지워주기
+      resetExceptions();
+      return;
+    }
+
     const exceptedMenus = data?.exceptedMenus;
     if (!Array.isArray(exceptedMenus)) return;
 
@@ -90,6 +102,7 @@ export default function MainPage() {
       <div className="pointer-events-none absolute inset-0 bg-black/65" />
 
       <div className="relative mx-auto w-full max-w-md lg:max-w-lg xl:max-w-xl">
+        {/*메인페이지 배경화면 이미지*/}
         <Image
           src="/mainpage/mainpage.svg"
           alt="메인 페이지"
@@ -99,6 +112,7 @@ export default function MainPage() {
         />
       </div>
 
+      {/*StartButton List*/}
       <MainStartSection
         picked={picked}
         onPickStart={() => go("/mainpage/question-answer/1", "start")}
