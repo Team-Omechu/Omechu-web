@@ -49,20 +49,15 @@ export default function QuestionAnswerPage() {
     setShowModal(false);
   };
 
-  const hanldeXClick = () => {
-    setShowModal(true);
-    console.log("xclick");
-  };
-
   useEffect(() => {
-    // result 페이지면 step 세팅 불필요(원하면 setCurrentStep(QUESTION_STEPS) 같은 걸로 유지해도 됨)
+    // 스텝이 1~5가 아닌 경우에 대한 예외 처리
     if (isResult) return;
-
     if (Number.isNaN(step) || step < 1 || step > QUESTION_STEPS) {
       router.replace("/mainpage/question-answer/1");
       return;
     }
     setCurrentStep(step);
+    //prettier-ignore
   }, [isResult, step, router, setCurrentStep]);
 
   const handlePrev = () => {
