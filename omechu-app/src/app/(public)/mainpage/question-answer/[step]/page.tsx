@@ -86,6 +86,7 @@ export default function QuestionAnswerPage() {
     }
   };
 
+  // 단계별로 어떤 컴포넌트를 렌더링할지 결정
   const renderStepComponent = () => {
     if (isResult) return null;
 

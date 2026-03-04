@@ -15,20 +15,24 @@ import { MainPick, MainStartSection } from "@/widgets/mainpage";
 export default function MainPage() {
   const router = useRouter();
 
+  // 로그인 여부 확인
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
 
+  // 이전 맞춤 추천 옵션 리셋 용
   const { tagDataReset } = useTagStore();
   const { locationReset, setX, setY, setLocationDenied } =
     useLocationAnswerStore();
-
   const { questionReset, addException, resetExceptions } =
     useQuestionAnswerStore();
 
+  // StartButton 선택 옵션
   const [picked, setPicked] = useState<MainPick>(null);
   const [isNavigating, setIsNavigating] = useState(false);
 
+  // 제외 음식 api
   const { data, refetch } = useRecommendManagement();
 
+  // 이전 맞춤 추천 옵션 리셋 함수
   const resetAll = () => {
     tagDataReset();
     locationReset();
@@ -36,6 +40,7 @@ export default function MainPage() {
     handleLocation(setX, setY, setLocationDenied);
   };
 
+  // StartButton 라우팅 처리 함수
   const go = (next: string, pick: Exclude<MainPick, null>) => {
     if (isNavigating) return;
     setIsNavigating(true);
