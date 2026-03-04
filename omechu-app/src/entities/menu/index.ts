@@ -13,3 +13,4 @@ export type {
 export { useGetMenu } from "./model/useGetMenu";
 export { useGetMenuDetail } from "./model/useGetMenuDetail";
 export { useGetRandomMenu } from "./model/useGetRandomMenu";
+export { useReshufflePolicy } from "./model/useReshufflePolicy";
