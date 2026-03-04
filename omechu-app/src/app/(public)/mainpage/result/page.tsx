@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useLocationAnswerStore } from "@/entities/location";
-import { MenuItem, useGetMenu } from "@/entities/menu";
+import { MenuItem, useGetMenu, useReshufflePolicy } from "@/entities/menu";
 import { useQuestionAnswerStore } from "@/entities/question";
 import { useAuthStore } from "@/entities/user/model/auth.store";
 import {
@@ -14,16 +14,17 @@ import {
   ModalWrapper,
   BaseModal,
   Toast,
-  RecommendedFoodCard,
   Button,
 } from "@/shared";
+import { ResultMenuList } from "@/widgets/result-menu-list";
 import { TagCard } from "@/widgets/TagCard";
 
 export default function ResultPage() {
   const router = useRouter();
 
-  const { data, isLoading, refetch, isRefetching } = useGetMenu();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  const { data, isLoading, refetch, isRefetching } = useGetMenu();
 
   const { addException } = useQuestionAnswerStore();
   const { setKeyword } = useLocationAnswerStore();
@@ -38,11 +39,20 @@ export default function ResultPage() {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
-  const [reshuffleAttemptCount, setReshuffleAttemptCount] = useState(0);
-  const [showLoginModalForReshuffle, setShowLoginModalForReshuffle] =
-    useState(false);
-
   const [showStopRecommendModal, setShowStopRecommendModal] = useState(false);
+
+  // 제외 하기 정책 관련 훅
+  const {
+    handleReshuffle,
+    showLoginModalForReshuffle,
+    closeLoginModalForReshuffle,
+  } = useReshufflePolicy({
+    isLoggedIn,
+    menus,
+    addException,
+    refetch,
+    setOpenMenu,
+  });
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
@@ -68,37 +78,13 @@ export default function ResultPage() {
     }
   };
 
-  const handleReshuffle = () => {
-    if (!isLoggedIn) {
-      setReshuffleAttemptCount((prev) => {
-        const next = prev + 1;
-        if (next >= 3) {
-          setShowLoginModalForReshuffle(true);
-          return next;
-        }
-        return next;
-      });
-
-      if (reshuffleAttemptCount + 1 < 3) {
-        const exceptionMenus = menus.slice(0, 3).map((m) => m.menu);
-        const unique = Array.from(new Set(exceptionMenus));
-        unique.forEach(addException);
-        refetch();
-        setOpenMenu(null);
-      }
-      return;
-    }
-
-    const exceptionMenus = menus.slice(0, 3).map((m) => m.menu);
-    const unique = Array.from(new Set(exceptionMenus));
-    unique.forEach(addException);
-    refetch();
-    setOpenMenu(null);
-  };
-
   const handleLoginButton = () => {
     router.push("/login");
-    setShowLoginModalForReshuffle(false);
+    closeLoginModalForReshuffle();
+  };
+
+  const handleToggleMenu = (menuName: string) => {
+    setOpenMenu((prev) => (prev === menuName ? null : menuName));
   };
 
   if (isLoading || isRefetching) return <MainLoading />;
@@ -111,20 +97,11 @@ export default function ResultPage() {
         showHomeButton={true}
       />
 
-      <div className="mt-3 ml-2.5 flex flex-col gap-4 px-4">
-        {menus.map((menu) => (
-          <RecommendedFoodCard
-            key={menu.menu}
-            menuTitle={menu.menu}
-            menuDesc={menu.text}
-            src={menu.image_link || ""}
-            onCardClick={() =>
-              setOpenMenu(openMenu === menu.menu ? null : menu.menu)
-            }
-            selected={openMenu === menu.menu}
-          />
-        ))}
-      </div>
+      <ResultMenuList
+        menus={menus}
+        openMenu={openMenu}
+        onToggleMenu={handleToggleMenu}
+      />
 
       <div className="mt-2 flex w-82.5 gap-2 py-2">
         <Button
@@ -148,6 +125,7 @@ export default function ResultPage() {
         </div>
       </div>
 
+      {/* 모달 관련 컴포넌트 */}
       {showLoginModalForReshuffle && (
         <ModalWrapper>
           <BaseModal
@@ -173,6 +151,7 @@ export default function ResultPage() {
           />
         </ModalWrapper>
       )}
+
       <Toast message={toastMessage} show={showToast} className="bottom-20" />
     </div>
   );
