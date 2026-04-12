@@ -49,7 +49,7 @@ type HeaderProps = VariantProps<typeof headerStyles> & {
   className?: string;
 };
 
-export const Header = ({
+export function Header({
   variant = "default",
   title,
   showBackButton = true,
@@ -61,11 +61,11 @@ export const Header = ({
 
   onBackClick,
   onHomeClick,
-  homeModalTitle = "홈으로 돌아가시겠어요?",
+  homeModalTitle,
   homeModalLeftText = "네",
   homeModalRightText = "아니요",
   className,
-}: HeaderProps) => {
+}: HeaderProps) {
   const router = useRouter();
   const [showHomeModal, setShowHomeModal] = useState(false);
 
@@ -137,7 +137,12 @@ export const Header = ({
           {showHomeButton ? (
             <button
               type="button"
-              onClick={onHomeClick ?? (() => setShowHomeModal(true))}
+              onClick={
+              onHomeClick ??
+              (homeModalTitle
+                ? () => setShowHomeModal(true)
+                : () => router.push("/mainpage"))
+            }
               aria-label="홈으로"
               className="shrink-0"
             >
@@ -167,4 +172,4 @@ export const Header = ({
       )}
     </>
   );
-};
+}
